@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MoreLinq.Pull
 {
+    /// <summary>
+    /// LINQ operators which operate on a set.
+    /// </summary>
     public static class SetOperations
     {
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,

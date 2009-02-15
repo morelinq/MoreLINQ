@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace MoreLinq.Test.Pull
 {
@@ -19,12 +20,21 @@ namespace MoreLinq.Test.Pull
 
         /// <summary>
         /// Make testing even easier - a params array makes for readable tests :)
+        /// The sequence is evaluated exactly once.
         /// </summary>
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected)
         {
-            Assert.IsTrue(actual.SequenceEqual(expected), "Expected: " +
-                ",".InsertBetween(expected.Select(x => Convert.ToString(x))) + "; was: " +
-                ",".InsertBetween(actual.Select(x => Convert.ToString(x))));
+            // Working with a copy means we can look over it more than once.
+            // We're safe to do that with the array anyway.
+            List<T> copy = actual.ToList();
+            bool result = copy.SequenceEqual(expected);
+            // Looks nicer than Assert.IsTrue or Assert.That, unfortunately.
+            if (!result)
+            {
+                Assert.Fail("Expected: " +
+                    ",".InsertBetween(expected.Select(x => Convert.ToString(x))) + "; was: " +
+                    ",".InsertBetween(copy.Select(x => Convert.ToString(x))));
+            }
         }
 
         internal static string InsertBetween(this string delimiter, IEnumerable<string> items)

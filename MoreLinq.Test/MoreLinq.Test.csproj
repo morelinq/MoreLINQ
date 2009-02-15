@@ -57,6 +57,7 @@
     <Compile Include="Pull\DisposeTestingSequence.cs" />
     <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
+    <Compile Include="Pull\SideEffectsTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
