@@ -8,8 +8,6 @@ namespace MoreLinq.Pull
     /// </summary>
     public static class Grouping
     {
-
-
         /// <summary>
         /// Returns tuples, where each tuple contains the N-th element from 
         /// each of the argument sequences. The returned sequence is truncated
