@@ -148,24 +148,26 @@ namespace MoreLinq.Pull
         }
 
         /// <summary>
-        /// Creates a string delimited-string from a sequence of values. The 
-        /// delimiter used depends on the current culture.
+        /// Creates a string-delimited string from a sequence of values. The 
+        /// delimiter used depends on the current culture of the executing thread.
         /// </summary>
-
+        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source)
         {
             return ToDelimitedString(source, null);
         }
 
         /// <summary>
-        /// Creates a string delimited-string from a sequence of values and
+        /// Creates a string-delimited string from a sequence of values and
         /// a given delimiter.
         /// </summary>
-        /// <remarks>
-        /// If no delimiter is specified (null) then one is used from the 
-        /// current culture.
-        /// </remarks>
-
+        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
+        /// the executing thread's current culture's list separator is used.</param>
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
             source.ThrowIfNull("source");

@@ -112,7 +112,13 @@ namespace MoreLinq.Test.Pull
         }
         #endregion
 
-        #region ToDelimitedString
+        #region ToDelimitedString        
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ToDelimitedStringWithNullSequence()
+        {
+            Aggregation.ToDelimitedString<int>(null, ",");
+        }
 
         [Test]
         public void ToDelimitedStringWithEmptySequence()
