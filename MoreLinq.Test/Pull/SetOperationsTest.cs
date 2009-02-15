@@ -63,11 +63,11 @@ namespace MoreLinq.Test.Pull
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullComparer()
         {
-            string[] source = { };
-            source.DistinctBy(x => x, null);
+            string[] source = { "first", "second", "third", "fourth", "fifth" };
+            var distinct = source.DistinctBy(word => word.Length, null);
+            distinct.AssertSequenceEqual("first", "second");
         }
 
         [Test]

@@ -8,7 +8,7 @@ namespace MoreLinq.Pull
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
         {
-            return source.DistinctBy(keySelector, EqualityComparer<TKey>.Default);
+            return source.DistinctBy(keySelector, null);
         }
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
@@ -16,8 +16,7 @@ namespace MoreLinq.Pull
         {
             source.ThrowIfNull("source");
             keySelector.ThrowIfNull("keySelector");
-            comparer.ThrowIfNull("comparer");
-            return DistinctByImpl(source, keySelector, comparer);
+            return DistinctByImpl(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
         }
 
         private static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source,
