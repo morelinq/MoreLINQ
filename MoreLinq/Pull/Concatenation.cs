@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace MoreLinq.Pull
 {
+    using System.Linq;
+
     public static class Concatenation
     {
         /// <summary>
@@ -15,16 +17,7 @@ namespace MoreLinq.Pull
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
         {
             tail.ThrowIfNull("tail");
-            return ConcatImpl(head, tail);
-        }
-
-        private static IEnumerable<T> ConcatImpl<T>(this T head, IEnumerable<T> tail)
-        {
-            yield return head;
-            foreach (T element in tail)
-            {
-                yield return element;
-            }
+            return Enumerable.Repeat(head, 1).Concat(tail);
         }
 
         /// <summary>
@@ -37,16 +30,7 @@ namespace MoreLinq.Pull
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
         {
             head.ThrowIfNull("head");
-            return ConcatImpl(head, tail);
-        }
-
-        private static IEnumerable<T> ConcatImpl<T>(this IEnumerable<T> head, T tail)
-        {
-            foreach (T element in head)
-            {
-                yield return element;
-            }
-            yield return tail;
+            return head.Concat(Enumerable.Repeat(tail, 1));
         }
     }
 }
