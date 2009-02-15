@@ -14,6 +14,7 @@ namespace MoreLinq.Test.Pull
             return new Tuple<TFirst, TSecond>(a, b);
         }
 
+        #region Default strategy (same tests as for ImbalancedZipStrategy.Truncate)
         [Test]
         public void BothSequencesDisposedWithUnequalLengths()
         {
@@ -39,7 +40,7 @@ namespace MoreLinq.Test.Pull
         }
 
         [Test]
-        public void ZipWithFirstSequnceShorterThanSecond()
+        public void ZipWithFirstSequenceShorterThanSecond()
         {
             var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
@@ -53,7 +54,162 @@ namespace MoreLinq.Test.Pull
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
+        #endregion
 
+        #region Handling of ImbalancedZipStrategy.Truncate
+        [Test]
+        public void BothSequencesDisposedWithUnequalLengthsTruncateStrategy()
+        {
+            var longer = DisposeTestingSequence.Of(1, 2, 3);
+            var shorter = DisposeTestingSequence.Of(1, 2);
+
+            longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Truncate).Exhaust();
+            longer.AssertDisposed();
+            shorter.AssertDisposed();
+
+            // Just in case it works one way but not the other...
+            shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Truncate).Exhaust();
+            longer.AssertDisposed();
+            shorter.AssertDisposed();
+        }
+
+        [Test]
+        public void ZipWithEqualLengthSequencesTruncateStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
+        }
+
+        [Test]
+        public void ZipWithFirstSequenceShorterThanSecondTruncateStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+        }
+
+        [Test]
+        public void ZipWithFirstSequnceLongerThanSecondTruncateStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+        }
+        #endregion
+
+        #region Handling of ImbalancedZipStrategy.Pad
+        [Test]
+        public void BothSequencesDisposedWithUnequalLengthsPadStrategy()
+        {
+            var longer = DisposeTestingSequence.Of(1, 2, 3);
+            var shorter = DisposeTestingSequence.Of(1, 2);
+
+            longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Pad).Exhaust();
+            longer.AssertDisposed();
+            shorter.AssertDisposed();
+
+            // Just in case it works one way but not the other...
+            shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Pad).Exhaust();
+            longer.AssertDisposed();
+            shorter.AssertDisposed();
+        }
+
+        [Test]
+        public void ZipWithEqualLengthSequencesPadStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
+        }
+
+        [Test]
+        public void ZipWithFirstSequenceShorterThanSecondPadStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(0, 6));
+        }
+
+        [Test]
+        public void ZipWithFirstSequnceLongerThanSecondPadStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 0));
+        }
+        #endregion
+
+        #region Handling of ImbalancedZipStrategy.Fail
+        [Test]
+        public void BothSequencesDisposedWithUnequalLengthsFailStrategy()
+        {
+            var longer = DisposeTestingSequence.Of(1, 2, 3);
+            var shorter = DisposeTestingSequence.Of(1, 2);
+
+            // Yes, this will throw... but then we should still have disposed both sequences
+            try
+            {
+                longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Fail).Exhaust();
+            }
+            catch (InvalidOperationException)
+            {
+                // Expected
+            }
+            longer.AssertDisposed();
+            shorter.AssertDisposed();
+
+            // Just in case it works one way but not the other...
+            try
+            {
+                shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Fail).Exhaust();
+            }
+            catch (InvalidOperationException)
+            {
+                // Expected
+            }
+            longer.AssertDisposed();
+            shorter.AssertDisposed();
+        }
+
+        [Test]
+        public void ZipWithEqualLengthSequencesFailStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.Exhaust();
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
+        {
+            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+                (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
+            Assert.That(zipped, Is.Not.Null);
+            zipped.Exhaust();
+            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+        }
+        #endregion
+
+        #region Invalid arguments
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullFirstSequence()
@@ -74,6 +230,15 @@ namespace MoreLinq.Test.Pull
         {
             Grouping.Zip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void ZipWithInvalidStrategy()
+        {
+            Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+                (x, y) => Tuple(x, y), (ImbalancedZipStrategy)10);
+        }
+        #endregion
 
         [Test]
         public void ZipIsLazy()
