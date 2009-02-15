@@ -55,6 +55,7 @@
     <Compile Include="Pull\Aggregation.cs" />
     <Compile Include="Pull\Concatenation.cs" />
     <Compile Include="Pull\ImbalancedZipStrategy.cs" />
+    <Compile Include="Pull\Partition.cs" />
     <Compile Include="Pull\SetOperations.cs" />
     <Compile Include="Pull\Grouping.cs" />
     <Compile Include="Pull\SideEffects.cs" />
