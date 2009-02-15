@@ -13,7 +13,7 @@ namespace MoreLinq.Pull
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// This is equivalent to <see cref="Zip(IEnumerable{T},IEnumerable{T},Func{T1,T2,TResult},ImbalancedZipStrategy)" />
+        /// This is equivalent to <see cref="Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)" />
         /// with a stategy of <see cref="ImbalancedZipStrategy.Truncate" />: if the two input sequences are of different lengths,
         /// the result sequence is terminated as soon as the shortest input sequence is exhausted.
         /// </remarks>
@@ -47,7 +47,7 @@ namespace MoreLinq.Pull
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// This is equivalent to <see cref="Zip(IEnumerable{T},IEnumerable{T},Func{T1,T2,TResult},ImbalancedZipStrategy)" />
+        /// This is equivalent to <see cref="Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)" />
         /// with a stategy of <see cref="ImbalancedZipStrategy.Truncate" />: if the two input sequences are of different lengths,
         /// the result sequence is terminated as soon as the shortest input sequence is exhausted.
         /// </remarks>

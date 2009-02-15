@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MoreLinq.Pull
 {
     /// <summary>
     /// Strategy determining the handling of the case where the inputs are of
-    /// unequal lengths in <see cref="Grouping.Zip{TFirst,TSecond,TResult}"/>.
+    /// unequal lengths in <see cref="Grouping.Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)"/>.
     /// </summary>
     public enum ImbalancedZipStrategy : byte
     {

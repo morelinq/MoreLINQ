@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 
 namespace MoreLinq.Pull
 {
-    using System.Linq;
-
+    /// <summary>
+    /// Concatenation operators.
+    /// </summary>
     public static class Concatenation
     {
         /// <summary>
         /// Returns a sequence consisting of the head element and the given tail elements.
+        /// This operator uses deferred execution and streams its results.
         /// </summary>
         /// <typeparam name="T">Type of sequence</typeparam>
         /// <param name="head">Head element of the new sequence.</param>
@@ -21,6 +24,7 @@ namespace MoreLinq.Pull
 
         /// <summary>
         /// Returns a sequence consisting of the head elements and the given tail element.
+        /// This operator uses deferred execution and streams its results.
         /// </summary>
         /// <typeparam name="T">Type of sequence</typeparam>
         /// <param name="head">All elements of the head. Must not be null.</param>

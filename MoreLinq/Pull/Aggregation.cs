@@ -18,7 +18,8 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// If more than one element has the maximal projected value, the first
         /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type.
+        /// for the projected type. This operator uses immediate execution, but
+        /// only buffers a single result (the current maximal element).
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -35,12 +36,13 @@ namespace MoreLinq.Pull
 
         /// <summary>
         /// Returns the maximal element of the given sequence, based on
-        /// the given projection and the specified comparer for projected values.
+        /// the given projection and the specified comparer for projected values. 
         /// </summary>
         /// <remarks>
         /// If more than one element has the maximal projected value, the first
         /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type.
+        /// for the projected type. This operator uses immediate execution, but
+        /// only buffers a single result (the current maximal element).
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -86,7 +88,8 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// If more than one element has the minimal projected value, the first
         /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type.
+        /// for the projected type. This operator uses immediate execution, but
+        /// only buffers a single result (the current minimal element).
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -108,7 +111,8 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// If more than one element has the minimal projected value, the first
         /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type.
+        /// for the projected type. This operator uses immediate execution, but
+        /// only buffers a single result (the current minimal element).
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -150,6 +154,7 @@ namespace MoreLinq.Pull
         /// <summary>
         /// Creates a string-delimited string from a sequence of values. The 
         /// delimiter used depends on the current culture of the executing thread.
+        /// This operator uses immediate execution and effectively buffers the sequence.
         /// </summary>
         /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
@@ -161,7 +166,7 @@ namespace MoreLinq.Pull
 
         /// <summary>
         /// Creates a string-delimited string from a sequence of values and
-        /// a given delimiter.
+        /// a given delimiter. This operator uses immediate execution and effectively buffers the sequence.
         /// </summary>
         /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
