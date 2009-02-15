@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using MoreLinq.Pull;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using System.Threading;
+using System.Globalization;
 
 namespace MoreLinq.Test.Pull
 {
@@ -107,6 +111,86 @@ namespace MoreLinq.Test.Pull
             Assert.AreEqual("ax", Strings.MinBy(x => x.Length));
         }
         #endregion
+
+        #region ToDelimitedString
+
+        [Test]
+        public void ToDelimitedStringWithEmptySequence()
+        {
+            Assert.That(Aggregation.ToDelimitedString(Enumerable.Empty<int>()), Is.Empty);
+        }
+
+        [Test]
+        public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
+        {
+            var result = Aggregation.ToDelimitedString(new[] { 1, 2, 3 }, "-");
+            Assert.That(result, Is.EqualTo("1-2-3"));
+        }
+
+        [Test]
+        public void ToDelimitedStringWithNonEmptySequenceAndDefaultDelimiter()
+        {
+            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
+            {
+                var result = Aggregation.ToDelimitedString(new[] {1, 2, 3});
+                Assert.That(result, Is.EqualTo("1;2;3"));
+            }
+        }
+
+        [Test]
+        public void ToDelimitedStringWithNonEmptySequenceAndNullDelimiter()
+        {
+            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
+            {
+                var result = Aggregation.ToDelimitedString(new[] { 1, 2, 3 }, null);
+                Assert.That(result, Is.EqualTo("1;2;3"));
+            }
+        }
+
+        [Test]
+        public void ToDelimitedStringWithNonEmptySequenceContainingNulls()
+        {
+            var result = Aggregation.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
+            Assert.That(result, Is.EqualTo("1,,foo,True"));
+        }
+
+        #endregion
+
+        private abstract class Scope<T> : IDisposable
+        {
+            private readonly T old;
+
+            protected Scope(T current)
+            {
+                old = current;
+            }
+
+            public virtual void Dispose()
+            {
+                Restore(old);
+            }
+
+            protected abstract void Restore(T old);
+        }
+
+        private sealed class CurrentThreadCultureScope : Scope<CultureInfo>
+        {
+            public CurrentThreadCultureScope(CultureInfo @new) : 
+                base(Thread.CurrentThread.CurrentCulture)
+            {
+                Install(@new);
+            }
+
+            protected override void Restore(CultureInfo old)
+            {
+                Install(old);
+            }
+
+            private static void Install(CultureInfo value)
+            {
+                Thread.CurrentThread.CurrentCulture = value;
+            }
+        }
 
         private class ReverseCharComparer : IComparer<char>
         {

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Globalization;
+using System.Diagnostics;
 
 namespace MoreLinq.Pull
 {
@@ -142,6 +145,47 @@ namespace MoreLinq.Pull
                 }
                 return min;
             }
+        }
+
+        /// <summary>
+        /// Creates a string delimited-string from a sequence of values. The 
+        /// delimiter used depends on the current culture.
+        /// </summary>
+
+        public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source)
+        {
+            return ToDelimitedString(source, null);
+        }
+
+        /// <summary>
+        /// Creates a string delimited-string from a sequence of values and
+        /// a given delimiter.
+        /// </summary>
+        /// <remarks>
+        /// If no delimiter is specified (null) then one is used from the 
+        /// current culture.
+        /// </remarks>
+
+        public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
+        {
+            source.ThrowIfNull("source");
+            return ToDelimitedStringImpl(source, delimiter ?? CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
+
+        private static string ToDelimitedStringImpl<TSource>(IEnumerable<TSource> source, string delimiter) 
+        {
+            Debug.Assert(source != null);
+            Debug.Assert(delimiter != null);
+
+            var sb = new StringBuilder();
+
+            foreach (var value in source)
+            {
+                if (sb.Length > 0) sb.Append(delimiter);
+                sb.Append(value);
+            }
+
+            return sb.ToString();
         }
     }
 }
