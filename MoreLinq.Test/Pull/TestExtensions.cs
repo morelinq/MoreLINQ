@@ -40,5 +40,12 @@ namespace MoreLinq.Test.Pull
             }
             return builder.ToString();
         }
+
+        internal static void Exhaust<T>(this IEnumerable<T> sequence)
+        {
+            foreach (T element in sequence)
+            {
+            }
+        }
     }
 }

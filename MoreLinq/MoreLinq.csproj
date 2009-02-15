@@ -49,6 +49,7 @@
     <Compile Include="Pull\Aggregation.cs" />
     <Compile Include="Pull\Concatenation.cs" />
     <Compile Include="Pull\SetOperations.cs" />
+    <Compile Include="Pull\Grouping.cs" />
     <Compile Include="ThrowHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

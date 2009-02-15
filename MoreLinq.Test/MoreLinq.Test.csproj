@@ -51,8 +51,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pull\AggregationTest.cs" />
+    <Compile Include="Pull\BreakingFunc.cs" />
     <Compile Include="Pull\BreakingSequence.cs" />
     <Compile Include="Pull\ConcatenationTest.cs" />
+    <Compile Include="Pull\DisposeTestingSequence.cs" />
+    <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
   </ItemGroup>
