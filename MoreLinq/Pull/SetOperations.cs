@@ -16,7 +16,7 @@ namespace MoreLinq.Pull
         {
             source.ThrowIfNull("source");
             keySelector.ThrowIfNull("keySelector");
-            return DistinctByImpl(source, keySelector, comparer ?? EqualityComparer<TKey>.Default);
+            return DistinctByImpl(source, keySelector, comparer);
         }
 
         private static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source,
