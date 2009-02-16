@@ -91,5 +91,63 @@ namespace MoreLinq.Test.Pull
             Concatenation.Concat(new BreakingSequence<string>(), "tail");
         }
         #endregion
+
+        #region Pad
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PadNullSource()
+        {
+            Concatenation.Pad<object>(null, 0);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void PadNegativeWidth()
+        {
+            Concatenation.Pad(new object[0], -1);
+        }
+
+        [Test]
+        public void PadIsLazy()
+        {
+            Concatenation.Pad(new BreakingSequence<object>(), 0);
+        }
+
+        [Test]
+        public void PadWithFillerIsLazy()
+        {
+            Concatenation.Pad(new BreakingSequence<object>(), 0, new object());
+        }
+
+        [Test]
+        public void PadWideSourceSequence()
+        {
+            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 2);
+            result.AssertSequenceEqual(new[] { 123, 456, 789 });
+        }
+
+        [Test]
+        public void PadEqualSourceSequence()
+        {
+            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 3);
+            result.AssertSequenceEqual(new[] { 123, 456, 789 });
+        }
+
+        [Test]
+        public void PadNarrowSourceSequence()
+        {
+            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 5);
+            result.AssertSequenceEqual(new[] { 123, 456, 789, 0, 0 });
+        }
+
+        [Test]
+        public void PadNarrowSourceSequenceWithFiller()
+        {
+            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 5, -1);
+            result.AssertSequenceEqual(new[] { 123, 456, 789, -1, -1 });
+        }
+
+        #endregion
     }
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MoreLinq.Pull
 {
+    using System;
+    using System.Diagnostics;
+
     /// <summary>
     /// Concatenation operators.
     /// </summary>
@@ -34,6 +37,77 @@ namespace MoreLinq.Pull
         {
             head.ThrowIfNull("head");
             return head.Concat(Enumerable.Repeat(tail, 1));
+        }
+
+        /// <summary>
+        /// Pads a sequence with default values if it is narrower (shorter 
+        /// in length) than a given width.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to pad.</param>
+        /// <param name="width">The width/length below which to pad.</param>
+        /// <returns>
+        /// Returns a sequence that is at least as wide/long as the width/length
+        /// specified by the <paramref name="width"/> parameter.
+        /// </returns>
+        /// <example>
+        /// <code>
+        /// int[] numbers = { 123, 456, 789 };
+        /// IEnumerable&lt;int&gt; result = numbers.Pad(5);
+        /// </code>
+        /// The <c>result</c> variable, when iterated over, will yield 
+        /// 123, 456, 789 and two zeroes, in turn.
+        /// </example>
+
+        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        {
+            return Pad(source, width, default(TSource));
+        }
+
+        /// <summary>
+        /// Pads a sequence with a given filler value if it is narrower (shorter 
+        /// in length) than a given width.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to pad.</param>
+        /// <param name="width">The width/length below which to pad.</param>
+        /// <param name="filler">The value to use for padding.</param>
+        /// <returns>
+        /// Returns a sequence that is at least as wide/long as the width/length
+        /// specified by the <paramref name="width"/> parameter.
+        /// </returns>
+        /// <example>
+        /// <code>
+        /// int[] numbers = { 123, 456, 789 };
+        /// IEnumerable&lt;int&gt; result = numbers.Pad(5, -1);
+        /// </code>
+        /// The <c>result</c> variable, when iterated over, will yield 
+        /// 123, 456, and 789 followed by two occurrences of -1, in turn.
+        /// </example>
+
+        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource filler)
+        {
+            source.ThrowIfNull("source");
+            if (width < 0) throw new ArgumentException(null, "width");
+            return PadImpl(source, width, filler);
+        }
+
+        private static IEnumerable<T> PadImpl<T>(this IEnumerable<T> source, int width, T filler)
+        {
+            Debug.Assert(source != null);
+            Debug.Assert(width >= 0);
+
+            var count = 0;
+            foreach (var item in source)
+            {
+                yield return item;
+                count++;
+            }
+            while (count < width)
+            {
+                yield return filler;
+                count++;
+            }
         }
     }
 }
