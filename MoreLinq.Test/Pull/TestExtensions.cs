@@ -51,6 +51,12 @@ namespace MoreLinq.Test.Pull
             return builder.ToString();
         }
 
+        internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
+        {
+            foreach (var split in str.Split(separators))
+                yield return split;
+        }
+
         /// <summary>
         /// Just iterates through a sequence to get to the end.
         /// </summary>

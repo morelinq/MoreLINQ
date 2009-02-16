@@ -28,31 +28,31 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void AssertCountSequenceWithMatchingLength()
         {
-            "foo,bar,baz".Split(',').AssertCount(3).Exhaust();
+            "foo,bar,baz".GenerateSplits(',').AssertCount(3).Exhaust();
         }
 
         [Test]
         [ExpectedException(typeof(Exception))]
         public void AssertCountShortSequence()
         {
-            "foo,bar,baz".Split(',').AssertCount(5).Exhaust();
+            "foo,bar,baz".GenerateSplits(',').AssertCount(4).Exhaust();
         }
 
         [Test]
         [ExpectedException(typeof(Exception))]
         public void AssertCountLongSequence()
         {
-            "foo,bar,baz".Split(',').AssertCount(2).Exhaust();
+            "foo,bar,baz".GenerateSplits(',').AssertCount(2).Exhaust();
         }
 
         [Test]
         public void AssertCountDefaultExceptionMessageVariesWithCase()
         {
-            var tokens = "foo,bar,baz".Split(',');
+            var tokens = "foo,bar,baz".GenerateSplits(',');
             Exception e1 = null, e2 = null;
             try
             {
-                tokens.AssertCount(5).Exhaust();
+                tokens.AssertCount(4).Exhaust();
                 Assert.Fail("Exception expected.");
             }
             catch (Exception e)
@@ -76,7 +76,7 @@ namespace MoreLinq.Test.Pull
         {
             try
             {
-                "foo,bar,baz".Split(',').AssertCount(2, (cmp, count) => new TestException(cmp, count)).Exhaust();
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count)).Exhaust();
                 Assert.Fail("Exception expected.");
             }
             catch (TestException e)
@@ -91,13 +91,13 @@ namespace MoreLinq.Test.Pull
         {
             try
             {
-                "foo,bar,baz".Split(',').AssertCount(5, (cmp, count) => new TestException(cmp, count)).Exhaust();
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count)).Exhaust();
                 Assert.Fail("Exception expected.");
             }
             catch (TestException e)
             {
                 Assert.That(e.Cmp, Is.LessThan(0));
-                Assert.That(e.Count, Is.EqualTo(5));
+                Assert.That(e.Count, Is.EqualTo(4));
             }
         }
         

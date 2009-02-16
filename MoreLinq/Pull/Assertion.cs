@@ -97,7 +97,7 @@ namespace MoreLinq.Pull
             {
                 while (e.MoveNext())
                 {
-                    if (++iterations == count)
+                    if (++iterations > count)
                         throw errorSelector(1, count);
                     yield return e.Current;
                 }
