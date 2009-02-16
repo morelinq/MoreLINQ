@@ -139,17 +139,24 @@ namespace MoreLinq.Test.Pull
         }
 
         [Test]
-        public void PadNarrowSourceSequence()
+        public void PadNarrowSourceSequenceWithDefaultPadding()
         {
             var result = Concatenation.Pad(new[] { 123, 456, 789 }, 5);
             result.AssertSequenceEqual(new[] { 123, 456, 789, 0, 0 });
         }
 
         [Test]
-        public void PadNarrowSourceSequenceWithFiller()
+        public void PadNarrowSourceSequenceWithNonDefaultPadding()
         {
             var result = Concatenation.Pad(new[] { 123, 456, 789 }, 5, -1);
             result.AssertSequenceEqual(new[] { 123, 456, 789, -1, -1 });
+        }
+
+        [Test]
+        public void PadNarrowSourceSequenceWithDynamicPadding()
+        {
+            var result = Concatenation.Pad("hello".ToCharArray(), 15, i => i % 2 == 0 ? '+' : '-');
+            result.AssertSequenceEqual("hello-+-+-+".ToCharArray());
         }
 
         #endregion
