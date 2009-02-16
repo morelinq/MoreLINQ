@@ -9,6 +9,10 @@ namespace MoreLinq.Test.Pull
     public class ConcatenationTest
     {
         #region Concat with single head and tail sequence
+
+        // NOTE: Concat with single head and tail sequence is now 
+        // implemented in terms of Prepend so the tests are identical. 
+
         [Test]
         public void ConcatWithNonEmptyTailSequence()
         {
@@ -148,6 +152,48 @@ namespace MoreLinq.Test.Pull
             result.AssertSequenceEqual(new[] { 123, 456, 789, -1, -1 });
         }
 
+        #endregion
+
+        #region Prepend
+        [Test]
+        public void PrependWithNonEmptyTailSequence()
+        {
+            string[] tail = { "second", "third" };
+            string head = "first";
+            IEnumerable<string> whole = Concatenation.Prepend(tail, head);
+            whole.AssertSequenceEqual("first", "second", "third");
+        }
+
+        [Test]
+        public void PrependWithEmptyTailSequence()
+        {
+            string[] tail = { };
+            string head = "first";
+            IEnumerable<string> whole = Concatenation.Prepend(tail, head);
+            whole.AssertSequenceEqual("first");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PrependWithNullTailSequence()
+        {
+            Concatenation.Prepend(null, "head");
+        }
+
+        [Test]
+        public void PrependWithNullHead()
+        {
+            string[] tail = { "second", "third" };
+            string head = null;
+            IEnumerable<string> whole = Concatenation.Prepend(tail, head);
+            whole.AssertSequenceEqual(null, "second", "third");
+        }
+
+        [Test]
+        public void PrependIsLazyInTailSequence()
+        {
+            Concatenation.Prepend(new BreakingSequence<string>(), "head");
+        }
         #endregion
     }
 }
