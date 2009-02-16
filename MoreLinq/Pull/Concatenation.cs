@@ -75,6 +75,9 @@ namespace MoreLinq.Pull
         /// Returns a sequence that is at least as wide/long as the width/length
         /// specified by the <paramref name="width"/> parameter.
         /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
@@ -101,6 +104,9 @@ namespace MoreLinq.Pull
         /// Returns a sequence that is at least as wide/long as the width/length
         /// specified by the <paramref name="width"/> parameter.
         /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
