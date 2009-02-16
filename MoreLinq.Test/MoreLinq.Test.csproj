@@ -61,6 +61,7 @@
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
+    <Compile Include="Pull\Tuple.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj">
