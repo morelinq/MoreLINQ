@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pull\Aggregation.cs" />
+    <Compile Include="Pull\Assertion.cs" />
     <Compile Include="Pull\Concatenation.cs" />
     <Compile Include="Pull\ImbalancedZipStrategy.cs" />
     <Compile Include="Pull\Partition.cs" />
