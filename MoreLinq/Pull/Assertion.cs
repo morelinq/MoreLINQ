@@ -4,6 +4,11 @@ using System.Diagnostics;
 
 namespace MoreLinq.Pull
 {
+    /// <summary>
+    /// Operators which apply assertions to sequences "in flight" - they can be
+    /// used as normal, but throw exceptions (lazily) if the operator detects
+    /// an assertion failure as the data is being read.
+    /// </summary>
     public static class Assertion
     {
         private static readonly Func<int, int, Exception> defaultErrorSelector = OnAssertCountFailure;
@@ -22,12 +27,11 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count)
         {
             source.ThrowIfNull("source");
-            if (count < 0) throw new ArgumentException(null, "count");
+            count.ThrowIfNegative("count");
 
             return ExpectingCountImpl(source, count, defaultErrorSelector);
         }
@@ -49,7 +53,6 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
@@ -65,16 +68,13 @@ namespace MoreLinq.Pull
             var message = cmp < 0 
                         ? "Sequence contains too few elements when exactly {0} were expected."
                         : "Sequence contains too many elements when exactly {0} were expected.";
-            // TODO: Consider raising custom exception like SequenceTooShortExceptoin and SequenceTooLongException
-            return new Exception(string.Format(message, count.ToString("N0")));
+            // TODO: Consider raising custom exception like SequenceTooShortException and SequenceTooLongException
+            return new InvalidOperationException(string.Format(message, count.ToString("N0")));
         }
 
-        internal static IEnumerable<TSource> ExpectingCountImpl<TSource>(IEnumerable<TSource> source, 
+        private static IEnumerable<TSource> ExpectingCountImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(errorSelector != null);
-
             var collection = source as ICollection<TSource>; // Optimization for collections
             if (collection != null)
             {
@@ -89,20 +89,19 @@ namespace MoreLinq.Pull
         private static IEnumerable<TSource> ExpectingCountYieldingImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(errorSelector != null);
-
             var iterations = 0;
-            using (var e = source.GetEnumerator())
+            foreach (TSource element in source)
             {
-                while (e.MoveNext())
+                iterations++;
+                if (iterations > count)
                 {
-                    if (++iterations > count)
-                        throw errorSelector(1, count);
-                    yield return e.Current;
+                    throw errorSelector(1, count);
                 }
-                if (iterations < count)
-                    throw errorSelector(-1, count);
+                yield return element;
+            }
+            if (iterations != count)
+            {
+                throw errorSelector(-1, count);
             }
         }
     }

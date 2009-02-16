@@ -14,5 +14,21 @@ namespace MoreLinq
                 throw new ArgumentNullException(name);
             }
         }
+
+        internal static void ThrowIfNegative(this int argument, string name)
+        {
+            if (argument < 0)
+            {
+                throw new ArgumentOutOfRangeException(name);
+            }
+        }
+
+        internal static void ThrowIfNonPositive(this int argument, string name)
+        {
+            if (argument <= 0)
+            {
+                throw new ArgumentOutOfRangeException(name);
+            }
+        }
     }
 }

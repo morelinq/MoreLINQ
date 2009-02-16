@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace MoreLinq.Pull
 {
+    /// <summary>
+    /// Operators which partition the data.
+    /// </summary>
     public static class Partition
     {
         /// <summary>
@@ -22,11 +25,10 @@ namespace MoreLinq.Pull
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield 1, 3 and 5, in turn.
         /// </example>
-
-        public static IEnumerable<TSource> Every<TSource>(this IEnumerable<TSource> source, int step)
+        public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
         {
             source.ThrowIfNull("source");
-            if (step <= 0) throw new ArgumentException(null, "step");
+            step.ThrowIfNonPositive("step");
             return source.Where((e, i) => i % step == 0);
         }
     }

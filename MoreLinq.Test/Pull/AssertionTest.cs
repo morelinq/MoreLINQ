@@ -19,7 +19,7 @@ namespace MoreLinq.Test.Pull
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertCountNegativeCount()
         {
             Assertion.AssertCount(new object[0], -1);
@@ -32,14 +32,14 @@ namespace MoreLinq.Test.Pull
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void AssertCountShortSequence()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(4).Exhaust();
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void AssertCountLongSequence()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(2).Exhaust();

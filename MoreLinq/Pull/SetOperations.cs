@@ -43,7 +43,7 @@ namespace MoreLinq.Pull
         /// <param name="source">Source sequence</param>
         /// <param name="keySelector">Projection for determining "distinctness"</param>
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-        /// If null, the default equality comparer for <see cref="TSource"/> is used.</param>
+        /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,

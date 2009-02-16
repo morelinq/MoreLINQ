@@ -9,60 +9,60 @@ namespace MoreLinq.Test.Pull
     [TestFixture]
     public class PartitionTest
     {
-        #region Every
+        #region TakeEvery
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void EveryNullSequence()
         {
-            Partition.Every<object>(null, 1);
+            Partition.TakeEvery<object>(null, 1);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void EveryNegativeSkip()
         {
-            Partition.Every(new object[0], -1);
+            Partition.TakeEvery(new object[0], -1);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void EveryZeroStep()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void EveryOutOfRangeZeroStep()
         {
-            Partition.Every(new object[0], 0);
+            Partition.TakeEvery(new object[0], 0);
         }
 
         [Test]
         public void EveryEmptySequence()
         {
-            Assert.That(Partition.Every(new object[0], 1).GetEnumerator().MoveNext(), Is.False);
+            Assert.That(Partition.TakeEvery(new object[0], 1).GetEnumerator().MoveNext(), Is.False);
         }
 
         [Test]
         public void EveryNonEmptySequence()
         {
-            var result = Partition.Every(new[] { 1, 2, 3, 4, 5 }, 1);
+            var result = Partition.TakeEvery(new[] { 1, 2, 3, 4, 5 }, 1);
             result.AssertSequenceEqual(1, 2, 3, 4, 5);
         }
 
         [Test]
         public void EveryOtherOnNonEmptySequence()
         {
-            var result = Partition.Every(new[] { 1, 2, 3, 4, 5 }, 2);
+            var result = Partition.TakeEvery(new[] { 1, 2, 3, 4, 5 }, 2);
             result.AssertSequenceEqual(1, 3, 5);
         }
 
         [Test]
         public void EveryThirdOnNonEmptySequence()
         {
-            var result = Partition.Every(new[] { 1, 2, 3, 4, 5 }, 3);
+            var result = Partition.TakeEvery(new[] { 1, 2, 3, 4, 5 }, 3);
             result.AssertSequenceEqual(1, 4);
         }
 
         [Test]
         public void EveryIsLazy()
         {
-            new BreakingSequence<object>().Every(1);
+            new BreakingSequence<object>().TakeEvery(1);
         }
 
         #endregion

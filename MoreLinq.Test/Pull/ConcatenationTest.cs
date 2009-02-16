@@ -156,7 +156,7 @@ namespace MoreLinq.Test.Pull
         public void PadNarrowSourceSequenceWithDynamicPadding()
         {
             var result = Concatenation.Pad("hello".ToCharArray(), 15, i => i % 2 == 0 ? '+' : '-');
-            result.AssertSequenceEqual("hello-+-+-+".ToCharArray());
+            result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
         }
 
         #endregion
