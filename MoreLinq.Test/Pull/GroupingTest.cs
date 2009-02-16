@@ -12,6 +12,8 @@ namespace MoreLinq.Test.Pull
         {
             return new Tuple<TFirst, TSecond>(a, b);
         }
+        
+        #region Zip
 
         #region Default strategy (same tests as for ImbalancedZipStrategy.Truncate)
         [Test]
@@ -247,5 +249,7 @@ namespace MoreLinq.Test.Pull
                 new BreakingSequence<int>(), 
                 delegate { throw new NotImplementedException(); });
         }
+        
+        #endregion
     }
 }
