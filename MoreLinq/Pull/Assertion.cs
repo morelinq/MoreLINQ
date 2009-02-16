@@ -33,7 +33,7 @@ namespace MoreLinq.Pull
             source.ThrowIfNull("source");
             count.ThrowIfNegative("count");
 
-            return ExpectingCountImpl(source, count, defaultErrorSelector);
+            return AssertCountImpl(source, count, defaultErrorSelector);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MoreLinq.Pull
             if (count < 0) throw new ArgumentException(null, "count");
             errorSelector.ThrowIfNull("errorSelector");
 
-            return ExpectingCountImpl(source, count, errorSelector);
+            return AssertCountImpl(source, count, errorSelector);
         }
 
         private static Exception OnAssertCountFailure(int cmp, int count)
@@ -72,7 +72,7 @@ namespace MoreLinq.Pull
             return new InvalidOperationException(string.Format(message, count.ToString("N0")));
         }
 
-        private static IEnumerable<TSource> ExpectingCountImpl<TSource>(IEnumerable<TSource> source, 
+        private static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
             var collection = source as ICollection<TSource>; // Optimization for collections
