@@ -32,14 +32,14 @@ namespace MoreLinq.Test.Pull
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(SequenceException))]
         public void AssertCountShortSequence()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(4).Exhaust();
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(SequenceException))]
         public void AssertCountLongSequence()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(2).Exhaust();

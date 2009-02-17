@@ -68,8 +68,7 @@ namespace MoreLinq.Pull
             var message = cmp < 0 
                         ? "Sequence contains too few elements when exactly {0} were expected."
                         : "Sequence contains too many elements when exactly {0} were expected.";
-            // TODO: Consider raising custom exception like SequenceTooShortException and SequenceTooLongException
-            return new InvalidOperationException(string.Format(message, count.ToString("N0")));
+            return new SequenceException(string.Format(message, count.ToString("N0")));
         }
 
         private static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
