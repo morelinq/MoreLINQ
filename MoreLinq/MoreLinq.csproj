@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IdentityFunc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pull\Aggregation.cs" />
     <Compile Include="Pull\Assertion.cs" />
