@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
+using SysTrace = System.Diagnostics.Trace;
 
 namespace MoreLinq.Pull
 {
@@ -55,6 +55,59 @@ namespace MoreLinq.Pull
                 action(element);
                 yield return element;
             }
+        }
+
+        /// <summary>
+        /// Traces the elements of a source sequence for diagnostics.
+        /// </summary>
+        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
+        /// <param name="source">Source sequence whose elements to trace.</param>
+        /// <returns>
+        /// Return the source sequence unmodified.
+        /// </returns>
+        /// <remarks>
+        /// This a pass-through operator that uses deferred execution and 
+        /// streams the results.
+        /// </remarks>
+
+        public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source)
+        {
+            return Trace(source, null);
+        }
+
+        /// <summary>
+        /// Traces the elements of a source sequence for diagnostics using
+        /// custom formatting.
+        /// </summary>
+        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
+        /// <param name="source">Source sequence whose elements to trace.</param>
+        /// <param name="format">
+        /// String to use to format the trace message. If null then the
+        /// element value becomes the traced message.
+        /// </param>
+        /// <returns>
+        /// Return the source sequence unmodified.
+        /// </returns>
+        /// <remarks>
+        /// This a pass-through operator that uses deferred execution and 
+        /// streams the results.
+        /// </remarks>
+
+        public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string format)
+        {
+            source.ThrowIfNull("source");
+            return TraceImpl(source, format);
+        }
+
+        private static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, string format)
+        {
+            Debug.Assert(source != null);
+
+            var formatter = string.IsNullOrEmpty(format)
+                ? (Func<TSource, string>) (x => x == null ? string.Empty : x.ToString())
+                : (x => string.Format(format, x));
+
+            return source.Pipe(x => SysTrace.WriteLine(formatter(x)));
         }
     }
 }
