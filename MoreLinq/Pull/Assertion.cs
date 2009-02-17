@@ -17,8 +17,8 @@ namespace MoreLinq.Pull
         /// Asserts that a source sequence contains a given count of elements.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
-        /// <param name="source">Source sequence</param>
-        /// <param name="count">Count to assert</param>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="count">Count to assert.</param>
         /// <returns>
         /// Returns the original sequence as long it is contains the
         /// number of elements specified by <paramref name="count"/>.
@@ -41,8 +41,8 @@ namespace MoreLinq.Pull
         /// A parameter specifies the exception to be thrown.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
-        /// <param name="source">Source sequence</param>
-        /// <param name="count">Count to assert</param>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="count">Count to assert.</param>
         /// <param name="errorSelector">Function that returns the <see cref="Exception"/> object to throw.</param>
         /// <returns>
         /// Returns the original sequence as long it is contains the
