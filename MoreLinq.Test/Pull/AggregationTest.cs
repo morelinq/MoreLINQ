@@ -5,7 +5,6 @@ using System.Linq;
 using MoreLinq.Pull;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using System.Threading;
 using System.Globalization;
 
 namespace MoreLinq.Test.Pull
@@ -161,42 +160,6 @@ namespace MoreLinq.Test.Pull
         }
 
         #endregion
-
-        private abstract class Scope<T> : IDisposable
-        {
-            private readonly T old;
-
-            protected Scope(T current)
-            {
-                old = current;
-            }
-
-            public virtual void Dispose()
-            {
-                Restore(old);
-            }
-
-            protected abstract void Restore(T old);
-        }
-
-        private sealed class CurrentThreadCultureScope : Scope<CultureInfo>
-        {
-            public CurrentThreadCultureScope(CultureInfo @new) : 
-                base(Thread.CurrentThread.CurrentCulture)
-            {
-                Install(@new);
-            }
-
-            protected override void Restore(CultureInfo old)
-            {
-                Install(old);
-            }
-
-            private static void Install(CultureInfo value)
-            {
-                Thread.CurrentThread.CurrentCulture = value;
-            }
-        }
 
         private class ReverseCharComparer : IComparer<char>
         {

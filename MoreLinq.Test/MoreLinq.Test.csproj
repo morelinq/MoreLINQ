@@ -55,9 +55,11 @@
     <Compile Include="Pull\BreakingFunc.cs" />
     <Compile Include="Pull\BreakingSequence.cs" />
     <Compile Include="Pull\ConcatenationTest.cs" />
+    <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
     <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\PartitionTest.cs" />
+    <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
