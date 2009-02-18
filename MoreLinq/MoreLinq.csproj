@@ -60,6 +60,7 @@
     <Compile Include="Pull\SetOperations.cs" />
     <Compile Include="Pull\Grouping.cs" />
     <Compile Include="Pull\SideEffects.cs" />
+    <Compile Include="Pull\Transformation.cs" />
     <Compile Include="SequenceException.cs" />
     <Compile Include="ThrowHelper.cs" />
   </ItemGroup>
