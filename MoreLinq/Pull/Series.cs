@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MoreLinq.Pull
 {
@@ -28,16 +29,15 @@ namespace MoreLinq.Pull
         public static IEnumerable<TResult> Expand<TResult>(TResult initial, Func<TResult, TResult> generateNext)
         {
             generateNext.ThrowIfNull("first");
+            return ExpandImpl(initial, generateNext);
+        }
 
-            TResult current = initial;
+        private static IEnumerable<TSource> ExpandImpl<TSource>(TSource initial, Func<TSource, TSource> generator) 
+        {
+            Debug.Assert(generator != null);
 
-            yield return current;
-
-            while (true)
-            {
-                current = generateNext(current);
+            for (var current = initial; ; current = generator(current))
                 yield return current;
-            }
         }
     }
 }

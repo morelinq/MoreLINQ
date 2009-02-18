@@ -2,7 +2,6 @@
 using System.Linq;
 using MoreLinq.Pull;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace MoreLinq.Test.Pull
 {
@@ -37,6 +36,13 @@ namespace MoreLinq.Test.Pull
             var result = Series.Expand<int>(0, generateFail).TakeWhile(n => false);
 
             result.Exhaust();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ExpandWithNullSequencer()
+        {
+            Series.Expand(0, null);
         }
     }
 }
