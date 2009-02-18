@@ -14,7 +14,7 @@ namespace MoreLinq.Pull
         /// </summary>
         /// <typeparam name="TResult">Type of elements to generate.</typeparam>
         /// <param name="initial">Value of first element in sequence</param>
-        /// <param name="generateNext">
+        /// <param name="generator">
         /// Generator function which takes the previous series element and uses it to generate the next element.
         /// </param>
         /// <remarks>
@@ -26,10 +26,11 @@ namespace MoreLinq.Pull
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield 2, 4, 8, 16, 32, and 64, in turn.
         /// </example>
-        public static IEnumerable<TResult> Expand<TResult>(TResult initial, Func<TResult, TResult> generateNext)
+        
+        public static IEnumerable<TResult> Expand<TResult>(TResult initial, Func<TResult, TResult> generator)
         {
-            generateNext.ThrowIfNull("first");
-            return ExpandImpl(initial, generateNext);
+            generator.ThrowIfNull("generator");
+            return ExpandImpl(initial, generator);
         }
 
         private static IEnumerable<TResult> ExpandImpl<TResult>(TResult initial, Func<TResult, TResult> generator) 
