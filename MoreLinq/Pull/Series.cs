@@ -32,7 +32,7 @@ namespace MoreLinq.Pull
             return ExpandImpl(initial, generateNext);
         }
 
-        private static IEnumerable<TSource> ExpandImpl<TSource>(TSource initial, Func<TSource, TSource> generator) 
+        private static IEnumerable<TResult> ExpandImpl<TResult>(TResult initial, Func<TResult, TResult> generator) 
         {
             Debug.Assert(generator != null);
 
