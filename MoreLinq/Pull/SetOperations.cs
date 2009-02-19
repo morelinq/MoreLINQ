@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MoreLinq.Pull
 {
@@ -57,14 +58,7 @@ namespace MoreLinq.Pull
         private static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-            HashSet<TKey> knownKeys = new HashSet<TKey>(comparer);
-            foreach (TSource element in source)
-            {
-                if (knownKeys.Add(keySelector(element)))
-                {
-                    yield return element;
-                }
-            }
+            return source.GroupBy(keySelector, comparer).Select(g => g.First());
         }
     }
 }
