@@ -7,7 +7,9 @@ namespace MoreLinq
     /// The exception that is thrown for a sequence that fails a condition.
     /// </summary>
 
+#if !NO_EXCEPTION_SERIALIZATION
     [ Serializable ]
+#endif
     public class SequenceException : Exception
     {
         private const string defaultMessage = "Error in sequence.";
@@ -39,14 +41,16 @@ namespace MoreLinq
         public SequenceException(string message, Exception innerException) :
             base(string.IsNullOrEmpty(message) ? defaultMessage : message, innerException) { }
 
+#if !NO_EXCEPTION_SERIALIZATION
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceException"/> class
         /// with serialized data.
         /// </summary>
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
-        
+
         protected SequenceException(SerializationInfo info, StreamingContext context) : 
             base(info, context) {}
+#endif
     }
 }

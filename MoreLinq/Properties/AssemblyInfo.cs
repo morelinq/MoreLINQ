@@ -6,7 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MoreLinq")]
-[assembly: AssemblyDescription("")]
+#if SILVERLIGHT
+[assembly: AssemblyDescription("MoreLinq for Silverlight")]
+#else
+[assembly: AssemblyDescription("MoreLinq")]
+#endif
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MoreLinq")]

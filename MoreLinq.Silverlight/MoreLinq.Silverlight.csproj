@@ -1,0 +1,110 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A1FC2FCD-4744-46F3-96A4-D72C7C20C0C7}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MoreLinq</RootNamespace>
+    <AssemblyName>MoreLinq</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;NO_EXCEPTION_SERIALIZATION;NO_TRACING</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\MoreLinq.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;NO_EXCEPTION_SERIALIZATION;NO_TRACING</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MoreLinq.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MoreLinq\IdentityFunc.cs">
+      <Link>IdentityFunc.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Properties\AssemblyInfo.cs">
+      <Link>AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Aggregation.cs">
+      <Link>Pull\Aggregation.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Assertion.cs">
+      <Link>Pull\Assertion.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Concatenation.cs">
+      <Link>Pull\Concatenation.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Grouping.cs">
+      <Link>Pull\Grouping.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\ImbalancedZipStrategy.cs">
+      <Link>Pull\ImbalancedZipStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Partition.cs">
+      <Link>Pull\Partition.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Series.cs">
+      <Link>Pull\Series.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\SetOperations.cs">
+      <Link>Pull\SetOperations.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\SideEffects.cs">
+      <Link>Pull\SideEffects.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Transformation.cs">
+      <Link>Pull\Transformation.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\SequenceException.cs">
+      <Link>SequenceException.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\ThrowHelper.cs">
+      <Link>ThrowHelper.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
