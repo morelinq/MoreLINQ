@@ -63,11 +63,13 @@ namespace MoreLinq.Pull
 
         private static IEnumerable<TResult> GenerateByIndexImpl<TResult>(Func<int, TResult> generator)
         {
-            // Simplest way to get 0 to int.MaxValue inclusive due to overflow.
-            for (int i = 0; i >= 0; i++)
+            // Looping over 0...int.MaxValue inclusive is a pain. Simplest is to go exclusive,
+            // then go again for int.MaxValue.
+            for (int i = 0; i < int.MaxValue; i++)
             {
                 yield return generator(i);
             }
+            yield return generator(int.MaxValue);
         }
     }
 }
