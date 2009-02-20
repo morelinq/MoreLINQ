@@ -34,10 +34,12 @@ namespace MoreLinq.Pull
 
         private static IEnumerable<TResult> GenerateImpl<TResult>(TResult initial, Func<TResult, TResult> generator) 
         {
-            Debug.Assert(generator != null);
-
-            for (var current = initial; ; current = generator(current))
+            TResult current = initial;
+            while (true)
+            {
                 yield return current;
+                current = generator(current);
+            }
         }
 
         /// <summary>
