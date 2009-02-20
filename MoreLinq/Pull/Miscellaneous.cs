@@ -12,7 +12,8 @@ namespace MoreLinq.Pull
     public static class Miscellaneous
     {
         /// <summary>
-        /// Completely consumes the given sequence.
+        /// Completely consumes the given sequence. This method uses immediate execution,
+        /// and doesn't store any data during execution.
         /// </summary>
         /// <typeparam name="T">Element type of the sequence</typeparam>
         /// <param name="source">Source to consume</param>
