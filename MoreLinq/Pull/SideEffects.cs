@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if !NO_TRACING
-using SysTrace = System.Diagnostics.Trace;
-#endif
 
 namespace MoreLinq.Pull
 {
@@ -134,9 +131,9 @@ namespace MoreLinq.Pull
 
             return source
 #if !NO_TRACING
-                .Pipe(x => SysTrace.WriteLine(formatter(x)))
+                .Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)))
 #endif
-                ;
+;
         }
     }
 }
