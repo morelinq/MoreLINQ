@@ -61,7 +61,7 @@
     <Compile Include="Pull\PartitionTest.cs" />
     <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
-    <Compile Include="Pull\SeriesTest.cs" />
+    <Compile Include="Pull\SequenceTest.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />

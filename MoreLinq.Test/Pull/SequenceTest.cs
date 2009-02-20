@@ -6,12 +6,12 @@ using NUnit.Framework;
 namespace MoreLinq.Test.Pull
 {
     [TestFixture]
-    public class SeriesTest
+    public class SequenceTest
     {
         [Test]
         public void ExpandTerminatesWhenCheckReturnsFalse()
         {
-            var result = Series.Expand(1, n => n + 2).TakeWhile(n => n < 10);
+            var result = Sequence.Generate(1, n => n + 2).TakeWhile(n => n < 10);
 
             result.AssertSequenceEqual(1, 3, 5, 7, 9);
         }
@@ -19,7 +19,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ExpandProcessesNonNumerics()
         {
-            var result = Series.Expand("", s => s + 'a').TakeWhile(s => s.Length < 5);
+            var result = Sequence.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
 
             result.AssertSequenceEqual("", "a", "aa", "aaa", "aaaa");
         }
@@ -33,7 +33,7 @@ namespace MoreLinq.Test.Pull
                   throw new InvalidOperationException();
                 };
 
-            var result = Series.Expand(0, generateFail).TakeWhile(n => false);
+            var result = Sequence.Generate(0, generateFail).TakeWhile(n => false);
 
             result.Exhaust();
         }
@@ -42,7 +42,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ExpandWithNullSequencer()
         {
-            Series.Expand(0, null);
+            Sequence.Generate(0, null);
         }
     }
 }
