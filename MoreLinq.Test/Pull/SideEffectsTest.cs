@@ -141,8 +141,9 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
+                var formatter = System.Globalization.CultureInfo.InvariantCulture;
                 SideEffects.Trace(new int?[] { 1234, null, 5678 }, 
-                    n => n.HasValue ? n.Value.ToString("N0") : "#NULL").Consume();
+                    n => n.HasValue ? n.Value.ToString("N0", formatter) : "#NULL").Consume();
             }));
 
             trace.AssertSequenceEqual("1,234", "#NULL", "5,678");
