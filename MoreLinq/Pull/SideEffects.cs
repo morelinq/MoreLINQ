@@ -74,7 +74,7 @@ namespace MoreLinq.Pull
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source)
         {
-            return Trace(source, null);
+            return Trace(source, (string) null);
         }
 
         /// <summary>
@@ -98,16 +98,39 @@ namespace MoreLinq.Pull
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string format)
         {
             source.ThrowIfNull("source");
-            return TraceImpl(source, format);
+
+            return TraceImpl(source, 
+                string.IsNullOrEmpty(format)
+                ? (Func<TSource, string>) (x => x == null ? string.Empty : x.ToString())
+                : (x => string.Format(format, x)));
         }
 
-        private static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, string format)
+        /// <summary>
+        /// Traces the elements of a source sequence for diagnostics using
+        /// a custom formatter.
+        /// </summary>
+        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
+        /// <param name="source">Source sequence whose elements to trace.</param>
+        /// <param name="formatter">Function used to format each source element into a string.</param>
+        /// <returns>
+        /// Return the source sequence unmodified.
+        /// </returns>
+        /// <remarks>
+        /// This a pass-through operator that uses deferred execution and 
+        /// streams the results.
+        /// </remarks>
+
+        public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, Func<TSource, string> formatter)
+        {
+            source.ThrowIfNull("source");
+            formatter.ThrowIfNull("formatter");
+            return TraceImpl(source, formatter);
+        }
+
+        private static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
         {
             Debug.Assert(source != null);
-
-            var formatter = string.IsNullOrEmpty(format)
-                ? (Func<TSource, string>) (x => x == null ? string.Empty : x.ToString())
-                : (x => string.Format(format, x));
+            Debug.Assert(formatter != null);
 
             return source
 #if !NO_TRACING

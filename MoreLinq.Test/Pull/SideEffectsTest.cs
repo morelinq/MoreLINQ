@@ -129,6 +129,25 @@ namespace MoreLinq.Test.Pull
             trace.AssertSequenceEqual("1,234", "5,678");
         }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TraceSequenceWithNullFormatter()
+        {
+            SideEffects.Trace(new object[0], (Func<object, string>) null);
+        }
+
+        [Test]
+        public void TraceSequenceWithFormatter()
+        {
+            var trace = Lines(CaptureTrace(delegate
+            {
+                SideEffects.Trace(new int?[] { 1234, null, 5678 }, 
+                    n => n.HasValue ? n.Value.ToString("N0") : "#NULL").Consume();
+            }));
+
+            trace.AssertSequenceEqual("1,234", "#NULL", "5,678");
+        }
+
         private static IEnumerable<string> Lines(string str)
         {
             return Lines(string.IsNullOrEmpty(str) 
