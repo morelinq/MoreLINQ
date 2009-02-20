@@ -61,6 +61,9 @@
     <Compile Include="..\MoreLinq\Pull\Concatenation.cs">
       <Link>Pull\Concatenation.cs</Link>
     </Compile>
+    <Compile Include="..\MoreLinq\Pull\Element.cs">
+      <Link>Pull\Element.cs</Link>
+    </Compile>
     <Compile Include="..\MoreLinq\Pull\Grouping.cs">
       <Link>Pull\Grouping.cs</Link>
     </Compile>
