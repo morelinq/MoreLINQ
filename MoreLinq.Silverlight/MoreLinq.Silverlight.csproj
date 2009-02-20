@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;NO_EXCEPTION_SERIALIZATION;NO_TRACING</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_HASHSET</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -32,7 +32,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;NO_EXCEPTION_SERIALIZATION;NO_TRACING</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_HASHSET</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -70,8 +70,8 @@
     <Compile Include="..\MoreLinq\Pull\Partition.cs">
       <Link>Pull\Partition.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Series.cs">
-      <Link>Pull\Series.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Sequence.cs">
+      <Link>Pull\Sequence.cs</Link>
     </Compile>
     <Compile Include="..\MoreLinq\Pull\SetOperations.cs">
       <Link>Pull\SetOperations.cs</Link>
