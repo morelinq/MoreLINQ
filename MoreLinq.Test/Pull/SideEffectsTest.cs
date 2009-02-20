@@ -91,7 +91,7 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                SideEffects.Trace("the quick brown fox".Split()).Exhaust(); 
+                SideEffects.Trace("the quick brown fox".Split()).Consume(); 
             }));
             trace.AssertSequenceEqual("the", "quick", "brown", "fox");
         }
@@ -101,7 +101,7 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                SideEffects.Trace(new int?[] { 1, null, 2, null, 3 }).Exhaust();
+                SideEffects.Trace(new int?[] { 1, null, 2, null, 3 }).Consume();
             }));
             trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
         }
@@ -111,7 +111,7 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                SideEffects.Trace(new[] { "the", null, "quick", null, "brown", null, "fox" }).Exhaust();
+                SideEffects.Trace(new[] { "the", null, "quick", null, "brown", null, "fox" }).Consume();
             }));
 
             trace.AssertSequenceEqual("the", string.Empty, "quick", string.Empty, "brown", string.Empty, "fox");
@@ -123,7 +123,7 @@ namespace MoreLinq.Test.Pull
             var trace = Lines(CaptureTrace(delegate
             {
                 using (new CurrentThreadCultureScope(CultureInfo.InvariantCulture))
-                    SideEffects.Trace(new[] { 1234, 5678 }, "{0:N0}").Exhaust();
+                    SideEffects.Trace(new[] { 1234, 5678 }, "{0:N0}").Consume();
             }));
 
             trace.AssertSequenceEqual("1,234", "5,678");

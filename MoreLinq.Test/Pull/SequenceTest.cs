@@ -29,7 +29,7 @@ namespace MoreLinq.Test.Pull
         {
             var result = Sequence.Generate(0, BreakingFunc.Of<int,int>()).TakeWhile(n => false);
 
-            result.Exhaust();
+            result.Consume();
         }
 
         [Test]

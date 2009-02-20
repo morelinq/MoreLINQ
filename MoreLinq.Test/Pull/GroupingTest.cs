@@ -24,12 +24,12 @@ namespace MoreLinq.Test.Pull
             var longer = DisposeTestingSequence.Of(1, 2, 3);
             var shorter = DisposeTestingSequence.Of(1, 2);
 
-            longer.Zip(shorter, (x, y) => x + y).Exhaust();
+            longer.Zip(shorter, (x, y) => x + y).Consume();
             longer.AssertDisposed();
             shorter.AssertDisposed();
 
             // Just in case it works one way but not the other...
-            shorter.Zip(longer, (x, y) => x + y).Exhaust();
+            shorter.Zip(longer, (x, y) => x + y).Consume();
             longer.AssertDisposed();
             shorter.AssertDisposed();
         }
@@ -66,12 +66,12 @@ namespace MoreLinq.Test.Pull
             var longer = DisposeTestingSequence.Of(1, 2, 3);
             var shorter = DisposeTestingSequence.Of(1, 2);
 
-            longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Truncate).Exhaust();
+            longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Truncate).Consume();
             longer.AssertDisposed();
             shorter.AssertDisposed();
 
             // Just in case it works one way but not the other...
-            shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Truncate).Exhaust();
+            shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Truncate).Consume();
             longer.AssertDisposed();
             shorter.AssertDisposed();
         }
@@ -111,12 +111,12 @@ namespace MoreLinq.Test.Pull
             var longer = DisposeTestingSequence.Of(1, 2, 3);
             var shorter = DisposeTestingSequence.Of(1, 2);
 
-            longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Pad).Exhaust();
+            longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Pad).Consume();
             longer.AssertDisposed();
             shorter.AssertDisposed();
 
             // Just in case it works one way but not the other...
-            shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Pad).Exhaust();
+            shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Pad).Consume();
             longer.AssertDisposed();
             shorter.AssertDisposed();
         }
@@ -159,7 +159,7 @@ namespace MoreLinq.Test.Pull
             // Yes, this will throw... but then we should still have disposed both sequences
             try
             {
-                longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Fail).Exhaust();
+                longer.Zip(shorter, (x, y) => x + y, ImbalancedZipStrategy.Fail).Consume();
             }
             catch (InvalidOperationException)
             {
@@ -171,7 +171,7 @@ namespace MoreLinq.Test.Pull
             // Just in case it works one way but not the other...
             try
             {
-                shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Fail).Exhaust();
+                shorter.Zip(longer, (x, y) => x + y, ImbalancedZipStrategy.Fail).Consume();
             }
             catch (InvalidOperationException)
             {
@@ -197,7 +197,7 @@ namespace MoreLinq.Test.Pull
             var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
-            zipped.Exhaust();
+            zipped.Consume();
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace MoreLinq.Test.Pull
             var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
-            zipped.Exhaust();
+            zipped.Consume();
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
         #endregion

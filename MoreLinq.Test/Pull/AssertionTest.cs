@@ -28,21 +28,21 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void AssertCountSequenceWithMatchingLength()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(3).Exhaust();
+            "foo,bar,baz".GenerateSplits(',').AssertCount(3).Consume();
         }
 
         [Test]
         [ExpectedException(typeof(SequenceException))]
         public void AssertCountShortSequence()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(4).Exhaust();
+            "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume();
         }
 
         [Test]
         [ExpectedException(typeof(SequenceException))]
         public void AssertCountLongSequence()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(2).Exhaust();
+            "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume();
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace MoreLinq.Test.Pull
             Exception e1 = null, e2 = null;
             try
             {
-                tokens.AssertCount(4).Exhaust();
+                tokens.AssertCount(4).Consume();
                 Assert.Fail("Exception expected.");
             }
             catch (Exception e)
@@ -61,7 +61,7 @@ namespace MoreLinq.Test.Pull
             }
             try
             {
-                tokens.AssertCount(2).Exhaust();
+                tokens.AssertCount(2).Consume();
                 Assert.Fail("Exception expected.");
             }
             catch (Exception e)
@@ -76,7 +76,7 @@ namespace MoreLinq.Test.Pull
         {
             try
             {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count)).Exhaust();
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count)).Consume();
                 Assert.Fail("Exception expected.");
             }
             catch (TestException e)
@@ -91,7 +91,7 @@ namespace MoreLinq.Test.Pull
         {
             try
             {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count)).Exhaust();
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count)).Consume();
                 Assert.Fail("Exception expected.");
             }
             catch (TestException e)

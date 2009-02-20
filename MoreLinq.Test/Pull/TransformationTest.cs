@@ -58,8 +58,6 @@ namespace MoreLinq.Test.Pull
         {
             var result = Values.Scan(Plus);
             var gold = Values.PreScan(Plus, 0).Zip(Values, Plus);
-            Console.WriteLine("result: {0}", result.ToDelimitedString());
-            Console.WriteLine("gold: {0}", gold.ToDelimitedString());
             result.AssertSequenceEqual(gold);
         }
     }

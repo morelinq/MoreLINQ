@@ -57,14 +57,5 @@ namespace MoreLinq.Test.Pull
                 yield return split;
         }
 
-        /// <summary>
-        /// Just iterates through a sequence to get to the end.
-        /// </summary>
-        internal static void Exhaust<T>(this IEnumerable<T> sequence)
-        {
-            foreach (T element in sequence)
-            {
-            }
-        }
     }
 }

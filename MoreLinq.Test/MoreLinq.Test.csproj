@@ -58,6 +58,7 @@
     <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
     <Compile Include="Pull\GroupingTest.cs" />
+    <Compile Include="Pull\MiscellaneousTest.cs" />
     <Compile Include="Pull\PartitionTest.cs" />
     <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
