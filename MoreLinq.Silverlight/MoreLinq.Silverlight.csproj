@@ -67,6 +67,9 @@
     <Compile Include="..\MoreLinq\Pull\ImbalancedZipStrategy.cs">
       <Link>Pull\ImbalancedZipStrategy.cs</Link>
     </Compile>
+    <Compile Include="..\MoreLinq\Pull\Miscellaneous.cs">
+      <Link>Pull\Miscellaneous.cs</Link>
+    </Compile>
     <Compile Include="..\MoreLinq\Pull\Partition.cs">
       <Link>Pull\Partition.cs</Link>
     </Compile>
