@@ -18,7 +18,7 @@ namespace MoreLinq.Test.Pull
         {
             string[] tail = { "second", "third" };
             string head = "first";
-            IEnumerable<string> whole = Concatenation.Concat(head, tail);
+            IEnumerable<string> whole = Enumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -27,7 +27,7 @@ namespace MoreLinq.Test.Pull
         {
             string[] tail = { };
             string head = "first";
-            IEnumerable<string> whole = Concatenation.Concat(head, tail);
+            IEnumerable<string> whole = Enumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -35,7 +35,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConcatWithNullTailSequence()
         {
-            Concatenation.Concat("head", null);
+            Enumerable.Concat("head", null);
         }
 
         [Test]
@@ -43,14 +43,14 @@ namespace MoreLinq.Test.Pull
         {
             string[] tail = { "second", "third" };
             string head = null;
-            IEnumerable<string> whole = Concatenation.Concat(head, tail);
+            IEnumerable<string> whole = Enumerable.Concat(head, tail);
             whole.AssertSequenceEqual(null, "second", "third");
         }
 
         [Test]
         public void ConcatIsLazyInTailSequence()
         {
-            Concatenation.Concat("head", new BreakingSequence<string>());
+            Enumerable.Concat("head", new BreakingSequence<string>());
         }
         #endregion
 
@@ -60,7 +60,7 @@ namespace MoreLinq.Test.Pull
         {
             string[] head = { "first", "second" };
             string tail = "third";
-            IEnumerable<string> whole = Concatenation.Concat(head, tail);
+            IEnumerable<string> whole = Enumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -69,7 +69,7 @@ namespace MoreLinq.Test.Pull
         {
             string[] head = { };
             string tail = "first";
-            IEnumerable<string> whole = Concatenation.Concat(head, tail);
+            IEnumerable<string> whole = Enumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -77,7 +77,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConcatWithNullHeadSequence()
         {
-            Concatenation.Concat(null, "tail");
+            Enumerable.Concat(null, "tail");
         }
 
         [Test]
@@ -85,14 +85,14 @@ namespace MoreLinq.Test.Pull
         {
             string[] head = { "first", "second" };
             string tail = null;
-            IEnumerable<string> whole = Concatenation.Concat(head, tail);
+            IEnumerable<string> whole = Enumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", null);
         }
 
         [Test]
         public void ConcatIsLazyInHeadSequence()
         {
-            Concatenation.Concat(new BreakingSequence<string>(), "tail");
+            Enumerable.Concat(new BreakingSequence<string>(), "tail");
         }
         #endregion
 
@@ -102,60 +102,60 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void PadNullSource()
         {
-            Concatenation.Pad<object>(null, 0);
+            Enumerable.Pad<object>(null, 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void PadNegativeWidth()
         {
-            Concatenation.Pad(new object[0], -1);
+            Enumerable.Pad(new object[0], -1);
         }
 
         [Test]
         public void PadIsLazy()
         {
-            Concatenation.Pad(new BreakingSequence<object>(), 0);
+            Enumerable.Pad(new BreakingSequence<object>(), 0);
         }
 
         [Test]
         public void PadWithFillerIsLazy()
         {
-            Concatenation.Pad(new BreakingSequence<object>(), 0, new object());
+            Enumerable.Pad(new BreakingSequence<object>(), 0, new object());
         }
 
         [Test]
         public void PadWideSourceSequence()
         {
-            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 2);
+            var result = Enumerable.Pad(new[] { 123, 456, 789 }, 2);
             result.AssertSequenceEqual(new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadEqualSourceSequence()
         {
-            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 3);
+            var result = Enumerable.Pad(new[] { 123, 456, 789 }, 3);
             result.AssertSequenceEqual(new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithDefaultPadding()
         {
-            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 5);
+            var result = Enumerable.Pad(new[] { 123, 456, 789 }, 5);
             result.AssertSequenceEqual(new[] { 123, 456, 789, 0, 0 });
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithNonDefaultPadding()
         {
-            var result = Concatenation.Pad(new[] { 123, 456, 789 }, 5, -1);
+            var result = Enumerable.Pad(new[] { 123, 456, 789 }, 5, -1);
             result.AssertSequenceEqual(new[] { 123, 456, 789, -1, -1 });
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithDynamicPadding()
         {
-            var result = Concatenation.Pad("hello".ToCharArray(), 15, i => i % 2 == 0 ? '+' : '-');
+            var result = Enumerable.Pad("hello".ToCharArray(), 15, i => i % 2 == 0 ? '+' : '-');
             result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
         }
 
@@ -167,7 +167,7 @@ namespace MoreLinq.Test.Pull
         {
             string[] tail = { "second", "third" };
             string head = "first";
-            IEnumerable<string> whole = Concatenation.Prepend(tail, head);
+            IEnumerable<string> whole = Enumerable.Prepend(tail, head);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -176,7 +176,7 @@ namespace MoreLinq.Test.Pull
         {
             string[] tail = { };
             string head = "first";
-            IEnumerable<string> whole = Concatenation.Prepend(tail, head);
+            IEnumerable<string> whole = Enumerable.Prepend(tail, head);
             whole.AssertSequenceEqual("first");
         }
 
@@ -184,7 +184,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void PrependWithNullTailSequence()
         {
-            Concatenation.Prepend(null, "head");
+            Enumerable.Prepend(null, "head");
         }
 
         [Test]
@@ -192,14 +192,14 @@ namespace MoreLinq.Test.Pull
         {
             string[] tail = { "second", "third" };
             string head = null;
-            IEnumerable<string> whole = Concatenation.Prepend(tail, head);
+            IEnumerable<string> whole = Enumerable.Prepend(tail, head);
             whole.AssertSequenceEqual(null, "second", "third");
         }
 
         [Test]
         public void PrependIsLazyInTailSequence()
         {
-            Concatenation.Prepend(new BreakingSequence<string>(), "head");
+            Enumerable.Prepend(new BreakingSequence<string>(), "head");
         }
         #endregion
     }

@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using NUnit.Framework;
-using System;
-using MoreLinq.Pull;
-
-namespace MoreLinq.Test.Pull
+﻿namespace MoreLinq.Test.Pull
 {
+    using System;
+    using MoreLinq.Pull;
+    using NUnit.Framework;
+
+    using LinqEnumerable = System.Linq.Enumerable;
+
     [TestFixture]
     public class MiscellaneousTest
     {
@@ -12,14 +13,14 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConsumeWithNullSource()
         {
-            Miscellaneous.Consume<int>(null);
+            Enumerable.Consume<int>(null);
         }
 
         [Test]
         public void ConsumeReallyConsumes()
         {
             int counter = 0;
-            var sequence = Enumerable.Range(0, 10).Pipe(x => counter++);
+            var sequence = LinqEnumerable.Range(0, 10).Pipe(x => counter++);
             sequence.Consume();
             Assert.AreEqual(10, counter);
         }

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using MoreLinq.Pull;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using System.Globalization;
-
-namespace MoreLinq.Test.Pull
+﻿namespace MoreLinq.Test.Pull
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using MoreLinq.Pull;
+    using NUnit.Framework;
+    using NUnit.Framework.SyntaxHelpers;
+    using System.Globalization;
+    using Enumerable = MoreLinq.Pull.Enumerable;
+    using LinqEnumerable = System.Linq.Enumerable;
+
     [TestFixture]
     public class AggregationTest
     {
@@ -116,19 +117,19 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ToDelimitedStringWithNullSequence()
         {
-            Aggregation.ToDelimitedString<int>(null, ",");
+            Enumerable.ToDelimitedString<int>(null, ",");
         }
 
         [Test]
         public void ToDelimitedStringWithEmptySequence()
         {
-            Assert.That(Aggregation.ToDelimitedString(Enumerable.Empty<int>()), Is.Empty);
+            Assert.That(Enumerable.ToDelimitedString(LinqEnumerable.Empty<int>()), Is.Empty);
         }
 
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
         {
-            var result = Aggregation.ToDelimitedString(new[] { 1, 2, 3 }, "-");
+            var result = Enumerable.ToDelimitedString(new[] { 1, 2, 3 }, "-");
             Assert.That(result, Is.EqualTo("1-2-3"));
         }
 
@@ -137,7 +138,7 @@ namespace MoreLinq.Test.Pull
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = Aggregation.ToDelimitedString(new[] {1, 2, 3});
+                var result = Enumerable.ToDelimitedString(new[] {1, 2, 3});
                 Assert.That(result, Is.EqualTo("1;2;3"));
             }
         }
@@ -147,7 +148,7 @@ namespace MoreLinq.Test.Pull
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = Aggregation.ToDelimitedString(new[] { 1, 2, 3 }, null);
+                var result = Enumerable.ToDelimitedString(new[] { 1, 2, 3 }, null);
                 Assert.That(result, Is.EqualTo("1;2;3"));
             }
         }
@@ -155,7 +156,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNulls()
         {
-            var result = Aggregation.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
+            var result = Enumerable.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
             Assert.That(result, Is.EqualTo("1,,foo,True"));
         }
 

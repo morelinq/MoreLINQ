@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
-namespace MoreLinq.Pull
+﻿namespace MoreLinq.Pull
 {
-    /// <summary>
-    /// Grouping operators.
-    /// </summary>
-    public static class Grouping
+    using System;
+    using System.Collections.Generic;
+
+    public static partial class Enumerable
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element 
@@ -34,7 +29,8 @@ namespace MoreLinq.Pull
         /// <param name="first">First sequence</param>
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
-        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, 
+        
+        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
             first.ThrowIfNull("first");
@@ -69,8 +65,9 @@ namespace MoreLinq.Pull
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
         /// <param name="imbalanceStrategy">Strategy to apply if the two input sequences differ in length.</param>
+        
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
-             IEnumerable<TSecond> second, 
+             IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector,
              ImbalancedZipStrategy imbalanceStrategy)
         {
@@ -86,8 +83,8 @@ namespace MoreLinq.Pull
         }
 
         private static IEnumerable<TResult> ZipImpl<TFirst, TSecond, TResult>(
-            IEnumerable<TFirst> first, 
-            IEnumerable<TSecond> second, 
+            IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
             Func<TFirst, TSecond, TResult> resultSelector,
             ImbalancedZipStrategy imbalanceStrategy)
         {
@@ -103,7 +100,7 @@ namespace MoreLinq.Pull
                         }
                         else
                         {
-                            switch(imbalanceStrategy)
+                            switch (imbalanceStrategy)
                             {
                                 case ImbalancedZipStrategy.Fail:
                                     throw new InvalidOperationException("Second sequence ran out before first");
@@ -136,58 +133,6 @@ namespace MoreLinq.Pull
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Batches the source sequence into sized buckets.
-        /// </summary>
-
-        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
-        {
-            return Batch(source, size, IdentityFunc<IEnumerable<TSource>>.Value);
-        }
-
-        /// <summary>
-        /// Batches the source sequence into sized buckets that are then
-        /// transformed into results.
-        /// </summary>
-
-        public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            source.ThrowIfNull("source");
-            size.ThrowIfNonPositive("size");
-            resultSelector.ThrowIfNull("resultSelector");
-            return BatchImpl(source, size, resultSelector);
-        }
-
-        private static IEnumerable<TResult> BatchImpl<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(size > 0);
-            Debug.Assert(resultSelector != null);
-
-            TSource[] items = null;
-            var count = 0;
-
-            foreach (var item in source)
-            {
-                if (items == null)
-                    items = new TSource[size];
-
-                items[count++] = item;
-
-                if (count != size) 
-                    continue;
-
-                yield return resultSelector(items.Select(IdentityFunc<TSource>.Value));
-                items = null;
-                count = 0;
-            }
-
-            if (items != null && count > 0)
-                yield return resultSelector(items.Take(count));
         }
     }
 }

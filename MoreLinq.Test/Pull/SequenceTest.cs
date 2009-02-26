@@ -1,17 +1,18 @@
-﻿using System;
-using System.Linq;
-using MoreLinq.Pull;
-using NUnit.Framework;
-
-namespace MoreLinq.Test.Pull
+﻿namespace MoreLinq.Test.Pull
 {
+    using System;
+    using System.Linq;
+    using MoreLinq.Pull;
+    using Enumerable = MoreLinq.Pull.Enumerable;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SequenceTest
     {
         [Test]
         public void GenerateTerminatesWhenCheckReturnsFalse()
         {
-            var result = Sequence.Generate(1, n => n + 2).TakeWhile(n => n < 10);
+            var result = Enumerable.Generate(1, n => n + 2).TakeWhile(n => n < 10);
 
             result.AssertSequenceEqual(1, 3, 5, 7, 9);
         }
@@ -19,7 +20,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void GenerateProcessesNonNumerics()
         {
-            var result = Sequence.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
+            var result = Enumerable.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
 
             result.AssertSequenceEqual("", "a", "aa", "aaa", "aaaa");
         }
@@ -27,7 +28,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void GenerateIsLazy()
         {
-            var result = Sequence.Generate(0, BreakingFunc.Of<int,int>()).TakeWhile(n => false);
+            var result = Enumerable.Generate(0, BreakingFunc.Of<int,int>()).TakeWhile(n => false);
 
             result.Consume();
         }
@@ -36,26 +37,26 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateWithNullGenerator()
         {
-            Sequence.Generate(0, null);
+            Enumerable.Generate(0, null);
         }
 
         [Test]
         public void GenerateByIndexIsLazy()
         {
-            Sequence.GenerateByIndex(BreakingFunc.Of<int, int>());
+            Enumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateByIndexWithNullGenerator()
         {
-            Sequence.GenerateByIndex<int>(null);
+            Enumerable.GenerateByIndex<int>(null);
         }
 
         [Test]
         public void GenerateByIndex()
         {
-            var sequence = Sequence.GenerateByIndex(x => x.ToString()).Take(3);
+            var sequence = Enumerable.GenerateByIndex(x => x.ToString()).Take(3);
             sequence.AssertSequenceEqual("0", "1", "2");
         }
     }

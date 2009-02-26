@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MoreLinq.Pull;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-
 namespace MoreLinq.Test.Pull
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using MoreLinq.Pull;
+    using NUnit.Framework;
+    using Enumerable = MoreLinq.Pull.Enumerable;
+
     [TestFixture]
     public class TransformationTest
     {
@@ -19,7 +18,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullSequence()
         {
-            Transformation.PreScan<int>(null, Plus, 0);
+            Enumerable.PreScan(null, Plus, 0);
         }
 
         [Test]

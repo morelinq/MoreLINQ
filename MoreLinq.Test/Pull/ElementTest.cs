@@ -1,10 +1,11 @@
-﻿using System;
-using NUnit.Framework;
-using MoreLinq.Pull;
-using System.Linq;
-
-namespace MoreLinq.Test.Pull
+﻿namespace MoreLinq.Test.Pull
 {
+    using System;
+    using NUnit.Framework;
+    using MoreLinq.Pull;
+    using LinqEnumerable = System.Linq.Enumerable;
+    using Enumerable = MoreLinq.Pull.Enumerable;
+
     [TestFixture]
     public class ElementTest
     {
@@ -12,20 +13,20 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullSequence()
         {
-            Element.SingleOrFallback<int>(null, BreakingFunc.Of<int>());
+            Enumerable.SingleOrFallback(null, BreakingFunc.Of<int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullFallback()
         {
-            Element.SingleOrFallback(new[] {1}, null);
+            Enumerable.SingleOrFallback(new[] {1}, null);
         }
 
         [Test]
         public void SingleOrFallbackWithEmptySequence()
         {
-            Assert.AreEqual(5, Enumerable.Empty<int>().SingleOrFallback(() => 5));
+            Assert.AreEqual(5, LinqEnumerable.Empty<int>().SingleOrFallback(() => 5));
         }
 
         [Test]

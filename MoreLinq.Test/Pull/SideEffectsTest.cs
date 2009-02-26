@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MoreLinq.Pull;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using System.Diagnostics;
-
-namespace MoreLinq.Test.Pull
+﻿namespace MoreLinq.Test.Pull
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using MoreLinq.Pull;
+    using NUnit.Framework;
+    using NUnit.Framework.SyntaxHelpers;
+    using Enumerable = MoreLinq.Pull.Enumerable;
 
     [TestFixture]
     public class SideEffectsTest
@@ -20,21 +20,21 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullSequence()
         {
-            SideEffects.ForEach<int>(null, x => { throw new InvalidOperationException(); });
+            Enumerable.ForEach<int>(null, x => { throw new InvalidOperationException(); });
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullAction()
         {
-            SideEffects.ForEach(new[] { 1, 2, 3 }, null);
+            Enumerable.ForEach(new[] { 1, 2, 3 }, null);
         }
 
         [Test]
         public void ForEachWithSequence()
         {
             List<int> results = new List<int>();
-            SideEffects.ForEach(new[] { 1, 2, 3 }, results.Add);
+            Enumerable.ForEach(new[] { 1, 2, 3 }, results.Add);
             results.AssertSequenceEqual(1, 2, 3);
         }
         #endregion
@@ -44,21 +44,21 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullSequence()
         {
-            SideEffects.Pipe<int>(null, x => { throw new InvalidOperationException(); });
+            Enumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); });
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullAction()
         {
-            SideEffects.Pipe(new[] { 1, 2, 3 }, null);
+            Enumerable.Pipe(new[] { 1, 2, 3 }, null);
         }
 
         [Test]
         public void PipeWithSequence()
         {
             List<int> results = new List<int>();
-            var returned = SideEffects.Pipe(new[] { 1, 2, 3 }, results.Add);
+            var returned = Enumerable.Pipe(new[] { 1, 2, 3 }, results.Add);
             // Lazy - nothing has executed yet
             Assert.That(results, Is.Empty);
             returned.AssertSequenceEqual(1, 2, 3);
@@ -91,7 +91,7 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                SideEffects.Trace("the quick brown fox".Split()).Consume(); 
+                Enumerable.Trace("the quick brown fox".Split()).Consume(); 
             }));
             trace.AssertSequenceEqual("the", "quick", "brown", "fox");
         }
@@ -101,7 +101,7 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                SideEffects.Trace(new int?[] { 1, null, 2, null, 3 }).Consume();
+                Enumerable.Trace(new int?[] { 1, null, 2, null, 3 }).Consume();
             }));
             trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
         }
@@ -111,7 +111,7 @@ namespace MoreLinq.Test.Pull
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                SideEffects.Trace(new[] { "the", null, "quick", null, "brown", null, "fox" }).Consume();
+                Enumerable.Trace(new[] { "the", null, "quick", null, "brown", null, "fox" }).Consume();
             }));
 
             trace.AssertSequenceEqual("the", string.Empty, "quick", string.Empty, "brown", string.Empty, "fox");
@@ -123,7 +123,7 @@ namespace MoreLinq.Test.Pull
             var trace = Lines(CaptureTrace(delegate
             {
                 using (new CurrentThreadCultureScope(CultureInfo.InvariantCulture))
-                    SideEffects.Trace(new[] { 1234, 5678 }, "{0:N0}").Consume();
+                    Enumerable.Trace(new[] { 1234, 5678 }, "{0:N0}").Consume();
             }));
 
             trace.AssertSequenceEqual("1,234", "5,678");
@@ -133,7 +133,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void TraceSequenceWithNullFormatter()
         {
-            SideEffects.Trace(new object[0], (Func<object, string>) null);
+            Enumerable.Trace(new object[0], (Func<object, string>) null);
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace MoreLinq.Test.Pull
             var trace = Lines(CaptureTrace(delegate
             {
                 var formatter = System.Globalization.CultureInfo.InvariantCulture;
-                SideEffects.Trace(new int?[] { 1234, null, 5678 }, 
+                Enumerable.Trace(new int?[] { 1234, null, 5678 }, 
                     n => n.HasValue ? n.Value.ToString("N0", formatter) : "#NULL").Consume();
             }));
 

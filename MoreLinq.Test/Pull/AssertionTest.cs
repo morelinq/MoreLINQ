@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Assertion = MoreLinq.Pull.Assertion;
 using MoreLinq.Pull;
 
 namespace MoreLinq.Test.Pull
@@ -15,14 +14,14 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void AssertCountNullSequence()
         {
-            Assertion.AssertCount<object>(null, 0);
+            Enumerable.AssertCount<object>(null, 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertCountNegativeCount()
         {
-            Assertion.AssertCount(new object[0], -1);
+            Enumerable.AssertCount(new object[0], -1);
         }
 
         [Test]
@@ -116,7 +115,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void AssertCountIsLazy()
         {
-            Assertion.AssertCount(new BreakingSequence<object>(), 0);
+            Enumerable.AssertCount(new BreakingSequence<object>(), 0);
         }
         
         #endregion

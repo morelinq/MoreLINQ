@@ -6,6 +6,7 @@ namespace MoreLinq.Test.Pull
     using MoreLinq.Pull;
     using NUnit.Framework;
     using NUnit.Framework.SyntaxHelpers;
+    using Enumerable = MoreLinq.Pull.Enumerable;
 
     [TestFixture]
     public class GroupingTest
@@ -37,7 +38,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithEqualLengthSequences()
         {
-            var zipped = Grouping.Zip(new[] {1, 2, 3}, new[] {4, 5, 6}, (x, y) => Tuple(x, y));
+            var zipped = Enumerable.Zip(new[] {1, 2, 3}, new[] {4, 5, 6}, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
@@ -45,7 +46,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithFirstSequenceShorterThanSecond()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
+            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
@@ -53,7 +54,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithFirstSequnceLongerThanSecond()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 }, (x, y) => Tuple(x, y));
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 }, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
@@ -79,7 +80,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithEqualLengthSequencesTruncateStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
@@ -88,7 +89,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithFirstSequenceShorterThanSecondTruncateStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
@@ -97,7 +98,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithFirstSequnceLongerThanSecondTruncateStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
@@ -124,7 +125,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithEqualLengthSequencesPadStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
@@ -133,7 +134,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithFirstSequenceShorterThanSecondPadStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(0, 6));
@@ -142,7 +143,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithFirstSequnceLongerThanSecondPadStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 0));
@@ -184,7 +185,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipWithEqualLengthSequencesFailStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
@@ -194,7 +195,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
@@ -204,7 +205,7 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
@@ -217,28 +218,28 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullFirstSequence()
         {
-            Grouping.Zip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            Enumerable.Zip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            Grouping.Zip(new[] { 1, 2, 3 }, null, BreakingFunc.Of<int, int, int>());
+            Enumerable.Zip(new[] { 1, 2, 3 }, null, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            Grouping.Zip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
+            Enumerable.Zip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ZipWithInvalidStrategy()
         {
-            Grouping.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), (ImbalancedZipStrategy)10);
         }
         #endregion
@@ -246,7 +247,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void ZipIsLazy()
         {
-            Grouping.Zip<int, int, int>(
+            Enumerable.Zip<int, int, int>(
                 new BreakingSequence<int>(), 
                 new BreakingSequence<int>(), 
                 delegate { throw new NotImplementedException(); });
@@ -260,34 +261,34 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void BatchNullSequence()
         {
-            Grouping.Batch<object>(null, 1);
+            Enumerable.Batch<object>(null, 1);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchZeroSize()
         {
-            Grouping.Batch(new object[0], 0);
+            Enumerable.Batch(new object[0], 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchNegativeSize()
         {
-            Grouping.Batch(new object[0], -1);
+            Enumerable.Batch(new object[0], -1);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void BatcWithhNullResultSelector()
         {
-            Grouping.Batch<object, object>(new object[0], 1, null);
+            Enumerable.Batch<object, object>(new object[0], 1, null);
         }
 
         [Test]
         public void BatchEvenlyDivisibleSequence()
         {
-            var result = Grouping.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
+            var result = Enumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
             using (var reader = Read(result))
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3);
@@ -300,7 +301,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void BatchUnevenlyDivisbleSequence()
         {
-            var result = Grouping.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
+            var result = Enumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
             using (var reader = Read(result))
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3, 4);
@@ -313,14 +314,14 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void BatchSequenceTransformingResult()
         {
-            var result = Grouping.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4, batch => batch.Sum());
+            var result = Enumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4, batch => batch.Sum());
             result.AssertSequenceEqual(10, 26, 9);
         }
 
         [Test]
         public void BatchSequenceYieldsBatches()
         {
-            var result = Grouping.Batch(new[] { 1, 2, 3 }, 2);
+            var result = Enumerable.Batch(new[] { 1, 2, 3 }, 2);
             using (var reader = Read(result))
             {
                 Assert.That(reader.Read(), Is.Not.InstanceOfType(typeof(ICollection<int>)));
@@ -332,7 +333,7 @@ namespace MoreLinq.Test.Pull
         [Test]
         public void BatchIsLazy()
         {
-            Grouping.Batch(new BreakingSequence<object>(), 1);
+            Enumerable.Batch(new BreakingSequence<object>(), 1);
         }
 
         private static SequenceReader<T> Read<T>(IEnumerable<T> source)
