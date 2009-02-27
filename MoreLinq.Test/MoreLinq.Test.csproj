@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pull\AggregationTest.cs" />
     <Compile Include="Pull\AssertionTest.cs" />
     <Compile Include="Pull\BreakingFunc.cs" />
     <Compile Include="Pull\BreakingSequence.cs" />
@@ -58,7 +57,10 @@
     <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
     <Compile Include="Pull\ElementTest.cs" />
+    <Compile Include="Pull\EnumerableTest.cs" />
     <Compile Include="Pull\GroupingTest.cs" />
+    <Compile Include="Pull\MaxByTest.cs" />
+    <Compile Include="Pull\MinByTest.cs" />
     <Compile Include="Pull\MiscellaneousTest.cs" />
     <Compile Include="Pull\PartitionTest.cs" />
     <Compile Include="Pull\Scope.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
+    <Compile Include="Pull\ToDelimitedStringTest.cs" />
     <Compile Include="Pull\TransformationTest.cs" />
     <Compile Include="Pull\Tuple.cs" />
   </ItemGroup>
