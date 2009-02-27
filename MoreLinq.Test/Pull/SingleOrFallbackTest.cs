@@ -7,33 +7,33 @@
 
     partial class EnumerableTest
     {
-        [Test]
+        [Test, Category("Element")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullSequence()
         {
             Enumerable.SingleOrFallback(null, BreakingFunc.Of<int>());
         }
 
-        [Test]
+        [Test, Category("Element")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullFallback()
         {
             Enumerable.SingleOrFallback(new[] {1}, null);
         }
 
-        [Test]
+        [Test, Category("Element")]
         public void SingleOrFallbackWithEmptySequence()
         {
             Assert.AreEqual(5, LinqEnumerable.Empty<int>().SingleOrFallback(() => 5));
         }
 
-        [Test]
+        [Test, Category("Element")]
         public void SingleOrFallbackWithSingleElementSequence()
         {
             Assert.AreEqual(10, new[]{10}.SingleOrFallback(BreakingFunc.Of<int>()));
         }
 
-        [Test]
+        [Test, Category("Element")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void SingleOrFallbackWithLongSequence()
         {
