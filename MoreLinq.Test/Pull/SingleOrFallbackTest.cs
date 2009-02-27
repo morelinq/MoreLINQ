@@ -4,10 +4,8 @@
     using NUnit.Framework;
     using MoreLinq.Pull;
     using LinqEnumerable = System.Linq.Enumerable;
-    using Enumerable = MoreLinq.Pull.Enumerable;
 
-    [TestFixture]
-    public class ElementTest
+    partial class EnumerableTest
     {
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]

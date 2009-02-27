@@ -57,7 +57,6 @@
     <Compile Include="Pull\ConsumeTest.cs" />
     <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
-    <Compile Include="Pull\ElementTest.cs" />
     <Compile Include="Pull\EnumerableTest.cs" />
     <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\MaxByTest.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Pull\SequenceTest.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
+    <Compile Include="Pull\SingleOrFallbackTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
     <Compile Include="Pull\ToDelimitedStringTest.cs" />
     <Compile Include="Pull\TransformationTest.cs" />
