@@ -6,17 +6,16 @@
 
     using LinqEnumerable = System.Linq.Enumerable;
 
-    [TestFixture]
-    public class MiscellaneousTest
+    partial class EnumerableTest
     {
-        [Test]
+        [Test, Category("Miscellaneous")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConsumeWithNullSource()
         {
             Enumerable.Consume<int>(null);
         }
 
-        [Test]
+        [Test, Category("Miscellaneous")]
         public void ConsumeReallyConsumes()
         {
             int counter = 0;

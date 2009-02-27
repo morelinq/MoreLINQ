@@ -54,6 +54,7 @@
     <Compile Include="Pull\BreakingFunc.cs" />
     <Compile Include="Pull\BreakingSequence.cs" />
     <Compile Include="Pull\ConcatenationTest.cs" />
+    <Compile Include="Pull\ConsumeTest.cs" />
     <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
     <Compile Include="Pull\ElementTest.cs" />
@@ -61,7 +62,6 @@
     <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\MaxByTest.cs" />
     <Compile Include="Pull\MinByTest.cs" />
-    <Compile Include="Pull\MiscellaneousTest.cs" />
     <Compile Include="Pull\PartitionTest.cs" />
     <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
