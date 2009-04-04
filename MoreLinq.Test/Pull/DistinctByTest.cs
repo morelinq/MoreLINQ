@@ -1,14 +1,12 @@
-﻿using System;
-using MoreLinq.Pull;
-using NUnit.Framework;
-
-namespace MoreLinq.Test.Pull
+﻿namespace MoreLinq.Test.Pull
 {
-    [TestFixture]
-    public class SetOperationsTest
+    using System;
+    using MoreLinq.Pull;
+    using NUnit.Framework;
+
+    partial class EnumerableTest
     {
-        #region DistinctBy
-        [Test]
+        [Test, Category("SetOperations")]
         public void DistinctBy()
         {
             string[] source = { "first", "second", "third", "fourth", "fifth" };
@@ -16,7 +14,7 @@ namespace MoreLinq.Test.Pull
             distinct.AssertSequenceEqual("first", "second");
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullSequence()
         {
@@ -24,7 +22,7 @@ namespace MoreLinq.Test.Pull
             source.DistinctBy(x => x.Length);
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullKeySelector()
         {
@@ -32,13 +30,13 @@ namespace MoreLinq.Test.Pull
             source.DistinctBy((Func<string,string>) null);
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         public void DistinctByIsLazy()
         {
             new BreakingSequence<string>().DistinctBy(x => x.Length);
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         public void DistinctByWithComparer()
         {
             string[] source = { "first", "FIRST", "second", "second", "third" };
@@ -46,7 +44,7 @@ namespace MoreLinq.Test.Pull
             distinct.AssertSequenceEqual("first", "second", "third");
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullSequenceWithComparer()
         {
@@ -54,7 +52,7 @@ namespace MoreLinq.Test.Pull
             source.DistinctBy(x => x, StringComparer.Ordinal);
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullKeySelectorWithComparer()
         {
@@ -62,7 +60,7 @@ namespace MoreLinq.Test.Pull
             source.DistinctBy(null, StringComparer.Ordinal);
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         public void DistinctByNullComparer()
         {
             string[] source = { "first", "second", "third", "fourth", "fifth" };
@@ -70,11 +68,10 @@ namespace MoreLinq.Test.Pull
             distinct.AssertSequenceEqual("first", "second");
         }
 
-        [Test]
+        [Test, Category("SetOperations")]
         public void DistinctByIsLazyWithComparer()
         {
             new BreakingSequence<string>().DistinctBy(x => x, StringComparer.Ordinal);
         }
-        #endregion
     }
 }
