@@ -56,6 +56,7 @@
     <Compile Include="Pull\ConsumeTest.cs" />
     <Compile Include="Pull\ConcatTest.cs" />
     <Compile Include="Pull\BatchTest.cs" />
+    <Compile Include="Pull\GenerateTest.cs" />
     <Compile Include="Pull\ZipTest.cs" />
     <Compile Include="Pull\PrependTest.cs" />
     <Compile Include="Pull\PadTest.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Pull\MinByTest.cs" />
     <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
-    <Compile Include="Pull\SequenceTest.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
     <Compile Include="Pull\SingleOrFallbackTest.cs" />
