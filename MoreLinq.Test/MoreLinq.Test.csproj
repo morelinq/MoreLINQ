@@ -61,13 +61,13 @@
     <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\MaxByTest.cs" />
     <Compile Include="Pull\MinByTest.cs" />
-    <Compile Include="Pull\PartitionTest.cs" />
     <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
     <Compile Include="Pull\SequenceTest.cs" />
     <Compile Include="Pull\SetOperationsTest.cs" />
     <Compile Include="Pull\SideEffectsTest.cs" />
     <Compile Include="Pull\SingleOrFallbackTest.cs" />
+    <Compile Include="Pull\TakeEveryTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
     <Compile Include="Pull\ToDelimitedStringTest.cs" />
     <Compile Include="Pull\TransformationTest.cs" />
