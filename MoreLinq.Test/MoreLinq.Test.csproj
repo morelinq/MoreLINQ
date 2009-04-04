@@ -55,12 +55,13 @@
     <Compile Include="Pull\BreakingSequence.cs" />
     <Compile Include="Pull\ConsumeTest.cs" />
     <Compile Include="Pull\ConcatTest.cs" />
+    <Compile Include="Pull\BatchTest.cs" />
+    <Compile Include="Pull\ZipTest.cs" />
     <Compile Include="Pull\PrependTest.cs" />
     <Compile Include="Pull\PadTest.cs" />
     <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
     <Compile Include="Pull\EnumerableTest.cs" />
-    <Compile Include="Pull\GroupingTest.cs" />
     <Compile Include="Pull\MaxByTest.cs" />
     <Compile Include="Pull\MinByTest.cs" />
     <Compile Include="Pull\Scope.cs" />
