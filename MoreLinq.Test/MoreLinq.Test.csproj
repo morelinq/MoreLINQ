@@ -56,6 +56,8 @@
     <Compile Include="Pull\ConsumeTest.cs" />
     <Compile Include="Pull\ConcatTest.cs" />
     <Compile Include="Pull\BatchTest.cs" />
+    <Compile Include="Pull\ScanTest.cs" />
+    <Compile Include="Pull\PreScanTest.cs" />
     <Compile Include="Pull\TraceTest.cs" />
     <Compile Include="Pull\PipeTest.cs" />
     <Compile Include="Pull\ForEachTest.cs" />
@@ -75,7 +77,6 @@
     <Compile Include="Pull\TakeEveryTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
     <Compile Include="Pull\ToDelimitedStringTest.cs" />
-    <Compile Include="Pull\TransformationTest.cs" />
     <Compile Include="Pull\Tuple.cs" />
   </ItemGroup>
   <ItemGroup>
