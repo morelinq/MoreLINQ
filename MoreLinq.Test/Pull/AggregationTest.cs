@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,7 +20,9 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void MaxByNullSequence()
         {
+#pragma warning disable 1720
             ((IEnumerable<string>)null).MaxBy(x => x.Length);
+#pragma warning restore 1720
         }
 
         [Test]
@@ -68,7 +70,9 @@ namespace MoreLinq.Test.Pull
         [ExpectedException(typeof(ArgumentNullException))]
         public void MinByNullSequence()
         {
+#pragma warning disable 1720
             ((IEnumerable<string>)null).MinBy(x => x.Length);
+#pragma warning restore 1720
         }
 
         [Test]

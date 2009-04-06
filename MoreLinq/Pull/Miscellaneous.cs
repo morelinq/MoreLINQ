@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +20,11 @@ namespace MoreLinq.Pull
         public static void Consume<T>(this IEnumerable<T> source)
         {
             source.ThrowIfNull("source");
+#pragma warning disable 0219
             foreach (T element in source)
             {
             }
+#pragma warning restore 0219
         }
     }
 }
