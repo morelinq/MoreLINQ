@@ -46,83 +46,103 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MoreLinq\AssertCount.cs">
+      <Link>AssertCount.cs</Link>
+        <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Batch.cs">
+      <Link>Batch.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Concat.cs">
+      <Link>Concat.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Consume.cs">
+      <Link>Consume.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\DistinctBy.cs">
+      <Link>DistinctBy.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\ForEach.cs">
+      <Link>ForEach.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Generate.cs">
+      <Link>Generate.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\GenerateByIndex.cs">
+      <Link>GenerateByIndex.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\IdentityFunc.cs">
       <Link>IdentityFunc.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\ImbalancedZipStrategy.cs">
+      <Link>ImbalancedZipStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\MaxBy.cs">
+      <Link>MaxBy.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\MinBy.cs">
+      <Link>MinBy.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\MoreEnumerable.cs">
+      <Link>MoreEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pad.cs">
+      <Link>Pad.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pipe.cs">
+      <Link>Pipe.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Prepend.cs">
+      <Link>Prepend.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\PreScan.cs">
+      <Link>PreScan.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="..\MoreLinq\Properties\AssemblyInfo.cs">
       <Link>AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\AssertCount.cs">
-      <Link>Pull\AssertCount.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Batch.cs">
-      <Link>Pull\Batch.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Concat.cs">
-      <Link>Pull\Concat.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Consume.cs">
-      <Link>Pull\Consume.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\DistinctBy.cs">
-      <Link>Pull\DistinctBy.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Enumerable.cs">
-      <Link>Pull\Enumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\ForEach.cs">
-      <Link>Pull\ForEach.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Generate.cs">
-      <Link>Pull\Generate.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\GenerateByIndex.cs">
-      <Link>Pull\GenerateByIndex.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\ImbalancedZipStrategy.cs">
-      <Link>Pull\ImbalancedZipStrategy.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\MaxBy.cs">
-      <Link>Pull\MaxBy.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\MinBy.cs">
-      <Link>Pull\MinBy.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Pad.cs">
-      <Link>Pull\Pad.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Pipe.cs">
-      <Link>Pull\Pipe.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Prepand.cs">
-      <Link>Pull\Prepand.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\PreScan.cs">
-      <Link>Pull\PreScan.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Scan.cs">
-      <Link>Pull\Scan.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\SingleOrFallback.cs">
-      <Link>Pull\SingleOrFallback.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\TakeEvery.cs">
-      <Link>Pull\TakeEvery.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\ToDelimitedString.cs">
-      <Link>Pull\ToDelimitedString.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Trace.cs">
-      <Link>Pull\Trace.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\Pull\Zip.cs">
-      <Link>Pull\Zip.cs</Link>
+    <Compile Include="..\MoreLinq\Scan.cs">
+      <Link>Scan.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="..\MoreLinq\SequenceException.cs">
       <Link>SequenceException.cs</Link>
     </Compile>
+    <Compile Include="..\MoreLinq\SingleOrFallback.cs">
+      <Link>SingleOrFallback.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\TakeEvery.cs">
+      <Link>TakeEvery.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\ThrowHelper.cs">
       <Link>ThrowHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\ToDelimitedString.cs">
+      <Link>ToDelimitedString.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Trace.cs">
+      <Link>Trace.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\Zip.cs">
+      <Link>Zip.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
