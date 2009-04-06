@@ -5,7 +5,7 @@ namespace MoreLinq
 {
     /// <summary>
     /// Strategy determining the handling of the case where the inputs are of
-    /// unequal lengths in <see cref="Enumerable.Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)"/>.
+    /// unequal lengths in <see cref="MoreEnumerable.Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)"/>.
     /// </summary>
     public enum ImbalancedZipStrategy : byte
     {
