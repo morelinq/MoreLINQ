@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MoreLinq.Pull
+﻿namespace MoreLinq.Pull
 {
-    /// <summary>
-    /// LINQ operators which operate on a set.
-    /// </summary>
-    public static class SetOperations
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public static partial class Enumerable
     {
         /// <summary>
         /// Returns all distinct elements of the given source, where "distinctness"
@@ -24,6 +21,7 @@ namespace MoreLinq.Pull
         /// <param name="keySelector">Projection for determining "distinctness"</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
+        
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
         {
@@ -47,6 +45,7 @@ namespace MoreLinq.Pull
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
+        
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {

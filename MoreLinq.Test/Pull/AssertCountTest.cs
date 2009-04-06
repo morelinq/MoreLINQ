@@ -1,51 +1,47 @@
-using System;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using Assertion = MoreLinq.Pull.Assertion;
-using MoreLinq.Pull;
-
 namespace MoreLinq.Test.Pull
 {
-    [TestFixture]
-    public class AssertionTest
-    {
-        #region AssertCount
+    using System;
+    using NUnit.Framework;
+    using NUnit.Framework.SyntaxHelpers;
+    using MoreLinq.Pull;
 
-        [Test]
+    partial class EnumerableTest
+    {
+        [Test, Category("Assertion")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AssertCountNullSequence()
         {
-            Assertion.AssertCount<object>(null, 0);
+            Enumerable.AssertCount<object>(null, 0);
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertCountNegativeCount()
         {
-            Assertion.AssertCount(new object[0], -1);
+            Enumerable.AssertCount(new object[0], -1);
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         public void AssertCountSequenceWithMatchingLength()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(3).Consume();
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         [ExpectedException(typeof(SequenceException))]
         public void AssertCountShortSequence()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume();
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         [ExpectedException(typeof(SequenceException))]
         public void AssertCountLongSequence()
         {
             "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume();
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         public void AssertCountDefaultExceptionMessageVariesWithCase()
         {
             var tokens = "foo,bar,baz".GenerateSplits(',');
@@ -71,7 +67,7 @@ namespace MoreLinq.Test.Pull
             Assert.That(e1.Message, Is.Not.EqualTo(e2.Message));
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         public void AssertCountLongSequenceWithErrorSelector()
         {
             try
@@ -86,7 +82,7 @@ namespace MoreLinq.Test.Pull
             }
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         public void AssertCountShortSequenceWithErrorSelector()
         {
             try
@@ -113,12 +109,10 @@ namespace MoreLinq.Test.Pull
             }
         }
 
-        [Test]
+        [Test, Category("Assertion")]
         public void AssertCountIsLazy()
         {
-            Assertion.AssertCount(new BreakingSequence<object>(), 0);
+            Enumerable.AssertCount(new BreakingSequence<object>(), 0);
         }
-        
-        #endregion
     }
 }

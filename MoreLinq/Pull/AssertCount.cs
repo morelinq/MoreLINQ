@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace MoreLinq.Pull
 {
-    /// <summary>
-    /// Operators which apply assertions to sequences "in flight" - they can be
-    /// used as normal, but throw exceptions (lazily) if the operator detects
-    /// an assertion failure as the data is being read.
-    /// </summary>
-    public static class Assertion
+    using System;
+    using System.Collections.Generic;
+
+    public static partial class Enumerable
     {
         private static readonly Func<int, int, Exception> defaultErrorSelector = OnAssertCountFailure;
 
@@ -27,6 +21,7 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+        
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count)
         {
@@ -53,6 +48,7 @@ namespace MoreLinq.Pull
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+        
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {

@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MoreLinq.Pull
+﻿namespace MoreLinq.Pull
 {
-    /// <summary>
-    /// Extension methods which don't fit anywhere else yet. Ideally this class should
-    /// stay small and eventually be removed!
-    /// </summary>
-    public static class Miscellaneous
+    using System.Collections.Generic;
+
+    public static partial class Enumerable
     {
         /// <summary>
         /// Completely consumes the given sequence. This method uses immediate execution,
@@ -20,11 +13,9 @@ namespace MoreLinq.Pull
         public static void Consume<T>(this IEnumerable<T> source)
         {
             source.ThrowIfNull("source");
-#pragma warning disable 0219
             foreach (T element in source)
             {
             }
-#pragma warning restore 0219
         }
     }
 }

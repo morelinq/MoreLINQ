@@ -50,24 +50,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pull\AggregationTest.cs" />
-    <Compile Include="Pull\AssertionTest.cs" />
+    <Compile Include="Pull\AssertCountTest.cs" />
     <Compile Include="Pull\BreakingFunc.cs" />
     <Compile Include="Pull\BreakingSequence.cs" />
-    <Compile Include="Pull\ConcatenationTest.cs" />
+    <Compile Include="Pull\ConsumeTest.cs" />
+    <Compile Include="Pull\ConcatTest.cs" />
+    <Compile Include="Pull\BatchTest.cs" />
+    <Compile Include="Pull\ScanTest.cs" />
+    <Compile Include="Pull\PreScanTest.cs" />
+    <Compile Include="Pull\TraceTest.cs" />
+    <Compile Include="Pull\PipeTest.cs" />
+    <Compile Include="Pull\ForEachTest.cs" />
+    <Compile Include="Pull\DistinctByTest.cs" />
+    <Compile Include="Pull\GenerateTest.cs" />
+    <Compile Include="Pull\ZipTest.cs" />
+    <Compile Include="Pull\PrependTest.cs" />
+    <Compile Include="Pull\PadTest.cs" />
     <Compile Include="Pull\CurrentThreadCultureScope.cs" />
     <Compile Include="Pull\DisposeTestingSequence.cs" />
-    <Compile Include="Pull\ElementTest.cs" />
-    <Compile Include="Pull\GroupingTest.cs" />
-    <Compile Include="Pull\MiscellaneousTest.cs" />
-    <Compile Include="Pull\PartitionTest.cs" />
+    <Compile Include="Pull\EnumerableTest.cs" />
+    <Compile Include="Pull\MaxByTest.cs" />
+    <Compile Include="Pull\MinByTest.cs" />
     <Compile Include="Pull\Scope.cs" />
     <Compile Include="Pull\SequenceReader.cs" />
-    <Compile Include="Pull\SequenceTest.cs" />
-    <Compile Include="Pull\SetOperationsTest.cs" />
-    <Compile Include="Pull\SideEffectsTest.cs" />
+    <Compile Include="Pull\SingleOrFallbackTest.cs" />
+    <Compile Include="Pull\TakeEveryTest.cs" />
     <Compile Include="Pull\TestExtensions.cs" />
-    <Compile Include="Pull\TransformationTest.cs" />
+    <Compile Include="Pull\ToDelimitedStringTest.cs" />
     <Compile Include="Pull\Tuple.cs" />
   </ItemGroup>
   <ItemGroup>

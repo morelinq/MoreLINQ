@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-
-namespace MoreLinq.Pull
+﻿namespace MoreLinq.Pull
 {
-    /// <summary>
-    /// Operators which partition the data.
-    /// </summary>
-    public static class Partition
+    using System.Linq;
+    using System.Collections.Generic;
+
+    public static partial class Enumerable
     {
         /// <summary>
         /// Returns every N-th element of a source sequence.
@@ -25,6 +21,7 @@ namespace MoreLinq.Pull
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield 1, 3 and 5, in turn.
         /// </example>
+        
         public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
         {
             source.ThrowIfNull("source");

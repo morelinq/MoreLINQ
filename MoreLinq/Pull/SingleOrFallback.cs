@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MoreLinq.Pull
+﻿namespace MoreLinq.Pull
 {
-    /// <summary>
-    /// More element query operators.
-    /// </summary>
-    public static class Element
+    using System;
+    using System.Collections.Generic;
+
+    public static partial class Enumerable
     {
         /// <summary>
         /// Returns the single element in the given sequence, or the result
@@ -22,6 +19,7 @@ namespace MoreLinq.Pull
         /// <exception cref="InvalidOperationException">The sequence has more than one element</exception>
         /// <returns>The single element in the sequence, or the result of calling the
         /// fallback delegate if the sequence is empty.</returns>
+
         public static T SingleOrFallback<T>(this IEnumerable<T> source, Func<T> fallback)
         {
             source.ThrowIfNull("source");

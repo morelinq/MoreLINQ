@@ -52,41 +52,71 @@
     <Compile Include="..\MoreLinq\Properties\AssemblyInfo.cs">
       <Link>AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Aggregation.cs">
-      <Link>Pull\Aggregation.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\AssertCount.cs">
+      <Link>Pull\AssertCount.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Assertion.cs">
-      <Link>Pull\Assertion.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Batch.cs">
+      <Link>Pull\Batch.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Concatenation.cs">
-      <Link>Pull\Concatenation.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Concat.cs">
+      <Link>Pull\Concat.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Element.cs">
-      <Link>Pull\Element.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Consume.cs">
+      <Link>Pull\Consume.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Grouping.cs">
-      <Link>Pull\Grouping.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\DistinctBy.cs">
+      <Link>Pull\DistinctBy.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Enumerable.cs">
+      <Link>Pull\Enumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\ForEach.cs">
+      <Link>Pull\ForEach.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Generate.cs">
+      <Link>Pull\Generate.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\GenerateByIndex.cs">
+      <Link>Pull\GenerateByIndex.cs</Link>
     </Compile>
     <Compile Include="..\MoreLinq\Pull\ImbalancedZipStrategy.cs">
       <Link>Pull\ImbalancedZipStrategy.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Miscellaneous.cs">
-      <Link>Pull\Miscellaneous.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\MaxBy.cs">
+      <Link>Pull\MaxBy.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Partition.cs">
-      <Link>Pull\Partition.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\MinBy.cs">
+      <Link>Pull\MinBy.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Sequence.cs">
-      <Link>Pull\Sequence.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Pad.cs">
+      <Link>Pull\Pad.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\SetOperations.cs">
-      <Link>Pull\SetOperations.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Pipe.cs">
+      <Link>Pull\Pipe.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\SideEffects.cs">
-      <Link>Pull\SideEffects.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\Prepand.cs">
+      <Link>Pull\Prepand.cs</Link>
     </Compile>
-    <Compile Include="..\MoreLinq\Pull\Transformation.cs">
-      <Link>Pull\Transformation.cs</Link>
+    <Compile Include="..\MoreLinq\Pull\PreScan.cs">
+      <Link>Pull\PreScan.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Scan.cs">
+      <Link>Pull\Scan.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\SingleOrFallback.cs">
+      <Link>Pull\SingleOrFallback.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\TakeEvery.cs">
+      <Link>Pull\TakeEvery.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\ToDelimitedString.cs">
+      <Link>Pull\ToDelimitedString.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Trace.cs">
+      <Link>Pull\Trace.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\Pull\Zip.cs">
+      <Link>Pull\Zip.cs</Link>
     </Compile>
     <Compile Include="..\MoreLinq\SequenceException.cs">
       <Link>SequenceException.cs</Link>
