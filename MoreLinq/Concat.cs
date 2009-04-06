@@ -3,7 +3,7 @@ using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns a sequence consisting of the head element and the given tail elements.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         private static readonly Func<int, int, Exception> defaultErrorSelector = OnAssertCountFailure;
 

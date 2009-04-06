@@ -10,7 +10,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateTerminatesWhenCheckReturnsFalse()
         {
-            var result = Enumerable.Generate(1, n => n + 2).TakeWhile(n => n < 10);
+            var result = MoreEnumerable.Generate(1, n => n + 2).TakeWhile(n => n < 10);
 
             result.AssertSequenceEqual(1, 3, 5, 7, 9);
         }
@@ -18,7 +18,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateProcessesNonNumerics()
         {
-            var result = Enumerable.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
+            var result = MoreEnumerable.Generate("", s => s + 'a').TakeWhile(s => s.Length < 5);
 
             result.AssertSequenceEqual("", "a", "aa", "aaa", "aaaa");
         }
@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateIsLazy()
         {
-            var result = Enumerable.Generate(0, BreakingFunc.Of<int, int>()).TakeWhile(n => false);
+            var result = MoreEnumerable.Generate(0, BreakingFunc.Of<int, int>()).TakeWhile(n => false);
 
             result.Consume();
         }
@@ -35,26 +35,26 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateWithNullGenerator()
         {
-            Enumerable.Generate(0, null);
+            MoreEnumerable.Generate(0, null);
         }
 
         [Test]
         public void GenerateByIndexIsLazy()
         {
-            Enumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
+            MoreEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateByIndexWithNullGenerator()
         {
-            Enumerable.GenerateByIndex<int>(null);
+            MoreEnumerable.GenerateByIndex<int>(null);
         }
 
         [Test]
         public void GenerateByIndex()
         {
-            var sequence = Enumerable.GenerateByIndex(x => x.ToString()).Take(3);
+            var sequence = MoreEnumerable.GenerateByIndex(x => x.ToString()).Take(3);
             sequence.AssertSequenceEqual("0", "1", "2");
         }
     }

@@ -12,7 +12,7 @@ namespace MoreLinq.Test
         {
             string[] tail = { "second", "third" };
             string head = "first";
-            IEnumerable<string> whole = Enumerable.Prepend(tail, head);
+            IEnumerable<string> whole = MoreEnumerable.Prepend(tail, head);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -21,7 +21,7 @@ namespace MoreLinq.Test
         {
             string[] tail = { };
             string head = "first";
-            IEnumerable<string> whole = Enumerable.Prepend(tail, head);
+            IEnumerable<string> whole = MoreEnumerable.Prepend(tail, head);
             whole.AssertSequenceEqual("first");
         }
 
@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void PrependWithNullTailSequence()
         {
-            Enumerable.Prepend(null, "head");
+            MoreEnumerable.Prepend(null, "head");
         }
 
         [Test]
@@ -37,14 +37,14 @@ namespace MoreLinq.Test
         {
             string[] tail = { "second", "third" };
             string head = null;
-            IEnumerable<string> whole = Enumerable.Prepend(tail, head);
+            IEnumerable<string> whole = MoreEnumerable.Prepend(tail, head);
             whole.AssertSequenceEqual(null, "second", "third");
         }
 
         [Test]
         public void PrependIsLazyInTailSequence()
         {
-            Enumerable.Prepend(new BreakingSequence<string>(), "head");
+            MoreEnumerable.Prepend(new BreakingSequence<string>(), "head");
         }
     }
 }

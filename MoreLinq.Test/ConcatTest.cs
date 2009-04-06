@@ -17,7 +17,7 @@ namespace MoreLinq.Test
         {
             string[] tail = { "second", "third" };
             string head = "first";
-            IEnumerable<string> whole = Enumerable.Concat(head, tail);
+            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         {
             string[] tail = { };
             string head = "first";
-            IEnumerable<string> whole = Enumerable.Concat(head, tail);
+            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -34,7 +34,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConcatWithNullTailSequence()
         {
-            Enumerable.Concat("head", null);
+            MoreEnumerable.Concat("head", null);
         }
 
         [Test]
@@ -42,14 +42,14 @@ namespace MoreLinq.Test
         {
             string[] tail = { "second", "third" };
             string head = null;
-            IEnumerable<string> whole = Enumerable.Concat(head, tail);
+            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual(null, "second", "third");
         }
 
         [Test]
         public void ConcatIsLazyInTailSequence()
         {
-            Enumerable.Concat("head", new BreakingSequence<string>());
+            MoreEnumerable.Concat("head", new BreakingSequence<string>());
         }
         #endregion
 
@@ -59,7 +59,7 @@ namespace MoreLinq.Test
         {
             string[] head = { "first", "second" };
             string tail = "third";
-            IEnumerable<string> whole = Enumerable.Concat(head, tail);
+            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         {
             string[] head = { };
             string tail = "first";
-            IEnumerable<string> whole = Enumerable.Concat(head, tail);
+            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -76,7 +76,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConcatWithNullHeadSequence()
         {
-            Enumerable.Concat(null, "tail");
+            MoreEnumerable.Concat(null, "tail");
         }
 
         [Test]
@@ -84,14 +84,14 @@ namespace MoreLinq.Test
         {
             string[] head = { "first", "second" };
             string tail = null;
-            IEnumerable<string> whole = Enumerable.Concat(head, tail);
+            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", null);
         }
 
         [Test]
         public void ConcatIsLazyInHeadSequence()
         {
-            Enumerable.Concat(new BreakingSequence<string>(), "tail");
+            MoreEnumerable.Concat(new BreakingSequence<string>(), "tail");
         }
         #endregion
     }

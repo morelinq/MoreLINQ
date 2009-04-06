@@ -32,7 +32,7 @@
         [Test]
         public void ZipWithEqualLengthSequences()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
@@ -40,7 +40,7 @@
         [Test]
         public void ZipWithFirstSequenceShorterThanSecond()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 }, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
@@ -48,7 +48,7 @@
         [Test]
         public void ZipWithFirstSequnceLongerThanSecond()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 }, (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 }, (x, y) => Tuple(x, y));
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
@@ -74,7 +74,7 @@
         [Test]
         public void ZipWithEqualLengthSequencesTruncateStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
@@ -83,7 +83,7 @@
         [Test]
         public void ZipWithFirstSequenceShorterThanSecondTruncateStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
@@ -92,7 +92,7 @@
         [Test]
         public void ZipWithFirstSequnceLongerThanSecondTruncateStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Truncate);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
@@ -119,7 +119,7 @@
         [Test]
         public void ZipWithEqualLengthSequencesPadStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
@@ -128,7 +128,7 @@
         [Test]
         public void ZipWithFirstSequenceShorterThanSecondPadStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(0, 6));
@@ -137,7 +137,7 @@
         [Test]
         public void ZipWithFirstSequnceLongerThanSecondPadStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Pad);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 0));
@@ -179,7 +179,7 @@
         [Test]
         public void ZipWithEqualLengthSequencesFailStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
@@ -189,7 +189,7 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
@@ -199,7 +199,7 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
+            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 },
                 (x, y) => Tuple(x, y), ImbalancedZipStrategy.Fail);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
@@ -212,28 +212,28 @@
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullFirstSequence()
         {
-            Enumerable.Zip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            MoreEnumerable.Zip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            Enumerable.Zip(new[] { 1, 2, 3 }, null, BreakingFunc.Of<int, int, int>());
+            MoreEnumerable.Zip(new[] { 1, 2, 3 }, null, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            Enumerable.Zip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
+            MoreEnumerable.Zip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ZipWithInvalidStrategy()
         {
-            Enumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
+            MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
                 (x, y) => Tuple(x, y), (ImbalancedZipStrategy)10);
         }
         #endregion
@@ -241,7 +241,7 @@
         [Test]
         public void ZipIsLazy()
         {
-            Enumerable.Zip<int, int, int>(
+            MoreEnumerable.Zip<int, int, int>(
                 new BreakingSequence<int>(),
                 new BreakingSequence<int>(),
                 delegate { throw new NotImplementedException(); });

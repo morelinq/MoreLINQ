@@ -12,7 +12,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConsumeWithNullSource()
         {
-            Enumerable.Consume<int>(null);
+            MoreEnumerable.Consume<int>(null);
         }
 
         [Test]

@@ -2,7 +2,7 @@
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Completely consumes the given sequence. This method uses immediate execution,

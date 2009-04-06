@@ -12,7 +12,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void PreScanNullSequence()
         {
-            Enumerable.PreScan(null, SampleData.Plus, 0);
+            MoreEnumerable.PreScan(null, SampleData.Plus, 0);
         }
 
         [Test]

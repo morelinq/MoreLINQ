@@ -14,21 +14,21 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullSequence()
         {
-            Enumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); });
+            MoreEnumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); });
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullAction()
         {
-            Enumerable.Pipe(new[] { 1, 2, 3 }, null);
+            MoreEnumerable.Pipe(new[] { 1, 2, 3 }, null);
         }
 
         [Test]
         public void PipeWithSequence()
         {
             List<int> results = new List<int>();
-            var returned = Enumerable.Pipe(new[] { 1, 2, 3 }, results.Add);
+            var returned = MoreEnumerable.Pipe(new[] { 1, 2, 3 }, results.Add);
             // Lazy - nothing has executed yet
             Assert.That(results, Is.Empty);
             returned.AssertSequenceEqual(1, 2, 3);

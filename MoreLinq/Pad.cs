@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Pads a sequence with default values if it is narrower (shorter 

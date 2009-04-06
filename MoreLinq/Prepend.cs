@@ -3,7 +3,7 @@ using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Prepends a single value to a sequence.

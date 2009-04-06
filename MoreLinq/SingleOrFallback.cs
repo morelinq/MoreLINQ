@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns the single element in the given sequence, or the result

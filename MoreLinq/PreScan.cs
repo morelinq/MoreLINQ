@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Performs a pre-scan (exclusive prefix sum) on a sequence of elements.

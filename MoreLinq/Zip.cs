@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element 

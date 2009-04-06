@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
-    public static partial class Enumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Creates a delimited string from a sequence of values. The 

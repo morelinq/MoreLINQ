@@ -11,21 +11,21 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullSequence()
         {
-            Enumerable.ForEach<int>(null, x => { throw new InvalidOperationException(); });
+            MoreEnumerable.ForEach<int>(null, x => { throw new InvalidOperationException(); });
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullAction()
         {
-            Enumerable.ForEach(new[] { 1, 2, 3 }, null);
+            MoreEnumerable.ForEach(new[] { 1, 2, 3 }, null);
         }
 
         [Test]
         public void ForEachWithSequence()
         {
             List<int> results = new List<int>();
-            Enumerable.ForEach(new[] { 1, 2, 3 }, results.Add);
+            MoreEnumerable.ForEach(new[] { 1, 2, 3 }, results.Add);
             results.AssertSequenceEqual(1, 2, 3);
         }
     }

@@ -11,14 +11,14 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullSequence()
         {
-            Enumerable.SingleOrFallback(null, BreakingFunc.Of<int>());
+            MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullFallback()
         {
-            Enumerable.SingleOrFallback(new[] {1}, null);
+            MoreEnumerable.SingleOrFallback(new[] {1}, null);
         }
 
         [Test]

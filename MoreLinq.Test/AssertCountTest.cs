@@ -11,14 +11,14 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void AssertCountNullSequence()
         {
-            Enumerable.AssertCount<object>(null, 0);
+            MoreEnumerable.AssertCount<object>(null, 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertCountNegativeCount()
         {
-            Enumerable.AssertCount(new object[0], -1);
+            MoreEnumerable.AssertCount(new object[0], -1);
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountIsLazy()
         {
-            Enumerable.AssertCount(new BreakingSequence<object>(), 0);
+            MoreEnumerable.AssertCount(new BreakingSequence<object>(), 0);
         }
     }
 }

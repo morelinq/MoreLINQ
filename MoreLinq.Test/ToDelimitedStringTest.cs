@@ -13,19 +13,19 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ToDelimitedStringWithNullSequence()
         {
-            Enumerable.ToDelimitedString<int>(null, ",");
+            MoreEnumerable.ToDelimitedString<int>(null, ",");
         }
 
         [Test]
         public void ToDelimitedStringWithEmptySequence()
         {
-            Assert.That(Enumerable.ToDelimitedString(LinqEnumerable.Empty<int>()), Is.Empty);
+            Assert.That(MoreEnumerable.ToDelimitedString(LinqEnumerable.Empty<int>()), Is.Empty);
         }
 
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
         {
-            var result = Enumerable.ToDelimitedString(new[] { 1, 2, 3 }, "-");
+            var result = MoreEnumerable.ToDelimitedString(new[] { 1, 2, 3 }, "-");
             Assert.That(result, Is.EqualTo("1-2-3"));
         }
 
@@ -34,7 +34,7 @@ namespace MoreLinq.Test
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = Enumerable.ToDelimitedString(new[] {1, 2, 3});
+                var result = MoreEnumerable.ToDelimitedString(new[] {1, 2, 3});
                 Assert.That(result, Is.EqualTo("1;2;3"));
             }
         }
@@ -44,7 +44,7 @@ namespace MoreLinq.Test
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = Enumerable.ToDelimitedString(new[] { 1, 2, 3 }, null);
+                var result = MoreEnumerable.ToDelimitedString(new[] { 1, 2, 3 }, null);
                 Assert.That(result, Is.EqualTo("1;2;3"));
             }
         }
@@ -52,7 +52,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNulls()
         {
-            var result = Enumerable.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
+            var result = MoreEnumerable.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
             Assert.That(result, Is.EqualTo("1,,foo,True"));
         }
     }
