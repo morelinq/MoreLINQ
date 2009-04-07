@@ -10,16 +10,14 @@ namespace MoreLinq
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// This is equivalent to <see cref="Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)" />
-        /// with a stategy of <see cref="ImbalancedZipStrategy.Truncate" />: if the two input sequences are of different lengths,
-        /// the result sequence is terminated as soon as the shortest input sequence is exhausted.
+        /// If the two input sequences are of different lengths, the result sequence 
+        /// is terminated as soon as the shortest input sequence is exhausted.
         /// </remarks>
         /// <example>
         /// <code>
         /// int[] numbers = { 1, 2, 3 };
         /// string[] letters = { "A", "B", "C", "D" };
-        /// 
-        /// IEnumerable&lt;string&gt; zipped = numbers.Zip(letters, (n, l) => n + l);
+        /// var zipped = numbers.Zip(letters, (n, l) => n + l);
         /// </code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
         /// </example>
@@ -45,16 +43,49 @@ namespace MoreLinq
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// This is equivalent to <see cref="Zip{T1,T2,TResult}(IEnumerable{T1},IEnumerable{T2},Func{T1,T2,TResult},ImbalancedZipStrategy)" />
-        /// with a stategy of <see cref="ImbalancedZipStrategy.Truncate" />: if the two input sequences are of different lengths,
-        /// the result sequence is terminated as soon as the shortest input sequence is exhausted.
+        /// If the two input sequences are of different lengths then 
+        /// <see cref="InvalidOperationException"/> is thrown.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// int[] numbers = { 1, 2, 3, 4 };
+        /// string[] letters = { "A", "B", "C", "D" };
+        /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
+        /// </code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "4D" in turn.
+        /// </example>
+        /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
+        /// <param name="first">First sequence</param>
+        /// <param name="second">Second sequence</param>
+        /// <param name="resultSelector">Function to apply to each pair of elements</param>
+        
+        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
+             IEnumerable<TSecond> second,
+             Func<TFirst, TSecond, TResult> resultSelector)
+        {
+            first.ThrowIfNull("first");
+            second.ThrowIfNull("second");
+            resultSelector.ThrowIfNull("resultSelector");
+
+            return ZipImpl(first, second, resultSelector, ImbalancedZipStrategy.Fail);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// from each of the argument sequences.
+        /// </summary>
+        /// <remarks>
+        /// If the two input sequences are of different lengths then the result 
+        /// sequence will always be as long as the longer of the two input sequences.
+        /// The default value of the shorter sequence element type is used for padding.
         /// </remarks>
         /// <example>
         /// <code>
         /// int[] numbers = { 1, 2, 3 };
         /// string[] letters = { "A", "B", "C", "D" };
-        /// 
-        /// IEnumerable&lt;string&gt; zipped = numbers.Zip(letters, (n, l) => n + l, ImbalancedZipStrategy.Pad);
+        /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
         /// </code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "0D" in turn.
         /// </example>
@@ -64,22 +95,16 @@ namespace MoreLinq
         /// <param name="first">First sequence</param>
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
-        /// <param name="imbalanceStrategy">Strategy to apply if the two input sequences differ in length.</param>
-        
-        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
+
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
              IEnumerable<TSecond> second,
-             Func<TFirst, TSecond, TResult> resultSelector,
-             ImbalancedZipStrategy imbalanceStrategy)
+             Func<TFirst, TSecond, TResult> resultSelector)
         {
             first.ThrowIfNull("first");
             second.ThrowIfNull("second");
             resultSelector.ThrowIfNull("resultSelector");
-            if (!Enum.IsDefined(typeof(ImbalancedZipStrategy), imbalanceStrategy))
-            {
-                throw new ArgumentOutOfRangeException("Unknown imbalanced zip strategy: " + imbalanceStrategy);
-            }
 
-            return ZipImpl(first, second, resultSelector, imbalanceStrategy);
+            return ZipImpl(first, second, resultSelector, ImbalancedZipStrategy.Pad);
         }
 
         private static IEnumerable<TResult> ZipImpl<TFirst, TSecond, TResult>(
@@ -133,6 +158,29 @@ namespace MoreLinq
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Strategy determining the handling of the case where the inputs are of
+        /// unequal lengths.
+        /// </summary>
+        internal enum ImbalancedZipStrategy
+        {
+            /// <summary>
+            /// The result sequence ends when either input sequence is exhausted.
+            /// </summary>
+            Truncate = 0,
+            /// <summary>
+            /// The result sequence ends when both sequences are exhausted. The 
+            /// shorter sequence is effectively "padded" at the end with the default
+            /// value for its element type.
+            /// </summary>
+            Pad = 1,
+            /// <summary>
+            /// <see cref="InvalidOperationException" /> is thrown if one sequence
+            /// is exhausted but not the other.
+            /// </summary>
+            Fail = 2
         }
     }
 }

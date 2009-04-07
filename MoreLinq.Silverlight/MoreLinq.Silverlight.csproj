@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="..\MoreLinq\AssertCount.cs">
       <Link>AssertCount.cs</Link>
-        <DependentUpon>MoreEnumerable.cs</DependentUpon>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="..\MoreLinq\Batch.cs">
       <Link>Batch.cs</Link>
@@ -80,9 +80,6 @@
     </Compile>
     <Compile Include="..\MoreLinq\IdentityFunc.cs">
       <Link>IdentityFunc.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\ImbalancedZipStrategy.cs">
-      <Link>ImbalancedZipStrategy.cs</Link>
     </Compile>
     <Compile Include="..\MoreLinq\MaxBy.cs">
       <Link>MaxBy.cs</Link>

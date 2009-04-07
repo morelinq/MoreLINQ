@@ -100,7 +100,6 @@
     <Compile Include="MaxBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImbalancedZipStrategy.cs" />
     <Compile Include="SingleOrFallback.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
