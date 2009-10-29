@@ -41,8 +41,8 @@ using System.Runtime.InteropServices;
 // bld = months_since_2000 x 100 + day_of_month
 // rev = utc_hours_since_midnight + utc_minutes
 
-[assembly: AssemblyVersion("1.0.11522.0")]
-[assembly: AssemblyFileVersion("1.0.11522.1815")]
+[assembly: AssemblyVersion("1.0.11729.0")]
+[assembly: AssemblyFileVersion("1.0.11729.0")]
 
 // Debug or release configuration?
 

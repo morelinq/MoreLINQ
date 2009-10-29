@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptBy.cs">
-          <DependentUpon>MoreEnumerable.cs</DependentUpon>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="IdentityFunc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +58,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Batch.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TakeLast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Trace.cs">
