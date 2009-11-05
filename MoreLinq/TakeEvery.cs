@@ -36,7 +36,7 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 1, 2, 3, 4, 5 };
-        /// IEnumerable&lt;int&gt; result = numbers.Every(2);
+        /// IEnumerable&lt;int&gt; result = numbers.TakeEvery(2);
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield 1, 3 and 5, in turn.
         /// </example>
