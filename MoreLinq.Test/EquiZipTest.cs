@@ -13,34 +13,39 @@
         }
 
         [Test]
-        public void BothSequencesDisposedWithUnequalLengths()
+        public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
         {
-            var longer = DisposeTestingSequence.Of(1, 2, 3);
-            var shorter = DisposeTestingSequence.Of(1, 2);
+            using (var longer = TestingSequence.Of(1, 2, 3))
+            using (var shorter = TestingSequence.Of(1, 2))
+            {
+                // Yes, this will throw... but then we should still have disposed both sequences
+                try
+                {
+                    longer.EquiZip(shorter, (x, y) => x + y).Consume();
+                }
+                catch (InvalidOperationException)
+                {
+                    // Expected
+                }
+            }
+        }
 
-            // Yes, this will throw... but then we should still have disposed both sequences
-            try
+        [Test]
+        public void BothSequencesDisposedWithUnequalLengthsAndShorterFirst()
+        {
+            using (var longer = TestingSequence.Of(1, 2, 3))
+            using (var shorter = TestingSequence.Of(1, 2))
             {
-                longer.EquiZip(shorter, (x, y) => x + y).Consume();
+                // Yes, this will throw... but then we should still have disposed both sequences
+                try
+                {
+                    shorter.EquiZip(longer, (x, y) => x + y).Consume();
+                }
+                catch (InvalidOperationException)
+                {
+                    // Expected
+                }
             }
-            catch (InvalidOperationException)
-            {
-                // Expected
-            }
-            longer.AssertDisposed();
-            shorter.AssertDisposed();
-
-            // Just in case it works one way but not the other...
-            try
-            {
-                shorter.EquiZip(longer, (x, y) => x + y).Consume();
-            }
-            catch (InvalidOperationException)
-            {
-                // Expected
-            }
-            longer.AssertDisposed();
-            shorter.AssertDisposed();
         }
 
         [Test]

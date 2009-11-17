@@ -52,6 +52,7 @@
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
+    <Compile Include="TestingSequence.cs" />
     <Compile Include="ZipLongestTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssertCountTest.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="PrependTest.cs" />
     <Compile Include="PadTest.cs" />
     <Compile Include="CurrentThreadCultureScope.cs" />
-    <Compile Include="DisposeTestingSequence.cs" />
     <Compile Include="MaxByTest.cs" />
     <Compile Include="MinByTest.cs" />
     <Compile Include="Scope.cs" />

@@ -13,19 +13,23 @@
         }
 
         [Test]
-        public void BothSequencesDisposedWithUnequalLengths()
+        public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
         {
-            var longer = DisposeTestingSequence.Of(1, 2, 3);
-            var shorter = DisposeTestingSequence.Of(1, 2);
+            using (var longer = TestingSequence.Of(1, 2, 3))
+            using (var shorter = TestingSequence.Of(1, 2))
+            {
+                longer.ZipLongest(shorter, (x, y) => x + y).Consume();
+            }
+        }
 
-            longer.ZipLongest(shorter, (x, y) => x + y).Consume();
-            longer.AssertDisposed();
-            shorter.AssertDisposed();
-
-            // Just in case it works one way but not the other...
-            shorter.ZipLongest(longer, (x, y) => x + y).Consume();
-            longer.AssertDisposed();
-            shorter.AssertDisposed();
+        [Test]
+        public void BothSequencesDisposedWithUnequalLengthsAndShorterFirst()
+        {
+            using (var longer = TestingSequence.Of(1, 2, 3))
+            using (var shorter = TestingSequence.Of(1, 2))
+            {
+                shorter.ZipLongest(longer, (x, y) => x + y).Consume();
+            }
         }
 
         [Test]
