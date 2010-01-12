@@ -54,14 +54,12 @@ namespace MoreLinq.ModelShredder
 			// Initialize table
 			m_SchemaBuilder.BuildTableSchema(table, m_ShredderOptions);
 
-			IEnumerator e = source.GetEnumerator();
-
 			table.BeginLoadData();
-
-			while (e.MoveNext())
+			foreach (T element in source)
 			{
-				table.Rows.Add(m_ShredderMethod.Invoke(e.Current));
+				table.Rows.Add(m_ShredderMethod.Invoke(element));
 			}
+			table.EndLoadData();
 
 			return table;
 		}

@@ -71,6 +71,9 @@
     <Compile Include="TakeLast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ToDataTable.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Trace.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
