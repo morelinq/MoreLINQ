@@ -110,13 +110,13 @@ namespace MoreLinq
             var memberz = from e in expressions
                           let member = GetMemberExpression(e)
                           let type = member.Type
-                          let nullable = type.IsGenericType 
-                                    && type.GetGenericTypeDefinition() == typeof(Nullable<>)
                           select new
                           {
                               member.Member.Name,
-                              Type = nullable ? type.GetGenericArguments()[0] : type,
-                              Nullable = nullable, 
+                              Type = type.IsGenericType 
+                                     && typeof(Nullable<>) == type.GetGenericTypeDefinition() 
+                                   ? type.GetGenericArguments()[0] 
+                                   : type,
                               GetValue = e.Compile(),
                          };
 
@@ -131,9 +131,7 @@ namespace MoreLinq
             DataColumn[] columns;
             if (table.Columns.Count == 0)
             {
-                columns = members.Select(m => new DataColumn(m.Name, m.Type) { AllowDBNull = m.Nullable })
-                                 .ToArray();
-
+                columns = members.Select(m => new DataColumn(m.Name, m.Type)).ToArray();
                 table.Columns.AddRange(columns);
             }
             else
