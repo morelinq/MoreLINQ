@@ -49,12 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelShredder\DefaultSchemaBuilderTest.cs" />
-    <Compile Include="ModelShredder\DefaultShredderOptionsProviderTest.cs" />
-    <Compile Include="ModelShredder\InjectionObjectShredderTest.cs" />
-    <Compile Include="ModelShredder\ShredderOptionsTest.cs" />
-    <Compile Include="ModelShredder\ShredderTest.cs" />
-    <Compile Include="ModelShredder\ShredderTestObject.cs" />
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
