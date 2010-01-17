@@ -71,6 +71,9 @@
     <Compile Include="Random.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repeat.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Subsets.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
