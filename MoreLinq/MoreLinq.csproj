@@ -80,6 +80,9 @@
     <Compile Include="Random.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="RandomSubset.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repeat.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
