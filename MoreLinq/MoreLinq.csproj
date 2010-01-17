@@ -68,6 +68,9 @@
     <Compile Include="Batch.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Random.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="TakeLast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -92,7 +95,9 @@
     <Compile Include="Generate.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="MoreEnumerable.cs" />
+    <Compile Include="MoreEnumerable.cs">
+      <DependentUpon>Random.cs</DependentUpon>
+    </Compile>
     <Compile Include="TakeEvery.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

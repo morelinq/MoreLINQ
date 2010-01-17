@@ -55,6 +55,7 @@
     <Compile Include="ModelShredder\ShredderOptionsTest.cs" />
     <Compile Include="ModelShredder\ShredderTest.cs" />
     <Compile Include="ModelShredder\ShredderTestObject.cs" />
+    <Compile Include="RandomTest.cs" />
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
