@@ -85,7 +85,8 @@ namespace MoreLinq
         {
             rand.ThrowIfNull("rand");
             if (minValue > maxValue)
-                throw new ArgumentOutOfRangeException("minValue", "minValue is greater than maxValue");
+                throw new ArgumentOutOfRangeException( "minValue", 
+                    string.Format("The argument minValue ({0}) is greater than maxValue ({1})", minValue, maxValue) );
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
         }
@@ -119,12 +120,12 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="T">The type of value returned (either Int32 or Double)</typeparam>
         /// <param name="rand">Random generators used to produce the sequence</param>
-        /// <param name="NextValue">Generator function that actually produces the next value - specific to T</param>
+        /// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
         /// <returns>An infinite sequence of random numbers of type T</returns>
-        private static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> NextValue)
+        private static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
         {
             while (true)
-                yield return NextValue(rand);
+                yield return nextValue(rand);
         }
     }
 }
