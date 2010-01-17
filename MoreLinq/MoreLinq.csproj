@@ -58,6 +58,9 @@
     <Compile Include="NestedLoops.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Permutations.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssertCount.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>

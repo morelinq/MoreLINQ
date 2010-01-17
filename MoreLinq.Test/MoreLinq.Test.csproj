@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Combinatorics.cs" />
+    <Compile Include="ComparerFunc.cs" />
+    <Compile Include="EqualityComparerFunc.cs" />
     <Compile Include="ModelShredder\DefaultSchemaBuilderTest.cs" />
     <Compile Include="ModelShredder\DefaultShredderOptionsProviderTest.cs" />
     <Compile Include="ModelShredder\InjectionObjectShredderTest.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="ModelShredder\ShredderTest.cs" />
     <Compile Include="ModelShredder\ShredderTestObject.cs" />
     <Compile Include="NestedLoopTest.cs" />
+    <Compile Include="PermutationsTest.cs" />
     <Compile Include="RandomTest.cs" />
     <Compile Include="RepeatTest.cs" />
     <Compile Include="SubsetTest.cs" />
