@@ -59,6 +59,7 @@
     <Compile Include="ModelShredder\ShredderTest.cs" />
     <Compile Include="ModelShredder\ShredderTestObject.cs" />
     <Compile Include="NestedLoopTest.cs" />
+    <Compile Include="PairUpTest.cs" />
     <Compile Include="PermutationsTest.cs" />
     <Compile Include="PermutedSubsetsTest.cs" />
     <Compile Include="RandomSubsetTest.cs" />
