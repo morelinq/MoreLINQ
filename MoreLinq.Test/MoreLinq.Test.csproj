@@ -64,6 +64,7 @@
     <Compile Include="RandomSubsetTest.cs" />
     <Compile Include="RandomTest.cs" />
     <Compile Include="RepeatTest.cs" />
+    <Compile Include="RunLengthEncodeTest.cs" />
     <Compile Include="SubsetTest.cs" />
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
