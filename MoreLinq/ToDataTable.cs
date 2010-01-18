@@ -39,7 +39,7 @@ namespace MoreLinq
 			{
 				var memberz = from m in typeof(T).GetMembers()
 							  where m.MemberType == MemberTypes.Field
-								 || (m.MemberType == MemberTypes.Property && (m as PropertyInfo).GetIndexParameters().Length == 0)
+                                 || (m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0)
 							  select m;
 
 				members = memberz.ToArray();
