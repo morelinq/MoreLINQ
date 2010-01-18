@@ -62,6 +62,9 @@
     <Compile Include="PairUp.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Partition.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Permutations.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

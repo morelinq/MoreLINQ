@@ -52,6 +52,7 @@
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
     <Compile Include="EqualityComparerFunc.cs" />
+    <Compile Include="InfiniteSequence.cs" />
     <Compile Include="ModelShredder\DefaultSchemaBuilderTest.cs" />
     <Compile Include="ModelShredder\DefaultShredderOptionsProviderTest.cs" />
     <Compile Include="ModelShredder\InjectionObjectShredderTest.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="ModelShredder\ShredderTestObject.cs" />
     <Compile Include="NestedLoopTest.cs" />
     <Compile Include="PairUpTest.cs" />
+    <Compile Include="PartitionTest.cs" />
     <Compile Include="PermutationsTest.cs" />
     <Compile Include="PermutedSubsetsTest.cs" />
     <Compile Include="RandomSubsetTest.cs" />

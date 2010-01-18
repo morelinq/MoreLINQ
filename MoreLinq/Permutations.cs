@@ -194,7 +194,7 @@ namespace MoreLinq
 
             return PermutationsImpl(sequence);
         }
-        
+
         /// <summary>
         /// Private implementation that generates sequence permutations using the PermutatinEnumerator
         /// </summary>
