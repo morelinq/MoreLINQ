@@ -51,12 +51,12 @@ namespace MoreLinq
                 //
 
                 if (expressions.Any(e => e == null))
-                    throw new ArgumentException("contains null expression", "expressions");
+                    throw new ArgumentException("One of the supplied expressions was null.", "expressions");
 
                 members = expressions.Select(x => GetAccessedMember(x)).ToArray();
 
                 if (members.Any(m => m == null))
-                    throw new ArgumentException("contains an invalid member expression", "expressions");
+                    throw new ArgumentException("One of the supplied expressions was not allowed.", "expressions");
             }
             return members;
         }
@@ -100,7 +100,7 @@ namespace MoreLinq
                         throw new ArgumentException(string.Format("Column named '{0}' is missing or the table has unexpected column ordering.", members[i].Name), "table");
 
                     if (table.Columns[i].DataType != expectedColumns[i].Type)
-                        throw new ArgumentException(string.Format("Column named '{0}' has wrong datatype.", members[i].Name), "table");
+                        throw new ArgumentException(string.Format("Column named '{0}' has wrong data type.", members[i].Name), "table");
 
                     // can have more columns at the end
                 }
