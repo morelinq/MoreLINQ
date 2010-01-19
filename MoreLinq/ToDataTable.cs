@@ -23,42 +23,41 @@ namespace MoreLinq
             MemberExpression memberExpression = body as MemberExpression;
             if ((memberExpression == null) || (memberExpression.Expression.NodeType != ExpressionType.Parameter))
             {
-                return null;
+                throw new ArgumentException(string.Format("Illegal expression: {0}", lambda), "lambda");
             }
 
             return memberExpression.Member;
         }
 
-        private static MemberInfo[] PrepareMemberInfos<T>(Expression<Func<T, object>>[] expressions)
+        private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
         {
+            //
             // If no lambda expressions supplied then reflect them off the source element type.
+            //
 
-            MemberInfo[] members = null;
-
-            if (expressions == null || expressions.Length == 0)
+            if (expressions == null || expressions.Count == 0)
             {
-                var memberz = from m in typeof(T).GetMembers()
-                              where m.MemberType == MemberTypes.Field
-                                 || (m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0)
-                              select m;
-
-                members = memberz.ToArray();
+                return from m in typeof(T).GetMembers()
+                       where m.MemberType == MemberTypes.Field
+                             || (m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0)
+                       select m;
             }
-            else
+
+            //
+            // Ensure none of the expressions is null.
+            //
+
+            if (expressions.Any(e => e == null))
+                throw new ArgumentException("One of the supplied expressions was null.", "expressions");
+
+            try
             {
-                //
-                // Ensure none of the expressions is null, a non-MemberExpression or accesses an invalid Member
-                //
-
-                if (expressions.Any(e => e == null))
-                    throw new ArgumentException("One of the supplied expressions was null.", "expressions");
-
-                members = expressions.Select(x => GetAccessedMember(x)).ToArray();
-
-                if (members.Any(m => m == null))
-                    throw new ArgumentException("One of the supplied expressions was not allowed.", "expressions");
+                return expressions.Select(x => GetAccessedMember(x));
             }
-            return members;
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException("One of the supplied expressions is not allowed.", "expressions", e);
+            }
         }
 
         private static void PrepareDataTable(DataTable table, MemberInfo[] members)
@@ -127,7 +126,6 @@ namespace MoreLinq
             return lambda.Compile();
         }
 
-
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> 
         /// object with a set of lambda expressions specifying which members (property
@@ -148,12 +146,8 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (table == null) throw new ArgumentNullException("table");
 
-
-
-            MemberInfo[] members = PrepareMemberInfos<T>(expressions);
-
+            var members = PrepareMemberInfos(expressions).ToArray();
             PrepareDataTable(table, members);
-
             var shredder = CreateShredder<T>(members);
 
             //
