@@ -60,50 +60,64 @@ namespace MoreLinq
             }
         }
 
-        private static void PrepareDataTable(DataTable table, MemberInfo[] members)
+        /// <remarks>
+        /// The resulting array may contain null entries and those represent
+        /// columns for which there is no source member supplying a value.
+        /// </remarks>
+
+        private static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
         {
             //
-            // retrieve member information
-            // needed to build or validate the table schema.
+            // Retrieve member information needed to 
+            // build or validate the table schema.
             //
-            var columnInfos = from m in members
-                              let type = m.MemberType == MemberTypes.Property ? ((PropertyInfo)m).PropertyType : ((FieldInfo)m).FieldType
-                              select new
-                              {
-                                  m.Name,
-                                  Type = type.IsGenericType
-                                         && typeof(Nullable<>) == type.GetGenericTypeDefinition()
-                                       ? type.GetGenericArguments()[0]
-                                       : type,
-                              };
 
+            var columns = table.Columns;
+
+            var schemas = from m in members
+                          let type = m.MemberType == MemberTypes.Property 
+                                   ? ((PropertyInfo) m).PropertyType 
+                                   : ((FieldInfo) m).FieldType
+                          select new
+                          {
+                              Member = m,
+                              Type = type.IsGenericType
+                                     && typeof(Nullable<>) == type.GetGenericTypeDefinition()
+                                   ? type.GetGenericArguments()[0]
+                                   : type,
+                              Column = columns[m.Name],
+                          };
 
             //
             // If the table has no columns then build the schema.
-            // If it has columns, validate they are correctly ordered
-            // and of correct datatype. The table can have columns left at the end.
+            // If it has columns then validate members against the columns
+            // and re-order members to be aligned with column ordering.
             //
 
-            if (table.Columns.Count == 0)
+            if (columns.Count == 0)
             {
-                var columns = columnInfos.Select(m => new DataColumn(m.Name, m.Type)).ToArray();
-                table.Columns.AddRange(columns);
+                columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
             }
             else
             {
-                var expectedColumns = columnInfos.ToArray();
+                members = new MemberInfo[columns.Count];
 
-                for (var i = 0; i < expectedColumns.Length; i++)
+                foreach (var info in schemas)
                 {
-                    if (table.Columns[i].ColumnName != expectedColumns[i].Name)
-                        throw new ArgumentException(string.Format("Column named '{0}' is missing or the table has unexpected column ordering.", members[i].Name), "table");
+                    var member = info.Member;
+                    var column = info.Column;
 
-                    if (table.Columns[i].DataType != expectedColumns[i].Type)
-                        throw new ArgumentException(string.Format("Column named '{0}' has wrong data type.", members[i].Name), "table");
+                    if (column == null)
+                        throw new ArgumentException(string.Format("Column named '{0}' is missing or the table has unexpected column ordering.", member.Name), "table");
 
-                    // can have more columns at the end
+                    if (info.Type != column.DataType)
+                        throw new ArgumentException(string.Format("Column named '{0}' has wrong data type. It should be {1} when it is {2}.", member.Name, info.Type, column.DataType), "table");
+
+                    members[column.Ordinal] = member;
                 }
             }
+
+            return members;
         }
 
         private static UnaryExpression CreateMemberAccessor(Expression parameter, MemberInfo member)
@@ -116,13 +130,19 @@ namespace MoreLinq
         {
             var parameter = Expression.Parameter(typeof(T), "e");
 
-            var initializers = members.Select(m => CreateMemberAccessor(parameter, m))
-                                      .Cast<Expression>();
+            //
+            // It is valid for members sequence to have null entrie and in
+            // which case, a null constant is emitted into the corresponding
+            // slow of the row values array.
+            //
+
+            var initializers = members.Select(m => m != null
+                                                   ? (Expression) CreateMemberAccessor(parameter, m)
+                                                   : Expression.Constant(null, typeof(object)));
 
             var array = Expression.NewArrayInit(typeof(object), initializers);
 
             var lambda = Expression.Lambda<Func<T, object[]>>(array, parameter);
-
             return lambda.Compile();
         }
 
@@ -147,7 +167,7 @@ namespace MoreLinq
             if (table == null) throw new ArgumentNullException("table");
 
             var members = PrepareMemberInfos(expressions).ToArray();
-            PrepareDataTable(table, members);
+            members = BuildOrBindSchema(table, members);
             var shredder = CreateShredder<T>(members);
 
             //

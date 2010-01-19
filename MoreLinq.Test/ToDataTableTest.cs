@@ -9,7 +9,10 @@ using System.Data;
 
 namespace MoreLinq.Test
 {
-	[TestFixture]
+    using System.Collections;
+    using NUnit.Framework.SyntaxHelpers;
+
+    [TestFixture]
 	public class ToDataTableTest
 	{
 		private class TestObject
@@ -163,5 +166,28 @@ namespace MoreLinq.Test
 
 			Assert.AreEqual(1, dt.Columns.Count);
 		}
+
+        [Test]
+        public void ToDataTableWithSchema()
+        {
+            var dt = new DataTable();
+            var columns = dt.Columns;
+            columns.Add("Column1", typeof(int));
+            columns.Add("Value", typeof(string));
+            columns.Add("Column3", typeof(int));
+            columns.Add("Name", typeof(string));
+
+            var vars = Environment.GetEnvironmentVariables()
+                                  .Cast<DictionaryEntry>()
+                                  .ToArray();
+
+            vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
+                .ToDataTable(dt, e => e.Name, e => e.Value);
+
+            var rows = dt.AsEnumerable().ToArray();
+            Assert.That(rows.Length, Is.EqualTo(vars.Length));
+            Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
+            Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
+        }
 	}
 }
