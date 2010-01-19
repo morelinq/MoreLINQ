@@ -9,7 +9,7 @@ using System.Data;
 
 namespace MoreLinq.Test
 {
-	[TestFixture, SetUpFixture]
+	[TestFixture]
 	public class ToDataTableTest
 	{
 		private class TestObject
