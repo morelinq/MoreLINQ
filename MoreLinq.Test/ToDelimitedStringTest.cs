@@ -55,5 +55,13 @@ namespace MoreLinq.Test
             var result = MoreEnumerable.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
             Assert.That(result, Is.EqualTo("1,,foo,True"));
         }
+
+        [Test]
+        public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
+        {
+            // See: http://code.google.com/p/morelinq/issues/detail?id=43
+            var result = MoreEnumerable.ToDelimitedString(new object[] { null, null, "foo" }, ",");
+            Assert.That(result, Is.EqualTo(",,foo"));
+        }
     }
 }

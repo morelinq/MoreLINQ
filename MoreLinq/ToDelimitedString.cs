@@ -67,10 +67,11 @@ namespace MoreLinq
             Debug.Assert(delimiter != null);
 
             var sb = new StringBuilder();
+            var i = 0;
 
             foreach (var value in source)
             {
-                if (sb.Length > 0) sb.Append(delimiter);
+                if (i++ > 0) sb.Append(delimiter);
                 sb.Append(value);
             }
 
