@@ -131,19 +131,20 @@ namespace MoreLinq
             var parameter = Expression.Parameter(typeof(T), "e");
 
             //
-            // It is valid for members sequence to have null entrie and in
-            // which case, a null constant is emitted into the corresponding
-            // slow of the row values array.
+            // It is valid for members sequence to have null entries, in
+            // which case a null constant is emitted into the corresponding
+            // row values array.
             //
 
             var initializers = members.Select(m => m != null
-                                                   ? (Expression) CreateMemberAccessor(parameter, m)
+                                                   ? (Expression)CreateMemberAccessor(parameter, m)
                                                    : Expression.Constant(null, typeof(object)));
 
             var array = Expression.NewArrayInit(typeof(object), initializers);
 
             var lambda = Expression.Lambda<Func<T, object[]>>(array, parameter);
-            return lambda.Compile();
+            
+			return lambda.Compile();
         }
 
         /// <summary>
