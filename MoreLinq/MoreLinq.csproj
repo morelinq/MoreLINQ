@@ -96,6 +96,9 @@
     <Compile Include="RunLengthEncode.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Segment.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="SortedMerge.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
