@@ -47,6 +47,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="IdentityFunc.cs" />
+    <Compile Include="Incremental.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModelShredder\DefaultSchemaBuilder.cs" />
     <Compile Include="ModelShredder\DefaultShredderOptionsProvider.cs" />
     <Compile Include="ModelShredder\InjectionObjectShredder.cs" />
