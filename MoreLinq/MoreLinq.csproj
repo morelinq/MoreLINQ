@@ -47,14 +47,6 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="IdentityFunc.cs" />
-    <Compile Include="ModelShredder\DefaultSchemaBuilder.cs" />
-    <Compile Include="ModelShredder\DefaultShredderOptionsProvider.cs" />
-    <Compile Include="ModelShredder\InjectionObjectShredder.cs" />
-    <Compile Include="ModelShredder\ISchemaBuilder.cs" />
-    <Compile Include="ModelShredder\IShredderDelegateProvider.cs" />
-    <Compile Include="ModelShredder\Shredder.cs" />
-    <Compile Include="ModelShredder\ShredderDelegate.cs" />
-    <Compile Include="ModelShredder\ShredderOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssertCount.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
