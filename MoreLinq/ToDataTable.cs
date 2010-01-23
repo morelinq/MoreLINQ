@@ -108,7 +108,7 @@ namespace MoreLinq
                     var column = info.Column;
 
                     if (column == null)
-                        throw new ArgumentException(string.Format("Column named '{0}' is missing or the table has unexpected column ordering.", member.Name), "table");
+                        throw new ArgumentException(string.Format("Column named '{0}' is missing.", member.Name), "table");
 
                     if (info.Type != column.DataType)
                         throw new ArgumentException(string.Format("Column named '{0}' has wrong data type. It should be {1} when it is {2}.", member.Name, info.Type, column.DataType), "table");
