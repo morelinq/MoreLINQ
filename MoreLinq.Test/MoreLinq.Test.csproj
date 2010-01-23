@@ -71,12 +71,14 @@
     <Compile Include="RepeatTest.cs" />
     <Compile Include="RunLengthEncodeTest.cs" />
     <Compile Include="SegmentTest.cs" />
+    <Compile Include="SliceTest.cs" />
     <Compile Include="SortedMergeTest.cs" />
     <Compile Include="SubsetTest.cs" />
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
     <Compile Include="TestingSequence.cs" />
+    <Compile Include="UnenumerableList.cs" />
     <Compile Include="VerifiableEnumerator.cs" />
     <Compile Include="WhileTest.cs" />
     <Compile Include="ZipLongestTest.cs" />
