@@ -138,6 +138,9 @@
     <Compile Include="TakeEvery.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="While.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Zip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
