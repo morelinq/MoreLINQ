@@ -57,6 +57,7 @@
     <Compile Include="IncrementalTest.cs" />
     <Compile Include="InfiniteSequence.cs" />
     <Compile Include="LagTest.cs" />
+    <Compile Include="LeadTest.cs" />
     <Compile Include="ModelShredder\DefaultSchemaBuilderTest.cs" />
     <Compile Include="ModelShredder\DefaultShredderOptionsProviderTest.cs" />
     <Compile Include="ModelShredder\InjectionObjectShredderTest.cs" />
