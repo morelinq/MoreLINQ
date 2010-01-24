@@ -46,6 +46,9 @@
     <Compile Include="ExceptBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exclude.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="IdentityFunc.cs" />
     <Compile Include="Incremental.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
