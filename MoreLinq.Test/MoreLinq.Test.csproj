@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CartesianTest.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
     <Compile Include="EqualityComparerFunc.cs" />
