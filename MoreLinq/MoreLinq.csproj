@@ -114,6 +114,9 @@
     <Compile Include="Slice.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="SlidingWindow.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="SortedMerge.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

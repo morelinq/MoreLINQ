@@ -12,7 +12,7 @@ namespace MoreLinq.Test
     public class CartesianTests
     {
         /// <summary>
-        /// Verify that the cartesian product is evaluted in a lazy fashion on demand.
+        /// Verify that the Cartesian product is evaluated in a lazy fashion on demand.
         /// </summary>
         [Test]
         public void TestCartesianIsLazy()

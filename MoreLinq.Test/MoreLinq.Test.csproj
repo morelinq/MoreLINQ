@@ -74,6 +74,7 @@
     <Compile Include="RunLengthEncodeTest.cs" />
     <Compile Include="SegmentTest.cs" />
     <Compile Include="SliceTest.cs" />
+    <Compile Include="SlidingWindowTest.cs" />
     <Compile Include="SortedMergeTest.cs" />
     <Compile Include="SubsetTest.cs" />
     <Compile Include="TakeLastTest.cs" />
