@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssertUtil.cs" />
     <Compile Include="CartesianTest.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="PermutedSubsetsTest.cs" />
     <Compile Include="RandomSubsetTest.cs" />
     <Compile Include="RandomTest.cs" />
+    <Compile Include="RankTest.cs" />
     <Compile Include="RepeatTest.cs" />
     <Compile Include="RunLengthEncodeTest.cs" />
     <Compile Include="SegmentTest.cs" />
