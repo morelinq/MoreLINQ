@@ -29,9 +29,9 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <param name="source">Source sequence</param>
-        /// <param name="step">Steps in which to partition source</param>
+        /// <param name="step">Number of elements to bypass before returning the next element.</param>
         /// <remarks>
-        /// This operator uses deferred execution and streams the results.
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
         /// <code>
