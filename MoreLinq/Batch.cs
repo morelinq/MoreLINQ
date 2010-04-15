@@ -29,10 +29,9 @@ namespace MoreLinq
         /// <summary>
         /// Batches the source sequence into sized buckets.
         /// </summary>
-
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
         {
-            return Batch(source, size, IdentityFunc<IEnumerable<TSource>>.Value);
+            return Batch(source, size, x => x);
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace MoreLinq
                 if (count != size)
                     continue;
 
-                yield return resultSelector(items.Select(IdentityFunc<TSource>.Value));
+                yield return resultSelector(items.Select(x => x));
                 items = null;
                 count = 0;
             }

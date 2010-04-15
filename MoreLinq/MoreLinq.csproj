@@ -48,7 +48,6 @@
     <Compile Include="ExceptBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="IdentityFunc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssertCount.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
