@@ -33,6 +33,7 @@ namespace MoreLinq
         /// element is a special case, it is set to the identity). More
         /// generally, the pre-scan allows any commutative binary operation,
         /// not just a sum.
+		/// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <typeparam name="TSource">Type of elements in source sequence</typeparam>
         /// <param name="source">Source sequence</param>
@@ -50,11 +51,14 @@ namespace MoreLinq
 
         private static IEnumerable<T> PreScanImpl<T>(IEnumerable<T> source, Func<T, T, T> f, T id)
         {
+			// special case, the first element is set to the identity
             var aggregator = id;
 
             foreach (var i in source)
             {
                 yield return aggregator;
+
+				// aggregate the next element in the sequence
                 aggregator = f(aggregator, i);
             }
         }
