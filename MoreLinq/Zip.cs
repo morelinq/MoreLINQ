@@ -31,6 +31,7 @@ namespace MoreLinq
         /// <remarks>
         /// If the two input sequences are of different lengths, the result sequence 
         /// is terminated as soon as the shortest input sequence is exhausted.
+		/// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
         /// <code>
@@ -64,6 +65,7 @@ namespace MoreLinq
         /// <remarks>
         /// If the two input sequences are of different lengths then 
         /// <see cref="InvalidOperationException"/> is thrown.
+		/// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
         /// <code>
@@ -99,6 +101,7 @@ namespace MoreLinq
         /// If the two input sequences are of different lengths then the result 
         /// sequence will always be as long as the longer of the two input sequences.
         /// The default value of the shorter sequence element type is used for padding.
+		/// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
         /// <code>
