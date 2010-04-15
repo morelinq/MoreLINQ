@@ -33,8 +33,7 @@ namespace MoreLinq
         /// the original, but with the extra action being executed while the
         /// sequence is evaluated. The action is always taken before the element
         /// is yielded, so any changes made by the action will be visible in the
-        /// returned sequence. This operator executes lazily, and with deferred
-        /// execution.
+        /// returned sequence. This operator uses deferred execution and streams it results.
         /// </remarks>
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="source">The sequence of elements</param>
