@@ -100,9 +100,6 @@
     <Compile Include="Consume.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Batch.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Random.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -130,6 +127,7 @@
     <Compile Include="SortedMerge.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Split.cs" />
     <Compile Include="Subsets.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

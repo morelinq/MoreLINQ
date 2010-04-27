@@ -175,55 +175,9 @@ namespace MoreLinq.Test
         public void TestPartitionWithProjection()
         {
             var sequence = Enumerable.Repeat(1, 100);
-            var result = sequence.Partition(Enumerable.Repeat(10, 10), seq => seq.Sum());
+            var result = sequence.Partition(Enumerable.Repeat(10, 10)).Select(seq => seq.Sum());
 
             Assert.IsTrue(result.All(x => x == 10));
-        }
-
-        /// <summary>
-        /// Verify that the underflow strategy that returns the remainder of a sequence
-        /// after partitioning, works correctly.
-        /// </summary>
-        [Test]
-        public void TestPartitionUnderflowStrategyRest()
-        {
-            const int count = 100;
-            const int firstPart = 10;
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(new[] { firstPart }, PartitionUnderflowStrategy.Rest);
-
-            Assert.IsTrue(result.First().SequenceEqual(sequence.Take(firstPart)));
-            Assert.IsTrue(result.Skip(1).Single().SequenceEqual(sequence.Skip(firstPart)));
-        }
-
-        /// <summary>
-        /// Verify that the Partition method can handle terminal partitions that are infinite in
-        /// length when the underflow strategy is <c>PartitionUnderflowStrategy.Rest</c>
-        /// </summary>
-        [Test]
-        public void TestPartitionUnderflowStrategyInfiniteTail()
-        {
-            const int count = 100;
-            const int testValue = -1;
-            const int firstPart = 20;
-            const int secondPart = 80;
-            const int restPart = 500; // to test we can read a portion of the infinite sequence 
-
-            var sequence = Enumerable.Range(1, count).Concat(new InfiniteSequence<int>(-1));
-
-            var checkPoint = sequence.Take(count * 2);  // verify we can read the sequence using LINQ
-            Assert.AreEqual( count * 2, checkPoint.Count() );
-
-            var result = sequence.Partition(new[] { firstPart, secondPart }, PartitionUnderflowStrategy.Rest);
-
-            var resultRest = result.Last();
-
-            Assert.AreEqual(firstPart, result.First().Count());
-            Assert.AreEqual(secondPart, result.Skip(1).First().Count());
-            // verifies that the "rest" sequence can be consumed at least once
-            Assert.AreEqual(restPart, resultRest.Take(restPart).Count());
-            // verifies that the "rest" sequence can be consumed more than once
-            Assert.IsTrue(resultRest.Take(restPart).SequenceEqual(Enumerable.Repeat(testValue, restPart)));
         }
     }
 }
