@@ -127,7 +127,6 @@
     <Compile Include="SortedMerge.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Split.cs" />
     <Compile Include="Subsets.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
