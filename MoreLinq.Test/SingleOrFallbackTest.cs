@@ -22,27 +22,27 @@ namespace MoreLinq.Test
             MoreEnumerable.SingleOrFallback(new[] {1}, null);
         }
 
-		[Test]
-		public void SingleOrFallbackWithEmptySequence()
-		{
-			Assert.AreEqual(5, LinqEnumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
-		}
-		[Test]
-		public void SingleOrFallbackWithEmptySequenceIListOptimized()
-		{
-			Assert.AreEqual(5, LinqEnumerable.Empty<int>().SingleOrFallback(() => 5));
-		}
+        [Test]
+        public void SingleOrFallbackWithEmptySequence()
+        {
+            Assert.AreEqual(5, LinqEnumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
+        }
+        [Test]
+        public void SingleOrFallbackWithEmptySequenceIListOptimized()
+        {
+            Assert.AreEqual(5, LinqEnumerable.Empty<int>().SingleOrFallback(() => 5));
+        }
 
         [Test]
         public void SingleOrFallbackWithSingleElementSequence()
         {
             Assert.AreEqual(10, new[]{10}.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>()));
         }
-		[Test]
-		public void SingleOrFallbackWithSingleElementSequenceIListOptimized()
-		{
-			Assert.AreEqual(10, new[] { 10 }.SingleOrFallback(BreakingFunc.Of<int>()));
-		}
+        [Test]
+        public void SingleOrFallbackWithSingleElementSequenceIListOptimized()
+        {
+            Assert.AreEqual(10, new[] { 10 }.SingleOrFallback(BreakingFunc.Of<int>()));
+        }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
@@ -51,11 +51,11 @@ namespace MoreLinq.Test
             new[] { 10, 20, 30 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>());
         }
 
-		[Test]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void SingleOrFallbackWithLongSequenceIListOptimized()
-		{
-			new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>());
-		}
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void SingleOrFallbackWithLongSequenceIListOptimized()
+        {
+            new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>());
+        }
     }
 }

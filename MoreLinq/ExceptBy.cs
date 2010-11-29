@@ -28,12 +28,12 @@ namespace MoreLinq
         /// Returns the set of elements in the first sequence which aren't
         /// in the second sequence, according to a given key selector.
         /// </summary>
-		/// <remarks>
-		/// This is a set operation; if multiple elements in <paramref name="first"/> have
-		/// equal keys, only the first such element is returned.
-		/// This operator uses deferred execution and streams the results, although
-		/// a set of keys from <paramref name="second"/> is immediately selected and retained.
-		/// </remarks>
+        /// <remarks>
+        /// This is a set operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, only the first such element is returned.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of keys from <paramref name="second"/> is immediately selected and retained.
+        /// </remarks>
         /// <typeparam name="TSource">The type of the elements in the input sequences.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
         /// <param name="first">The sequence of potentially included elements.</param>
@@ -56,8 +56,8 @@ namespace MoreLinq
         /// <remarks>
         /// This is a set operation; if multiple elements in <paramref name="first"/> have
         /// equal keys, only the first such element is returned.
-		/// This operator uses deferred execution and streams the results, although
-		/// a set of keys from <paramref name="second"/> is immediately selected and retained.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements in the input sequences.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>

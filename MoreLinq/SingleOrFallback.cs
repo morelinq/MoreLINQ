@@ -26,12 +26,12 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns the single element in the given sequence, or the result
-		/// of executing a fallback delegate if the sequence is empty.
-		/// This method throws an exception if there is more than one element in the sequence.
+        /// of executing a fallback delegate if the sequence is empty.
+        /// This method throws an exception if there is more than one element in the sequence.
         /// </summary>
         /// <remarks>
         /// The fallback delegate is not executed if the sequence is non-empty.
-		/// This operator uses immediate execution and has optimizations for <see cref="IList{T}"/> sources.
+        /// This operator uses immediate execution and has optimizations for <see cref="IList{T}"/> sources.
         /// </remarks>
         /// <typeparam name="TSource">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
@@ -41,45 +41,45 @@ namespace MoreLinq
         /// <returns>The single element in the sequence, or the result of calling the
         /// fallback delegate if the sequence is empty.</returns>
 
-		public static TSource SingleOrFallback<TSource>(this IEnumerable<TSource> source, Func<TSource> fallback)
+        public static TSource SingleOrFallback<TSource>(this IEnumerable<TSource> source, Func<TSource> fallback)
         {
             source.ThrowIfNull("source");
             fallback.ThrowIfNull("fallback");
 
-			IList<TSource> list = source as IList<TSource>;
-			if (list != null)
-			{
-				switch (list.Count)
-				{
-					case 0:
-						return fallback();
+            IList<TSource> list = source as IList<TSource>;
+            if (list != null)
+            {
+                switch (list.Count)
+                {
+                    case 0:
+                        return fallback();
 
-					case 1:
-						return list[0];
+                    case 1:
+                        return list[0];
 
-					// anything but 0 and 1 is not handled
-				}
-			}
-			else
-			{
-				using (IEnumerator<TSource> iterator = source.GetEnumerator())
-				{
-					if (!iterator.MoveNext())
-					{
-						return fallback();
-					}
-					TSource first = iterator.Current;
+                    // anything but 0 and 1 is not handled
+                }
+            }
+            else
+            {
+                using (IEnumerator<TSource> iterator = source.GetEnumerator())
+                {
+                    if (!iterator.MoveNext())
+                    {
+                        return fallback();
+                    }
+                    TSource first = iterator.Current;
 
-					// Return if there's no next element
-					if (!iterator.MoveNext())
-					{
-						return first;
-					}
-				}
-			}
+                    // Return if there's no next element
+                    if (!iterator.MoveNext())
+                    {
+                        return first;
+                    }
+                }
+            }
 
-			// We should have checked the sequence length and returned by now
-			throw new InvalidOperationException("Sequence contains more than one element");
+            // We should have checked the sequence length and returned by now
+            throw new InvalidOperationException("Sequence contains more than one element");
         }
     }
 }

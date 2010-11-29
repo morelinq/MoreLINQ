@@ -33,21 +33,21 @@ namespace MoreLinq
         /// element is a special case, it is set to the identity). More
         /// generally, the pre-scan allows any commutative binary operation,
         /// not just a sum.
-		/// The inclusive version of PreScan is <see cref="Scan"/>.
-		/// This operator uses deferred execution and streams its result.
+        /// The inclusive version of PreScan is <see cref="Scan"/>.
+        /// This operator uses deferred execution and streams its result.
         /// </remarks>
-		/// <example>
-		/// <code>
-		/// Func&lt;int, int, int&gt; plus = (a, b) =&gt; a + b;
-		/// int[] values = { 1, 2, 3, 4 };
-		/// IEnumerable&lt;int&gt; prescan = values.PreScan(plus, 0);
-		/// IEnumerable&lt;int&gt; scan = values.Scan(plus; a + b);
-		/// IEnumerable&lt;int&gt; result = values.Zip(prescan, plus);
-		/// </code>
-		/// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
-		/// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
-		/// shows the relationship between the inclusive and exclusive prefix sum.
-		/// </example>
+        /// <example>
+        /// <code>
+        /// Func&lt;int, int, int&gt; plus = (a, b) =&gt; a + b;
+        /// int[] values = { 1, 2, 3, 4 };
+        /// IEnumerable&lt;int&gt; prescan = values.PreScan(plus, 0);
+        /// IEnumerable&lt;int&gt; scan = values.Scan(plus; a + b);
+        /// IEnumerable&lt;int&gt; result = values.Zip(prescan, plus);
+        /// </code>
+        /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
+        /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
+        /// shows the relationship between the inclusive and exclusive prefix sum.
+        /// </example>
         /// <typeparam name="TSource">Type of elements in source sequence</typeparam>
         /// <param name="source">Source sequence</param>
         /// <param name="transformation">Transformation operation</param>
@@ -64,14 +64,14 @@ namespace MoreLinq
 
         private static IEnumerable<T> PreScanImpl<T>(IEnumerable<T> source, Func<T, T, T> f, T id)
         {
-			// special case, the first element is set to the identity
+            // special case, the first element is set to the identity
             var aggregator = id;
 
             foreach (var i in source)
             {
                 yield return aggregator;
 
-				// aggregate the next element in the sequence
+                // aggregate the next element in the sequence
                 aggregator = f(aggregator, i);
             }
         }

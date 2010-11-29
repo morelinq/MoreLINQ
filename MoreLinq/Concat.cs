@@ -31,7 +31,7 @@ namespace MoreLinq
         /// <param name="head">Head element of the new sequence.</param>
         /// <param name="tail">All elements of the tail. Must not be null.</param>
         /// <returns>A sequence consisting of the head elements and the given tail elements.</returns>
-		/// <remarks>This operator uses deferred execution and streams its results.</remarks>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
         {
             tail.ThrowIfNull("tail");
@@ -44,8 +44,8 @@ namespace MoreLinq
         /// <typeparam name="T">Type of sequence</typeparam>
         /// <param name="head">All elements of the head. Must not be null.</param>
         /// <param name="tail">Tail element of the new sequence.</param>
-		/// <returns>A sequence consisting of the head elements and the given tail element.</returns>
-		/// <remarks>This operator uses deferred execution and streams its results.</remarks>
+        /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
         {
             head.ThrowIfNull("head");
