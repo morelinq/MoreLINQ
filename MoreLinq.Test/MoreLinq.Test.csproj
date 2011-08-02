@@ -53,9 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SkipUntilTest.cs" />
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
+    <Compile Include="TakeUntilTest.cs" />
     <Compile Include="TestingSequence.cs" />
     <Compile Include="ToDataTableTest.cs" />
     <Compile Include="ZipLongestTest.cs" />

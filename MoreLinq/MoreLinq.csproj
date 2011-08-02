@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SkipUntil.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -66,6 +69,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="TakeLast.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TakeUntil.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="ToDataTable.cs">
