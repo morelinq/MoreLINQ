@@ -1,4 +1,4 @@
-﻿#region License and Terms
+ #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008-2011 Jonathan Skeet. All rights reserved.
 // 
@@ -69,13 +69,17 @@ namespace MoreLinq
             foreach (var item in source)
             {
                 if (bucket == null)
+                {
                     bucket = new TSource[size];
+                }
 
                 bucket[count++] = item;
 
                 // The bucket is fully buffered before it's yielded
                 if (count != size)
+                {
                     continue;
+                }
 
                 // Select is necessary so bucket contents are streamed too
                 yield return resultSelector(bucket.Select(x => x));
@@ -86,7 +90,9 @@ namespace MoreLinq
 
             // Return the last bucket with all remaining elements
             if (bucket != null && count > 0)
+            {
                 yield return resultSelector(bucket.Take(count));
+            }
         }
     }
 }
