@@ -7,6 +7,6 @@ if not exist "%MSBUILD35EXE%" (
     echo machine, which is required to build the solution.
     exit /b 1
 )
-for %%i in (debug release) do "%MSBUILD35EXE%" MoreLinq.sln /p:Configuration=%%i    
+for %%i in (debug release) do "%MSBUILD35EXE%" "MoreLinq VS2008.sln" /p:Configuration=%%i    
 if "%1"=="all" for %%i in (debug release) do "%MSBUILD35EXE%" MoreLinq.Silverlight.sln /p:Configuration=%%i
 popd

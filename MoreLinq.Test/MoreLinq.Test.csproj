@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +12,10 @@
     <AssemblyName>MoreLinq.Test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertUtil.cs" />
+    <Compile Include="SkipUntilTest.cs" />
     <Compile Include="CartesianTest.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
@@ -60,12 +65,6 @@
     <Compile Include="InterleaveTest.cs" />
     <Compile Include="LagTest.cs" />
     <Compile Include="LeadTest.cs" />
-    <Compile Include="ModelShredder\DefaultSchemaBuilderTest.cs" />
-    <Compile Include="ModelShredder\DefaultShredderOptionsProviderTest.cs" />
-    <Compile Include="ModelShredder\InjectionObjectShredderTest.cs" />
-    <Compile Include="ModelShredder\ShredderOptionsTest.cs" />
-    <Compile Include="ModelShredder\ShredderTest.cs" />
-    <Compile Include="ModelShredder\ShredderTestObject.cs" />
     <Compile Include="NestedLoopTest.cs" />
     <Compile Include="OrderByTest.cs" />
     <Compile Include="PairUpTest.cs" />
@@ -85,7 +84,9 @@
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
+    <Compile Include="TakeUntilTest.cs" />
     <Compile Include="TestingSequence.cs" />
+    <Compile Include="ToDataTableTest.cs" />
     <Compile Include="UnenumerableList.cs" />
     <Compile Include="VerifiableEnumerator.cs" />
     <Compile Include="WhileTest.cs" />

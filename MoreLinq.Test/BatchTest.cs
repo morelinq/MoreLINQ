@@ -1,39 +1,63 @@
-﻿using System;
-using System.Linq;
+﻿#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2008-2011 Jonathan Skeet. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace MoreLinq.Test
 {
     [TestFixture]
-    public class Batch
+    public class BatchTest
     {
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void BatchNullSequence()
         {
-            MoreEnumerable.Partition<object>(null, 1);
+            MoreEnumerable.Batch<object>(null, 1);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchZeroSize()
         {
-            MoreEnumerable.Partition(new object[0], 0);
+            MoreEnumerable.Batch(new object[0], 0);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchNegativeSize()
         {
-            MoreEnumerable.Partition(new object[0], -1);
+            MoreEnumerable.Batch(new object[0], -1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BatcWithhNullResultSelector()
+        {
+            MoreEnumerable.Batch<object, object>(new object[0], 1, null);
         }
 
         [Test]
         public void BatchEvenlyDivisibleSequence()
         {
-            var result = MoreEnumerable.Partition(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
+            var result = MoreEnumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
             using (var reader = Read(result))
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3);
@@ -46,7 +70,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchUnevenlyDivisbleSequence()
         {
-            var result = MoreEnumerable.Partition(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
+            var result = MoreEnumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
             using (var reader = Read(result))
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3, 4);
@@ -59,14 +83,14 @@ namespace MoreLinq.Test
         [Test]
         public void BatchSequenceTransformingResult()
         {
-            var result = MoreEnumerable.Partition(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4).Select(batch => batch.Sum());
+            var result = MoreEnumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4, batch => batch.Sum());
             result.AssertSequenceEqual(10, 26, 9);
         }
 
         [Test]
         public void BatchSequenceYieldsBatches()
         {
-            var result = MoreEnumerable.Partition(new[] { 1, 2, 3 }, 2);
+            var result = MoreEnumerable.Batch(new[] { 1, 2, 3 }, 2);
             using (var reader = Read(result))
             {
                 Assert.That(reader.Read(), Is.Not.InstanceOfType(typeof(ICollection<int>)));
@@ -78,7 +102,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchIsLazy()
         {
-            MoreEnumerable.Partition(new BreakingSequence<object>(), 1);
+            MoreEnumerable.Batch(new BreakingSequence<object>(), 1);
         }
 
         private static SequenceReader<T> Read<T>(IEnumerable<T> source)

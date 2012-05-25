@@ -1,21 +1,20 @@
 ﻿#region License and Terms
-//
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008-9 Jonathan Skeet. All rights reserved.
-//
+// Copyright (c) 2008-2011 Jonathan Skeet. All rights reserved.
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +30,8 @@ namespace MoreLinq
         /// <remarks>
         /// This is a set operation; if multiple elements in <paramref name="first"/> have
         /// equal keys, only the first such element is returned.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements in the input sequences.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
@@ -54,6 +55,8 @@ namespace MoreLinq
         /// <remarks>
         /// This is a set operation; if multiple elements in <paramref name="first"/> have
         /// equal keys, only the first such element is returned.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements in the input sequences.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>

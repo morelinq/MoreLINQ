@@ -1,20 +1,18 @@
 ﻿#region License and Terms
-//
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008-9 Jonathan Skeet. All rights reserved.
-//
+// Copyright (c) 2008-2011 Jonathan Skeet. All rights reserved.
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 #endregion
 
 using System;
@@ -32,6 +30,8 @@ namespace MoreLinq
         /// N-th element is the sum of the first N input elements. More
         /// generally, the scan allows any commutative binary operation, not
         /// just a sum.
+        /// The exclusive version of Scan is <see cref="PreScan"/>.
+        /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
         /// <code>
