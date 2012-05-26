@@ -80,9 +80,6 @@
       <Link>GenerateByIndex.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\MoreLinq\IdentityFunc.cs">
-      <Link>IdentityFunc.cs</Link>
-    </Compile>
     <Compile Include="..\MoreLinq\MaxBy.cs">
       <Link>MaxBy.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
