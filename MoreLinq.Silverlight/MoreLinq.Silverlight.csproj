@@ -95,6 +95,10 @@
       <Link>Pad.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\Pairwise.cs">
+      <Link>Pairwise.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\Pipe.cs">
       <Link>Pipe.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
