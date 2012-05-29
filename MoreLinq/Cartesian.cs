@@ -24,7 +24,7 @@ namespace MoreLinq
             resultSelector.ThrowIfNull("resultSelector");
 
             return from item1 in first 
-                   from item2 in second 
+                   from item2 in second // TODO buffer to avoid multiple enumerations
                    select resultSelector(item1, item2);
         }
     }

@@ -23,6 +23,7 @@ namespace MoreLinq
         {
             while (count-- > 0)
             {
+                // TODO buffer to avoid multiple enumerations
                 foreach (var item in sequence)
                     yield return item;
             }
