@@ -126,6 +126,7 @@ namespace MoreLinq
         {
             public DisposableGroup(IEnumerable<IEnumerable<T>> sequences)
             {
+                // TODO Review leaking of disposable enumerators when a GetEnumerator throws
                 Iterators = sequences.Select(seq => seq.GetEnumerator()).ToList();
             }
 
