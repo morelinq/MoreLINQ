@@ -48,6 +48,19 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that SortedMerge throws an exception if invoked on a <c>null</c> sequence.
+        /// </summary>
+        [Test]
+        public void TestSortedMergeComparerNull()
+        {
+            var sequenceA = Enumerable.Range(1, 3);
+            var sequenceB = Enumerable.Range(4, 3);
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>)null, sequenceB);
+
+            Assert.IsTrue(result.SequenceEqual(sequenceA.Concat(sequenceB)));
+        }
+
+        /// <summary>
         /// Verify that if <c>otherSequences</c> is empty, SortedMerge yields the contents of <c>sequence</c>
         /// </summary>
         [Test]

@@ -33,7 +33,7 @@ namespace MoreLinq
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
         public static IEnumerable<T> SortedMerge<T>(this IEnumerable<T> sequence, OrderByDirection direction, params IEnumerable<T>[] otherSequences)
         {
-            return SortedMerge(sequence, direction, Comparer<T>.Default, otherSequences);
+            return SortedMerge(sequence, direction, null, otherSequences);
         }
 
         /// <summary>
@@ -53,6 +53,8 @@ namespace MoreLinq
 
             if (otherSequences.Length == 0)
                 return sequence; // optimization for when otherSequences is empty
+
+            comparer = comparer ?? Comparer<T>.Default;
 
             // define an precedence function based on the comparer and direction
             // this is a function that will return True if (b) should precede (a)
