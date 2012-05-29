@@ -1,4 +1,4 @@
-﻿namespace MoreLinq
+namespace MoreLinq
 {
     /// <summary>
     /// Enumeration that defines values representing valid ordering directions for a sequence.

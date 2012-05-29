@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 //
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008-9 Jonathan Skeet. All rights reserved.
