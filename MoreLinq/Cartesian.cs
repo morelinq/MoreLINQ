@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MoreLinq
 {
@@ -22,14 +23,9 @@ namespace MoreLinq
             second.ThrowIfNull("second");
             resultSelector.ThrowIfNull("resultSelector");
 
-            return CartesianImpl(first, second, resultSelector);
-        }
-
-        private static IEnumerable<TResult> CartesianImpl<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
-        {
-            foreach (var item1 in first)
-                foreach (var item2 in second)
-                    yield return resultSelector(item1, item2);
+            return from item1 in first 
+                   from item2 in second 
+                   select resultSelector(item1, item2);
         }
     }
 }
