@@ -7,33 +7,6 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Class used to assist in ensuring that groups of disposable iterators
-        /// are disposed - either when Excluded or when the DisposableGroup is disposed.
-        /// </summary>
-        private sealed class DisposableGroup<T> : IDisposable
-        {
-            public DisposableGroup(IEnumerable<IEnumerable<T>> sequences)
-            {
-                Iterators = sequences.Select(seq => seq.GetEnumerator()).ToList();
-            }
-
-            public List<IEnumerator<T>> Iterators { get; private set; }
-
-            public IEnumerator<T> this[int index] { get { return Iterators[index]; } }
-
-            public void Exclude(int index)
-            {
-                Iterators[index].Dispose();
-                Iterators.RemoveAt(index);
-            }
-
-            public void Dispose()
-            {
-                Iterators.ForEach(iter => iter.Dispose());
-            }
-        }
-
-        /// <summary>
         /// Merges two or more sequences that are in a common order (either ascending or descending) into
         /// a single sequence that preserves that order.
         /// </summary>
@@ -142,6 +115,33 @@ namespace MoreLinq
                     if (!allIterators.Iterators[nextIndex].MoveNext())
                         allIterators.Exclude(nextIndex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Class used to assist in ensuring that groups of disposable iterators
+        /// are disposed - either when Excluded or when the DisposableGroup is disposed.
+        /// </summary>
+        private sealed class DisposableGroup<T> : IDisposable
+        {
+            public DisposableGroup(IEnumerable<IEnumerable<T>> sequences)
+            {
+                Iterators = sequences.Select(seq => seq.GetEnumerator()).ToList();
+            }
+
+            public List<IEnumerator<T>> Iterators { get; private set; }
+
+            public IEnumerator<T> this[int index] { get { return Iterators[index]; } }
+
+            public void Exclude(int index)
+            {
+                Iterators[index].Dispose();
+                Iterators.RemoveAt(index);
+            }
+
+            public void Dispose()
+            {
+                Iterators.ForEach(iter => iter.Dispose());
             }
         }
     }
