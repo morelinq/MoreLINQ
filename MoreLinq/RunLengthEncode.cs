@@ -14,7 +14,7 @@ namespace MoreLinq
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where the key is the element and the value is the occurrence count</returns>
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence)
         {
-            return RunLengthEncode(sequence, EqualityComparer<T>.Default);
+            return RunLengthEncode(sequence, null);
         }
 
         /// <summary>
