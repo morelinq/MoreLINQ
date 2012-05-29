@@ -15,7 +15,7 @@ namespace MoreLinq
         {
             sequence.ThrowIfNull("sequence");
             if (count < 0)
-                throw new ArgumentOutOfRangeException("count", "Repeat count must be greater than or equal to zero.");
+                throw new ArgumentOutOfRangeException("count", count, "Repeat count must be greater than or equal to zero.");
             return RepeatImpl(sequence, count);
         }
 
