@@ -13,14 +13,10 @@ namespace MoreLinq
         /// <typeparam name="T"></typeparam>
         private sealed class DisposableGroup<T> : IDisposable
         {
-            #region Constructors
             public DisposableGroup(IEnumerable<IEnumerable<T>> sequences)
             {
                 Iterators = sequences.Select(seq => seq.GetEnumerator()).ToList();
             }
-            #endregion
-
-            #region Public Members
 
             public List<IEnumerator<T>> Iterators { get; private set; }
 
@@ -31,14 +27,11 @@ namespace MoreLinq
                 Iterators[index].Dispose();
                 Iterators.RemoveAt(index);
             }
-            #endregion
 
-            #region Implementation of IDisposable
             public void Dispose()
             {
                 Iterators.ForEach(iter => iter.Dispose());
             }
-            #endregion
         }
 
         /// <summary>
