@@ -80,27 +80,29 @@ namespace MoreLinq
         /// </remarks>
         private static IEnumerable<T> SortedMergeImpl<T>(Func<T, T, bool> precedenceFunc, IEnumerable<IEnumerable<T>> otherSequences)
         {
-            using (var allIterators = new DisposableGroup<T>(otherSequences))
+            using (var disposables = new DisposableGroup<T>(otherSequences))
             {
+                var iterators = disposables.Iterators;
+
                 // prime all of the iterators by advancing them to their first element (if any)
                 // NOTE: We start with the last index to simplify the removal of an iterator if
                 //       it happens to be terminal (no items) before we start merging
-                for (var i = allIterators.Iterators.Count - 1; i >= 0; i--)
+                for (var i = iterators.Count - 1; i >= 0; i--)
                 {
-                    if (!allIterators.Iterators[i].MoveNext())
-                        allIterators.Exclude(i);
+                    if (!iterators[i].MoveNext())
+                        disposables.Exclude(i);
                 }
 
                 // while all iterators have not yet been consumed...
-                while (allIterators.Iterators.Count > 0)
+                while (iterators.Count > 0)
                 {
                     var nextIndex = 0;
-                    var nextValue = allIterators[0].Current;
+                    var nextValue = disposables[0].Current;
 
                     // find the next least element to return
-                    for (var i = 1; i < allIterators.Iterators.Count; i++)
+                    for (var i = 1; i < iterators.Count; i++)
                     {
-                        var anotherElement = allIterators[i].Current;
+                        var anotherElement = disposables[i].Current;
                         // determine which element follows based on ordering function
                         if (precedenceFunc(nextValue, anotherElement))
                         {
@@ -112,8 +114,8 @@ namespace MoreLinq
                     yield return nextValue; // next value in precedence order
 
                     // advance iterator that yielded element, excluding it when consumed
-                    if (!allIterators.Iterators[nextIndex].MoveNext())
-                        allIterators.Exclude(nextIndex);
+                    if (!iterators[nextIndex].MoveNext())
+                        disposables.Exclude(nextIndex);
                 }
             }
         }
