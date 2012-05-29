@@ -11,7 +11,7 @@ namespace MoreLinq
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        private class DisposableGroup<T> : IDisposable
+        private sealed class DisposableGroup<T> : IDisposable
         {
             #region Constructors
             public DisposableGroup(IEnumerable<IEnumerable<T>> sequences)
