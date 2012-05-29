@@ -47,5 +47,15 @@ namespace MoreLinq.Test
         {
             Enumerable.Range(1, 10).Repeat(-3);
         }
+
+        /// <summary>
+        /// Verify applying Repeat to a <c>null</c> sequence results in an exception.
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestRepeatSequenceANullException()
+        {
+            MoreEnumerable.Repeat<object>(null, 42);
+        }
     }
 }

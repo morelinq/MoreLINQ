@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MoreLinq
@@ -13,6 +13,7 @@ namespace MoreLinq
         /// <returns>A sequence produced from the repetition of the original source sequence</returns>
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence, int repeatCount)
         {
+            sequence.ThrowIfNull("sequence");
             if (repeatCount < 0)
                 throw new ArgumentOutOfRangeException("repeatCount", "Repeat count must be >= 0");
             return RepeatImpl(sequence, repeatCount);
