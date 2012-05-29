@@ -26,45 +26,45 @@ namespace MoreLinq
         ///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
         /// </code>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements of the sequence</typeparam>
-        /// <param name="sequence">The primary sequence with which to merge</param>
+        /// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
+        /// <param name="source">The primary sequence with which to merge</param>
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-        public static IEnumerable<T> SortedMerge<T>(this IEnumerable<T> sequence, OrderByDirection direction, params IEnumerable<T>[] otherSequences)
+        public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
         {
-            return SortedMerge(sequence, direction, null, otherSequences);
+            return SortedMerge(source, direction, null, otherSequences);
         }
 
         /// <summary>
         /// Merges two or more sequences that are in a common order (either ascending or descending) into
         /// a single sequence that preserves that order.
         /// </summary>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The primary sequence with which to merge</param>
+        /// <typeparam name="TSource">The type of the elements in the sequence</typeparam>
+        /// <param name="source">The primary sequence with which to merge</param>
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-        /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
+        /// <param name="otherSources">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
-        public static IEnumerable<T> SortedMerge<T>(this IEnumerable<T> sequence, OrderByDirection direction, IComparer<T> comparer, params IEnumerable<T>[] otherSequences)
+        public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSources)
         {
-            sequence.ThrowIfNull("sequence");
-            otherSequences.ThrowIfNull("otherSequences");
+            source.ThrowIfNull("source");
+            otherSources.ThrowIfNull("otherSources");
 
-            if (otherSequences.Length == 0)
-                return sequence; // optimization for when otherSequences is empty
+            if (otherSources.Length == 0)
+                return source; // optimization for when otherSequences is empty
 
-            comparer = comparer ?? Comparer<T>.Default;
+            comparer = comparer ?? Comparer<TSource>.Default;
 
             // define an precedence function based on the comparer and direction
             // this is a function that will return True if (b) should precede (a)
             var precedenceFunc =
                 direction == OrderByDirection.Ascending
-                    ? (Func<T, T, bool>)((a, b) => comparer.Compare(b, a) < 0)
+                    ? (Func<TSource, TSource, bool>)((a, b) => comparer.Compare(b, a) < 0)
                     : (a, b) => comparer.Compare(b, a) > 0;
 
             // return the sorted merge result
-            return SortedMergeImpl(precedenceFunc, new[] { sequence }.Concat(otherSequences));
+            return SortedMergeImpl(precedenceFunc, new[] { source }.Concat(otherSources));
         }
 
         /// <summary>
