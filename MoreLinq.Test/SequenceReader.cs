@@ -20,6 +20,15 @@ using System.Collections.Generic;
 
 namespace MoreLinq.Test
 {
+    internal static class SequenceReader
+    {
+        public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return new SequenceReader<T>(source);
+        }
+    }
+
     /// <summary>
     /// Adds reader semantics to a sequence where <see cref="IEnumerator{T}.MoveNext"/>
     /// and <see cref="IEnumerator{T}.Current"/> are rolled into a single

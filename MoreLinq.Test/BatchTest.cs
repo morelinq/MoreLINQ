@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         public void BatchEvenlyDivisibleSequence()
         {
             var result = MoreEnumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
-            using (var reader = Read(result))
+            using (var reader = result.Read())
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3);
                 reader.Read().AssertSequenceEqual(4, 5, 6);
@@ -71,7 +71,7 @@ namespace MoreLinq.Test
         public void BatchUnevenlyDivisbleSequence()
         {
             var result = MoreEnumerable.Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
-            using (var reader = Read(result))
+            using (var reader = result.Read())
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3, 4);
                 reader.Read().AssertSequenceEqual(5, 6, 7, 8);
@@ -91,7 +91,7 @@ namespace MoreLinq.Test
         public void BatchSequenceYieldsBatches()
         {
             var result = MoreEnumerable.Batch(new[] { 1, 2, 3 }, 2);
-            using (var reader = Read(result))
+            using (var reader = result.Read())
             {
                 Assert.That(reader.Read(), Is.Not.InstanceOfType(typeof(ICollection<int>)));
                 Assert.That(reader.Read(), Is.Not.InstanceOfType(typeof(ICollection<int>)));
@@ -103,11 +103,6 @@ namespace MoreLinq.Test
         public void BatchIsLazy()
         {
             MoreEnumerable.Batch(new BreakingSequence<object>(), 1);
-        }
-
-        private static SequenceReader<T> Read<T>(IEnumerable<T> source)
-        {
-            return new SequenceReader<T>(source);
         }
     }
 }
