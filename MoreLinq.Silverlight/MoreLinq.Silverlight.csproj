@@ -80,6 +80,10 @@
       <Link>GenerateByIndex.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\GroupAdjacent.cs">
+      <Link>GroupAdjacent.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\MaxBy.cs">
       <Link>MaxBy.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -131,6 +135,9 @@
     </Compile>
     <Compile Include="..\MoreLinq\ThrowHelper.cs">
       <Link>ThrowHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MoreLinq\KeyValuePair.cs">
+      <Link>KeyValuePair.cs</Link>
     </Compile>
     <Compile Include="..\MoreLinq\ToDelimitedString.cs">
       <Link>ToDelimitedString.cs</Link>

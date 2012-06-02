@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GroupAdjacentTest.cs" />
     <Compile Include="PairwiseTest.cs" />
     <Compile Include="SkipUntilTest.cs" />
     <Compile Include="TakeLastTest.cs" />
