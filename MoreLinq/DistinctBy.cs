@@ -17,6 +17,9 @@
 
 using System;
 using System.Collections.Generic;
+#if NO_HASHSET
+using System.Linq;
+#endif
 
 namespace MoreLinq
 {

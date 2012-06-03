@@ -222,7 +222,9 @@ namespace MoreLinq
             }
         }
 
+        #if !NO_SERIALIZATION_ATTRIBUTES
         [Serializable]
+        #endif
         private sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
         {
             private readonly IEnumerable<TElement> _members;
