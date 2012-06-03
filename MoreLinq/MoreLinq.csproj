@@ -163,9 +163,7 @@
     <Compile Include="Generate.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="MoreEnumerable.cs">
-      <DependentUpon>Random.cs</DependentUpon>
-    </Compile>
+    <Compile Include="MoreEnumerable.cs" />
     <Compile Include="TakeEvery.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
