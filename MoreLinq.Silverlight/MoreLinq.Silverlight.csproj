@@ -149,6 +149,9 @@
       <Link>Scan.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\Split.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\SequenceException.cs">
       <Link>SequenceException.cs</Link>
     </Compile>

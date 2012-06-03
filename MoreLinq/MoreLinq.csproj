@@ -112,6 +112,9 @@
     <Compile Include="Scan.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Split.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="PreScan.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
