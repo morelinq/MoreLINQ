@@ -53,6 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MoreLinq\KeyValuePair.cs">
+      <Link>KeyValuePair.cs</Link>
+    </Compile>
+    <Compile Include="IndexTest.cs" />
     <Compile Include="SplitTest.cs" />
     <Compile Include="GroupAdjacentTest.cs" />
     <Compile Include="PairwiseTest.cs" />

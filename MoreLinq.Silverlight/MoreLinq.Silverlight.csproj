@@ -83,6 +83,10 @@
       <Link>Batch.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\Index.cs">
+      <Link>Index.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\Concat.cs">
       <Link>Concat.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
