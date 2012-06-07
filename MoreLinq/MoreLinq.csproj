@@ -64,7 +64,9 @@
     <Compile Include="Incremental.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interleave.cs" />
+    <Compile Include="Interleave.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lag.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
