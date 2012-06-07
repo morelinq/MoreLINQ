@@ -57,6 +57,27 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that interleaving disposes those enumerators that it managed 
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestInterleaveDisposesOnError()
+        {
+            using (var sequenceA = TestingSequence.Of<int>())
+            {
+                try
+                {
+                    sequenceA.Interleave(new BreakingSequence<int>()).ToArray();
+                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
+                }
+                catch (InvalidOperationException)
+                {
+                    // Expected and thrown by BreakingSequence
+                }
+            }
+        }
+
+        /// <summary>
         /// Verify that two balanced sequences will interleave all of their elements
         /// </summary>
         [Test]

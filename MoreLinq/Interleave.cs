@@ -83,7 +83,8 @@ namespace MoreLinq
         private static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences, ImbalancedInterleaveStrategy imbalanceStrategy)
         {
             // produce an iterator collection for all IEnumerable<T> instancess passed to us
-            var seqIterators = sequences.Select(s => s.GetEnumerator()).ToList();
+            var seqIterators = new List<IEnumerator<T>>(sequences.GetEnumerators());
+            //var seqIterators = sequences.Select(e => e.GetEnumerator()).ToList();
             try
             {
                 var shouldContinue = true;

@@ -15,7 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MoreLinq
 {
@@ -26,5 +28,22 @@ namespace MoreLinq
     /// </summary>
     public static partial class MoreEnumerable
     {
+        static IEnumerator<T>[] GetEnumerators<T>(this IEnumerable<IEnumerable<T>> sources)
+        {
+            var array = sources.ToArray();
+            var enumerators = new IEnumerator<T>[array.Length];
+            try
+            {
+                for (var i = 0; i < array.Length; i++)
+                    enumerators[i] = array[i].GetEnumerator();
+                return enumerators;
+            }
+            catch
+            {
+                foreach (var enumerator in enumerators.TakeWhile(e => e != null))
+                    enumerator.Dispose();
+                throw;
+            }
+        }
     }
 }
