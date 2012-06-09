@@ -52,6 +52,7 @@ namespace MoreLinq
         {
             using (var iter = sequence.GetEnumerator())
             {
+                var lagQueue = new Queue<TSource>(lagBy);
                 var lagOffset = lagBy;
                 // until we progress far enough, the lagged value is defaultLagValue
                 var hasMore = true;
@@ -60,6 +61,7 @@ namespace MoreLinq
                 //       Do not reorder the terms in the condition!
                 while (lagOffset-- > 0 && (hasMore = iter.MoveNext()))
                 {
+                    lagQueue.Enqueue(iter.Current);
                     // until we reach the lag offset, the lagged value is the defaultLagValue
                     yield return resultSelector(iter.Current, defaultLagValue);
                 }
@@ -67,11 +69,11 @@ namespace MoreLinq
                 if (hasMore) // check that we didn't consume the sequence yet
                 {
                     // now the lagged value is derived from the sequence
-                    var lagValue = iter.Current;
                     while (iter.MoveNext())
                     {
+                        var lagValue = lagQueue.Dequeue();
                         yield return resultSelector(iter.Current, lagValue);
-                        lagValue = iter.Current;
+                        lagQueue.Enqueue(iter.Current);
                     }
                 }
             }

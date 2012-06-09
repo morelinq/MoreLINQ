@@ -125,7 +125,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(2, (a, b) => new { A = a, B = b });
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 1)));
+            Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 2)));
             Assert.IsTrue(result.Take(2).All(x => (x.A - x.B) == x.A));
         }
     }
