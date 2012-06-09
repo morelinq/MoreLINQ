@@ -84,7 +84,7 @@ namespace MoreLinq
         {
             // produce an iterator collection for all IEnumerable<T> instancess passed to us
             var seqIterators = new List<IEnumerator<T>>(sequences.GetEnumerators());
-            //var seqIterators = sequences.Select(e => e.GetEnumerator()).ToList();
+
             try
             {
                 var shouldContinue = true;
