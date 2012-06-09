@@ -48,6 +48,27 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that SortedMerge disposes those enumerators that it managed 
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestSortedMergeDisposesOnError()
+        {
+            using (var sequenceA = TestingSequence.Of<int>())
+            {
+                try
+                {
+                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).ToArray();
+                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
+                }
+                catch (InvalidOperationException)
+                {
+                    // Expected and thrown by BreakingSequence
+                }
+            }
+        }
+
+        /// <summary>
         /// Verify that SortedMerge throws an exception if invoked on a <c>null</c> sequence.
         /// </summary>
         [Test]

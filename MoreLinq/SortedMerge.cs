@@ -82,7 +82,7 @@ namespace MoreLinq
         /// </remarks>
         private static IEnumerable<T> SortedMergeImpl<T>(Func<T, T, bool> precedenceFunc, IEnumerable<IEnumerable<T>> otherSequences)
         {
-            using (var disposables = new DisposableGroup<T>(otherSequences))
+            using (var disposables = new DisposableGroup<T>(otherSequences.GetEnumerators()))
             {
                 var iterators = disposables.Iterators;
 
@@ -128,10 +128,9 @@ namespace MoreLinq
         /// </summary>
         private sealed class DisposableGroup<T> : IDisposable
         {
-            public DisposableGroup(IEnumerable<IEnumerable<T>> sequences)
+            public DisposableGroup(IEnumerable<IEnumerator<T>> iterators)
             {
-                // TODO Review leaking of disposable enumerators when a GetEnumerator throws
-                Iterators = sequences.Select(seq => seq.GetEnumerator()).ToList();
+                Iterators = new List<IEnumerator<T>>(iterators);
             }
 
             public List<IEnumerator<T>> Iterators { get; private set; }
