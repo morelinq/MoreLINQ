@@ -28,6 +28,14 @@ namespace MoreLinq
     /// </summary>
     public static partial class MoreEnumerable
     {
+        /// <summary>
+        /// Returns the enumerators resulting from calling 
+        /// <see cref="IEnumerable{T}.GetEnumerator"/> on each of the 
+        /// supplied sequences. If any one of the 
+        /// <see cref="IEnumerable{T}.GetEnumerator"/> call fails then
+        /// any successfully obtains enumerators are disposed.
+        /// </summary>
+
         static IEnumerator<T>[] GetEnumerators<T>(this IEnumerable<IEnumerable<T>> sources)
         {
             Debug.Assert(sources != null);
