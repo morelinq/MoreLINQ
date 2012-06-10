@@ -23,17 +23,11 @@ namespace MoreLinq
             loopCounts.ThrowIfNull("loopCounts");
             if( loopCounts.Any( lc => lc < 0 ) )
                 throw new ArgumentException("All loop counts must be >= 0", "loopCounts");
-            
-            return NestedLoopsImpl(action, loopCounts);
-        }
-        
-        private static IEnumerable<Action> NestedLoopsImpl(Action action, IEnumerable<int> loopCounts)
-        {
+
             using (var iter = loopCounts.GetEnumerator())
             {
                 if (!iter.MoveNext())
                     return Enumerable.Repeat(action, 0); // null loop
-
                 var loop = Enumerable.Repeat(action, iter.Current);
                 while (iter.MoveNext())
                     loop = loop.Repeat(iter.Current);
