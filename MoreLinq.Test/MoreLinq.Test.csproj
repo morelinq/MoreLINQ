@@ -70,7 +70,6 @@
     <Compile Include="PairUpTest.cs" />
     <Compile Include="PartitionTest.cs" />
     <Compile Include="PermutationsTest.cs" />
-    <Compile Include="PermutedSubsetsTest.cs" />
     <Compile Include="RandomSubsetTest.cs" />
     <Compile Include="RandomTest.cs" />
     <Compile Include="RankTest.cs" />
