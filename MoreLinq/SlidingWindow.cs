@@ -14,25 +14,25 @@ namespace MoreLinq
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
         /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements of the source sequence</typeparam>
-        /// <param name="sequence">The sequence to evaluate a sliding window over</param>
-        /// <param name="windowSize">The size (number of elements) in each window</param>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence to evaluate a sliding window over</param>
+        /// <param name="size">The size (number of elements) in each window</param>
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
-        public static IEnumerable<IEnumerable<T>> SlidingWindow<T>(this IEnumerable<T> sequence, int windowSize)
+        public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int size)
         {
-            sequence.ThrowIfNull("sequence");
-            windowSize.ThrowIfNonPositive("windowSize");
+            source.ThrowIfNull("source");
+            size.ThrowIfNonPositive("size");
 
-            return SlidingWindowImpl(sequence, windowSize);
+            return SlidingWindowImpl(source, size);
         }
 
-        private static IEnumerable<IEnumerable<T>> SlidingWindowImpl<T>(this IEnumerable<T> sequence, int windowSize)
+        private static IEnumerable<IEnumerable<TSource>> SlidingWindowImpl<TSource>(this IEnumerable<TSource> source, int size)
         {
-            using (var iter = sequence.GetEnumerator())
+            using (var iter = source.GetEnumerator())
             {
                 // generate the first window of items
-                var countLeft = windowSize;
-                var window = new List<T>();
+                var countLeft = size;
+                var window = new List<TSource>();
                 // NOTE: The order of evaluation in the if() below is important
                 //       because it relies on short-circuit behavior to ensure
                 //       we don't move the iterator once the window is complete
@@ -50,7 +50,7 @@ namespace MoreLinq
                     // NOTE: If we used a circular queue rather than a list, 
                     //       we could make this quite a bit more efficient.
                     //       Sadly the BCL does not offer such a collection.
-                    window = new List<T>(window.Skip(1)) { iter.Current };
+                    window = new List<TSource>(window.Skip(1)) { iter.Current };
                     yield return window;
                 }
             }
