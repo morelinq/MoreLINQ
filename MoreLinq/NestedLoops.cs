@@ -24,19 +24,23 @@ namespace MoreLinq
 
             using (var iter = loopCounts.GetEnumerator())
             {
-                if (!iter.MoveNext())
+                var loopCount = NextLoopCount(iter);
+                if (loopCount == null)
                     return Enumerable.Empty<Action>(); // null loop
-                if (iter.Current < 0)
-                    throw new ArgumentException("All loop counts must be >= 0", "loopCounts");
-                var loop = Enumerable.Repeat(action, iter.Current);
-                while (iter.MoveNext())
-                {
-                    if (iter.Current < 0)
-                        throw new ArgumentException("All loop counts must be >= 0", "loopCounts");
-                    loop = loop.Repeat(iter.Current);
-                }
+                var loop = Enumerable.Repeat(action, loopCount.Value);
+                while ((loopCount = NextLoopCount(iter)) != null)
+                    loop = loop.Repeat(loopCount.Value);
                 return loop;
             }
+        }
+
+        private static int? NextLoopCount(IEnumerator<int> iter)
+        {
+            if (!iter.MoveNext())
+                return null;
+            if (iter.Current < 0)
+                throw new ArgumentException("All loop counts must be >= 0", "loopCounts");
+            return iter.Current;
         }
     }
 }
