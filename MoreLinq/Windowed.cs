@@ -18,15 +18,15 @@ namespace MoreLinq
         /// <param name="source">The sequence to evaluate a sliding window over</param>
         /// <param name="size">The size (number of elements) in each window</param>
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
-        public static IEnumerable<IEnumerable<TSource>> SlidingWindow<TSource>(this IEnumerable<TSource> source, int size)
+        public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
         {
             source.ThrowIfNull("source");
             size.ThrowIfNonPositive("size");
 
-            return SlidingWindowImpl(source, size);
+            return WindowedImpl(source, size);
         }
 
-        private static IEnumerable<IEnumerable<TSource>> SlidingWindowImpl<TSource>(this IEnumerable<TSource> source, int size)
+        private static IEnumerable<IEnumerable<TSource>> WindowedImpl<TSource>(this IEnumerable<TSource> source, int size)
         {
             using (var iter = source.GetEnumerator())
             {

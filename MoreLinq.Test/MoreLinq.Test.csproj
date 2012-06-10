@@ -78,7 +78,6 @@
     <Compile Include="RunLengthEncodeTest.cs" />
     <Compile Include="SegmentTest.cs" />
     <Compile Include="SliceTest.cs" />
-    <Compile Include="SlidingWindowTest.cs" />
     <Compile Include="SortedMergeTest.cs" />
     <Compile Include="SubsetTest.cs" />
     <Compile Include="TakeLastTest.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="ToDataTableTest.cs" />
     <Compile Include="UnenumerableList.cs" />
     <Compile Include="VerifiableEnumerator.cs" />
+    <Compile Include="WindowedTest.cs" />
     <Compile Include="ZipLongestTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssertCountTest.cs" />
