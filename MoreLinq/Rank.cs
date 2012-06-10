@@ -63,6 +63,7 @@ namespace MoreLinq
         {
             var rank = 0;
             var rankDictionary = new Dictionary<TSource, int>();
+            source = source.ToArray(); // avoid enumerating source twice
             foreach (var item in source.Distinct().OrderByDescending(keySelector, comparer))
                 rankDictionary.Add(item, ++rank);
 
