@@ -48,7 +48,7 @@ namespace MoreLinq.Test
             var expectedCount = Combinatorics.Factorial(count);
 
             var loopCounts = Enumerable.Range(1, count);
-            var nestedLoops = loopBody.NestedLoops(loopCounts);
+            var nestedLoops = loopBody.NestedLoops(loopCounts.AsTestingSequence());
 
             nestedLoops.ForEach( act => act() ); // perform all actions
 
