@@ -39,7 +39,7 @@ namespace MoreLinq
             if (!iter.MoveNext())
                 return null;
             if (iter.Current < 0)
-                throw new ArgumentException("All loop counts must be >= 0", "loopCounts");
+                throw new ArgumentException("All loop counts must be greater than or equal to zero.", "loopCounts");
             return iter.Current;
         }
     }
