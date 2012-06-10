@@ -27,7 +27,7 @@ namespace MoreLinq
             using (var iter = loopCounts.GetEnumerator())
             {
                 if (!iter.MoveNext())
-                    return Enumerable.Repeat(action, 0); // null loop
+                    return Enumerable.Empty<Action>(); // null loop
                 var loop = Enumerable.Repeat(action, iter.Current);
                 while (iter.MoveNext())
                     loop = loop.Repeat(iter.Current);
