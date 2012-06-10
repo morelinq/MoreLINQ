@@ -6,10 +6,10 @@ namespace MoreLinq
 {
     public static partial class MoreEnumerable
     {
-        // This extension methods were developed (primarily) to support the
+        // This extension method was developed (primarily) to support the
         // implementation of the Permutations() extension methods. However,
         // it is of sufficient generality and usefulness to be elevated to
-        // public extension methods in its own right.
+        // a public extension method in its own right.
 
         /// <summary>
         /// Produces a sequence from an action based on the dynamic generation of N nested loops
