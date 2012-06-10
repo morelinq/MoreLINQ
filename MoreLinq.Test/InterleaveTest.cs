@@ -18,7 +18,6 @@ namespace MoreLinq.Test
         public void TestInterleaveIsLazy()
         {
             new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
-            new BreakingSequence<int>().Interleave(ImbalancedInterleaveStrategy.Pad, new BreakingSequence<int>());
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace MoreLinq.Test
         public void TestInterleaveNullSequenceArgument()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Interleave(ImbalancedInterleaveStrategy.Pad, new int[] { });
+            sequence.Interleave(new int[] { });
         }
 
         /// <summary>
@@ -105,22 +104,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that interleaving two unequal sequence with the Pad strategy results in 
-        /// default values appended to the shorter sequence
-        /// </summary>
-        [Test]
-        public void TestInterleaveTwoImbalanceStrategyPad()
-        {
-            var sequenceA = new[] { 1, 3, 5, 7, 9, 11, };
-            var sequenceB = new[] { 2, 4, 6, 8, };
-            var result = sequenceA.Interleave(ImbalancedInterleaveStrategy.Pad, sequenceB);
-
-            var expectedResult = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 0 };
-
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
-        }
-
-        /// <summary>
         /// Verify that interleaving two unequal sequences with the Skip strategy results in
         /// the shorter sequence being omitted from the interleave operation when consumed
         /// </summary>
@@ -129,25 +112,9 @@ namespace MoreLinq.Test
         {
             var sequenceA = new[] { 0, 0, 0, 0, 0, 0 };
             var sequenceB = new[] { 1, 1, 1, 1 };
-            var result = sequenceA.Interleave(ImbalancedInterleaveStrategy.Skip, sequenceB);
+            var result = sequenceA.Interleave(sequenceB);
 
             var expectedResult = new[] { 0, 1, 0, 1, 0, 1, 0, 1, 0, 0 };
-
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
-        }
-
-        /// <summary>
-        /// Verify that interleaving two unequal sequences with the Stop strategy results in
-        /// only as many elements being interleaved as in the shorter of the sequences
-        /// </summary>
-        [Test]
-        public void TestInterleaveTwoImbalanceStrategyStop()
-        {
-            var sequenceA = new[] { 0, 0, 0, 0, 0, 0 };
-            var sequenceB = new[] { 1, 1, 1, 1 };
-            var result = sequenceA.Interleave(ImbalancedInterleaveStrategy.Stop, sequenceB);
-
-            var expectedResult = new[] { 0, 1, 0, 1, 0, 1, 0, 1 };
 
             Assert.IsTrue(result.SequenceEqual(expectedResult));
         }
@@ -169,25 +136,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that interleaving multiple unequal length sequences with the Pad strategy
-        /// results in default values being interleaved when a shorter sequence is consumed
-        /// </summary>
-        [Test]
-        public void TestInterleaveManyImbalanceStrategyPad()
-        {
-            var sequenceA = new[] { 1, 5, 8, 11, 14, 16, };
-            var sequenceB = new[] { 2, 6, 9, 12, };
-            var sequenceC = new int[] { };
-            var sequenceD = new[] { 3 };
-            var sequenceE = new[] { 4, 7, 10, 13, 15, 17, };
-            var result = sequenceA.Interleave(ImbalancedInterleaveStrategy.Pad, sequenceB, sequenceC, sequenceD, sequenceE);
-
-            var expectedResult = new[] { 1, 2, 0, 3, 4, 5, 6, 0, 0, 7, 8, 9, 0, 0, 10, 11, 12, 0, 0, 13, 14, 0, 0, 0, 15, 16, 0, 0, 0, 17 };
-
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
-        }
-
-        /// <summary>
         /// Verify that interleaving multiple unequal sequences with the Skip strategy
         /// results in sequences being omitted form the interleave operation when consumed
         /// </summary>
@@ -199,33 +147,11 @@ namespace MoreLinq.Test
             var sequenceC = new int[] { };
             var sequenceD = new[] { 3 };
             var sequenceE = new[] { 4, 7, 10, 13, 15, 17, };
-            var result = sequenceA.Interleave(ImbalancedInterleaveStrategy.Skip, sequenceB, sequenceC, sequenceD, sequenceE);
+            var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
 
             var expectedResult = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
             Assert.IsTrue(result.SequenceEqual(expectedResult));
-        }
-
-        /// <summary>
-        /// Verify that interleaving multiple unequal sequences with the Stop strategy
-        /// results in only as many elements interleaved as exist in the shortest sequence
-        /// </summary>
-        [Test]
-        public void TestInterleaveManyImbalanceStrategyStop()
-        {
-            var sequenceA = new[] { 1, 5, 8, 11, 14, 16, };
-            var sequenceB = new[] { 2, 6, 9, 12, };
-            var sequenceC = new int[] { };
-            var sequenceD = new[] { 3 };
-            var sequenceE = new[] { 4, 7, 10, 13, 15, 17, };
-            var resultA = sequenceA.Interleave(ImbalancedInterleaveStrategy.Stop, sequenceB, sequenceC, sequenceD, sequenceE);
-            var resultB = sequenceA.Interleave(ImbalancedInterleaveStrategy.Stop, sequenceB, sequenceD, sequenceE);
-
-            var expectedResultA = new int[] { };
-            var expectedResultB = new[] { 1, 2, 3, 4 };
-
-            Assert.IsTrue(resultA.SequenceEqual(expectedResultA));
-            Assert.IsTrue(resultB.SequenceEqual(expectedResultB));
         }
 
         /// <summary>
@@ -249,19 +175,9 @@ namespace MoreLinq.Test
             var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
             var sequenceD = Enumerable.Range(1, 0).AsVerifiable().WhenDisposed(s => disposedSequenceD = true);
 
-            var resultCase1 = sequenceA.Interleave(ImbalancedInterleaveStrategy.Pad, sequenceB, sequenceC, sequenceD);
-            var resultCase2 = sequenceA.Interleave(ImbalancedInterleaveStrategy.Skip, sequenceB, sequenceC, sequenceD);
-            var resultCase3 = sequenceA.Interleave(ImbalancedInterleaveStrategy.Stop, sequenceB, sequenceC, sequenceD);
+            var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
 
-            resultCase1.Count();
-            AssertIndicators();
-            ResetIndicators();
-
-            resultCase2.Count();
-            AssertIndicators();
-            ResetIndicators();
-
-            resultCase3.Count();
+            result.Count();
             AssertIndicators();
             ResetIndicators();
         }

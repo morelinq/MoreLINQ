@@ -4,25 +4,6 @@ using System.Linq;
 
 namespace MoreLinq
 {
-    /// <summary>
-    /// Defines the strategies available when Interleave is passed sequences of unequal length
-    /// </summary>
-    public enum ImbalancedInterleaveStrategy
-    {
-        /// <summary>
-        /// Extends a sequence by padding its tail with default(T)
-        /// </summary>
-        Pad,
-        /// <summary>
-        /// Removes the sequence from the interleave set, and continues interleaving remaining sequences.
-        /// </summary>
-        Skip,
-        /// <summary>
-        /// Stops the interleave operation.
-        /// </summary>
-        Stop,
-    }
-
     public static partial class MoreEnumerable
     {
         /// <summary>
@@ -70,7 +51,7 @@ namespace MoreLinq
         /// <param name="imbalanceStrategy">Defines the behavior of the operator when sequences are of unequal length</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
-        public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, ImbalancedInterleaveStrategy imbalanceStrategy, params IEnumerable<T>[] otherSequences)
+        private static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, ImbalancedInterleaveStrategy imbalanceStrategy, params IEnumerable<T>[] otherSequences)
         {
             sequence.ThrowIfNull("sequence");
             otherSequences.ThrowIfNull("otherSequences");
@@ -143,6 +124,25 @@ namespace MoreLinq
                 foreach (var iter in seqIterators)
                     iter.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Defines the strategies available when Interleave is passed sequences of unequal length
+        /// </summary>
+        enum ImbalancedInterleaveStrategy
+        {
+            /// <summary>
+            /// Extends a sequence by padding its tail with default(T)
+            /// </summary>
+            Pad,
+            /// <summary>
+            /// Removes the sequence from the interleave set, and continues interleaving remaining sequences.
+            /// </summary>
+            Skip,
+            /// <summary>
+            /// Stops the interleave operation.
+            /// </summary>
+            Stop,
         }
     }
 }
