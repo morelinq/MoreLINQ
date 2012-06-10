@@ -11,7 +11,6 @@ namespace MoreLinq
         // it is of sufficient generality and usefulness to be elevated to
         // public extension methods in its own right.
 
-        #region Nested Loop Generators
         /// <summary>
         /// Produces a sequence from an action based on the dynamic generation of N nested loops
         /// who iteration counts are defined by <paramref name="loopCounts"/>.
@@ -41,6 +40,5 @@ namespace MoreLinq
                 return loop;
             }
         }
-        #endregion
     }
 }
