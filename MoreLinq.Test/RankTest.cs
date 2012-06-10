@@ -48,15 +48,14 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Rank throws an exception if the comparer is <c>null</c>
+        /// Verify that Rank uses the default comparer when comparer is <c>null</c>
         /// </summary>
         [Test]
-        public void TestRankComparerNullException()
+        public void TestRankNullComparer()
         {
             var sequence = Enumerable.Repeat(1, 10);
-
-            AssertUtil.Throws<ArgumentNullException>(() => sequence.Rank(null));
-            AssertUtil.Throws<ArgumentNullException>(() => sequence.RankBy(x => x, null));
+            sequence.Rank(null).AssertSequenceEqual(sequence.ToArray());
+            sequence.RankBy(x => x, null).AssertSequenceEqual(sequence.ToArray());
         }
         
         /// <summary>

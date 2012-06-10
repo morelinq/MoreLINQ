@@ -39,7 +39,7 @@ namespace MoreLinq
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            return RankBy(source, keySelector, Comparer<TKey>.Default);
+            return RankBy(source, keySelector, null);
         }
 
         /// <summary>
@@ -55,9 +55,8 @@ namespace MoreLinq
         {
             source.ThrowIfNull("source");
             keySelector.ThrowIfNull("keySelector");
-            comparer.ThrowIfNull("comparer");
 
-            return RankByImpl(source, keySelector, comparer);
+            return RankByImpl(source, keySelector, comparer ?? Comparer<TKey>.Default);
         }
         
         private static IEnumerable<int> RankByImpl<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
