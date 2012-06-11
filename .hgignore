@@ -20,3 +20,4 @@ docs/api/*.xml
 NodaTime.shfbproj_Jon
 docs/PublicApi/*.xml
 *.ncrunchsolution
+docs/api/LastBuild.log
