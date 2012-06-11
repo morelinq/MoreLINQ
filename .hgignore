@@ -13,3 +13,10 @@ _ReSharper.*
 dist/**
 pkg/*/**
 *.nupkg
+docs/api/fti/*
+docs/api/*.aspx
+docs/api/Web.Config
+docs/api/*.xml
+NodaTime.shfbproj_Jon
+docs/PublicApi/*.xml
+*.ncrunchsolution
