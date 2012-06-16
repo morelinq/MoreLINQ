@@ -7,6 +7,6 @@ if not exist "%MSBUILDEXE%" (
     echo machine, which is required to build the solution.
     exit /b 1
 )
-for %%i in (debug release) do "%MSBUILDEXE%" "MoreLinq.sln" /p:Configuration=%%i 
-if "%1"=="all" for %%i in (debug release) do "%MSBUILDEXE%" MoreLinq.Silverlight.sln /p:Configuration=%%i
-if "%1"=="docs" "%MSBUILDEXE%" MoreLinq.shfbproj
+for %%i in (debug release) do "%MSBUILDEXE%" "MoreLinq.sln" /p:Configuration=%%i %*
+if "%1"=="all" for %%i in (debug release) do "%MSBUILDEXE%" MoreLinq.Silverlight.sln /p:Configuration=%%i %*
+if "%1"=="docs" "%MSBUILDEXE%" MoreLinq.shfbproj %*
