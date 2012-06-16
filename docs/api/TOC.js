@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TOC.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 02/21/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: JavaScript
 //
 // This file contains the methods necessary to implement a simple tree view
@@ -26,11 +26,16 @@
 // 1.6.0.7  04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a
 //                           website keyword index.  Added support for "topic"
 //                           query string option.
+// 1.9.4.0  02/21/2012  EFW  Merged code from Thomas Levesque to show direct
+//                           link and support other page types like PHP.
 //=============================================================================
 
-// IE flag
+// IE and Chrome flags
 var isIE = (navigator.userAgent.indexOf("MSIE") >= 0);
 var isChrome = (navigator.userAgent.indexOf("Chrome") >= 0);
+
+// Page extension
+var pageExtension = ".aspx";
 
 // Minimum width of the TOC div
 var minWidth = 100;
@@ -48,8 +53,9 @@ var currentIndexPage = 0;
 
 //============================================================================
 
-// Initialize the tree view and resize the content
-function Initialize()
+// Initialize the tree view and resize the content.  Pass it the page extension to use (i.e. ".aspx")
+// for loading TOC element, index keywords, searching, etc.
+function Initialize(extension)
 {
     docBody = document.getElementsByTagName("body")[0];
     divTOC = document.getElementById("TOCDiv");
@@ -64,6 +70,10 @@ function Initialize()
     txtSearchText = document.getElementById("txtSearchText");
     chkSortByTitle = document.getElementById("chkSortByTitle");
 
+    // Set the page extension if specified
+    if(typeof(extension) != "undefined" && extension != "")
+        pageExtension = extension;
+
     // The sizes are bit off in FireFox
     if(!isIE)
         divNavOpts.style.width = divSearchOpts.style.width =
@@ -71,6 +81,8 @@ function Initialize()
 
     ResizeTree();
     SyncTOC();
+
+    topicContent.onload = SyncTOC;
 
     // Use an alternate default page if a topic is specified in
     // the query string.
@@ -229,7 +241,7 @@ function GetCurrentUrl()
         if(base.substr(0, 5) == "file:")
             top.location.href = base + "Index.html";
         else
-            top.location.href = base + "Index.aspx";
+            top.location.href = base + "index" + pageExtension; // Use lowercase on name for case-sensitive servers
     }
 
     return url;
@@ -406,7 +418,7 @@ function FillNode(div, expandChildren)
     div.innerHTML = "Loading...";
 
     // Add a unique hash to ensure it doesn't use cached results
-    xmlHttp.open("GET", "FillNode.aspx?Id=" + div.id + "&hash=" +
+    xmlHttp.open("GET", "FillNode" + pageExtension + "?Id=" + div.id + "&hash=" +
         now.getTime(), true);
 
     xmlHttp.onreadystatechange = function()
@@ -611,7 +623,7 @@ function PerformSearch()
     divSearchResults.innerHTML = "<span class=\"PaddedText\">Searching...</span>";
 
     // Add a unique hash to ensure it doesn't use cached results
-    xmlHttp.open("GET", "SearchHelp.aspx?Keywords=" + txtSearchText.value +
+    xmlHttp.open("GET", "SearchHelp" + pageExtension + "?Keywords=" + txtSearchText.value +
         "&SortByTitle=" + (chkSortByTitle.checked ? "true" : "false") +
         "&hash=" + now.getTime(), true);
 
@@ -684,7 +696,7 @@ function PopulateIndex(startIndex)
         "keyword index...</span>";
 
     // Add a unique hash to ensure it doesn't use cached results
-    xmlHttp.open("GET", "LoadIndexKeywords.aspx?StartIndex=" + startIndex +
+    xmlHttp.open("GET", "LoadIndexKeywords" + pageExtension + "?StartIndex=" + startIndex +
       "&hash=" + now.getTime(), true);
 
     xmlHttp.onreadystatechange = function()
@@ -740,4 +752,21 @@ function ChangeIndexPage(direction)
     PopulateIndex(currentIndexPage + direction);
 
     return false;
+}
+
+// Show a direct link to the currently displayed topic
+function ShowDirectLink()
+{
+    var url = GetCurrentUrl();
+    var base = window.location.href;
+
+    if(base.indexOf("?") > 0)
+        base = base.substr(0, base.indexOf("?") + 1);
+
+    base = base.substr(0, base.lastIndexOf("/") + 1);
+
+    var relative = url.substr(base.length);
+
+    // Using prompt lets the user copy it from the text box
+    prompt("Direct link", base + "?topic=" + relative);
 }

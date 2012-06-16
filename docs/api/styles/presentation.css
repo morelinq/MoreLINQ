@@ -35,6 +35,7 @@ div#control {
 	border-bottom-color: #C8CDDE;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
+	display: table;
 	z-index: 2;
 }
 
@@ -678,6 +679,10 @@ sup.citation a:link a:visited a:active
 }
 
 /* autoOutline styles */
+ul.autoOutline
+{
+}
+
 li.outlineSectionEntry
 {
 }

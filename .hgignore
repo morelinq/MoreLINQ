@@ -15,6 +15,7 @@ pkg/*/**
 *.nupkg
 docs/api/fti/*
 docs/api/*.aspx
+docs/api/*.php
 docs/api/Web.Config
 docs/api/*.xml
 docs/PublicApi/*.xml
