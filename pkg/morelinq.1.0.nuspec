@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>morelinq</id>
+        <version>1.0</version>
+        <title>MoreLINQ 1.0 BETA</title>
+        <authors>Jon Skeet</authors>
+        <owners>Dan Pincas</owners>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>IMPORTANT: This project is BETA quality. The author "definitely wants to take another look over it (and possibly add more stuff) before declaring it done."
+
+With that being stated, LINQ to Objects is missing a few desirable features. This project will enhance LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</description>
+        <language>en-US</language>
+        <tags>linq .net35 .net40 beta extensions</tags>
+    </metadata>
+    <files>
+        <file src="MoreLinq\bin\Release\MoreLinq.dll" target="lib\net35\MoreLinq.dll" />
+    </files>
+</package>
