@@ -79,6 +79,10 @@
       <Link>AssertCount.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\Acquire.cs">
+      <Link>Acquire.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\Batch.cs">
       <Link>Batch.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>

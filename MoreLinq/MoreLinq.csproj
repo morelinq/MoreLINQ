@@ -60,6 +60,9 @@
     <Compile Include="AssertCount.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Acquire.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Concat.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
