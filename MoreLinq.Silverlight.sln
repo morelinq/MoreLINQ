@@ -6,6 +6,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.cmd = build.cmd
 		buildw.cmd = buildw.cmd
 		COPYING.txt = COPYING.txt
+		pkg\morelinq.nuspec = pkg\morelinq.nuspec
+		pack.cmd = pack.cmd
+		packw.cmd = packw.cmd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Silverlight", "MoreLinq.Silverlight\MoreLinq.Silverlight.csproj", "{A1FC2FCD-4744-46F3-96A4-D72C7C20C0C7}"

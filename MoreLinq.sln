@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
 		build.cmd = build.cmd
 		buildw.cmd = buildw.cmd
 		COPYING.txt = COPYING.txt
+		pkg\morelinq.nuspec = pkg\morelinq.nuspec
+		pack.cmd = pack.cmd
+		packw.cmd = packw.cmd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{8642E81B-3414-4C13-914F-05A4E600FE49}"
