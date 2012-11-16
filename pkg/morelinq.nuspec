@@ -9,7 +9,8 @@
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</description>
+        <summary>This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
+        <description>This project enhances LINQ to Objects with the following methods: Acquire, AssertCount, Batch, Concat, Consume, DistinctBy, EquiZip, ExceptBy, ForEach, Generate, GenerateByIndex, GroupAdjacent, Index, MaxBy, MinBy, Pad, Pairwise, Pipe, Prepend, PreScan, Scan, SingleOrFallback, SkipUntil, Split, TakeEvery, TakeLast, TakeUntil, ToDataTable, ToDelimitedString, ToHashSet, Trace, Zip, ZipLongest</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
     </metadata>
