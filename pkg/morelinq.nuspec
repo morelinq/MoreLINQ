@@ -15,7 +15,7 @@
         <tags>linq extensions</tags>
     </metadata>
     <files>
-        <file src="MoreLinq\bin\Release\MoreLinq.dll" target="lib\net35\MoreLinq.dll" />
-        <file src="MoreLinq\bin\Release\MoreLinq.xml" target="lib\net35\MoreLinq.xml" />
+        <file src="..\MoreLinq\bin\Release\MoreLinq.dll" target="lib\net35\MoreLinq.dll" />
+        <file src="..\MoreLinq\bin\Release\MoreLinq.xml" target="lib\net35\MoreLinq.xml" />
     </files>
 </package>
