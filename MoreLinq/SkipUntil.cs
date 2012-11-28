@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Skips items from the input sequence until the given predicate returns true

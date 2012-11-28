@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns a sequence resulting from applying a function to each 

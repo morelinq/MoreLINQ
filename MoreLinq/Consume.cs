@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Completely consumes the given sequence. This method uses immediate execution,

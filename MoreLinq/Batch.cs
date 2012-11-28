@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Batches the source sequence into sized buckets.

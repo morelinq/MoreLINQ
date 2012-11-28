@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Traces the elements of a source sequence for diagnostics.

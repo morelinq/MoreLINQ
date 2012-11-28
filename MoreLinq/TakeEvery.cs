@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns every N-th element of a source sequence.

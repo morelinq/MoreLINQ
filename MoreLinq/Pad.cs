@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Pads a sequence with default values if it is narrower (shorter 

@@ -22,7 +22,7 @@ using System.Text;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Creates a delimited string from a sequence of values. The 

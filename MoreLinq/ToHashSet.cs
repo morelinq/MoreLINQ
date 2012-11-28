@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace MoreLinq
 {
     // TODO: Tests! (The code is simple enough I trust it not to fail, mind you...)
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns a <see cref="HashSet{T}"/> of the source items using the default equality

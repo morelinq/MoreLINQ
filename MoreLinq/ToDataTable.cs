@@ -24,7 +24,7 @@ using System.Reflection;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         private static MemberInfo GetAccessedMember(LambdaExpression lambda)
         {

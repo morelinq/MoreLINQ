@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Peforms a scan (inclusive prefix sum) on a sequence of elements.

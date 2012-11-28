@@ -21,7 +21,7 @@ using System.Linq;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns the set of elements in the first sequence which aren't

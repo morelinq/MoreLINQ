@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/> 

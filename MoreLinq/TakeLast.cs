@@ -20,7 +20,7 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns a specified number of contiguous elements from the end of 

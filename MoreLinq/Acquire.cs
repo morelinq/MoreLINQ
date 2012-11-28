@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Ensures that a source sequence of <see cref="IDisposable"/> 

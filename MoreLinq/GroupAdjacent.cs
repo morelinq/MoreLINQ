@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a 
