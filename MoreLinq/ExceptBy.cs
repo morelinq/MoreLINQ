@@ -84,6 +84,7 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer)
         {
+#if !NO_HASHSET
             HashSet<TKey> keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
             foreach (var element in first)
             {
@@ -95,6 +96,24 @@ namespace MoreLinq
                 yield return element;
                 keys.Add(key);
             }
+#else
+            //
+            // On platforms where LINQ is available but no HashSet<T>
+            // (like on Silverlight), implement this operator using 
+            // Dictionary<TKey, TValue>.
+            //
+            var keys = second.ToDictionary(keySelector, keyComparer);
+            foreach (var element in first)
+            {
+                TKey key = keySelector(element);
+                if (keys.ContainsKey(key))
+                {
+                    continue;
+                }
+                yield return element;
+                keys.Add(key, element);
+            }
+#endif
         }
     }
 }
