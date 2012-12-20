@@ -184,7 +184,7 @@ namespace MoreLinq
         /// Strategy determining the handling of the case where the inputs are of
         /// unequal lengths.
         /// </summary>
-        internal enum ImbalancedZipStrategy
+        enum ImbalancedZipStrategy
         {
             /// <summary>
             /// The result sequence ends when either input sequence is exhausted.
