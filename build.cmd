@@ -1,6 +1,11 @@
 @echo off
 setlocal
 pushd "%~dp0"
+call :main %*
+popd
+goto :EOF
+
+:main
 set MSBUILDEXE=%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
 if not exist "%MSBUILDEXE%" (
     echo The .NET Framework 4.0 does not appear to be installed on this 
@@ -13,12 +18,12 @@ call :base %*
 goto :EOF
 
 :base
-for %%i in (debug release) do "%MSBUILDEXE%" "MoreLinq.sln" /p:Configuration=%%i %*
+for %%i in (debug release) do "%MSBUILDEXE%" "MoreLinq.sln" /v:m /p:Configuration=%%i %*
 goto :EOF
 
 :sl
 call :base %*
-for %%i in (debug release) do "%MSBUILDEXE%" MoreLinq.Silverlight.sln /p:Configuration=%%i %*
+for %%i in (debug release) do "%MSBUILDEXE%" MoreLinq.Silverlight.sln /v:m /p:Configuration=%%i %*
 goto :EOF
 
 :docs
