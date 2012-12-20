@@ -184,6 +184,14 @@
       <Link>Zip.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\EquiZip.cs">
+      <Link>EquiZip.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\MoreLinq\ZipLongest.cs">
+      <Link>ZipLongest.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\MoreLinq\key.snk">

@@ -114,6 +114,12 @@
     <Compile Include="Zip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="EquiZip.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ZipLongest.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Scan.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

@@ -27,17 +27,17 @@ namespace MoreLinq
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the two input sequences are of different lengths, the result sequence 
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// If the two input sequences are of different lengths then 
+        /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
         /// <code>
-        /// int[] numbers = { 1, 2, 3 };
+        /// int[] numbers = { 1, 2, 3, 4 };
         /// string[] letters = { "A", "B", "C", "D" };
-        /// var zipped = numbers.Zip(letters, (n, l) => n + l);
+        /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
         /// </code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
+        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "4D" in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence</typeparam>
@@ -46,17 +46,18 @@ namespace MoreLinq
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
         
-        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
+             IEnumerable<TSecond> second,
+             Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
             if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
-            return ZipImpl(first, second, resultSelector);
+            return EquiZipImpl(first, second, resultSelector);
         }
 
-        static IEnumerable<TResult> ZipImpl<TFirst, TSecond, TResult>(
+        static IEnumerable<TResult> EquiZipImpl<TFirst, TSecond, TResult>(
             IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
             Func<TFirst, TSecond, TResult> resultSelector)
@@ -68,7 +69,11 @@ namespace MoreLinq
                 {
                     if (e2.MoveNext())
                         yield return resultSelector(e1.Current, e2.Current);
+                    else
+                        throw new InvalidOperationException("Second sequence ran out before first");
                 }
+                if (e2.MoveNext())
+                    throw new InvalidOperationException("First sequence ran out before second");
             }
         }
     }
