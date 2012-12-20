@@ -20,6 +20,8 @@ using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq
 {
+    using System;
+
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -43,7 +45,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
             return LinqEnumerable.Concat(LinqEnumerable.Repeat(value, 1), source);
         }
     }

@@ -69,9 +69,9 @@ namespace MoreLinq
         public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
-            source.ThrowIfNull("source");
-            selector.ThrowIfNull("selector");
-            comparer.ThrowIfNull("comparer");
+            if (source == null) throw new ArgumentNullException("source");
+            if (selector == null) throw new ArgumentNullException("selector");
+            if (comparer == null) throw new ArgumentNullException("comparer");
             using (IEnumerator<TSource> sourceIterator = source.GetEnumerator())
             {
                 if (!sourceIterator.MoveNext())

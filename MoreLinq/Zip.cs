@@ -49,9 +49,9 @@ namespace MoreLinq
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            first.ThrowIfNull("first");
-            second.ThrowIfNull("second");
-            resultSelector.ThrowIfNull("resultSelector");
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             return ZipImpl(first, second, resultSelector, ImbalancedZipStrategy.Truncate);
         }
@@ -84,9 +84,9 @@ namespace MoreLinq
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
         {
-            first.ThrowIfNull("first");
-            second.ThrowIfNull("second");
-            resultSelector.ThrowIfNull("resultSelector");
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             return ZipImpl(first, second, resultSelector, ImbalancedZipStrategy.Fail);
         }
@@ -120,9 +120,9 @@ namespace MoreLinq
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
         {
-            first.ThrowIfNull("first");
-            second.ThrowIfNull("second");
-            resultSelector.ThrowIfNull("resultSelector");
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             return ZipImpl(first, second, resultSelector, ImbalancedZipStrategy.Pad);
         }

@@ -61,7 +61,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string format)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
 
             return TraceImpl(source, 
                 string.IsNullOrEmpty(format)
@@ -86,8 +86,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, Func<TSource, string> formatter)
         {
-            source.ThrowIfNull("source");
-            formatter.ThrowIfNull("formatter");
+            if (source == null) throw new ArgumentNullException("source");
+            if (formatter == null) throw new ArgumentNullException("formatter");
             return TraceImpl(source, formatter);
         }
 

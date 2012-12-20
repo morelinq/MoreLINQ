@@ -38,7 +38,7 @@ namespace MoreLinq
         {
             // Would just use Enumerable.Range(0, int.MaxValue).Select(generator) but that doesn't
             // include int.MaxValue. Picky, I know...
-            generator.ThrowIfNull("generator");
+            if (generator == null) throw new ArgumentNullException("generator");
             return GenerateByIndexImpl(generator);
         }
 

@@ -162,9 +162,9 @@ namespace MoreLinq
             Func<TSource, TElement> elementSelector,
             IEqualityComparer<TKey> comparer)
         {
-            source.ThrowIfNull("source");
-            keySelector.ThrowIfNull("keySelector");
-            elementSelector.ThrowIfNull("elementSelector");
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
 
             return GroupAdjacentImpl(source, keySelector, elementSelector,
                                      comparer ?? EqualityComparer<TKey>.Default);
@@ -181,7 +181,7 @@ namespace MoreLinq
             Debug.Assert(elementSelector != null);
             Debug.Assert(comparer != null);
 
-            using (var iterator = source.Select(item => KeyValuePair.Create(keySelector(item), elementSelector(item)))
+            using (var iterator = source.Select(item => new KeyValuePair<TKey, TElement>(keySelector(item), elementSelector(item)))
                                         .GetEnumerator())
             {
                 var group = default(TKey);

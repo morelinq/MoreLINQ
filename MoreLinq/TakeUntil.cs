@@ -54,8 +54,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            source.ThrowIfNull("source");
-            predicate.ThrowIfNull("predicate");
+            if (source == null) throw new ArgumentNullException("source");
+            if (predicate == null) throw new ArgumentNullException("predicate");
             return TakeUntilImpl(source, predicate);
         }
 

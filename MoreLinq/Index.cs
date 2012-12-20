@@ -50,7 +50,7 @@ namespace MoreLinq
         /// results.</remarks>
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
         {
-            return source.Select((item, index) => KeyValuePair.Create(startIndex + index, item));
+            return source.Select((item, index) => new KeyValuePair<int, TSource>(startIndex + index, item));
         }
     }
 }

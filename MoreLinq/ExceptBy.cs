@@ -73,9 +73,9 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer)
         {
-            first.ThrowIfNull("first");
-            second.ThrowIfNull("second");
-            keySelector.ThrowIfNull("keySelector");
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
             return ExceptByImpl(first, second, keySelector, keyComparer);
         }
 

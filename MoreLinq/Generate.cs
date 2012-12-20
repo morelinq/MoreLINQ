@@ -42,7 +42,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, TResult> generator)
         {
-            generator.ThrowIfNull("generator");
+            if (generator == null) throw new ArgumentNullException("generator");
             return GenerateImpl(initial, generator);
         }
 

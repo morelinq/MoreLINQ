@@ -50,8 +50,8 @@ namespace MoreLinq
         /// </example>
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
         {
-            source.ThrowIfNull("source");
-            resultSelector.ThrowIfNull("resultSelector");
+            if (source == null) throw new ArgumentNullException("source");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
             return PairwiseImpl(source, resultSelector);
         }
 

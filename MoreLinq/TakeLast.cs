@@ -20,6 +20,8 @@ using System.Diagnostics;
 
 namespace MoreLinq
 {
+    using System;
+
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -47,7 +49,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
             return TakeLastImpl(source, count);
         }
 

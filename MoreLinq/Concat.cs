@@ -20,6 +20,8 @@ using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq
 {
+    using System;
+
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -32,7 +34,7 @@ namespace MoreLinq
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
         {
-            tail.ThrowIfNull("tail");
+            if (tail == null) throw new ArgumentNullException("tail");
             return tail.Prepend(head);
         }
 
@@ -46,7 +48,7 @@ namespace MoreLinq
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
         {
-            head.ThrowIfNull("head");
+            if (head == null) throw new ArgumentNullException("head");
             return LinqEnumerable.Concat(head, LinqEnumerable.Repeat(tail, 1));
         }
     }

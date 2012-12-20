@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyValuePair.cs" />
     <Compile Include="SkipUntil.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -146,7 +145,6 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="SequenceException.cs" />
-    <Compile Include="ThrowHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />

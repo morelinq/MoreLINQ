@@ -68,8 +68,8 @@ namespace MoreLinq
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-            source.ThrowIfNull("source");
-            keySelector.ThrowIfNull("keySelector");
+            if (source == null) throw new ArgumentNullException("source");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
             return DistinctByImpl(source, keySelector, comparer);
         }
 

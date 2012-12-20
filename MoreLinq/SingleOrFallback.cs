@@ -41,8 +41,8 @@ namespace MoreLinq
 
         public static TSource SingleOrFallback<TSource>(this IEnumerable<TSource> source, Func<TSource> fallback)
         {
-            source.ThrowIfNull("source");
-            fallback.ThrowIfNull("fallback");
+            if (source == null) throw new ArgumentNullException("source");
+            if (fallback == null) throw new ArgumentNullException("fallback");
 
             IList<TSource> list = source as IList<TSource>;
             if (list != null)

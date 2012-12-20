@@ -115,9 +115,9 @@ namespace MoreLinq
             TSource separator, IEqualityComparer<TSource> comparer, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            source.ThrowIfNull("source");
-            count.ThrowIfNonPositive("count");
-            resultSelector.ThrowIfNull("resultSelector");
+            if (source == null) throw new ArgumentNullException("source");
+            if (count <= 0) throw new ArgumentOutOfRangeException("count");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
             return SplitImpl(source, separator, comparer ?? EqualityComparer<TSource>.Default, count, resultSelector);
         }
 
@@ -175,10 +175,10 @@ namespace MoreLinq
             Func<TSource, bool> separatorFunc, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            source.ThrowIfNull("source");
-            source.ThrowIfNull("separatorFunc");
-            count.ThrowIfNonPositive("count");
-            resultSelector.ThrowIfNull("resultSelector");
+            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException("separatorFunc");
+            if (count <= 0) throw new ArgumentOutOfRangeException("count");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
             return SplitImpl(source, separatorFunc, count, resultSelector);
         }
 

@@ -17,7 +17,7 @@
 
 using System.Collections.Generic;
 
-namespace MoreLinq
+namespace MoreLinq.Test
 {
     static class KeyValuePair
     {

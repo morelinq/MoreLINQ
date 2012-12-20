@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MoreLinq</RootNamespace>
     <AssemblyName>MoreLinq</AssemblyName>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
@@ -24,8 +24,9 @@
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -170,12 +171,6 @@
     <Compile Include="..\MoreLinq\TakeEvery.cs">
       <Link>TakeEvery.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\MoreLinq\ThrowHelper.cs">
-      <Link>ThrowHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\MoreLinq\KeyValuePair.cs">
-      <Link>KeyValuePair.cs</Link>
     </Compile>
     <Compile Include="..\MoreLinq\ToDelimitedString.cs">
       <Link>ToDelimitedString.cs</Link>

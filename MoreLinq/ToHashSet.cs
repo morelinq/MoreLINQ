@@ -51,7 +51,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
             return new HashSet<TSource>(source, comparer);
         }
     }

@@ -19,6 +19,8 @@ using System.Collections.Generic;
 
 namespace MoreLinq
 {
+    using System;
+
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -29,7 +31,7 @@ namespace MoreLinq
         /// <param name="source">Source to consume</param>
         public static void Consume<T>(this IEnumerable<T> source)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
             foreach (T element in source)
             {
             }

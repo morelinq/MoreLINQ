@@ -22,6 +22,8 @@ using System.Text;
 
 namespace MoreLinq
 {
+    using System;
+
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -55,7 +57,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter ?? CultureInfo.CurrentCulture.TextInfo.ListSeparator);
         }
 

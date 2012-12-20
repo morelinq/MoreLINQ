@@ -55,8 +55,8 @@ namespace MoreLinq
         public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation, TSource identity)
         {
-            source.ThrowIfNull("source");
-            transformation.ThrowIfNull("transformation");
+            if (source == null) throw new ArgumentNullException("source");
+            if (transformation == null) throw new ArgumentNullException("transformation");
             return PreScanImpl(source, transformation, identity);
         }
 

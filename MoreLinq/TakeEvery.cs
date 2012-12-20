@@ -20,6 +20,8 @@ using System.Linq;
 
 namespace MoreLinq
 {
+    using System;
+
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -41,8 +43,8 @@ namespace MoreLinq
         
         public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
         {
-            source.ThrowIfNull("source");
-            step.ThrowIfNonPositive("step");
+            if (source == null) throw new ArgumentNullException("source");
+            if (step <= 0) throw new ArgumentOutOfRangeException("step");
             return source.Where((e, i) => i % step == 0);
         }
     }

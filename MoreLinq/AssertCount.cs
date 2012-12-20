@@ -42,8 +42,8 @@ namespace MoreLinq
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count)
         {
-            source.ThrowIfNull("source");
-            count.ThrowIfNegative("count");
+            if (source == null) throw new ArgumentNullException("source");
+            if (count < 0) throw new ArgumentOutOfRangeException("count");
 
             return AssertCountImpl(source, count, defaultErrorSelector);
         }
@@ -69,9 +69,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
-            source.ThrowIfNull("source");
+            if (source == null) throw new ArgumentNullException("source");
             if (count < 0) throw new ArgumentException(null, "count");
-            errorSelector.ThrowIfNull("errorSelector");
+            if (errorSelector == null) throw new ArgumentNullException("errorSelector");
 
             return AssertCountImpl(source, count, errorSelector);
         }

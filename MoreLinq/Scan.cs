@@ -54,8 +54,8 @@ namespace MoreLinq
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
         {
-            source.ThrowIfNull("source");
-            transformation.ThrowIfNull("transformation");
+            if (source == null) throw new ArgumentNullException("source");
+            if (transformation == null) throw new ArgumentNullException("transformation");
             return ScanImpl(source, transformation);
         }
 
