@@ -9,7 +9,9 @@ Bin/**
 *.docstates
 obj/**
 _ReSharper.*
+*.DotSettings
 *.orig
+*.rej
 dist/**
 pkg/*/**
 *.nupkg
