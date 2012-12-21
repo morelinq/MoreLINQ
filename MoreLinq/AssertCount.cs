@@ -22,6 +22,8 @@ namespace MoreLinq
 {
     static partial class MoreEnumerable
     {
+        #if MORELINQ
+
         private static readonly Func<int, int, Exception> defaultErrorSelector = OnAssertCountFailure;
 
         /// <summary>
@@ -83,6 +85,8 @@ namespace MoreLinq
                         : "Sequence contains too many elements when exactly {0} were expected.";
             return new SequenceException(string.Format(message, count.ToString("N0")));
         }
+
+        #endif
 
         private static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
