@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>MoreLinq.Embedded.Enumerable.MaxBy</id>
+    <version>1.0</version>
+    <title>MoreLINQ MoreEnumerable.MaxBy for C#</title>
+    <authors>MoreLINQ Developers</authors>
+    <owners>Jon Skeet, Atif Aziz</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Enhances LINQ to Objects with the following method: MaxBy (2 overloads)</summary>
+    <description>Enhances LINQ to Objects with the following method: MaxBy. Returns the maximal element of the given sequence, based on the given projection.</description>
+    <language>en-US</language>
+    <tags>linq extensions</tags>
+  </metadata>
+  <files>
+    <file src="..\MoreLinq\MaxBy.cs" target="content\net35\MoreLinq\MoreEnumerable.MaxBy.cs" />
+  </files>
+</package>

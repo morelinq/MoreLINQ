@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>MoreLinq.Embedded.Enumerable.SkipUntil</id>
+    <version>1.0</version>
+    <title>MoreLINQ MoreEnumerable.SkipUntil for C#</title>
+    <authors>MoreLINQ Developers</authors>
+    <owners>Jon Skeet, Atif Aziz</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Enhances LINQ to Objects with the following method: SkipUntil</summary>
+    <description>Enhances LINQ to Objects with the following method: SkipUntil. Skips items from the input sequence until the given predicate returns true when applied to the current source item; that item will be the last skipped.</description>
+    <language>en-US</language>
+    <tags>linq extensions</tags>
+  </metadata>
+  <files>
+    <file src="..\MoreLinq\SkipUntil.cs" target="content\net35\MoreLinq\MoreEnumerable.SkipUntil.cs" />
+  </files>
+</package>
