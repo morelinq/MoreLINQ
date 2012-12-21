@@ -114,6 +114,9 @@
     <Compile Include="Zip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Zip.stub.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="EquiZip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
