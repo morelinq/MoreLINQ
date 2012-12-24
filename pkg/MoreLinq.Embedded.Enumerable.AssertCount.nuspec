@@ -9,7 +9,7 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: AssertCount (2 overloads)</summary>
+    <summary>Enhances LINQ to Objects with the following method: AssertCount</summary>
     <description>Enhances LINQ to Objects with the following method: AssertCount. Asserts that a source sequence contains a given count of elements.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
