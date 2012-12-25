@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,6 +14,45 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{8642E81B-3414-4C13-914F-05A4E600FE49}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{D89B7AF5-7615-47B7-B894-A722E66DB3D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D09D94-E557-4383-B5DB-9F15D43DAC72}"
+	ProjectSection(SolutionItems) = preProject
+		pkg\MoreLinq.Embedded.Enumerable.Acquire.nuspec = pkg\MoreLinq.Embedded.Enumerable.Acquire.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.AssertCount.nuspec = pkg\MoreLinq.Embedded.Enumerable.AssertCount.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Batch.nuspec = pkg\MoreLinq.Embedded.Enumerable.Batch.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Concat.nuspec = pkg\MoreLinq.Embedded.Enumerable.Concat.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Consume.nuspec = pkg\MoreLinq.Embedded.Enumerable.Consume.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.DistinctBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.DistinctBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.EquiZip.nuspec = pkg\MoreLinq.Embedded.Enumerable.EquiZip.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ExceptBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.ExceptBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ForEach.nuspec = pkg\MoreLinq.Embedded.Enumerable.ForEach.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Generate.nuspec = pkg\MoreLinq.Embedded.Enumerable.Generate.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.GenerateByIndex.nuspec = pkg\MoreLinq.Embedded.Enumerable.GenerateByIndex.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.GroupAdjacent.nuspec = pkg\MoreLinq.Embedded.Enumerable.GroupAdjacent.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Index.nuspec = pkg\MoreLinq.Embedded.Enumerable.Index.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.MaxBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.MaxBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.MinBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.MinBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.nuspec = pkg\MoreLinq.Embedded.Enumerable.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Pad.nuspec = pkg\MoreLinq.Embedded.Enumerable.Pad.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Pairwise.nuspec = pkg\MoreLinq.Embedded.Enumerable.Pairwise.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Pipe.nuspec = pkg\MoreLinq.Embedded.Enumerable.Pipe.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Prepend.nuspec = pkg\MoreLinq.Embedded.Enumerable.Prepend.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.PreScan.nuspec = pkg\MoreLinq.Embedded.Enumerable.PreScan.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Scan.nuspec = pkg\MoreLinq.Embedded.Enumerable.Scan.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.SingleOrFallback.nuspec = pkg\MoreLinq.Embedded.Enumerable.SingleOrFallback.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.SkipUntil.nuspec = pkg\MoreLinq.Embedded.Enumerable.SkipUntil.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Split.nuspec = pkg\MoreLinq.Embedded.Enumerable.Split.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.TakeEvery.nuspec = pkg\MoreLinq.Embedded.Enumerable.TakeEvery.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.TakeLast.nuspec = pkg\MoreLinq.Embedded.Enumerable.TakeLast.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.TakeUntil.nuspec = pkg\MoreLinq.Embedded.Enumerable.TakeUntil.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ToDataTable.nuspec = pkg\MoreLinq.Embedded.Enumerable.ToDataTable.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ToDelimitedString.nuspec = pkg\MoreLinq.Embedded.Enumerable.ToDelimitedString.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ToHashSet.nuspec = pkg\MoreLinq.Embedded.Enumerable.ToHashSet.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Trace.nuspec = pkg\MoreLinq.Embedded.Enumerable.Trace.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Zip.nuspec = pkg\MoreLinq.Embedded.Enumerable.Zip.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ZipLongest.nuspec = pkg\MoreLinq.Embedded.Enumerable.ZipLongest.nuspec
+		pkg\morelinq.nuspec = pkg\morelinq.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

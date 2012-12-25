@@ -13,6 +13,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Silverlight", "MoreLinq.Silverlight\MoreLinq.Silverlight.csproj", "{A1FC2FCD-4744-46F3-96A4-D72C7C20C0C7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{AA60FB03-AD39-4FB6-90DF-BCA3B77BAB1E}"
+	ProjectSection(SolutionItems) = preProject
+		pkg\MoreLinq.Embedded.Enumerable.Acquire.nuspec = pkg\MoreLinq.Embedded.Enumerable.Acquire.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.AssertCount.nuspec = pkg\MoreLinq.Embedded.Enumerable.AssertCount.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Batch.nuspec = pkg\MoreLinq.Embedded.Enumerable.Batch.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Concat.nuspec = pkg\MoreLinq.Embedded.Enumerable.Concat.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Consume.nuspec = pkg\MoreLinq.Embedded.Enumerable.Consume.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.DistinctBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.DistinctBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.EquiZip.nuspec = pkg\MoreLinq.Embedded.Enumerable.EquiZip.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ExceptBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.ExceptBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ForEach.nuspec = pkg\MoreLinq.Embedded.Enumerable.ForEach.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Generate.nuspec = pkg\MoreLinq.Embedded.Enumerable.Generate.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.GenerateByIndex.nuspec = pkg\MoreLinq.Embedded.Enumerable.GenerateByIndex.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.GroupAdjacent.nuspec = pkg\MoreLinq.Embedded.Enumerable.GroupAdjacent.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Index.nuspec = pkg\MoreLinq.Embedded.Enumerable.Index.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.MaxBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.MaxBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.MinBy.nuspec = pkg\MoreLinq.Embedded.Enumerable.MinBy.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.nuspec = pkg\MoreLinq.Embedded.Enumerable.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Pad.nuspec = pkg\MoreLinq.Embedded.Enumerable.Pad.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Pairwise.nuspec = pkg\MoreLinq.Embedded.Enumerable.Pairwise.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Pipe.nuspec = pkg\MoreLinq.Embedded.Enumerable.Pipe.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Prepend.nuspec = pkg\MoreLinq.Embedded.Enumerable.Prepend.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.PreScan.nuspec = pkg\MoreLinq.Embedded.Enumerable.PreScan.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Scan.nuspec = pkg\MoreLinq.Embedded.Enumerable.Scan.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.SingleOrFallback.nuspec = pkg\MoreLinq.Embedded.Enumerable.SingleOrFallback.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.SkipUntil.nuspec = pkg\MoreLinq.Embedded.Enumerable.SkipUntil.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Split.nuspec = pkg\MoreLinq.Embedded.Enumerable.Split.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.TakeEvery.nuspec = pkg\MoreLinq.Embedded.Enumerable.TakeEvery.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.TakeLast.nuspec = pkg\MoreLinq.Embedded.Enumerable.TakeLast.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.TakeUntil.nuspec = pkg\MoreLinq.Embedded.Enumerable.TakeUntil.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ToDataTable.nuspec = pkg\MoreLinq.Embedded.Enumerable.ToDataTable.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ToDelimitedString.nuspec = pkg\MoreLinq.Embedded.Enumerable.ToDelimitedString.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ToHashSet.nuspec = pkg\MoreLinq.Embedded.Enumerable.ToHashSet.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Trace.nuspec = pkg\MoreLinq.Embedded.Enumerable.Trace.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.Zip.nuspec = pkg\MoreLinq.Embedded.Enumerable.Zip.nuspec
+		pkg\MoreLinq.Embedded.Enumerable.ZipLongest.nuspec = pkg\MoreLinq.Embedded.Enumerable.ZipLongest.nuspec
+		pkg\morelinq.nuspec = pkg\morelinq.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
