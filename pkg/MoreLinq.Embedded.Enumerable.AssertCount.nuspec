@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.AssertCount</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.AssertCount for C# (Embedded)</title>
+    <title>MoreLINQ's AssertCount for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: AssertCount</summary>
-    <description>Enhances LINQ to Objects with the following method: AssertCount. Asserts that a source sequence contains a given count of elements.</description>
+    <summary>Enhances LINQ to Objects with the method `AssertCount` </summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `AssertCount`. Asserts that a source sequence contains a given count of elements.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

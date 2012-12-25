@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.Prepend</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.Prepend for C# (Embedded)</title>
+    <title>MoreLINQ's Prepend for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: Prepend</summary>
-    <description>Enhances LINQ to Objects with the following method: Prepend. Prepends a single value to a sequence.</description>
+    <summary>Enhances LINQ to Objects with the method `Prepend` </summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `Prepend`. Prepends a single value to a sequence.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

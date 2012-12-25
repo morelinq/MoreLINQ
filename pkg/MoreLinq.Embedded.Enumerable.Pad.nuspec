@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.Pad</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.Pad for C# (Embedded)</title>
+    <title>MoreLINQ's Pad for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: Pad (3 overloads)</summary>
-    <description>Enhances LINQ to Objects with the following method: Pad. Pads a sequence with default values if it is narrower (shorter in length) than a given width.</description>
+    <summary>Enhances LINQ to Objects with the method `Pad`  (3 overloads)</summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `Pad`. Pads a sequence with default values if it is narrower (shorter in length) than a given width.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

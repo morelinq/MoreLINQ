@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.MinBy</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.MinBy for C# (Embedded)</title>
+    <title>MoreLINQ's MinBy for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: MinBy (2 overloads)</summary>
-    <description>Enhances LINQ to Objects with the following method: MinBy. Returns the minimal element of the given sequence, based on the given projection.</description>
+    <summary>Enhances LINQ to Objects with the method `MinBy`  (2 overloads)</summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `MinBy`. Returns the minimal element of the given sequence, based on the given projection.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

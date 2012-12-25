@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.TakeUntil</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.TakeUntil for C# (Embedded)</title>
+    <title>MoreLINQ's TakeUntil for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: TakeUntil</summary>
-    <description>Enhances LINQ to Objects with the following method: TakeUntil. Returns items from the input sequence until the given predicate returns true when applied to the current source item; that item will be the last returned.</description>
+    <summary>Enhances LINQ to Objects with the method `TakeUntil` </summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `TakeUntil`. Returns items from the input sequence until the given predicate returns true when applied to the current source item; that item will be the last returned.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

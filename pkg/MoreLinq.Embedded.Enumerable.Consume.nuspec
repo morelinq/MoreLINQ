@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.Consume</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.Consume for C# (Embedded)</title>
+    <title>MoreLINQ's Consume for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: Consume</summary>
-    <description>Enhances LINQ to Objects with the following method: Consume. Completely consumes the given sequence. This method uses immediate execution, and doesn't store any data during execution.</description>
+    <summary>Enhances LINQ to Objects with the method `Consume` </summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `Consume`. Completely consumes the given sequence. This method uses immediate execution, and doesn't store any data during execution.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

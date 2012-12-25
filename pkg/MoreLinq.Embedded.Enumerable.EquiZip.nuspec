@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.EquiZip</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.EquiZip for C# (Embedded)</title>
+    <title>MoreLINQ's EquiZip for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: EquiZip</summary>
-    <description>Enhances LINQ to Objects with the following method: EquiZip. Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</description>
+    <summary>Enhances LINQ to Objects with the method `EquiZip` </summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `EquiZip`. Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.ForEach</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.ForEach for C# (Embedded)</title>
+    <title>MoreLINQ's ForEach for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: ForEach</summary>
-    <description>Enhances LINQ to Objects with the following method: ForEach. Immediately executes the given action on each element in the source sequence.</description>
+    <summary>Enhances LINQ to Objects with the method `ForEach` </summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `ForEach`. Immediately executes the given action on each element in the source sequence.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.Generate</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.Generate for C# (Embedded)</title>
+    <title>MoreLINQ's Generate for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: Generate (2 overloads)</summary>
-    <description>Enhances LINQ to Objects with the following method: Generate. Returns a sequence of values based on indexes.</description>
+    <summary>Enhances LINQ to Objects with the method `Generate`  (2 overloads)</summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `Generate`. Returns a sequence of values based on indexes.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

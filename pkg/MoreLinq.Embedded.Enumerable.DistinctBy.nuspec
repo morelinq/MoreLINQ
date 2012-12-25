@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.DistinctBy</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.DistinctBy for C# (Embedded)</title>
+    <title>MoreLINQ's DistinctBy for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: DistinctBy (2 overloads)</summary>
-    <description>Enhances LINQ to Objects with the following method: DistinctBy. Returns all distinct elements of the given source, where "distinctness" is determined via a projection and the default eqaulity comparer for the projected type.</description>
+    <summary>Enhances LINQ to Objects with the method `DistinctBy`  (2 overloads)</summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `DistinctBy`. Returns all distinct elements of the given source, where "distinctness" is determined via a projection and the default eqaulity comparer for the projected type.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>

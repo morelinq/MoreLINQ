@@ -3,14 +3,14 @@
   <metadata>
     <id>MoreLinq.Embedded.Enumerable.Index</id>
     <version>1.0</version>
-    <title>MoreLINQ MoreEnumerable.Index for C# (Embedded)</title>
+    <title>MoreLINQ's Index for C# Sequences (Embedded)</title>
     <authors>MoreLINQ Developers</authors>
     <owners>Jon Skeet, Atif Aziz</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the following method: Index (2 overloads)</summary>
-    <description>Enhances LINQ to Objects with the following method: Index. Returns a sequence of where the key is the zero-based index of the value in the source sequence.</description>
+    <summary>Enhances LINQ to Objects with the method `Index`  (2 overloads)</summary>
+    <description>C# source implementation that enhances LINQ to Objects with the method `Index`. Returns a sequence of where the key is the zero-based index of the value in the source sequence.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
   </metadata>
