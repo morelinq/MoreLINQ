@@ -13,6 +13,9 @@
     <description>C# source implementation that enhances LINQ to Objects with the method `Concat`. Returns a sequence consisting of the head element and the given tail elements.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
+    <dependencies>
+      <dependency id="MoreLinq.Embedded.Enumerable.Prepend" version="1.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\MoreLinq\Concat.cs" target="content\net35\MoreLinq\MoreEnumerable.Concat.cs" />

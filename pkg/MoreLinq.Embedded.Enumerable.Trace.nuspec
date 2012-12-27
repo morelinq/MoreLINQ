@@ -13,6 +13,9 @@
     <description>C# source implementation that enhances LINQ to Objects with the method `Trace`. Traces the elements of a source sequence for diagnostics.</description>
     <language>en-US</language>
     <tags>linq extensions</tags>
+    <dependencies>
+      <dependency id="MoreLinq.Embedded.Enumerable.Pipe" version="1.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\MoreLinq\Trace.cs" target="content\net35\MoreLinq\MoreEnumerable.Trace.cs" />
