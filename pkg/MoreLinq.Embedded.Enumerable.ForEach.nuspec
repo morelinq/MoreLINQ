@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
-  <metadata>
-    <id>MoreLinq.Embedded.Enumerable.ForEach</id>
-    <version>1.0</version>
-    <title>MoreLINQ's ForEach for C# Sequences (Embedded)</title>
-    <authors>MoreLINQ Developers</authors>
-    <owners>Jon Skeet, Atif Aziz</owners>
-    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with the method `ForEach` </summary>
-    <description>C# source implementation that enhances LINQ to Objects with the method `ForEach`. Immediately executes the given action on each element in the source sequence.</description>
-    <language>en-US</language>
-    <tags>linq extensions</tags>
-  </metadata>
-  <files>
-    <file src="..\MoreLinq\ForEach.cs" target="content\net35\MoreLinq\MoreEnumerable.ForEach.cs" />
-  </files>
+    <metadata>
+        <id>MoreLinq.Embedded.Enumerable.ForEach</id>
+        <version>1.0</version>
+        <title>MoreLINQ's ForEach for C# Sequences (Embedded)</title>
+        <authors>MoreLINQ Developers</authors>
+        <owners>Jon Skeet, Atif Aziz</owners>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>Enhances LINQ to Objects with the method `ForEach` </summary>
+        <description>C# source implementation that enhances LINQ to Objects with the method `ForEach`. Immediately executes the given action on each element in the source sequence.</description>
+        <language>en-US</language>
+        <tags>linq extensions</tags>
+    </metadata>
+    <files>
+        <file src="..\MoreLinq\ForEach.cs" target="content\net35\MoreLinq\MoreEnumerable.ForEach.cs" />
+    </files>
 </package>

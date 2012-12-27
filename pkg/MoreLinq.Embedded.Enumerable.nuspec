@@ -1,54 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
-  <metadata>
-    <id>MoreLinq.Embedded.Enumerable</id>
-    <version>1.0</version>
-    <title>MoreLINQ for C# Sequences (Embedded)</title>
-    <authors>MoreLINQ Developers</authors>
-    <owners>Jon Skeet, Atif Aziz</owners>
-    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
-    <description>C# source implementation that enhances LINQ to Objects with the following methods: Acquire, AssertCount, Batch, Concat, Consume, DistinctBy, EquiZip, ExceptBy, ForEach, Generate, GenerateByIndex, GroupAdjacent, Index, MaxBy, MinBy, Pad, Pairwise, Pipe, Prepend, PreScan, Scan, SingleOrFallback, SkipUntil, Split, TakeEvery, TakeLast, TakeUntil, ToDataTable, ToDelimitedString, ToHashSet, Trace, Zip, ZipLongest</description>
-    <language>en-US</language>
-    <tags>linq extensions</tags>
-    <dependencies>
-      <dependency id="MoreLinq.Embedded.Enumerable.Acquire" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.AssertCount" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Batch" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Concat" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Consume" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.DistinctBy" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.EquiZip" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.ExceptBy" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.ForEach" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Generate" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.GenerateByIndex" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.GroupAdjacent" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Index" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.MaxBy" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.MinBy" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Pad" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Pairwise" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Pipe" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Prepend" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.PreScan" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Scan" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.SingleOrFallback" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.SkipUntil" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Split" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.TakeEvery" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.TakeLast" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.TakeUntil" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.ToDataTable" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.ToDelimitedString" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.ToHashSet" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Trace" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.Zip" version="1.0" />
-      <dependency id="MoreLinq.Embedded.Enumerable.ZipLongest" version="1.0" />
-    </dependencies>
-  </metadata>
+    <metadata>
+        <id>MoreLinq.Embedded.Enumerable</id>
+        <version>1.0</version>
+        <title>MoreLINQ for C# Sequences (Embedded)</title>
+        <authors>MoreLINQ Developers</authors>
+        <owners>Jon Skeet, Atif Aziz</owners>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>Enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
+        <description>C# source implementation that enhances LINQ to Objects with the following methods: Acquire, AssertCount, Batch, Concat, Consume, DistinctBy, EquiZip, ExceptBy, ForEach, Generate, GenerateByIndex, GroupAdjacent, Index, MaxBy, MinBy, Pad, Pairwise, Pipe, Prepend, PreScan, Scan, SingleOrFallback, SkipUntil, Split, TakeEvery, TakeLast, TakeUntil, ToDataTable, ToDelimitedString, ToHashSet, Trace, Zip, ZipLongest</description>
+        <language>en-US</language>
+        <tags>linq extensions</tags>
+        <dependencies>
+            <dependency id="MoreLinq.Embedded.Enumerable.Acquire" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.AssertCount" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Batch" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Concat" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Consume" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.DistinctBy" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.EquiZip" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.ExceptBy" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.ForEach" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Generate" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.GenerateByIndex" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.GroupAdjacent" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Index" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.MaxBy" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.MinBy" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Pad" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Pairwise" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Pipe" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Prepend" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.PreScan" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Scan" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.SingleOrFallback" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.SkipUntil" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Split" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.TakeEvery" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.TakeLast" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.TakeUntil" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.ToDataTable" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.ToDelimitedString" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.ToHashSet" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Trace" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.Zip" version="1.0" />
+            <dependency id="MoreLinq.Embedded.Enumerable.ZipLongest" version="1.0" />
+        </dependencies>
+    </metadata>
     <files>
         <file src="..\COPYING.txt" target="lib\COPYING.txt" />
     </files>
