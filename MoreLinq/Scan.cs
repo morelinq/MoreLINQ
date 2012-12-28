@@ -65,7 +65,7 @@ namespace MoreLinq
             {
                 if (!i.MoveNext())
                 {
-                    throw new InvalidOperationException("source must not be empty");
+                    throw new InvalidOperationException("Sequence contains no elements");
                 }
                 var aggregator = i.Current;
 

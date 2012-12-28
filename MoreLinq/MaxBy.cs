@@ -76,7 +76,7 @@ namespace MoreLinq
             {
                 if (!sourceIterator.MoveNext())
                 {
-                    throw new InvalidOperationException("Sequence was empty");
+                    throw new InvalidOperationException("Sequence contains no elements");
                 }
                 var max = sourceIterator.Current;
                 var maxKey = selector(max);
