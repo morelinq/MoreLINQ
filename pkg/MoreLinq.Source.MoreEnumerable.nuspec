@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable</id>
-        <version>1.0</version>
+        <version>1.0.0</version>
         <title>MoreLINQ for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -14,39 +14,39 @@
         <language>en-US</language>
         <tags>linq extensions</tags>
         <dependencies>
-            <dependency id="MoreLinq.Source.MoreEnumerable.Acquire" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.AssertCount" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Batch" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Concat" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Consume" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.DistinctBy" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.EquiZip" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.ExceptBy" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.ForEach" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Generate" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.GenerateByIndex" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.GroupAdjacent" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Index" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.MaxBy" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.MinBy" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Pad" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Pairwise" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Pipe" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.PreScan" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Scan" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.SingleOrFallback" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.SkipUntil" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Split" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.TakeEvery" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.TakeLast" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.TakeUntil" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.ToDataTable" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.ToDelimitedString" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.ToHashSet" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Trace" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.Zip" version="1.0" />
-            <dependency id="MoreLinq.Source.MoreEnumerable.ZipLongest" version="1.0" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Acquire" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.AssertCount" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Batch" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Concat" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Consume" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.DistinctBy" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.EquiZip" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.ExceptBy" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.ForEach" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Generate" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.GenerateByIndex" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.GroupAdjacent" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Index" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.MaxBy" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.MinBy" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Pad" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Pairwise" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Pipe" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.PreScan" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Scan" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.SingleOrFallback" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.SkipUntil" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Split" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.TakeEvery" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.TakeLast" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.TakeUntil" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.ToDataTable" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.ToDelimitedString" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.ToHashSet" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Trace" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Zip" version="[1,2)" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.ZipLongest" version="[1,2)" />
         </dependencies>
     </metadata>
     <files>

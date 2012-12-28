@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.Concat</id>
-        <version>1.0</version>
+        <version>1.0.0</version>
         <title>MoreLINQ's Concat for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -14,7 +14,7 @@
         <language>en-US</language>
         <tags>linq extensions</tags>
         <dependencies>
-            <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="1.0" />
+            <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
         </dependencies>
     </metadata>
     <files>

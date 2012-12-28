@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.Batch</id>
-        <version>1.0</version>
+        <version>1.0.0</version>
         <title>MoreLINQ's Batch for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
