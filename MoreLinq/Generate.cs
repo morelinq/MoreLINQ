@@ -35,9 +35,9 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
-        /// IEnumerable&lt;int&gt; result = Sequence.Generate(2, n => n * n).Take(6);
+        /// IEnumerable&lt;int&gt; result = Sequence.Generate(2, n => n * n).Take(5);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 2, 4, 8, 16, 32, and 64, in turn.
+        /// The <c>result</c> variable, when iterated over, will yield 2, 4, 16, 256, and 65536, in turn.
         /// </example>        
 
         public static IEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, TResult> generator)
