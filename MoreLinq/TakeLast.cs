@@ -28,7 +28,7 @@ namespace MoreLinq
         /// a sequence.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The sequence to pad.</param>
+        /// <param name="source">The sequence to return the last element of.</param>
         /// <param name="count">The number of elements to return.</param>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> that contains the specified number of 
