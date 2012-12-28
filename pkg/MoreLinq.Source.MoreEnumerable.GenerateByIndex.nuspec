@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>MoreLinq.Source.MoreEnumerable.GenerateByIndex</id>
+        <version>1.0</version>
+        <title>MoreLINQ's GenerateByIndex for C# Sequences (Source)</title>
+        <authors>MoreLINQ Developers</authors>
+        <owners>Jon Skeet, Atif Aziz</owners>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <summary>Enhances LINQ to Objects with the method GenerateByIndex</summary>
+        <description>C# source implementation that enhances LINQ to Objects with the method GenerateByIndex. Returns a sequence of values based on indexes.</description>
+        <language>en-US</language>
+        <tags>linq extensions</tags>
+    </metadata>
+    <files>
+        <file src="..\MoreLinq\GenerateByIndex.cs" target="content\net35\MoreLinq\MoreEnumerable.GenerateByIndex.cs" />
+    </files>
+</package>
