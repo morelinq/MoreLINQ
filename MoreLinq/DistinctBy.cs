@@ -15,14 +15,16 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
+
 #if NO_HASHSET
 using System.Linq;
 #endif
 
 namespace MoreLinq
 {
+    using System;
+    using System.Collections.Generic;
+
     static partial class MoreEnumerable
     {
         /// <summary>

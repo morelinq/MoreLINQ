@@ -15,15 +15,15 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-
 namespace MoreLinq
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+
     static partial class MoreEnumerable
     {
         private static MemberInfo GetAccessedMember(LambdaExpression lambda)

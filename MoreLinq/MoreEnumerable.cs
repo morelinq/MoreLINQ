@@ -15,10 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-
 namespace MoreLinq
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Provides a set of static methods for querying objects that 
     /// implement <see cref="IEnumerable{T}" />. The actual methods

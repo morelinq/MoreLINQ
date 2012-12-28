@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Runtime.Serialization;
-
 namespace MoreLinq
 {
+    using System;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// The exception that is thrown for a sequence that fails a condition.
     /// </summary>

@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
 using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq
 {
     using System;
+    using System.Collections.Generic;
 
     static partial class MoreEnumerable
     {
