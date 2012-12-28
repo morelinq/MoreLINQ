@@ -44,7 +44,7 @@ namespace MoreLinq.Test
         [Test]
         public void PipeWithSequence()
         {
-            List<int> results = new List<int>();
+            var results = new List<int>();
             var returned = MoreEnumerable.Pipe(new[] { 1, 2, 3 }, results.Add);
             // Lazy - nothing has executed yet
             Assert.That(results, Is.Empty);

@@ -34,7 +34,7 @@ namespace MoreLinq.Test
         [Test]
         public void ConsumeReallyConsumes()
         {
-            int counter = 0;
+            var counter = 0;
             var sequence = LinqEnumerable.Range(0, 10).Pipe(x => counter++);
             sequence.Consume();
             Assert.AreEqual(10, counter);

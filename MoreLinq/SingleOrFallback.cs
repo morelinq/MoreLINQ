@@ -44,7 +44,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (fallback == null) throw new ArgumentNullException("fallback");
 
-            IList<TSource> list = source as IList<TSource>;
+            var list = source as IList<TSource>;
             if (list != null)
             {
                 switch (list.Count)
@@ -60,13 +60,13 @@ namespace MoreLinq
             }
             else
             {
-                using (IEnumerator<TSource> iterator = source.GetEnumerator())
+                using (var iterator = source.GetEnumerator())
                 {
                     if (!iterator.MoveNext())
                     {
                         return fallback();
                     }
-                    TSource first = iterator.Current;
+                    var first = iterator.Current;
 
                     // Return if there's no next element
                     if (!iterator.MoveNext())

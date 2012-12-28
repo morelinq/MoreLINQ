@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         [Test]
         public void ForEachWithSequence()
         {
-            List<int> results = new List<int>();
+            var results = new List<int>();
             MoreEnumerable.ForEach(new[] { 1, 2, 3 }, results.Add);
             results.AssertSequenceEqual(1, 2, 3);
         }

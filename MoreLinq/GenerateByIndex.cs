@@ -46,7 +46,7 @@ namespace MoreLinq
         {
             // Looping over 0...int.MaxValue inclusive is a pain. Simplest is to go exclusive,
             // then go again for int.MaxValue.
-            for (int i = 0; i < int.MaxValue; i++)
+            for (var i = 0; i < int.MaxValue; i++)
             {
                 yield return generator(i);
             }

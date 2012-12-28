@@ -45,7 +45,7 @@ namespace MoreLinq
 
         private static IEnumerable<T> PipeImpl<T>(this IEnumerable<T> source, Action<T> action)
         {
-            foreach (T element in source)
+            foreach (var element in source)
             {
                 action(element);
                 yield return element;

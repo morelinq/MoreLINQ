@@ -33,7 +33,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException("source");
             if (action == null) throw new ArgumentNullException("action");
-            foreach (T element in source)
+            foreach (var element in source)
             {
                 action(element);
             }

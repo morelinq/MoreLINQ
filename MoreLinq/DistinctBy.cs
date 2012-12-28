@@ -79,8 +79,8 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
 #if !NO_HASHSET
-            HashSet<TKey> knownKeys = new HashSet<TKey>(comparer);
-            foreach (TSource element in source)
+            var knownKeys = new HashSet<TKey>(comparer);
+            foreach (var element in source)
             {
                 if (knownKeys.Add(keySelector(element)))
                 {

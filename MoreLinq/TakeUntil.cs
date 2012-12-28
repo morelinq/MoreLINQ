@@ -61,7 +61,7 @@ namespace MoreLinq
 
         private static IEnumerable<TSource> TakeUntilImpl<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            foreach (TSource item in source)
+            foreach (var item in source)
             {
                 yield return item;
                 if (predicate(item))

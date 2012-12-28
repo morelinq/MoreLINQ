@@ -72,18 +72,18 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (selector == null) throw new ArgumentNullException("selector");
             if (comparer == null) throw new ArgumentNullException("comparer");
-            using (IEnumerator<TSource> sourceIterator = source.GetEnumerator())
+            using (var sourceIterator = source.GetEnumerator())
             {
                 if (!sourceIterator.MoveNext())
                 {
                     throw new InvalidOperationException("Sequence was empty");
                 }
-                TSource min = sourceIterator.Current;
-                TKey minKey = selector(min);
+                var min = sourceIterator.Current;
+                var minKey = selector(min);
                 while (sourceIterator.MoveNext())
                 {
-                    TSource candidate = sourceIterator.Current;
-                    TKey candidateProjected = selector(candidate);
+                    var candidate = sourceIterator.Current;
+                    var candidateProjected = selector(candidate);
                     if (comparer.Compare(candidateProjected, minKey) < 0)
                     {
                         min = candidate;

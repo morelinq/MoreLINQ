@@ -28,7 +28,7 @@ namespace MoreLinq
     {
         private static MemberInfo GetAccessedMember(LambdaExpression lambda)
         {
-            Expression body = lambda.Body;
+            var body = lambda.Body;
 
             // If it's a field access, boxing was used, we need the field
             if ((body.NodeType == ExpressionType.Convert) || (body.NodeType == ExpressionType.ConvertChecked))
@@ -37,7 +37,7 @@ namespace MoreLinq
             }
 
             // Check if the MemberExpression is valid and is a "first level" member access e.g. not a.b.c 
-            MemberExpression memberExpression = body as MemberExpression;
+            var memberExpression = body as MemberExpression;
             if ((memberExpression == null) || (memberExpression.Expression.NodeType != ExpressionType.Parameter))
             {
                 throw new ArgumentException(string.Format("Illegal expression: {0}", lambda), "lambda");

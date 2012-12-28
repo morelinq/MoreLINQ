@@ -65,7 +65,7 @@ namespace MoreLinq.Test
         public ToDataTableTest()
         {
             m_TestObjects = new List<TestObject>();
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 m_TestObjects.Add(new TestObject(i));
             }
@@ -101,7 +101,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableTableWithWrongColumnNames()
         {
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("Test");
 
             m_TestObjects.ToDataTable(dt);
@@ -111,7 +111,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableTableWithWrongColumnDataType()
         {
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
             m_TestObjects.ToDataTable(dt, t=>t.AString);
@@ -142,7 +142,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableSchemaInDeclarationOrder()
         {
-            DataTable dt = m_TestObjects.ToDataTable();
+            var dt = m_TestObjects.ToDataTable();
 
             // Assert properties first, then fields, then in declaration order
 
@@ -165,7 +165,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableContainsAllElements()
         {
-            DataTable dt = m_TestObjects.ToDataTable();
+            var dt = m_TestObjects.ToDataTable();
             Assert.AreEqual(m_TestObjects.Count, dt.Rows.Count);
         }
         
@@ -173,7 +173,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableWithExpression()
         {
-            DataTable dt = m_TestObjects.ToDataTable(t => t.AString);
+            var dt = m_TestObjects.ToDataTable(t => t.AString);
 
             Assert.AreEqual("AString", dt.Columns[0].Caption);
             Assert.AreEqual(typeof(string), dt.Columns[0].DataType);

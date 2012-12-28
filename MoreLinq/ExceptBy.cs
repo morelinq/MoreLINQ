@@ -84,10 +84,10 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer)
         {
-            HashSet<TKey> keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
+            var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
             foreach (var element in first)
             {
-                TKey key = keySelector(element);
+                var key = keySelector(element);
                 if (keys.Contains(key))
                 {
                     continue;

@@ -32,9 +32,9 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithNonEmptyTailSequence()
         {
-            string[] tail = { "second", "third" };
-            string head = "first";
-            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
+            var tail = new[] { "second", "third" };
+            var head = "first";
+            var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -42,8 +42,8 @@ namespace MoreLinq.Test
         public void ConcatWithEmptyTailSequence()
         {
             string[] tail = { };
-            string head = "first";
-            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
+            var head = "first";
+            var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -57,9 +57,9 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithNullHead()
         {
-            string[] tail = { "second", "third" };
+            var tail = new[] { "second", "third" };
             string head = null;
-            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
+            var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual(null, "second", "third");
         }
 
@@ -74,9 +74,9 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithNonEmptyHeadSequence()
         {
-            string[] head = { "first", "second" };
-            string tail = "third";
-            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
+            var head = new[] { "first", "second" };
+            var tail = "third";
+            var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -84,8 +84,8 @@ namespace MoreLinq.Test
         public void ConcatWithEmptyHeadSequence()
         {
             string[] head = { };
-            string tail = "first";
-            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
+            var tail = "first";
+            var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -99,9 +99,9 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithNullTail()
         {
-            string[] head = { "first", "second" };
+            var head = new[] { "first", "second" };
             string tail = null;
-            IEnumerable<string> whole = MoreEnumerable.Concat(head, tail);
+            var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first", "second", null);
         }
 

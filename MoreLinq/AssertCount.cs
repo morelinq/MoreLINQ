@@ -106,7 +106,7 @@ namespace MoreLinq
             int count, Func<int, int, Exception> errorSelector)
         {
             var iterations = 0;
-            foreach (TSource element in source)
+            foreach (var element in source)
             {
                 iterations++;
                 if (iterations > count)

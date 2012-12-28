@@ -48,7 +48,7 @@ namespace MoreLinq
 
         private static IEnumerable<TResult> GenerateImpl<TResult>(TResult initial, Func<TResult, TResult> generator)
         {
-            TResult current = initial;
+            var current = initial;
             while (true)
             {
                 yield return current;
