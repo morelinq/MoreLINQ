@@ -17,13 +17,13 @@
 //
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 namespace MoreLinq
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+
     public static partial class MoreEnumerable
     {
         /// <summary>

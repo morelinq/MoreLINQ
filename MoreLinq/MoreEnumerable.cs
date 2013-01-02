@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System.Diagnostics;
-using System.Linq;
 namespace MoreLinq
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Provides a set of static methods for querying objects that 

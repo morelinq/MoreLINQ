@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace MoreLinq
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Extension methods for generating random sequences.
     /// </summary>

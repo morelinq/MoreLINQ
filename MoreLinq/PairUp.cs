@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace MoreLinq
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Enumeration defining strategies used by PairUp() for handling sequences that are not even in length.
     /// </summary>
