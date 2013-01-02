@@ -1,4 +1,4 @@
-﻿
+
 namespace MoreLinq.Test
 {
     internal static class Combinatorics

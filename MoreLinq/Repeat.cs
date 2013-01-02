@@ -1,4 +1,4 @@
-﻿namespace MoreLinq
+namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
