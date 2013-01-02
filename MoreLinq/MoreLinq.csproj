@@ -83,6 +83,11 @@
     <Compile Include="ToDataTable.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ToDelimitedString.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
+    </Compile>
     <Compile Include="ToHashSet.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -153,10 +158,18 @@
     <Compile Include="ToDelimitedString.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <None Include="ToDelimitedString.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </None>
     <Compile Include="SequenceException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

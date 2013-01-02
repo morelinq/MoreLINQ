@@ -2,19 +2,21 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.ToDelimitedString</id>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <title>MoreLINQ's ToDelimitedString for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Enhances LINQ to Objects with the method ToDelimitedString  (2 overloads)</summary>
+        <summary>Enhances LINQ to Objects with the method ToDelimitedString  (30 overloads)</summary>
         <description>C# source implementation that enhances LINQ to Objects with the method ToDelimitedString. Creates a delimited string from a sequence of values. The delimiter used depends on the current culture of the executing thread.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
+        <releaseNotes>New overloads to avoid boxing for commonly used value types</releaseNotes>
     </metadata>
     <files>
         <file src="..\MoreLinq\ToDelimitedString.cs" target="content\net35\MoreLinq\MoreEnumerable.ToDelimitedString.cs" />
+        <file src="..\MoreLinq\ToDelimitedString.g.cs" target="content\net35\MoreLinq\MoreEnumerable.ToDelimitedString.g.cs" />
     </files>
 </package>

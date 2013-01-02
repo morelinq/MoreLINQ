@@ -1,3 +1,11 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.CodeDom" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="Microsoft.CSharp" #>
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
@@ -19,13 +27,24 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Linq;
     using System.Text;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
+<#      var cscp = new CSharpCodeProvider();
+        var types = 
+            from method in typeof(StringBuilder).GetMethods(BindingFlags.Public | BindingFlags.Instance)
+            where "Append" == method.Name
+            select method.GetParameters() into parameters
+            where parameters.Length == 1
+            select parameters.First().ParameterType into type
+            where type.IsValueType || type == typeof(string)
+            select new 
+            {
+                Type = type,
+                Name = cscp.GetTypeOutput(new CodeTypeReference(type)),
+            };
+        foreach (var type in types) { #>
         /// <summary>
         /// Creates a delimited string from a sequence of values. The 
         /// delimiter used depends on the current culture of the executing thread.
@@ -33,13 +52,17 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
-        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
 
-        public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source)
+        public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source)
         {
             return ToDelimitedString(source, null);
+        }
+
+        static partial class StringBuilderAppenders 
+        {
+            public static readonly Func<StringBuilder, <#= type.Name #>, StringBuilder> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
         }
 
         /// <summary>
@@ -49,34 +72,18 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
-        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
         }
 
-        static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(append != null);
+<#      } #>
 
-            delimiter = delimiter ?? CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-            var sb = new StringBuilder();
-            var i = 0;
-
-            foreach (var value in source)
-            {
-                if (i++ > 0) sb.Append(delimiter);
-                append(sb, value);
-            }
-
-            return sb.ToString();
-        }
+        static partial class StringBuilderAppenders {}
     }
 }
