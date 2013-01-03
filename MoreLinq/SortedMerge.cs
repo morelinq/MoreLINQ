@@ -82,7 +82,7 @@ namespace MoreLinq
         /// </remarks>
         private static IEnumerable<T> SortedMergeImpl<T>(Func<T, T, bool> precedenceFunc, IEnumerable<IEnumerable<T>> otherSequences)
         {
-            using (var disposables = new DisposableGroup<T>(otherSequences.GetEnumerators()))
+            using (var disposables = new DisposableGroup<T>(otherSequences.Select(e => e.GetEnumerator()).Acquire()))
             {
                 var iterators = disposables.Iterators;
 
