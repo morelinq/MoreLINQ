@@ -2,6 +2,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     public static partial class MoreEnumerable
@@ -64,20 +65,23 @@ namespace MoreLinq
         private static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences, ImbalancedInterleaveStrategy imbalanceStrategy)
         {
             // produce an iterator collection for all IEnumerable<T> instancess passed to us
-            var seqIterators = new List<IEnumerator<T>>(sequences.Select(e => e.GetEnumerator()).Acquire());
+            var iterators = sequences.Select(e => e.GetEnumerator()).Acquire();
+            List<IEnumerator<T>> iteratorList = null;
 
             try
             {
+                iteratorList = new List<IEnumerator<T>>(iterators);
+                iterators = null;
                 var shouldContinue = true;
                 var consumedIterators = 0;
-                var iterCount = seqIterators.Count;
+                var iterCount = iteratorList.Count;
 
                 while (shouldContinue)
                 {
                     // advance every iterator and verify a value exists to be yielded
                     for (var index = 0; index < iterCount; index++)
                     {
-                        if (!seqIterators[index].MoveNext())
+                        if (!iteratorList[index].MoveNext())
                         {
                             // check if all iterators have been consumed and we can terminate
                             // or if the imbalance strategy informs us that we MUST terminate
@@ -87,18 +91,18 @@ namespace MoreLinq
                                 break;
                             }
 
-                            seqIterators[index].Dispose(); // dispose the iterator sice we no longer need it
+                            iteratorList[index].Dispose(); // dispose the iterator sice we no longer need it
 
                             // otherwise, apply the imbalance strategy
                             switch (imbalanceStrategy)
                             {
                                 case ImbalancedInterleaveStrategy.Pad:
-                                    var newIter = seqIterators[index] = Generate(default(T), x => default(T)).GetEnumerator();
+                                    var newIter = iteratorList[index] = Generate(default(T), x => default(T)).GetEnumerator();
                                     newIter.MoveNext();
                                     break;
 
                                 case ImbalancedInterleaveStrategy.Skip:
-                                    seqIterators.RemoveAt(index); // no longer visit this particular iterator
+                                    iteratorList.RemoveAt(index); // no longer visit this particular iterator
                                     --iterCount; // reduce the expected number of iterators to visit
                                     --index; // decrement iterator index to compensate for index shifting
                                     --consumedIterators; // decrement consumer iterator count to stay in balance
@@ -113,15 +117,15 @@ namespace MoreLinq
                         // yield the values of each iterator's current position
                         for (var index = 0; index < iterCount; index++)
                         {
-                            yield return seqIterators[index].Current;
+                            yield return iteratorList[index].Current;
                         }
                     }
                 }
             }
             finally
             {
-                // ensure all remaining iterators are disposed
-                foreach (var iter in seqIterators)
+                Debug.Assert(iteratorList != null || iterators != null);
+                foreach (var iter in (iteratorList ?? (IList<IEnumerator<T>>) iterators))
                     iter.Dispose();
             }
         }
