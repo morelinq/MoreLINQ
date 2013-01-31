@@ -1,0 +1,67 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    partial class MoreEnumerable
+    {
+<#      const int max = 4;
+        var overloads = 
+            from i in Enumerable.Range(1, max)
+            let istr = i.ToString(CultureInfo.InvariantCulture)
+            select new 
+            {
+                Ts            = string.Join(", ", Enumerable.Repeat("T", i)),
+                Count         = i,
+                CountElements = istr + " " + (i == 1 ? "element" : "elements"),
+                CountArg      = istr,
+                FolderArgs    = string.Join(", ", Enumerable.Repeat("null", i - 1)
+                                                            .Concat(new[] { "folder" })
+                                                            .Concat(Enumerable.Repeat("null", max - i))),
+
+            };
+        
+        foreach (var e in overloads) { #>
+        /// <summary>
+        /// Returns the result of applying a function to a sequence of 
+        /// <#= e.CountElements #>.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers 
+        /// as many items of the source sequence as necessary.
+        /// </remarks>
+        /// <typeparam name="T">Type of element in the source sequence</typeparam>
+        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <param name="source">The sequence of items to fold.</param>
+        /// <param name="folder">Function to apply to the elements in the sequence.</param>
+
+        public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
+        {
+            return FoldImpl(source, <#= e.CountArg #>, <#= e.FolderArgs #>);
+        }
+
+<#      } #>
+    }
+}

@@ -88,6 +88,12 @@
       <Link>Batch.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\Fold.g.cs">
+      <Link>Fold.g.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Fold.g.tt</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\Index.cs">
       <Link>Index.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -200,6 +206,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MoreLinq\Fold.g.tt">
+      <Link>Fold.g.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Fold.g.cs</LastGenOutput>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </None>
     <None Include="..\MoreLinq\key.snk">
       <Link>key.snk</Link>
     </None>
@@ -229,6 +241,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

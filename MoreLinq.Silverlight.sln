@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{AA60
 		pkg\MoreLinq.Source.MoreEnumerable.DistinctBy.nuspec = pkg\MoreLinq.Source.MoreEnumerable.DistinctBy.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.EquiZip.nuspec = pkg\MoreLinq.Source.MoreEnumerable.EquiZip.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ExceptBy.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ExceptBy.nuspec
+		pkg\MoreLinq.Source.MoreEnumerable.Fold.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Fold.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ForEach.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ForEach.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Generate.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Generate.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.GenerateByIndex.nuspec = pkg\MoreLinq.Source.MoreEnumerable.GenerateByIndex.nuspec

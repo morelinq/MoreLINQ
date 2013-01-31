@@ -49,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fold.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Fold.g.tt</DependentUpon>
+    </Compile>
     <Compile Include="SkipUntil.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -161,6 +166,14 @@
     <None Include="ToDelimitedString.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </None>
+    <Compile Include="Fold.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <None Include="Fold.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Fold.g.cs</LastGenOutput>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </None>
     <Compile Include="SequenceException.cs" />
