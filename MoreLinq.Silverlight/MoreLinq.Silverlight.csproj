@@ -176,6 +176,12 @@
       <Link>ToDelimitedString.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\ToDelimitedString.g.cs">
+      <Link>ToDelimitedString.g.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\Trace.cs">
       <Link>Trace.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -196,6 +202,12 @@
   <ItemGroup>
     <None Include="..\MoreLinq\key.snk">
       <Link>key.snk</Link>
+    </None>
+    <None Include="..\MoreLinq\ToDelimitedString.g.tt">
+      <Link>ToDelimitedString.g.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
