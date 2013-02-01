@@ -38,30 +38,30 @@ namespace MoreLinq
                 throw new ArgumentNullException("folder");   // ReSharper restore NotResolvedInText
             }
 
-            using (var e = source.GetEnumerator())
+            T[] elements = null;
+            foreach (var e in source.Index().AssertCount(count, OnFolderSourceSizeErrorSelector))
+                (elements = elements ?? new T[count])[e.Key] = e.Value;
+
+            Debug.Assert(elements != null);
+
+            switch (count)
             {
-                T[] elements = null;
-                for (var i = 0; i < count; i++)
-                {
-                    if (!e.MoveNext()) 
-                        throw new Exception(string.Format(@"Sequence has fewer than {0:N0} element(s).", count));
-                    (elements = elements??new T[count])[i] = e.Current;
-                }
-                
-                if (e.MoveNext()) 
-                    throw new Exception(string.Format(@"Sequence has more than {0:N0} element(s).", count));
-                
-                Debug.Assert(elements != null);
-                
-                switch (count)
-                {
-                    case 1: return folder1(elements[0]);
-                    case 2: return folder2(elements[0], elements[1]);
-                    case 3: return folder3(elements[0], elements[1], elements[2]);
-                    case 4: return folder4(elements[0], elements[1], elements[2], elements[3]);
-                    default: throw new NotSupportedException();
-                }
+                case 1: return folder1(elements[0]);
+                case 2: return folder2(elements[0], elements[1]);
+                case 3: return folder3(elements[0], elements[1], elements[2]);
+                case 4: return folder4(elements[0], elements[1], elements[2], elements[3]);
+                default: throw new NotSupportedException();
             }
+        }
+
+        static readonly Func<int, int, Exception> OnFolderSourceSizeErrorSelector = OnFolderSourceSizeError;
+
+        static Exception OnFolderSourceSizeError(int cmp, int count)
+        {
+            var message = cmp < 0
+                        ? "Sequence contains too few elements when exactly {0} {1} expected."
+                        : "Sequence contains too many elements when exactly {0} {1} expected.";
+            return new Exception(string.Format(message, count.ToString("N0"), count == 1 ? "was" : "were"));
         }
     }
 }
