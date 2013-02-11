@@ -89,6 +89,13 @@ namespace MoreLinq.Test
 
         [Test]
         [ExpectedException(typeof(Exception))]
+        public void FoldWithEmptySequence()
+        {
+            Enumerable.Empty<int>().Fold(a => a);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Exception))]
         public void FoldWithTooManyItems()
         {
             Enumerable.Range(1, 3).Fold((a, b) => a + b);

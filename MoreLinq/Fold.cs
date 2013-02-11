@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     static partial class MoreEnumerable
     {
@@ -38,11 +37,9 @@ namespace MoreLinq
                 throw new ArgumentNullException("folder");   // ReSharper restore NotResolvedInText
             }
 
-            T[] elements = null;
+            var elements = new T[count];
             foreach (var e in source.Index().AssertCount(count, OnFolderSourceSizeErrorSelector))
-                (elements = elements ?? new T[count])[e.Key] = e.Value;
-
-            Debug.Assert(elements != null);
+                elements[e.Key] = e.Value;
 
             switch (count)
             {
