@@ -38,7 +38,7 @@ namespace MoreLinq
             }
 
             var elements = new T[count];
-            foreach (var e in source.Index().AssertCount(count, OnFolderSourceSizeErrorSelector))
+            foreach (var e in AssertCountImpl(source.Index(), count, OnFolderSourceSizeErrorSelector))
                 elements[e.Key] = e.Value;
 
             switch (count)
