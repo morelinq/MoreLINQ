@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.Concat</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <title>MoreLINQ's Concat for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -13,11 +13,21 @@
         <description>C# source implementation that enhances LINQ to Objects with the method Concat. Returns a sequence consisting of the head element and the given tail elements.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
+        <releaseNotes>Microsoft .NET Framework 2.0 support via LINQBridge</releaseNotes>
         <dependencies>
-            <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
+            <group>
+                <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
+            </group>
+            <group targetFramework="net35">
+                <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
+            </group>
+            <group targetFramework="net20">
+                <dependency id="LinqBridge.Embedded" />
+                <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
+            </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="..\MoreLinq\Concat.cs" target="content\net35\MoreLinq\MoreEnumerable.Concat.cs" />
+        <file src="..\MoreLinq\Concat.cs" target="content\net20\MoreLinq\MoreEnumerable.Concat.cs" />
     </files>
 </package>

@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.PreScan</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <title>MoreLINQ's PreScan for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -13,8 +13,15 @@
         <description>C# source implementation that enhances LINQ to Objects with the method PreScan. Performs a pre-scan (exclusive prefix sum) on a sequence of elements.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
+        <releaseNotes>Microsoft .NET Framework 2.0 support via LINQBridge</releaseNotes>
+        <dependencies>
+            <group targetFramework="net35" />
+            <group targetFramework="net20">
+                <dependency id="LinqBridge.Embedded" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
-        <file src="..\MoreLinq\PreScan.cs" target="content\net35\MoreLinq\MoreEnumerable.PreScan.cs" />
+        <file src="..\MoreLinq\PreScan.cs" target="content\net20\MoreLinq\MoreEnumerable.PreScan.cs" />
     </files>
 </package>
