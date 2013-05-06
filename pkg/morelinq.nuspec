@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>morelinq</id>
-        <version>1.0.15631-beta</version>
+        <version>1.0.15631</version>
         <title>MoreLINQ</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
