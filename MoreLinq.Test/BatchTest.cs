@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace MoreLinq.Test
 {
@@ -93,8 +92,8 @@ namespace MoreLinq.Test
             var result = MoreEnumerable.Batch(new[] { 1, 2, 3 }, 2);
             using (var reader = result.Read())
             {
-                Assert.That(reader.Read(), Is.Not.InstanceOfType(typeof(ICollection<int>)));
-                Assert.That(reader.Read(), Is.Not.InstanceOfType(typeof(ICollection<int>)));
+                Assert.That(reader.Read(), Is.Not.InstanceOf(typeof(ICollection<int>)));
+                Assert.That(reader.Read(), Is.Not.InstanceOf(typeof(ICollection<int>)));
                 reader.ReadEnd();
             }
         }
