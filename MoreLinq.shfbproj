@@ -18,20 +18,19 @@
     <OutputPath>.\docs\api\</OutputPath>
     <HtmlHelpName>Help</HtmlHelpName>
     <Language>en-US</Language>
-    <ProjectSummary>MoreLINQ fills in a few gaps left by LINQ to
-Objects.</ProjectSummary>
+    <ProjectSummary>MoreLINQ fills in a few gaps left by LINQ to Objects.</ProjectSummary>
     <DocumentationSources>
       <DocumentationSource sourceFile="MoreLinq\bin\Release\MoreLinq.dll" />
       <DocumentationSource sourceFile="MoreLinq\bin\Release\MoreLinq.xml" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
-    <CopyrightText>Copyright 2008-2012 Jon Skeet, All rights reserved.</CopyrightText>
+    <CopyrightText>Copyright 2008 Jon Skeet, All rights reserved.</CopyrightText>
     <FeedbackEMailAddress>morelinq-dev%40googlegroups.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>MoreLinq Google Groups</FeedbackEMailLinkText>
     <HelpTitle>MoreLinq</HelpTitle>
     <NamingMethod>MemberName</NamingMethod>
-    <Preliminary>True</Preliminary>
+    <Preliminary>False</Preliminary>
     <ComponentConfigurations>
       <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
         <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">

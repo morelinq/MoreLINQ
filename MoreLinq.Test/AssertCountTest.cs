@@ -17,7 +17,6 @@
 
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace MoreLinq.Test
 {

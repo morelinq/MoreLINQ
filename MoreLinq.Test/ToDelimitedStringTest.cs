@@ -18,7 +18,6 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq.Test

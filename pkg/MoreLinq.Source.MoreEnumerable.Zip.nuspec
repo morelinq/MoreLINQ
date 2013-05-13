@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.Zip</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <title>MoreLINQ's Zip for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -13,9 +13,16 @@
         <description>C# source implementation that enhances LINQ to Objects with the method Zip. Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
+        <releaseNotes>Microsoft .NET Framework 2.0 support via LINQBridge</releaseNotes>
+        <dependencies>
+            <group targetFramework="net35" />
+            <group targetFramework="net20">
+                <dependency id="LinqBridge.Embedded" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
-        <file src="..\MoreLinq\Zip.cs" target="content\net35\MoreLinq\MoreEnumerable.Zip.cs" />
+        <file src="..\MoreLinq\Zip.cs" target="content\net20\MoreLinq\MoreEnumerable.Zip.cs" />
         <file src="..\MoreLinq\Zip.stub.cs" target="content\net40\MoreLinq\MoreEnumerable.Zip.cs" />
     </files>
 </package>
