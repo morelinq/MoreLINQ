@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcquireTest.cs" />
+    <Compile Include="AssertTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
