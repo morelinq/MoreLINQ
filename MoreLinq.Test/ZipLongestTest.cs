@@ -51,8 +51,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithEqualLengthSequences()
         {
-            var zipped = MoreEnumerable.ZipLongest(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
-                (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.ZipLongest(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
@@ -60,8 +59,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequenceShorterThanSecond()
         {
-            var zipped = MoreEnumerable.ZipLongest(new[] { 1, 2 }, new[] { 4, 5, 6 },
-                (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.ZipLongest(new[] { 1, 2 }, new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(0, 6));
         }
@@ -69,8 +67,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequnceLongerThanSecond()
         {
-            var zipped = MoreEnumerable.ZipLongest(new[] { 1, 2, 3 }, new[] { 4, 5 },
-                (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.ZipLongest(new[] { 1, 2, 3 }, new[] { 4, 5 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 0));
         }
