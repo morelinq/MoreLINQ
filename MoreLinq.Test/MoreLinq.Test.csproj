@@ -78,7 +78,6 @@
     <Compile Include="LeadTest.cs" />
     <Compile Include="NestedLoopTest.cs" />
     <Compile Include="OrderByTest.cs" />
-    <Compile Include="PairUpTest.cs" />
     <Compile Include="PartitionTest.cs" />
     <Compile Include="PermutationsTest.cs" />
     <Compile Include="RandomSubsetTest.cs" />
