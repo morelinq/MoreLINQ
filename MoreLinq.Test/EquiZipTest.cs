@@ -67,8 +67,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithEqualLengthSequencesFailStrategy()
         {
-            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 },
-                (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
@@ -77,8 +76,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2 }, new[] { 4, 5, 6 },
-                (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2 }, new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
         }
@@ -87,8 +85,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, new[] { 4, 5 },
-                (x, y) => Tuple(x, y));
+            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, new[] { 4, 5 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));

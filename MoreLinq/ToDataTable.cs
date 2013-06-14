@@ -69,7 +69,7 @@ namespace MoreLinq
 
             try
             {
-                return expressions.Select(x => GetAccessedMember(x));
+                return expressions.Select(GetAccessedMember);
             }
             catch (ArgumentException e)
             {
