@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AcquireTest.cs" />
     <Compile Include="AssertTest.cs" />
+    <Compile Include="AssertUtil.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
@@ -65,12 +66,39 @@
     <Compile Include="TagFirstLastTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CartesianTest.cs" />
+    <Compile Include="Combinatorics.cs" />
+    <Compile Include="ComparerFunc.cs" />
+    <Compile Include="EqualityComparerFunc.cs" />
+    <Compile Include="ExcludeTest.cs" />
+    <Compile Include="IncrementalTest.cs" />
+    <Compile Include="InfiniteSequence.cs" />
+    <Compile Include="InterleaveTest.cs" />
+    <Compile Include="LagTest.cs" />
+    <Compile Include="LeadTest.cs" />
+    <Compile Include="NestedLoopTest.cs" />
+    <Compile Include="OrderByTest.cs" />
+    <Compile Include="PairUpTest.cs" />
+    <Compile Include="PartitionTest.cs" />
+    <Compile Include="PermutationsTest.cs" />
+    <Compile Include="RandomSubsetTest.cs" />
+    <Compile Include="RandomTest.cs" />
+    <Compile Include="RankTest.cs" />
+    <Compile Include="RepeatTest.cs" />
+    <Compile Include="RunLengthEncodeTest.cs" />
+    <Compile Include="SegmentTest.cs" />
+    <Compile Include="SliceTest.cs" />
+    <Compile Include="SortedMergeTest.cs" />
+    <Compile Include="SubsetTest.cs" />
     <Compile Include="TakeLastTest.cs" />
     <Compile Include="EquiZipTest.cs" />
     <Compile Include="ExceptByTest.cs" />
     <Compile Include="TakeUntilTest.cs" />
     <Compile Include="TestingSequence.cs" />
     <Compile Include="ToDataTableTest.cs" />
+    <Compile Include="UnenumerableList.cs" />
+    <Compile Include="VerifiableEnumerator.cs" />
+    <Compile Include="WindowedTest.cs" />
     <Compile Include="ZipLongestTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AssertCountTest.cs" />

@@ -28,6 +28,12 @@ namespace MoreLinq.Test
         {
             return new TestingSequence<T>(elements);
         }
+
+        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return new TestingSequence<T>(source);
+        }
     }
 
     /// <summary>
