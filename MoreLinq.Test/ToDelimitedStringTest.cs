@@ -35,13 +35,13 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithEmptySequence()
         {
-            Assert.That(MoreEnumerable.ToDelimitedString(LinqEnumerable.Empty<int>()), Is.Empty);
+            Assert.That(LinqEnumerable.Empty<int>().ToDelimitedString(), Is.Empty);
         }
 
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
         {
-            var result = MoreEnumerable.ToDelimitedString(new[] { 1, 2, 3 }, "-");
+            var result = new[] { 1, 2, 3 }.ToDelimitedString("-");
             Assert.That(result, Is.EqualTo("1-2-3"));
         }
 
@@ -50,7 +50,7 @@ namespace MoreLinq.Test
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = MoreEnumerable.ToDelimitedString(new[] {1, 2, 3});
+                var result = new[] {1, 2, 3}.ToDelimitedString();
                 Assert.That(result, Is.EqualTo("1;2;3"));
             }
         }
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = MoreEnumerable.ToDelimitedString(new[] { 1, 2, 3 }, null);
+                var result = new[] { 1, 2, 3 }.ToDelimitedString(null);
                 Assert.That(result, Is.EqualTo("1;2;3"));
             }
         }
@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNulls()
         {
-            var result = MoreEnumerable.ToDelimitedString(new object[] { 1, null, "foo", true }, ",");
+            var result = new object[] { 1, null, "foo", true }.ToDelimitedString(",");
             Assert.That(result, Is.EqualTo("1,,foo,True"));
         }
 
@@ -76,7 +76,7 @@ namespace MoreLinq.Test
         public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
         {
             // See: http://code.google.com/p/morelinq/issues/detail?id=43
-            var result = MoreEnumerable.ToDelimitedString(new object[] { null, null, "foo" }, ",");
+            var result = new object[] { null, null, "foo" }.ToDelimitedString(",");
             Assert.That(result, Is.EqualTo(",,foo"));
         }
     }

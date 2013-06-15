@@ -37,14 +37,14 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullAction()
         {
-            MoreEnumerable.Pipe(new[] { 1, 2, 3 }, null);
+            new[] { 1, 2, 3 }.Pipe(null);
         }
 
         [Test]
         public void PipeWithSequence()
         {
             var results = new List<int>();
-            var returned = MoreEnumerable.Pipe(new[] { 1, 2, 3 }, results.Add);
+            var returned = new[] { 1, 2, 3 }.Pipe(results.Add);
             // Lazy - nothing has executed yet
             Assert.That(results, Is.Empty);
             returned.AssertSequenceEqual(1, 2, 3);

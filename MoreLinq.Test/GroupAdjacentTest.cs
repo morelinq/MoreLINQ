@@ -36,16 +36,17 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void GroupAdjacentNullKeySelector()
         {
-            MoreEnumerable.GroupAdjacent<object, object>(new object[0], null);
+            new object[0].GroupAdjacent<object, object>(null);
         }
 
         [Test]
         public void GroupAdjacentIsLazy()
         {
-            MoreEnumerable.GroupAdjacent(new BreakingSequence<object>(), delegate { return 0; });
-            MoreEnumerable.GroupAdjacent(new BreakingSequence<object>(), delegate { return 0; }, o => o);
-            MoreEnumerable.GroupAdjacent(new BreakingSequence<object>(), delegate { return 0; }, o => o, EqualityComparer<int>.Default);
-            MoreEnumerable.GroupAdjacent(new BreakingSequence<object>(), delegate { return 0; }, EqualityComparer<int>.Default);
+            var bs = new BreakingSequence<object>();
+            bs.GroupAdjacent(delegate { return 0; });
+            bs.GroupAdjacent(delegate { return 0; }, o => o);
+            bs.GroupAdjacent(delegate { return 0; }, o => o, EqualityComparer<int>.Default);
+            bs.GroupAdjacent(delegate { return 0; }, EqualityComparer<int>.Default);
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace MoreLinq.Test
             const string ten = "ten";
 
             var source = new[] { one, two, three, four, five, six, seven, eight, nine, ten };
-            var groupings = MoreEnumerable.GroupAdjacent(source, s => s.Length);
+            var groupings = source.GroupAdjacent(s => s.Length);
             
             using (var reader = groupings.Read())
             {
@@ -82,7 +83,7 @@ namespace MoreLinq.Test
         public void GroupAdjacentSourceSequenceComparer()
         {
             var source = new[] { "foo", "FOO", "Foo", "bar", "BAR", "Bar" };
-            var groupings = MoreEnumerable.GroupAdjacent(source, s => s, StringComparer.OrdinalIgnoreCase);
+            var groupings = source.GroupAdjacent(s => s, StringComparer.OrdinalIgnoreCase);
 
             using (var reader = groupings.Read())
             {
@@ -108,7 +109,7 @@ namespace MoreLinq.Test
                 new { Month = 3, Value = 123 },                 
             };
 
-            var groupings = MoreEnumerable.GroupAdjacent(source, e => e.Month, e => e.Value * 2);
+            var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2);
 
             using (var reader = groupings.Read())
             {
@@ -135,7 +136,7 @@ namespace MoreLinq.Test
                 new { Month = "MAR", Value = 123 },                 
             };
 
-            var groupings = MoreEnumerable.GroupAdjacent(source, e => e.Month, e => e.Value * 2, StringComparer.OrdinalIgnoreCase);
+            var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2, StringComparer.OrdinalIgnoreCase);
 
             using (var reader = groupings.Read())
             {

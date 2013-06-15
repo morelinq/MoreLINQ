@@ -36,7 +36,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullFallback()
         {
-            MoreEnumerable.SingleOrFallback(new[] {1}, null);
+            new[] {1}.SingleOrFallback(null);
         }
 
         [Test]

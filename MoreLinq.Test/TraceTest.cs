@@ -30,30 +30,21 @@ namespace MoreLinq.Test
         [Test]
         public void TraceSequence()
         {
-            var trace = Lines(CaptureTrace(delegate
-            {
-                MoreEnumerable.Trace("the quick brown fox".Split()).Consume();
-            }));
+            var trace = Lines(CaptureTrace(() => "the quick brown fox".Split().Trace().Consume()));
             trace.AssertSequenceEqual("the", "quick", "brown", "fox");
         }
 
         [Test]
         public void TraceSequenceWithSomeNullElements()
         {
-            var trace = Lines(CaptureTrace(delegate
-            {
-                MoreEnumerable.Trace(new int?[] { 1, null, 2, null, 3 }).Consume();
-            }));
+            var trace = Lines(CaptureTrace(() => new int?[] {1, null, 2, null, 3}.Trace().Consume()));
             trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
         }
 
         [Test]
         public void TraceSequenceWithSomeNullReferences()
         {
-            var trace = Lines(CaptureTrace(delegate
-            {
-                MoreEnumerable.Trace(new[] { "the", null, "quick", null, "brown", null, "fox" }).Consume();
-            }));
+            var trace = Lines(CaptureTrace(() => new[] { "the", null, "quick", null, "brown", null, "fox" }.Trace().Consume()));
 
             trace.AssertSequenceEqual("the", string.Empty, "quick", string.Empty, "brown", string.Empty, "fox");
         }
@@ -64,7 +55,7 @@ namespace MoreLinq.Test
             var trace = Lines(CaptureTrace(delegate
             {
                 using (new CurrentThreadCultureScope(CultureInfo.InvariantCulture))
-                    MoreEnumerable.Trace(new[] { 1234, 5678 }, "{0:N0}").Consume();
+                    new[] { 1234, 5678 }.Trace("{0:N0}").Consume();
             }));
 
             trace.AssertSequenceEqual("1,234", "5,678");
@@ -74,7 +65,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void TraceSequenceWithNullFormatter()
         {
-            MoreEnumerable.Trace(new object[0], (Func<object, string>)null);
+            new object[0].Trace((Func<object, string>)null);
         }
 
         [Test]
@@ -82,9 +73,11 @@ namespace MoreLinq.Test
         {
             var trace = Lines(CaptureTrace(delegate
             {
-                var formatter = System.Globalization.CultureInfo.InvariantCulture;
-                MoreEnumerable.Trace(new int?[] { 1234, null, 5678 },
-                    n => n.HasValue ? n.Value.ToString("N0", formatter) : "#NULL").Consume();
+                var formatter = CultureInfo.InvariantCulture;
+                new int?[] { 1234, null, 5678 }.Trace(n => n.HasValue 
+                                                           ? n.Value.ToString("N0", formatter) 
+                                                           : "#NULL")
+                                               .Consume();
             }));
 
             trace.AssertSequenceEqual("1,234", "#NULL", "5,678");

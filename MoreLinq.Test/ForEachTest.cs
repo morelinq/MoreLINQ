@@ -35,14 +35,14 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullAction()
         {
-            MoreEnumerable.ForEach(new[] { 1, 2, 3 }, null);
+            new[] { 1, 2, 3 }.ForEach(null);
         }
 
         [Test]
         public void ForEachWithSequence()
         {
             var results = new List<int>();
-            MoreEnumerable.ForEach(new[] { 1, 2, 3 }, results.Add);
+            new[] { 1, 2, 3 }.ForEach(results.Add);
             results.AssertSequenceEqual(1, 2, 3);
         }
     }

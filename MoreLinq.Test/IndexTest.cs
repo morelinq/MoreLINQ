@@ -40,8 +40,9 @@ namespace MoreLinq.Test
         [Test]
         public void IndexIsLazy()
         {
-            MoreEnumerable.Index(new BreakingSequence<object>());
-            MoreEnumerable.Index(new BreakingSequence<object>(), 0);
+            var bs = new BreakingSequence<object>();
+            bs.Index();
+            bs.Index(0);
         }
 
         [Test]
@@ -50,7 +51,7 @@ namespace MoreLinq.Test
             const string one = "one";
             const string two = "two";
             const string three = "three";
-            var result = MoreEnumerable.Index(new[] { one, two, three });
+            var result = new[] { one, two, three }.Index();
             result.AssertSequenceEqual(
                 KeyValuePair.Create(0, one),
                 KeyValuePair.Create(1, two),
@@ -63,7 +64,7 @@ namespace MoreLinq.Test
             const string one = "one";
             const string two = "two";
             const string three = "three";
-            var result = MoreEnumerable.Index(new[] { one, two, three }, 10);
+            var result = new[] { one, two, three }.Index(10);
             result.AssertSequenceEqual(
                 KeyValuePair.Create(10, one),
                 KeyValuePair.Create(11, two),

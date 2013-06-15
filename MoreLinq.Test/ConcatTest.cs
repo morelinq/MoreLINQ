@@ -76,7 +76,7 @@ namespace MoreLinq.Test
         {
             var head = new[] { "first", "second" };
             var tail = "third";
-            var whole = MoreEnumerable.Concat(head, tail);
+            var whole = head.Concat(tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -85,7 +85,7 @@ namespace MoreLinq.Test
         {
             string[] head = { };
             var tail = "first";
-            var whole = MoreEnumerable.Concat(head, tail);
+            var whole = head.Concat(tail);
             whole.AssertSequenceEqual("first");
         }
 
@@ -101,14 +101,14 @@ namespace MoreLinq.Test
         {
             var head = new[] { "first", "second" };
             string tail = null;
-            var whole = MoreEnumerable.Concat(head, tail);
+            var whole = head.Concat(tail);
             whole.AssertSequenceEqual("first", "second", null);
         }
 
         [Test]
         public void ConcatIsLazyInHeadSequence()
         {
-            MoreEnumerable.Concat(new BreakingSequence<string>(), "tail");
+            new BreakingSequence<string>().Concat("tail");
         }
         #endregion
     }
