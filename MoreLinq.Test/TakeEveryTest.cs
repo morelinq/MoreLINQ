@@ -34,40 +34,40 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TakeEveryNegativeSkip()
         {
-            MoreEnumerable.TakeEvery(new object[0], -1);
+            new object[0].TakeEvery(-1);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TakeEveryOutOfRangeZeroStep()
         {
-            MoreEnumerable.TakeEvery(new object[0], 0);
+            new object[0].TakeEvery(0);
         }
 
         [Test]
         public void TakeEveryEmptySequence()
         {
-            Assert.That(MoreEnumerable.TakeEvery(new object[0], 1).GetEnumerator().MoveNext(), Is.False);
+            Assert.That(new object[0].TakeEvery(1).GetEnumerator().MoveNext(), Is.False);
         }
 
         [Test]
         public void TakeEveryNonEmptySequence()
         {
-            var result = MoreEnumerable.TakeEvery(new[] { 1, 2, 3, 4, 5 }, 1);
+            var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(1);
             result.AssertSequenceEqual(1, 2, 3, 4, 5);
         }
 
         [Test]
         public void TakeEveryOtherOnNonEmptySequence()
         {
-            var result = MoreEnumerable.TakeEvery(new[] { 1, 2, 3, 4, 5 }, 2);
+            var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(2);
             result.AssertSequenceEqual(1, 3, 5);
         }
 
         [Test]
         public void TakeEveryThirdOnNonEmptySequence()
         {
-            var result = MoreEnumerable.TakeEvery(new[] { 1, 2, 3, 4, 5 }, 3);
+            var result = new[] { 1, 2, 3, 4, 5 }.TakeEvery(3);
             result.AssertSequenceEqual(1, 4);
         }
 

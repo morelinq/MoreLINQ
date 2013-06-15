@@ -51,7 +51,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithEqualLengthSequences()
         {
-            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.Zip(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
@@ -59,7 +59,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequenceShorterThanSecond()
         {
-            var zipped = MoreEnumerable.Zip(new[] { 1, 2 }, new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2 }.Zip(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
@@ -67,7 +67,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequnceLongerThanSecond()
         {
-            var zipped = MoreEnumerable.Zip(new[] { 1, 2, 3 }, new[] { 4, 5 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.Zip(new[] { 4, 5 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
@@ -83,23 +83,21 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            MoreEnumerable.Zip(new[] { 1, 2, 3 }, null, BreakingFunc.Of<int, int, int>());
+            new[] { 1, 2, 3 }.Zip(null, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            MoreEnumerable.Zip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
+            new[] { 1, 2, 3 }.Zip<int, int, int>(new[] { 4, 5, 6 }, null);
         }
 
         [Test]
         public void ZipIsLazy()
         {
-            MoreEnumerable.Zip<int, int, int>(
-                new BreakingSequence<int>(),
-                new BreakingSequence<int>(),
-                delegate { throw new NotImplementedException(); });
+            var bs = new BreakingSequence<int>();
+            bs.Zip<int, int, int>(bs, delegate { throw new NotImplementedException(); });
         }
     }
 }

@@ -67,7 +67,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithEqualLengthSequencesFailStrategy()
         {
-            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
@@ -76,7 +76,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2 }, new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
         }
@@ -85,7 +85,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, new[] { 4, 5 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.Consume();
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
@@ -102,23 +102,21 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            MoreEnumerable.EquiZip(new[] { 1, 2, 3 }, null, BreakingFunc.Of<int, int, int>());
+            new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            MoreEnumerable.EquiZip<int, int, int>(new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, null);
+            new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null);
         }
 
         [Test]
         public void ZipIsLazy()
         {
-            MoreEnumerable.EquiZip<int, int, int>(
-                new BreakingSequence<int>(),
-                new BreakingSequence<int>(),
-                delegate { throw new NotImplementedException(); });
+            var bs = new BreakingSequence<int>();
+            bs.EquiZip<int, int, int>(bs, delegate { throw new NotImplementedException(); });
         }
     }
 }

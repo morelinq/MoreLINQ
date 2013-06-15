@@ -34,53 +34,53 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentException))]
         public void PadNegativeWidth()
         {
-            MoreEnumerable.Pad(new object[0], -1);
+            new object[0].Pad(-1);
         }
 
         [Test]
         public void PadIsLazy()
         {
-            MoreEnumerable.Pad(new BreakingSequence<object>(), 0);
+            new BreakingSequence<object>().Pad(0);
         }
 
         [Test]
         public void PadWithFillerIsLazy()
         {
-            MoreEnumerable.Pad(new BreakingSequence<object>(), 0, new object());
+            new BreakingSequence<object>().Pad(0, new object());
         }
 
         [Test]
         public void PadWideSourceSequence()
         {
-            var result = MoreEnumerable.Pad(new[] { 123, 456, 789 }, 2);
+            var result = new[] { 123, 456, 789 }.Pad(2);
             result.AssertSequenceEqual(new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadEqualSourceSequence()
         {
-            var result = MoreEnumerable.Pad(new[] { 123, 456, 789 }, 3);
+            var result = new[] { 123, 456, 789 }.Pad(3);
             result.AssertSequenceEqual(new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithDefaultPadding()
         {
-            var result = MoreEnumerable.Pad(new[] { 123, 456, 789 }, 5);
+            var result = new[] { 123, 456, 789 }.Pad(5);
             result.AssertSequenceEqual(new[] { 123, 456, 789, 0, 0 });
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithNonDefaultPadding()
         {
-            var result = MoreEnumerable.Pad(new[] { 123, 456, 789 }, 5, -1);
+            var result = new[] { 123, 456, 789 }.Pad(5, -1);
             result.AssertSequenceEqual(new[] { 123, 456, 789, -1, -1 });
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithDynamicPadding()
         {
-            var result = MoreEnumerable.Pad("hello".ToCharArray(), 15, i => i % 2 == 0 ? '+' : '-');
+            var result = "hello".ToCharArray().Pad(15, i => i % 2 == 0 ? '+' : '-');
             result.AssertSequenceEqual("hello-+-+-+-+-+".ToCharArray());
         }
     }

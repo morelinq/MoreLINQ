@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         {
             string[] tail = { "second", "third" };
             var head = "first";
-            var whole = MoreEnumerable.Prepend(tail, head);
+            var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         {
             string[] tail = { };
             var head = "first";
-            var whole = MoreEnumerable.Prepend(tail, head);
+            var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first");
         }
 
@@ -54,14 +54,14 @@ namespace MoreLinq.Test
         {
             string[] tail = { "second", "third" };
             string head = null;
-            var whole = MoreEnumerable.Prepend(tail, head);
+            var whole = tail.Prepend(head);
             whole.AssertSequenceEqual(null, "second", "third");
         }
 
         [Test]
         public void PrependIsLazyInTailSequence()
         {
-            MoreEnumerable.Prepend(new BreakingSequence<string>(), "head");
+            new BreakingSequence<string>().Prepend("head");
         }
     }
 }

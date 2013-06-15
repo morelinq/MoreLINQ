@@ -34,19 +34,19 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void PairwiseNullResultSelector()
         {
-            MoreEnumerable.Pairwise<object, object>(new object[0], null);
+            new object[0].Pairwise<object, object>(null);
         }
 
         [Test]
         public void PairwiseIsLazy()
         {
-            MoreEnumerable.Pairwise(new BreakingSequence<object>(), delegate { return 0; });
+            new BreakingSequence<object>().Pairwise(delegate { return 0; });
         }
 
         [Test]
         public void PairwiseWideSourceSequence()
         {
-            var result = MoreEnumerable.Pairwise(new[] { 123, 456, 789 }, (a, b) => new { A = a, B = b, });
+            var result = new[] { 123, 456, 789 }.Pairwise((a, b) => new { A = a, B = b, });
             result.AssertSequenceEqual(new { A = 123, B = 456, },
                                        new { A = 456, B = 789, });
         }
