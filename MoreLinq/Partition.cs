@@ -60,7 +60,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (size <= 0) throw new ArgumentOutOfRangeException("size");
 
-            var splitInstructions = MoreEnumerable.GenerateByIndex(i => i % size == size - 1 ? PartitionInstruction.Yield : PartitionInstruction.Fill);
+            var splitInstructions = GenerateByIndex(i => i % size == size - 1 ? PartitionInstruction.Yield : PartitionInstruction.Fill);
             return source.PartitionImpl(splitInstructions);
         }
 
@@ -82,10 +82,10 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException("source");
 
-            IEnumerable<PartitionInstruction> splitInstructions = Enumerable.Empty<PartitionInstruction>();
+            var splitInstructions = Enumerable.Empty<PartitionInstruction>();
 
             // Each partition shall be filled and then splitted
-            foreach (int partitionSize in partitions)
+            foreach (var partitionSize in partitions)
             {
                 if (partitionSize < 0)
                     throw new ArgumentException("Partition sizes may not be negative.");
@@ -109,8 +109,8 @@ namespace MoreLinq
             Debug.Assert(source != null);
             Debug.Assert(splitInstructions != null);
 
-            IList<TSource> collector = new List<TSource>();
-            bool collectorFilled = false;
+            var collector = (IList<TSource>) new List<TSource>();
+            var collectorFilled = false;
 
             // Zip shortest
             foreach (var itemInstructionPair in source.Zip(splitInstructions, (x, y) => new { Item = x, Instruction = y }))
@@ -132,8 +132,6 @@ namespace MoreLinq
                         collectorFilled = true;
                         collector.Add(itemInstructionPair.Item);
                         break;
-                    default:
-                        break;
                 }
             }
 
@@ -142,7 +140,6 @@ namespace MoreLinq
             {
                 yield return collector.Select(x => x);
             }
-
         }
     }
 }
