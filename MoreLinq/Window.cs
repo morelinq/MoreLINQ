@@ -36,7 +36,7 @@ namespace MoreLinq
         /// <param name="source">The sequence to evaluate a sliding window over</param>
         /// <param name="size">The size (number of elements) in each window</param>
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
-        public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
+        public static IEnumerable<IEnumerable<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (size <= 0) throw new ArgumentOutOfRangeException("size");
