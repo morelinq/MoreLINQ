@@ -88,6 +88,10 @@
       <Link>Batch.cs</Link>
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\MoreLinq\Fold.cs">
+      <Link>Fold.cs</Link>
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\MoreLinq\Fold.g.cs">
       <Link>Fold.g.cs</Link>
       <AutoGen>True</AutoGen>
