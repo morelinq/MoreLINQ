@@ -19,11 +19,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-#if SILVERLIGHT
-[assembly: AssemblyTitle("MoreLINQ for Silverlight")]
-#else
 [assembly: AssemblyTitle("MoreLINQ")]
-#endif
 [assembly: AssemblyDescription("Extensions to LINQ to Objects")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MoreLINQ")]
