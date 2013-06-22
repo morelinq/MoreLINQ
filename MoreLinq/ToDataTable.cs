@@ -178,6 +178,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> or subclass representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
+        
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
             where TTable : DataTable
         {
@@ -223,6 +224,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> or subclass representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
+        
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
@@ -241,6 +243,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
+       
         public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
@@ -255,6 +258,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
+        
         public static DataTable ToDataTable<T>(this IEnumerable<T> source)
         {
             return ToDataTable(source, new DataTable());

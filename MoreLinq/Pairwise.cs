@@ -48,6 +48,7 @@ namespace MoreLinq
         /// The <c>result</c> variable, when iterated over, will yield 
         /// 579 and 1245, in turn.
         /// </example>
+
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException("source");

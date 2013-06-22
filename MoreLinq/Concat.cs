@@ -32,6 +32,7 @@ namespace MoreLinq
         /// <param name="tail">All elements of the tail. Must not be null.</param>
         /// <returns>A sequence consisting of the head elements and the given tail elements.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+        
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
         {
             if (tail == null) throw new ArgumentNullException("tail");
@@ -46,6 +47,7 @@ namespace MoreLinq
         /// <param name="tail">Tail element of the new sequence.</param>
         /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+        
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
         {
             if (head == null) throw new ArgumentNullException("head");

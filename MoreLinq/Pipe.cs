@@ -36,6 +36,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="source">The sequence of elements</param>
         /// <param name="action">The action to execute on each element</param>
+        
         public static IEnumerable<T> Pipe<T>(this IEnumerable<T> source, Action<T> action)
         {
             if (source == null) throw new ArgumentNullException("source");

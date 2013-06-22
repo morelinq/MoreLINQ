@@ -33,6 +33,7 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <returns>A hash set of the items in the sequence, using the default equality comparer.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source) 
         {
             return source.ToHashSet(null);
@@ -49,6 +50,7 @@ namespace MoreLinq
         /// <param name="comparer">Equality comparer to use; a value of null will cause the type's default equality comparer to be used</param>
         /// <returns>A hash set of the items in the sequence, using the default equality comparer.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
