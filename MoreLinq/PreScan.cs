@@ -40,7 +40,7 @@ namespace MoreLinq
         /// int[] values = { 1, 2, 3, 4 };
         /// IEnumerable&lt;int&gt; prescan = values.PreScan(plus, 0);
         /// IEnumerable&lt;int&gt; scan = values.Scan(plus; a + b);
-        /// IEnumerable&lt;int&gt; result = values.Zip(prescan, plus);
+        /// IEnumerable&lt;int&gt; result = values.ZipShortest(prescan, plus);
         /// </code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This

@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace MoreLinq.Test
 {
     [TestFixture]
-    public class ZipTest
+    public class ZipShortestTest
     {
         private static Tuple<TFirst, TSecond> Tuple<TFirst, TSecond>(TFirst a, TSecond b)
         {
@@ -34,7 +34,7 @@ namespace MoreLinq.Test
             using (var longer = TestingSequence.Of(1, 2, 3))
             using (var shorter = TestingSequence.Of(1, 2))
             {
-                longer.Zip(shorter, (x, y) => x + y).Consume();
+                longer.ZipShortest(shorter, (x, y) => x + y).Consume();
             }
         }
 
@@ -44,60 +44,60 @@ namespace MoreLinq.Test
             using (var longer = TestingSequence.Of(1, 2, 3))
             using (var shorter = TestingSequence.Of(1, 2))
             {
-                shorter.Zip(longer, (x, y) => x + y).Consume();
+                shorter.ZipShortest(longer, (x, y) => x + y).Consume();
             }
         }
 
         [Test]
-        public void ZipWithEqualLengthSequences()
+        public void ZipShortestWithEqualLengthSequences()
         {
-            var zipped = new[] { 1, 2, 3 }.Zip(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
         }
 
         [Test]
-        public void ZipWithFirstSequenceShorterThanSecond()
+        public void ZipShortestWithFirstSequenceShorterThanSecond()
         {
-            var zipped = new[] { 1, 2 }.Zip(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2 }.ZipShortest(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
 
         [Test]
-        public void ZipWithFirstSequnceLongerThanSecond()
+        public void ZipShortestWithFirstSequnceLongerThanSecond()
         {
-            var zipped = new[] { 1, 2, 3 }.Zip(new[] { 4, 5 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ZipWithNullFirstSequence()
+        public void ZipShortestWithNullFirstSequence()
         {
-            MoreEnumerable.Zip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            MoreEnumerable.ZipShortest(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ZipWithNullSecondSequence()
+        public void ZipShortestWithNullSecondSequence()
         {
-            new[] { 1, 2, 3 }.Zip(null, BreakingFunc.Of<int, int, int>());
+            new[] { 1, 2, 3 }.ZipShortest(null, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ZipWithNullResultSelector()
+        public void ZipShortestWithNullResultSelector()
         {
-            new[] { 1, 2, 3 }.Zip<int, int, int>(new[] { 4, 5, 6 }, null);
+            new[] { 1, 2, 3 }.ZipShortest<int, int, int>(new[] { 4, 5, 6 }, null);
         }
 
         [Test]
-        public void ZipIsLazy()
+        public void ZipShortestIsLazy()
         {
             var bs = new BreakingSequence<int>();
-            bs.Zip<int, int, int>(bs, delegate { throw new NotImplementedException(); });
+            bs.ZipShortest<int, int, int>(bs, delegate { throw new NotImplementedException(); });
         }
     }
 }

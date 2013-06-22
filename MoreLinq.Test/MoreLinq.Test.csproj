@@ -114,7 +114,7 @@
     <Compile Include="ForEachTest.cs" />
     <Compile Include="DistinctByTest.cs" />
     <Compile Include="GenerateTest.cs" />
-    <Compile Include="ZipTest.cs" />
+    <Compile Include="ZipShortestTest.cs" />
     <Compile Include="PrependTest.cs" />
     <Compile Include="PadTest.cs" />
     <Compile Include="CurrentThreadCultureScope.cs" />

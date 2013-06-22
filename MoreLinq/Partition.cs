@@ -113,7 +113,7 @@ namespace MoreLinq
             var collectorFilled = false;
 
             // Zip shortest
-            foreach (var itemInstructionPair in source.Zip(splitInstructions, (x, y) => new { Item = x, Instruction = y }))
+            foreach (var itemInstructionPair in source.ZipShortest(splitInstructions, (x, y) => new { Item = x, Instruction = y }))
             {
                 switch (itemInstructionPair.Instruction)
                 {

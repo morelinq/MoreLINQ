@@ -46,7 +46,7 @@ namespace MoreLinq.Test
             
             Assert.That(disposables.Length, Is.EqualTo(3));
             
-            foreach (var disposable in disposables.Zip(new[] { a, b, c }, (act, exp) => new { Actual = act, Expected = exp }))
+            foreach (var disposable in disposables.ZipShortest(new[] { a, b, c }, (act, exp) => new { Actual = act, Expected = exp }))
             {
                 Assert.That(disposable.Actual, Is.SameAs(disposable.Expected));
                 Assert.That(disposable.Actual.Disposed, Is.False);

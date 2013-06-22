@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>MoreLinq.Source.MoreEnumerable.Zip</id>
-        <version>1.0.1</version>
-        <title>MoreLINQ's Zip for C# Sequences (Source)</title>
+        <id>MoreLinq.Source.MoreEnumerable.ZipShortest</id>
+        <version>1.0.0</version>
+        <title>MoreLINQ's ZipShortest for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>Enhances LINQ to Objects with the method Zip  (2 overloads)</summary>
-        <description>C# source implementation that enhances LINQ to Objects with the method Zip. Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</description>
+        <description>C# source implementation that enhances LINQ to Objects with the method ZipShortest. Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
         <releaseNotes>Microsoft .NET Framework 2.0 support via LINQBridge</releaseNotes>
@@ -22,7 +22,6 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\MoreLinq\Zip.cs" target="content\net20\MoreLinq\MoreEnumerable.Zip.cs" />
-        <file src="..\MoreLinq\Zip.stub.cs" target="content\net40\MoreLinq\MoreEnumerable.Zip.cs" />
+        <file src="..\MoreLinq\ZipShortest.cs" target="content\net20\MoreLinq\MoreEnumerable.ZipShortest.cs" />
     </files>
 </package>

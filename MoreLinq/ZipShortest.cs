@@ -35,7 +35,7 @@ namespace MoreLinq
         /// <code>
         /// int[] numbers = { 1, 2, 3 };
         /// string[] letters = { "A", "B", "C", "D" };
-        /// var zipped = numbers.Zip(letters, (n, l) => n + l);
+        /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
         /// </code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
         /// </example>
@@ -46,7 +46,7 @@ namespace MoreLinq
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
         
-        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException("first");

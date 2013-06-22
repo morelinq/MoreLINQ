@@ -51,7 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D0
 		pkg\MoreLinq.Source.MoreEnumerable.ToDelimitedString.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ToDelimitedString.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ToHashSet.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ToHashSet.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Zip.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Zip.nuspec
+		pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec
 	EndProjectSection
 EndProject

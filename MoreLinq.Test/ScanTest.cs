@@ -35,7 +35,7 @@ namespace MoreLinq.Test
         public void ScanSum()
         {
             var result = SampleData.Values.Scan(SampleData.Plus);
-            var gold = SampleData.Values.PreScan(SampleData.Plus, 0).Zip(SampleData.Values, SampleData.Plus);
+            var gold = SampleData.Values.PreScan(SampleData.Plus, 0).ZipShortest(SampleData.Values, SampleData.Plus);
             result.AssertSequenceEqual(gold);
         }
     }

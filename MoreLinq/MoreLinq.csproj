@@ -189,10 +189,7 @@
     <Compile Include="TakeEvery.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Zip.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Zip.stub.cs">
+    <Compile Include="ZipShortest.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="EquiZip.cs">
