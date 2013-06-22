@@ -205,6 +205,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="sequence">The original sequence to permute</param>
         /// <returns>A sequence of lists representing permutations of the original sequence</returns>
+        
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");

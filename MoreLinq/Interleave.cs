@@ -43,6 +43,7 @@ namespace MoreLinq
         /// <param name="sequence">The first sequence in the interleave group</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
+        
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
         {
             return Interleave(sequence, ImbalancedInterleaveStrategy.Skip, otherSequences);
@@ -69,6 +70,7 @@ namespace MoreLinq
         /// <param name="imbalanceStrategy">Defines the behavior of the operator when sequences are of unequal length</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
+        
         private static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, ImbalancedInterleaveStrategy imbalanceStrategy, params IEnumerable<T>[] otherSequences)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");

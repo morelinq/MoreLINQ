@@ -36,6 +36,7 @@ namespace MoreLinq
         /// <param name="sequence">The sequence of elements to incrementally process</param>
         /// <param name="resultSelector">A projection applied to each pair of adjacent elements in the sequence</param>
         /// <returns>A sequence of elements resulting from projection every adjacent pair</returns>
+        
         public static IEnumerable<TResult> Incremental<TSource, TResult>(this IEnumerable<TSource> sequence, Func<TSource, TSource, TResult> resultSelector)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");
@@ -58,6 +59,7 @@ namespace MoreLinq
         /// <param name="sequence">The sequence of elements to incrementally process</param>
         /// <param name="resultSelector">A projection applied to each pair of adjacent elements in the sequence</param>
         /// <returns>A sequence of elements resulting from projection every adjacent pair</returns>
+        
         public static IEnumerable<TResult> Incremental<TSource, TResult>(this IEnumerable<TSource> sequence, Func<TSource, TSource, int, TResult> resultSelector)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");

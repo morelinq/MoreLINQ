@@ -20,6 +20,7 @@ namespace MoreLinq
     /// <summary>
     /// Enumeration that defines values representing valid ordering directions for a sequence.
     /// </summary>
+    
     public enum OrderByDirection
     {
         /// <summary>

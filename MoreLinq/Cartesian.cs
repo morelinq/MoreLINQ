@@ -34,6 +34,7 @@ namespace MoreLinq
         /// <param name="second">The second sequence of elements</param>
         /// <param name="resultSelector">A projection function that combines elements from both sequences</param>
         /// <returns>A sequence representing the Cartesian product of the two source sequences</returns>
+        
         public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException("first");

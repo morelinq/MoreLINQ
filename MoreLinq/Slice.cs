@@ -38,6 +38,7 @@ namespace MoreLinq
         /// <param name="startIndex">The zero-based index at which to begin slicing</param>
         /// <param name="count">The number of items to slice out of the index</param>
         /// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
+        
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");

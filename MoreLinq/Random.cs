@@ -23,6 +23,7 @@ namespace MoreLinq
     /// <summary>
     /// Extension methods for generating random sequences.
     /// </summary>
+    
     public static partial class MoreEnumerable
     {
         /// <summary>
@@ -30,6 +31,7 @@ namespace MoreLinq
         /// .NET random number generator.
         /// </summary>
         /// <returns>An infinite sequence of random integers</returns>
+        
         public static IEnumerable<int> Random()
         {
             return Random(new Random());
@@ -42,6 +44,7 @@ namespace MoreLinq
         /// <param name="rand">Random generator used to produce random numbers</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
+        
         public static IEnumerable<int> Random(Random rand)
         {
             if (rand == null) throw new ArgumentNullException("rand");
@@ -54,6 +57,7 @@ namespace MoreLinq
         /// </summary>
         /// <param name="maxValue">exclusive upper bound for the random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
+        
         public static IEnumerable<int> Random(int maxValue)
         {
             if (maxValue < 0) throw new ArgumentOutOfRangeException("maxValue");
@@ -69,6 +73,7 @@ namespace MoreLinq
         /// <param name="maxValue">Exclusive upper bound for random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
+        
         public static IEnumerable<int> Random(Random rand, int maxValue)
         {
             if (rand == null) throw new ArgumentNullException("rand");
@@ -84,6 +89,7 @@ namespace MoreLinq
         /// <param name="minValue">Inclusive lower bound of the values returned</param>
         /// <param name="maxValue">Exclusive upper bound of the values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
+        
         public static IEnumerable<int> Random(int minValue, int maxValue)
         {
             return Random(new Random(), minValue, maxValue);
@@ -98,6 +104,7 @@ namespace MoreLinq
         /// <param name="maxValue">Exclusive upper bound of the values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
+        
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
             if (rand == null) throw new ArgumentNullException("rand");
@@ -112,6 +119,7 @@ namespace MoreLinq
         /// Returns an infinite sequence of random double values between 0.0 and 1.0
         /// </summary>
         /// <returns>An infinite sequence of random doubles</returns>
+        
         public static IEnumerable<double> RandomDouble()
         {
             return RandomDouble(new Random());
@@ -124,6 +132,7 @@ namespace MoreLinq
         /// <param name="rand">Generator used to produce random numbers</param>
         /// <returns>An infinite sequence of random doubles</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="rand"/> is <see langword="null"/>.</exception>
+        
         public static IEnumerable<double> RandomDouble(Random rand)
         {
             if (rand == null) throw new ArgumentNullException("rand");
@@ -139,6 +148,7 @@ namespace MoreLinq
         /// <param name="rand">Random generators used to produce the sequence</param>
         /// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
         /// <returns>An infinite sequence of random numbers of type T</returns>
+        
         private static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
         {
             while (true)

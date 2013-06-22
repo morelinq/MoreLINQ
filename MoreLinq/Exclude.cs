@@ -30,6 +30,7 @@ namespace MoreLinq
         /// <param name="startIndex">The zero-based index at which to begin excluding elements</param>
         /// <param name="count">The number of elements to exclude</param>
         /// <returns>A sequence that excludes the specified portion of elements</returns>
+        
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
             if (sequence == null) throw new ArgumentNullException("sequence");

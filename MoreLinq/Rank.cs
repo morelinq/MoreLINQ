@@ -29,6 +29,7 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of item in the sequence</typeparam>
         /// <param name="source">The sequence whose items will be ranked</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
+        
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source)
         {
             return source.RankBy(x => x);
@@ -41,6 +42,7 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to rank</param>
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
+        
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
         {
             return source.RankBy(x => x, comparer);
@@ -54,6 +56,7 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to rank</param>
         /// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
+        
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             return RankBy(source, keySelector, null);
@@ -68,6 +71,7 @@ namespace MoreLinq
         /// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
         /// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
+        
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");

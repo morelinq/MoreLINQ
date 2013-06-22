@@ -55,6 +55,7 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results (partitions and partition content). 
         /// Each partition is fully filled before it's yielded. 
         /// </remarks>
+        
         public static IEnumerable<IEnumerable<TSource>> Partition<TSource>(this IEnumerable<TSource> source, int size)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -103,6 +104,7 @@ namespace MoreLinq
         /// A partition is buffered before it's yielded element by element.
         /// If either input sequence is exhausted and a partition has been partly filled, it is yielded too.
         /// </summary>
+        
         private static IEnumerable<IEnumerable<TSource>> PartitionImpl<TSource>(this IEnumerable<TSource> source,
             IEnumerable<PartitionInstruction> splitInstructions)
         {

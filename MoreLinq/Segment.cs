@@ -32,6 +32,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="sequence"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
+        
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> sequence, Func<T, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException("newSegmentPredicate");
@@ -49,6 +50,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
+        
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException("newSegmentPredicate");
@@ -66,6 +68,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="sequence"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
+        
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> sequence, Func<T, T, int, bool> newSegmentPredicate)
         {
             if (sequence == null) throw new ArgumentNullException("source");
@@ -77,6 +80,7 @@ namespace MoreLinq
         /// <summary>
         /// The private implementation of the Segment operator.
         /// </summary>
+        
         private static IEnumerable<IEnumerable<T>> SegmentImpl<T>(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
         {
             var index = -1;

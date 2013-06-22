@@ -30,6 +30,7 @@ namespace MoreLinq
         /// <param name="sequence">The sequence from which to return random elements</param>
         /// <param name="subsetSize">The size of the random subset to return</param>
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
+        
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             return RandomSubset(sequence, subsetSize, new Random());
@@ -43,6 +44,7 @@ namespace MoreLinq
         /// <param name="subsetSize">The size of the random subset to return</param>
         /// <param name="rand">A random generator used as part of the selection algorithm</param>
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
+        
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
         {
             if (rand == null) throw new ArgumentNullException("rand");
@@ -55,6 +57,7 @@ namespace MoreLinq
         /// <summary>
         /// Private implementation method that generates a random subset of a sequence
         /// </summary>
+        
         private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> sequence, int subsetSize, Random rand)
         {
             // The simplest and most efficient way to return a random subet is to perform 

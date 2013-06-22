@@ -40,6 +40,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
+        
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
             if (sequence == null)
@@ -61,6 +62,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
         /// </exception>
+        
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             if (sequence == null)
@@ -90,6 +92,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <returns>Sequence of lists representing all subsets of a sequence</returns>
+        
         private static IEnumerable<IList<T>> SubsetsImpl<T>(IEnumerable<T> sequence)
         {
             var sequenceAsList = sequence.ToList();
@@ -118,6 +121,7 @@ namespace MoreLinq
         /// This class is responsible for producing the lexographically ordered k-subsets
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        
         private sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
         {
             #region Nested Classes

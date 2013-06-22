@@ -48,6 +48,7 @@ namespace MoreLinq
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
+        
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
         {
             return SortedMerge(source, direction, null, otherSequences);
@@ -63,6 +64,7 @@ namespace MoreLinq
         /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
         /// <param name="otherSources">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
+        
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSources)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -97,6 +99,7 @@ namespace MoreLinq
         /// 
         /// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
         /// </remarks>
+        
         private static IEnumerable<T> SortedMergeImpl<T>(Func<T, T, bool> precedenceFunc, IEnumerable<IEnumerable<T>> otherSequences)
         {
             using (var disposables = new DisposableGroup<T>(otherSequences.Select(e => e.GetEnumerator()).Acquire()))
@@ -143,6 +146,7 @@ namespace MoreLinq
         /// Class used to assist in ensuring that groups of disposable iterators
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
+        
         private sealed class DisposableGroup<T> : IDisposable
         {
             public DisposableGroup(IEnumerable<IEnumerator<T>> iterators)

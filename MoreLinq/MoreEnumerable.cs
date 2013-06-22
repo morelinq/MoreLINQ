@@ -24,6 +24,7 @@ namespace MoreLinq
     /// implement <see cref="IEnumerable{T}" />. The actual methods
     /// are implemented in files reflecting the method name.
     /// </summary>
+    
     public static partial class MoreEnumerable
     {
     }
