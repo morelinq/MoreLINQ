@@ -131,17 +131,17 @@ namespace MoreLinq
 
             private class SubsetEnumerator : IEnumerator<IList<T>>
             {
-                private readonly IList<T> m_Set;   // the original set of elements
-                private readonly T[] m_Subset;     // the current subset to return
-                private readonly int[] m_Indices;  // indices into the original set
+                private readonly IList<T> _set;   // the original set of elements
+                private readonly T[] _subset;     // the current subset to return
+                private readonly int[] _indices;  // indices into the original set
 
                 // TODO: It would be desirable to give these index members clearer names
-                private bool m_Continue;  // termination indicator, set when all subsets have been produced
-                private int m;            // previous swap index (upper index)
-                private int m2;           // current swap index (lower index)
-                private int k;            // size of the subset being produced
-                private int n;            // size of the original set (sequence)
-                private int z;            // count of items excluded from the subet
+                private bool _continue;  // termination indicator, set when all subsets have been produced
+                private int _m;            // previous swap index (upper index)
+                private int _m2;           // current swap index (lower index)
+                private int _k;            // size of the subset being produced
+                private int _n;            // size of the original set (sequence)
+                private int _z;            // count of items excluded from the subet
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -150,26 +150,26 @@ namespace MoreLinq
                         throw new ArgumentOutOfRangeException("subsetSize", subsetSize, "Subset size must be <= sequence.Count()");
                     
                     // initialize set arrays...
-                    m_Set = set;
-                    m_Subset = new T[subsetSize];
-                    m_Indices = new int[subsetSize];
+                    _set = set;
+                    _subset = new T[subsetSize];
+                    _indices = new int[subsetSize];
                     // initialize index counters...
                     Reset();
                 }
 
                 public void Reset()
                 {
-                    m = m_Subset.Length;
-                    m2 = -1;
-                    k = m_Subset.Length;
-                    n = m_Set.Count;
-                    z = n - k + 1;
-                    m_Continue = m_Subset.Length > 0;
+                    _m = _subset.Length;
+                    _m2 = -1;
+                    _k = _subset.Length;
+                    _n = _set.Count;
+                    _z = _n - _k + 1;
+                    _continue = _subset.Length > 0;
                 }
 
                 public IList<T> Current
                 {
-                    get { return (IList<T>)m_Subset.Clone(); }
+                    get { return (IList<T>)_subset.Clone(); }
                 }
 
                 object IEnumerator.Current
@@ -179,30 +179,30 @@ namespace MoreLinq
 
                 public bool MoveNext()
                 {
-                    if (!m_Continue)
+                    if (!_continue)
                         return false;
 
-                    if (m2 == -1)
+                    if (_m2 == -1)
                     {
-                        m2 = 0;
-                        m = k;
+                        _m2 = 0;
+                        _m = _k;
                     }
                     else
                     {
-                        if (m2 < n - m)
+                        if (_m2 < _n - _m)
                         {
-                            m = 0;
+                            _m = 0;
                         }
-                        m++;
-                        m2 = m_Indices[k - m];
+                        _m++;
+                        _m2 = _indices[_k - _m];
                     }
 
-                    for (var j = 1; j <= m; j++)
-                        m_Indices[k + j - m - 1] = m2 + j;
+                    for (var j = 1; j <= _m; j++)
+                        _indices[_k + j - _m - 1] = _m2 + j;
 
                     ExtractSubset();
 
-                    m_Continue = (m_Indices[0] != z);
+                    _continue = (_indices[0] != _z);
                     return true;
                 }
 
@@ -210,13 +210,13 @@ namespace MoreLinq
 
                 private void ExtractSubset()
                 {
-                    for (var i = 0; i < k; i++)
-                        m_Subset[i] = m_Set[m_Indices[i] - 1];
+                    for (var i = 0; i < _k; i++)
+                        _subset[i] = _set[_indices[i] - 1];
                 }
             }
 
-            private readonly IEnumerable<T> m_Sequence;
-            private readonly int m_SubsetSize;
+            private readonly IEnumerable<T> _sequence;
+            private readonly int _subsetSize;
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
@@ -224,8 +224,8 @@ namespace MoreLinq
                     throw new ArgumentNullException("sequence");
                 if (subsetSize < 0)
                     throw new ArgumentOutOfRangeException("subsetSize", "{subsetSize} must be between 0 and set.Count()");
-                m_SubsetSize = subsetSize;
-                m_Sequence = sequence;
+                _subsetSize = subsetSize;
+                _sequence = sequence;
             }
 
             /// <summary>
@@ -237,7 +237,7 @@ namespace MoreLinq
 
             public IEnumerator<IList<T>> GetEnumerator()
             {
-                return new SubsetEnumerator(m_Sequence.ToList(), m_SubsetSize);
+                return new SubsetEnumerator(_sequence.ToList(), _subsetSize);
             }
 
             IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
