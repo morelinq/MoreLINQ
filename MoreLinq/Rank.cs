@@ -82,14 +82,23 @@ namespace MoreLinq
         
         private static IEnumerable<int> RankByImpl<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         {
-            var rank = 0;
-            var rankDictionary = new Dictionary<TSource, int>();
             source = source.ToArray(); // avoid enumerating source twice
-            foreach (var item in source.Distinct().OrderByDescending(keySelector, comparer))
-                rankDictionary.Add(item, ++rank);
 
+            var rankDictionary = source.Distinct()
+                                       .OrderByDescending(keySelector, comparer)
+                                       .Index(1)
+                                       .ToDictionary(item => item.Value, 
+                                                     item => item.Key);
+
+            // The following loop should not be be converted to a query to
+            // keep this RankBy lazy.
+
+            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach (var item in source)
                 yield return rankDictionary[item];
+
+            // ReSharper restore LoopCanBeConvertedToQuery
         }
     }
 }
