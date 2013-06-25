@@ -198,11 +198,9 @@ namespace MoreLinq
             else
             {
                 List<TSource> items = null;
-                var index = 0;
 
                 foreach (var item in source)
                 {
-                    index++;
                     if (count > 0 && separatorFunc(item))
                     {
                         yield return resultSelector(items ?? Enumerable.Empty<TSource>());
