@@ -213,9 +213,6 @@ namespace MoreLinq
             return PermutationsImpl(sequence);
         }
 
-        /// <summary>
-        /// Private implementation that generates sequence permutations using the PermutatinEnumerator
-        /// </summary>
         private static IEnumerable<IList<T>> PermutationsImpl<T>(IEnumerable<T> sequence)
         {
             using (var iter = new PermutationEnumerator<T>(sequence))

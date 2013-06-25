@@ -52,10 +52,6 @@ namespace MoreLinq
 
             return RunLengthEncodeImpl(sequence, comparer ?? EqualityComparer<T>.Default);
         }
-
-        /// <summary>
-        /// Private implementation that performs the run-length encoding of a sequence.
-        /// </summary>
         
         private static IEnumerable<KeyValuePair<T, int>> RunLengthEncodeImpl<T>(IEnumerable<T> sequence, IEqualityComparer<T> comparer)
         {

@@ -53,10 +53,6 @@ namespace MoreLinq
 
             return RandomSubsetImpl(sequence, subsetSize, rand);
         }
-
-        /// <summary>
-        /// Private implementation method that generates a random subset of a sequence
-        /// </summary>
         
         private static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> sequence, int subsetSize, Random rand)
         {

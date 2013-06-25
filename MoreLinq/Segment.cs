@@ -76,11 +76,7 @@ namespace MoreLinq
 
             return SegmentImpl(sequence, newSegmentPredicate);
         }
-        
-        /// <summary>
-        /// The private implementation of the Segment operator.
-        /// </summary>
-        
+                
         private static IEnumerable<IEnumerable<T>> SegmentImpl<T>(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
         {
             var index = -1;
