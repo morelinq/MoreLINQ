@@ -31,9 +31,11 @@ namespace MoreLinq
         /// <param name="source">The source sequence.</param>
         /// <param name="size">Size of buckets.</param>
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
-        /// <remarks> This operator uses deferred execution and streams its results (buckets and bucket content).</remarks>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results (buckets and bucket content). 
+        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
+        /// </remarks>
 
-        [Obsolete("Use Partition instead.")]
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
         {
             return Batch(source, size, x => x);
@@ -48,9 +50,11 @@ namespace MoreLinq
         /// <param name="size">Size of buckets.</param>
         /// <param name="resultSelector">The projection to apply to each bucket.</param>
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
-        /// <remarks> This operator uses deferred execution and streams its results (buckets and bucket content).</remarks>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results (buckets and bucket content).
+        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
+        /// </remarks>
         
-        [Obsolete("Use Partition instead.")]
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
