@@ -120,19 +120,17 @@ namespace MoreLinq
         /// <summary>
         /// This class is responsible for producing the lexographically ordered k-subsets
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         
         private sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
         {
-            #region Nested Classes
             /// <summary>
             /// SubsetEnumerator uses a snapshot of the original sequence, and an
             /// iterative, reductive swap algorithm to produce all subsets of a
             /// predetermined size less than or equal to the original set size.
             /// </summary>
+
             private class SubsetEnumerator : IEnumerator<IList<T>>
             {
-                #region Private Fields
                 private readonly IList<T> m_Set;   // the original set of elements
                 private readonly T[] m_Subset;     // the current subset to return
                 private readonly int[] m_Indices;  // indices into the original set
@@ -144,9 +142,7 @@ namespace MoreLinq
                 private int k;            // size of the subset being produced
                 private int n;            // size of the original set (sequence)
                 private int z;            // count of items excluded from the subet
-                #endregion
 
-                #region Constructors
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
                     // precondition: subsetSize <= set.Count
@@ -160,9 +156,7 @@ namespace MoreLinq
                     // initialize index counters...
                     Reset();
                 }
-                #endregion
 
-                #region IEnumerator Members
                 public void Reset()
                 {
                     m = m_Subset.Length;
@@ -213,25 +207,17 @@ namespace MoreLinq
                 }
 
                 void IDisposable.Dispose() { }
-                #endregion
 
-                #region Private Methods
                 private void ExtractSubset()
                 {
                     for (var i = 0; i < k; i++)
                         m_Subset[i] = m_Set[m_Indices[i] - 1];
                 }
-                #endregion
             }
-            #endregion
-
-            #region Private Members
 
             private readonly IEnumerable<T> m_Sequence;
             private readonly int m_SubsetSize;
-            #endregion
 
-            #region Constructors
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
                 if (sequence == null)
@@ -241,25 +227,20 @@ namespace MoreLinq
                 m_SubsetSize = subsetSize;
                 m_Sequence = sequence;
             }
-            #endregion
 
-            #region Public Methods
             /// <summary>
             /// Returns an enumerator that produces all of the k-sized
             /// subsets of the initial value set. The enumerator returns
             /// and <see cref="IList{T}"/> for each subset.
             /// </summary>
             /// <returns>an <see cref="IEnumerator"/> that enumerates all k-sized subsets</returns>
+
             public IEnumerator<IList<T>> GetEnumerator()
             {
                 return new SubsetEnumerator(m_Sequence.ToList(), m_SubsetSize);
             }
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-            #endregion
+            IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
         }
     }
 }
