@@ -10,10 +10,10 @@
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
-        <description>This project enhances LINQ to Objects with the following methods: Acquire, AssertCount, Batch, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Index, MaxBy, MinBy, Pad, Pairwise, Pipe, Prepend, PreScan, Scan, SingleOrFallback, SkipUntil, Split, TakeEvery, TakeLast, TakeUntil, ToDataTable, ToDelimitedString, ToHashSet, Trace, ZipLongest, ZipShortest</description>
+        <description>This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, Pad, Pairwise, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, Window, ZipLongest, ZipShortest</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
-        <releaseNotes>See http://code.google.com/p/morelinq/wiki/ApiChanges</releaseNotes>
+        <releaseNotes>Adds new operators: Assert, Cartesian, Exclude, Incremental, Interleave, Lag, Lead, NestedLoops, OrderBy, Partition, Permutations, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Segment, Slice, SortedMerge, Subsets, TagFirstLast, ThenBy, Window, ZipShortest. See also http://code.google.com/p/morelinq/wiki/ApiChanges. This is an ALPHA release so operators may be renamed, changed radically or removed in the final version.</releaseNotes>
     </metadata>
     <files>
         <file src="..\MoreLinq\bin\Release\*" target="lib\net35" />
