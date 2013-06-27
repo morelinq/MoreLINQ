@@ -9,7 +9,7 @@ namespace MoreLinq.Test
     /// Verify the behavior of the SlidingWindow operator
     /// </summary>
     [TestFixture]
-    public class WindowTests
+    public class WindowedTests
     {
         /// <summary>
         /// Verify that SlidingWindow behaves in a lazy manner
@@ -17,7 +17,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestSlidingWindowIsLazy()
         {
-            new BreakingSequence<int>().Window(1);
+            new BreakingSequence<int>().Windowed(1);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         public void TestSlidingWindowNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Window(10);
+            sequence.Windowed(10);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace MoreLinq.Test
         public void TestSlidingWindowNegativeWindowSizeException()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            sequence.Window(-5);
+            sequence.Windowed(-5);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         public void TestSlidingWindowEmptySequence()
         {
             var sequence = Enumerable.Empty<int>();
-            var result = sequence.Window(5);
+            var result = sequence.Windowed(5);
 
             Assert.IsTrue( result.Single().SequenceEqual(sequence) );
         }
@@ -63,7 +63,7 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Window(1);
+            var result = sequence.Windowed(1);
 
             // number of windows should be equal to the source sequence length
             Assert.AreEqual(count, result.Count());
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Window(count + 1);
+            var result = sequence.Windowed(count + 1);
 
             // there should only be one window whose contents is the same
             // as the source sequence
@@ -99,7 +99,7 @@ namespace MoreLinq.Test
             const int count = 100;
             const int windowSize = count / 3;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Window(windowSize);
+            var result = sequence.Windowed(windowSize);
 
             // ensure that the number of windows is correct
             Assert.AreEqual(count - windowSize + 1, result.Count());
