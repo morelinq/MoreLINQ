@@ -38,5 +38,11 @@ namespace MoreLinq.Test
             var gold = SampleData.Values.PreScan(SampleData.Plus, 0).Zip(SampleData.Values, SampleData.Plus);
             result.AssertSequenceEqual(gold);
         }
+
+        [Test]
+        public void ScanIsLazy()
+        {
+            new BreakingSequence<object>().Scan<object>(delegate { throw new NotImplementedException(); });
+        }
     }
 }
