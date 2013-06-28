@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [ExpectedException(typeof(InvalidOperationException))]
         public void ScanEmpty()
         {
-            (new int[] { }).Scan(SampleData.Plus).Consume();
+            new int[0].Scan(SampleData.Plus).Consume();
         }
 
         [Test]
