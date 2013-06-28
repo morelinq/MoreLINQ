@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -64,10 +65,53 @@ namespace MoreLinq
             using (var i = source.GetEnumerator())
             {
                 if (!i.MoveNext())
-                {
-                    throw new InvalidOperationException("Sequence contains no elements");
-                }
+                    throw new InvalidOperationException("Sequence contains no elements.");
+
                 var aggregator = i.Current;
+
+                while (i.MoveNext())
+                {
+                    yield return aggregator;
+                    aggregator = f(aggregator, i.Current);
+                }
+                yield return aggregator;
+            }
+        }
+
+        /// <summary>
+        /// Like <see cref="Enumerable.Aggregate{TSource}"/> except returns 
+        /// the sequence of intermediate results as well as the final one. 
+        /// An additional parameter specifies a seed.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its result.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) =&gt; a + b);
+        /// </code>
+        /// When iterated, <c>result</c> will yield <c>{ 0, 1, 3, 6, 10, 15 }</c>.
+        /// </example>
+        /// <typeparam name="TSource">Type of elements in source sequence</typeparam>
+        /// <typeparam name="TState">Type of state</typeparam>
+        /// <param name="source">Source sequence</param>
+        /// <param name="seed">Initial state to seed</param>
+        /// <param name="transformation">Transformation operation</param>
+        /// <returns>The scanned sequence</returns>
+        
+        public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
+            TState seed, Func<TState, TSource, TState> transformation)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (transformation == null) throw new ArgumentNullException("transformation");
+            return ScanImpl(source, seed, transformation);
+        }
+
+        private static IEnumerable<TState> ScanImpl<T, TState>(IEnumerable<T> source, TState seed, Func<TState, T, TState> f)
+        {
+            using (var i = source.GetEnumerator())
+            {
+                var aggregator = seed;
 
                 while (i.MoveNext())
                 {
