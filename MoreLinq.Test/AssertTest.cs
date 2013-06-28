@@ -20,8 +20,6 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    using System.Runtime.Serialization;
-
     [TestFixture]
     public class AssertTest
     {

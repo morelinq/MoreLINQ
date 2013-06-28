@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
