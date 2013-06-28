@@ -31,7 +31,7 @@ namespace MoreLinq
         /// element is a special case, it is set to the identity). More
         /// generally, the pre-scan allows any commutative binary operation,
         /// not just a sum.
-        /// The inclusive version of PreScan is <see cref="Scan"/>.
+        /// The inclusive version of PreScan is <see cref="Scan{TSource}"/>.
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
