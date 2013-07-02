@@ -2,14 +2,14 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.Scan</id>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
         <title>MoreLINQ's Scan for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Enhances LINQ to Objects with the method Scan</summary>
+        <summary>Enhances LINQ to Objects with the method Scan  (2 overloads)</summary>
         <description>C# source implementation that enhances LINQ to Objects with the method Scan. Peforms a scan (inclusive prefix sum) on a sequence of elements.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
