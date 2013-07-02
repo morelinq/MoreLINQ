@@ -37,7 +37,7 @@
                 <dependency id="MoreLinq.Source.MoreEnumerable.Pipe" version="[1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.Prepend" version="[1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.PreScan" version="[1,2)" />
-                <dependency id="MoreLinq.Source.MoreEnumerable.Scan" version="[1,2)" />
+                <dependency id="MoreLinq.Source.MoreEnumerable.Scan" version="[1.1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.SingleOrFallback" version="[1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.SkipUntil" version="[1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.Split" version="[1,2)" />
