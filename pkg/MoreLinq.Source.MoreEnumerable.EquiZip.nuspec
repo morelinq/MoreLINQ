@@ -9,7 +9,7 @@
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <summary>Enhances LINQ to Objects with the method EquiZip</summary>
+        <summary>Enhances LINQ to Objects with the method EquiZip  (3 overloads)</summary>
         <description>C# source implementation that enhances LINQ to Objects with the method EquiZip. Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
