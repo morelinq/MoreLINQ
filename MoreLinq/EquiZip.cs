@@ -70,10 +70,10 @@ namespace MoreLinq
                     if (e2.MoveNext())
                         yield return resultSelector(e1.Current, e2.Current);
                     else
-                        throw new InvalidOperationException("Second sequence ran out before first");
+                        throw new InvalidOperationException("Second sequence ran out before first.");
                 }
                 if (e2.MoveNext())
-                    throw new InvalidOperationException("First sequence ran out before second");
+                    throw new InvalidOperationException("First sequence ran out before second.");
             }
         }
     }
