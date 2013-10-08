@@ -38,6 +38,13 @@ namespace MoreLinq
         /// <exception cref="InvalidOperationException">The sequence has more than one element</exception>
         /// <returns>The single element in the sequence, or the result of calling the
         /// fallback delegate if the sequence is empty.</returns>
+        /// <example>
+        /// <code>
+        /// var numbers = { 123, 456, 789 };
+        /// var result = numbers.Where(x => x == 100).SingleOrFallback(() => -1);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>-1</c>.
+        /// </example>
 
         public static TSource SingleOrFallback<TSource>(this IEnumerable<TSource> source, Func<TSource> fallback)
         {
