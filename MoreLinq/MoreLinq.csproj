@@ -76,6 +76,9 @@
     <Compile Include="Batch.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="OrderedMerge.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Index.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
