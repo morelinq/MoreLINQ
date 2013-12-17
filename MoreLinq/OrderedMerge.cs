@@ -25,7 +25,7 @@ namespace MoreLinq
 
     #endregion
 
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Merges two ordered sequences into one. Where the elements equal
