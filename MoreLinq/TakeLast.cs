@@ -43,7 +43,7 @@ namespace MoreLinq
         /// IEnumerable&lt;int&gt; result = numbers.TakeLast(2);
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield 
-        /// 34, 56 and 78 in turn.
+        /// 56 and 78 in turn.
         /// </example>
 
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)

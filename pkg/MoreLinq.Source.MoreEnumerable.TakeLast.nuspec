@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>MoreLinq.Source.MoreEnumerable.TakeLast</id>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <title>MoreLINQ's TakeLast for C# Sequences (Source)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -13,7 +13,7 @@
         <description>C# source implementation that enhances LINQ to Objects with the method TakeLast. Returns a specified number of contiguous elements from the end of a sequence.</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
-        <releaseNotes>Microsoft .NET Framework 2.0 support via LINQBridge</releaseNotes>
+        <releaseNotes>Documentation fix</releaseNotes>
         <dependencies>
             <group targetFramework="net35" />
             <group targetFramework="net20">
