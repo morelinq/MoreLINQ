@@ -55,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D0
 		pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Zip.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Zip.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec
+		pkg\Portable.MoreLinq.nuspec = pkg\Portable.MoreLinq.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.MoreLinq", "MoreLinq\Portable.MoreLinq.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
