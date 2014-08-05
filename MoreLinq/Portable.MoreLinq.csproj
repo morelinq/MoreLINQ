@@ -157,9 +157,6 @@
     <Compile Include="ToHashSet.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Trace.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Zip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
