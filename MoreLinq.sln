@@ -59,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.MoreLinq", "MoreLinq\Portable.MoreLinq.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.MoreLinq.Test", "MoreLinq.Test\Portable.MoreLinq.Test.csproj", "{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
