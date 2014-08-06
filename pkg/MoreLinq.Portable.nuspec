@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>Portable.MoreLinq</id>
+        <id>MoreLinq.Portable</id>
         <version>1.0.16006</version>
         <title>MoreLINQ (Portable)</title>
         <authors>MoreLINQ Developers</authors>
@@ -27,7 +27,7 @@ PCL profile 328 is used, i.e. the following targets are supported:
 * Xamarin.iOS</releaseNotes>
     </metadata>
     <files>
-        <file src="..\MoreLinq\bin\Release\Portable.MoreLinq.*" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
+        <file src="..\MoreLinq\bin\Release\MoreLinq.Portable.*" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
         <file src="..\COPYING.txt" target="COPYING.txt" />
     </files>
 </package>

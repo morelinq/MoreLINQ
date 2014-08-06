@@ -55,12 +55,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D0
 		pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Zip.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Zip.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec
-		pkg\Portable.MoreLinq.nuspec = pkg\Portable.MoreLinq.nuspec
+		pkg\MoreLinq.Portable.nuspec = pkg\MoreLinq.Portable.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.MoreLinq", "MoreLinq\Portable.MoreLinq.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable", "MoreLinq\MoreLinq.Portable.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.MoreLinq.Test", "MoreLinq.Test\Portable.MoreLinq.Test.csproj", "{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable.Test", "MoreLinq.Test\MoreLinq.Portable.Test.csproj", "{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

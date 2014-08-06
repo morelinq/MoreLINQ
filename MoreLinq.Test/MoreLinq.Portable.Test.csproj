@@ -89,7 +89,7 @@
     <Compile Include="ZipTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MoreLinq\Portable.MoreLinq.csproj">
+    <ProjectReference Include="..\MoreLinq\MoreLinq.Portable.csproj">
       <Project>{72c49b06-715d-4423-ad0a-78517f71d7b9}</Project>
       <Name>Portable.MoreLinq</Name>
     </ProjectReference>
