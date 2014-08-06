@@ -29,7 +29,7 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns all distinct elements of the given source, where "distinctness"
-        /// is determined via a projection and the default eqaulity comparer for the projected type.
+        /// is determined via a projection and the default equality comparer for the projected type.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results, although
