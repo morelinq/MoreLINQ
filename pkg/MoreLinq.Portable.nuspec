@@ -29,5 +29,6 @@ PCL profile 328 is used, i.e. the following targets are supported:
     <files>
         <file src="..\MoreLinq\bin\Release\MoreLinq.Portable.*" target="lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1" />
         <file src="..\COPYING.txt" target="COPYING.txt" />
+        <file src="..\MoreLinq\**\*.cs" target="src\MoreLinq" />
     </files>
 </package>
