@@ -110,6 +110,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="MoreEnumerable.cs" />
+    <Compile Include="OrderedMerge.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pad.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
