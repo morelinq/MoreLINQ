@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>morelinq</id>
-        <version>1.0.16006</version>
+        <version>1.0.16006.1</version>
         <title>MoreLINQ</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
@@ -18,6 +18,6 @@
     <files>
         <file src="..\MoreLinq\bin\Release\*" target="lib\net35" />
         <file src="..\COPYING.txt" target="COPYING.txt" />
-        <file src="..\MoreLinq\**\*.cs" target="src" />
+        <file src="..\MoreLinq\**\*.cs" target="src\MoreLinq" />
     </files>
 </package>
