@@ -48,7 +48,7 @@ namespace MoreLinq.Test
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void BatcWithhNullResultSelector()
+        public void BatchWithNullResultSelector()
         {
             MoreEnumerable.Batch<object, object>(new object[0], 1, null);
         }
