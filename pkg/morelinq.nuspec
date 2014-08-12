@@ -16,7 +16,7 @@
         <releaseNotes>See http://code.google.com/p/morelinq/wiki/ApiChanges</releaseNotes>
     </metadata>
     <files>
-        <file src="..\MoreLinq\bin\Release\*" target="lib\net35" />
+        <file src="..\MoreLinq\bin\Release\*" target="lib\net35" exclude="..\MoreLinq\bin\Release\*.Portable.*" />
         <file src="..\COPYING.txt" target="COPYING.txt" />
         <file src="..\MoreLinq\**\*.cs" target="src\MoreLinq" />
     </files>
