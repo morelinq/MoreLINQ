@@ -147,7 +147,7 @@ namespace MoreLinq
                 {
                     // precondition: subsetSize <= set.Count
                     if (subsetSize > set.Count)
-                        throw new ArgumentOutOfRangeException("subsetSize", subsetSize, "Subset size must be <= sequence.Count()");
+                        throw new ArgumentOutOfRangeException("subsetSize", "Subset size must be <= sequence.Count()");
                     
                     // initialize set arrays...
                     _set = set;

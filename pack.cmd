@@ -8,6 +8,7 @@ if not exist dist md dist
 if not %errorlevel%==0 exit /b %errorlevel%
 call build /v:m ^
     && nuget pack pkg\morelinq.nuspec -OutputDirectory dist -Symbols ^
+    && nuget pack pkg\MoreLinq.Portable.nuspec -OutputDirectory dist -Symbols ^
     && for %%i in (pkg\MoreLinq.Source.*.nuspec) do nuget pack %%i -OutputDirectory dist
 goto :EOF
 
