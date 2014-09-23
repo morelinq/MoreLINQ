@@ -176,7 +176,7 @@ namespace MoreLinq
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException("source");
-            if (source == null) throw new ArgumentNullException("separatorFunc");
+            if (separatorFunc == null) throw new ArgumentNullException("separatorFunc");
             if (count <= 0) throw new ArgumentOutOfRangeException("count");
             if (resultSelector == null) throw new ArgumentNullException("resultSelector");
             return SplitImpl(source, separatorFunc, count, resultSelector);
