@@ -45,7 +45,7 @@
                 <dependency id="MoreLinq.Source.MoreEnumerable.TakeEvery" version="[1.0.1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.TakeLast" version="[1.0.3,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.TakeUntil" version="[1.0.1,2)" />
-                <dependency id="MoreLinq.Source.MoreEnumerable.ToDataTable" version="[1,2)" />
+                <dependency id="MoreLinq.Source.MoreEnumerable.ToDataTable" version="[1.0.1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.ToDelimitedString" version="[1.1.1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.ToHashSet" version="[1,2)" />
                 <dependency id="MoreLinq.Source.MoreEnumerable.Trace" version="[1.0.2,2)" />

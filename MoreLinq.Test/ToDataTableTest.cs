@@ -82,7 +82,7 @@ namespace MoreLinq.Test
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ToDataTableNullTable()
-        { 
+        {
             DataTable dt = null;
             m_TestObjects.ToDataTable(dt);
         }
@@ -167,8 +167,7 @@ namespace MoreLinq.Test
             var dt = m_TestObjects.ToDataTable();
             Assert.AreEqual(m_TestObjects.Count, dt.Rows.Count);
         }
-        
-        
+
         [Test]
         public void ToDataTableWithExpression()
         {
@@ -201,6 +200,31 @@ namespace MoreLinq.Test
             Assert.That(rows.Length, Is.EqualTo(vars.Length));
             Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
+        }
+
+        struct Point
+        {
+            public static Point Empty = new Point();
+            public bool IsEmpty { get { return X == 0 && Y == 0; } }
+            public int X { get; set; }
+            public int Y { get; set; }
+            public Point(int x, int y) : this() { X = x; Y = y; }
+        }
+
+        [Test]
+        public void ToDataTableIgnoresStaticMembers()
+        {
+            var points = new[] { new Point(12, 34) }.ToDataTable();
+
+            Assert.AreEqual(3, points.Columns.Count);
+            DataColumn x, y, empty;
+            Assert.NotNull(x = points.Columns["X"]);
+            Assert.NotNull(y = points.Columns["Y"]);
+            Assert.NotNull(empty = points.Columns["IsEmpty"]);
+            var row = points.Rows.Cast<DataRow>().Single();
+            Assert.AreEqual(12, row[x]);
+            Assert.AreEqual(34, row[y]);
+            Assert.AreEqual(false, row[empty]);
         }
     }
 }
