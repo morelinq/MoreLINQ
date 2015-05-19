@@ -54,7 +54,7 @@ namespace MoreLinq
 
             if (expressions == null || expressions.Count == 0)
             {
-                return from m in typeof(T).GetMembers()
+                return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
                              || (m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0)
                        select m;
