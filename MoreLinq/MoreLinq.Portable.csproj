@@ -100,6 +100,9 @@
     <Compile Include="ForEach.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="FullGroupJoin.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Generate.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

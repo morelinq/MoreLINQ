@@ -245,6 +245,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </None>
     <Compile Include="SequenceException.cs" />
+    <Compile Include="FullGroupJoin.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
