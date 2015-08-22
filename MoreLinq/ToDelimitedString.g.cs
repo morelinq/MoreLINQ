@@ -328,7 +328,7 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<sbyte> source)
         {
             return ToDelimitedString(source, null);
@@ -350,7 +350,7 @@ namespace MoreLinq
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
@@ -439,7 +439,7 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<uint> source)
         {
             return ToDelimitedString(source, null);
@@ -461,7 +461,7 @@ namespace MoreLinq
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<uint> source, string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt32);
@@ -476,7 +476,7 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ulong> source)
         {
             return ToDelimitedString(source, null);
@@ -498,7 +498,7 @@ namespace MoreLinq
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ulong> source, string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt64);
@@ -513,7 +513,7 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ushort> source)
         {
             return ToDelimitedString(source, null);
@@ -535,7 +535,7 @@ namespace MoreLinq
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
