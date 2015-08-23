@@ -39,11 +39,13 @@ namespace MoreLinq
             where parameters.Length == 1
             select parameters.First().ParameterType into type
             where type.IsValueType || type == typeof(string)
-            select new 
+            let res = new
             {
                 Type = type,
                 Name = cscp.GetTypeOutput(new CodeTypeReference(type)),
-            };
+            }
+            orderby res.Name
+            select res;
         foreach (var type in types) { #>
         /// <summary>
         /// Creates a delimited string from a sequence of values. The 
