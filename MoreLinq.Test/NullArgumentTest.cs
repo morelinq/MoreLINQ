@@ -21,9 +21,8 @@ namespace MoreLinq.Test
             var inner = ex.InnerException;
             Assert.That(inner, Is.TypeOf<ArgumentNullException>());
 
-            // TODO enable later
-            //var argumentNullException = ((ArgumentNullException)inner);
-            //Assert.That(argumentNullException.ParamName, Is.EqualTo(parameterName));
+            var argumentNullException = ((ArgumentNullException) inner);
+            Assert.That(argumentNullException.ParamName, Is.EqualTo(parameterName));
         }
 
         // TODO: test null allowed
@@ -108,12 +107,9 @@ namespace MoreLinq.Test
         {
             var invoke = type.GetMethod("Invoke");
             var parameters = invoke.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
-            var body = Expression.Default(invoke.ReturnType); // TODO: Requires >= .NET 4.0
+            var body = Expression.Default(invoke.ReturnType); // requires >= .NET 4.0
             var lambda = Expression.Lambda(type, body, parameters);
-
-            return null;
-            // TODO
-            //return lambda.Compile();
+            return lambda.Compile();
         }
 
         private object CreateGenericInterfaceInstance(Type type)
@@ -122,7 +118,6 @@ namespace MoreLinq.Test
             var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
             var definition = typeof (GenericArgs).GetNestedType(name);
             var instantiation = definition.MakeGenericType(type.GetGenericArguments());
-
             return Activator.CreateInstance(instantiation);
         }
 
