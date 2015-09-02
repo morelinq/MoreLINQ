@@ -130,6 +130,7 @@ namespace MoreLinq
             Func<T, T, TResult> bothSelector,
             [CanBeNull] IComparer<TKey> comparer)
         {
+            if (keySelector == null) throw new ArgumentNullException("keySelector"); // Argument name changes to 'firstKeySelector'
             return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
         }
 
