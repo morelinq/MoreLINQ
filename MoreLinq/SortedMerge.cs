@@ -62,15 +62,15 @@ namespace MoreLinq
         /// <param name="source">The primary sequence with which to merge</param>
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-        /// <param name="otherSources">A variable argument array of zero or more other sequences to merge with</param>
+        /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
         
-        public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSources)
+        public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSequences)
         {
             if (source == null) throw new ArgumentNullException("source");
-            if (otherSources == null) throw new ArgumentNullException("otherSources");
+            if (otherSequences == null) throw new ArgumentNullException("otherSequences");
 
-            if (otherSources.Length == 0)
+            if (otherSequences.Length == 0)
                 return source; // optimization for when otherSequences is empty
 
             comparer = comparer ?? Comparer<TSource>.Default;
@@ -83,7 +83,7 @@ namespace MoreLinq
                     : (a, b) => comparer.Compare(b, a) > 0;
 
             // return the sorted merge result
-            return SortedMergeImpl(precedenceFunc, new[] { source }.Concat(otherSources));
+            return SortedMergeImpl(precedenceFunc, new[] { source }.Concat(otherSequences));
         }
 
         /// <summary>
