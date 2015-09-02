@@ -26,18 +26,18 @@ namespace MoreLinq
         /// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The sequence to segment</param>
+        /// <param name="source">The sequence to segment</param>
         /// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given element begins a new segment, and <c>false</c> otherwise</param>
         /// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if either <paramref name="sequence"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
+        /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
         
-        public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> sequence, Func<T, bool> newSegmentPredicate)
+        public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException("newSegmentPredicate");
 
-            return Segment(sequence, (curr, prev, index) => newSegmentPredicate(curr));
+            return Segment(source, (curr, prev, index) => newSegmentPredicate(curr));
         }
 
         /// <summary>
@@ -62,19 +62,19 @@ namespace MoreLinq
         /// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The sequence to segment</param>
+        /// <param name="source">The sequence to segment</param>
         /// <param name="newSegmentPredicate">A function, which returns <c>true</c> if the given current element, previous element or index indicate a new segment, and <c>false</c> otherwise</param>
         /// <returns>A sequence of segment, each of which is a portion of the original sequence</returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if either <paramref name="sequence"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
+        /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
         
-        public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> sequence, Func<T, T, int, bool> newSegmentPredicate)
+        public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
         {
-            if (sequence == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException("source");
             if (newSegmentPredicate == null) throw new ArgumentNullException("newSegmentPredicate");
 
-            return SegmentImpl(sequence, newSegmentPredicate);
+            return SegmentImpl(source, newSegmentPredicate);
         }
                 
         private static IEnumerable<IEnumerable<T>> SegmentImpl<T>(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
