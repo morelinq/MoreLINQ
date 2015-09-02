@@ -13,21 +13,42 @@ namespace MoreLinq.Test
     public class NullArgumentTest
     {
         [Test, TestCaseSource("GetNotNullTestCases")]
-        public void NotNull(MethodInfo method, object[] arguments, string parameterName)
+        public void NotNull(TestCase testCase)
         {
-            var ex = Assert.Throws<TargetInvocationException>(() => method.Invoke(null, arguments));
-
-            var inner = ex.InnerException;
-            Assert.That(inner, Is.TypeOf<ArgumentNullException>());
-
-            var argumentNullException = ((ArgumentNullException) inner);
-            Assert.That(argumentNullException.ParamName, Is.EqualTo(parameterName));
+            var ex = Assert.Throws<ArgumentNullException>(() => testCase.Invoke());
+            Assert.That(ex.ParamName, Is.EqualTo(testCase.ParameterName));
         }
 
         [Test, TestCaseSource("GetCanBeNullTestCases")]
-        public void CanBeNull(MethodInfo method, object[] arguments, string parameterName)
+        public void CanBeNull(TestCase testCase)
         {
-            Assert.DoesNotThrow(() => method.Invoke(null, arguments));
+            Assert.DoesNotThrow(() => testCase.Invoke());
+        }
+
+        public class TestCase
+        {
+            public MethodInfo Method { get; private set; }
+            public object[] Arguments { get; private set; }
+            public string ParameterName { get; private set; }
+
+            public TestCase(MethodInfo method, object[] arguments, string parameterName)
+            {
+                Method = method;
+                Arguments = arguments;
+                ParameterName = parameterName;
+            }
+
+            public object Invoke()
+            {
+                try
+                {
+                    return Method.Invoke(null, Arguments);
+                }
+                catch (TargetInvocationException ex)
+                {
+                    throw ex.InnerException;
+                }
+            }
         }
 
         private IEnumerable<ITestCaseData> GetNotNullTestCases()
@@ -54,8 +75,9 @@ namespace MoreLinq.Test
             return from param in parameters
                 where IsReferenceType(param) && CanBeNull(param) == canBeNull
                 let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
+                let testCase = new TestCase(method, arguments, param.Name)
                 let testName = GetTestName(methodDefinition, param)
-                select (ITestCaseData) new TestCaseData(method, arguments, param.Name).SetName(testName);
+                select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
         }
 
         private string GetTestName(MethodInfo definition, ParameterInfo parameter)
