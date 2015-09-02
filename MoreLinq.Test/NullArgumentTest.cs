@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -13,8 +12,8 @@ namespace MoreLinq.Test
     [TestFixture]
     public class NullArgumentTest
     {
-        [Test, TestCaseSource("GetTestCases")]
-        public void NullCheck(MethodInfo method, object[] arguments, string parameterName)
+        [Test, TestCaseSource("GetNotNullTestCases")]
+        public void NotNull(MethodInfo method, object[] arguments, string parameterName)
         {
             var ex = Assert.Throws<TargetInvocationException>(() => method.Invoke(null, arguments));
 
@@ -25,22 +24,35 @@ namespace MoreLinq.Test
             Assert.That(argumentNullException.ParamName, Is.EqualTo(parameterName));
         }
 
-        // TODO: test null allowed
-        // TODO: test that both of them test all methods/parameter combinations.
-
-        private IEnumerable<ITestCaseData> GetTestCases()
+        [Test, TestCaseSource("GetCanBeNullTestCases")]
+        public void CanBeNull(MethodInfo method, object[] arguments, string parameterName)
         {
-            var flags = BindingFlags.Public | BindingFlags.Static;
-            return typeof (MoreEnumerable).GetMethods(flags).SelectMany(CreateTestCases);
+            Assert.DoesNotThrow(() => method.Invoke(null, arguments));
         }
 
-        private IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition)
+        private IEnumerable<ITestCaseData> GetNotNullTestCases()
+        {
+            return GetTestCases(canBeNull: false);
+        }
+
+        private IEnumerable<ITestCaseData> GetCanBeNullTestCases()
+        {
+            return GetTestCases(canBeNull: true);
+        }
+
+        private IEnumerable<ITestCaseData> GetTestCases(bool canBeNull)
+        {
+            var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
+            return typeof (MoreEnumerable).GetMethods(flags).SelectMany(m => CreateTestCases(m, canBeNull));
+        }
+
+        private IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull)
         {
             var method = InstantiateMethod(methodDefinition);
             var parameters = method.GetParameters().ToList();
 
             return from param in parameters
-                where IsReferenceType(param) && !CanBeNull(param)
+                where IsReferenceType(param) && CanBeNull(param) == canBeNull
                 let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
                 let testName = GetTestName(methodDefinition, param)
                 select (ITestCaseData) new TestCaseData(method, arguments, param.Name).SetName(testName);
@@ -66,7 +78,7 @@ namespace MoreLinq.Test
             if (constraints.Length == 0) return typeof (int);
             if (constraints.Length == 1) return constraints.Single();
 
-            return typeParameter;
+            throw new NotImplementedException("NullArgumentTest.InstantiateType");
         }
 
         private bool IsReferenceType(ParameterInfo parameter)
@@ -91,14 +103,6 @@ namespace MoreLinq.Test
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
             if (typeof (Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
             if (type == typeof (string)) return "";
-            if (type == typeof (Random)) return new Random();
-            if (type == typeof (DataTable)) return new DataTable();
-
-            if (type.IsGenericParameter)
-            {
-                // TODO
-                return new object();
-            }
 
             return CreateGenericInterfaceInstance(type);
         }
@@ -123,9 +127,18 @@ namespace MoreLinq.Test
 
         static class GenericArgs
         {
+            public class Enumerator<T> : IEnumerator<T>
+            {
+                public bool MoveNext() { return false; }
+                public T Current { get; private set; }
+                object IEnumerator.Current { get { return Current; } }
+                public void Reset() { }
+                public void Dispose() { }                
+            }
+
             public class Enumerable<T> : IEnumerable<T>
             {
-                public IEnumerator<T> GetEnumerator() { throw new NotImplementedException(); }
+                public IEnumerator<T> GetEnumerator() { return new Enumerator<T>(); }
                 IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
             }
 
@@ -134,19 +147,19 @@ namespace MoreLinq.Test
                 public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
                 {
                     if (keySelector == null) throw new ArgumentNullException("keySelector");
-                    throw new NotImplementedException();
+                    return this;
                 }
             }
 
             public class Comparer<T> : IComparer<T>
             {
-                public int Compare(T x, T y) { throw new NotImplementedException(); }
+                public int Compare(T x, T y) { return -1; }
             }
 
             public class EqualityComparer<T> : IEqualityComparer<T>
             {
-                public bool Equals(T x, T y) { throw new NotImplementedException(); }
-                public int GetHashCode(T obj) { throw new NotImplementedException(); }
+                public bool Equals(T x, T y) { return false; }
+                public int GetHashCode(T obj) { return 0; }
             }
         }
     }
