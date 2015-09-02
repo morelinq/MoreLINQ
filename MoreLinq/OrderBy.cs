@@ -35,9 +35,7 @@ namespace MoreLinq
         
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> sequence, Func<T, TKey> keySelector, OrderByDirection direction)
         {
-            return direction == OrderByDirection.Ascending
-                       ? sequence.OrderBy(keySelector)
-                       : sequence.OrderByDescending(keySelector);
+            return OrderBy(sequence, keySelector, null, direction);
         }
 
         /// <summary>
@@ -70,9 +68,7 @@ namespace MoreLinq
         
         public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> sequence, Func<T, TKey> keySelector, OrderByDirection direction)
         {
-            return direction == OrderByDirection.Ascending
-                       ? sequence.ThenBy(keySelector)
-                       : sequence.ThenByDescending(keySelector);
+            return ThenBy(sequence, keySelector, null, direction);
         }
 
         /// <summary>
