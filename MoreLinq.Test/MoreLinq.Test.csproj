@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MoreLinq.Test</RootNamespace>
     <AssemblyName>MoreLinq.Test</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -57,6 +57,7 @@
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
+    <Compile Include="NullArgumentTest.cs" />
     <Compile Include="SplitTest.cs" />
     <Compile Include="GroupAdjacentTest.cs" />
     <Compile Include="PairwiseTest.cs" />
