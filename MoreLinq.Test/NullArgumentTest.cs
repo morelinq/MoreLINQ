@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -39,9 +42,14 @@ namespace MoreLinq.Test
 
             return from param in parameters
                 where IsReferenceType(param) && !CanBeNull(param)
-                let arguments = parameters.Select(p => p == param ? null : GetArgument(p.ParameterType)).ToArray()
+                let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
                 let testName = GetTestName(methodDefinition, param)
                 select (ITestCaseData) new TestCaseData(method, arguments, param.Name).SetName(testName);
+        }
+
+        private string GetTestName(MethodInfo definition, ParameterInfo parameter)
+        {
+            return string.Format("{0}: '{1}' ({2});\n{3}", definition.Name, parameter.Name, parameter.Position, definition);
         }
 
         private MethodInfo InstantiateMethod(MethodInfo definition)
@@ -55,7 +63,9 @@ namespace MoreLinq.Test
         private Type InstantiateType(Type typeParameter)
         {
             var constraints = typeParameter.GetGenericParameterConstraints();
+
             if (constraints.Length == 0) return typeof (int);
+            if (constraints.Length == 1) return constraints.Single();
 
             return typeParameter;
         }
@@ -70,50 +80,65 @@ namespace MoreLinq.Test
             return parameter.GetCustomAttributes(false).Any(a => a.GetType().Name == "CanBeNullAttribute");
         }
 
-        private string GetTestName(MethodInfo definition, ParameterInfo parameter)
+        private bool HasDefaultConstructor(Type type)
         {
-            return string.Format("{0}: '{1}' ({2});\n{3}", definition.Name, parameter.Name, parameter.Position, definition);
+            return type.GetConstructor(Type.EmptyTypes) != null;
         }
 
-        private object GetArgument(Type type)
+        private object CreateInstance(Type type)
         {
-            if (type.IsValueType) return Activator.CreateInstance(type);
-            if (typeof (Delegate).IsAssignableFrom(type)) return CreateDelegate(type);
-            if (type == typeof(string)) return "";
-            if (type == typeof(Random)) return new Random();
-            
+            if (type == typeof (int)) return new int(); // often used as size, range, etc.. avoid ArgumentOutOfRange. 
+            if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
+            if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
+            if (typeof (Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
+            if (type == typeof (string)) return "";
+            if (type == typeof (Random)) return new Random();
+            if (type == typeof (DataTable)) return new DataTable();
 
-            // TODO var typeArg = type.GetGenericArguments().Single();
-            if (IsGeneric(type, typeof (IEnumerable<>))) return Array.CreateInstance(type.GetGenericArguments().Single(), 0);
-            if (IsGeneric(type, typeof (IComparer<>))) return Create(typeof (Args.Comparer<>), type.GetGenericArguments().Single());
-            if (IsGeneric(type, typeof (IEqualityComparer<>))) return Create(typeof (Args.EqualityComparer<>), type.GetGenericArguments().Single());
+            if (type.IsGenericParameter)
+            {
+                // TODO
+                return new object();
+            }
 
-            return new object();
+            return CreateGenericInterfaceInstance(type);
         }
 
-        private bool IsGeneric(Type instantiation, Type definition)
+        private Delegate CreateDelegateInstance(Type type)
         {
-            return instantiation.IsGenericType && instantiation.GetGenericTypeDefinition() == definition;
-        }
-
-        private Delegate CreateDelegate(Type delegateType)
-        {
-            var invoke = delegateType.GetMethod("Invoke");
+            var invoke = type.GetMethod("Invoke");
             var parameters = invoke.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
             var body = Expression.Default(invoke.ReturnType); // TODO: Requires >= .NET 4.0
-            var lambda = Expression.Lambda(delegateType, body, parameters);
+            var lambda = Expression.Lambda(type, body, parameters);
 
-            return lambda.Compile();
+            return null;
+            // TODO
+            //return lambda.Compile();
         }
 
-        private object Create(Type definition, Type typeArgument)
+        private object CreateGenericInterfaceInstance(Type type)
         {
-            var type = definition.MakeGenericType(typeArgument);
-            return Activator.CreateInstance(type);
+            Debug.Assert(type.IsGenericType && type.IsInterface);
+            var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
+            var definition = typeof (GenericArgs).GetNestedType(name);
+            var instantiation = definition.MakeGenericType(type.GetGenericArguments());
+
+            return Activator.CreateInstance(instantiation);
         }
 
-        static class Args
+        static class GenericArgs
         {
+            public class Enumerable<T> : IEnumerable<T>
+            {
+                public IEnumerator<T> GetEnumerator() { throw new NotImplementedException(); }
+                IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+            }
+
+            public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
+            {
+                public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending) { throw new NotImplementedException(); }
+            }
+
             public class Comparer<T> : IComparer<T>
             {
                 public int Compare(T x, T y) { throw new NotImplementedException(); }
