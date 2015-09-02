@@ -125,9 +125,10 @@ namespace MoreLinq.Test
             return Activator.CreateInstance(instantiation);
         }
 
+        // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
         static class GenericArgs
         {
-            public class Enumerator<T> : IEnumerator<T>
+            private class Enumerator<T> : IEnumerator<T>
             {
                 public bool MoveNext() { return false; }
                 public T Current { get; private set; }
