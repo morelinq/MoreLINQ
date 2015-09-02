@@ -65,6 +65,7 @@
     <Compile Include="Batch.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="CanBeNullAttribute.cs" />
     <Compile Include="Concat.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
