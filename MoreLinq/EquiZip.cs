@@ -133,7 +133,7 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
             if (third == null) throw new ArgumentNullException("third");
-            if (third == null) throw new ArgumentNullException("fourth");
+            if (fourth == null) throw new ArgumentNullException("fourth");
             if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             return EquiZipImpl(first, second, third, fourth, resultSelector);

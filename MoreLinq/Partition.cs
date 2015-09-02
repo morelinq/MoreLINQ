@@ -82,6 +82,7 @@ namespace MoreLinq
             IEnumerable<int> partitions)
         {
             if (source == null) throw new ArgumentNullException("source");
+            if (partitions == null) throw new ArgumentNullException("partitions");
 
             var splitInstructions = Enumerable.Empty<PartitionInstruction>();
 

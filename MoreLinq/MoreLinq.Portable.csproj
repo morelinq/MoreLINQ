@@ -68,6 +68,7 @@
     <Compile Include="Batch.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="CanBeNullAttribute.cs" />
     <Compile Include="Cartesian.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

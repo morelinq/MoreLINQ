@@ -75,7 +75,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer)
+            TSource separator, [CanBeNull] IEqualityComparer<TSource> comparer)
         {
             return Split(source, separator, comparer, int.MaxValue);
         }
@@ -87,7 +87,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer, int count)
+            TSource separator, [CanBeNull] IEqualityComparer<TSource> comparer, int count)
         {
             return Split(source, separator, comparer, count, s => s);
         }
@@ -99,7 +99,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer,
+            TSource separator, [CanBeNull] IEqualityComparer<TSource> comparer,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             return Split(source, separator, comparer, int.MaxValue, resultSelector);
@@ -112,7 +112,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer, int count,
+            TSource separator, [CanBeNull] IEqualityComparer<TSource> comparer, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException("source");
