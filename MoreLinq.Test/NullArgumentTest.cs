@@ -87,7 +87,7 @@ namespace MoreLinq.Test
 
         private object CreateInstance(Type type)
         {
-            if (type == typeof (int)) return new int(); // often used as size, range, etc.. avoid ArgumentOutOfRange. 
+            if (type == typeof (int)) return 7; // often used as size, range, etc. avoid ArgumentOutOfRange for '0'.
             if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
             if (typeof (Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
@@ -136,7 +136,11 @@ namespace MoreLinq.Test
 
             public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
             {
-                public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending) { throw new NotImplementedException(); }
+                public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
+                {
+                    if (keySelector == null) throw new ArgumentNullException("keySelector");
+                    throw new NotImplementedException();
+                }
             }
 
             public class Comparer<T> : IComparer<T>
