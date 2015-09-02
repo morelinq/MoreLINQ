@@ -55,7 +55,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<string> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<string> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.String);
         }
@@ -92,7 +92,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<bool> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<bool> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Boolean);
         }
@@ -129,7 +129,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<sbyte> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
         }
@@ -166,7 +166,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<byte> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<byte> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Byte);
         }
@@ -203,7 +203,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<char> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<char> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Char);
         }
@@ -240,7 +240,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<short> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<short> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int16);
         }
@@ -277,7 +277,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<int> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<int> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int32);
         }
@@ -314,7 +314,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<long> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<long> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int64);
         }
@@ -351,7 +351,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<float> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<float> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Single);
         }
@@ -388,7 +388,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<double> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<double> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Double);
         }
@@ -425,7 +425,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<decimal> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<decimal> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Decimal);
         }
@@ -462,7 +462,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<ushort> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
         }
@@ -499,7 +499,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<uint> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<uint> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt32);
         }
@@ -536,7 +536,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<ulong> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<ulong> source, [CanBeNull] string delimiter)
         {
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt64);
         }

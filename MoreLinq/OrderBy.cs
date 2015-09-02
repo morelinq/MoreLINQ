@@ -51,7 +51,7 @@ namespace MoreLinq
         /// <param name="comparer">A comparer used to define the semantics of element comparison</param>
         /// <returns>An ordered copy of the source sequence</returns>
         
-        public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> sequence, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
+        public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> sequence, Func<T, TKey> keySelector, [CanBeNull] IComparer<TKey> comparer, OrderByDirection direction)
         {
             return direction == OrderByDirection.Ascending
                        ? sequence.OrderBy(keySelector, comparer)
@@ -86,7 +86,7 @@ namespace MoreLinq
         /// <param name="comparer">A comparer used to define the semantics of element comparison</param>
         /// <returns>An ordered copy of the source sequence</returns>
         
-        public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> sequence, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
+        public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> sequence, Func<T, TKey> keySelector, [CanBeNull] IComparer<TKey> comparer, OrderByDirection direction)
         {
             return direction == OrderByDirection.Ascending
                        ? sequence.ThenBy(keySelector, comparer)

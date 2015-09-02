@@ -65,7 +65,7 @@ namespace MoreLinq
         /// <param name="otherSources">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
         
-        public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSources)
+        public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, [CanBeNull] IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSources)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (otherSources == null) throw new ArgumentNullException("otherSources");
