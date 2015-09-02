@@ -59,7 +59,7 @@ namespace MoreLinq
         public static IEnumerable<T> OrderedMerge<T>(
             this IEnumerable<T> first,
             IEnumerable<T> second,
-            IComparer<T> comparer)
+            [CanBeNull] IComparer<T> comparer)
         {
             return OrderedMerge(first, second, e => e, f => f, s => s, (a, _) => a, comparer);
         }
@@ -128,7 +128,7 @@ namespace MoreLinq
             Func<T, TResult> firstSelector,
             Func<T, TResult> secondSelector,
             Func<T, T, TResult> bothSelector,
-            IComparer<TKey> comparer)
+            [CanBeNull] IComparer<TKey> comparer)
         {
             return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
         }
@@ -180,7 +180,7 @@ namespace MoreLinq
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
-            IComparer<TKey> comparer)
+            [CanBeNull] IComparer<TKey> comparer)
         {
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
