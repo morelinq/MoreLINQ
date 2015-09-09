@@ -179,7 +179,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
         
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, [CanBeNull] params Expression<Func<T, object>>[] expressions)
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
             where TTable : DataTable
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -244,7 +244,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
        
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, [CanBeNull] params Expression<Func<T, object>>[] expressions)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
         }

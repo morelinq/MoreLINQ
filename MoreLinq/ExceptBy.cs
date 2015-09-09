@@ -73,7 +73,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
-            [CanBeNull] IEqualityComparer<TKey> keyComparer)
+            IEqualityComparer<TKey> keyComparer)
         {
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");

@@ -59,7 +59,7 @@ namespace MoreLinq
         /// streams the results.
         /// </remarks>
 
-        public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, [CanBeNull] string format)
+        public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string format)
         {
             if (source == null) throw new ArgumentNullException("source");
 

@@ -83,7 +83,7 @@ namespace MoreLinq
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
-            [CanBeNull] IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
@@ -160,7 +160,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
-            [CanBeNull] IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");

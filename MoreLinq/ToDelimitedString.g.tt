@@ -92,7 +92,7 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 <#= attribute #>
-        public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, [CanBeNull] string delimiter)
+        public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
             if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
