@@ -110,23 +110,31 @@ namespace MoreLinq.Test
 
         private bool CanBeNull(ParameterInfo parameter)
         {
-            return parameter.GetCustomAttributes(false).Any(a => a.GetType().Name == "CanBeNullAttribute");
+            var type = parameter.ParameterType;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (IEqualityComparer<>)) return true;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (IComparer<>)) return true;
+            if (parameter.Member.Name == "ToDataTable" && parameter.Name == "expressions") return true;
+            if (parameter.Member.Name == "ToDelimitedString" && parameter.Name == "delimiter") return true;
+            if (parameter.Member.Name == "Trace" && parameter.Name == "format") return true;
+
+            return false;
+        }
+
+        private object CreateInstance(Type type)
+        {
+            if (type == typeof (int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
+            if (type == typeof (string)) return "";
+            if (typeof(IEnumerable<int>).IsAssignableFrom(type)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
+            if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
+            if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
+            if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
+
+            return CreateGenericInterfaceInstance(type);
         }
 
         private bool HasDefaultConstructor(Type type)
         {
             return type.GetConstructor(Type.EmptyTypes) != null;
-        }
-
-        private object CreateInstance(Type type)
-        {
-            if (type == typeof (int)) return 7; // often used as size, range, etc. avoid ArgumentOutOfRange for '0'.
-            if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
-            if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
-            if (typeof (Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
-            if (type == typeof (string)) return "";
-
-            return CreateGenericInterfaceInstance(type);
         }
 
         private Delegate CreateDelegateInstance(Type type)
@@ -156,7 +164,7 @@ namespace MoreLinq.Test
                 public T Current { get; private set; }
                 object IEnumerator.Current { get { return Current; } }
                 public void Reset() { }
-                public void Dispose() { }                
+                public void Dispose() { }
             }
 
             public class Enumerable<T> : IEnumerable<T>
