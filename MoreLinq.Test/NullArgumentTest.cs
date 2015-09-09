@@ -110,14 +110,14 @@ namespace MoreLinq.Test
 
         private bool CanBeNull(ParameterInfo parameter)
         {
-            var type = parameter.ParameterType;
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (IEqualityComparer<>)) return true;
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (IComparer<>)) return true;
-            if (parameter.Member.Name == "ToDataTable" && parameter.Name == "expressions") return true;
-            if (parameter.Member.Name == "ToDelimitedString" && parameter.Name == "delimiter") return true;
-            if (parameter.Member.Name == "Trace" && parameter.Name == "format") return true;
+            var nullableTypes = new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) };
+            var nullableParameters = new[] { "ToDataTable.expressions", "ToDelimitedString.delimiter", "Trace.format" };
 
-            return false;
+            var type = parameter.ParameterType;
+            type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+            var param = parameter.Member.Name + "." + parameter.Name;
+
+            return nullableTypes.Contains(type) || nullableParameters.Contains(param);
         }
 
         private object CreateInstance(Type type)
