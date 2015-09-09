@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanBeNullAttribute.cs" />
     <Compile Include="Fold.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
