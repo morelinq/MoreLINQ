@@ -129,6 +129,7 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.g.cs" />
     <Compile Include="Scan.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
