@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>MoreLinq.Portable</id>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <title>MoreLINQ (Portable)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz, Anders Gustafsson</owners>
@@ -13,7 +13,9 @@
         <description>This project is a PCL port of MoreLINQ that enhances LINQ to Objects with the following methods: Acquire, AssertCount, Batch, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Index, MaxBy, MinBy, OrderedMerge, Pad, Pairwise, Pipe, Prepend, PreScan, Scan, SingleOrFallback, SkipUntil, Split, TakeEvery, TakeLast, TakeUntil, ToDelimitedString, ToHashSet, Zip, ZipLongest</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
-        <releaseNotes>This PCL version of MoreLINQ is identical to the .NET version, except:
+        <releaseNotes>Marks non-CLS compliant members such and adds missing null-argument checks.
+
+This PCL version of MoreLINQ is identical to the .NET version, except:
 * ToDataTable and Trace methods are omitted,
 * SequenceException is not serializable.
 
