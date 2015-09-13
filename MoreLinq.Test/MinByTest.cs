@@ -39,10 +39,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MinByNullComparer()
         {
-            SampleData.Strings.MinBy(x => x.Length, null);
+            Assert.AreEqual("ax", SampleData.Strings.MinBy(x => x.Length, null));
         }
 
         [Test]
