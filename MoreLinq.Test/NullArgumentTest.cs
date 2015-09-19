@@ -141,7 +141,7 @@ namespace MoreLinq.Test
         {
             if (type == typeof (int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
             if (type == typeof (string)) return "";
-            if (typeof(IEnumerable<int>).IsAssignableFrom(type)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
+            if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
             if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
