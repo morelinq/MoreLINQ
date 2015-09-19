@@ -33,43 +33,6 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
 
-        public static string ToDelimitedString(this IEnumerable<string> source)
-        {
-            return ToDelimitedString(source, null);
-        }
-
-        static partial class StringBuilderAppenders 
-        {
-            public static readonly Func<StringBuilder, string, StringBuilder> String = (sb, e) => sb.Append(e);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values and
-        /// a given delimiter.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-
-        public static string ToDelimitedString(this IEnumerable<string> source, string delimiter)
-        {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.String);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values. The 
-        /// delimiter used depends on the current culture of the executing thread.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-
         public static string ToDelimitedString(this IEnumerable<bool> source)
         {
             return ToDelimitedString(source, null);
@@ -94,44 +57,8 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<bool> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Boolean);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values. The 
-        /// delimiter used depends on the current culture of the executing thread.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-
-        public static string ToDelimitedString(this IEnumerable<sbyte> source)
-        {
-            return ToDelimitedString(source, null);
-        }
-
-        static partial class StringBuilderAppenders 
-        {
-            public static readonly Func<StringBuilder, sbyte, StringBuilder> SByte = (sb, e) => sb.Append(e);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values and
-        /// a given delimiter.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-
-        public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
-        {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
         }
 
         /// <summary>
@@ -168,6 +95,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<byte> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Byte);
         }
 
@@ -205,6 +133,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<char> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Char);
         }
 
@@ -218,14 +147,14 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
 
-        public static string ToDelimitedString(this IEnumerable<short> source)
+        public static string ToDelimitedString(this IEnumerable<decimal> source)
         {
             return ToDelimitedString(source, null);
         }
 
         static partial class StringBuilderAppenders 
         {
-            public static readonly Func<StringBuilder, short, StringBuilder> Int16 = (sb, e) => sb.Append(e);
+            public static readonly Func<StringBuilder, decimal, StringBuilder> Decimal = (sb, e) => sb.Append(e);
         }
 
         /// <summary>
@@ -240,9 +169,86 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<short> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<decimal> source, string delimiter)
         {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int16);
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Decimal);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values. The 
+        /// delimiter used depends on the current culture of the executing thread.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+
+        public static string ToDelimitedString(this IEnumerable<double> source)
+        {
+            return ToDelimitedString(source, null);
+        }
+
+        static partial class StringBuilderAppenders 
+        {
+            public static readonly Func<StringBuilder, double, StringBuilder> Double = (sb, e) => sb.Append(e);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values and
+        /// a given delimiter.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
+        /// the executing thread's current culture's list separator is used.</param>
+
+        public static string ToDelimitedString(this IEnumerable<double> source, string delimiter)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Double);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values. The 
+        /// delimiter used depends on the current culture of the executing thread.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+
+        public static string ToDelimitedString(this IEnumerable<float> source)
+        {
+            return ToDelimitedString(source, null);
+        }
+
+        static partial class StringBuilderAppenders 
+        {
+            public static readonly Func<StringBuilder, float, StringBuilder> Single = (sb, e) => sb.Append(e);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values and
+        /// a given delimiter.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
+        /// the executing thread's current culture's list separator is used.</param>
+
+        public static string ToDelimitedString(this IEnumerable<float> source, string delimiter)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Single);
         }
 
         /// <summary>
@@ -279,6 +285,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<int> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int32);
         }
 
@@ -316,6 +323,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<long> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int64);
         }
 
@@ -328,15 +336,53 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
-        public static string ToDelimitedString(this IEnumerable<float> source)
+        [CLSCompliant(false)]
+        public static string ToDelimitedString(this IEnumerable<sbyte> source)
         {
             return ToDelimitedString(source, null);
         }
 
         static partial class StringBuilderAppenders 
         {
-            public static readonly Func<StringBuilder, float, StringBuilder> Single = (sb, e) => sb.Append(e);
+            public static readonly Func<StringBuilder, sbyte, StringBuilder> SByte = (sb, e) => sb.Append(e);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values and
+        /// a given delimiter.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
+        /// the executing thread's current culture's list separator is used.</param>
+        [CLSCompliant(false)]
+        public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values. The 
+        /// delimiter used depends on the current culture of the executing thread.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+
+        public static string ToDelimitedString(this IEnumerable<short> source)
+        {
+            return ToDelimitedString(source, null);
+        }
+
+        static partial class StringBuilderAppenders 
+        {
+            public static readonly Func<StringBuilder, short, StringBuilder> Int16 = (sb, e) => sb.Append(e);
         }
 
         /// <summary>
@@ -351,9 +397,10 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<float> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<short> source, string delimiter)
         {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Single);
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int16);
         }
 
         /// <summary>
@@ -366,14 +413,14 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
 
-        public static string ToDelimitedString(this IEnumerable<double> source)
+        public static string ToDelimitedString(this IEnumerable<string> source)
         {
             return ToDelimitedString(source, null);
         }
 
         static partial class StringBuilderAppenders 
         {
-            public static readonly Func<StringBuilder, double, StringBuilder> Double = (sb, e) => sb.Append(e);
+            public static readonly Func<StringBuilder, string, StringBuilder> String = (sb, e) => sb.Append(e);
         }
 
         /// <summary>
@@ -388,9 +435,10 @@ namespace MoreLinq
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
 
-        public static string ToDelimitedString(this IEnumerable<double> source, string delimiter)
+        public static string ToDelimitedString(this IEnumerable<string> source, string delimiter)
         {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Double);
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.String);
         }
 
         /// <summary>
@@ -402,81 +450,7 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
-        public static string ToDelimitedString(this IEnumerable<decimal> source)
-        {
-            return ToDelimitedString(source, null);
-        }
-
-        static partial class StringBuilderAppenders 
-        {
-            public static readonly Func<StringBuilder, decimal, StringBuilder> Decimal = (sb, e) => sb.Append(e);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values and
-        /// a given delimiter.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-
-        public static string ToDelimitedString(this IEnumerable<decimal> source, string delimiter)
-        {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Decimal);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values. The 
-        /// delimiter used depends on the current culture of the executing thread.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-
-        public static string ToDelimitedString(this IEnumerable<ushort> source)
-        {
-            return ToDelimitedString(source, null);
-        }
-
-        static partial class StringBuilderAppenders 
-        {
-            public static readonly Func<StringBuilder, ushort, StringBuilder> UInt16 = (sb, e) => sb.Append(e);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values and
-        /// a given delimiter.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-
-        public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
-        {
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from a sequence of values. The 
-        /// delimiter used depends on the current culture of the executing thread.
-        /// </summary>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<uint> source)
         {
             return ToDelimitedString(source, null);
@@ -498,9 +472,10 @@ namespace MoreLinq
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<uint> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt32);
         }
 
@@ -513,7 +488,7 @@ namespace MoreLinq
         /// </remarks>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ulong> source)
         {
             return ToDelimitedString(source, null);
@@ -535,10 +510,49 @@ namespace MoreLinq
         /// simple ToString() conversion.</param>
         /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
         /// the executing thread's current culture's list separator is used.</param>
-
+        [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ulong> source, string delimiter)
         {
+            if (source == null) throw new ArgumentNullException("source");
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt64);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values. The 
+        /// delimiter used depends on the current culture of the executing thread.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+        [CLSCompliant(false)]
+        public static string ToDelimitedString(this IEnumerable<ushort> source)
+        {
+            return ToDelimitedString(source, null);
+        }
+
+        static partial class StringBuilderAppenders 
+        {
+            public static readonly Func<StringBuilder, ushort, StringBuilder> UInt16 = (sb, e) => sb.Append(e);
+        }
+
+        /// <summary>
+        /// Creates a delimited string from a sequence of values and
+        /// a given delimiter.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses immediate execution and effectively buffers the sequence.
+        /// </remarks>
+        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
+        /// simple ToString() conversion.</param>
+        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
+        /// the executing thread's current culture's list separator is used.</param>
+        [CLSCompliant(false)]
+        public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
         }
 
 

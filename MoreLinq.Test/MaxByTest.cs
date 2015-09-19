@@ -39,10 +39,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MaxByNullComparer()
         {
-            SampleData.Strings.MaxBy(x => x.Length, null);
+            Assert.AreEqual("hello", SampleData.Strings.MaxBy(x => x.Length, null));
         }
 
         [Test]
