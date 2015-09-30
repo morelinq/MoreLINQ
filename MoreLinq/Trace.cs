@@ -38,7 +38,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source)
         {
-            return Trace(source, (string) null);
+            return Trace(source, "{0}");
         }
 
         /// <summary>
@@ -47,10 +47,7 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">Source sequence whose elements to trace.</param>
-        /// <param name="format">
-        /// String to use to format the trace message. If null then the
-        /// element value becomes the traced message.
-        /// </param>
+        /// <param name="format">String to use to format the trace message.</param>
         /// <returns>
         /// Return the source sequence unmodified.
         /// </returns>
@@ -62,11 +59,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string format)
         {
             if (source == null) throw new ArgumentNullException("source");
+            if (format == null) throw new ArgumentNullException("format");
 
-            return TraceImpl(source, 
-                string.IsNullOrEmpty(format)
-                ? (Func<TSource, string>) (x => x == null ? string.Empty : x.ToString())
-                : (x => string.Format(format, x)));
+            return TraceImpl(source, x => string.Format(format, x));
         }
 
         /// <summary>
