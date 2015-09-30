@@ -41,7 +41,7 @@ namespace MoreLinq
         
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            return Assert(source, predicate, x => null);
+            return Assert(source, predicate, x => new InvalidOperationException("Sequence contains an invalid item."));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace MoreLinq
             {
                 var success = predicate(element);
                 if (!success)
-                    throw errorSelector(element) ?? new InvalidOperationException("Sequence contains an invalid item.");
+                    throw errorSelector(element);
                 yield return element;
             }
         }
