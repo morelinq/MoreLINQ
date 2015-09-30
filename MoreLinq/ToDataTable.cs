@@ -46,13 +46,13 @@ namespace MoreLinq
             return memberExpression.Member;
         }
 
-        private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(Expression<Func<T, object>>[] expressions)
         {
             //
             // If no lambda expressions supplied then reflect them off the source element type.
             //
 
-            if (expressions == null || expressions.Count == 0)
+            if (expressions.Length == 0)
             {
                 return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
@@ -184,6 +184,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException("source");
             if (table == null) throw new ArgumentNullException("table");
+            if (expressions == null) throw new ArgumentNullException("expressions");
 
             var members = PrepareMemberInfos(expressions).ToArray();
             members = BuildOrBindSchema(table, members);
@@ -228,7 +229,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, null);
+            return ToDataTable(source, table, new Expression<Func<T, object>>[0]);
         }
 
         /// <summary>

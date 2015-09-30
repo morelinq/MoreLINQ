@@ -128,7 +128,7 @@ namespace MoreLinq.Test
         private static bool CanBeNull(ParameterInfo parameter)
         {
             var nullableTypes = new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) };
-            var nullableParameters = new[] { "ToDataTable.expressions", "ToDelimitedString.delimiter", "Trace.format" };
+            var nullableParameters = new[] { "ToDelimitedString.delimiter", "Trace.format" };
 
             var type = parameter.ParameterType;
             type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
