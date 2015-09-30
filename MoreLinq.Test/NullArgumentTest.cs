@@ -128,13 +128,11 @@ namespace MoreLinq.Test
         private static bool CanBeNull(ParameterInfo parameter)
         {
             var nullableTypes = new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) };
-            var nullableParameters = new string[0];
 
             var type = parameter.ParameterType;
             type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
-            var param = parameter.Member.Name + "." + parameter.Name;
 
-            return nullableTypes.Contains(type) || nullableParameters.Contains(param);
+            return nullableTypes.Contains(type);
         }
 
         private static object CreateInstance(Type type)
