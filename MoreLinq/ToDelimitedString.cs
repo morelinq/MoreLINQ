@@ -26,8 +26,8 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Creates a delimited string from a sequence of values. The 
-        /// delimiter used depends on the current culture of the executing thread.
+        /// Creates a delimited string from a sequence of values. The executing thread's
+        /// current culture's list separator is used as the delimiter.
         /// </summary>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
@@ -38,7 +38,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source)
         {
-            return ToDelimitedString(source, null);
+            return ToDelimitedString(source, DefaultDelimiter);
         }
 
         /// <summary>
@@ -51,21 +51,27 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
             if (source == null) throw new ArgumentNullException("source");
+            if (delimiter == null) throw new ArgumentNullException("delimiter");
             return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
+        }
+
+        // Cannot be a field since we want to respect the (scoped) culture of the current thread.
+        private static string DefaultDelimiter
+        {
+            get { return CultureInfo.CurrentCulture.TextInfo.ListSeparator; }
         }
 
         static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
         {
             Debug.Assert(source != null);
+            Debug.Assert(delimiter != null);
             Debug.Assert(append != null);
 
-            delimiter = delimiter ?? CultureInfo.CurrentCulture.TextInfo.ListSeparator;
             var sb = new StringBuilder();
             var i = 0;
 

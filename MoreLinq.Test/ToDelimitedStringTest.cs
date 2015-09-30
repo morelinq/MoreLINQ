@@ -56,16 +56,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndNullDelimiter()
-        {
-            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
-            {
-                var result = new[] { 1, 2, 3 }.ToDelimitedString(null);
-                Assert.That(result, Is.EqualTo("1;2;3"));
-            }
-        }
-
-        [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNulls()
         {
             var result = new object[] { 1, null, "foo", true }.ToDelimitedString(",");
