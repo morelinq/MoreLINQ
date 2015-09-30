@@ -65,7 +65,7 @@ namespace MoreLinq
             using (var i = source.GetEnumerator())
             {
                 if (!i.MoveNext())
-                    throw new InvalidOperationException("Sequence contains no elements.");
+                    yield break;
 
                 var aggregator = i.Current;
 
