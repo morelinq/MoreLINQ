@@ -43,7 +43,7 @@ namespace MoreLinq
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
-            return source.MinBy(selector, Comparer<TKey>.Default);
+            return source.MinBy(selector, null);
         }
 
         /// <summary>
@@ -52,8 +52,7 @@ namespace MoreLinq
         /// </summary>
         /// <remarks>
         /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type. This operator uses immediate execution, but
+        /// one encountered will be returned. This operator uses immediate execution, but
         /// only buffers a single result (the current minimal element).
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
@@ -71,7 +70,8 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException("source");
             if (selector == null) throw new ArgumentNullException("selector");
-            if (comparer == null) throw new ArgumentNullException("comparer");
+            comparer = comparer ?? Comparer<TKey>.Default;
+
             using (var sourceIterator = source.GetEnumerator())
             {
                 if (!sourceIterator.MoveNext())
