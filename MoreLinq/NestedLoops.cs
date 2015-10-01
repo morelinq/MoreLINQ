@@ -38,6 +38,7 @@ namespace MoreLinq
        
         public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
         {
+            if (action == null) throw new ArgumentNullException("action");
             if (loopCounts == null) throw new ArgumentNullException("loopCounts");
 
             using (var iter = loopCounts.GetEnumerator())
