@@ -36,7 +36,7 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
         /// <param name="first">First sequence</param>
-        /// <param name="second">Second secuence</param>
+        /// <param name="second">Second sequence</param>
         /// <param name="firstKeySelector">The mapping from first sequence to key</param>
         /// <param name="secondKeySelector">The mapping from second sequence to key</param>
         /// <param name="resultSelector">Function to apply to each pair of elements plus the key</param>
@@ -62,7 +62,7 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
         /// <param name="first">First sequence</param>
-        /// <param name="second">Second secuence</param>
+        /// <param name="second">Second sequence</param>
         /// <param name="firstKeySelector">The mapping from first sequence to key</param>
         /// <param name="secondKeySelector">The mapping from second sequence to key</param>
         /// <param name="resultSelector">Function to apply to each pair of elements plus the key</param>
