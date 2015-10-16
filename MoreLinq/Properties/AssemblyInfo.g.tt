@@ -2,7 +2,7 @@
 <#@ output extension=".cs" #>
 <#
     var date = DateTime.UtcNow;
-    var version = new Version(1, 3,
+    var version = new Version(1, 4,
         /* bld */ ((date.Year - 2000) * 12 + date.Month - 1) * 100 + date.Day,
         /* rev */ date.Hour * 100 + date.Minute);
 #>
