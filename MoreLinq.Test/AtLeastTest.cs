@@ -15,9 +15,10 @@
 // limitations under the License.
 #endregion
 
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
 using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq.Test
@@ -30,7 +31,7 @@ namespace MoreLinq.Test
         public void AtLeastWithNullSequence()
         {
             IEnumerable<int> sequence = null;
-            MoreEnumerable.AtLeast(sequence, 1);
+            sequence.AtLeast(1);
         }
 
         [Test]
@@ -40,52 +41,133 @@ namespace MoreLinq.Test
             new[] { 1 }.AtLeast(-1);
         }
 
+        private static IEnumerable<int> getSequence()
+        {
+            int i = 1;
+            while(true)
+            {
+                yield return i++;
+            }
+        }
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
-            Assert.That(LinqEnumerable.Empty<int>().AtLeast(0));
+            Assert.That(getEmptySequence().AtLeast(0));
         }
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastOneElement()
         {
-            Assert.That(!LinqEnumerable.Empty<int>().AtLeast(1));
+            Assert.That(!getEmptySequence().AtLeast(1));
         }
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElements()
         {
-            Assert.That(!LinqEnumerable.Empty<int>().AtLeast(2));
+            Assert.That(!getEmptySequence().AtLeast(2));
+        }
+        private static IEnumerable<int> getEmptySequence()
+        {
+            return LinqEnumerable.Empty<int>();
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElements()
         {
-            Assert.That(new[] { 1 }.AtLeast(0));
+            Assert.That(getSingleElementSequence().AtLeast(0));
         }
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElement()
         {
-            Assert.That(new [] { 1 }.AtLeast(1));
+            Assert.That(getSingleElementSequence().AtLeast(1));
         }
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElements()
         {
-            Assert.That(!new [] { 1 }.AtLeast(2));
+            Assert.That(!getSingleElementSequence().AtLeast(2));
+        }
+        private static IEnumerable<int> getSingleElementSequence()
+        {
+            return getSequence().Take(1);
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastZeroElements()
         {
-            Assert.That(new [] { 10, 20, 30 }.AtLeast(0));
+            Assert.That(getManyElementSequence().AtLeast(0));
         }
         [Test]
         public void AtLeastWithManyElementsHasAtLeastOneElement()
         {
-            Assert.That(new [] { 10, 20, 30 }.AtLeast(1));
+            Assert.That(getManyElementSequence().AtLeast(1));
         }
         [Test]
         public void AtLeastWithManyElementsHasAtLeastManyElements()
         {
-            Assert.That(new [] { 10, 20, 30 }.AtLeast(2));
+            Assert.That(getManyElementSequence().AtLeast(2));
+        }
+        private static IEnumerable<int> getManyElementSequence()
+        {
+            return getSequence().Take(3);
+        }
+
+        //ICollection<T> Optimization Tests
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastZeroElementsForCollections()
+        {
+            Assert.That(getEmptyArray().AtLeast(0));
+        }
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastOneElementForCollections()
+        {
+            Assert.That(!getEmptyArray().AtLeast(1));
+        }
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastManyElementsForCollections()
+        {
+            Assert.That(!getEmptyArray().AtLeast(2));
+        }
+        private static IEnumerable<int> getEmptyArray()
+        {
+            return new int[] { };
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementHasAtLeastZeroElementsForCollections()
+        {
+            Assert.That(getSingleElementArray().AtLeast(0));
+        }
+        [Test]
+        public void AtLeastWithSingleElementHasAtLeastOneElementForCollections()
+        {
+            Assert.That(getSingleElementArray().AtLeast(1));
+        }
+        [Test]
+        public void AtLeastWithSingleElementHasAtLeastManyElementsForCollections()
+        {
+            Assert.That(!getSingleElementArray().AtLeast(2));
+        }
+        private static IEnumerable<int> getSingleElementArray()
+        {
+            return getSingleElementSequence().ToArray();
+        }
+
+        [Test]
+        public void AtLeastWithManyElementsHasAtLeastZeroElementsForCollections()
+        {
+            Assert.That(getManyElementArray().AtLeast(0));
+        }
+        [Test]
+        public void AtLeastWithManyElementsHasAtLeastOneElementForCollections()
+        {
+            Assert.That(getManyElementArray().AtLeast(1));
+        }
+        [Test]
+        public void AtLeastWithManyElementsHasAtLeastManyElementsForCollections()
+        {
+            Assert.That(getManyElementArray().AtLeast(2));
+        }
+        private static IEnumerable<int> getManyElementArray()
+        {
+            return getManyElementSequence().ToArray();
         }
     }
 }
