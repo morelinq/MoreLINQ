@@ -30,6 +30,9 @@ namespace MoreLinq
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
+        /// The results are yielded in the order of the elements found in the first sequence
+        /// followed by those found only in the second. In addition, the callback responsible
+        /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
         /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
@@ -56,6 +59,9 @@ namespace MoreLinq
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
+        /// The results are yielded in the order of the elements found in the first sequence
+        /// followed by those found only in the second. In addition, the callback responsible
+        /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
         /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
@@ -95,16 +101,19 @@ namespace MoreLinq
         {
             comparer = comparer ?? EqualityComparer<TKey>.Default;
 
-            var alookup = first.ToLookup(firstKeySelector, comparer);
-            var blookup = second.ToLookup(secondKeySelector, comparer);
-            var keys = alookup.Select(p => p.Key).Union(blookup.Select(p => p.Key), comparer);
+            var alookup = OrderPreservingLookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+            var blookup = OrderPreservingLookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
-            var join = keys.Select(key => resultSelector(key, alookup[key], blookup[key]));
+            var seenKeys = new HashSet<TKey>(comparer);
 
-            // We do the iteration + yield return to delay executing the earlier ToLookup
-            // until the result is enumerated
-            foreach (var item in join) {
-                yield return item;
+            var allKeys = alookup.Select(p => p.Key).Concat(blookup.Select(p => p.Key));
+
+            foreach (var key in allKeys) {
+                if (seenKeys.Contains(key)) {
+                    continue;
+                }
+                seenKeys.Add(key);
+                yield return resultSelector(key, alookup[key], blookup[key]);
             }
         }
     }

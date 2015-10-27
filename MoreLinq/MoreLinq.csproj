@@ -57,6 +57,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="OrderPreservingLookup.cs" />
     <Compile Include="SkipUntil.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

@@ -93,6 +93,39 @@ namespace MoreLinq.Test
             Assert.AreEqual(2, result[2].second.Single());
         }
 
+        [Test]
+        public void FullGroupPreservesOrder()
+        {
+            var listA = new[] {
+                Tuple.Create(3, 1),
+                Tuple.Create(1, 1),
+                Tuple.Create(2, 1),
+                Tuple.Create(1, 2),
+                Tuple.Create(1, 3),
+                Tuple.Create(3, 2),
+                Tuple.Create(1, 4),
+                Tuple.Create(3, 3),
+            };
+            var listB = new[] {
+                Tuple.Create(4, 1),
+                Tuple.Create(3, 1),
+                Tuple.Create(2, 1),
+                Tuple.Create(0, 1),
+                Tuple.Create(3, 0),
+            };
+
+            var result = listA.FullGroupJoin(listB, x => x.Item1, x => x.Item1, (key, first, second) => new { key, first, second }).ToList();
+
+            // Order of keys is preserved
+            result.Select(x => x.key).AssertSequenceEqual(3, 1, 2, 4, 0);
+
+            // Order of joined elements is preserved
+            foreach (var res in result) {
+                res.first.AssertSequenceEqual(listA.Where(t => t.Item1 == res.key).ToArray());
+                res.second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.key).ToArray());
+            }
+        }
+
         private static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
         {
             return t1;

@@ -146,6 +146,7 @@
     <Compile Include="OrderedMerge.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="OrderPreservingLookup.cs" />
     <Compile Include="Pad.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
