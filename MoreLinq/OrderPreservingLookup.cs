@@ -1,4 +1,29 @@
-﻿using System;
+﻿#region License and Terms
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license.
+// The MIT License (MIT)
+//
+// Copyright(c) Microsoft Corporation
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+#endregion
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,34 +31,18 @@ using System.Text;
 
 namespace MoreLinq
 {
-    // A Lookup implementation that preserves insertion order.
-    // Copied over from CoreFX on 2015-10-27
-    // https://github.com/dotnet/corefx/blob/6f1c2a86fb8fa1bdaee7c6e70a684d27842d804c/src/System.Linq/src/System/Linq/Enumerable.cs#L3230-L3403
-    // Modified to remove internal interfaces
-    //
-    // Copyright (c) Microsoft. All rights reserved.
-    // Licensed under the MIT license.
-    // The MIT License (MIT)
-    //
-    // Copyright(c) Microsoft Corporation
-    //
-    // Permission is hereby granted, free of charge, to any person obtaining a copy
-    // of this software and associated documentation files (the "Software"), to deal
-    // in the Software without restriction, including without limitation the rights
-    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    // copies of the Software, and to permit persons to whom the Software is
-    // furnished to do so, subject to the following conditions:
-    //
-    // The above copyright notice and this permission notice shall be included in all
-    // copies or substantial portions of the Software.
-    //
-    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    // SOFTWARE.
+
+    /// <summary>
+    /// A <see cref="ILookup{TKey, TElement}"/> implementation that preserves insertion order
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys in the <see cref="OrderPreservingLookup{TKey, TElement}"/></typeparam>
+    /// <typeparam name="TElement">The type of the elements in the <see cref="IEnumerable{T}"/> sequences that make up the values in the <see cref="OrderPreservingLookup{TKey, TElement}"/></typeparam>
+    /// <remarks>
+    /// This implementation preserves insertion order of keys and elements within each <see cref="IEnumerable{T}"/>
+    /// Copied over from CoreFX on 2015-10-27
+    /// https://github.com/dotnet/corefx/blob/6f1c2a86fb8fa1bdaee7c6e70a684d27842d804c/src/System.Linq/src/System/Linq/Enumerable.cs#L3230-L3403
+    /// Modified to remove internal interfaces
+    /// </remarks>
     internal class OrderPreservingLookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement>
     {
         private IEqualityComparer<TKey> _comparer;
