@@ -114,7 +114,8 @@ namespace MoreLinq
             foreach (var b in blookup) {
                 if (seenKeys.Contains(b.Key))
                     continue;
-                yield return resultSelector(b.Key, alookup[b.Key], b);
+                // We can skip the lookup because we are iterating over keys not found in the first sequence
+                yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
             }
         }
     }
