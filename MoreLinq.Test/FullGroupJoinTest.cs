@@ -94,6 +94,40 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void FullGroupJoinsEmptyLeft()
+        {
+            var listA = new int[] { };
+            var listB = new[] { 2, 3 };
+
+            var result = listA.FullGroupJoin(listB, x => x, x => x, (key, first, second) => new { key, first, second }).ToDictionary(a => a.key);
+
+            Assert.AreEqual(2, result.Keys.Count);
+
+            Assert.IsEmpty(result[2].first);
+            Assert.AreEqual(2, result[2].second.Single());
+
+            Assert.IsEmpty(result[3].first);
+            Assert.AreEqual(3, result[3].second.Single());
+        }
+
+        [Test]
+        public void FullGroupJoinsEmptyRight()
+        {
+            var listA = new[] { 2, 3 };
+            var listB = new int[] { };
+
+            var result = listA.FullGroupJoin(listB, x => x, x => x, (key, first, second) => new { key, first, second }).ToDictionary(a => a.key);
+
+            Assert.AreEqual(2, result.Keys.Count);
+
+            Assert.AreEqual(2, result[2].first.Single());
+            Assert.IsEmpty(result[2].second);
+
+            Assert.AreEqual(3, result[3].first.Single());
+            Assert.IsEmpty(result[3].second);
+        }
+
+        [Test]
         public void FullGroupPreservesOrder()
         {
             var listA = new[] {
