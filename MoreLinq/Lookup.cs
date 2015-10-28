@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license.
 // The MIT License (MIT)
