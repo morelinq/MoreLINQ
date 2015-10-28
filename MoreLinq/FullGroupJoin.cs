@@ -109,10 +109,8 @@ namespace MoreLinq
             var allKeys = alookup.Select(p => p.Key).Concat(blookup.Select(p => p.Key));
 
             foreach (var key in allKeys) {
-                if (seenKeys.Contains(key)) {
+                if (!seenKeys.Add(key))
                     continue;
-                }
-                seenKeys.Add(key);
                 yield return resultSelector(key, alookup[key], blookup[key]);
             }
         }
