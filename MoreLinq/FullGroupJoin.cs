@@ -106,12 +106,15 @@ namespace MoreLinq
 
             var seenKeys = new HashSet<TKey>(comparer);
 
-            var allKeys = alookup.Select(p => p.Key).Concat(blookup.Select(p => p.Key));
+            foreach (var a in alookup) {
+                yield return resultSelector(a.Key, a, blookup[a.Key]);
+                seenKeys.Add(a.Key);
+            }
 
-            foreach (var key in allKeys) {
-                if (!seenKeys.Add(key))
+            foreach (var b in blookup) {
+                if (!seenKeys.Add(b.Key))
                     continue;
-                yield return resultSelector(key, alookup[key], blookup[key]);
+                yield return resultSelector(b.Key, alookup[b.Key], b);
             }
         }
     }
