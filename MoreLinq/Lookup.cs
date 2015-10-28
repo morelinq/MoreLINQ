@@ -34,36 +34,36 @@ namespace MoreLinq
     /// <summary>
     /// A <see cref="ILookup{TKey, TElement}"/> implementation that preserves insertion order
     /// </summary>
-    /// <typeparam name="TKey">The type of the keys in the <see cref="OrderPreservingLookup{TKey, TElement}"/></typeparam>
-    /// <typeparam name="TElement">The type of the elements in the <see cref="IEnumerable{T}"/> sequences that make up the values in the <see cref="OrderPreservingLookup{TKey, TElement}"/></typeparam>
+    /// <typeparam name="TKey">The type of the keys in the <see cref="Lookup{TKey, TElement}"/></typeparam>
+    /// <typeparam name="TElement">The type of the elements in the <see cref="IEnumerable{T}"/> sequences that make up the values in the <see cref="Lookup{TKey, TElement}"/></typeparam>
     /// <remarks>
     /// This implementation preserves insertion order of keys and elements within each <see cref="IEnumerable{T}"/>
     /// Copied over from CoreFX on 2015-10-27
     /// https://github.com/dotnet/corefx/blob/6f1c2a86fb8fa1bdaee7c6e70a684d27842d804c/src/System.Linq/src/System/Linq/Enumerable.cs#L3230-L3403
     /// Modified to remove internal interfaces
     /// </remarks>
-    internal class OrderPreservingLookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement>
+    internal class Lookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement>
     {
         private IEqualityComparer<TKey> _comparer;
         private Grouping<TKey, TElement>[] _groupings;
         private Grouping<TKey, TElement> _lastGrouping;
         private int _count;
 
-        internal static OrderPreservingLookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
+        internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
             if (elementSelector == null) throw new ArgumentNullException("elementSelector");
-            OrderPreservingLookup<TKey, TElement> lookup = new OrderPreservingLookup<TKey, TElement>(comparer);
+            Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
             foreach (TSource item in source) {
                 lookup.GetGrouping(keySelector(item), true).Add(elementSelector(item));
             }
             return lookup;
         }
 
-        internal static OrderPreservingLookup<TKey, TElement> CreateForJoin(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        internal static Lookup<TKey, TElement> CreateForJoin(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-            OrderPreservingLookup<TKey, TElement> lookup = new OrderPreservingLookup<TKey, TElement>(comparer);
+            Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
             foreach (TElement item in source) {
                 TKey key = keySelector(item);
                 if (key != null) lookup.GetGrouping(key, true).Add(item);
@@ -71,7 +71,7 @@ namespace MoreLinq
             return lookup;
         }
 
-        private OrderPreservingLookup(IEqualityComparer<TKey> comparer)
+        private Lookup(IEqualityComparer<TKey> comparer)
         {
             if (comparer == null) comparer = EqualityComparer<TKey>.Default;
             _comparer = comparer;

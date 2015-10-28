@@ -101,8 +101,8 @@ namespace MoreLinq
         {
             comparer = comparer ?? EqualityComparer<TKey>.Default;
 
-            var alookup = OrderPreservingLookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
-            var blookup = OrderPreservingLookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
+            var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+            var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
             var seenKeys = new HashSet<TKey>(comparer);
 
