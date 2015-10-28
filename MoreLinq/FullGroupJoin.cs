@@ -112,7 +112,7 @@ namespace MoreLinq
             }
 
             foreach (var b in blookup) {
-                if (!seenKeys.Add(b.Key))
+                if (seenKeys.Contains(b.Key))
                     continue;
                 yield return resultSelector(b.Key, alookup[b.Key], b);
             }
