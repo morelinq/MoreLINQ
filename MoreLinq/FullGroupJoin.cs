@@ -102,19 +102,13 @@ namespace MoreLinq
 
             var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
             var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
-
-            bool firstNotEmpty = alookup.Count > 0;
-            HashSet<TKey> seenKeys = null;
-            if (firstNotEmpty) {
-                seenKeys = new HashSet<TKey>(comparer);
-                foreach (var a in alookup) {
-                    yield return resultSelector(a.Key, a, blookup[a.Key]);
-                    seenKeys.Add(a.Key);
-                }
+            
+            foreach (var a in alookup) {
+                yield return resultSelector(a.Key, a, blookup[a.Key]);
             }
 
             foreach (var b in blookup) {
-                if (firstNotEmpty && seenKeys.Contains(b.Key))
+                if (alookup.Contains(b.Key))
                     continue;
                 // We can skip the lookup because we are iterating over keys not found in the first sequence
                 yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
