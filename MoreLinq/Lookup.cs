@@ -95,7 +95,7 @@ namespace MoreLinq
 
         public bool Contains(TKey key)
         {
-            return GetGrouping(key, false) != null;
+            return _count > 0 && GetGrouping(key, false) != null;
         }
 
         public IEnumerator<IGrouping<TKey, TElement>> GetEnumerator()
