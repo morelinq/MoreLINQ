@@ -54,7 +54,7 @@ namespace MoreLinq
             var collection = source as ICollection<TSource>;
             if (collection != null)
             {
-                return collection.Count() >= count;
+                return collection.Count >= count;
             }
 
             return source.Take(count).Count() == count;
