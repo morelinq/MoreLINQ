@@ -18,7 +18,6 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using LinqEnumerable = System.Linq.Enumerable;
 
@@ -172,27 +171,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void AtLeastShouldBeMuchFasterForImplementersOfICollection()
+        public void AtLeastShouldBeNotEnumerateSequenceForImplementersOfICollection()
         {
-            var length = 999999;
-            var collection = LinqEnumerable.Range(0, length).ToArray();
-            var nonCollection = LinqEnumerable.Range(0, length);
-
-            var collectionTime = MeasureAtLeastTime(collection, length);
-            var nonCollectionTime = MeasureAtLeastTime(nonCollection, length);
-
-            Console.WriteLine(collectionTime);
-            Console.WriteLine(nonCollectionTime);
-
-            var difference = nonCollectionTime - collectionTime;
-            Assert.That(difference > 10000);
-        }
-        private long MeasureAtLeastTime(IEnumerable<int> sequence, int length)
-        {
-            var timer = Stopwatch.StartNew();
-            sequence.AtLeast(length);
-            timer.Stop();
-            return timer.ElapsedTicks;
+            var sequence = new UnenumerableList<int>();
+            sequence.AtLeast(3);
         }
     }
 }
