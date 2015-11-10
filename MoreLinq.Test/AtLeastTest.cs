@@ -43,11 +43,7 @@ namespace MoreLinq.Test
 
         private static IEnumerable<int> GetSequence()
         {
-            int i = 1;
-            while(true)
-            {
-                yield return i++;
-            }
+            return new InfiniteSequence<int>(0);
         }
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
