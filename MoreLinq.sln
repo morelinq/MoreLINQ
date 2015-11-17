@@ -63,6 +63,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable", "MoreLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable.Test", "MoreLinq.Test\MoreLinq.Portable.Test.csproj", "{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lic", "lic", "{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corefx", "corefx", "{F73528F4-B669-4AFF-84C9-D62B77CA3848}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +95,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737} = {835F8FFA-471F-4322-B721-A897F27872FA}
+		{F73528F4-B669-4AFF-84C9-D62B77CA3848} = {1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = 
