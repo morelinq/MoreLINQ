@@ -56,6 +56,7 @@
     <Compile Include="AcquireTest.cs" />
     <Compile Include="AssertTest.cs" />
     <Compile Include="AssertUtil.cs" />
+    <Compile Include="AtLeastTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
