@@ -24,25 +24,26 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns true when the number of elements in the given sequence is greater than
-        /// or equal to the given integer.
+        /// Returns true when the number of elements in the given sequence is equal to the
+        /// given integer.
         /// This method throws an exception if the given integer is negative.
         /// </summary>
         /// <remarks>
-        /// The number of items streamed will be less than or equal to the given integer.
+        /// The number of items streamed will be less than or equal to the given integer
+        /// plus one.
         /// </remarks>
         /// <typeparam name="TSource">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="count">The minimum number of items a sequence must have for this
+        /// <param name="count">The number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException">source is null</exception>
         /// <exception cref="ArgumentOutOfRangeException">count is negative</exception>
-        /// <returns><c>true</c> if the number of elements in the sequence is greater than
-        /// or equal to the given integer or <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the number of elements in the sequence is equal to the
+        /// given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code>
         /// var numbers = { 123, 456, 789 };
-        /// var result = numbers.Exactly(2);
+        /// var result = numbers.Exactly(3);
         /// </code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
