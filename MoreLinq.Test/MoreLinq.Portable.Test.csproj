@@ -54,6 +54,7 @@
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
     <Compile Include="EqualityComparerFunc.cs" />
+    <Compile Include="ExactlyTest.cs" />
     <Compile Include="ExcludeTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IncrementalTest.cs" />

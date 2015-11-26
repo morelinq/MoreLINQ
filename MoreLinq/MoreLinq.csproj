@@ -55,6 +55,9 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exactly.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Fold.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
