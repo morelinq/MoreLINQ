@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithSingleElementHasExactlyZeroElements()
         {
-            Assert.IsTrue(GetSingleElementSequence().Exactly(0));
+            Assert.IsFalse(GetSingleElementSequence().Exactly(0));
         }
         [Test]
         public void ExactlyWithSingleElementHasExactlyOneElement()
@@ -86,21 +86,21 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ExactlyWithManyElementsHasExactlyZeroElements()
+        public void ExactlyWithThreeElementsHasExactlyZeroElements()
         {
-            Assert.IsTrue(GetManyElementSequence().Exactly(0));
+            Assert.IsFalse(GetThreeElementSequence().Exactly(0));
         }
         [Test]
-        public void ExactlyWithManyElementsHasExactlyOneElement()
+        public void ExactlyWithThreeElementsHasExactlyOneElement()
         {
-            Assert.IsTrue(GetManyElementSequence().Exactly(1));
+            Assert.IsFalse(GetThreeElementSequence().Exactly(1));
         }
         [Test]
-        public void ExactlyWithManyElementsHasExactlyManyElements()
+        public void ExactlyWithThreeElementsHasExactlyManyElements()
         {
-            Assert.IsTrue(GetManyElementSequence().Exactly(2));
+            Assert.IsTrue(GetThreeElementSequence().Exactly(3));
         }
-        private static IEnumerable<int> GetManyElementSequence()
+        private static IEnumerable<int> GetThreeElementSequence()
         {
             return GetSequence().Take(3);
         }
@@ -129,7 +129,7 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithSingleElementHasExactlyZeroElementsForCollections()
         {
-            Assert.IsTrue(GetSingleElementArray().Exactly(0));
+            Assert.IsFalse(GetSingleElementArray().Exactly(0));
         }
         [Test]
         public void ExactlyWithSingleElementHasExactlyOneElementForCollections()
@@ -147,23 +147,23 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ExactlyWithManyElementsHasExactlyZeroElementsForCollections()
+        public void ExactlyWithThreeElementsHasExactlyZeroElementsForCollections()
         {
-            Assert.IsTrue(GetManyElementArray().Exactly(0));
+            Assert.IsFalse(GetThreeElementArray().Exactly(0));
         }
         [Test]
-        public void ExactlyWithManyElementsHasExactlyOneElementForCollections()
+        public void ExactlyWithThreeElementsHasExactlyOneElementForCollections()
         {
-            Assert.IsTrue(GetManyElementArray().Exactly(1));
+            Assert.IsFalse(GetThreeElementArray().Exactly(1));
         }
         [Test]
-        public void ExactlyWithManyElementsHasExactlyManyElementsForCollections()
+        public void ExactlyWithThreeElementsHasExactlyManyElementsForCollections()
         {
-            Assert.IsTrue(GetManyElementArray().Exactly(2));
+            Assert.IsTrue(GetThreeElementArray().Exactly(3));
         }
-        private static IEnumerable<int> GetManyElementArray()
+        private static IEnumerable<int> GetThreeElementArray()
         {
-            return GetManyElementSequence().ToArray();
+            return GetThreeElementSequence().ToArray();
         }
 
         [Test]
