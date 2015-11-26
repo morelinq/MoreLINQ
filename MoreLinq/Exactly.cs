@@ -48,7 +48,16 @@ namespace MoreLinq
         /// </example>
         public static bool Exactly<TSource>(this IEnumerable<TSource> source, int count)
         {
-            throw new NotImplementedException();
+            if (source == null) throw new ArgumentNullException("source");
+            if (count < 0) throw new ArgumentOutOfRangeException("count", "The count must not be negative.");
+
+            var collection = source as ICollection<TSource>;
+            if (collection != null)
+            {
+                return collection.Count == count;
+            }
+
+            return source.Take(count + 1).Count() == count;
         }
     }
 }
