@@ -4,7 +4,8 @@
         <id>morelinq</id>
         <version>2.0.0-alpha02</version>
         <title>MoreLINQ</title>
-        <authors>MoreLINQ Developers. Portions Copyright (c) Microsoft. All rights reserved.</authors>
+        <authors>MoreLINQ Developers.</authors>
+        <copyright>Copyright © 2008 Jonathan Skeet. All rights reserved. Portions Copyright (c) Microsoft. All rights reserved.</copyright>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
