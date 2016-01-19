@@ -181,25 +181,25 @@ namespace MoreLinq
             Debug.Assert(elementSelector != null);
             Debug.Assert(comparer != null);
 
-            using (var iterator = source.Select(item => new KeyValuePair<TKey, TElement>(keySelector(item), elementSelector(item)))
-                                        .GetEnumerator())
+            using (var iterator = source.GetEnumerator())
             {
                 var group = default(TKey);
                 var members = (List<TElement>) null;
 
                 while (iterator.MoveNext())
                 {
-                    var item = iterator.Current;
-                    if (members != null && comparer.Equals(group, item.Key))
+                    var key = keySelector(iterator.Current);
+                    var element = elementSelector(iterator.Current);
+                    if (members != null && comparer.Equals(group, key))
                     {
-                        members.Add(item.Value);
+                        members.Add(element);
                     }
                     else
                     {
                         if (members != null)
                             yield return CreateGroupAdjacentGrouping(group, members);
-                        group = item.Key;
-                        members = new List<TElement> { item.Value };
+                        group = key;
+                        members = new List<TElement> { element };
                     }
                 }
 
