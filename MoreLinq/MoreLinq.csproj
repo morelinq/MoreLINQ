@@ -60,6 +60,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="Lookup.cs" />
     <Compile Include="SkipUntil.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -248,6 +249,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </None>
     <Compile Include="SequenceException.cs" />
+    <Compile Include="FullGroupJoin.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />

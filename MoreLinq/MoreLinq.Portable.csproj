@@ -103,6 +103,9 @@
     <Compile Include="ForEach.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="FullGroupJoin.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Generate.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -127,6 +130,7 @@
     <Compile Include="Lead.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lookup.cs" />
     <Compile Include="MaxBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

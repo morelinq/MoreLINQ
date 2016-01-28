@@ -4,7 +4,8 @@
         <id>morelinq</id>
         <version>2.0.0-alpha02</version>
         <title>MoreLINQ</title>
-        <authors>MoreLINQ Developers</authors>
+        <authors>MoreLINQ Developers.</authors>
+        <copyright>Copyright © 2008 Jonathan Skeet. All rights reserved. Portions Copyright (c) Microsoft. All rights reserved.</copyright>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
@@ -18,6 +19,7 @@
     <files>
         <file src="..\MoreLinq\bin\Release\*" target="lib\net35" exclude="..\MoreLinq\bin\Release\*.Portable.*" />
         <file src="..\COPYING.txt" target="COPYING.txt" />
+        <file src="..\lic\corefx\LICENSE" target="lic\corefx\LICENSE" />
         <file src="..\MoreLinq\**\*.cs" target="src\MoreLinq" />
     </files>
 </package>

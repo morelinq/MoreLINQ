@@ -129,6 +129,7 @@
     <Compile Include="TestExtensions.cs" />
     <Compile Include="ToDelimitedStringTest.cs" />
     <Compile Include="Tuple.cs" />
+    <Compile Include="FullGroupJoinTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj">
