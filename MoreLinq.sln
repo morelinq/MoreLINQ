@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		COPYING.txt = COPYING.txt
 		pack.cmd = pack.cmd
 		packw.cmd = packw.cmd
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{8642E81B-3414-4C13-914F-05A4E600FE49}"
@@ -19,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D09D94-E557-4383-B5DB-9F15D43DAC72}"
 	ProjectSection(SolutionItems) = preProject
 		pkg\morelinq.nuspec = pkg\morelinq.nuspec
+		pkg\MoreLinq.Portable.nuspec = pkg\MoreLinq.Portable.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Acquire.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Acquire.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.AssertCount.nuspec = pkg\MoreLinq.Source.MoreEnumerable.AssertCount.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Batch.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Batch.nuspec
@@ -55,7 +57,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D0
 		pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec
-		pkg\MoreLinq.Portable.nuspec = pkg\MoreLinq.Portable.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable", "MoreLinq\MoreLinq.Portable.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
