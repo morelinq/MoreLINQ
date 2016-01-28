@@ -7,7 +7,7 @@
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <projectUrl>https://github.com/morelinq</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>Enhances LINQ to Objects with the method Split  (12 overloads)</summary>
         <description>C# source implementation that enhances LINQ to Objects with the method Split. Splits the source sequence by a separator.</description>

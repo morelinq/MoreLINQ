@@ -8,7 +8,7 @@
         <copyright>Copyright © 2008 Jonathan Skeet. All rights reserved. Portions Copyright (c) Microsoft. All rights reserved.</copyright>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <projectUrl>https://github.com/morelinq</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
         <description>This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, Windowed, ZipLongest, ZipShortest</description>

@@ -7,7 +7,7 @@
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <projectUrl>https://github.com/morelinq</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>Enhances LINQ to Objects with the method GroupAdjacent  (4 overloads)</summary>
         <description>C# source implementation that enhances LINQ to Objects with the method GroupAdjacent. Groups the adjacent elements of a sequence according to a specified key selector function.</description>

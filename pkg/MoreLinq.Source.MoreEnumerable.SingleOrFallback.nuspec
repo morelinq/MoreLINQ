@@ -7,7 +7,7 @@
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-        <projectUrl>http://code.google.com/p/morelinq/</projectUrl>
+        <projectUrl>https://github.com/morelinq</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>Enhances LINQ to Objects with the method SingleOrFallback</summary>
         <description>C# source implementation that enhances LINQ to Objects with the method SingleOrFallback. Returns the single element in the given sequence, or the result of executing a fallback delegate if the sequence is empty. This method throws an exception if there is more than one element in the sequence.</description>

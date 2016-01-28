@@ -26,10 +26,9 @@ namespace MoreLinq.Test
     public class ScanTest
     {
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ScanEmpty()
         {
-            new int[0].Scan(SampleData.Plus).GetEnumerator().MoveNext();
+            Assert.False(new int[0].Scan(SampleData.Plus).GetEnumerator().MoveNext());
         }
 
         [Test]

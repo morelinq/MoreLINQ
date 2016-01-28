@@ -60,6 +60,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.g.tt</DependentUpon>
+    </Compile>
     <Compile Include="Lookup.cs" />
     <Compile Include="SkipUntil.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -258,6 +263,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AssemblyInfo.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.g.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
