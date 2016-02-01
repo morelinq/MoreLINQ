@@ -44,6 +44,7 @@
       </ComponentConfig>
     </ComponentConfigurations>
     <PresentationStyle>VS2013</PresentationStyle>
+    <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
