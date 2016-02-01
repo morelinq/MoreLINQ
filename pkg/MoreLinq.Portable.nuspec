@@ -2,18 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>MoreLinq.Portable</id>
-        <version>2.0.0-alpha02</version>
+        <version>2.0.0-beta01</version>
         <title>MoreLINQ (Portable)</title>
         <authors>MoreLINQ Developers</authors>
         <owners>Jon Skeet, Atif Aziz, Anders Gustafsson</owners>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-        <projectUrl>https://github.com/morelinq</projectUrl>
+        <projectUrl>https://morelinq.github.io/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>This project is a PCL port of MoreLINQ that enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
         <description>This project is a PCL port of MoreLINQ that enhances LINQ to Objects with the following methods: Acquire, AssertCount, Batch, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Index, MaxBy, MinBy, OrderedMerge, Pad, Pairwise, Pipe, Prepend, PreScan, Scan, SingleOrFallback, SkipUntil, Split, TakeEvery, TakeLast, TakeUntil, ToDelimitedString, ToHashSet, Zip, ZipLongest</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
-        <releaseNotes>Adds ForEach overload that supplies each element with its index to the callback action.
+        <releaseNotes>Adds new operators: Assert, Cartesian, Exclude, Incremental, Interleave, Lag, Lead, NestedLoops, OrderBy, Partition, Permutations, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Segment, Slice, SortedMerge, Subsets, TagFirstLast, ThenBy, Windowed, ZipShortest. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.
 
 This PCL version of MoreLINQ is identical to the .NET version, except:
 * ToDataTable and Trace methods are omitted,
