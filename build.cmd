@@ -14,6 +14,5 @@ for %%i in (debug release) do "%MSBUILDEXE%" "MoreLinq.sln" /v:m /p:Configuratio
 goto :EOF
 
 :docs
-call :base
-"%MSBUILDEXE%" MoreLinq.shfbproj %*
+call :base && "%MSBUILDEXE%" MoreLinq.shfbproj %*
 goto :EOF
