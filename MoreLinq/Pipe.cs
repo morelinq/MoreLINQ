@@ -26,6 +26,10 @@ namespace MoreLinq
         /// Executes the given action on each element in the source sequence
         /// and yields it.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
+        /// <param name="source">The sequence of elements</param>
+        /// <param name="action">The action to execute on each element</param>
+        /// <returns>A sequence with source elements in their original order.</returns>
         /// <remarks>
         /// The returned sequence is essentially a duplicate of
         /// the original, but with the extra action being executed while the
@@ -33,10 +37,7 @@ namespace MoreLinq
         /// is yielded, so any changes made by the action will be visible in the
         /// returned sequence. This operator uses deferred execution and streams it results.
         /// </remarks>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="source">The sequence of elements</param>
-        /// <param name="action">The action to execute on each element</param>
-        
+
         public static IEnumerable<T> Pipe<T>(this IEnumerable<T> source, Action<T> action)
         {
             if (source == null) throw new ArgumentNullException("source");
