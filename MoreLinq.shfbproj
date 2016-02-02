@@ -45,6 +45,9 @@
     </ComponentConfigurations>
     <PresentationStyle>VS2013</PresentationStyle>
     <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
+<NamespaceSummaryItem name="MoreLinq" isDocumented="True" xmlns="">Provides types and extension methods that extend LINQ to Objects.</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
