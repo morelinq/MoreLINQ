@@ -20,6 +20,8 @@ using System.Linq;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;
 
+#pragma warning disable 618 // TODO SingleOrFallback is obsolete
+
 namespace MoreLinq.Test
 {
     [TestFixture]

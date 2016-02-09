@@ -46,6 +46,8 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>-1</c>.
         /// </example>
 
+        [Obsolete("Consider using FallbackIfEmpty instead. SingleOrFallback may be removed in a future version. " +
+                  "For more information, see https://github.com/morelinq/MoreLINQ/issues/122.")]
         public static TSource SingleOrFallback<TSource>(this IEnumerable<TSource> source, Func<TSource> fallback)
         {
             if (source == null) throw new ArgumentNullException("source");

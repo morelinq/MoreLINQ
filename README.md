@@ -24,6 +24,7 @@ Operator             | Summary
 `EquiZip`            | Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences. This method has 3 overloads.
 `ExceptBy`           | Returns the set of elements in the first sequence which aren't in the second sequence, according to a given key selector. This method has 2 overloads.
 `Exclude`            | Excludes elements from a sequence starting at a given index
+`FallbackIfEmpty`    | Returns the elements of a sequence and falls back to another if the original sequence is empty.
 `Fold`               | Returns the result of applying a function to a sequence of 1 element. This method has 4 overloads.
 `ForEach`            | Immediately executes the given action on each element in the source sequence. This method has 2 overloads.
 `FullGroupJoin`      | Performs a Full Group Join between the and sequences. This method has 2 overloads.

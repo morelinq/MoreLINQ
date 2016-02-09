@@ -14,7 +14,7 @@
         <description>This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, Windowed, ZipLongest, ZipShortest</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
-        <releaseNotes>Adds new operators: Assert, Cartesian, Exclude, Incremental, Interleave, Lag, Lead, NestedLoops, OrderBy, Partition, Permutations, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Segment, Slice, SortedMerge, Subsets, TagFirstLast, ThenBy, Windowed, ZipShortest. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</releaseNotes>
+        <releaseNotes>Adds new operators: Assert, Cartesian, Exclude, FallbackIfEmpty, Incremental, Interleave, Lag, Lead, NestedLoops, OrderBy, Partition, Permutations, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Segment, Slice, SortedMerge, Subsets, TagFirstLast, ThenBy, Windowed, ZipShortest. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</releaseNotes>
     </metadata>
     <files>
         <file src="..\MoreLinq\bin\Release\*" target="lib\net35" exclude="..\MoreLinq\bin\Release\*.Portable.*" />

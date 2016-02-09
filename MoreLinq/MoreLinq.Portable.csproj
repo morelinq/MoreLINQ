@@ -92,6 +92,9 @@
     <Compile Include="Exclude.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="FallbackIfEmpty.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Fold.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
