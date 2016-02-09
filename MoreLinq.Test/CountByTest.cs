@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqEnumerable = System.Linq.Enumerable;
-using System.Text;
 
 namespace MoreLinq.Test
 {
@@ -18,7 +16,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that RandomSubset() behaves in a lazy manner.
+        /// Verify that CountBy behaves in a lazy manner.
         /// </summary>
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
