@@ -80,7 +80,6 @@
     <Compile Include="Consume.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="CountBy.cs" />
     <Compile Include="DistinctBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

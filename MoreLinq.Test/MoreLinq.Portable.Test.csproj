@@ -53,7 +53,6 @@
     <Compile Include="CartesianTest.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
-    <Compile Include="CountByTest.cs" />
     <Compile Include="EqualityComparerFunc.cs" />
     <Compile Include="ExcludeTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />

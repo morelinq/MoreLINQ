@@ -1,10 +1,15 @@
-﻿namespace MoreLinq
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    static partial class MoreEnumerable
+    public static partial class MoreEnumerable
     {
         /// <summary>
         /// Projects each element in a collection to a new element, and returns
