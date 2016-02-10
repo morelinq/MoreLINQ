@@ -146,6 +146,9 @@
     <Compile Include="Slice.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Top.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windowed.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
