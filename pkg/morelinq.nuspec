@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>morelinq</id>
-        <version>2.0.0-beta02</version>
+        <version>2.0.0-beta03</version>
         <title>MoreLINQ</title>
         <authors>MoreLINQ Developers.</authors>
         <copyright>Copyright © 2008 Jonathan Skeet. All rights reserved. Portions Copyright (c) Microsoft. All rights reserved.</copyright>
@@ -11,7 +11,7 @@
         <projectUrl>https://morelinq.github.io/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <summary>This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.</summary>
-        <description>This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, Windowed, ZipLongest, ZipShortest</description>
+        <description>This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Top, TopBy, Trace, Windowed, ZipLongest, ZipShortest</description>
         <language>en-US</language>
         <tags>linq extensions</tags>
         <releaseNotes>Adds new operators: Assert, Cartesian, Exclude, FallbackIfEmpty, Incremental, Interleave, Lag, Lead, NestedLoops, OrderBy, Partition, Permutations, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Segment, Slice, SortedMerge, Subsets, TagFirstLast, ThenBy, Windowed, ZipShortest. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</releaseNotes>
