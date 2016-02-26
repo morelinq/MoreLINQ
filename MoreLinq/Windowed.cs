@@ -50,15 +50,13 @@ namespace MoreLinq
             using (var iter = source.GetEnumerator())
             {
                 // generate the first window of items
-                var countLeft = size;
-                var window = new List<TSource>();
-                // NOTE: The order of evaluation in the if() below is important
-                //       because it relies on short-circuit behavior to ensure
-                //       we don't move the iterator once the window is complete
-                while (countLeft-- > 0 && iter.MoveNext())
-                {
-                    window.Add(iter.Current);
-                }
+                var window = new TSource[size];
+                int i;
+                for (i = 0; i < size && iter.MoveNext(); i++)
+                    window[i] = iter.Current;
+
+                if (i < size)
+                    yield break;
 
                 // return the first window (whatever size it may be)
                 yield return window;
@@ -69,8 +67,11 @@ namespace MoreLinq
                     // NOTE: If we used a circular queue rather than a list, 
                     //       we could make this quite a bit more efficient.
                     //       Sadly the BCL does not offer such a collection.
-                    window = new List<TSource>(window.Skip(1)) { iter.Current };
-                    yield return window;
+                    var newWindow = new TSource[size];
+                    Array.Copy(window, 1, newWindow, 0, size - 1);
+                    newWindow[size - 1] = iter.Current;
+                    yield return newWindow;
+                    window = newWindow;
                 }
             }
         }
