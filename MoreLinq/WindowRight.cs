@@ -38,22 +38,52 @@ namespace MoreLinq
         /// of a given size.
         /// </summary>
 
-        public static IEnumerable<TResult> WindowRight<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
+        public static IEnumerable<TResult> WindowRight<TSource, TResult>(this IEnumerable<TSource> source, int size,
+            Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (size <= 0) throw new ArgumentOutOfRangeException("size");
 
-            return WindowRightImpl(source, size, resultSelector);
+            return WindowRightWhile(source, (_, i) => i < size, resultSelector);
         }
 
-        static IEnumerable<TResult> WindowRightImpl<TSource, TResult>(IEnumerable<TSource> source, int size, Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
+        /// <summary>
+        /// Creates a right-aligned sliding window over the source sequence
+        /// with a predicate function determining the window range.
+        /// </summary>
+
+        public static IEnumerable<TResult> WindowRightWhile<TSource, TResult>(this IEnumerable<TSource> source,
+            Func<TSource, bool> predicate, Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return source.WindowRightWhile((e, _) => predicate(e), resultSelector);
+        }
+
+        /// <summary>
+        /// Creates a right-aligned sliding window over the source sequence
+        /// with a predicate function determining the window range.
+        /// </summary>
+
+        public static IEnumerable<TResult> WindowRightWhile<TSource, TResult>(this IEnumerable<TSource> source,
+        Func<TSource, int, bool> predicate, Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
+            return WindowRightWhileImpl(source, predicate, resultSelector);
+        }
+
+        static IEnumerable<TResult> WindowRightWhileImpl<TSource, TResult>(IEnumerable<TSource> source,
+        Func<TSource, int, bool> predicate, Func<TSource, IEnumerable<TSource>, TResult> resultSelector)
         {
             var window = new List<TSource>();
             foreach (var item in source)
             {
                 window.Add(item);
                 yield return resultSelector(item, window);
-                window = new List<TSource>(window.Count == size ? window.Skip(1) : window);
+                window = new List<TSource>(predicate(item, window.Count) ? window : window.Skip(1));
             }
         }
     }
