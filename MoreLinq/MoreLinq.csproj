@@ -207,6 +207,12 @@
     <Compile Include="TakeEvery.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="WindowLeft.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowRight.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ZipShortest.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

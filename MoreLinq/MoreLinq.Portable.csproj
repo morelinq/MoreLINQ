@@ -245,6 +245,12 @@
     <Compile Include="Windowed.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="WindowLeft.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowRight.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Zip.stub.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
