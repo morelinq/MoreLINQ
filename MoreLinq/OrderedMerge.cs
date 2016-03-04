@@ -43,7 +43,6 @@ namespace MoreLinq
         /// if the sequences are unordered as inputs.
         /// </remarks>
 
-
         public static IEnumerable<T> OrderedMerge<T>(
             this IEnumerable<T> first,
             IEnumerable<T> second)

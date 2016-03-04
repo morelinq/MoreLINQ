@@ -60,8 +60,10 @@
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
+    <Compile Include="ListExtensionsTest.cs" />
     <Compile Include="NullArgumentTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />
+    <Compile Include="OrderedMergeTest.cs" />
     <Compile Include="SplitTest.cs" />
     <Compile Include="GroupAdjacentTest.cs" />
     <Compile Include="PairwiseTest.cs" />

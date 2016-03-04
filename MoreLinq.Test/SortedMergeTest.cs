@@ -209,5 +209,106 @@ namespace MoreLinq.Test
 
             Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
         }
+
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestSortedMergeArgNullException()
+        {
+            List<List<int>> lists = null;
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+            result.Count(); // execute delayed call
+        }
+
+        [Test]
+        public void TestSortedMergeEmptyList()
+        {
+            List<List<int>> lists = new List<List<int>>(0);
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public void TestSortedMergeOneList()
+        {
+            List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+            {
+                Enumerable.Range(1, 5),
+            };
+
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+            Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 5)));
+        }
+
+        [Test]
+        public void TestSortedMergeAscSortedLists()
+        {
+            {
+                List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+                {
+                    Enumerable.Range(1, 5),
+                    Enumerable.Range(6, 5),
+                };
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 10)));
+            }
+            {
+                List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+                {
+                    Enumerable.Range(6, 5),
+                    Enumerable.Range(1, 5),
+                };
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 10)));
+            }
+            {
+                List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+                {
+                    Enumerable.Range(6, 5),
+                    Enumerable.Range(1, 5),
+                    Enumerable.Range(11, 5),
+                };
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 15)));
+            }
+            {
+                IEnumerable<IEnumerable<int>> lists = Enumerable.Range(1, 50)
+                                                         .OrderBy(_ => Guid.NewGuid().ToString("N"))
+                                                         .Batch(7)
+                                                         .Select(v=>v.OrderBy(i=>i, OrderByDirection.Ascending));
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 50)));
+            }
+        }
+
+        [Test]
+        public void TestSortedMergeAscSortedListsWithDuplicates()
+        {
+            IEnumerable<IEnumerable<int>> enumerable = Enumerable.Range(1, 50)
+                                                            .OrderBy(_ => Guid.NewGuid().ToString("N"))
+                                                            .Batch(7)
+                                                            .Select(v => v.OrderBy(i => i, OrderByDirection.Ascending));
+
+            List<List<int>> lists= new List<List<int>>();
+            lists.AddRange(enumerable.Select(v=>v.ToList()));
+            lists.AddRange(enumerable.Select(v=>v.ToList()));
+
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+            List<int> expected = new List<int>();
+            expected.AddRange(Enumerable.Range(1, 50));
+            expected.AddRange(Enumerable.Range(1, 50));
+
+            Assert.IsTrue(result.SequenceEqual(expected.OrderBy(v=>v)));
+        }
     }
 }

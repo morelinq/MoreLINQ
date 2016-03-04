@@ -63,6 +63,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -64,7 +64,9 @@
     <Compile Include="KeyValuePair.cs" />
     <Compile Include="LagTest.cs" />
     <Compile Include="LeadTest.cs" />
+    <Compile Include="ListExtensionsTest.cs" />
     <Compile Include="NestedLoopTest.cs" />
+    <Compile Include="OrderedMergeTest.cs" />
     <Compile Include="TopByTest.cs" />
     <Compile Include="TopTest.cs" />
     <Compile Include="OrderByTest.cs" />
