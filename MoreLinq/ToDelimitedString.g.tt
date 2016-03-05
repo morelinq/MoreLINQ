@@ -83,7 +83,7 @@ namespace MoreLinq
 
         static partial class StringBuilderAppenders
         {
-            public static readonly Func<StringBuilder, <#= type.Name #>, StringBuilder> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
+            public static readonly Action<StringBuilder, <#= type.Name #>> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace MoreLinq
         public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
             if (source == null) throw new ArgumentNullException("source");
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
+            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>, 256);
         }
 
 <#      } #>

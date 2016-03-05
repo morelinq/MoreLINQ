@@ -159,6 +159,12 @@
     <Compile Include="Subsets.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shuffle.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectTrimmedNotEmpty.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Index.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
