@@ -64,6 +64,8 @@
     <Compile Include="NullArgumentTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />
     <Compile Include="OrderedMergeTest.cs" />
+    <Compile Include="SelectTrimmedNotEmptyTests.cs" />
+    <Compile Include="ShuffleTest.cs" />
     <Compile Include="SplitTest.cs" />
     <Compile Include="GroupAdjacentTest.cs" />
     <Compile Include="PairwiseTest.cs" />

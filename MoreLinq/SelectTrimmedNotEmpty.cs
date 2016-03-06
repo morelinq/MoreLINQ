@@ -23,14 +23,16 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Shuffles the source sequence.
+        /// Selects trimmed not empty string values from source sequence.
         /// </summary>
-        /// <param name="source">The source sequence.</param>
-        /// <returns>A sequence of all elements from the original sequence but in random order.</returns>
-        /// <remarks>Each element from the source is used only and only once for result sequence.</remarks>
+        /// <param name="source">The source sequence of string values.</param>
+        /// <returns>A sequence of string elements.</returns>
         public static IEnumerable<string> SelectTrimmedNotEmpty(this IEnumerable<string> source)
         {
-            return source.Where(v => !string.IsNullOrEmpty(v)).Select(v => v.Trim()).Where(v => !string.IsNullOrEmpty(v));
+            return source
+                .Where(v => !string.IsNullOrEmpty(v))
+                .Select(v => v.Trim())
+                .Where(v => !string.IsNullOrEmpty(v));
         }
     }
 }

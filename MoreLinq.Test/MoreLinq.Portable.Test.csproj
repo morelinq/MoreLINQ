@@ -67,6 +67,8 @@
     <Compile Include="ListExtensionsTest.cs" />
     <Compile Include="NestedLoopTest.cs" />
     <Compile Include="OrderedMergeTest.cs" />
+    <Compile Include="SelectTrimmedNotEmptyTests.cs" />
+    <Compile Include="ShuffleTest.cs" />
     <Compile Include="TopByTest.cs" />
     <Compile Include="TopTest.cs" />
     <Compile Include="OrderByTest.cs" />
