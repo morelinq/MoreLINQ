@@ -82,7 +82,7 @@ Operator             | Summary
 ## Running on dnx451
 
 ###Program.cs
-
+```
 using System;
 using System.Linq;
 
@@ -98,7 +98,7 @@ public class Program
 }
 
 ###Project.json
-
+```
 {
   "version": "1.0.0-*",
   "compilationOptions": {
@@ -117,6 +117,6 @@ public class Program
 }
 
 ###How to run it:
-
+```
 dnu restore
 dnx run
