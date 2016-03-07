@@ -96,7 +96,7 @@ public class Program
         Console.ReadLine();
     }
 }
-
+```
 ###Project.json
 ```
 {
@@ -115,8 +115,9 @@ public class Program
     }
   }
 }
-
+```
 ###How to run it:
 ```
 dnu restore
 dnx run
+```
