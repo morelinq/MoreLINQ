@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2016 Sergiy Zinovyev. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -208,6 +225,107 @@ namespace MoreLinq.Test
             result.Count(); // ensures the sequences are actually merged and iterators are obtained
 
             Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestSortedMergeArgNullException()
+        {
+            List<List<int>> lists = null;
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+            result.Count(); // execute delayed call
+        }
+
+        [Test]
+        public void TestSortedMergeEmptyList()
+        {
+            List<List<int>> lists = new List<List<int>>(0);
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public void TestSortedMergeOneList()
+        {
+            List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+            {
+                Enumerable.Range(1, 5),
+            };
+
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+            Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 5)));
+        }
+
+        [Test]
+        public void TestSortedMergeAscSortedLists()
+        {
+            {
+                List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+                {
+                    Enumerable.Range(1, 5),
+                    Enumerable.Range(6, 5),
+                };
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 10)));
+            }
+            {
+                List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+                {
+                    Enumerable.Range(6, 5),
+                    Enumerable.Range(1, 5),
+                };
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 10)));
+            }
+            {
+                List<IEnumerable<int>> lists = new List<IEnumerable<int>>
+                {
+                    Enumerable.Range(6, 5),
+                    Enumerable.Range(1, 5),
+                    Enumerable.Range(11, 5),
+                };
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 15)));
+            }
+            {
+                IEnumerable<IEnumerable<int>> lists = Enumerable.Range(1, 50)
+                                                         .OrderBy(_ => Guid.NewGuid().ToString("N"))
+                                                         .Batch(7)
+                                                         .Select(v=>v.OrderBy(i=>i, OrderByDirection.Ascending));
+
+                IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+                Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, 50)));
+            }
+        }
+
+        [Test]
+        public void TestSortedMergeAscSortedListsWithDuplicates()
+        {
+            IEnumerable<IEnumerable<int>> enumerable = Enumerable.Range(1, 50)
+                                                            .OrderBy(_ => Guid.NewGuid().ToString("N"))
+                                                            .Batch(7)
+                                                            .Select(v => v.OrderBy(i => i, OrderByDirection.Ascending));
+
+            List<List<int>> lists= new List<List<int>>();
+            lists.AddRange(enumerable.Select(v=>v.ToList()));
+            lists.AddRange(enumerable.Select(v=>v.ToList()));
+
+            IEnumerable<int> result = lists.SortedMerge(v => v, OrderByDirection.Ascending, Comparer<int>.Default);
+
+            List<int> expected = new List<int>();
+            expected.AddRange(Enumerable.Range(1, 50));
+            expected.AddRange(Enumerable.Range(1, 50));
+
+            Assert.IsTrue(result.SequenceEqual(expected.OrderBy(v=>v)));
         }
     }
 }
