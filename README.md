@@ -85,6 +85,7 @@ MoreLinq assembly can be used in Full DNX applications. Below is an example of d
 ```
 using System;
 using System.Linq;
+using MoreLinq;
 
 public class Program
 {
@@ -92,6 +93,7 @@ public class Program
     {
         Console.WriteLine("Hello World 2");
         Console.WriteLine(MoreLinq.MoreEnumerable.ToDelimitedString(Enumerable.Range(1, 10), ";"));
+        Console.WriteLine(Enumerable.Range(-10, 10).ToDelimitedString(";"));
 
         Console.ReadLine();
     }
