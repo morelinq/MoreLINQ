@@ -80,7 +80,7 @@ Operator             | Summary
 
 
 ## Running on dnx451
-
+MoreLinq assembly can be used in Full DNX applications. Below is an example of dnx451 HelloWorld console application.
 ###Program.cs
 ```
 using System;
