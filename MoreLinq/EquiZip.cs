@@ -87,6 +87,10 @@ namespace MoreLinq
         /// <param name="second">Second sequence</param>
         /// <param name="third">Third sequence</param>
         /// <param name="resultSelector">Function to apply to each triplet of elements</param>
+        /// <returns>
+        /// A sequence that contains elements of the three input sequences,
+        /// combined by <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(this IEnumerable<T1> first,
              IEnumerable<T2> second, IEnumerable<T3> third,
@@ -129,6 +133,10 @@ namespace MoreLinq
         /// <param name="third">Third sequence</param>
         /// <param name="fourth">Fourth sequence</param>
         /// <param name="resultSelector">Function to apply to each quadruplet of elements</param>
+        /// <returns>
+        /// A sequence that contains elements of the four input sequences,
+        /// combined by <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
              IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, 
