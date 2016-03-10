@@ -17,7 +17,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("MoreLINQ")]
@@ -46,6 +45,3 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("fc632c9d-390e-4902-8c1c-3e57b08c1d38")]
 #endif
-
-[assembly: InternalsVisibleTo("MoreLinq.Test, PublicKey=0024000004800000940000000602000000240000525341310004000001000100290a359c9159ca9f82c3d03a0d0f3e3475193a03396eef81aa8704db25c9e06507f28326ddf2f74671ca6a906ab2fc560dbac02e0ddabff53872ba3d6b609735f4c9ba4cba88c6bbca1ede2f78d4b473be3fac627b1faa700656d13aaf946eb6738a299c0001d5fe2ae0c0ef79843fc84460bb2de8855938d622dcd48bbcdbd5")]
-[assembly: InternalsVisibleTo("MoreLinq.Portable.Test, PublicKey=0024000004800000940000000602000000240000525341310004000001000100290a359c9159ca9f82c3d03a0d0f3e3475193a03396eef81aa8704db25c9e06507f28326ddf2f74671ca6a906ab2fc560dbac02e0ddabff53872ba3d6b609735f4c9ba4cba88c6bbca1ede2f78d4b473be3fac627b1faa700656d13aaf946eb6738a299c0001d5fe2ae0c0ef79843fc84460bb2de8855938d622dcd48bbcdbd5")]

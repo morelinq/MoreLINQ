@@ -17,7 +17,6 @@
 
 using System;
 using System.Globalization;
-using System.Linq;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;
 
@@ -78,49 +77,6 @@ namespace MoreLinq.Test
         {
             // See: http://code.google.com/p/morelinq/issues/detail?id=43
             var result = new object[] { null, null, "foo" }.ToDelimitedString(",");
-            Assert.That(result, Is.EqualTo(",,foo"));
-        }
-
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ToDelimitedStringWithNullSequenceAndChar()
-        {
-            MoreEnumerable.ToDelimitedString<int>(null, ',');
-        }
-
-        [Test]
-        public void ToDelimitedStringWithEmptySequenceAndChar()
-        {
-            Assert.That(LinqEnumerable.Empty<int>().ToDelimitedString(','), Is.Empty);
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndChar()
-        {
-            var result = new[] { 1, 2, 3 }.ToDelimitedString('-');
-            Assert.That(result, Is.EqualTo("1-2-3"));
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndZeroChar()
-        {
-            Assert.AreEqual(new[] {1, 2, 3}.ToDelimitedString('\0'), "1\02\03");
-            Assert.AreEqual(new[] {1, 2, 3}.Select(v=>v.ToString()).ToDelimitedString('\0'), "1\02\03");
-            Assert.AreEqual(new[] {1, 2, 3}.Select(v=>v.ToString()).ToArray().ToDelimitedString('\0'), "1\02\03");
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceContainingNullsAndChar()
-        {
-            var result = new object[] { 1, null, "foo", true }.ToDelimitedString(',');
-            Assert.That(result, Is.EqualTo("1,,foo,True"));
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStartAndChar()
-        {
-            var result = new object[] { null, null, "foo" }.ToDelimitedString(',');
             Assert.That(result, Is.EqualTo(",,foo"));
         }
     }

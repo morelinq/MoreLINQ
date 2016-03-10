@@ -133,7 +133,6 @@
     <Compile Include="Lead.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListExtensions.cs" />
     <Compile Include="Lookup.cs" />
     <Compile Include="MaxBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -253,12 +252,6 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="ZipShortest.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Shuffle.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SelectTrimmedNotEmpty.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
   </ItemGroup>

@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
-
 namespace MoreLinq
 {
     using System;
@@ -69,153 +67,22 @@ namespace MoreLinq
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
             if (source == null) throw new ArgumentNullException("source");
-            return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e), 256);
+            return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
         }
 
-        /// <summary>
-        /// Creates a delimited string from a sequence of values and
-        /// a given delimiter.
-        /// </summary>
-        /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-        /// <returns>
-        /// A string that consists of the elements in <paramref name="source"/>
-        /// delimited by <paramref name="delimiter"/>. If the source sequence
-        /// is empty, the method returns an empty string.
-        /// </returns>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-
-        public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, char delimiter)
-        {
-            if (source == null) throw new ArgumentNullException("source");
-            return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e), 256);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from an array of string values and a given delimiter.
-        /// </summary>
-        /// <param name="source">The array of string items to join. Each is converted to a string using the simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-        /// <returns>
-        /// A string that consists of the elements in <paramref name="source"/>
-        /// delimited by <paramref name="delimiter"/>. If the source sequence
-        /// is empty, the method returns an empty string.
-        /// </returns>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// This is optimized version of more generic method that accepts IEnumarable{T}.
-        /// It calculates entire length of the result string and initializes StringBuilder's capacity with it.
-        /// </remarks>
-
-        public static string ToDelimitedString(this IList<string> source, string delimiter)
-        {
-            if (source == null) throw new ArgumentNullException("source");
-
-            int capacity = source.Sum(v => v.Length);
-            if (delimiter != null)
-            {
-                capacity += (source.Count - 1) * delimiter.Length;
-            }
-
-            return ToDelimitedStringImpl(source, delimiter, capacity);
-        }
-
-        /// <summary>
-        /// Creates a delimited string from an array of string values and a given delimiter.
-        /// </summary>
-        /// <param name="source">The array of string items to join. Each is converted to a string using the simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
-        /// <returns>
-        /// A string that consists of the elements in <paramref name="source"/>
-        /// delimited by <paramref name="delimiter"/>. If the source sequence
-        /// is empty, the method returns an empty string.
-        /// </returns>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// This is optimized version of more generic method that accepts IEnumarable{T}.
-        /// It calculates entire length of the result string and initializes StringBuilder's capacity with it.
-        /// </remarks>
-
-        public static string ToDelimitedString(this IList<string> source, char delimiter)
-        {
-            if (source == null) throw new ArgumentNullException("source");
-
-            int capacity = source.Sum(v => v.Length) + (source.Count - 1) * 1;
-
-            return ToDelimitedStringImpl(source, delimiter, capacity);
-        }
-
-
-        private static string ToDelimitedStringImpl<TSource>(IEnumerable<TSource> source, string delimiter, Action<StringBuilder, TSource> append, int capacity)
+        static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
         {
             Debug.Assert(source != null);
             Debug.Assert(append != null);
 
             delimiter = delimiter ?? CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-
-            var sb = new StringBuilder(capacity);
+            var sb = new StringBuilder();
             var i = 0;
 
             foreach (var value in source)
             {
                 if (i++ > 0) sb.Append(delimiter);
                 append(sb, value);
-            }
-
-            return sb.ToString();
-        }
-
-        private static string ToDelimitedStringImpl<TSource>(IEnumerable<TSource> source, char delimiter, Action<StringBuilder, TSource> append, int capacity)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(append != null);
-
-            var sb = new StringBuilder(capacity);
-            var i = 0;
-
-            foreach (var value in source)
-            {
-                if (i++ > 0) sb.Append(delimiter);
-                append(sb, value);
-            }
-
-            return sb.ToString();
-        }
-
-        private static string ToDelimitedStringImpl(IList<string> source, string delimiter, int capacity)
-        {
-            Debug.Assert(source != null);
-
-            StringBuilder sb = new StringBuilder(capacity);
-            int i = 0;
-
-            foreach (string value in source)
-            {
-                if (i++ > 0) sb.Append(delimiter);
-                sb.Append(value);
-            }
-
-            return sb.ToString();
-        }
-
-        private static string ToDelimitedStringImpl(IList<string> source, char delimiter, int capacity)
-        {
-            Debug.Assert(source != null);
-
-            StringBuilder sb = new StringBuilder(capacity);
-            int i = 0;
-
-            foreach (string value in source)
-            {
-                if (i++ > 0) sb.Append(delimiter);
-                sb.Append(value);
             }
 
             return sb.ToString();
