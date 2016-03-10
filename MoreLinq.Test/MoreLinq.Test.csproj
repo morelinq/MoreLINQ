@@ -34,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -60,8 +66,12 @@
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
+    <Compile Include="ListExtensionsTest.cs" />
     <Compile Include="NullArgumentTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />
+    <Compile Include="OrderedMergeTest.cs" />
+    <Compile Include="SelectTrimmedNotEmptyTests.cs" />
+    <Compile Include="ShuffleTest.cs" />
     <Compile Include="SplitTest.cs" />
     <Compile Include="GroupAdjacentTest.cs" />
     <Compile Include="PairwiseTest.cs" />
@@ -137,6 +147,9 @@
       <Project>{8642E81B-3414-4C13-914F-05A4E600FE49}</Project>
       <Name>MoreLinq</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

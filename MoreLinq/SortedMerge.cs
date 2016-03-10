@@ -48,7 +48,7 @@ namespace MoreLinq
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-        
+
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
         {
             return SortedMerge(source, direction, null, otherSequences);
@@ -64,7 +64,7 @@ namespace MoreLinq
         /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
-        
+
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSequences)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -99,7 +99,7 @@ namespace MoreLinq
         /// 
         /// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
         /// </remarks>
-        
+
         private static IEnumerable<T> SortedMergeImpl<T>(Func<T, T, bool> precedenceFunc, IEnumerable<IEnumerable<T>> otherSequences)
         {
             using (var disposables = new DisposableGroup<T>(otherSequences.Select(e => e.GetEnumerator()).Acquire()))
@@ -142,11 +142,114 @@ namespace MoreLinq
             }
         }
 
+
+        /// <summary>
+        /// Merges sequences that are in a common order (either ascending or descending by TKey) into
+        /// a single sequence that preserves that order. Part of SortMerge algorithm.
+        /// </summary>
+        /// <param name="source">Sequence of sequences</param>
+        /// <param name="keySelector">Function to extract a key given an element from a sequence.</param>
+        /// <param name="direction">The ordering that all sequences must already exhibit.</param>
+        /// <param name="comparer">An <see cref="IComparer{T}"/> to compare keys.</param>
+        /// <typeparam name="T">Type of elements.</typeparam>
+        /// <typeparam name="TKey">Type of keys used for merging.</typeparam>
+        /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences merged according to a key.</returns>
+        /// <remarks>
+        /// Using SortedMerge on sequences that are not ordered or are not in the same order produces
+        /// undefined results.<br/>
+        /// <c>SortedMerge</c> performs the merge in a deferred, streaming manner.<br/>
+        /// 
+        /// Each item from each sequence is copied into result sequence.
+        /// {1, 2} + {2, 3} = {1, 2, 2, 3}
+        /// </remarks>
+        public static IEnumerable<T> SortedMerge<T, TKey>(this IEnumerable<IEnumerable<T>> source, Func<T, TKey> keySelector, OrderByDirection direction, IComparer<TKey> comparer)
+        {
+            List<IEnumerator<T>> enumerators = source
+                .Select(v =>
+                {
+                    IEnumerator<T> enumerator = v.GetEnumerator();
+                    if (enumerator.MoveNext())
+                    {
+                        return enumerator;
+                    }
+                    else
+                    {
+                        enumerator.Dispose();
+                        return null;
+                    }
+                })
+                .Where(v => v != null)
+                .ToList();
+
+            if (enumerators.Any())
+            {
+                try
+                {
+                    List<SortedMergeHelperItem<T, TKey>> values = enumerators
+                        .Select((v, i) =>
+                        {
+                            T value = v.Current;
+                            TKey key = keySelector(value);
+                            return new SortedMergeHelperItem<T, TKey>(i, key, value);
+                        })
+                        .OrderBy(v => v.Key, comparer, direction)
+                        .ToList();
+
+                    int count = enumerators.Count;
+                    while (count > 0)
+                    {
+                        var first = values.First();
+                        yield return first.Value;
+
+                        values.RemoveAt(0);
+
+                        int enumeratorId = first.Index;
+                        IEnumerator<T> enumerator = enumerators[enumeratorId];
+                        bool hasValue = enumerator.MoveNext();
+                        if (!hasValue)
+                        {
+                            --count;
+                            enumerators[enumeratorId] = null;
+                            enumerator.Dispose();
+                        }
+                        else
+                        {
+                            T value = enumerator.Current;
+                            TKey key = keySelector(value);
+                            values.AddSorted(new SortedMergeHelperItem<T, TKey>(enumeratorId, key, value), v => v.Key, comparer, direction);
+                        }
+                    }
+                }
+                finally
+                {
+                    enumerators
+                        .Where(v => v != null)
+                        .ForEach(v => v.Dispose());
+                }
+            }
+        }
+
+
+        private struct SortedMergeHelperItem<T, TKey>
+        {
+            public int Index { get; }
+            public TKey Key { get; }
+            public T Value { get; }
+
+            public SortedMergeHelperItem(int index, TKey key, T value)
+            {
+                Index = index;
+                Key = key;
+                Value = value;
+            }
+        }
+
+
         /// <summary>
         /// Class used to assist in ensuring that groups of disposable iterators
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
-        
+
         private sealed class DisposableGroup<T> : IDisposable
         {
             public DisposableGroup(IEnumerable<IEnumerator<T>> iterators)
