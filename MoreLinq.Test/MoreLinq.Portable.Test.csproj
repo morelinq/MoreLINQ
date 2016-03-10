@@ -70,7 +70,6 @@
     <Compile Include="KeyValuePair.cs" />
     <Compile Include="LagTest.cs" />
     <Compile Include="LeadTest.cs" />
-    <Compile Include="ListExtensionsTest.cs" />
     <Compile Include="NestedLoopTest.cs" />
     <Compile Include="OrderedMergeTest.cs" />
     <Compile Include="SelectTrimmedNotEmptyTests.cs" />
