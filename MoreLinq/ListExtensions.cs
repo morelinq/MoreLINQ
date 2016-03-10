@@ -26,7 +26,7 @@ namespace MoreLinq
     ///  - AddSorted
     ///  - BinarySearchBy
     /// </summary>
-    public static class ListExtensions
+    internal static class ListExtensions
     {
         /// <summary>
         /// Adds item in sorted list.
