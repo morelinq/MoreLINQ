@@ -25,7 +25,7 @@
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
-    <CopyrightText>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph. Portions &#169; Microsoft.</CopyrightText>
+    <CopyrightText>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin. Portions &#169; 2015 Felipe Sateler, &#8220;sholland&#8221;. Portions &#169; Microsoft.</CopyrightText>
     <FeedbackEMailAddress>morelinq-dev%40googlegroups.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>MoreLinq Google Groups</FeedbackEMailLinkText>
     <HelpTitle>MoreLinq</HelpTitle>
