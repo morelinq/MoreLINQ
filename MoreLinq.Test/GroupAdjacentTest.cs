@@ -108,7 +108,10 @@ namespace MoreLinq.Test
                 new { Month = 2, Value = 321 },                 
                 new { Month = 3, Value = 789 },                 
                 new { Month = 3, Value = 456 },                 
-                new { Month = 3, Value = 123 },                 
+                new { Month = 3, Value = 123 },
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 781 },
             };
 
             var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2);
@@ -118,6 +121,7 @@ namespace MoreLinq.Test
                 AssertGrouping(reader, 1, 123 * 2, 456 * 2, 789 * 2);
                 AssertGrouping(reader, 2, 987 * 2, 654 * 2, 321 * 2);
                 AssertGrouping(reader, 3, 789 * 2, 456 * 2, 123 * 2);
+                AssertGrouping(reader, 1, 123 * 2, 456 * 2, 781 * 2);
                 reader.ReadEnd();
             }
         }
@@ -135,7 +139,10 @@ namespace MoreLinq.Test
                 new { Month = "FEB", Value = 321 },                 
                 new { Month = "mar", Value = 789 },                 
                 new { Month = "Mar", Value = 456 },                 
-                new { Month = "MAR", Value = 123 },                 
+                new { Month = "MAR", Value = 123 },
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 781 },
             };
 
             var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2, StringComparer.OrdinalIgnoreCase);
@@ -145,6 +152,7 @@ namespace MoreLinq.Test
                 AssertGrouping(reader, "jan", 123 * 2, 456 * 2, 789 * 2);
                 AssertGrouping(reader, "feb", 987 * 2, 654 * 2, 321 * 2);
                 AssertGrouping(reader, "mar", 789 * 2, 456 * 2, 123 * 2);
+                AssertGrouping(reader, "jan", 123 * 2, 456 * 2, 781 * 2);
                 reader.ReadEnd();
             }
         }
@@ -163,6 +171,9 @@ namespace MoreLinq.Test
                 new { Month = 3, Value = 789 },
                 new { Month = 3, Value = 456 },
                 new { Month = 3, Value = 123 },
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 781 },
             };
 
             var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
@@ -171,6 +182,7 @@ namespace MoreLinq.Test
                 AssertResult(reader, 123 + 456 + 789);
                 AssertResult(reader, 987 + 654 + 321);
                 AssertResult(reader, 789 + 456 + 123);
+                AssertResult(reader, 123 + 456 + 781);
                 reader.ReadEnd();
             }
         }
@@ -189,6 +201,9 @@ namespace MoreLinq.Test
                 new { Month = "mar", Value = 789 },
                 new { Month = "Mar", Value = 456 },
                 new { Month = "MAR", Value = 123 },
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 781 },
             };
 
             var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
@@ -197,6 +212,7 @@ namespace MoreLinq.Test
                 AssertResult(reader, 123 + 456 + 789);
                 AssertResult(reader, 987 + 654 + 321);
                 AssertResult(reader, 789 + 456 + 123);
+                AssertResult(reader, 123 + 456 + 781);
                 reader.ReadEnd();
             }
         }
