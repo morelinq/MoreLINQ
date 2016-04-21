@@ -59,6 +59,7 @@
     <Compile Include="AtLeastTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
+    <Compile Include="IntersectByTest.cs" />
     <Compile Include="KeyValuePair.cs" />
     <Compile Include="NullArgumentTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />
@@ -137,6 +138,9 @@
       <Project>{8642E81B-3414-4C13-914F-05A4E600FE49}</Project>
       <Name>MoreLinq</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

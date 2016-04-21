@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 // 
@@ -19,111 +19,97 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace MoreLinq.Test
-{
+namespace MoreLinq.Test {
     [TestFixture]
-    public class ExceptByTest
-    {
+    public class IntersectByTest {
         [Test]
-        public void SimpleExceptBy()
-        {
+        public void SimpleIntersectBy() {
             string[] first = { "aaa", "bb", "c", "dddd" };
-            string[] second = { "xx", "y" };
-            var result = first.ExceptBy(second, x => x.Length);
-            result.AssertSequenceEqual("aaa", "dddd");
+            string[] second = { "bb", "c" };
+            var result = first.IntersectBy(second, x => x.Length);
+            result.AssertSequenceEqual("bb", "c");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullFirstSequence()
-        {
+        public void IntersectByNullFirstSequence() {
             string[] first = null;
             string[] second = { "aaa" };
-            first.ExceptBy(second, x => x.Length);
+            first.IntersectBy(second, x => x.Length);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullSecondSequence()
-        {
+        public void IntersectByNullSecondSequence() {
             string[] first = { "aaa" };
             string[] second = null;
-            first.ExceptBy(second, x => x.Length);
+            first.IntersectBy(second, x => x.Length);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullKeySelector()
-        {
+        public void IntersectByNullKeySelector() {
             string[] first = { "aaa" };
             string[] second = { "aaa" };
-            first.ExceptBy<string>(second, (Func<string, string>)null);
-        }
-        
-        [Test]
-        public void ExceptByIsLazy()
-        {
-            new BreakingSequence<string>().ExceptBy(new string[0], x => x.Length);
+            first.IntersectBy<string>(second, (Func<string, string>)null);
         }
 
         [Test]
-        public void ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
-        {
+        public void IntersectByIsLazy() {
+            new BreakingSequence<string>().IntersectBy(new string[0], x => x.Length);
+        }
+
+        [Test]
+        public void IntersectByDoesNotRepeatSourceElementsWithDuplicateKeys() {
             string[] first = { "aaa", "bb", "c", "a", "b", "c", "dddd" };
-            string[] second = { "xx" };
-            var result = first.ExceptBy(second, x => x.Length);
-            result.AssertSequenceEqual("aaa", "c", "dddd");
+            string[] second = { "c" };
+            var result = first.IntersectBy(second, x => x.Length);
+            result.AssertSequenceEqual("c");
         }
 
         [Test]
-        public void ExceptByWithComparer()
-        {
+        public void IntersectByWithComparer() {
             string[] first = { "first", "second", "third", "fourth" };
-            string[] second = { "FIRST" , "thiRD", "FIFTH" };
-            var result = first.ExceptBy<string>(second, word => word, StringComparer.OrdinalIgnoreCase);
-            result.AssertSequenceEqual("second", "fourth");
+            string[] second = { "FIRST", "thiRD", "FIFTH" };
+            var result = first.IntersectBy<string>(second, word => word, StringComparer.OrdinalIgnoreCase);
+            result.AssertSequenceEqual("first", "third");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullFirstSequenceWithComparer()
-        {
+        public void IntersectByNullFirstSequenceWithComparer() {
             string[] first = null;
             string[] second = { "aaa" };
-            first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default);
+            first.IntersectBy(second, x => x.Length, EqualityComparer<int>.Default);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullSecondSequenceWithComparer()
-        {
+        public void IntersectByNullSecondSequenceWithComparer() {
             string[] first = { "aaa" };
             string[] second = null;
-            first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default);
+            first.IntersectBy(second, x => x.Length, EqualityComparer<int>.Default);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullKeySelectorWithComparer()
-        {
+        public void IntersectByNullKeySelectorWithComparer() {
             string[] first = { "aaa" };
             string[] second = { "aaa" };
-            first.ExceptBy<string>(second, null, EqualityComparer<string>.Default);
+            first.IntersectBy<string>(second, null, EqualityComparer<string>.Default);
         }
 
         [Test]
-        public void ExceptByNullComparer()
-        {
+        public void IntersectByNullComparer() {
             string[] first = { "aaa", "bb", "c", "dddd" };
             string[] second = { "xx", "y" };
-            var result = first.ExceptBy(second, x => x.Length, null);
-            result.AssertSequenceEqual("aaa", "dddd");
+            var result = first.IntersectBy(second, x => x.Length, null);
+            result.AssertSequenceEqual("bb", "c");
         }
 
         [Test]
-        public void ExceptByIsLazyWithComparer()
-        {
-            new BreakingSequence<string>().ExceptBy<string>(new string[0], x => x, StringComparer.Ordinal);
+        public void IntersectByIsLazyWithComparer() {
+            new BreakingSequence<string>().IntersectBy<string>(new string[0], x => x, StringComparer.Ordinal);
         }
     }
 }

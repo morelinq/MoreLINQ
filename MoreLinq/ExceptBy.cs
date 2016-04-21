@@ -24,6 +24,54 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
+        /// Returns a distinct set of elements from the first collection,
+        /// whose keys are not in the second collection.
+        /// </summary>
+        /// <typeparam name="T">The type of source, keys, and result elements.</typeparam>
+        /// <param name="first">The source collection.</param>
+        /// <param name="second">The key collection.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <returns>
+        /// Distinct set of elements from first collection,
+        /// whose keys are not in second collection.
+        /// </returns>
+        public static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> first,
+            IEnumerable<T> second,
+            Func<T, T> keySelector) {
+
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+
+            return ExceptByImpl(first, second, keySelector, null);
+        }
+
+        /// <summary>
+        /// Returns a distinct set of elements from the first collection,
+        /// whose keys are not in the second collection.
+        /// </summary>
+        /// <typeparam name="T">The type of source, keys, and result elements.</typeparam>
+        /// <param name="first">The source collection.</param>
+        /// <param name="second">The key collection.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <param name="keyComparer">The key comparer. Defaults to default TKey equality comparer.</param>
+        /// <returns>
+        /// Distinct set of elements from first collection,
+        /// whose keys are not in second collection.
+        /// </returns>
+        public static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> first,
+            IEnumerable<T> second,
+            Func<T, T> keySelector,
+            IEqualityComparer<T> keyComparer) {
+
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+
+            return ExceptByImpl(first, second, keySelector, keyComparer);
+        }
+
+        /// <summary>
         /// Returns the set of elements in the first sequence which aren't
         /// in the second sequence, according to a given key selector.
         /// </summary>
@@ -78,20 +126,69 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
+
+            return ExceptByImpl(first, second.Select(keySelector), keySelector, keyComparer);
+        }
+
+        /// <summary>
+        /// Returns a distinct set of elements from the first collection,
+        /// whose keys are not in the second collection.
+        /// </summary>
+        /// <typeparam name="TSource">The type of source and result elements.</typeparam>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <param name="first">The source collection.</param>
+        /// <param name="second">The key collection.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <returns>
+        /// Distinct set of elements from first collection,
+        /// whose keys are not in second collection.
+        /// </returns>
+        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+            IEnumerable<TKey> second,
+            Func<TSource, TKey> keySelector) {
+
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+
+            return ExceptByImpl(first, second, keySelector, null);
+        }
+
+        /// <summary>
+        /// Returns a distinct set of elements from the first collection,
+        /// whose keys are not in the second collection.
+        /// </summary>
+        /// <typeparam name="TSource">The type of source and result elements.</typeparam>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <param name="first">The source collection.</param>
+        /// <param name="second">The key collection.</param>
+        /// <param name="keySelector">The key selector.</param>
+        /// <param name="keyComparer">The key comparer. Defaults to default TKey equality comparer.</param>
+        /// <returns>
+        /// Distinct set of elements from first collection,
+        /// whose keys are not in second collection.
+        /// </returns>
+        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+            IEnumerable<TKey> second,
+            Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey> keyComparer) {
+
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+
             return ExceptByImpl(first, second, keySelector, keyComparer);
         }
 
-        private static IEnumerable<TSource> ExceptByImpl<TSource, TKey>(this IEnumerable<TSource> first,
-            IEnumerable<TSource> second,
+        private static IEnumerable<TSource> ExceptByImpl<TSource, TKey>(IEnumerable<TSource> first,
+            IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> keyComparer)
-        {
-            var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
-            foreach (var element in first)
-            {
+            IEqualityComparer<TKey> keyComparer) {
+
+            var keys = new HashSet<TKey>(second, keyComparer);
+            foreach (var element in first) {
                 var key = keySelector(element);
-                if (keys.Contains(key))
-                {
+                if (keys.Contains(key)) {
                     continue;
                 }
                 yield return element;
