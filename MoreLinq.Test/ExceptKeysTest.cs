@@ -22,108 +22,108 @@ using NUnit.Framework;
 namespace MoreLinq.Test
 {
     [TestFixture]
-    public class ExceptByTest
+    public class ExceptKeysTest
     {
         [Test]
-        public void SimpleExceptBy()
+        public void SimpleExceptKeys()
         {
             string[] first = { "aaa", "bb", "c", "dddd" };
-            string[] second = { "xx", "y" };
-            var result = first.ExceptBy(second, x => x.Length);
+            int[] second = { 1, 2 };
+            var result = first.ExceptKeys(second, x => x.Length);
             result.AssertSequenceEqual("aaa", "dddd");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullFirstSequence()
+        public void ExceptKeysNullFirstSequence()
         {
             string[] first = null;
-            string[] second = { "aaa" };
-            first.ExceptBy(second, x => x.Length);
+            int[] second = { 1 };
+            first.ExceptKeys(second, x => x.Length);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullSecondSequence()
+        public void ExceptKeysNullSecondSequence()
         {
             string[] first = { "aaa" };
-            string[] second = null;
-            first.ExceptBy(second, x => x.Length);
+            int[] second = null;
+            first.ExceptKeys(second, x => x.Length);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullKeySelector()
+        public void ExceptKeysNullKeySelector()
         {
             string[] first = { "aaa" };
-            string[] second = { "aaa" };
-            first.ExceptBy(second, (Func<string, string>)null);
+            int[] second = { 1 };
+            first.ExceptKeys(second, (Func<string, int>)null);
         }
         
         [Test]
-        public void ExceptByIsLazy()
+        public void ExceptKeysIsLazy()
         {
-            new BreakingSequence<string>().ExceptBy(new string[0], x => x.Length);
+            new BreakingSequence<string>().ExceptKeys(new int[0], x => x.Length);
         }
 
         [Test]
-        public void ExceptByDoesNotRepeatSourceElementsWithDuplicateKeys()
+        public void ExceptKeysDoesNotRepeatSourceElementsWithDuplicateKeys()
         {
             string[] first = { "aaa", "bb", "c", "a", "b", "c", "dddd" };
-            string[] second = { "xx" };
-            var result = first.ExceptBy(second, x => x.Length);
+            int[] second = { 2 };
+            var result = first.ExceptKeys(second, x => x.Length);
             result.AssertSequenceEqual("aaa", "c", "dddd");
         }
 
         [Test]
-        public void ExceptByWithComparer()
+        public void ExceptKeysWithComparer()
         {
             string[] first = { "first", "second", "third", "fourth" };
             string[] second = { "FIRST" , "thiRD", "FIFTH" };
-            var result = first.ExceptBy(second, word => word, StringComparer.OrdinalIgnoreCase);
+            var result = first.ExceptKeys(second, word => word, StringComparer.OrdinalIgnoreCase);
             result.AssertSequenceEqual("second", "fourth");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullFirstSequenceWithComparer()
+        public void ExceptKeysNullFirstSequenceWithComparer()
         {
             string[] first = null;
-            string[] second = { "aaa" };
-            first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default);
+            int[] second = { 1 };
+            first.ExceptKeys(second, x => x.Length, EqualityComparer<int>.Default);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullSecondSequenceWithComparer()
+        public void ExceptKeysNullSecondSequenceWithComparer()
         {
             string[] first = { "aaa" };
-            string[] second = null;
-            first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default);
+            int[] second = null;
+            first.ExceptKeys(second, x => x.Length, EqualityComparer<int>.Default);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ExceptByNullKeySelectorWithComparer()
+        public void ExceptKeysNullKeySelectorWithComparer()
         {
             string[] first = { "aaa" };
-            string[] second = { "aaa" };
-            first.ExceptBy(second, null, EqualityComparer<string>.Default);
+            int[] second = { 1 };
+            first.ExceptKeys(second, null, EqualityComparer<int>.Default);
         }
 
         [Test]
-        public void ExceptByNullComparer()
+        public void ExceptKeysNullComparer()
         {
             string[] first = { "aaa", "bb", "c", "dddd" };
-            string[] second = { "xx", "y" };
-            var result = first.ExceptBy(second, x => x.Length, null);
+            int[] second = { 1, 2 };
+            var result = first.ExceptKeys(second, x => x.Length, null);
             result.AssertSequenceEqual("aaa", "dddd");
         }
 
         [Test]
-        public void ExceptByIsLazyWithComparer()
+        public void ExceptKeysIsLazyWithComparer()
         {
-            new BreakingSequence<string>().ExceptBy(new string[0], x => x, StringComparer.Ordinal);
+            new BreakingSequence<string>().ExceptKeys(new string[0], x => x, StringComparer.Ordinal);
         }
     }
 }

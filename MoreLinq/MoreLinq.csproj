@@ -55,6 +55,9 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExceptBy.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="FallbackIfEmpty.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -76,9 +79,6 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Cartesian.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ExceptBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Exclude.cs">

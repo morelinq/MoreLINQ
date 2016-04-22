@@ -15,61 +15,12 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq
-{
+namespace MoreLinq {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    static partial class MoreEnumerable
-    {
-        /// <summary>
-        /// Returns a distinct set of elements from the first collection,
-        /// whose keys are not in the second collection.
-        /// </summary>
-        /// <typeparam name="T">The type of source, keys, and result elements.</typeparam>
-        /// <param name="first">The source collection.</param>
-        /// <param name="second">The key collection.</param>
-        /// <param name="keySelector">The key selector.</param>
-        /// <returns>
-        /// Distinct set of elements from first collection,
-        /// whose keys are not in second collection.
-        /// </returns>
-        public static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> first,
-            IEnumerable<T> second,
-            Func<T, T> keySelector) {
-
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-
-            return ExceptByImpl(first, second, keySelector, null);
-        }
-
-        /// <summary>
-        /// Returns a distinct set of elements from the first collection,
-        /// whose keys are not in the second collection.
-        /// </summary>
-        /// <typeparam name="T">The type of source, keys, and result elements.</typeparam>
-        /// <param name="first">The source collection.</param>
-        /// <param name="second">The key collection.</param>
-        /// <param name="keySelector">The key selector.</param>
-        /// <param name="keyComparer">The key comparer. Defaults to default TKey equality comparer.</param>
-        /// <returns>
-        /// Distinct set of elements from first collection,
-        /// whose keys are not in second collection.
-        /// </returns>
-        public static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> first,
-            IEnumerable<T> second,
-            Func<T, T> keySelector,
-            IEqualityComparer<T> keyComparer) {
-
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-
-            return ExceptByImpl(first, second, keySelector, keyComparer);
-        }
+    static partial class MoreEnumerable {
 
         /// <summary>
         /// Returns the set of elements in the first sequence which aren't
@@ -89,11 +40,9 @@ namespace MoreLinq
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
-            Func<TSource, TKey> keySelector)
-        {
+            Func<TSource, TKey> keySelector) {
             return ExceptBy(first, second, keySelector, null);
         }
 
@@ -117,33 +66,39 @@ namespace MoreLinq
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        
+
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> keyComparer)
-        {
+            IEqualityComparer<TKey> keyComparer) {
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return ExceptByImpl(first, second.Select(keySelector), keySelector, keyComparer);
+            return ExceptKeysImpl(first, second.Select(keySelector), keySelector, keyComparer);
         }
 
         /// <summary>
-        /// Returns a distinct set of elements from the first collection,
-        /// whose keys are not in the second collection.
+        /// Returns the set of elements in the first sequence,
+        /// whose keys are not in the second sequence, according to a given key selector.
         /// </summary>
         /// <typeparam name="TSource">The type of source and result elements.</typeparam>
         /// <typeparam name="TKey">The type of the key.</typeparam>
-        /// <param name="first">The source collection.</param>
-        /// <param name="second">The key collection.</param>
-        /// <param name="keySelector">The key selector.</param>
+        /// <param name="first">The sequence of potentially included elements.</param>
+        /// <param name="second">The sequence of keys which may prevent elements in
+        /// <paramref name="first"/> from being returned.</param>
+        /// <param name="keySelector">The mapping from source element to key.</param>
         /// <returns>
-        /// Distinct set of elements from first collection,
-        /// whose keys are not in second collection.
-        /// </returns>
-        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+        /// Distinct set of elements from first sequence,
+        /// whose keys are not in second sequence.
+        /// </returns>  
+        /// <remarks>
+        /// This is a set operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, only the first such element is returned.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of keys from <paramref name="second"/> is immediately selected and retained.
+        /// </remarks>
+        public static IEnumerable<TSource> ExceptKeys<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector) {
 
@@ -151,24 +106,31 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return ExceptByImpl(first, second, keySelector, null);
+            return ExceptKeysImpl(first, second, keySelector, null);
         }
 
         /// <summary>
-        /// Returns a distinct set of elements from the first collection,
-        /// whose keys are not in the second collection.
+        /// Returns the set of elements from the first collection,
+        /// whose keys are not in the second collection, according to a given key selector.
         /// </summary>
         /// <typeparam name="TSource">The type of source and result elements.</typeparam>
         /// <typeparam name="TKey">The type of the key.</typeparam>
-        /// <param name="first">The source collection.</param>
-        /// <param name="second">The key collection.</param>
-        /// <param name="keySelector">The key selector.</param>
-        /// <param name="keyComparer">The key comparer. Defaults to default TKey equality comparer.</param>
+        /// <param name="first">The sequence of potentially included elements.</param>
+        /// <param name="second">The sequence of keys which may prevent elements in
+        /// <paramref name="first"/> from being returned.</param>
+        /// <param name="keySelector">The mapping from source element to key.</param>
+        /// <param name="keyComparer">The key comparer. If <c>null</c>, uses the default TKey equality comparer.</param>
         /// <returns>
-        /// Distinct set of elements from first collection,
-        /// whose keys are not in second collection.
+        /// Distinct set of elements from first sequence,
+        /// whose keys are not in second sequence.
         /// </returns>
-        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+        /// <remarks>
+        /// This is a set operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, only the first such element is returned.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of keys from <paramref name="second"/> is immediately selected and retained.
+        /// </remarks>
+        public static IEnumerable<TSource> ExceptKeys<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
@@ -177,10 +139,10 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return ExceptByImpl(first, second, keySelector, keyComparer);
+            return ExceptKeysImpl(first, second, keySelector, keyComparer);
         }
 
-        private static IEnumerable<TSource> ExceptByImpl<TSource, TKey>(IEnumerable<TSource> first,
+        private static IEnumerable<TSource> ExceptKeysImpl<TSource, TKey>(IEnumerable<TSource> first,
             IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {

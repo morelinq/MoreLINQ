@@ -21,95 +21,95 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test {
     [TestFixture]
-    public class IntersectByTest {
+    public class IntersectKeysTest {
         [Test]
-        public void SimpleIntersectBy() {
+        public void SimpleIntersectKeys() {
             string[] first = { "aaa", "bb", "c", "dddd" };
-            string[] second = { "bb", "c" };
-            var result = first.IntersectBy(second, x => x.Length);
+            int[] second = { 1, 2 };
+            var result = first.IntersectKeys(second, x => x.Length);
             result.AssertSequenceEqual("bb", "c");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IntersectByNullFirstSequence() {
+        public void IntersectKeysNullFirstSequence() {
             string[] first = null;
-            string[] second = { "aaa" };
-            first.IntersectBy(second, x => x.Length);
+            int[] second = { 1 };
+            first.IntersectKeys(second, x => x.Length);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IntersectByNullSecondSequence() {
+        public void IntersectKeysNullSecondSequence() {
             string[] first = { "aaa" };
-            string[] second = null;
-            first.IntersectBy(second, x => x.Length);
+            int[] second = null;
+            first.IntersectKeys(second, x => x.Length);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IntersectByNullKeySelector() {
+        public void IntersectKeysNullKeySelector() {
             string[] first = { "aaa" };
-            string[] second = { "aaa" };
-            first.IntersectBy<string, string>(second, (Func<string, string>)null);
+            int[] second = { 3 };
+            first.IntersectKeys<string, int>(second, (Func<string, int>)null);
         }
 
         [Test]
-        public void IntersectByIsLazy() {
-            new BreakingSequence<string>().IntersectBy(new string[0], x => x.Length);
+        public void IntersectKeysIsLazy() {
+            new BreakingSequence<string>().IntersectKeys(new int[0], x => x.Length);
         }
 
         [Test]
-        public void IntersectByDoesNotRepeatSourceElementsWithDuplicateKeys() {
+        public void IntersectKeysDoesNotRepeatSourceElementsWithDuplicateKeys() {
             string[] first = { "aaa", "bb", "c", "a", "b", "c", "dddd" };
-            string[] second = { "c" };
-            var result = first.IntersectBy(second, x => x.Length);
+            int[] second = { 1 };
+            var result = first.IntersectKeys(second, x => x.Length);
             result.AssertSequenceEqual("c");
         }
 
         [Test]
-        public void IntersectByWithComparer() {
+        public void IntersectKeysWithComparer() {
             string[] first = { "first", "second", "third", "fourth" };
             string[] second = { "FIRST", "thiRD", "FIFTH" };
-            var result = first.IntersectBy(second, word => word, StringComparer.OrdinalIgnoreCase);
+            var result = first.IntersectKeys(second, word => word, StringComparer.OrdinalIgnoreCase);
             result.AssertSequenceEqual("first", "third");
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IntersectByNullFirstSequenceWithComparer() {
+        public void IntersectKeysNullFirstSequenceWithComparer() {
             string[] first = null;
-            string[] second = { "aaa" };
-            first.IntersectBy(second, x => x.Length, EqualityComparer<int>.Default);
+            int[] second = { 1 };
+            first.IntersectKeys(second, x => x.Length, EqualityComparer<int>.Default);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IntersectByNullSecondSequenceWithComparer() {
+        public void IntersectKeysNullSecondSequenceWithComparer() {
             string[] first = { "aaa" };
-            string[] second = null;
-            first.IntersectBy(second, x => x.Length, EqualityComparer<int>.Default);
+            int[] second = null;
+            first.IntersectKeys(second, x => x.Length, EqualityComparer<int>.Default);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IntersectByNullKeySelectorWithComparer() {
+        public void IntersectKeysNullKeySelectorWithComparer() {
             string[] first = { "aaa" };
-            string[] second = { "aaa" };
-            first.IntersectBy(second, null, EqualityComparer<string>.Default);
+            int[] second = { 1 };
+            first.IntersectKeys(second, null, EqualityComparer<int>.Default);
         }
 
         [Test]
-        public void IntersectByNullComparer() {
+        public void IntersectKeysNullComparer() {
             string[] first = { "aaa", "bb", "c", "dddd" };
-            string[] second = { "xx", "y" };
-            var result = first.IntersectBy(second, x => x.Length, null);
+            int[] second = { 1, 2 };
+            var result = first.IntersectKeys(second, x => x.Length, null);
             result.AssertSequenceEqual("bb", "c");
         }
 
         [Test]
-        public void IntersectByIsLazyWithComparer() {
-            new BreakingSequence<string>().IntersectBy(new string[0], x => x, StringComparer.Ordinal);
+        public void IntersectKeysIsLazyWithComparer() {
+            new BreakingSequence<string>().IntersectKeys(new string[0], x => x, StringComparer.Ordinal);
         }
     }
 }
