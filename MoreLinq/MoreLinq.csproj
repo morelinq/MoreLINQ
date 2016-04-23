@@ -83,6 +83,10 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="DeletegateEqualityComparer.cs" />
+    <Compile Include="MemoizedSequence.cs" />
+    <Compile Include="Memoize.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
