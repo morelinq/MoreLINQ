@@ -55,6 +55,7 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Counter.cs" />
     <Compile Include="Duplicates.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -78,7 +79,7 @@
     <Compile Include="IntersectBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="LambdaComparer.cs" />
+    <Compile Include="DeletegateEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

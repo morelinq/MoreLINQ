@@ -57,6 +57,7 @@
     <Compile Include="AssertTest.cs" />
     <Compile Include="AssertUtil.cs" />
     <Compile Include="AtLeastTest.cs" />
+    <Compile Include="CounterTest.cs" />
     <Compile Include="UniqueElementsTest.cs" />
     <Compile Include="DuplicateElementsTest.cs" />
     <Compile Include="UniqueKeysTest.cs" />
