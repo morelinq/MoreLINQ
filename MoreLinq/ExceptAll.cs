@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 // 
@@ -23,12 +23,37 @@ namespace MoreLinq {
     static partial class MoreEnumerable {
 
         /// <summary>
-        /// Returns the set of elements in the first sequence which aren't
+        /// Returns the sequence of elements in the first sequence which aren't
+        /// in the second sequence.
+        /// </summary>
+        /// <remarks>
+        /// This is a sequence operation; if multiple elements in <paramref name="first"/> are equal, 
+        /// all such elements are returned.
+        /// This operator uses deferred execution and streams the results, although
+        /// a set of elements from <paramref name="second"/> is immediately selected and retained.
+        /// </remarks>
+        /// <typeparam name="T">The type of the elements in the input sequences.</typeparam>
+        /// <param name="first">The sequence of potentially included elements.</param>
+        /// <param name="second">The sequence of elements which may prevent elements in
+        /// <paramref name="first"/> from being returned.</param>
+        /// <param name="comparer">The element comparer. If <c>null</c>, uses the default T equality comparer.</param>
+        /// <returns>A sequence of elements from <paramref name="first"/> that are not in <paramref name="second"/>.</returns>
+        public static IEnumerable<T> ExceptAll<T>(this IEnumerable<T> first,
+            IEnumerable<T> second,
+            IEqualityComparer<T> comparer) {
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+
+            return ExceptAllKeysImpl(first, second, x => x, comparer);
+        }
+        
+        /// <summary>
+        /// Returns the sequence of elements in the first sequence which aren't
         /// in the second sequence, according to a given key selector.
         /// </summary>
         /// <remarks>
-        /// This is a set operation; if multiple elements in <paramref name="first"/> have
-        /// equal keys, only the first such element is returned.
+        /// This is a sequence operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, all such elements are returned.
         /// This operator uses deferred execution and streams the results, although
         /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
@@ -40,23 +65,23 @@ namespace MoreLinq {
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+        public static IEnumerable<TSource> ExceptAllBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector) {
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
-
-            return ExceptKeysImpl(first, second.Select(keySelector), keySelector, null);
+             
+            return ExceptAllKeysImpl(first, second.Select(keySelector), keySelector, null);
         }
 
         /// <summary>
-        /// Returns the set of elements in the first sequence which aren't
+        /// Returns the sequence of elements in the first sequence which aren't
         /// in the second sequence, according to a given key selector.
         /// </summary>
         /// <remarks>
-        /// This is a set operation; if multiple elements in <paramref name="first"/> have
-        /// equal keys, only the first such element is returned.
+        /// This is a sequence operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, all such elements are returned.
         /// This operator uses deferred execution and streams the results, although
         /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
@@ -70,8 +95,7 @@ namespace MoreLinq {
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-
-        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+        public static IEnumerable<TSource> ExceptAllBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
@@ -79,11 +103,11 @@ namespace MoreLinq {
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return ExceptKeysImpl(first, second.Select(keySelector), keySelector, keyComparer);
+            return ExceptAllKeysImpl(first, second.Select(keySelector), keySelector, keyComparer);
         }
 
         /// <summary>
-        /// Returns the set of elements in the first sequence,
+        /// Returns the sequence of elements in the first sequence,
         /// whose keys are not in the second sequence, according to a given key selector.
         /// </summary>
         /// <typeparam name="TSource">The type of source and result elements.</typeparam>
@@ -93,16 +117,16 @@ namespace MoreLinq {
         /// <paramref name="first"/> from being returned.</param>
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <returns>
-        /// Distinct set of elements from first sequence,
+        /// Sequence of elements from first sequence,
         /// whose keys are not in second sequence.
         /// </returns>  
         /// <remarks>
-        /// This is a set operation; if multiple elements in <paramref name="first"/> have
-        /// equal keys, only the first such element is returned.
+        /// This is a sequence operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, all such elements are returned.
         /// This operator uses deferred execution and streams the results, although
         /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
-        public static IEnumerable<TSource> ExceptKeys<TSource, TKey>(this IEnumerable<TSource> first,
+        public static IEnumerable<TSource> ExceptAllKeys<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector) {
 
@@ -110,11 +134,11 @@ namespace MoreLinq {
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return ExceptKeysImpl(first, second, keySelector, null);
+            return ExceptAllKeysImpl(first, second, keySelector, null);
         }
 
         /// <summary>
-        /// Returns the set of elements from the first collection,
+        /// Returns the sequence of elements from the first collection,
         /// whose keys are not in the second collection, according to a given key selector.
         /// </summary>
         /// <typeparam name="TSource">The type of source and result elements.</typeparam>
@@ -125,16 +149,16 @@ namespace MoreLinq {
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <param name="keyComparer">The key comparer. If <c>null</c>, uses the default TKey equality comparer.</param>
         /// <returns>
-        /// Distinct set of elements from first sequence,
+        /// Sequence of elements from first sequence,
         /// whose keys are not in second sequence.
         /// </returns>
         /// <remarks>
-        /// This is a set operation; if multiple elements in <paramref name="first"/> have
-        /// equal keys, only the first such element is returned.
+        /// This is a sequence operation; if multiple elements in <paramref name="first"/> have
+        /// equal keys, all such elements are returned.
         /// This operator uses deferred execution and streams the results, although
         /// a set of keys from <paramref name="second"/> is immediately selected and retained.
         /// </remarks>
-        public static IEnumerable<TSource> ExceptKeys<TSource, TKey>(this IEnumerable<TSource> first,
+        public static IEnumerable<TSource> ExceptAllKeys<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
@@ -143,10 +167,10 @@ namespace MoreLinq {
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return ExceptKeysImpl(first, second, keySelector, keyComparer);
+            return ExceptAllKeysImpl(first, second, keySelector, keyComparer);
         }
 
-        private static IEnumerable<TSource> ExceptKeysImpl<TSource, TKey>(IEnumerable<TSource> first,
+        private static IEnumerable<TSource> ExceptAllKeysImpl<TSource, TKey>(IEnumerable<TSource> first,
             IEnumerable<TKey> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
@@ -154,10 +178,8 @@ namespace MoreLinq {
             var keys = new HashSet<TKey>(second, keyComparer);
             foreach (var element in first) {
                 var key = keySelector(element);
-                if (!keys.Contains(key)) {
+                if (!keys.Contains(key))
                     yield return element;
-                    keys.Add(key);
-                }                
             }
         }
     }

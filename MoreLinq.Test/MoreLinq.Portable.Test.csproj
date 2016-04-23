@@ -54,6 +54,9 @@
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
     <Compile Include="EqualityComparerFunc.cs" />
+    <Compile Include="ExceptAllByTest.cs" />
+    <Compile Include="ExceptAllKeysTest.cs" />
+    <Compile Include="ExceptKeysTest.cs" />
     <Compile Include="ExcludeTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />
     <Compile Include="FoldTest.cs" />
@@ -62,6 +65,7 @@
     <Compile Include="InfiniteSequence.cs" />
     <Compile Include="InterleaveTest.cs" />
     <Compile Include="IntersectByTest.cs" />
+    <Compile Include="IntersectKeysTest.cs" />
     <Compile Include="KeyValuePair.cs" />
     <Compile Include="LagTest.cs" />
     <Compile Include="LeadTest.cs" />

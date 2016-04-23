@@ -55,6 +55,12 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="IntersectAll.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptAll.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

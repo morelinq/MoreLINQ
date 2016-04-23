@@ -86,6 +86,9 @@
     <Compile Include="EquiZip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExceptAll.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -127,7 +130,12 @@
     <Compile Include="Interleave.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="IntersectBy.cs" />
+    <Compile Include="IntersectAll.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntersectBy.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lag.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
