@@ -20,7 +20,7 @@ namespace MoreLinq {
     using System.Collections.Generic;
     using System.Linq;
 
-    static partial class MoreEnumerable {
+    partial class MoreEnumerable {
 
         /// <summary>
         /// Returns the set of elements in the first sequence which aren't
