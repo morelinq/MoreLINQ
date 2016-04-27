@@ -170,13 +170,7 @@
     <Compile Include="Top.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrySelect.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Unique.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TryWhere.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Windowed.cs">
