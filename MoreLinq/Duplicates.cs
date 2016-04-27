@@ -44,7 +44,6 @@ namespace MoreLinq {
         /// <returns>Sequence of duplicate keys from source sequence.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
-        /// This is a set operation; each key is only returned once.
         /// </remarks>
         public static IEnumerable<TKey> DuplicateKeys<TSource, TKey>(this IEnumerable<TSource> sequence,
             Func<TSource, TKey> keySelector) {
@@ -64,7 +63,6 @@ namespace MoreLinq {
         /// <returns>Sequence of duplicate keys from source sequence.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
-        /// This is a set operation; each key is only returned once
         /// </remarks>
         public static IEnumerable<TKey> DuplicateKeys<TSource, TKey>(this IEnumerable<TSource> sequence,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> keyComparer) {
@@ -86,11 +84,6 @@ namespace MoreLinq {
         /// <summary>Get a sequence of elements that occur in this sequence more than once.</summary>
         /// <typeparam name="T">The type of this sequence.</typeparam>
         /// <param name="sequence">This sequence.</param>
-        /// <remarks>
-        /// This operator uses deferred execution and streams the results.
-        /// This is a sequence operation; if multiple elements in <paramref name="sequence"/> have
-        /// equal keys, all such elements are returned.
-        /// </remarks>
         /// <returns>Collection containing duplicate elements from this sequence.</returns>
         public static IEnumerable<T> DuplicateElements<T>(this IEnumerable<T> sequence) {
             if (sequence == null) throw new ArgumentNullException("sequence");
@@ -103,11 +96,6 @@ namespace MoreLinq {
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <param name="sequence">This sequence.</param>
         /// <param name="keySelector">The key selector.</param>
-        /// <remarks>
-        /// This operator uses deferred execution and streams the results.
-        /// This is a sequence operation; if multiple elements in <paramref name="sequence"/> have
-        /// equal keys, all such elements are returned.
-        /// </remarks>
         /// <returns>Collection containing duplicate elements from this sequence.</returns>
         public static IEnumerable<TSource> DuplicateElements<TSource, TKey>(this IEnumerable<TSource> sequence,
             Func<TSource, TKey> keySelector) {
@@ -127,8 +115,6 @@ namespace MoreLinq {
         /// <returns>Sequence of duplicate keys from source sequence.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
-        /// This is a sequence operation; if multiple elements in <paramref name="sequence"/> have
-        /// equal keys, all such elements are returned.
         /// </remarks>
         public static IEnumerable<TSource> DuplicateElements<TSource, TKey>(this IEnumerable<TSource> sequence,
             Func<TSource, TKey> keySelector,
@@ -143,8 +129,8 @@ namespace MoreLinq {
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
 
-            return sequence.ExceptAllKeys<TSource, TKey>(
-                sequence.UniqueKeys(keySelector, keyComparer),
+            return sequence.ExceptKeys<TSource, TKey>(
+                sequence.DuplicateKeys(keySelector, keyComparer),
                 keySelector,
                 keyComparer);
         }
