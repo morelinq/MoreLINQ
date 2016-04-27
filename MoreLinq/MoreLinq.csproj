@@ -55,9 +55,6 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Duplicates.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
     <Compile Include="IntersectAll.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -159,9 +156,6 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Top.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Unique.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Windowed.cs">
