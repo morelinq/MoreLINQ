@@ -56,9 +56,6 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Counter.cs" />
-    <Compile Include="CountValues.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
-    </Compile>
     <Compile Include="Duplicates.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
