@@ -57,11 +57,15 @@
     <Compile Include="AssertTest.cs" />
     <Compile Include="AssertUtil.cs" />
     <Compile Include="AtLeastTest.cs" />
+    <Compile Include="ExceptAllByTest.cs" />
+    <Compile Include="ExceptAllKeysTest.cs" />
     <Compile Include="ExceptKeysTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
+    <Compile Include="IntersectAllByTest.cs" />
+    <Compile Include="IntersectAllKeysTest.cs" />
     <Compile Include="IntersectKeysTest.cs" />
     <Compile Include="IntersectByTest.cs" />
     <Compile Include="KeyValuePair.cs" />
