@@ -64,6 +64,8 @@
     <Compile Include="IndexTest.cs" />
     <Compile Include="InfiniteSequence.cs" />
     <Compile Include="InterleaveTest.cs" />
+    <Compile Include="IntersectAllByTest.cs" />
+    <Compile Include="IntersectAllKeysTest.cs" />
     <Compile Include="IntersectByTest.cs">
       <SubType>Code</SubType>
     </Compile>

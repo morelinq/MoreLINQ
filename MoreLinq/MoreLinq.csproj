@@ -66,6 +66,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="IntersectAll.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="IntersectBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

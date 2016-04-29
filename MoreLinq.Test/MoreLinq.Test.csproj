@@ -62,6 +62,8 @@
     <Compile Include="ExceptKeysTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
+    <Compile Include="IntersectAllByTest.cs" />
+    <Compile Include="IntersectAllKeysTest.cs" />
     <Compile Include="IntersectByTest.cs" />
     <Compile Include="IntersectKeysTest.cs">
       <SubType>Code</SubType>
