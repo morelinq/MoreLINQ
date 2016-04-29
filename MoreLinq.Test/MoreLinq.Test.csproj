@@ -60,6 +60,10 @@
     <Compile Include="ExceptKeysTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
+    <Compile Include="IntersectByTest.cs" />
+    <Compile Include="IntersectKeysTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="KeyValuePair.cs" />
     <Compile Include="NullArgumentTest.cs" />
     <Compile Include="FallbackIfEmptyTest.cs" />

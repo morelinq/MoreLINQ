@@ -62,6 +62,12 @@
     <Compile Include="IndexTest.cs" />
     <Compile Include="InfiniteSequence.cs" />
     <Compile Include="InterleaveTest.cs" />
+    <Compile Include="IntersectByTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntersectKeysTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="KeyValuePair.cs" />
     <Compile Include="LagTest.cs" />
     <Compile Include="LeadTest.cs" />
