@@ -57,6 +57,8 @@
     <Compile Include="AssertTest.cs" />
     <Compile Include="AssertUtil.cs" />
     <Compile Include="AtLeastTest.cs" />
+    <Compile Include="ExceptAllByTest.cs" />
+    <Compile Include="ExceptAllKeysTest.cs" />
     <Compile Include="ExceptKeysTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
