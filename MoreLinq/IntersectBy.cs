@@ -158,13 +158,7 @@ namespace MoreLinq {
             IEqualityComparer<TKey> keyComparer) {
 
             var keys = new HashSet<TKey>(second, keyComparer);
-            foreach (var element in first) {
-                var k = keySelector(element);
-                if (keys.Contains(k)) {
-                    yield return element;
-                    keys.Remove(k);
-                }
-            }
+            return first.Where(x => keys.Remove(keySelector(x)));
         }
     }
 }
