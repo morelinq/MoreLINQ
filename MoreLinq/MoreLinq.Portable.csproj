@@ -87,10 +87,19 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="ExceptAll.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+      <DependentUpon>SetFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptAllBy.cs">
+      <DependentUpon>SetFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptAllKeys.cs">
+      <DependentUpon>SetFilter.cs</DependentUpon>
     </Compile>
     <Compile Include="ExceptBy.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+      <DependentUpon>SetFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptKeys.cs">
+      <DependentUpon>SetFilter.cs</DependentUpon>
     </Compile>
     <Compile Include="Exclude.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -131,10 +140,19 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="IntersectAll.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+      <DependentUpon>SetFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntersectAllBy.cs">
+      <DependentUpon>SetFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntersectAllKeys.cs">
+      <DependentUpon>SetFilter.cs</DependentUpon>
     </Compile>
     <Compile Include="IntersectBy.cs">
-      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+      <DependentUpon>SetFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntersectKeys.cs">
+      <DependentUpon>SetFilter.cs</DependentUpon>
     </Compile>
     <Compile Include="Lag.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -207,6 +225,9 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="SequenceException.cs" />
+    <Compile Include="SetFilter.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="SingleOrFallback.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
