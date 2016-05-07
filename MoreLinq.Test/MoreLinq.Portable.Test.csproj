@@ -65,6 +65,7 @@
     <Compile Include="LagTest.cs" />
     <Compile Include="LeadTest.cs" />
     <Compile Include="NestedLoopTest.cs" />
+    <Compile Include="StartsWithTest.cs" />
     <Compile Include="TopByTest.cs" />
     <Compile Include="TopTest.cs" />
     <Compile Include="OrderByTest.cs" />

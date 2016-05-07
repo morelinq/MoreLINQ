@@ -213,6 +213,9 @@
     <Compile Include="Split.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="StartsWith.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Subsets.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
