@@ -51,6 +51,11 @@ namespace MoreLinq
                 ? SliceImpl(asList, startIndex, count)
                 : SliceImpl(sequence, startIndex, count);
         }
+        
+        public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex)
+        {
+            return sequence.Slice(startIndex, sequence.Count - startIndex);
+        }
 
         private static IEnumerable<T> SliceImpl<T>(IEnumerable<T> sequence, int startIndex, int count)
         {
