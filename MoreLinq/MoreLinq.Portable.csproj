@@ -83,6 +83,9 @@
     <Compile Include="DistinctBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="EndsWith.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="EquiZip.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>

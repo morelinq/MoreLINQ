@@ -55,6 +55,9 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="EndsWith.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="FallbackIfEmpty.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
