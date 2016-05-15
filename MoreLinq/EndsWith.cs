@@ -71,7 +71,7 @@ namespace MoreLinq
 
             comparer = comparer ?? EqualityComparer<T>.Default;
 
-            ICollection<T> secondCollection = second as ICollection<T> ?? second.ToList();
+            var secondCollection = second as ICollection<T> ?? second.ToList();
             using (var firstIter = first.TakeLast(secondCollection.Count).GetEnumerator())
             {
                 return secondCollection.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
