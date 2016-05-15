@@ -41,7 +41,7 @@ namespace MoreLinq
         /// </remarks>
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
-            return EndsWith(first, second, EqualityComparer<T>.Default);
+            return EndsWith(first, second, null);
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace MoreLinq
         /// </remarks>
         public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
-            return StartsWith(first, second, EqualityComparer<T>.Default);
+            return StartsWith(first, second, null);
         }
 
         /// <summary>
