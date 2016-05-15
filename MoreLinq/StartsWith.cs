@@ -24,17 +24,22 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        ///     Determines whether the beginning of <paramref name="first" /> matches <paramref name="second" />.
+        /// Determines whether the beginning of <paramref name="first" />
+        /// matches <paramref name="second" />.
         /// </summary>
         /// <typeparam name="T">Type of elements.</typeparam>
         /// <param name="first">The sequence to check.</param>
         /// <param name="second">The sequence to compare to.</param>
         /// <returns>
-        ///     <c>true</c> if <paramref name="first" /> begins with elements equivalent to <paramref name="second" />.
+        /// <c>true</c> if <paramref name="first" /> begins with elements
+        /// equivalent to <paramref name="second" />.
         /// </returns>
         /// <remarks>
-        ///     This is the <see cref="IEnumerable{T}" /> equivalent of <see cref="string.StartsWith(string)" /> and
-        ///     it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> using <see cref="EqualityComparer{T}.Default"/> on pairs of elements at the same index.
+        /// This is the <see cref="IEnumerable{T}" /> equivalent of 
+        /// <see cref="string.StartsWith(string)" /> and it calls
+        /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using 
+        /// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
+        /// the same index.
         /// </remarks>
         public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
@@ -42,18 +47,22 @@ namespace MoreLinq
         }
 
         /// <summary>
-        ///     Determines whether the beginning of <paramref name="first" /> matches <paramref name="second" />.
+        /// Determines whether the beginning of <paramref name="first" />
+        /// matches <paramref name="second" />.
         /// </summary>
         /// <typeparam name="T">Type of elements.</typeparam>
         /// <param name="first">The sequence to check.</param>
         /// <param name="second">The sequence to compare to.</param>
         /// <param name="comparer">Equality comparer to use.</param>
         /// <returns>
-        ///     <c>true</c> if <paramref name="first" /> begins with elements equivalent to <paramref name="second" />.
+        /// <c>true</c> if <paramref name="first" /> begins with elements
+        /// equivalent to <paramref name="second" />.
         /// </returns>
         /// <remarks>
-        ///     This is the <see cref="IEnumerable{T}" /> equivalent of <see cref="string.StartsWith(string)" /> and
-        ///     it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs of elements at the same index.
+        /// This is the <see cref="IEnumerable{T}" /> equivalent of 
+        /// <see cref="string.StartsWith(string)" /> and
+        /// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
+        /// of elements at the same index.
         /// </remarks>
         public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
         {
