@@ -24,8 +24,9 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Determines whether the beginning of <paramref name="first" />
-        /// matches <paramref name="second" />.
+        /// Determines whether the beginning of the first sequence is
+        /// equivalent to the second sequence, using the default equality
+        /// comparer.
         /// </summary>
         /// <typeparam name="T">Type of elements.</typeparam>
         /// <param name="first">The sequence to check.</param>
@@ -47,8 +48,9 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Determines whether the beginning of <paramref name="first" />
-        /// matches <paramref name="second" />.
+        /// Determines whether the beginning of the first sequence is
+        /// equivalent to the second sequence, using the specified element
+        /// equality comparer.
         /// </summary>
         /// <typeparam name="T">Type of elements.</typeparam>
         /// <param name="first">The sequence to check.</param>
