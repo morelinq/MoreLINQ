@@ -68,7 +68,8 @@ namespace MoreLinq
         {
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
-            if (comparer == null) comparer = EqualityComparer<T>.Default;
+
+            comparer = comparer ?? EqualityComparer<T>.Default;
 
             ICollection<T> secondCollection = second as ICollection<T> ?? second.ToList();
             using (var firstIter = first.TakeLast(secondCollection.Count).GetEnumerator())
