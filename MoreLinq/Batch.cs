@@ -130,35 +130,28 @@ namespace MoreLinq
             Debug.Assert(firstMatchPredicate != null);
             Debug.Assert(lastMatchPredicate != null);
 
-            var currentBatch = new List<TSource>();
-            using (var iter = source.GetEnumerator())
+            var currentBatch = new List<TSource>();            
+            foreach (var item in source)
             {
-                while (iter.MoveNext())
+                var firstMatched = firstMatchPredicate(item);
+                if (firstMatched)
                 {
-                    var item = iter.Current;
-                    var itemConsidered = false;
-
-                    var firstMatched = firstMatchPredicate(item);
-                    if (firstMatched)
-                    {
-                        currentBatch.Clear();
-                        currentBatch.Add(item);
-                        itemConsidered = true;
-                    }
-
-                    var lastMatched = !itemConsidered && lastMatchPredicate(item);
-                    if (lastMatched)
-                    {
-                        currentBatch.Add(item);
-                        yield return currentBatch;
-
-                        itemConsidered = true;
-                        currentBatch = new List<TSource>();
-                    }
-
-                    if (!itemConsidered)
-                        currentBatch.Add(item);
+                    currentBatch.Clear();
+                    currentBatch.Add(item);
+                    continue;
                 }
+
+                var lastMatched = lastMatchPredicate(item);
+                if (lastMatched)
+                {
+                    currentBatch.Add(item);
+                    yield return currentBatch;
+
+                    currentBatch = new List<TSource>();
+                    continue;
+                }
+
+                currentBatch.Add(item);
             }
         }
     }
