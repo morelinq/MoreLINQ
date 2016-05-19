@@ -103,5 +103,61 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<object>().Batch(1);
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BatchNullSequenceBasedOnPredicates()
+        {
+            Func<int, bool> firstMatch = i => i == 1;
+            Func<int, bool> lastMatch = i => i == 3;
+            MoreEnumerable.Batch(null, firstMatch, lastMatch).Consume();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BatchSequenceBasedOnNullFirstMatchPredicate()
+        {
+            var source = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
+            Func<int, bool> lastMatch = i => i == 3;
+            source.Batch(null, lastMatch).Consume();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void BatchSequenceBasedOnNullLastMatchPredicate()
+        {
+            var source = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
+            Func<int, bool> firstMatch = i => i == 1;
+            source.Batch(firstMatch, null).Consume();
+        }
+
+        [Test]
+        public void BatchSequenceBasedOnPredicateSimple()
+        {
+            Func<int, bool> firstMatch = i => i == 1;
+            Func<int, bool> lastMatch = i => i == 3;
+            var result = new[] { 1, 2, 3, 1, 2, 3, 1, 2, 3 }.Batch(firstMatch, lastMatch);
+            using (var reader = result.Read())
+            {
+                reader.Read().AssertSequenceEqual(1, 2, 3);
+                reader.Read().AssertSequenceEqual(1, 2, 3);
+                reader.Read().AssertSequenceEqual(1, 2, 3);
+                reader.ReadEnd();
+            }
+        }
+
+        [Test]
+        public void BatchSequenceBasedOnPredicateSkipUnmatched()
+        {
+            Func<int, bool> firstMatch = i => i == 1;
+            Func<int, bool> lastMatch = i => i == 3;
+            var result = new[] { 1, 2, 1, 2, 3, 1, 2, 3 }.Batch(firstMatch, lastMatch);
+            using (var reader = result.Read())
+            {
+                reader.Read().AssertSequenceEqual(1, 2, 3);
+                reader.Read().AssertSequenceEqual(1, 2, 3);
+                reader.ReadEnd();
+            }
+        }
     }
 }

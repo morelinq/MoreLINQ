@@ -64,6 +64,21 @@ namespace MoreLinq
             return BatchImpl(source, size, resultSelector);
         }
 
+        /// <summary>
+        /// Batches the sequence based on the first and last match predicates.
+        /// </summary>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="firstMatchPredicate">Predicate to identify the first element of the result sequence</param>
+        /// <param name="lastMatchPredicate">Predicate to identify the last element of the result sequence</param>
+        /// <returns>A sequence where the first element satisfies the firstMatchPredicate and the last element matches the lastMatchPredicate. Elements in between should not satisfy the predicates.</returns>
+        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source,
+                                                                       Func<TSource, bool> firstMatchPredicate,
+                                                                       Func<TSource, bool> lastMatchPredicate)
+        {
+            throw new NotImplementedException();
+        }
+
         private static IEnumerable<TResult> BatchImpl<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
