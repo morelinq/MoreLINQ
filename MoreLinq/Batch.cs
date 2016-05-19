@@ -76,7 +76,11 @@ namespace MoreLinq
                                                                        Func<TSource, bool> firstMatchPredicate,
                                                                        Func<TSource, bool> lastMatchPredicate)
         {
-            throw new NotImplementedException();
+            if (source == null) throw new ArgumentNullException("source");
+            if (firstMatchPredicate == null) throw new ArgumentNullException("firstMatchPredicate");
+            if (lastMatchPredicate == null) throw new ArgumentNullException("lastMatchPredicate");
+
+            return BatchByPredicatesImpl(source, firstMatchPredicate, lastMatchPredicate);
         }
 
         private static IEnumerable<TResult> BatchImpl<TSource, TResult>(this IEnumerable<TSource> source, int size,
@@ -115,6 +119,46 @@ namespace MoreLinq
             if (bucket != null && count > 0)
             {
                 yield return resultSelector(bucket.Take(count));
+            }
+        }
+
+        private static IEnumerable<IEnumerable<TSource>> BatchByPredicatesImpl<TSource>(this IEnumerable<TSource> source,
+                                                                       Func<TSource, bool> firstMatchPredicate,
+                                                                       Func<TSource, bool> lastMatchPredicate)
+        {
+            Debug.Assert(source != null);
+            Debug.Assert(firstMatchPredicate != null);
+            Debug.Assert(lastMatchPredicate != null);
+
+            var currentBatch = new List<TSource>();
+            using (var iter = source.GetEnumerator())
+            {
+                while (iter.MoveNext())
+                {
+                    var item = iter.Current;
+                    var itemConsidered = false;
+
+                    var firstMatched = firstMatchPredicate(item);
+                    if (firstMatched)
+                    {
+                        currentBatch.Clear();
+                        currentBatch.Add(item);
+                        itemConsidered = true;
+                    }
+
+                    var lastMatched = !itemConsidered && lastMatchPredicate(item);
+                    if (lastMatched)
+                    {
+                        currentBatch.Add(item);
+                        yield return currentBatch;
+
+                        itemConsidered = true;
+                        currentBatch = new List<TSource>();
+                    }
+
+                    if (!itemConsidered)
+                        currentBatch.Add(item);
+                }
             }
         }
     }
