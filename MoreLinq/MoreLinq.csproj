@@ -66,6 +66,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="IntersectBy.cs">
+      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,7 +212,8 @@
     <Compile Include="GroupAdjacent.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="MoreEnumerable.cs" />
+    <Compile Include="MoreEnumerable.cs">
+    </Compile>
     <Compile Include="TakeEvery.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -282,6 +286,7 @@
       <LastGenOutput>AssemblyInfo.g.cs</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
