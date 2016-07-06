@@ -15,16 +15,11 @@
 // limitations under the License.
 #endregion
 
-
-#if NO_HASHSET
-using System.Linq;
-#endif
-
 namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -80,13 +75,7 @@ namespace MoreLinq
         {
 #if !NO_HASHSET
             var knownKeys = new HashSet<TKey>(comparer);
-            foreach (var element in source)
-            {
-                if (knownKeys.Add(keySelector(element)))
-                {
-                    yield return element;
-                }
-            }
+            return source.Where(e => knownKeys.Add(keySelector(e)));
 #else
             //
             // On platforms where LINQ is available but no HashSet<T>
