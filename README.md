@@ -8,6 +8,9 @@ keeps to the spirit of LINQ.
 MoreLINQ is available for download and installation as
 [NuGet packages](https://www.nuget.org/packages/morelinq/).
 
+Documentation for the stable and beta releases can be found at [morelinq.github.io](http://morelinq.github.io/).
+
+
 ## Overview of Operators
 
 Operator             | Summary
