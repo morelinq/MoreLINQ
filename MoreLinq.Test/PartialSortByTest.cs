@@ -46,6 +46,25 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void PartialSortWithOrder()
+        {
+            var ns = MoreEnumerable.RandomDouble().Take(10).ToArray();
+
+            const int count = 5;
+            var top = ns.Select((n, i) => KeyValuePair.Create(i, n))
+                        .Reverse()
+                        .PartialSortBy(count, e => e.Key, OrderByDirection.Ascending);
+
+            top.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
+
+            top = ns.Select((n, i) => KeyValuePair.Create(i, n))
+                        .Reverse()
+                        .PartialSortBy(count, e => e.Key, OrderByDirection.Descending);
+
+            top.Select(e => e.Value).AssertSequenceEqual(ns.Reverse().Take(count));
+        }
+
+        [Test]
         public void PartialSortWithComparer()
         {
             var alphabet = Enumerable.Range(0, 26)

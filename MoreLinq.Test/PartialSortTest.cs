@@ -44,6 +44,22 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void PartialSortWithOrder()
+        {
+            var top = Enumerable.Range(1, 10)
+                                .Reverse()
+                                .Concat(0)
+                                .PartialSort(5, OrderByDirection.Ascending);
+
+            top.AssertSequenceEqual(Enumerable.Range(0, 5));
+            top = Enumerable.Range(1, 10)
+                                .Reverse()
+                                .Concat(0)
+                                .PartialSort(5, OrderByDirection.Descending);
+            top.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
+        }
+
+        [Test]
         public void PartialSortWithDuplicates()
         {
             var top = Enumerable.Range(1, 10)

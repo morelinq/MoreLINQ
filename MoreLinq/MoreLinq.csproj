@@ -66,6 +66,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="ReverseComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
