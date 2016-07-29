@@ -38,9 +38,9 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams it results.
         /// </remarks>
 
-        public static IEnumerable<T> Top<T>(this IEnumerable<T> source, int count)
+        public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source, int count)
         {
-            return source.Top(count, null);
+            return source.PartialSort(count, null);
         }
 
         /// <summary>
@@ -59,11 +59,11 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams it results.
         /// </remarks>
 
-        public static IEnumerable<T> Top<T>(this IEnumerable<T> source,
+        public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, IComparer<T> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
-            return TopByImpl<T, T>(source, count, null, null, comparer);
+            return PartialSortByImpl<T, T>(source, count, null, null, comparer);
         }
 
         /// <summary>
@@ -81,11 +81,11 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams it results.
         /// </remarks>
 
-        public static IEnumerable<TSource> TopBy<TSource, TKey>(
+        public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector)
         {
-            return source.TopBy(count, keySelector, null);
+            return source.PartialSortBy(count, keySelector, null);
         }
 
         /// <summary>
@@ -105,17 +105,17 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams it results.
         /// </remarks>
 
-        public static IEnumerable<TSource> TopBy<TSource, TKey>(
+        public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
-            return TopByImpl(source, count, keySelector, comparer, null);
+            return PartialSortByImpl(source, count, keySelector, comparer, null);
         }
 
-        static IEnumerable<TSource> TopByImpl<TSource, TKey>(
+        static IEnumerable<TSource> PartialSortByImpl<TSource, TKey>(
             IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector,
             IComparer<TKey> keyComparer, IComparer<TSource> comparer)

@@ -23,45 +23,45 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class TopByTests
+    public class PartialSortByTests
     {
         [Test]
-        public void TopByWithNullSequence()
+        public void PartialSortByWithNullSequence()
         {
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.TopBy<object, object>(null, 0, e => e)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.TopBy<object, object>(null, 0, e => e, Comparer<object>.Default)).ParamName);
+            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e)).ParamName);
+            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e, Comparer<object>.Default)).ParamName);
         }
 
         [Test]
-        public void TopBy()
+        public void PartialSortBy()
         {
             var ns = MoreEnumerable.RandomDouble().Take(10).ToArray();
 
             const int count = 5;
             var top = ns.Select((n, i) => KeyValuePair.Create(i, n))
                         .Reverse()
-                        .TopBy(count, e => e.Key);
+                        .PartialSortBy(count, e => e.Key);
 
             top.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
         }
 
         [Test]
-        public void TopWithComparer()
+        public void PartialSortWithComparer()
         {
             var alphabet = Enumerable.Range(0, 26)
                                      .Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
                                      .ToArray();
 
             var ns = alphabet.Zip(MoreEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
-            var top = ns.TopBy(5, e => e.Key, StringComparer.Ordinal);
+            var top = ns.PartialSortBy(5, e => e.Key, StringComparer.Ordinal);
 
             top.Select(e => e.Key[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
         }
 
         [Test]
-        public void TopByIsLazy()
+        public void PartialSortByIsLazy()
         {
-            new BreakingSequence<object>().TopBy(1, o => o);
+            new BreakingSequence<object>().PartialSortBy(1, o => o);
         }
     }
 }

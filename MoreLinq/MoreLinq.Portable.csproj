@@ -245,7 +245,7 @@
     <Compile Include="ToHashSet.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Top.cs">
+    <Compile Include="PartialSort.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Windowed.cs">

@@ -23,53 +23,53 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class TopTests
+    public class PartialSortTests
     {
         [Test]
-        public void TopWithNullSequence()
+        public void PartialSortWithNullSequence()
         {
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.Top<object>(null, 0)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.Top(null, 0, Comparer<object>.Default)).ParamName);
+            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSort<object>(null, 0)).ParamName);
+            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSort(null, 0, Comparer<object>.Default)).ParamName);
         }
 
         [Test]
-        public void Top()
+        public void PartialSort()
         {
             var top = Enumerable.Range(1, 10)
                                 .Reverse()
                                 .Concat(0)
-                                .Top(5);
+                                .PartialSort(5);
 
             top.AssertSequenceEqual(Enumerable.Range(0, 5));
         }
 
         [Test]
-        public void TopWithDuplicates()
+        public void PartialSortWithDuplicates()
         {
             var top = Enumerable.Range(1, 10)
                                 .Reverse()
                                 .Concat(Enumerable.Repeat(3, 3))
-                                .Top(5);
+                                .PartialSort(5);
 
             top.AssertSequenceEqual(1, 2, 3, 3, 3);
         }
 
         [Test]
-        public void TopWithComparer()
+        public void PartialSortWithComparer()
         {
             var alphabet = Enumerable.Range(0, 26)
                                      .Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
                                      .ToArray();
 
-            var top = alphabet.Top(5, StringComparer.Ordinal);
+            var top = alphabet.PartialSort(5, StringComparer.Ordinal);
 
             top.Select(s => s[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
         }
 
         [Test]
-        public void TopIsLazy()
+        public void PartialSortIsLazy()
         {
-            new BreakingSequence<object>().Top(1);
+            new BreakingSequence<object>().PartialSort(1);
         }
     }
 }
