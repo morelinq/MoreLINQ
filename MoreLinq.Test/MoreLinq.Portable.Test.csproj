@@ -50,6 +50,7 @@
     <Compile Include="AssertTest.cs" />
     <Compile Include="AssertUtil.cs" />
     <Compile Include="AtLeastTest.cs" />
+    <Compile Include="AtMostTest.cs" />
     <Compile Include="CartesianTest.cs" />
     <Compile Include="Combinatorics.cs" />
     <Compile Include="ComparerFunc.cs" />
