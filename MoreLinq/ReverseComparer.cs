@@ -30,7 +30,8 @@ namespace MoreLinq
 
         public int Compare(T x, T y)
         {
-            return -_underlying.Compare(x, y);
+            var result = _underlying.Compare(x, y);
+            return result < 0 ? 1 : result > 0 ? -1 : 0;
         }
     }
 }
