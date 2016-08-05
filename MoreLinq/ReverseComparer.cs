@@ -19,12 +19,6 @@ namespace MoreLinq
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// A <see cref="IComparer{T}"/> that compares in reverse order than the
-    /// specified <see cref="IComparer{T}"/>
-    /// </summary>
-    /// <typeparam name="T">The type of the objects to be compared</typeparam>
-
     sealed class ReverseComparer<T> : IComparer<T>
     {
         readonly IComparer<T> _underlying;
