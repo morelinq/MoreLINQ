@@ -38,11 +38,11 @@ namespace MoreLinq.Test
             var ns = MoreEnumerable.RandomDouble().Take(10).ToArray();
 
             const int count = 5;
-            var top = ns.Select((n, i) => KeyValuePair.Create(i, n))
-                        .Reverse()
-                        .PartialSortBy(count, e => e.Key);
+            var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
+                           .Reverse()
+                           .PartialSortBy(count, e => e.Key);
 
-            top.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
+            sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
         }
 
         [Test]
@@ -51,17 +51,17 @@ namespace MoreLinq.Test
             var ns = MoreEnumerable.RandomDouble().Take(10).ToArray();
 
             const int count = 5;
-            var top = ns.Select((n, i) => KeyValuePair.Create(i, n))
-                        .Reverse()
-                        .PartialSortBy(count, e => e.Key, OrderByDirection.Ascending);
+            var sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
+                            .Reverse()
+                            .PartialSortBy(count, e => e.Key, OrderByDirection.Ascending);
 
-            top.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
+            sorted.Select(e => e.Value).AssertSequenceEqual(ns.Take(count));
 
-            top = ns.Select((n, i) => KeyValuePair.Create(i, n))
+            sorted = ns.Select((n, i) => KeyValuePair.Create(i, n))
                         .Reverse()
                         .PartialSortBy(count, e => e.Key, OrderByDirection.Descending);
 
-            top.Select(e => e.Value).AssertSequenceEqual(ns.Reverse().Take(count));
+            sorted.Select(e => e.Value).AssertSequenceEqual(ns.Reverse().Take(count));
         }
 
         [Test]
@@ -72,9 +72,9 @@ namespace MoreLinq.Test
                                      .ToArray();
 
             var ns = alphabet.Zip(MoreEnumerable.RandomDouble(), KeyValuePair.Create).ToArray();
-            var top = ns.PartialSortBy(5, e => e.Key, StringComparer.Ordinal);
+            var sorted = ns.PartialSortBy(5, e => e.Key, StringComparer.Ordinal);
 
-            top.Select(e => e.Key[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
+            sorted.Select(e => e.Key[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
         }
 
         [Test]

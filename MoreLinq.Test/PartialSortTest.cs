@@ -35,39 +35,39 @@ namespace MoreLinq.Test
         [Test]
         public void PartialSort()
         {
-            var top = Enumerable.Range(1, 10)
-                                .Reverse()
-                                .Concat(0)
-                                .PartialSort(5);
+            var sorted = Enumerable.Range(1, 10)
+                                   .Reverse()
+                                   .Concat(0)
+                                   .PartialSort(5);
 
-            top.AssertSequenceEqual(Enumerable.Range(0, 5));
+            sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
         }
 
         [Test]
         public void PartialSortWithOrder()
         {
-            var top = Enumerable.Range(1, 10)
-                                .Reverse()
-                                .Concat(0)
-                                .PartialSort(5, OrderByDirection.Ascending);
+            var sorted = Enumerable.Range(1, 10)
+                                    .Reverse()
+                                    .Concat(0)
+                                    .PartialSort(5, OrderByDirection.Ascending);
 
-            top.AssertSequenceEqual(Enumerable.Range(0, 5));
-            top = Enumerable.Range(1, 10)
+            sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
+            sorted = Enumerable.Range(1, 10)
                                 .Reverse()
                                 .Concat(0)
                                 .PartialSort(5, OrderByDirection.Descending);
-            top.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
+            sorted.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
         }
 
         [Test]
         public void PartialSortWithDuplicates()
         {
-            var top = Enumerable.Range(1, 10)
-                                .Reverse()
-                                .Concat(Enumerable.Repeat(3, 3))
-                                .PartialSort(5);
+            var sorted = Enumerable.Range(1, 10)
+                                   .Reverse()
+                                   .Concat(Enumerable.Repeat(3, 3))
+                                   .PartialSort(5);
 
-            top.AssertSequenceEqual(1, 2, 3, 3, 3);
+            sorted.AssertSequenceEqual(1, 2, 3, 3, 3);
         }
 
         [Test]
@@ -77,9 +77,9 @@ namespace MoreLinq.Test
                                      .Select((n, i) => ((char)((i % 2 == 0 ? 'A' : 'a') + n)).ToString())
                                      .ToArray();
 
-            var top = alphabet.PartialSort(5, StringComparer.Ordinal);
+            var sorted = alphabet.PartialSort(5, StringComparer.Ordinal);
 
-            top.Select(s => s[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
+            sorted.Select(s => s[0]).AssertSequenceEqual('A', 'C', 'E', 'G', 'I');
         }
 
         [Test]
