@@ -137,6 +137,7 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Lookup.cs" />
+    <Compile Include="ReverseComparer.cs" />
     <Compile Include="MaxBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
@@ -245,7 +246,7 @@
     <Compile Include="ToHashSet.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Top.cs">
+    <Compile Include="PartialSort.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Windowed.cs">

@@ -74,8 +74,8 @@ Operator             | Summary
 `ToDataTable`        | Appends elements in the sequence as rows of a given object with a set of lambda expressions specifying which members (property or field) of each element in the sequence will supply the column values. This method has 4 overloads.
 `ToDelimitedString`  | Creates a delimited string from a sequence of values. The delimiter used depends on the current culture of the executing thread. This method has 30 overloads.
 `ToHashSet`          | Returns a of the source items using the default equality comparer for the type. This method has 2 overloads.
-`Top`                | Combines `OrderBy` (where element is key) and `Take` in a single operation.
-`TopBy`              | Combines `OrderBy` and `Take` in a single operation.
+`PartialSort`        | Combines `OrderBy` (where element is key) and `Take` in a single operation.
+`PartialSortBy`      | Combines `OrderBy` and `Take` in a single operation.
 `Trace`              | Traces the elements of a source sequence for diagnostics. This method has 3 overloads.
 `Windowed`           | Processes a sequence into a series of subsequences representing a windowed subset of the original
 `ZipLongest`         | Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences

@@ -67,8 +67,8 @@
     <Compile Include="LeadTest.cs" />
     <Compile Include="NestedLoopTest.cs" />
     <Compile Include="StartsWithTest.cs" />
-    <Compile Include="TopByTest.cs" />
-    <Compile Include="TopTest.cs" />
+    <Compile Include="PartialSortByTest.cs" />
+    <Compile Include="PartialSortTest.cs" />
     <Compile Include="OrderByTest.cs" />
     <Compile Include="PartitionTest.cs" />
     <Compile Include="PermutationsTest.cs" />
