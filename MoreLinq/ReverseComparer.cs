@@ -17,18 +17,16 @@
 
 namespace MoreLinq
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-    
+
     /// <summary>
     /// A <see cref="IComparer{T}"/> that compares in reverse order than the specified <see cref="IComparer{T}"/>
     /// </summary>
     /// <typeparam name="T">The type of the objects to be compared</typeparam>
-    internal class ReverseComparer<T> : IComparer<T>
+
+    class ReverseComparer<T> : IComparer<T>
     {
-        private readonly IComparer<T> _underlying;
+        readonly IComparer<T> _underlying;
 
         public ReverseComparer(IComparer<T> underlying)
         {
