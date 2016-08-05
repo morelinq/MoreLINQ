@@ -82,5 +82,33 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<object>().PartialSortBy(1, o => o);
         }
+
+        [Test, Ignore("TODO")]
+        public void PartialSortByIsStable()
+        {
+            // Force creation of same strings to avoid reference equality at
+            // start via interned literals.
+
+            var foobar = "foobar".ToCharArray();
+            var foobars = Enumerable.Repeat(foobar, 10)
+                                    .Select(chars => new string(chars))
+                                    .ToArray();
+
+            var sorted = foobars.PartialSort(5);
+
+            // Pair expected and actuals by index and then check
+            // reference equality, finding the first mismatch.
+
+            var mismatchIndex =
+                foobars.Index()
+                       .Zip(sorted, (expected, actual) => new
+                       {
+                           Index = expected.Key,
+                           Pass = ReferenceEquals(expected.Value, actual)
+                       })
+                       .FirstOrDefault(e => !e.Pass)?.Index;
+
+            Assert.That(mismatchIndex, Is.Null, "Mismatch index");
+        }
     }
 }
