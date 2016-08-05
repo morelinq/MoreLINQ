@@ -24,7 +24,7 @@ namespace MoreLinq
     /// </summary>
     /// <typeparam name="T">The type of the objects to be compared</typeparam>
 
-    class ReverseComparer<T> : IComparer<T>
+    sealed class ReverseComparer<T> : IComparer<T>
     {
         readonly IComparer<T> _underlying;
 
