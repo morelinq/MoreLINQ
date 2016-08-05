@@ -20,7 +20,8 @@ namespace MoreLinq
     using System.Collections.Generic;
 
     /// <summary>
-    /// A <see cref="IComparer{T}"/> that compares in reverse order than the specified <see cref="IComparer{T}"/>
+    /// A <see cref="IComparer{T}"/> that compares in reverse order than the
+    /// specified <see cref="IComparer{T}"/>
     /// </summary>
     /// <typeparam name="T">The type of the objects to be compared</typeparam>
 
@@ -30,22 +31,12 @@ namespace MoreLinq
 
         public ReverseComparer(IComparer<T> underlying)
         {
-            if (underlying == null) underlying = Comparer<T>.Default;
-            _underlying = underlying;
+            _underlying = underlying ?? Comparer<T>.Default;
         }
 
         public int Compare(T x, T y)
         {
-            int res = _underlying.Compare(x, y);
-            if (res > 0) {
-                return -1;
-            }
-            else if (res < 0) {
-                return 1;
-            }
-            else {
-                return 0;
-            }
+            return -_underlying.Compare(x, y);
         }
     }
 }
