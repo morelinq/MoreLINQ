@@ -26,15 +26,14 @@ namespace MoreLinq
         /// <summary>
         /// Returns true when the number of elements in the given sequence is smaller than
         /// or equal to the given integer.
-        /// This method throws an exception if the given integer is negative.
         /// </summary>
         /// <remarks>
-        /// The number of items streamed will be less than or equal to the given integer
-        /// plus one.
+        /// The number of items pulled from the sequence will be less than or equal to 
+        /// the given integer plus one.
         /// </remarks>
         /// <typeparam name="TSource">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="count">The maximum number of items a sequence must have for this
+        /// <param name="count">The maximum number of items the sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException">source is null</exception>
         /// <exception cref="ArgumentOutOfRangeException">count is negative</exception>
@@ -42,8 +41,8 @@ namespace MoreLinq
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code>
-        /// var numbers = { 123, 456, 789 };
-        /// var result = numbers.AtMost(4);
+        /// int[] numbers = { 123, 456, 789 };
+        /// bool result = numbers.AtMost(4);
         /// </code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
