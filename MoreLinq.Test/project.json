@@ -1,0 +1,53 @@
+{
+    "name": "MoreLinq.Test",
+    "title": "MoreLinq (.NET 3.5, PCL, and .NET Core)",
+    "authors": [
+        "MoreLINQ Developers"
+    ],
+    "packOptions": {
+        "tags": [
+            "linq",
+            "extensions"
+        ]
+    },
+    "dependencies": {
+        "MoreLinq": {
+            "target": "project"
+        },
+        "NUnit": "2.*"
+    },
+    "version": "2.0.0-beta04-3",
+    "buildOptions": {
+        "debugType": "portable",
+        "emitEntryPoint": false,
+        "warningsAsErrors": true,
+        "xmlDoc": false,
+        "define": [
+            "TRACE"
+        ]
+    },
+    "frameworks": {
+        "net4": {
+            "frameworkAssemblies": {
+                "System.Data.DataSetExtensions": "4.0.0.0",
+                "System.Data": "4.0.0.0",
+                "System.Xml": "4.0.0.0",
+                "System.Xml.Linq": "4.0.0.0"
+            }
+        },
+        ".NETFramework,Version=v4.0,Profile=Client": {
+            "buildOptions": {
+                "compile": {
+                    "exclude": [
+                        "ToDataTable.cs"
+                    ]
+                }
+            },
+            "frameworkAssemblies": {
+                "mscorlib": "",
+                "System": "",
+                "System.Core": ""
+            }
+        }
+    }
+}

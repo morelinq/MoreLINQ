@@ -1,0 +1,8 @@
+{
+    "runtimes": {
+        "win": {}
+    },
+    "frameworks": {
+        "net35": {}
+    }
+}

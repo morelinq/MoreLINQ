@@ -1,0 +1,77 @@
+{
+    "name": "MoreLinq",
+    "title": "MoreLinq (.NET 3.5, PCL, and .NET Core)",
+    "authors": [
+        "MoreLINQ Developers"
+    ],
+    "packOptions": {
+        "tags": [
+            "linq",
+            "extensions"
+        ]
+    },
+    "version": "2.0.0-beta04-3",
+    "buildOptions": {
+        "debugType": "portable",
+        "emitEntryPoint": false,
+        "warningsAsErrors": true,
+        "xmlDoc": true
+    },
+    "frameworks": {
+        "net35": {
+            "buildOptions": {
+                "define": [
+                    "TRACE",
+                    "MORELINQ"
+                ]
+            },
+            "frameworkAssemblies": {
+                "System.Data.DataSetExtensions": "",
+                "System.Data": "",
+                "System.Xml": ""
+            }
+        },
+        "netstandard1.6": {
+            "buildOptions": {
+                "compile": {
+                    "exclude": [
+                        "ToDataTable.cs"
+                    ]
+                },
+                "define": [
+                    "TRACE",
+                    "MORELINQ",
+                    "NO_SERIALIZATION_ATTRIBUTES",
+                    "NO_EXCEPTION_SERIALIZATION",
+                    "NO_TRACING",
+                    "NO_COM"
+                ]
+            },
+            "dependencies": {
+                "NETStandard.Library": "1.6.0"
+            }
+        },
+        ".NETPortable,Version=v4.0,Profile=Profile328": {
+            "buildOptions": {
+                "compile": {
+                    "exclude": [
+                        "ToDataTable.cs"
+                    ]
+                },
+                "define": [
+                    "TRACE",
+                    "MORELINQ",
+                    "NO_SERIALIZATION_ATTRIBUTES",
+                    "NO_EXCEPTION_SERIALIZATION",
+                    "NO_TRACING",
+                    "NO_COM"
+                ]
+            },
+            "frameworkAssemblies": {
+                "mscorlib": "",
+                "System": "",
+                "System.Core": ""
+            }
+        }
+    }
+}

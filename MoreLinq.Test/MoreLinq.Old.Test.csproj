@@ -137,9 +137,9 @@
     <Compile Include="FullGroupJoinTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MoreLinq\MoreLinq.csproj">
-      <Project>{8642E81B-3414-4C13-914F-05A4E600FE49}</Project>
-      <Name>MoreLinq</Name>
+    <ProjectReference Include="..\MoreLinq\MoreLinq.Old.csproj">
+      <Project>{8642e81b-3414-4c13-914f-05a4e600fe49}</Project>
+      <Name>MoreLinq.Old</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
