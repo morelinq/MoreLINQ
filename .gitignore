@@ -43,4 +43,5 @@ docs/
 
 .vscode/
 *.lock.json
-lib/nunit.runners/
+tools/nunit.runners*/
+TestResult.xml
