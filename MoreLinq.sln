@@ -4,65 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
-	ProjectSection(SolutionItems) = preProject
-        global.json = global.json
-		build.cmd = build.cmd
-		buildw.cmd = buildw.cmd
-		COPYING.txt = COPYING.txt
-		pack.cmd = pack.cmd
-		packw.cmd = packw.cmd
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Old", "MoreLinq\MoreLinq.Old.csproj", "{8642E81B-3414-4C13-914F-05A4E600FE49}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Old.Test", "MoreLinq.Test\MoreLinq.Old.Test.csproj", "{D89B7AF5-7615-47B7-B894-A722E66DB3D8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D09D94-E557-4383-B5DB-9F15D43DAC72}"
-	ProjectSection(SolutionItems) = preProject
-		pkg\morelinq.nuspec = pkg\morelinq.nuspec
-		pkg\MoreLinq.Portable.nuspec = pkg\MoreLinq.Portable.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Acquire.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Acquire.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.AssertCount.nuspec = pkg\MoreLinq.Source.MoreEnumerable.AssertCount.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Batch.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Batch.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Concat.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Concat.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Consume.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Consume.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.DistinctBy.nuspec = pkg\MoreLinq.Source.MoreEnumerable.DistinctBy.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.EquiZip.nuspec = pkg\MoreLinq.Source.MoreEnumerable.EquiZip.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ExceptBy.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ExceptBy.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Fold.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Fold.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ForEach.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ForEach.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Generate.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Generate.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.GenerateByIndex.nuspec = pkg\MoreLinq.Source.MoreEnumerable.GenerateByIndex.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.GroupAdjacent.nuspec = pkg\MoreLinq.Source.MoreEnumerable.GroupAdjacent.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Index.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Index.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.MaxBy.nuspec = pkg\MoreLinq.Source.MoreEnumerable.MaxBy.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.MinBy.nuspec = pkg\MoreLinq.Source.MoreEnumerable.MinBy.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.nuspec = pkg\MoreLinq.Source.MoreEnumerable.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.OrderedMerge.nuspec = pkg\MoreLinq.Source.MoreEnumerable.OrderedMerge.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Pad.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Pad.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Pairwise.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Pairwise.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Pipe.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Pipe.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Prepend.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Prepend.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.PreScan.nuspec = pkg\MoreLinq.Source.MoreEnumerable.PreScan.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Scan.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Scan.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.SingleOrFallback.nuspec = pkg\MoreLinq.Source.MoreEnumerable.SingleOrFallback.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.SkipUntil.nuspec = pkg\MoreLinq.Source.MoreEnumerable.SkipUntil.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Split.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Split.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.TakeEvery.nuspec = pkg\MoreLinq.Source.MoreEnumerable.TakeEvery.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.TakeLast.nuspec = pkg\MoreLinq.Source.MoreEnumerable.TakeLast.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.TakeUntil.nuspec = pkg\MoreLinq.Source.MoreEnumerable.TakeUntil.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ToDataTable.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ToDataTable.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ToDelimitedString.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ToDelimitedString.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ToHashSet.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ToHashSet.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Trace.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipLongest.nuspec
-		pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable", "MoreLinq\MoreLinq.Portable.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable.Test", "MoreLinq.Test\MoreLinq.Portable.Test.csproj", "{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lic", "lic", "{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}"
 EndProject
@@ -81,22 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
