@@ -24,8 +24,8 @@ namespace MoreLinq
     public partial class MoreEnumerable
     {
         /// <summary>
-        /// Traverses a tree starting at the <paramref name="root"/> according to the <paramref name="childrenSelector"/> traversal function.
-        /// The returned elements are the result of breadth-first traversal.
+        /// Traverses a tree in a breadth-first fashion, starting at a root node and using a user-defined
+        /// function to get the children at each node of the tree.
         /// </summary>
         /// <typeparam name="T">The tree node type</typeparam>
         /// <param name="root">The root of the tree to traverse</param>
@@ -33,8 +33,8 @@ namespace MoreLinq
         /// <returns>A sequence containing the traversed values</returns>
         /// <remarks>
         /// This function defers traversal until needed and streams the results.
-        /// The progression function is not checked for loops. If you need the resulting sequence to be finite
-        /// you must ensure that loops are not produced by <paramref name="childrenSelector"/>
+        /// The tree is not checked for loops. If the resulting sequence needs to be finite then it is the
+        /// responsibility of <paramref name="childrenSelector"/> to ensure that loops are not produced.
         /// </remarks>
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
@@ -56,8 +56,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Traverses a tree starting at the <paramref name="root"/> according to the <paramref name="childrenSelector"/> traversal function.
-        /// The returned elements are the result of depth-first traversal.
+        /// Traverses a tree in a depth-first fashion, starting at a root node and using a user-defined
+        /// function to get the children at each node of the tree.
         /// </summary>
         /// <typeparam name="T">The tree node type</typeparam>
         /// <param name="root">The root of the tree to traverse</param>
@@ -65,8 +65,8 @@ namespace MoreLinq
         /// <returns>A sequence containing the traversed values</returns>
         /// <remarks>
         /// This function defers traversal until needed and streams the results.
-        /// The progression function is not checked for loops. If you need the resulting sequence to be finite
-        /// you must ensure that loops are not produced by <paramref name="childrenSelector"/>
+        /// The tree is not checked for loops. If the resulting sequence needs to be finite then it is the
+        /// responsibility of <paramref name="childrenSelector"/> to ensure that loops are not produced.
         /// </remarks>
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {

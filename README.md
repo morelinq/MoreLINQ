@@ -73,8 +73,8 @@ Operator             | Summary
 `ThenBy`             | Performs a subsequent ordering of elements in a sequence in a particular direction (ascending, descending) according to a key. This method has 2 overloads.
 `ToDataTable`        | Appends elements in the sequence as rows of a given object with a set of lambda expressions specifying which members (property or field) of each element in the sequence will supply the column values. This method has 4 overloads.
 `ToDelimitedString`  | Creates a delimited string from a sequence of values. The delimiter used depends on the current culture of the executing thread. This method has 30 overloads.
-`TraverseBreadthFirst` | Traverses a tree in a Breadth First manner
-`TraverseDepthFirst` | Traverses a tree in a Breadth First manner
+`TraverseBreadthFirst` | Traverses a tree in a breadth-first fashion, starting at a root node and using a user-defined function to get the children at each node of the tree.
+`TraverseDepthFirst` | Traverses a tree in a depth-first fashion, starting at a root node and using a user-defined function to get the children at each node of the tree.
 `ToHashSet`          | Returns a of the source items using the default equality comparer for the type. This method has 2 overloads.
 `PartialSort`        | Combines `OrderBy` (where element is key) and `Take` in a single operation.
 `PartialSortBy`      | Combines `OrderBy` and `Take` in a single operation.
