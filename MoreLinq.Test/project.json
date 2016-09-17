@@ -16,7 +16,7 @@
         },
         "NUnit": "2.*"
     },
-    "version": "2.0.0-beta04-3",
+    "version": "2.0.0-beta04",
     "buildOptions": {
         "debugType": "portable",
         "emitEntryPoint": false,
