@@ -61,6 +61,7 @@
     <Compile Include="PartialSortTest.cs" />
     <Compile Include="StartsWithTest.cs" />
     <Compile Include="AtLeastTest.cs" />
+    <Compile Include="AtMostTest.cs" />
     <Compile Include="FoldTest.cs" />
     <Compile Include="IndexTest.cs" />
     <Compile Include="KeyValuePair.cs" />
