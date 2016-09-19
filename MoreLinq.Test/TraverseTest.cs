@@ -68,35 +68,31 @@ namespace MoreLinq.Test
 
         private class Tree<T>
         {
-            public T Value { get; set; }
-            public ICollection<Tree<T>> Children { get; private set; }
+            public T Value { get; private set; }
+            public IEnumerable<Tree<T>> Children { get; private set; }
 
-            public Tree()
+            public Tree(T value, IEnumerable<Tree<T>> children)
             {
-                Children = new List<Tree<T>>();
+                Value = value;
+                Children = children;
+            }
+        }
+
+        private static class Tree {
+            public static Tree<T> New<T>(T value, params Tree<T>[] children) {
+                return new Tree<T>(value, children);
             }
         }
 
         [Test]
         public void TraverseBreadthFirstTraversesBreadthFirst()
         {
-            var tree = new Tree<int> {
-                Value = 1,
-                Children =  {
-                    new Tree<int> {
-                        Value = 2,
-                        Children = {
-                            new Tree<int> { Value = 3 },
-                        }
-                    },
-                    new Tree<int> {
-                        Value = 5,
-                        Children = {
-                            new Tree<int> { Value = 6 },
-                        }
-                    }
-                }
-            };
+            var tree = Tree.New(1,
+                Tree.New(2,
+                    Tree.New(3)),
+                Tree.New(5,
+                    Tree.New(6))
+            );
             var res = MoreEnumerable.TraverseBreadthFirst(tree, t => t.Children).Select(t => t.Value);
             res.AssertSequenceEqual(1, 2, 5, 3, 6);
         }
@@ -104,23 +100,12 @@ namespace MoreLinq.Test
         [Test]
         public void TraverseDepthFirstTraversesDepthFirst()
         {
-            var tree = new Tree<int> {
-                Value = 1,
-                Children =  {
-                    new Tree<int> {
-                        Value = 2,
-                        Children = {
-                            new Tree<int> { Value = 3 },
-                        }
-                    },
-                    new Tree<int> {
-                        Value = 5,
-                        Children = {
-                            new Tree<int> { Value = 6 },
-                        }
-                    }
-                }
-            };
+            var tree = Tree.New(1,
+                Tree.New(2,
+                    Tree.New(3)),
+                Tree.New(5,
+                    Tree.New(6))
+            );
             var res = MoreEnumerable.TraverseDepthFirst(tree, t => t.Children).Select(t => t.Value);
             res.AssertSequenceEqual(1, 2, 3, 5, 6);
         }
