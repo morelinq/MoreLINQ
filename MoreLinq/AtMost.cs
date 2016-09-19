@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -24,30 +24,30 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns true when the number of elements in the given sequence is greater than
+        /// Returns true when the number of elements in the given sequence is lesser than
         /// or equal to the given integer.
         /// This method throws an exception if the given integer is negative.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="min">The minimum number of items a sequence must have for this
+        /// <param name="max">The maximun number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException">min is negative</exception>
-        /// <returns><c>true</c> if the number of elements in the sequence is greater than
+        /// <exception cref="ArgumentOutOfRangeException">max is negative</exception>
+        /// <returns><c>true</c> if the number of elements in the sequence is lesser than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code>
         /// var numbers = { 123, 456, 789 };
-        /// var result = numbers.AtLeast(2);
+        /// var result = numbers.AtMost(2);
         /// </code>
-        /// The <c>result</c> variable will contain <c>true</c>.
+        /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
-        public static bool AtLeast<T>(this IEnumerable<T> source, int min)
+        public static bool AtMost<T>(this IEnumerable<T> source, int max)
         {
-            if (min < 0) throw new ArgumentOutOfRangeException("min", "min must not be negative.");
+            if (max < 0) throw new ArgumentOutOfRangeException("max", "max must not be negative.");
 
-            return QuantityIterator(source, min, count => count >= min);
+            return QuantityIterator(source, max + 1, count => count <= max);
         }
     }
 }

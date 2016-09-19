@@ -55,8 +55,17 @@
     <Compile Include="AtLeast.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
+    <Compile Include="AtMost.cs">
+	      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CountBetween.cs">
+	      <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
     <Compile Include="EndsWith.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exactly.cs">
+	      <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="FallbackIfEmpty.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
@@ -66,6 +75,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
+    <Compile Include="QuantityIterator.cs" />
     <Compile Include="ReverseComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.g.cs">
       <AutoGen>True</AutoGen>
