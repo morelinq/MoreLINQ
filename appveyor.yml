@@ -10,9 +10,8 @@ build_script:
   - ps: dotnet build -c Release .\*\project.json
 before_test:
   - ps: New-Item -ItemType Directory -Path tools -Force
-  - ps: Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile ".\tools\nuget.exe"
   - ps: Remove-Item -Recurse .\tools\NUnit.Runners.*
-  - ps: .\tools\nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory tools
+  - ps: nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory tools
 test_script:
   - ps: .\tools\NUnit.Runners.*\tools\nunit-console.exe .\MoreLinq.Test\bin\Debug\net40\MoreLinq.Test.dll
   - ps: .\tools\NUnit.Runners.*\tools\nunit-console.exe .\MoreLinq.Test\bin\Release\net40\MoreLinq.Test.dll
