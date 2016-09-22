@@ -56,7 +56,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MoreLinq.Test", "MoreLinq.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{BD551503-0FA8-4507-B91F-8EB6C83DF7FA}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
 		build.cmd = build.cmd
 		builddocs.cmd = builddocs.cmd
 		buildw.cmd = buildw.cmd
@@ -65,7 +64,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		pack.cmd = pack.cmd
 		packw.cmd = packw.cmd
 		README.md = README.md
-		test.cmd = test.cmd
 	EndProjectSection
 EndProject
 Global
