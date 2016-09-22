@@ -1,6 +1,6 @@
 {
     "name": "MoreLinq.Test",
-    "title": "MoreLinq (.NET 3.5, PCL, and .NET Core)",
+    "title": "MoreLinq.Test",
     "authors": [
         "MoreLINQ Developers"
     ],
@@ -21,10 +21,26 @@
         "debugType": "portable",
         "emitEntryPoint": false,
         "warningsAsErrors": true,
-        "xmlDoc": false,
-        "define": [
-            "TRACE"
-        ]
+        "xmlDoc": false
+    },
+    "configurations": {
+        "Debug": {
+            "buildOptions": {
+                "define": [
+                    "TRACE",
+                    "DEBUG"
+                ],
+                "optimize": false
+            }
+        },
+        "Release": {
+            "buildOptions": {
+                "define": [
+                    "TRACE"
+                ],
+                "optimize": true
+            }
+        }
     },
     "frameworks": {
         "net4": {

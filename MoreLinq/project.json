@@ -36,11 +36,29 @@
         "xmlDoc": true,
         "keyFile": "key.snk"
     },
+    "configurations": {
+        "Debug":{
+            "buildOptions": {
+                "define": [
+                    "TRACE",
+                    "DEBUG"
+                ],
+                "optimize": false
+            }
+        },
+        "Release":{
+            "buildOptions": {
+                "define": [
+                    "TRACE"
+                ],
+                "optimize": true
+            }
+        }
+    },
     "frameworks": {
         "net35": {
             "buildOptions": {
                 "define": [
-                    "TRACE",
                     "MORELINQ"
                 ]
             },
@@ -58,7 +76,6 @@
                     ]
                 },
                 "define": [
-                    "TRACE",
                     "MORELINQ",
                     "NO_SERIALIZATION_ATTRIBUTES",
                     "NO_EXCEPTION_SERIALIZATION",
@@ -78,7 +95,6 @@
                     ]
                 },
                 "define": [
-                    "TRACE",
                     "MORELINQ",
                     "NO_SERIALIZATION_ATTRIBUTES",
                     "NO_EXCEPTION_SERIALIZATION",
