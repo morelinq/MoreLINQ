@@ -1,26 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
-	ProjectSection(SolutionItems) = preProject
-		build.cmd = build.cmd
-		buildw.cmd = buildw.cmd
-		COPYING.txt = COPYING.txt
-		pack.cmd = pack.cmd
-		packw.cmd = packw.cmd
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{8642E81B-3414-4C13-914F-05A4E600FE49}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{D89B7AF5-7615-47B7-B894-A722E66DB3D8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D09D94-E557-4383-B5DB-9F15D43DAC72}"
 	ProjectSection(SolutionItems) = preProject
-		pkg\morelinq.nuspec = pkg\morelinq.nuspec
-		pkg\MoreLinq.Portable.nuspec = pkg\MoreLinq.Portable.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Acquire.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Acquire.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.AssertCount.nuspec = pkg\MoreLinq.Source.MoreEnumerable.AssertCount.nuspec
 		pkg\MoreLinq.Source.MoreEnumerable.Batch.nuspec = pkg\MoreLinq.Source.MoreEnumerable.Batch.nuspec
@@ -59,15 +43,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D0
 		pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec = pkg\MoreLinq.Source.MoreEnumerable.ZipShortest.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable", "MoreLinq\MoreLinq.Portable.csproj", "{72C49B06-715D-4423-AD0A-78517F71D7B9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Portable.Test", "MoreLinq.Test\MoreLinq.Portable.Test.csproj", "{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lic", "lic", "{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corefx", "corefx", "{F73528F4-B669-4AFF-84C9-D62B77CA3848}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MoreLinq", "MoreLinq\MoreLinq.xproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A87}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.xproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{BD551503-0FA8-4507-B91F-8EB6C83DF7FA}"
+	ProjectSection(SolutionItems) = preProject
+		build.cmd = build.cmd
+		builddocs.cmd = builddocs.cmd
+		buildw.cmd = buildw.cmd
+		COPYING.txt = COPYING.txt
+		global.json = global.json
+		pack.cmd = pack.cmd
+		packw.cmd = packw.cmd
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
@@ -76,31 +72,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8642E81B-3414-4C13-914F-05A4E600FE49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D89B7AF5-7615-47B7-B894-A722E66DB3D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72C49B06-715D-4423-AD0A-78517F71D7B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A47BCE6-B1A4-467A-BAF0-3021ED39FC7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737} = {835F8FFA-471F-4322-B721-A897F27872FA}
+		{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737} = {BD551503-0FA8-4507-B91F-8EB6C83DF7FA}
 		{F73528F4-B669-4AFF-84C9-D62B77CA3848} = {1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = 
 	EndGlobalSection
 EndGlobal
