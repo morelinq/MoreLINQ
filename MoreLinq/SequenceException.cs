@@ -18,7 +18,9 @@
 namespace MoreLinq
 {
     using System;
+#if !NO_EXCEPTION_SERIALIZATION
     using System.Runtime.Serialization;
+#endif
 
     /// <summary>
     /// The exception that is thrown for a sequence that fails a condition.
