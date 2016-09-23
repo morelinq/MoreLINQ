@@ -1,5 +1,5 @@
 {
-    "name": "MoreLinq",
+    "name": "morelinq",
     "title": "MoreLINQ",
     "description": "This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, Windowed, ZipLongest, ZipShortest",
     "language": "en-US",
