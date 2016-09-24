@@ -137,6 +137,7 @@
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Lookup.cs" />
+    <Compile Include="QuantityIterator.cs" />
     <Compile Include="ReverseComparer.cs" />
     <Compile Include="MaxBy.cs">
       <DependentUpon>MoreEnumerable.cs</DependentUpon>
