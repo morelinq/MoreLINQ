@@ -19,12 +19,15 @@ Operator             | Summary
 `Assert`             | Asserts that all elements of a sequence meet a given condition otherwise throws an object. This method has 2 overloads.
 `AssertCount`        | Asserts that a source sequence contains a given count of elements. This method has 2 overloads.
 `AtLeast`            | Returns true when the number of elements in the given sequence is greater than or equal to the given integer. This method throws an exception if the given integer is negative
+`AtMost`             | Returns true when the number of elements in the given sequence is lesser than or equal to the given integer. This method throws an exception if the given integer is negative
 `Batch`              | Batches the source sequence into sized buckets. This method has 2 overloads.
 `Cartesian`          | Returns the Cartesian product of two sequences by combining each element of the first set with each in the second and applying the user=define projection to the pair
 `Concat`             | Returns a sequence consisting of the head element and the given tail elements. This method has 2 overloads.
 `Consume`            | Completely consumes the given sequence. This method uses immediate execution, and doesn't store any data during execution
+`CountBetween`       | Returns true when the number of elements in the given sequence is between (inclusive) the min and max given integers. This method throws an exception if min is negative or max is lesser than min
 `DistinctBy`         | Returns all distinct elements of the given source, where "distinctness" is determined via a projection and the default equality comparer for the projected type. This method has 2 overloads.
 `EquiZip`            | Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences. This method has 3 overloads.
+`Exactly`            | Returns true when the number of elements in the given sequence is equals to the given integer. This method throws an exception if the given integer is negative
 `ExceptBy`           | Returns the set of elements in the first sequence which aren't in the second sequence, according to a given key selector. This method has 2 overloads.
 `Exclude`            | Excludes elements from a sequence starting at a given index
 `FallbackIfEmpty`    | Returns the elements of a sequence and falls back to another if the original sequence is empty.
