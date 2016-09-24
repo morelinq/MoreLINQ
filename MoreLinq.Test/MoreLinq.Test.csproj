@@ -56,7 +56,10 @@
     <Compile Include="AcquireTest.cs" />
     <Compile Include="AssertTest.cs" />
     <Compile Include="AssertUtil.cs" />
+    <Compile Include="AtMostTest.cs" />
+    <Compile Include="CountBetweenTest.cs" />
     <Compile Include="EndsWithTest.cs" />
+    <Compile Include="ExactlyTest.cs" />
     <Compile Include="PartialSortByTest.cs" />
     <Compile Include="PartialSortTest.cs" />
     <Compile Include="StartsWithTest.cs" />
