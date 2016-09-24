@@ -53,7 +53,7 @@ namespace MoreLinq
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
         {
             if (min < 0) throw new ArgumentOutOfRangeException("min", "min must not be negative.");
-            if (max < min) throw new ArgumentOutOfRangeException("max", "max must be greater than min.");
+            if (max < min) throw new ArgumentOutOfRangeException("max", "max must be greater than or equals to min.");
 
             return QuantityIterator(source, max + 1, count => min <= count && count <= max);
         }
