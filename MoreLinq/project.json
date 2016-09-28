@@ -6,7 +6,7 @@
   "authors": [
     "MoreLINQ Developers."
   ],
-  "copyright": "Copyright \u00a9 2008 Jonathan Skeet. All rights reserved. Portions Copyright (c) Microsoft. All rights reserved.",
+  "copyright": "\u00a9 2008 Jonathan Skeet. Portions \u00a9 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions \u00a9 2010 Johannes Rudolph, Leopold Bushkin. Portions \u00a9 2015 Felipe Sateler, \u201csholland\u201d. Portions \u00a9 Microsoft. All rights reserved.",
   "packOptions": {
     "releaseNotes": "Adds new operators: Assert, Cartesian, Exclude, FallbackIfEmpty, FullGroupJoin, Incremental, Interleave, Lag, Lead, NestedLoops, OrderBy, Partition, Permutations, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Segment, Slice, SortedMerge, Subsets, TagFirstLast, ThenBy, Windowed, ZipShortest. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.",
     "summary": "This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.",
