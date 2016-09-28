@@ -34,7 +34,8 @@
     "emitEntryPoint": false,
     "warningsAsErrors": true,
     "xmlDoc": true,
-    "keyFile": "key.snk"
+    "keyFile": "key.snk",
+    "outputName": "MoreLinq"
   },
   "configurations": {
     "Debug": {
