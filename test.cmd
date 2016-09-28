@@ -28,5 +28,5 @@ goto :EOF
 
 :nonuget
 echo NuGet executable not found in PATH
-echo For more on NuGet, see http://nuget.codeplex.com
+echo To download a version, see https://dist.nuget.org/
 exit /b 2
