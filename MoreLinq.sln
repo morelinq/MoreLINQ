@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		pack.cmd = pack.cmd
 		packw.cmd = packw.cmd
 		README.md = README.md
+		test.cmd = test.cmd
+		testw.cmd = testw.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuspecs", "Nuspecs", "{55D09D94-E557-4383-B5DB-9F15D43DAC72}"
