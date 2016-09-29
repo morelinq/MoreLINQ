@@ -14,7 +14,7 @@ if not exist "%MSBUILD%" (
 if "%1"=="docs" call :docs %2 %3 %4 %5 %6 %7 %8 %9 & goto :EOF
 
 :base
-for %%i in (debug release) do "%MSBUILD%" "MoreLinq.sln" /v:m /p:Configuration=%%i %*
+for %%i in (debug release) do "%MSBUILD%" "MoreLinq.sln" /v:m /p:Configuration=%%i %* || exit /b 1
 goto :EOF
 
 :docs
