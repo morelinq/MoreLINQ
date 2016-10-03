@@ -27,7 +27,13 @@ namespace MoreLinq
         private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, Func<int, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException("source");
-            if (source is ICollection<T>) return predicate(((ICollection<T>)source).Count);
+
+            var col = source as ICollection<T>;
+
+            if (col != null)
+            {
+                return predicate(col.Count);
+            }
 
             var count = 0;
 
