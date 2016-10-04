@@ -14,7 +14,7 @@ nuget.exe install NUnit.Runners -Version 2.6.4 -OutputDirectory tools || exit /b
 move tools\NUnit.Runners.2.6.4 tools\NUnit.Runners
 if not %errorlevel%==0 exit /b %errorlevel%
 :test-all
-call build /v:m ^
+call build /v:m /t:Rebuild ^
   && call :test net40 Debug ^
   && call :test net40 Release
 goto :EOF
