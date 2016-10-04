@@ -15,15 +15,16 @@ move tools\NUnit.Runners.2.6.4 tools\NUnit.Runners
 if not %errorlevel%==0 exit /b %errorlevel%
 :test-all
 call build /v:m ^
-  && call :test net40 ^
-  && call :test net40 ^
-  && call :test net40-client ^
-  && call :test net40-client
+  && call :test net40 Debug ^
+  && call :test net40 Release ^
+  && call :test net40-client Debug ^
+  && call :test net40-client Release
 goto :EOF
 
 :test
 setlocal
-%NUNIT_CONSOLE_PATH% MoreLinq.Test\bin\Release\%1\MoreLinq.Test.dll
+echo Testing %1 (%2)...
+%NUNIT_CONSOLE_PATH% MoreLinq.Test\bin\%2\%1\MoreLinq.Test.dll
 goto :EOF
 
 :nonuget
