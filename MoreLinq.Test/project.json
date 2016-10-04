@@ -50,20 +50,6 @@
         "System.Xml": "4.0.0.0",
         "System.Xml.Linq": "4.0.0.0"
       }
-    },
-    ".NETFramework,Version=v4.0,Profile=Client": {
-      "buildOptions": {
-        "compile": {
-          "exclude": [
-            "ToDataTable.cs"
-          ]
-        }
-      },
-      "frameworkAssemblies": {
-        "mscorlib": "",
-        "System": "",
-        "System.Core": ""
-      }
     }
   }
 }

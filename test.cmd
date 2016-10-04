@@ -16,9 +16,7 @@ if not %errorlevel%==0 exit /b %errorlevel%
 :test-all
 call build /v:m ^
   && call :test net40 Debug ^
-  && call :test net40 Release ^
-  && call :test net40-client Debug ^
-  && call :test net40-client Release
+  && call :test net40 Release
 goto :EOF
 
 :test
