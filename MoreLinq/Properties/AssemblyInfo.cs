@@ -23,12 +23,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Extensions to LINQ to Objects")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MoreLINQ")]
-[assembly: AssemblyCopyright("\u00a9 2008 Jonathan Skeet. " +
-                             "Portions \u00a9 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. " +
-                             "Portions \u00a9 2010 Johannes Rudolph, Leopold Bushkin. " +
-                             "Portions \u00a9 2015 Felipe Sateler, \u201csholland\u201d. " +
-                             "Portions \u00a9 Microsoft " +
-                             "All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
