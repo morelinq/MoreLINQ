@@ -32,7 +32,7 @@ namespace MoreLinq
         /// <param name="indexSelector">
         /// A function that maps an element to its index.</param>
         /// <typeparam name="T">
-        /// The type of the element in<paramref name="source"/>.</typeparam>
+        /// The type of the element in <paramref name="source"/>.</typeparam>
         /// <returns>
         /// An array that contains the elements from the input sequence. The
         /// size of the array will be as large as the highest index returned
@@ -64,9 +64,9 @@ namespace MoreLinq
         /// A function to project a source element into an element of the
         /// resulting array.</param>
         /// <typeparam name="T">
-        /// The type of the element in<paramref name="source"/>.</typeparam>
+        /// The type of the element in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">
-        /// The type of the element in the resulting arrary.</typeparam>
+        /// The type of the element in the resulting array.</typeparam>
         /// <returns>
         /// An array that contains the projected elements from the input
         /// sequence. The size of the array will be as large as the highest
@@ -98,9 +98,9 @@ namespace MoreLinq
         /// A function to project a source element into an element of the
         /// resulting array.</param>
         /// <typeparam name="T">
-        /// The type of the element in<paramref name="source"/>.</typeparam>
+        /// The type of the element in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">
-        /// The type of the element in the resulting arrary.</typeparam>
+        /// The type of the element in the resulting array.</typeparam>
         /// <returns>
         /// An array that contains the projected elements from the input
         /// sequence. The size of the array will be as large as the highest
@@ -137,7 +137,7 @@ namespace MoreLinq
         /// <param name="indexSelector">
         /// A function that maps an element to its index.</param>
         /// <typeparam name="T">
-        /// The type of the element in<paramref name="source"/>.</typeparam>
+        /// The type of the element in <paramref name="source"/>.</typeparam>
         /// <returns>
         /// An array of size <paramref name="length"/> that contains the
         /// elements from the input sequence.
@@ -169,9 +169,9 @@ namespace MoreLinq
         /// A function to project a source element into an element of the
         /// resulting array.</param>
         /// <typeparam name="T">
-        /// The type of the element in<paramref name="source"/>.</typeparam>
+        /// The type of the element in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">
-        /// The type of the element in the resulting arrary.</typeparam>
+        /// The type of the element in the resulting array.</typeparam>
         /// <returns>
         /// An array of size <paramref name="length"/> that contains the
         /// projected elements from the input sequence.
@@ -203,9 +203,9 @@ namespace MoreLinq
         /// A function to project a source element into an element of the
         /// resulting array.</param>
         /// <typeparam name="T">
-        /// The type of the element in<paramref name="source"/>.</typeparam>
+        /// The type of the element in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">
-        /// The type of the element in the resulting arrary.</typeparam>
+        /// The type of the element in the resulting array.</typeparam>
         /// <returns>
         /// An array of size <paramref name="length"/> that contains the
         /// projected elements from the input sequence.
