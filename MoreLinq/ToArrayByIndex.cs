@@ -120,7 +120,8 @@ namespace MoreLinq
             if (indexSelector == null) throw new ArgumentNullException("indexSelector");
             if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
-            var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e)).ToArray();
+            var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e))
+                                .ToList();
             var array = new TResult[indexed.Max(e => e.Key) + 1];
             foreach (var e in indexed)
                 array[e.Key] = resultSelector(e.Value, e.Key);
