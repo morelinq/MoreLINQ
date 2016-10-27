@@ -88,6 +88,9 @@ namespace MoreLinq
                         for (var i = 0; i < maxConcurrency && (more = item.MoveNext()); i++)
                             tasks.Add(selector(item.Current));
 
+                        if (!more)
+                            item.Dispose();
+
                         try
                         {
                             while (tasks.Count > 0)
