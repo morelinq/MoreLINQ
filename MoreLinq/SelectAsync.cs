@@ -34,9 +34,9 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> sources, Func<T, Task<TResult>> selector)
+            this IEnumerable<T> source, Func<T, Task<TResult>> selector)
         {
-            return SelectAsync(sources, null, selector);
+            return SelectAsync(source, null, selector);
         }
 
         /// <summary>
@@ -46,15 +46,15 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> sources,
+            this IEnumerable<T> source,
             TaskScheduler scheduler,
             Func<T, Task<TResult>> selector)
         {
-            if (sources == null) throw new ArgumentNullException("sources");
+            if (source == null) throw new ArgumentNullException("source");
             if (selector == null) throw new ArgumentNullException("selector");
 
             var queue = new BlockingCollection<object>();
-            var tasks = sources.Select(selector).ToList(); // TODO max concurrency
+            var tasks = source.Select(selector).ToList(); // TODO max concurrency
 
             Task.Factory.StartNew(async () =>
                 {
