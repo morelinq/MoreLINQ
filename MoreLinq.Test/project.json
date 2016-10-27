@@ -43,7 +43,7 @@
     }
   },
   "frameworks": {
-    "net4": {
+    "net45": {
       "frameworkAssemblies": {
         "System.Data.DataSetExtensions": "4.0.0.0",
         "System.Data": "4.0.0.0",
