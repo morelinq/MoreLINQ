@@ -22,7 +22,6 @@ namespace MoreLinq
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -36,56 +35,91 @@ namespace MoreLinq
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source, Func<T, Task<TResult>> selector)
         {
-            return SelectAsync(source, null, selector);
+            return source.SelectAsync(int.MaxValue, null, selector);
         }
 
         /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form.
-        /// An additional parameter specifies the <see cref="TaskScheduler"/>
-        /// to use to await for tasks to complete.
+        /// Asynchronously projects each element of a sequence to its new form
+        /// with a given concurrency.
         /// </summary>
+        /// <remarks>
+        /// The <paramref name="selector"/> function should be designed to be
+        /// thread-agnostic.
+        /// </remarks>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source,
+            int maxConcurrency,
+            Func<T, Task<TResult>> selector)
+        {
+            return source.SelectAsync(maxConcurrency, null, selector);
+        }
+
+        /// <summary>
+        /// Asynchronously projects each element of a sequence to its new form
+        /// with a given concurrency. An additional parameter specifies the
+        /// <see cref="TaskScheduler"/> to use to await for tasks to complete.
+        /// </summary>
+        /// <remarks>
+        /// The <paramref name="selector"/> function should be designed to be
+        /// thread-agnostic.
+        /// </remarks>
+
+        public static IEnumerable<TResult> SelectAsync<T, TResult>(
+            this IEnumerable<T> source,
+            int maxConcurrency,
             TaskScheduler scheduler,
             Func<T, Task<TResult>> selector)
         {
             if (source == null) throw new ArgumentNullException("source");
+            if (maxConcurrency <= 0) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
             if (selector == null) throw new ArgumentNullException("selector");
 
             var queue = new BlockingCollection<object>();
-            var tasks = source.Select(selector).ToList(); // TODO max concurrency
-
-            Task.Factory.StartNew(async () =>
-                {
-                    try
-                    {
-                        while (tasks.Count > 0)
-                        {
-                            var task = await Task.WhenAny(tasks);
-                            tasks.Remove(task);
-                            queue.Add(task);
-                        }
-                        queue.Add(null);
-                    }
-                    catch (Exception e)
-                    {
-                        queue.Add(ExceptionDispatchInfo.Capture(e));
-                    }
-                    queue.CompleteAdding();
-                },
-                CancellationToken.None,
-                TaskCreationOptions.DenyChildAttach,
-                scheduler ?? TaskScheduler.Default);
-
-            // TODO Consider the impact of throwing partway while other tasks are in flight!
-
-            foreach (var e in queue.GetConsumingEnumerable())
+            using (var _ = source.GetEnumerator())
             {
-                (e as ExceptionDispatchInfo)?.Throw();
-                if (e == null)
-                    yield break;
-                yield return ((Task<TResult>) e).Result;
+                var item = _;
+
+                Task.Factory.StartNew(async () =>
+                    {
+                        var tasks = new List<Task<TResult>>();
+
+                        var more = false;
+                        for (var i = 0; i < maxConcurrency && (more = item.MoveNext()); i++)
+                            tasks.Add(selector(item.Current));
+
+                        try
+                        {
+                            while (tasks.Count > 0)
+                            {
+                                var task = await Task.WhenAny(tasks);
+                                tasks.Remove(task);
+                                queue.Add(task);
+
+                                if (more && (more = item.MoveNext()))
+                                    tasks.Add(selector(item.Current));
+                            }
+                            queue.Add(null);
+                        }
+                        catch (Exception e)
+                        {
+                            queue.Add(ExceptionDispatchInfo.Capture(e));
+                        }
+                        queue.CompleteAdding();
+                    },
+                    CancellationToken.None,
+                    TaskCreationOptions.DenyChildAttach,
+                    scheduler ?? TaskScheduler.Default);
+
+                // TODO Consider the impact of throwing partway while other tasks are in flight!
+
+                foreach (var e in queue.GetConsumingEnumerable())
+                {
+                    (e as ExceptionDispatchInfo)?.Throw();
+                    if (e == null)
+                        yield break;
+                    yield return ((Task<TResult>) e).Result;
+                }
             }
         }
     }
