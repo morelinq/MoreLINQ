@@ -20,38 +20,73 @@
 namespace MoreLinq
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.ExceptionServices;
+    using System.Threading;
     using System.Threading.Tasks;
 
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Asynchronously pairs each element of a sequence with its projection.
+        /// Asynchronously projects each element of a sequence to its new form.
         /// </summary>
 
-        public static Task<ICollection<KeyValuePair<T, TAsync>>> SelectAsync<T, TAsync>(
-            this IEnumerable<T> sources, Func<T, Task<TAsync>> taskSelector)
+        public static IEnumerable<TResult> SelectAsync<T, TResult>(
+            this IEnumerable<T> sources, Func<T, Task<TResult>> selector)
         {
-            return SelectAsync(sources, taskSelector, (k, v) => new KeyValuePair<T, TAsync>(k, v));
+            return SelectAsync(sources, null, selector);
         }
 
         /// <summary>
-        /// Asynchronously projects each element of a sequence and then uses
-        /// a function to create the resulting value from the two.
+        /// Asynchronously projects each element of a sequence to its new form.
+        /// An additional parameter specifies the <see cref="TaskScheduler"/>
+        /// to use to await for tasks to complete.
         /// </summary>
 
-        public static async Task<ICollection<TResult>> SelectAsync<T, TAsync, TResult>(
-            this IEnumerable<T> sources, Func<T, Task<TAsync>> taskSelector,
-            Func<T, TAsync, TResult> resultSelector)
+        public static IEnumerable<TResult> SelectAsync<T, TResult>(
+            this IEnumerable<T> sources,
+            TaskScheduler scheduler,
+            Func<T, Task<TResult>> selector)
         {
             if (sources == null) throw new ArgumentNullException("sources");
-            if (taskSelector == null) throw new ArgumentNullException("taskSelector");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (selector == null) throw new ArgumentNullException("selector");
 
-            var results = await
-                Task.WhenAll(sources.Select(async e => new KeyValuePair<T, TAsync>(e, await taskSelector(e).ConfigureAwait(continueOnCapturedContext: false))));
-            return results.Select(e => resultSelector(e.Key, e.Value)).ToList();
+            var queue = new BlockingCollection<object>();
+            var tasks = sources.Select(selector).ToList(); // TODO max concurrency
+
+            Task.Factory.StartNew(async () =>
+                {
+                    try
+                    {
+                        while (tasks.Count > 0)
+                        {
+                            var task = await Task.WhenAny(tasks);
+                            tasks.Remove(task);
+                            queue.Add(task);
+                        }
+                        queue.Add(null);
+                    }
+                    catch (Exception e)
+                    {
+                        queue.Add(ExceptionDispatchInfo.Capture(e));
+                    }
+                    queue.CompleteAdding();
+                },
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach,
+                scheduler ?? TaskScheduler.Default);
+
+            // TODO Consider the impact of throwing partway while other tasks are in flight!
+
+            foreach (var e in queue.GetConsumingEnumerable())
+            {
+                (e as ExceptionDispatchInfo)?.Throw();
+                if (e == null)
+                    yield break;
+                yield return ((Task<TResult>) e).Result;
+            }
         }
     }
 }

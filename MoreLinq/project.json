@@ -86,6 +86,7 @@
       },
       "dependencies": {
         "System.Collections": "4.0.11",
+        "System.Collections.Concurrent": "4.0.12",
         "System.Diagnostics.Debug": "4.0.11",
         "System.Linq": "4.1.0",
         "System.Resources.ResourceManager": "4.0.1",
