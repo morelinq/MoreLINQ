@@ -232,8 +232,7 @@ namespace MoreLinq
                 foreach (var e in source)
                 {
                     var i = indexSelector(e);
-                    if (i < array.Length)
-                        array[i] = resultSelector(e, i);
+                    array[i] = resultSelector(e, i);
                 }
             }
             return array;
