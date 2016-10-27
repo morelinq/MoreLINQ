@@ -36,7 +36,12 @@ namespace MoreLinq
             return SelectAsync(sources, taskSelector, (k, v) => new KeyValuePair<T, TAsync>(k, v));
         }
 
-        static async Task<ICollection<TResult>> SelectAsync<T, TAsync, TResult>(
+        /// <summary>
+        /// Asynchronously projects each element of a sequence and then uses
+        /// a function to create the resulting value from the two.
+        /// </summary>
+
+        public static async Task<ICollection<TResult>> SelectAsync<T, TAsync, TResult>(
             this IEnumerable<T> sources, Func<T, Task<TAsync>> taskSelector,
             Func<T, TAsync, TResult> resultSelector)
         {
