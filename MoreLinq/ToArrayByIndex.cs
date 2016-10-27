@@ -227,13 +227,10 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             var array = new TResult[length];
-            if (length > 0)
+            foreach (var e in source)
             {
-                foreach (var e in source)
-                {
-                    var i = indexSelector(e);
-                    array[i] = resultSelector(e, i);
-                }
+                var i = indexSelector(e);
+                array[i] = resultSelector(e, i);
             }
             return array;
         }
