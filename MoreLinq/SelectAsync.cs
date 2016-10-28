@@ -71,8 +71,17 @@ namespace MoreLinq
             TaskScheduler scheduler,
             Func<T, Task<TResult>> selector)
         {
+            return SelectAsyncImpl(source, maxConcurrency, scheduler, selector);
+        }
+
+        static IEnumerable<TResult> SelectAsyncImpl<T, TResult>(
+            IEnumerable<T> source,
+            int maxConcurrency,
+            TaskScheduler scheduler,
+            Func<T, Task<TResult>> selector)
+        {
             if (source == null) throw new ArgumentNullException("source");
-            if (maxConcurrency <= 0) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
+            if (maxConcurrency <= 0) throw new ArgumentOutOfRangeException("maxConcurrency");
             if (selector == null) throw new ArgumentNullException("selector");
 
             var queue = new BlockingCollection<object>();
