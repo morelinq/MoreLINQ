@@ -22,6 +22,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -144,9 +145,12 @@ namespace MoreLinq
             IDisposable disposable = item; // disables AccessToDisposedClosure warnings
             try
             {
-                Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(async () =>
                     {
                         var cancellationToken = cancellationTokenSource.Token;
+                        var cancellationTaskSource = new TaskCompletionSource<bool>();
+                        cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
+
                         var tasks = new List<Task<TResult>>();
 
                         var more = false;
@@ -160,13 +164,19 @@ namespace MoreLinq
                         {
                             while (tasks.Count > 0)
                             {
-                                int i;
-                                try
-                                {
-                                    // ReSharper disable once CoVariantArrayConversion
-                                    i = Task.WaitAny(tasks.ToArray(), cancellationToken);
-                                }
-                                catch (OperationCanceledException)
+                                // Task.WaitAny is synchronous and blocking but
+                                // allows the waiting to be cancelled via a
+                                // CancellationToken. Task.WhenAny can be
+                                // awaited so it is better since the tread
+                                // won't be blocked and can return to the pool.
+                                // However, it doesn't support cancellation so
+                                // instead a task is built on top of the
+                                // CancellationToken that completes when the
+                                // CancellationToken trips.
+
+                                var task = await Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task));
+
+                                if (task == cancellationTaskSource.Task)
                                 {
                                     // Cancellation during the wait means the
                                     // enumeration has been stopped by the user
@@ -180,8 +190,8 @@ namespace MoreLinq
 
                                     return;
                                 }
-                                var task = tasks[i];
-                                tasks.RemoveAt(i);
+
+                                tasks.Remove((Task<TResult>)task);
                                 queue.Add(task);
 
                                 if (more && (more = item.MoveNext()))
