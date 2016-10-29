@@ -23,6 +23,7 @@ Operator             | Summary
 `Cartesian`          | Returns the Cartesian product of two sequences by combining each element of the first set with each in the second and applying the user=define projection to the pair
 `Concat`             | Returns a sequence consisting of the head element and the given tail elements. This method has 2 overloads.
 `Consume`            | Completely consumes the given sequence. This method uses immediate execution, and doesn't store any data during execution
+`CountBy`            | Applies a key-generating function to each element of a sequence and returns a sequence of unique keys and their number of occurrences in the original sequence. This method has 2 overloads.
 `DistinctBy`         | Returns all distinct elements of the given source, where "distinctness" is determined via a projection and the default equality comparer for the projected type. This method has 2 overloads.
 `EquiZip`            | Returns a projection of tuples, where each tuple contains the N-th element from each of the argument sequences. This method has 3 overloads.
 `ExceptBy`           | Returns the set of elements in the first sequence which aren't in the second sequence, according to a given key selector. This method has 2 overloads.
