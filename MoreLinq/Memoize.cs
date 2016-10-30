@@ -24,19 +24,19 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a <see cref="MemoizedEnumerator{T}"/> that lazily creates an in-memory
+        /// Returns a <see cref="MemoizedEnumerable{T}"/> that lazily creates an in-memory
         /// cache of the enumeration on first iteration, if it is not already an
         /// in-memory source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <returns>A <see cref="MemoizedEnumerator{T}"/>.</returns>
+        /// <returns>A <see cref="MemoizedEnumerable{T}"/>.</returns>
         public static IBufferedEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
             return source.Memoize(false);
         }
 
         /// <summary>
-        /// Returns a <see cref="MemoizedEnumerator{T}"/> that lazily creates an in-memory
+        /// Returns a <see cref="MemoizedEnumerable{T}"/> that lazily creates an in-memory
         /// cache of the enumeration on first iteration, if it is not already an
         /// in-memory source.
         /// </summary>
@@ -44,12 +44,12 @@ namespace MoreLinq
         /// <param name="forceBuffering">Force buffering, even if source is an <see cref="ICollection{T}" />
         /// (otherwise source is assumed to already be in-memory and enumerated quickly, and hence that
         /// buffering again would be a waste).</param>
-        /// <returns>A <see cref="MemoizedEnumerator{T}"/>.</returns>
+        /// <returns>A <see cref="MemoizedEnumerable{T}"/>.</returns>
         public static IBufferedEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool forceBuffering)
         {
             if (source == null) throw new ArgumentNullException("source");
 
-            return (source as MemoizedEnumerator<T>) ?? new MemoizedEnumerator<T>(source, forceBuffering);
+            return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source, forceBuffering);
         }
     }
 
@@ -63,7 +63,7 @@ namespace MoreLinq
 
     }
 
-    internal class MemoizedEnumerator<T> : IBufferedEnumerable<T>, IEnumerable<T>
+    internal class MemoizedEnumerable<T> : IBufferedEnumerable<T>, IEnumerable<T>
     {
         private ICollection<T> collection;
         private IEnumerable<T> source;
@@ -71,7 +71,7 @@ namespace MoreLinq
         private IList<T> cache;
         private bool disposed;
 
-        public MemoizedEnumerator(IEnumerable<T> sequence, bool forceBuffering)
+        public MemoizedEnumerable(IEnumerable<T> sequence, bool forceBuffering)
         {
             if (!forceBuffering && sequence is ICollection<T>)
             {
