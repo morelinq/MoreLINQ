@@ -41,8 +41,10 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException("second");
             if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
+            var secondMemoized = second.Memoize();
+
             return from item1 in first 
-                   from item2 in second // TODO buffer to avoid multiple enumerations
+                   from item2 in secondMemoized
                    select resultSelector(item1, item2);
         }
     }

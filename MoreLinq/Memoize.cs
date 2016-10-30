@@ -66,25 +66,28 @@ namespace MoreLinq
     internal class MemoizedEnumerator<T> : IBufferedEnumerable<T>, IEnumerable<T>
     {
         private ICollection<T> collection;
+        private IEnumerable<T> source;
         private IEnumerator<T> e;
         private IList<T> cache;
         private bool disposed;
 
-        public MemoizedEnumerator(IEnumerable<T> source, bool forceBuffering)
+        public MemoizedEnumerator(IEnumerable<T> sequence, bool forceBuffering)
         {
-            if (!forceBuffering && source is ICollection<T>)
+            if (!forceBuffering && sequence is ICollection<T>)
             {
-                collection = (ICollection<T>)source;
+                collection = (ICollection<T>)sequence;
             }
             else
             {
-                e = source.GetEnumerator();
+                source = sequence;
                 cache = new List<T>();
             }
         }
 
         private IEnumerator<T> GetMemoizedEnumerator()
         {
+            if (e == null) e = source.GetEnumerator();
+
             int index = 0;
 
             while (true)

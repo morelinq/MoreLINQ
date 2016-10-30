@@ -39,9 +39,11 @@ namespace MoreLinq
 
         private static IEnumerable<T> RepeatImpl<T>(this IEnumerable<T> sequence, int count)
         {
+            if (count > 1)
+                sequence = sequence.Memoize();
+
             while (count-- > 0)
             {
-                // TODO buffer to avoid multiple enumerations
                 foreach (var item in sequence)
                     yield return item;
             }
