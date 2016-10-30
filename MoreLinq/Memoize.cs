@@ -109,6 +109,7 @@ namespace MoreLinq
                     {
                         disposed = true;
                         e.Dispose();
+                        source = null;
                     }
 
                     yield break;
