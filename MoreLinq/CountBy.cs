@@ -77,7 +77,8 @@ namespace MoreLinq
                 }
             }
 
-            return keys.Select(k => new KeyValuePair<TKey, int>(k, dic[k]));
+            foreach (var key in keys)
+                yield return new KeyValuePair<TKey, int>(key, dic[key]);
         }
     }
 }
