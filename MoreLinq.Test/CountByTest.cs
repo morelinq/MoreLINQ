@@ -88,5 +88,16 @@ namespace MoreLinq.Test
 
             result.AssertSequenceEqual(expectations);
         }
+        
+        [Test]
+        public void CountByHasKeysOrderedLikeGroupBy()
+        {
+            var randomSequence = MoreEnumerable.Random(0, 100).Take(100).ToArray();
+
+            var countByKeys = randomSequence.CountBy(x => x).Select(x => x.Key);
+            var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
+
+            countByKeys.AssertSequenceEqual(groupByKeys);
+        }
     }
 }
