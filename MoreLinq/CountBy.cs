@@ -61,24 +61,27 @@ namespace MoreLinq
         {
             var dic = new Dictionary<TKey, int>(comparer);
             var keys = new List<TKey>();
+            var counts = new List<int>();
 
             foreach (var item in source)
             {
                 var key = keySelector(item);
 
-                if (dic.ContainsKey(key))
+                int i;
+                if (dic.TryGetValue(key, out i))
                 {
-                    dic[key]++;
+                    counts[i]++;
                 }
                 else
                 {
-                    dic[key] = 1;
+                    dic[key] = keys.Count;
                     keys.Add(key);
+                    counts.Add(1);
                 }
             }
 
-            foreach (var key in keys)
-                yield return new KeyValuePair<TKey, int>(key, dic[key]);
+            for (var i = 0; i < keys.Count; i++)
+                yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
         }
     }
 }
