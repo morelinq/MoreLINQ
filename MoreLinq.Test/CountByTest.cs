@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -45,31 +45,48 @@ namespace MoreLinq.Test
         [Test]
         public void CountBySimpleTest()
         {
-            IEnumerable<KeyValuePair<int, int>> result = new[] { 1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 }.CountBy(c => c);
+            var result = new[] { 1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 }.CountBy(c => c);
 
-            IEnumerable<KeyValuePair<int, int>> expecteds = new Dictionary<int, int>() { { 1, 4 }, { 2, 3 }, { 3, 2 }, { 4, 1 }, { 5, 1 }, { 6, 1 } };
+            var expectations = new List<KeyValuePair<int, int>>()
+            {
+                { 1, 4 },
+                { 2, 3 },
+                { 3, 2 },
+                { 4, 1 },
+                { 5, 1 },
+                { 6, 1 },
+            };
 
-            result.AssertSequenceEqual(expecteds);
+            result.AssertSequenceEqual(expectations);
         }
 
         [Test]
         public void CountByEvenOddTest()
         {
-            IEnumerable<KeyValuePair<int, int>> result = Enumerable.Range(1, 100).CountBy(c => c % 2);
+            var result = Enumerable.Range(1, 100).CountBy(c => c % 2);
 
-            IEnumerable<KeyValuePair<int, int>> expecteds = new Dictionary<int, int>() { { 1, 50 }, { 0, 50 } };
+            var expectations = new List<KeyValuePair<int, int>>()
+            {
+                { 1, 50 },
+                { 0, 50 },
+            };
 
-            result.AssertSequenceEqual(expecteds);
+            result.AssertSequenceEqual(expectations);
         }
 
         [Test]
         public void CountByWithEqualityComparer()
         {
-            IEnumerable<KeyValuePair<string, int>> result = new[] { "a", "B", "c", "A", "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
+            var result = new[] { "a", "B", "c", "A", "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
 
-            IEnumerable<KeyValuePair<string, int>> expecteds = new Dictionary<string, int>() { { "a", 3 }, { "B", 2 }, { "c", 1 } };
+            var expectations = new List<KeyValuePair<string, int>>()
+            {
+                { "a", 3 },
+                { "B", 2 },
+                { "c", 1 },
+            };
 
-            result.AssertSequenceEqual(expecteds);
+            result.AssertSequenceEqual(expectations);
         }
     }
 }
