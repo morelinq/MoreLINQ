@@ -76,7 +76,7 @@ namespace MoreLinq
 
         public MemoizedEnumerable(IEnumerable<T> sequence, bool forceBuffering)
         {
-		    if (sequence == null) throw new ArgumentNullException("sequence");
+            if (sequence == null) throw new ArgumentNullException("sequence");
 		
             if (!forceBuffering && sequence is ICollection<T>)
             {
