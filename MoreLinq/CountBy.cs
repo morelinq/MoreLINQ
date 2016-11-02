@@ -63,15 +63,21 @@ namespace MoreLinq
             var dic = new Dictionary<TKey, int>(comparer);
             var keys = new List<TKey>();
             var counts = new List<int>();
+            var havePrevKey = false;
+            var prevKey = default(TKey);
+            var index = 0;
 
             foreach (var item in source)
             {
                 var key = keySelector(item);
 
-                int i;
-                if (dic.TryGetValue(key, out i))
+                if (// key same as the previous? then re-use the index
+                    (havePrevKey && dic.Comparer.GetHashCode(prevKey) == dic.Comparer.GetHashCode(key)
+                                  && dic.Comparer.Equals(prevKey, key))
+                    // otherwise try & find index of the key
+                    || dic.TryGetValue(key, out index))
                 {
-                    counts[i]++;
+                    counts[index]++;
                 }
                 else
                 {
@@ -79,6 +85,9 @@ namespace MoreLinq
                     keys.Add(key);
                     counts.Add(1);
                 }
+
+                prevKey = key;
+                havePrevKey = true;
             }
 
             // The dictionary is no longer needed from this point forward so
