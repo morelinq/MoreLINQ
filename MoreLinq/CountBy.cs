@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -26,11 +27,11 @@ namespace MoreLinq
         /// Applies a key-generating function to each element of a sequence and returns a sequence of 
         /// unique keys and their number of occurrences in the original sequence.
         /// </summary>
-        /// <typeparam name="TSource">Type of the source sequence</typeparam>
-        /// <typeparam name="TKey">Type of the projected element</typeparam>
-        /// <param name="source">Source sequence</param>
-        /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others</param>
-        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence</returns>
+        /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TKey">Type of the projected element.</typeparam>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
+        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             return source.CountBy(keySelector, null);
@@ -39,14 +40,15 @@ namespace MoreLinq
         /// <summary>
         /// Applies a key-generating function to each element of a sequence and returns a sequence of 
         /// unique keys and their number of occurrences in the original sequence.
+        /// An additional argument specifies a comparer to use for testing equivalence of keys.
         /// </summary>
-        /// <typeparam name="TSource">Type of the source sequence</typeparam>
-        /// <typeparam name="TKey">Type of the projected element</typeparam>
-        /// <param name="source">Source sequence</param>
-        /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others</param>
+        /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TKey">Type of the projected element.</typeparam>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
-        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence</returns>
+        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -58,10 +60,11 @@ namespace MoreLinq
         private static IEnumerable<KeyValuePair<TKey, int>> CountByImpl<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             var dic = new Dictionary<TKey, int>(comparer);
+            var keys = new List<TKey>();
 
             foreach (var item in source)
             {
-                TKey key = keySelector(item);
+                var key = keySelector(item);
 
                 if (dic.ContainsKey(key))
                 {
@@ -70,10 +73,11 @@ namespace MoreLinq
                 else
                 {
                     dic[key] = 1;
+                    keys.Add(key);
                 }
             }
 
-            return dic;
+            return keys.Select(k => new KeyValuePair<TKey, int>(k, dic[k]));
         }
     }
 }
