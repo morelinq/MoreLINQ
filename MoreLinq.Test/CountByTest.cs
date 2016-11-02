@@ -99,5 +99,11 @@ namespace MoreLinq.Test
 
             countByKeys.AssertSequenceEqual(groupByKeys);
         }
+        
+        [Test]
+        public void CountByIsLazy()
+        {
+            new BreakingSequence<string>().CountBy(x => x.Length);
+        }
     }
 }
