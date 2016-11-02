@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     static partial class MoreEnumerable
     {
@@ -80,8 +81,26 @@ namespace MoreLinq
                 }
             }
 
+            // The dictionary is no longer needed from this point forward so
+            // lose the reference and make it available as food for the GC.
+            // This optimization is designed to help cases where a slow running
+            // loop over the yielded pairs could span GC cycles. However,
+            // instead of doing simply the following:
+            //
+            // dic = null;
+            //
+            // the reference is nulled through a method that the JIT compiler
+            // is told not to try and inline; done so assuming that the above
+            // method could have been turned into a NOP (in theory).
+
+            Null(ref dic); // dic = null;
+
             for (var i = 0; i < keys.Count; i++)
                 yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
         }
+
+        // ReSharper disable once RedundantAssignment
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static void Null<T>(ref T obj) where T : class { obj = null; }
     }
 }
