@@ -133,9 +133,14 @@ namespace MoreLinq
                       : -1;
 
                 if (i < 0)
-                    (etc ?? (etc = new List<IGrouping<TKey, TElement>>())).Add(e);
+                {
+                    etc = etc ?? new List<IGrouping<TKey, TElement>>();
+                    etc.Add(e);
+                }
                 else
+                {
                     groups[i] = e;
+                }
             }
 
             return resultSelector(groups[0], groups[1], groups[2], etc ?? Enumerable.Empty<IGrouping<TKey, TElement>>());
