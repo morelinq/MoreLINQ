@@ -58,11 +58,37 @@ namespace MoreLinq
             return CountByImpl(source, keySelector, comparer);
         }
 
-        private static IEnumerable<KeyValuePair<TKey, int>> CountByImpl<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        static IEnumerable<KeyValuePair<TKey, int>> CountByImpl<TSource, TKey>(
+            IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey> comparer)
+        {
+            List<TKey> keys;
+            List<int> counts;
+
+            // Avoid the temptation to inline the CountByLoop method, which
+            // exists solely to separate the scope & lifetimes of the locals
+            // needed for the actual looping of the source & production of the
+            // results (that happens once at the start of iteration) from
+            // those needed to simply yield the results. It is harder to reason
+            // about the lifetimes (if the code is inlined) with respect to how
+            // the compiler will rewrite the iterator code as a state machine.
+            // For background, see:
+            // http://blog.stephencleary.com/2010/02/q-should-i-set-variables-to-null-to.html
+
+            CountByLoop(source, keySelector, comparer ?? EqualityComparer<TKey>.Default,
+                        out keys, out counts);
+
+            for (var i = 0; i < keys.Count; i++)
+                yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
+        }
+
+        static void CountByLoop<TSource, TKey>(IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer,
+            out List<TKey> keys, out List<int> counts)
         {
             var dic = new Dictionary<TKey, int>(comparer);
-            var keys = new List<TKey>();
-            var counts = new List<int>();
+            keys = new List<TKey>();
+            counts = new List<int>();
             var havePrevKey = false;
             var prevKey = default(TKey);
             var index = 0;
@@ -72,8 +98,8 @@ namespace MoreLinq
                 var key = keySelector(item);
 
                 if (// key same as the previous? then re-use the index
-                    (havePrevKey && dic.Comparer.GetHashCode(prevKey) == dic.Comparer.GetHashCode(key)
-                                  && dic.Comparer.Equals(prevKey, key))
+                    (havePrevKey && comparer.GetHashCode(prevKey) == comparer.GetHashCode(key)
+                                  && comparer.Equals(prevKey, key))
                     // otherwise try & find index of the key
                     || dic.TryGetValue(key, out index))
                 {
@@ -89,27 +115,6 @@ namespace MoreLinq
                 prevKey = key;
                 havePrevKey = true;
             }
-
-            // The dictionary is no longer needed from this point forward so
-            // lose the reference and make it available as food for the GC.
-            // This optimization is designed to help cases where a slow running
-            // loop over the yielded pairs could span GC cycles. However,
-            // instead of doing simply the following:
-            //
-            // dic = null;
-            //
-            // the reference is nulled through a method that the JIT compiler
-            // is told not to try and inline; done so assuming that the above
-            // method could have been turned into a NOP (in theory).
-
-            Null(ref dic); // dic = null;
-
-            for (var i = 0; i < keys.Count; i++)
-                yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
         }
-
-        // ReSharper disable once RedundantAssignment
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static void Null<T>(ref T obj) where T : class { obj = null; }
     }
 }
