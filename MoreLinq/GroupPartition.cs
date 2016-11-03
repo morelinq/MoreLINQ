@@ -111,8 +111,8 @@ namespace MoreLinq
         {
             Debug.Assert(count > 0 && count <= 3);
 
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (source == null) throw new ArgumentNullException("source");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             comparer = comparer ?? EqualityComparer<TKey>.Default;
 
