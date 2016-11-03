@@ -30,8 +30,10 @@ namespace MoreLinq
         /// </summary>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
-            Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector) =>
-            source.Partition(true, false, (t, f, _) => resultSelector(t, f));
+            Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+        {
+            return source.Partition(true, false, (t, f, _) => resultSelector(t, f));
+        }
 
         /// <summary>
         /// Partitions a grouping by nullable Boolean keys into a projection of
@@ -39,8 +41,10 @@ namespace MoreLinq
         /// </summary>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
-            Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector) =>
-            source.Partition(true, false, null, (t, f, n, _) => resultSelector(t, f, n));
+            Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+        {
+            return source.Partition(true, false, null, (t, f, n, _) => resultSelector(t, f, n));
+        }
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a key
@@ -49,8 +53,10 @@ namespace MoreLinq
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key,
-            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, key, null, resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+        {
+            return Partition(source, key, null, resultSelector);
+        }
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a key
@@ -60,8 +66,11 @@ namespace MoreLinq
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key, IEqualityComparer<TKey> comparer,
-            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            PartitionImpl(source, 1, key, default(TKey), default(TKey), comparer, (a, b, c, rest) => resultSelector(a, rest));
+            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+        {
+            return PartitionImpl(source, 1, key, default(TKey), default(TKey), comparer,
+                                 (a, b, c, rest) => resultSelector(a, rest));
+        }
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -70,8 +79,10 @@ namespace MoreLinq
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, key1, key2, null, resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+        {
+            return Partition(source, key1, key2, null, resultSelector);
+        }
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -81,8 +92,11 @@ namespace MoreLinq
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            PartitionImpl(source, 2, key1, key2, default(TKey), comparer, (a, b, c, rest) => resultSelector(a, b, rest));
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+        {
+            return PartitionImpl(source, 2, key1, key2, default(TKey), comparer,
+                                 (a, b, c, rest) => resultSelector(a, b, rest));
+        }
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -91,8 +105,10 @@ namespace MoreLinq
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, key1, key2, key3, null, resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+        {
+            return Partition(source, key1, key2, key3, null, resultSelector);
+        }
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -102,8 +118,10 @@ namespace MoreLinq
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+        {
+            return PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
+        }
 
         static TResult PartitionImpl<TKey, TElement, TResult>(IEnumerable<IGrouping<TKey, TElement>> source,
             int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
