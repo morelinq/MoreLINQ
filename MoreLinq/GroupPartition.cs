@@ -64,8 +64,8 @@ namespace MoreLinq
             PartitionImpl(source, 1, key, default(TKey), default(TKey), comparer, (a, b, c, rest) => resultSelector(a, rest));
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching two
-        /// sets of keys and those groups that do not.
+        /// Partitions a grouping into a projection of elements matching a
+        /// set of two keys and those groups that do not.
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -74,9 +74,9 @@ namespace MoreLinq
             Partition(source, k1, k2, null, resultSelector);
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching two
-        /// sets of keys and those groups that do not. An additional parameter
-        /// specifies how to compare keys for equality.
+        /// Partitions a grouping into a projection of elements matching a
+        /// set of two keys and those groups that do not. An additional
+        /// parameter specifies how to compare keys for equality.
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -85,8 +85,8 @@ namespace MoreLinq
             PartitionImpl(source, 2, k1, k2, default(TKey), comparer, (a, b, c, rest) => resultSelector(a, b, rest));
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching three
-        /// sets of keys and those groups that do not.
+        /// Partitions a grouping into a projection of elements matching a
+        /// set of three keys and those groups that do not.
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -95,9 +95,9 @@ namespace MoreLinq
             Partition(source, k1, k2, k3, null, resultSelector);
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching three
-        /// sets of keys and those groups that do not. An additional parameter
-        /// specifies how to compare keys for equality.
+        /// Partitions a grouping into a projection of elements matching a
+        /// set of three keys and those groups that do not. An additional
+        /// parameter specifies how to compare keys for equality.
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
