@@ -69,9 +69,9 @@ namespace MoreLinq
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey k1, TKey k2,
+            TKey key1, TKey key2,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, k1, k2, null, resultSelector);
+            Partition(source, key1, key2, null, resultSelector);
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -80,9 +80,9 @@ namespace MoreLinq
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey k1, TKey k2, IEqualityComparer<TKey> comparer,
+            TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            PartitionImpl(source, 2, k1, k2, default(TKey), comparer, (a, b, c, rest) => resultSelector(a, b, rest));
+            PartitionImpl(source, 2, key1, key2, default(TKey), comparer, (a, b, c, rest) => resultSelector(a, b, rest));
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -90,9 +90,9 @@ namespace MoreLinq
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey k1, TKey k2, TKey k3,
+            TKey key1, TKey key2, TKey key3,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, k1, k2, k3, null, resultSelector);
+            Partition(source, key1, key2, key3, null, resultSelector);
 
         /// <summary>
         /// Partitions a grouping into a projection of elements matching a
@@ -101,12 +101,12 @@ namespace MoreLinq
         /// </summary>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey k1, TKey k2, TKey k3, IEqualityComparer<TKey> comparer,
+            TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            PartitionImpl(source, 3, k1, k2, k3, comparer, resultSelector);
+            PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
 
         static TResult PartitionImpl<TKey, TElement, TResult>(IEnumerable<IGrouping<TKey, TElement>> source,
-            int count, TKey k1, TKey k2, TKey k3, IEqualityComparer<TKey> comparer,
+            int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             Debug.Assert(count > 0 && count <= 3);
@@ -127,9 +127,9 @@ namespace MoreLinq
 
             foreach (var e in source)
             {
-                var i = count > 0 && comparer.Equals(e.Key, k1) ? 0
-                      : count > 1 && comparer.Equals(e.Key, k2) ? 1
-                      : count > 2 && comparer.Equals(e.Key, k3) ? 2
+                var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
+                      : count > 1 && comparer.Equals(e.Key, key2) ? 1
+                      : count > 2 && comparer.Equals(e.Key, key3) ? 2
                       : -1;
 
                 if (i < 0)
