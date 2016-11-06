@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MemoizeWithInnerForeach()
+        public void MemoizeReturningExpectedElementsWhenUsedAtInnerForeach()
         {
             var array = Enumerable.Range(1, 10).ToArray();
             var buffer = Enumerable.Range(1, 10).Memoize();
@@ -115,7 +115,7 @@ namespace MoreLinq.Test
             List<int> list = Enumerable.Range(1, 10).ToList();
 
             Assert.IsInstanceOf<List<int>.Enumerator>(list.Memoize().GetEnumerator());
-            Assert.IsInstanceOf<List<int>.Enumerator>(list.Memoize(false).GetEnumerator());
+            Assert.IsInstanceOf<List<int>.Enumerator>(list.Memoize(false, false).GetEnumerator());
         }
 
         [Test]
@@ -123,7 +123,50 @@ namespace MoreLinq.Test
         {
             List<int> list = Enumerable.Range(1, 10).ToList();
 
-            Assert.IsNotInstanceOf<List<int>.Enumerator>(list.Memoize(true).GetEnumerator());
+            Assert.IsNotInstanceOf<List<int>.Enumerator>(list.Memoize(true, false).GetEnumerator());
+        }
+
+        [Test]
+        public void MemoizeIsEnumeratedOnlyOnce()
+        {
+            var memoized = new SingleUseEnumerable<int>(Enumerable.Range(1, 10)).Memoize();
+
+            Assert.IsTrue(memoized.ToList().Count == 10);
+            Assert.IsTrue(memoized.ToList().Count == 10);
+        }
+
+        [Test]
+        public void MemoizeNotDisponsingOnEarlyExit()
+        {
+            TestSequence().Memoize().Take(1).ToList();
+            TestSequence().Memoize(false, false).Take(1).ToList();
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void MemoizeDisponsingOnEarlyExit()
+        {
+            TestSequence().Memoize(false, true).Take(1).ToList();
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void MemoizeDisponsingAfterSourceWasEntirelyIterated()
+        {
+            TestSequence().Memoize().ToList();
+        }
+
+        private IEnumerable<int> TestSequence()
+        {
+            try
+            {
+                yield return 1;
+                yield return 2;
+            }
+            finally
+            {
+                throw new InvalidOperationException("leaking resources");
+            }
         }
     }
 }
