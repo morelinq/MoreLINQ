@@ -23,8 +23,9 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns the source sequence with null references or values replaced
-        /// with the last non-null reference or value seen in the sequence.
+        /// Returns a sequence with each null reference or value in the source
+        /// replaced with the previous non-null reference or value seen in
+        /// that sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
@@ -44,10 +45,10 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns the source sequence with missing element replaced with
-        /// the last non-missing element seen in the sequence. An additional
-        /// parameter specified a function used to determine if an element is
-        /// considered missing or not.
+        /// Returns a sequence with each missing element in the source replaced
+        /// with the previous non-missing element seen in that sequence. An
+        /// additional parameter specified a function used to determine if an
+        /// element is considered missing or not.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The function used to determine if
