@@ -34,7 +34,7 @@ namespace MoreLinq
         /// <remarks>
         /// This method uses deferred execution semantics and streams its
         /// results. If values are null at the start of the sequence then
-        /// they remain missing.
+        /// they remain null.
         /// </remarks>
 
         public static IEnumerable<T?> Locf<T>(this IEnumerable<T?> source)
@@ -55,7 +55,7 @@ namespace MoreLinq
         /// <remarks>
         /// This method uses deferred execution semantics and streams its
         /// results. If references are null at the start of the sequence then
-        /// they remain missing.
+        /// they remain null.
         /// </remarks>
 
         public static IEnumerable<T> Locf<T>(this IEnumerable<T> source) where T : class
