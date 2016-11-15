@@ -24,7 +24,7 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns the source sequence with null references or values replaced
-        /// with the last non-null reference or value seen the in sequence.
+        /// with the last non-null reference or value seen in the sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
