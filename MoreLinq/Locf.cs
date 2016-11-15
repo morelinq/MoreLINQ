@@ -23,8 +23,8 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns the source sequence with null values replaced with last
-        /// the value seen in the sequence.
+        /// Returns the source sequence with null values replaced with the last
+        /// value seen in the sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
