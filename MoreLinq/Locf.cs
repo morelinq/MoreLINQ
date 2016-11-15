@@ -44,8 +44,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns the source sequence with missing values replaced with
-        /// the last non-missing value seen in the sequence. An additional
+        /// Returns the source sequence with missing element replaced with
+        /// the last non-missing element seen in the sequence. An additional
         /// parameter specified a function used to determine if an element is
         /// considered missing or not.
         /// </summary>
@@ -58,7 +58,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>
         /// This method uses deferred execution semantics and streams its
-        /// results. If values are missing at the start of the sequence then
+        /// results. If elements are missing at the start of the sequence then
         /// they remain missing.
         /// </remarks>
 
