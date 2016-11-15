@@ -24,7 +24,7 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns the source sequence with null values replaced with the last
-        /// value seen in the sequence.
+        /// non-null value seen in the sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
@@ -45,7 +45,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the source sequence with null references replaced with
-        /// the last reference seen the in sequence.
+        /// the last non-null reference seen the in sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
@@ -65,8 +65,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the source sequence with missing values replaced with
-        /// the last value seen in the sequence. An additional parameter
-        /// specified a function used to determine if an element is
+        /// the last non-missing value seen in the sequence. An additional
+        /// parameter specified a function used to determine if an element is
         /// considered missing or not.
         /// </summary>
         /// <param name="source">The source sequence.</param>
