@@ -25,7 +25,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each null reference or value in the source
         /// replaced with the previous non-null reference or value seen in
-        /// that sequence.
+        /// that sequence. (LOCF = Last Observation Carry Forward)
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
@@ -48,7 +48,8 @@ namespace MoreLinq
         /// Returns a sequence with each missing element in the source replaced
         /// with the previous non-missing element seen in that sequence. An
         /// additional parameter specified a function used to determine if an
-        /// element is considered missing or not.
+        /// element is considered missing or not. (LOCF = Last Observation
+        /// Carry Forward)
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The function used to determine if
