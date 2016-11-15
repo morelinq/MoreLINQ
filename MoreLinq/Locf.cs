@@ -64,14 +64,14 @@ namespace MoreLinq
 
         public static IEnumerable<T> Locf<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
+            if (source == null) throw new ArgumentNullException("source");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
             return LocfImpl(source, predicate);
         }
 
         static IEnumerable<T> LocfImpl<T>(IEnumerable<T> source, Func<T, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
-
             var seeded = false;
             var seed = default(T);
             foreach (var item in source)
