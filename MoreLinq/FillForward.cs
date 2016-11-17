@@ -25,7 +25,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each null reference or value in the source
         /// replaced with the previous non-null reference or value seen in
-        /// that sequence. (LOCF = Last Observation Carry Forward)
+        /// that sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
@@ -39,17 +39,16 @@ namespace MoreLinq
         /// sequence then they remain null.
         /// </remarks>
 
-        public static IEnumerable<T> Locf<T>(this IEnumerable<T> source)
+        public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source)
         {
-            return source.Locf(e => e == null);
+            return source.FillForward(e => e == null);
         }
 
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the previous non-missing element seen in that sequence. An
         /// additional parameter specified a function used to determine if an
-        /// element is considered missing or not. (LOCF = Last Observation
-        /// Carry Forward)
+        /// element is considered missing or not.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The function used to determine if
@@ -64,7 +63,7 @@ namespace MoreLinq
         /// they remain missing.
         /// </remarks>
 
-        public static IEnumerable<T> Locf<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (predicate == null) throw new ArgumentNullException("predicate");
