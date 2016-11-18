@@ -27,8 +27,6 @@ namespace MoreLinq
         /// Processes a sequence into a series of subsequences representing a windowed subset of the original
         /// </summary>
         /// <remarks>
-        /// This operator is guaranteed to return at least one result, even if the source sequence is smaller
-        /// than the window size.<br/>
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
         /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
