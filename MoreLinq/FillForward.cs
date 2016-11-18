@@ -68,10 +68,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return LocfImpl(source, predicate);
+            return FillForwardImpl(source, predicate);
         }
 
-        static IEnumerable<T> LocfImpl<T>(IEnumerable<T> source, Func<T, bool> predicate)
+        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate)
         {
             var seeded = false;
             var seed = default(T);
