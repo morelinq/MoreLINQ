@@ -43,7 +43,8 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that a sliding window of an any size over an empty sequence is a single empty sequence
+        /// Verify that a sliding window of an any size over an empty sequence
+        /// is an empty sequence
         /// </summary>
         [Test]
         public void TestSlidingWindowEmptySequence()
@@ -51,7 +52,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.Windowed(5);
 
-            Assert.IsTrue( result.Single().SequenceEqual(sequence) );
+            Assert.IsEmpty(result);
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace MoreLinq.Test
 
         /// <summary>
         /// Verify that asking for a window large than the source sequence results
-        /// in a single sequence whose content is the same as the source sequence.
+        /// in a empty sequence.
         /// </summary>
         [Test]
         public void TestSlidingWindowLargerThanSequence()
@@ -86,7 +87,7 @@ namespace MoreLinq.Test
 
             // there should only be one window whose contents is the same
             // as the source sequence
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.IsEmpty(result);
         }
 
         /// <summary>
