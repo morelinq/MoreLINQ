@@ -25,7 +25,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each null reference or value in the source
         /// replaced with the following non-null reference or value in
-        /// that sequence. (NOCB = Next Observation Carry Backward)
+        /// that sequence.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
@@ -39,17 +39,16 @@ namespace MoreLinq
         /// sequence then they remain null.
         /// </remarks>
 
-        public static IEnumerable<T> Nocb<T>(this IEnumerable<T> source)
+        public static IEnumerable<T> FillBackward<T>(this IEnumerable<T> source)
         {
-            return source.Nocb(e => e == null);
+            return source.FillBackward(e => e == null);
         }
 
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the following non-missing element in that sequence. An
         /// additional parameter specified a function used to determine if an
-        /// element is considered missing or not. (NOCB = Next Observation
-        /// Carry Backward)
+        /// element is considered missing or not.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The function used to determine if
@@ -64,7 +63,7 @@ namespace MoreLinq
         /// they remain missing.
         /// </remarks>
 
-        public static IEnumerable<T> Nocb<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        public static IEnumerable<T> FillBackward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException("source");
             if (predicate == null) throw new ArgumentNullException("predicate");
