@@ -47,7 +47,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the previous non-missing element seen in that sequence. An
-        /// additional parameter specified a function used to determine if an
+        /// additional parameter specifies a function used to determine if an
         /// element is considered missing or not.
         /// </summary>
         /// <param name="source">The source sequence.</param>
