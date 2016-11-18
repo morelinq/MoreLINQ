@@ -68,10 +68,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return NocbImpl(source, predicate);
+            return FillBackwardImpl(source, predicate);
         }
 
-        static IEnumerable<T> NocbImpl<T>(IEnumerable<T> source, Func<T, bool> predicate)
+        static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate)
         {
             List<T> blanks = null;
 
