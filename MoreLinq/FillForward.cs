@@ -68,10 +68,41 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException("source");
             if (predicate == null) throw new ArgumentNullException("predicate");
 
-            return FillForwardImpl(source, predicate);
+            return FillForwardImpl(source, predicate, null);
         }
 
-        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate)
+        /// <summary>
+        /// Returns a sequence with each missing element in the source replaced
+        /// with one based on the previous non-missing element seen in that
+        /// sequence. An  additional parameter specifies a function used to
+        /// determine if an element is considered missing or not.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">The function used to determine if
+        /// an element in the sequence is considered missing.</param>
+        /// <param name="fillSelector">The function used to produce the element
+        /// that will replace the missing one. It receives the previous
+        /// non-element as well as the current element considered missing.</param>
+        /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> with missing values replaced.
+        /// </returns>
+        /// <remarks>
+        /// This method uses deferred execution semantics and streams its
+        /// results. If elements are missing at the start of the sequence then
+        /// they remain missing.
+        /// </remarks>
+
+        public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (fillSelector == null) throw new ArgumentNullException("fillSelector");
+
+            return FillForwardImpl(source, predicate, fillSelector);
+        }
+
+        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
         {
             var seeded = false;
             var seed = default(T);
@@ -80,7 +111,11 @@ namespace MoreLinq
                 var blank = predicate(item);
                 if (blank)
                 {
-                    yield return seeded ? seed : item;
+                    yield return seeded
+                               ? fillSelector != null
+                                 ? fillSelector(seed, item)
+                                 : seed
+                               : item;
                 }
                 else
                 {
