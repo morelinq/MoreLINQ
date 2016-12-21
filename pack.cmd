@@ -9,8 +9,7 @@ if "%nuget%"=="" goto :nonuget
 if not exist dist md dist
 if not %errorlevel%==0 exit /b %errorlevel%
 call build /v:m ^
-    && dotnet pack -c Release MoreLinq\project.json -o dist ^
-    && for %%i in (pkg\MoreLinq.Source.*.nuspec) do nuget pack %%i -OutputDirectory dist
+    && dotnet pack -c Release MoreLinq\project.json -o dist
 goto :EOF
 
 :nonuget
