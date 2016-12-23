@@ -87,13 +87,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchSequenceYieldsBatches()
+        public void BatchSequenceYieldsListsOfBatches()
         {
             var result = new[] { 1, 2, 3 }.Batch(2);
             using (var reader = result.Read())
             {
-                Assert.That(reader.Read(), Is.Not.InstanceOf(typeof(ICollection<int>)));
-                Assert.That(reader.Read(), Is.Not.InstanceOf(typeof(ICollection<int>)));
+                Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
+                Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
                 reader.ReadEnd();
             }
         }
