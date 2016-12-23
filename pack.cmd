@@ -1,7 +1,11 @@
 @echo off
+pushd "%~dp0"
+call :main %*
+popd
+goto :EOF
+
+:main
 setlocal
-cd "%~dp0"
-chcp 1252 > nul
 for %%i in (NuGet.exe) do set nuget=%%~dpnx$PATH:i
 if "%nuget%"=="" goto :nonuget
 if not exist dist md dist
