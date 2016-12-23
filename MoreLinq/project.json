@@ -69,7 +69,7 @@
         "System.Xml": ""
       }
     },
-    "netstandard1.6": {
+    "netstandard1.0": {
       "buildOptions": {
         "compile": {
           "exclude": [
