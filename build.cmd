@@ -15,7 +15,8 @@ if "%dotnet%"=="" goto :nodotnet
 if "%1"=="docs" shift & goto :docs
 
 :base
-dotnet restore ^
+dotnet --info ^
+  && dotnet restore ^
   && for %%i in (debug release) do "%MSBUILD%" "MoreLinq.sln" /v:m /p:Configuration=%%i %* || exit /b 1
 goto :EOF
 
