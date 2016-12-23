@@ -33,7 +33,6 @@ namespace MoreLinq
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content). 
-        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
@@ -52,7 +51,6 @@ namespace MoreLinq
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content).
-        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
         /// </remarks>
         
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,

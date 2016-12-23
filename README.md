@@ -47,7 +47,6 @@ Operator             | Summary
 `OrderedMerge`       | Merges two ordered sequences into one. Where the elements equal in both sequences, the element from the first sequence is returned in the resulting sequence. This method has 7 overloads.
 `Pad`                | Pads a sequence with default values if it is narrower (shorter in length) than a given width. This method has 3 overloads.
 `Pairwise`           | Returns a sequence resulting from applying a function to each element in the source sequence and its predecessor, with the exception of the first element which is only returned as the predecessor of the second element
-`Partition`          | Partitions a sequence into equal-sized partitions. This method has 2 overloads.
 `Permutations`       | Generates a sequence of lists that represent the permutations of the original sequence
 `Pipe`               | Executes the given action on each element in the source sequence and yields it
 `Prepend`            | Prepends a single value to a sequence
