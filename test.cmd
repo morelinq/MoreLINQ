@@ -26,6 +26,6 @@ echo Testing %1 (%2)...
 goto :EOF
 
 :nonuget
-echo NuGet executable not found in PATH
-echo To download a version, see https://dist.nuget.org/
+echo>&2 NuGet executable not found in PATH
+echo>&2 To download a version, see https://dist.nuget.org/
 exit /b 2
