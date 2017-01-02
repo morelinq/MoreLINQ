@@ -92,5 +92,7 @@ namespace MoreLinq.Test
             public bool Disposed { get; private set; }    
             public void Dispose() { Disposed = true; }
         }
+
+        class ApplicationException : Exception {}
     }
 }

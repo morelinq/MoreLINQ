@@ -34,25 +34,25 @@ namespace MoreLinq.Test
             first.StartsWith(second);
         }
 
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2}, Result = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, Result = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3, 4}, Result = false)]
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2}, ExpectedResult = true)]
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3, 4}, ExpectedResult = false)]
         public bool StartsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
         {
             return first.StartsWith(second);
         }
 
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2'}, Result = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, Result = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3', '4'}, Result = false)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2'}, ExpectedResult = true)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, ExpectedResult = true)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3', '4'}, ExpectedResult = false)]
         public bool StartsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
         {
             return first.StartsWith(second);
         }
 
-        [TestCase("123", "12", Result = true)]
-        [TestCase("123", "123", Result = true)]
-        [TestCase("123", "1234", Result = false)]
+        [TestCase("123", "12", ExpectedResult = true)]
+        [TestCase("123", "123", ExpectedResult = true)]
+        [TestCase("123", "1234", ExpectedResult = false)]
         public bool StartsWithWithStrings(string first, string second)
         {
             // Conflict with String.StartsWith(), which has precedence in this case
@@ -71,8 +71,8 @@ namespace MoreLinq.Test
             Assert.False(new int[0].StartsWith(new[] {1,2,3}));
         }
 
-        [TestCase("", "", Result = true)]
-        [TestCase("1", "", Result = true)]
+        [TestCase("", "", ExpectedResult = true)]
+        [TestCase("1", "", ExpectedResult = true)]
         public bool StartsWithReturnsTrueIfSecondIsEmpty(string first, string second)
         {
             // Conflict with String.StartsWith(), which has precedence in this case

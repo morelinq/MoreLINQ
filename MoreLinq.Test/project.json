@@ -1,4 +1,5 @@
 {
+  "version": "2.0.0",
   "name": "MoreLinq.Test",
   "title": "MoreLinq.Test",
   "authors": [
@@ -14,9 +15,9 @@
     "MoreLinq": {
       "target": "project"
     },
-    "NUnit": "2.*"
+    "NUnit": "3.4.1",
+    "dotnet-test-nunit": "3.4.0-*"
   },
-  "version": "2.0.0",
   "buildOptions": {
     "debugType": "portable",
     "emitEntryPoint": false,
@@ -42,8 +43,29 @@
       }
     }
   },
+  "testRunner": "nunit",
   "frameworks": {
-    "net4": {
+    "netcoreapp1.0": {
+      "buildOptions": {
+        "compile": {
+          "exclude": [
+            "TraceTest.cs",
+            "ToDataTableTest.cs"
+          ]
+        }
+      },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
+    },
+    "net451": {
       "frameworkAssemblies": {
         "System.Data.DataSetExtensions": "4.0.0.0",
         "System.Data": "4.0.0.0",
