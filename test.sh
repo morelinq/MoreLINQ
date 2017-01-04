@@ -5,7 +5,7 @@ set -e
 dotnet test -f netcoreapp1.0 MoreLinq.Test
 RID=`dotnet --info | grep RID | sed -E 's/ *RID: *(.+)/\1/'`
 if [[ -z `which mono 2>/dev/null` ]]; then
-    echo>&2 NOTE! Mono does not appear to be installed so unit test
+    echo>&2 NOTE! Mono does not appear to be installed so unit tests
     echo>&2 against the Mono runtime will be skipped.
 else
     mono MoreLinq.Test/bin/Debug/net451/$RID/dotnet-test-nunit.exe \
