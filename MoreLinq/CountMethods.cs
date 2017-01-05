@@ -24,16 +24,15 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns true when the number of elements in the given sequence is greater than
+        /// Determines whether or not the number of elements in the sequence is greater than
         /// or equal to the given integer.
-        /// This method throws an exception if the given integer is negative.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="min">The minimum number of items a sequence must have for this
         /// function to return true</param>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException">min is negative</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is greater than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
@@ -51,16 +50,15 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns true when the number of elements in the given sequence is lesser than
+        /// Determines whether or not the number of elements in the sequence is lesser than
         /// or equal to the given integer.
-        /// This method throws an exception if the given integer is negative.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="max">The maximun number of items a sequence must have for this
         /// function to return true</param>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException">max is negative</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="max"/> is negative</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is lesser than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
@@ -78,16 +76,14 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns true when the number of elements in the given sequence is greater than
-        /// or equal to the given integer.
-        /// This method throws an exception if the given integer is negative.
+        /// Determines whether or not the number of elements in the sequence is equals to the given integer.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="length">The exactly number of items a sequence must have for this
         /// function to return true</param>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException">length is negative</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is negative</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is equals
         /// to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
@@ -105,23 +101,17 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns true when the number of elements in the given sequence is between (inclusive)
-        /// to the minimum and maximum given integer.
-        /// This method throws an exception if the minimum given integer is negative
-        /// or if the maximun given integer is lesser than the minimum integer.
+        /// Determines whether or not the number of elements in the sequence is between 
+        /// an inclusive range of minimum and maximum integers.
         /// </summary>
-        /// <remarks>
-        /// The number of items streamed will be greater than or equal to the given integer.
-        /// </remarks>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="min">The minimum number of items a sequence must have for this
         /// function to return true</param>
         /// <param name="max">The maximun number of items a sequence must have for this
         /// function to return true</param>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException">min is negative</exception>
-        /// <exception cref="ArgumentOutOfRangeException">max is lesser than min</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is between (inclusive)
         /// the min and max given integers or <c>false</c> otherwise.</returns>
         /// <example>
