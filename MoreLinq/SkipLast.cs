@@ -38,6 +38,10 @@ namespace MoreLinq
             if (count < 1)
                 return source;
 
+            var col = source as ICollection<T>;
+            if (col != null)
+                return col.Take(col.Count - count);
+
             return SkipLastImpl(source, count);
         }
 
