@@ -24,22 +24,23 @@ namespace MoreLinq.Test
         /// Verify that invoking SlidingWindow on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSlidingWindowNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Windowed(10);
+            Assert.ThrowsArgumentNullException("source", () =>
+                sequence.Windowed(10));
         }
 
         /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestSlidingWindowNegativeWindowSizeException()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            sequence.Windowed(-5);
+
+            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+                sequence.Windowed(-5));
         }
 
         /// <summary>

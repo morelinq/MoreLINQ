@@ -27,11 +27,17 @@ namespace MoreLinq.Test
     {
         [TestCase(null, null)]
         [TestCase(null, new[] {1})]
-        [TestCase(new[] {1}, null)]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void EndsWithThrowsIfFirstOrSecondAreNull(IEnumerable<int> first, IEnumerable<int> second)
+        public void EndsWithThrowsIfFirsIsNull(IEnumerable<int> first, IEnumerable<int> second)
         {
-            first.EndsWith(second);
+            Assert.ThrowsArgumentNullException("first", () =>
+                first.EndsWith(second));
+        }
+
+        [TestCase(new[] {1}, null)]
+        public void EndsWithThrowsIfSecondIsNull(IEnumerable<int> first, IEnumerable<int> second)
+        {
+            Assert.ThrowsArgumentNullException("second", () =>
+                first.EndsWith(second));
         }
 
         [TestCase(new[] {1, 2, 3}, new[] {2, 3}, ExpectedResult = true)]

@@ -47,10 +47,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConcatWithNullTailSequence()
         {
-            MoreEnumerable.Concat("head", null);
+            Assert.ThrowsArgumentNullException("tail",() =>
+                MoreEnumerable.Concat("head", null));
         }
 
         [Test]
@@ -89,10 +89,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConcatWithNullHeadSequence()
         {
-            MoreEnumerable.Concat(null, "tail");
+            Assert.ThrowsArgumentNullException("head",() =>
+                MoreEnumerable.Concat(null, "tail"));
         }
 
         [Test]

@@ -25,17 +25,17 @@ namespace MoreLinq.Test
     public class SkipUntilTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SkipUntilNullSource()
         {
-            MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1);
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SkipUntilNullPredicate()
         {
-            MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1);
+            Assert.ThrowsArgumentNullException("source",() =>
+                MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
         }
 
         [Test]
