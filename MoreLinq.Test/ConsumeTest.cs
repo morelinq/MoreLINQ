@@ -25,10 +25,12 @@ namespace MoreLinq.Test
     public class ConsumeTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConsumeWithNullSource()
         {
-            MoreEnumerable.Consume<int>(null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.Consume<int>(null);
+            });
         }
 
         [Test]

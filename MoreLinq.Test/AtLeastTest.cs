@@ -27,18 +27,22 @@ namespace MoreLinq.Test
     public class AtLeastTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AtLeastWithNullSequence()
         {
-            IEnumerable<int> sequence = null;
-            sequence.AtLeast(1);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IEnumerable<int> sequence = null;
+                sequence.AtLeast(1);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AtLeastWithNegativeCount()
         {
-            new[] { 1 }.AtLeast(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                new[] { 1 }.AtLeast(-1);
+            });
         }
 
         private static IEnumerable<int> GetSequence()

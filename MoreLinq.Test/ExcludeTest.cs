@@ -24,31 +24,37 @@ namespace MoreLinq.Test
         /// Verify that invoking exclude on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestExcludeNullSequenceException()
         {
-            const IEnumerable<int> sequence = null;
-            sequence.Exclude(0, 10);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                const IEnumerable<int> sequence = null;
+                sequence.Exclude(0, 10);
+            });
         }
 
         /// <summary>
         /// Verify that a negative startIndex parameter results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestExcludeNegativeStartIndexException()
         {
-            Enumerable.Range(1, 10).Exclude(-10, 10);
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                Enumerable.Range(1, 10).Exclude(-10, 10);
+            });
         }
 
         /// <summary>
         /// Verify that a negative count parameter results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestExcludeNegativeCountException()
         {
-            Enumerable.Range(1, 10).Exclude(0, -5);
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                Enumerable.Range(1, 10).Exclude(0, -5);
+            });
         }
 
         /// <summary>

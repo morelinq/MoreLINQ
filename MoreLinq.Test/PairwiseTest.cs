@@ -24,17 +24,21 @@ namespace MoreLinq.Test
     public class PairwiseTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PairwiseNullSource()
         {
-            MoreEnumerable.Pairwise<object, object>(null, delegate { return 0; });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.Pairwise<object, object>(null, delegate { return 0; });
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PairwiseNullResultSelector()
         {
-            new object[0].Pairwise<object, object>(null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new object[0].Pairwise<object, object>(null);
+            });
         }
 
         [Test]

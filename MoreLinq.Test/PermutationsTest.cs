@@ -163,11 +163,13 @@ namespace MoreLinq.Test
         /// Verify that invoking Permutations() on a <c>null</c> sequence results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestPermutationNullSequenceException()
         {
-            const IEnumerable<int> sequence = null;
-            sequence.Permutations();
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                const IEnumerable<int> sequence = null;
+                sequence.Permutations();
+            });
         }
 
         /// <summary>

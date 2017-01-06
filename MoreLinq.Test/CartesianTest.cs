@@ -24,33 +24,39 @@ namespace MoreLinq.Test
         /// Verify applying Cartesian to a <c>null</c> sequence results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCartesianSequenceANullException()
         {
-            const IEnumerable<int> sequence = null;
-            sequence.Cartesian(Enumerable.Repeat(1, 10), (a, b) => a + b);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                const IEnumerable<int> sequence = null;
+                sequence.Cartesian(Enumerable.Repeat(1, 10), (a, b) => a + b);
+            });
         }
 
         /// <summary>
         /// Verify passing a <c>null</c> second sequence to Cartesian results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCartesianSequenceBNullException()
         {
-            var sequence = Enumerable.Repeat(1,10);
-            sequence.Cartesian<int,int,int>(null, (a, b) => a + b);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var sequence = Enumerable.Repeat(1, 10);
+                sequence.Cartesian<int, int, int>(null, (a, b) => a + b);
+            });
         }
 
         /// <summary>
         /// Verify that passing a <c>null</c> projection function to Cartesian results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestCartesianResultSelectorNullException()
         {
-            var sequence = Enumerable.Repeat(1, 10);
-            sequence.Cartesian(sequence, (Func<int, int, int>) null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var sequence = Enumerable.Repeat(1, 10);
+                sequence.Cartesian(sequence, (Func<int, int, int>)null);
+            });
         }
 
         /// <summary>

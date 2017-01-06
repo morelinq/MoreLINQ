@@ -26,31 +26,39 @@ namespace MoreLinq.Test
     public class BatchTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void BatchNullSequence()
         {
-            MoreEnumerable.Batch<object>(null, 1);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.Batch<object>(null, 1);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchZeroSize()
         {
-            new object[0].Batch(0);
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                new object[0].Batch(0);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchNegativeSize()
         {
-            new object[0].Batch(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                new object[0].Batch(-1);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void BatchWithNullResultSelector()
         {
-            new object[0].Batch<object, object>(1, null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new object[0].Batch<object, object>(1, null);
+            });
         }
 
         [Test]

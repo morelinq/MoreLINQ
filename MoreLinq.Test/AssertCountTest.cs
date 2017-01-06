@@ -24,17 +24,21 @@ namespace MoreLinq.Test
     public class AssertCountTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AssertCountNullSequence()
         {
-            MoreEnumerable.AssertCount<object>(null, 0);
+            Assert.Throws<ArgumentNullException>( () =>
+            {
+                MoreEnumerable.AssertCount<object>(null, 0);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertCountNegativeCount()
         {
-            new object[0].AssertCount(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                new object[0].AssertCount(-1);
+            });
         }
 
         [Test]
@@ -44,17 +48,21 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(SequenceException))]
         public void AssertCountShortSequence()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume();
+            Assert.Throws<SequenceException>(() =>
+            {
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume();
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(SequenceException))]
         public void AssertCountLongSequence()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume();
+            Assert.Throws<SequenceException>(() =>
+            {
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume();
+            });
         }
 
         [Test]

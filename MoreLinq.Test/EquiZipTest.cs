@@ -73,43 +73,53 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
-            Assert.That(zipped, Is.Not.Null);
-            zipped.Consume();
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
+                Assert.That(zipped, Is.Not.Null);
+                zipped.Consume();
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
-            Assert.That(zipped, Is.Not.Null);
-            zipped.Consume();
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
+                Assert.That(zipped, Is.Not.Null);
+                zipped.Consume();
+                zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullFirstSequence()
         {
-            MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>());
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>());
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null);
+            });
         }
 
         [Test]

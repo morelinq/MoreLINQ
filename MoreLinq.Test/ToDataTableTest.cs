@@ -72,70 +72,86 @@ namespace MoreLinq.Test
 
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ToDataTableNullSequence()
         {
-            IEnumerable<TestObject> source = null;
-            source.ToDataTable();
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IEnumerable<TestObject> source = null;
+                source.ToDataTable();
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ToDataTableNullTable()
         {
-            DataTable dt = null;
-            m_TestObjects.ToDataTable(dt);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                DataTable dt = null;
+                m_TestObjects.ToDataTable(dt);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableNullMemberExpressionMethod()
         {
-            Expression<Func<TestObject, object>> expression = null;
+            Assert.Throws<ArgumentException>(() =>
+            {
+                Expression<Func<TestObject, object>> expression = null;
 
-            m_TestObjects.ToDataTable<TestObject>(expression);
+                m_TestObjects.ToDataTable<TestObject>(expression);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableTableWithWrongColumnNames()
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Test");
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var dt = new DataTable();
+                dt.Columns.Add("Test");
 
-            m_TestObjects.ToDataTable(dt);
+                m_TestObjects.ToDataTable(dt);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableTableWithWrongColumnDataType()
         {
-            var dt = new DataTable();
-            dt.Columns.Add("AString", typeof(int));
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var dt = new DataTable();
+                dt.Columns.Add("AString", typeof(int));
 
-            m_TestObjects.ToDataTable(dt, t=>t.AString);
+                m_TestObjects.ToDataTable(dt, t => t.AString);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableMemberExpressionMethod()
         {
-            m_TestObjects.ToDataTable(t => t.ToString());
+            Assert.Throws<ArgumentException>(() =>
+            {
+                m_TestObjects.ToDataTable(t => t.ToString());
+            });
         }
 
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableMemberExpressionNonMember()
         {
-            m_TestObjects.ToDataTable(t => t.ToString().Length);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                m_TestObjects.ToDataTable(t => t.ToString().Length);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableMemberExpressionIndexer()
         {
-            m_TestObjects.ToDataTable(t => t[0]);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                m_TestObjects.ToDataTable(t => t[0]);
+            });
         }
 
         [Test]

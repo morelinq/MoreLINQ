@@ -49,10 +49,12 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateWithNullGenerator()
         {
-            MoreEnumerable.Generate(0, null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.Generate(0, null);
+            });
         }
 
         [Test]
@@ -62,10 +64,12 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateByIndexWithNullGenerator()
         {
-            MoreEnumerable.GenerateByIndex<int>(null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.GenerateByIndex<int>(null);
+            });
         }
 
         [Test]

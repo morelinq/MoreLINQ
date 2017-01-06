@@ -28,10 +28,12 @@ namespace MoreLinq.Test
         [TestCase(null, null)]
         [TestCase(null, new[] {1})]
         [TestCase(new[] {1}, null)]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void StartsWithThrowsIfFirstOrSecondAreNull(IEnumerable<int> first, IEnumerable<int> second)
         {
-            first.StartsWith(second);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                first.StartsWith(second);
+            });
         }
 
         [TestCase(new[] {1, 2, 3}, new[] {1, 2}, ExpectedResult = true)]

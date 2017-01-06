@@ -25,17 +25,21 @@ namespace MoreLinq.Test
     public class ForEachTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullSequence()
         {
-            MoreEnumerable.ForEach<int>(null, x => { throw new InvalidOperationException(); });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.ForEach<int>(null, x => { throw new InvalidOperationException(); });
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachNullAction()
         {
-            new[] { 1, 2, 3 }.ForEach((Action<int>)null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new[] { 1, 2, 3 }.ForEach((Action<int>)null);
+            });
         }
 
         [Test]
@@ -47,17 +51,21 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachIndexedNullSequence()
         {
-            MoreEnumerable.ForEach<int>(null, ( x, i ) => { throw new InvalidOperationException(); });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.ForEach<int>(null, (x, i) => { throw new InvalidOperationException(); });
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ForEachIndexedNullAction()
         {
-            new[] { 1, 2, 3 }.ForEach((Action<int, int>)null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new[] { 1, 2, 3 }.ForEach((Action<int, int>)null);
+            });
         }
 
         [Test]

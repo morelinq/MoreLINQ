@@ -32,19 +32,23 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullSequence()
         {
-            string[] source = null;
-            source.DistinctBy(x => x.Length);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                string[] source = null;
+                source.DistinctBy(x => x.Length);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullKeySelector()
         {
-            string[] source = {};
-            source.DistinctBy((Func<string,string>) null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                string[] source = { };
+                source.DistinctBy((Func<string, string>)null);
+            });
         }
 
         [Test]
@@ -62,19 +66,23 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullSequenceWithComparer()
         {
-            string[] source = null;
-            source.DistinctBy(x => x, StringComparer.Ordinal);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                string[] source = null;
+                source.DistinctBy(x => x, StringComparer.Ordinal);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DistinctByNullKeySelectorWithComparer()
         {
-            string[] source = { };
-            source.DistinctBy(null, StringComparer.Ordinal);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                string[] source = { };
+                source.DistinctBy(null, StringComparer.Ordinal);
+            });
         }
 
         [Test]

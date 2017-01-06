@@ -24,10 +24,12 @@ namespace MoreLinq.Test
     public class TakeLastTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TakeLastNullSource()
         {
-            MoreEnumerable.TakeLast<object>(null, 0);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.TakeLast<object>(null, 0);
+            });
         }
 
         [Test]

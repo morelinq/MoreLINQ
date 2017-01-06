@@ -24,17 +24,21 @@ namespace MoreLinq.Test
     public class TagFirstLastTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TagFirstLastNullSource()
         {
-            MoreEnumerable.TagFirstLast<object, object>(null, delegate { return null; });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.TagFirstLast<object, object>(null, delegate { return null; });
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TagFirstLastNullResultSelector()
         {
-            new object[0].TagFirstLast<object, object>(null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new object[0].TagFirstLast<object, object>(null);
+            });
         }
 
         [Test]

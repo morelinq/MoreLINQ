@@ -27,38 +27,48 @@ namespace MoreLinq.Test
     public class FullGroupJoinTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupFirstNull()
         {
-            ((IEnumerable<string>)null).FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, DummySelector);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                ((IEnumerable<string>)null).FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, DummySelector);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupSecondNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin((IEnumerable<string>)null, x => x, x => x, DummySelector);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Enumerable.Empty<string>().FullGroupJoin((IEnumerable<string>)null, x => x, x => x, DummySelector);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupFirstKeyNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), (Func<string, string>)null, x => x, DummySelector);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), (Func<string, string>)null, x => x, DummySelector);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupSecondKeyNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, (Func<string, string>)null, DummySelector);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, (Func<string, string>)null, DummySelector);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupResultSelectorNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, (Func<string, IEnumerable<string>, IEnumerable<string>, string>)null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, (Func<string, IEnumerable<string>, IEnumerable<string>, string>)null);
+            });
         }
 
         [Test]

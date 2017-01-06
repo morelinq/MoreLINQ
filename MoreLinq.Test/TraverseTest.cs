@@ -26,17 +26,21 @@ namespace MoreLinq.Test
     public class TraverseTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TraverseBreadthFirstNullGenerator()
         {
-            MoreEnumerable.TraverseBreadthFirst(new object(), null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.TraverseBreadthFirst(new object(), null);
+            });
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TraverseDepthFirstNullGenerator()
         {
-            MoreEnumerable.TraverseDepthFirst(new object(), null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                MoreEnumerable.TraverseDepthFirst(new object(), null);
+            });
         }
 
         [Test]

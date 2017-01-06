@@ -27,24 +27,28 @@ namespace MoreLinq.Test
         /// Verify that SortedMerge throws an exception if invoked on a <c>null</c> sequence.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSortedMergeSequenceNullException()
         {
-            const IEnumerable<int> sequenceA = null;
-            var sequenceB = new BreakingSequence<int>();
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                const IEnumerable<int> sequenceA = null;
+                var sequenceB = new BreakingSequence<int>();
 
-            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+            });
         }
 
         /// <summary>
         /// Verify that SortedMerge throws an exception if invoked with a <c>null</c> <c>otherSequences</c> argument.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSortedMergeOtherSequencesNullException()
         {
-            var sequenceA = new BreakingSequence<int>();
-            sequenceA.SortedMerge(OrderByDirection.Ascending, (IEnumerable<int>[])null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var sequenceA = new BreakingSequence<int>();
+                sequenceA.SortedMerge(OrderByDirection.Ascending, (IEnumerable<int>[])null);
+            });
         }
 
         /// <summary>
