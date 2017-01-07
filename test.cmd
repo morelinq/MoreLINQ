@@ -25,7 +25,7 @@ echo Testing %1 (%2)...
 if %1==netcore10 (
     dotnet test -f netcoreapp1.0 -c %2 MoreLinq.Test
 ) else (
-    %NUNIT_CONSOLE_PATH% MoreLinq.Test\bin\%2\%1\MoreLinq.Test.dll
+    %NUNIT_CONSOLE_PATH% MoreLinq.Test\bin\%2\%1\win7-x86\MoreLinq.Test.dll
 )
 goto :EOF
 
