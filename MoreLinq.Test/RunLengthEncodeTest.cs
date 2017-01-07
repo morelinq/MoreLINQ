@@ -27,9 +27,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestRunLengthEncodeNullSequence()
         {
+            const IEnumerable<int> sequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> sequence = null;
                 sequence.RunLengthEncode();
             });
         }
@@ -40,9 +41,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestRunLengthEncodeNullSequence2()
         {
+            const IEnumerable<int> sequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> sequence = null;
                 sequence.RunLengthEncode(EqualityComparer<int>.Default);
             });
         }

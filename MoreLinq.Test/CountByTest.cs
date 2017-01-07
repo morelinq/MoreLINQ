@@ -29,9 +29,9 @@ namespace MoreLinq.Test
         [Test]
         public void CountByWithNullSequence()
         {
+            IEnumerable<int> sequence = null;
             Assert.Throws<ArgumentNullException>(() =>
             {
-                IEnumerable<int> sequence = null;
                 sequence.CountBy(x => x % 2 == 0);
             });
         }
@@ -39,9 +39,9 @@ namespace MoreLinq.Test
         [Test]
         public void CountByWithNullProjection()
         {
+            Func<int, bool> projection = null;
             Assert.Throws<ArgumentNullException>(() =>
             {
-                Func<int, bool> projection = null;
                 Enumerable.Range(1, 10).CountBy(projection);
             });
         }

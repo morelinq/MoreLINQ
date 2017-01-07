@@ -29,11 +29,11 @@ namespace MoreLinq.Test
         [Test]
         public void TestSortedMergeSequenceNullException()
         {
+            const IEnumerable<int> sequenceA = null;
+            var sequenceB = new BreakingSequence<int>();
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> sequenceA = null;
-                var sequenceB = new BreakingSequence<int>();
-
                 sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
             });
         }
@@ -44,9 +44,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestSortedMergeOtherSequencesNullException()
         {
+            var sequenceA = new BreakingSequence<int>();
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var sequenceA = new BreakingSequence<int>();
                 sequenceA.SortedMerge(OrderByDirection.Ascending, (IEnumerable<int>[])null);
             });
         }

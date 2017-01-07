@@ -26,9 +26,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestSlidingWindowNullSequenceException()
         {
+            const IEnumerable<int> sequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> sequence = null;
                 sequence.Windowed(10);
             });
         }
@@ -39,9 +40,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestSlidingWindowNegativeWindowSizeException()
         {
+            var sequence = Enumerable.Repeat(1, 10);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var sequence = Enumerable.Repeat(1, 10);
                 sequence.Windowed(-5);
             });
         }

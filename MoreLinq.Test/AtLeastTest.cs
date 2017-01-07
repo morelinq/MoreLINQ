@@ -29,9 +29,10 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithNullSequence()
         {
+            IEnumerable<int> sequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                IEnumerable<int> sequence = null;
                 sequence.AtLeast(1);
             });
         }

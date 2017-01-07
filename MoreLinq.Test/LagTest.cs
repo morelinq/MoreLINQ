@@ -27,9 +27,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagNullSequenceException()
         {
+            const IEnumerable<int> sequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> sequence = null;
                 sequence.Lag(10, (val, lagVal) => val);
             });
         }

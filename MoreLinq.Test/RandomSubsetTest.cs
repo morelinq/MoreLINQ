@@ -27,9 +27,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNullSequence()
         {
+            const IEnumerable<int> nullSequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> nullSequence = null;
                 nullSequence.RandomSubset(10);
             });
         }
@@ -40,9 +41,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNullSequence2()
         {
+            const IEnumerable<int> nullSequence = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const IEnumerable<int> nullSequence = null;
                 nullSequence.RandomSubset(10, new Random());
             });
         }
@@ -123,12 +125,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetLongerThanSequence()
         {
+            const int count = 100;
+            const int subsetSize = count + 5;
+            var sequence = Enumerable.Range(1, count);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                const int count = 100;
-                const int subsetSize = count + 5;
-                var sequence = Enumerable.Range(1, count);
-
                 sequence.RandomSubset(subsetSize).Count();
             });
         }
@@ -140,12 +142,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetLongerThanSequence2()
         {
+            const int count = 100;
+            const int subsetSize = count + 5;
+            var sequence = Enumerable.Range(1, count);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                const int count = 100;
-                const int subsetSize = count + 5;
-                var sequence = Enumerable.Range(1, count);
-
                 sequence.RandomSubset(subsetSize, new Random(1234)).Count();
             });
         }

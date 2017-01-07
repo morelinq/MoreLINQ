@@ -75,10 +75,10 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
+            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
+            Assert.That(zipped, Is.Not.Null);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
-                Assert.That(zipped, Is.Not.Null);
                 zipped.Consume();
             });
         }
@@ -86,12 +86,11 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
+            Assert.That(zipped, Is.Not.Null);
             Assert.Throws<InvalidOperationException>(() =>
             {
-                var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
-                Assert.That(zipped, Is.Not.Null);
                 zipped.Consume();
-                zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
             });
         }
 

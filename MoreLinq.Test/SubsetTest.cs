@@ -26,10 +26,11 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeSubsetSize()
         {
+            const int count = 10;
+            var sequence = Enumerable.Range(1, count);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                const int count = 10;
-                var sequence = Enumerable.Range(1, count);
                 sequence.Subsets(-5);
             });
         }
@@ -40,11 +41,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestSubsetLargerThanSequence()
         {
+            const int count = 10;
+            var sequence = Enumerable.Range(1, count);
+            var result = sequence.Subsets(count + 5);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                const int count = 10;
-                var sequence = Enumerable.Range(1, count);
-                var result = sequence.Subsets(count + 5);
                 result.Count(); // this particular exception is deferred until sequence evaluation
             });
         }

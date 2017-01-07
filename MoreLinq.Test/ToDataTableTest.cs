@@ -74,9 +74,10 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableNullSequence()
         {
+            IEnumerable<TestObject> source = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                IEnumerable<TestObject> source = null;
                 source.ToDataTable();
             });
         }
@@ -84,9 +85,10 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableNullTable()
         {
+            DataTable dt = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                DataTable dt = null;
                 m_TestObjects.ToDataTable(dt);
             });
         }
@@ -94,10 +96,10 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
         {
+            Expression<Func<TestObject, object>> expression = null;
+
             Assert.Throws<ArgumentException>(() =>
             {
-                Expression<Func<TestObject, object>> expression = null;
-
                 m_TestObjects.ToDataTable<TestObject>(expression);
             });
         }
@@ -105,11 +107,11 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableTableWithWrongColumnNames()
         {
+            var dt = new DataTable();
+            dt.Columns.Add("Test");
+
             Assert.Throws<ArgumentException>(() =>
             {
-                var dt = new DataTable();
-                dt.Columns.Add("Test");
-
                 m_TestObjects.ToDataTable(dt);
             });
         }
@@ -117,12 +119,12 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableTableWithWrongColumnDataType()
         {
+            var dt = new DataTable();
+            dt.Columns.Add("AString", typeof(int));
+
             Assert.Throws<ArgumentException>(() =>
             {
-                var dt = new DataTable();
-                dt.Columns.Add("AString", typeof(int));
-
-                m_TestObjects.ToDataTable(dt, t => t.AString);
+                m_TestObjects.ToDataTable(dt, t=>t.AString);
             });
         }
 

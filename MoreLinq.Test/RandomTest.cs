@@ -31,11 +31,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestNullGeneratorException2()
         {
+            const int maxValue = 10;
+
+            Assert.Greater(maxValue, 0);
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const int maxValue = 10;
-
-                Assert.Greater(maxValue, 0);
                 MoreEnumerable.Random(null, maxValue);
             });
         }
@@ -46,12 +47,13 @@ namespace MoreLinq.Test
         [Test]
         public void TestNullGeneratorException3()
         {
+            const int minValue = 10;
+            const int maxValue = 100;
+
+            Assert.LessOrEqual(minValue, maxValue);
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                const int minValue = 10;
-                const int maxValue = 100;
-
-                Assert.LessOrEqual(minValue, maxValue);
                 MoreEnumerable.Random(null, minValue, maxValue);
             });
         }
@@ -74,10 +76,11 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeMaxValueException()
         {
+            const int maxValue = -10;
+            Assert.Less(maxValue, 0);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                const int maxValue = -10;
-                Assert.Less(maxValue, 0);
                 MoreEnumerable.Random(maxValue);
             });
         }
@@ -89,12 +92,13 @@ namespace MoreLinq.Test
         [Test]
         public void TestMinValueGreaterThanMaxValueException()
         {
+            const int minValue = 100;
+            const int maxValue = 10;
+
+            Assert.Greater(minValue, maxValue);
+
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                const int minValue = 100;
-                const int maxValue = 10;
-
-                Assert.Greater(minValue, maxValue);
                 MoreEnumerable.Random(minValue, maxValue);
             });
         }

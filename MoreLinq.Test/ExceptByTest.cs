@@ -36,10 +36,11 @@ namespace MoreLinq.Test
         [Test]
         public void ExceptByNullFirstSequence()
         {
+            string[] first = null;
+            string[] second = { "aaa" };
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                string[] first = null;
-                string[] second = { "aaa" };
                 first.ExceptBy(second, x => x.Length);
             });
         }
@@ -47,10 +48,11 @@ namespace MoreLinq.Test
         [Test]
         public void ExceptByNullSecondSequence()
         {
+            string[] first = { "aaa" };
+            string[] second = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                string[] first = { "aaa" };
-                string[] second = null;
                 first.ExceptBy(second, x => x.Length);
             });
         }
@@ -58,10 +60,11 @@ namespace MoreLinq.Test
         [Test]
         public void ExceptByNullKeySelector()
         {
+            string[] first = { "aaa" };
+            string[] second = { "aaa" };
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                string[] first = { "aaa" };
-                string[] second = { "aaa" };
                 first.ExceptBy(second, (Func<string, string>)null);
             });
         }
@@ -93,10 +96,11 @@ namespace MoreLinq.Test
         [Test]
         public void ExceptByNullFirstSequenceWithComparer()
         {
+            string[] first = null;
+            string[] second = { "aaa" };
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                string[] first = null;
-                string[] second = { "aaa" };
                 first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default);
             });
         }
@@ -104,10 +108,11 @@ namespace MoreLinq.Test
         [Test]
         public void ExceptByNullSecondSequenceWithComparer()
         {
+            string[] first = { "aaa" };
+            string[] second = null;
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                string[] first = { "aaa" };
-                string[] second = null;
                 first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default);
             });
         }
@@ -115,10 +120,11 @@ namespace MoreLinq.Test
         [Test]
         public void ExceptByNullKeySelectorWithComparer()
         {
+            string[] first = { "aaa" };
+            string[] second = { "aaa" };
+
             Assert.Throws<ArgumentNullException>(() =>
             {
-                string[] first = { "aaa" };
-                string[] second = { "aaa" };
                 first.ExceptBy(second, null, EqualityComparer<string>.Default);
             });
         }
