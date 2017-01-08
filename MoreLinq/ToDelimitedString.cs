@@ -41,6 +41,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+		[Obsolete]
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source)
         {
             return ToDelimitedString(source, null);
