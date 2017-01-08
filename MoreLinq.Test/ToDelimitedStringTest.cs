@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable 612 // 'ToDelimitedString' is obsolete
+
 using System;
 using System.Globalization;
 using NUnit.Framework;
