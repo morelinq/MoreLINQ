@@ -86,7 +86,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 <#= attribute #>
-		[Obsolete]
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source)
         {
             return ToDelimitedString(source, null);

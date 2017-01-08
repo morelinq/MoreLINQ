@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable 612 // 'ToDelimitedString' is obsolete
+
 using System;
 using System.Globalization;
 using NUnit.Framework;
@@ -32,7 +34,7 @@ namespace MoreLinq.Test
             MoreEnumerable.ToDelimitedString<int>(null, ",");
         }
 
-        [Test, Ignore("Obsolete")]
+        [Test]
         public void ToDelimitedStringWithEmptySequence()
         {
             Assert.That(LinqEnumerable.Empty<int>().ToDelimitedString(), Is.Empty);
@@ -45,7 +47,7 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo("1-2-3"));
         }
 
-        [Test, Ignore("Obsolete")]
+        [Test]
         public void ToDelimitedStringWithNonEmptySequenceAndDefaultDelimiter()
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
