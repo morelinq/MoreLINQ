@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void AcquireNullSequence()
         {
-            AssertThrows.ArgumentNull("source",() =>
+            Assert.ThrowsArgumentNullException("source",() =>
                 MoreEnumerable.Acquire<IDisposable>(null));
         }
 

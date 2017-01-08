@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void ConsumeWithNullSource()
         {
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.Consume<int>(null));
         }
 

@@ -30,7 +30,7 @@ namespace MoreLinq.Test
         public void CountByWithNullSequence()
         {
             IEnumerable<int> sequence = null;
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 sequence.CountBy(x => x % 2 == 0));
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         public void CountByWithNullProjection()
         {
             Func<int, bool> projection = null;
-            AssertThrows.ArgumentNull("keySelector",() =>
+            Assert.ThrowsArgumentNullException("keySelector",() =>
                 Enumerable.Range(1, 10).CountBy(projection));
         }
 

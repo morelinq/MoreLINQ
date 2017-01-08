@@ -28,14 +28,14 @@ namespace MoreLinq.Test
         [Test]
         public void TraverseBreadthFirstNullGenerator()
         {
-            AssertThrows.ArgumentNull("childrenSelector", () =>
+            Assert.ThrowsArgumentNullException("childrenSelector", () =>
                 MoreEnumerable.TraverseBreadthFirst(new object(), null));
         }
 
         [Test]
         public void TraverseDepthFirstNullGenerator()
         {
-            AssertThrows.ArgumentNull("childrenSelector",() =>
+            Assert.ThrowsArgumentNullException("childrenSelector",() =>
                 MoreEnumerable.TraverseDepthFirst(new object(), null));
         }
 

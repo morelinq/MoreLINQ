@@ -28,33 +28,33 @@ namespace MoreLinq.Test
         [Test]
         public void FillForwardWithNullSequence()
         {
-            AssertThrows.ArgumentNull("source", () => MoreEnumerable.FillForward<object>(null));
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FillForward<object>(null));
         }
 
         [Test]
         public void FillForwardWithNullPredicate()
         {
-            AssertThrows.ArgumentNull("predicate", () => new object[0].FillForward(null));
+            Assert.ThrowsArgumentNullException("predicate", () => new object[0].FillForward(null));
         }
 
         [Test]
         public void FillForwardWithFillSelectorButNullSequence()
         {
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.FillForward<object>(null, _ => false, delegate { return null; }));
         }
 
         [Test]
         public void FillForwardWithFillSelectorButNullPredicate()
         {
-            AssertThrows.ArgumentNull("predicate", () =>
+            Assert.ThrowsArgumentNullException("predicate", () =>
                 new object[0].FillForward(null, delegate { return null; }));
         }
 
         [Test]
         public void FillForwardWithNullFillSelector()
         {
-            AssertThrows.ArgumentNull("fillSelector", () =>
+            Assert.ThrowsArgumentNullException("fillSelector", () =>
                 new object[0].FillForward(_ => false, null));
         }
 

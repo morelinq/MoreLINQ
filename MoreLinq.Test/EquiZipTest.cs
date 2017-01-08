@@ -77,7 +77,7 @@ namespace MoreLinq.Test
         {
             var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
-            AssertThrows.InvalidOperation(() =>
+            Assert.Throws<InvalidOperationException>(() =>
                 zipped.Consume());
         }
 
@@ -86,28 +86,28 @@ namespace MoreLinq.Test
         {
             var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
             Assert.That(zipped, Is.Not.Null);
-            AssertThrows.InvalidOperation(() =>
+            Assert.Throws<InvalidOperationException>(() =>
                 zipped.Consume());
         }
 
         [Test]
         public void ZipWithNullFirstSequence()
         {
-            AssertThrows.ArgumentNull("first", () =>
+            Assert.ThrowsArgumentNullException("first", () =>
                 MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
         public void ZipWithNullSecondSequence()
         {
-            AssertThrows.ArgumentNull("second", () =>
+            Assert.ThrowsArgumentNullException("second", () =>
                 new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
         public void ZipWithNullResultSelector()
         {
-            AssertThrows.ArgumentNull("resultSelector", () =>
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
                 new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 

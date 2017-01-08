@@ -166,7 +166,7 @@ namespace MoreLinq.Test
         public void TestPermutationNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            AssertThrows.ArgumentNull("sequence", () =>
+            Assert.ThrowsArgumentNullException("sequence", () =>
                 sequence.Permutations());
         }
 

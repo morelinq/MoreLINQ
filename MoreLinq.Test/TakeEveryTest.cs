@@ -26,21 +26,21 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryNullSequence()
         {
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.TakeEvery<object>(null, 1));
         }
 
         [Test]
         public void TakeEveryNegativeSkip()
         {
-            AssertThrows.OutOfRange("step",() =>
+            Assert.ThrowsArgumentOutOfRangeException("step",() =>
                 new object[0].TakeEvery(-1));
         }
 
         [Test]
         public void TakeEveryOutOfRangeZeroStep()
         {
-            AssertThrows.OutOfRange("step", () =>
+            Assert.ThrowsArgumentOutOfRangeException("step", () =>
                 new object[0].TakeEvery(0));
         }
 

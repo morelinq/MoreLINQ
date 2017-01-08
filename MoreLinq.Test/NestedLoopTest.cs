@@ -20,7 +20,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestNullLoopCountsException()
         {
-            AssertThrows.ArgumentNull("loopCounts",() =>
+            Assert.ThrowsArgumentNullException("loopCounts",() =>
                 EmptyLoopBody.NestedLoops(null));
         }
 
@@ -30,7 +30,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeLoopCountsException()
         {
-            AssertThrows.Argument("loopCounts", () =>
+            Assert.ThrowsArgumentException("loopCounts", () =>
                 EmptyLoopBody.NestedLoops(Enumerable.Range(-10, 10)));
         }
 

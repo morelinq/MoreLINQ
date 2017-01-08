@@ -29,35 +29,35 @@ namespace MoreLinq.Test
         [Test]
         public void FullGroupFirstNull()
         {
-            AssertThrows.ArgumentNull("first", () =>
+            Assert.ThrowsArgumentNullException("first", () =>
                 ((IEnumerable<string>)null).FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, DummySelector));
         }
 
         [Test]
         public void FullGroupSecondNull()
         {
-            AssertThrows.ArgumentNull("second", () =>
+            Assert.ThrowsArgumentNullException("second", () =>
                 Enumerable.Empty<string>().FullGroupJoin((IEnumerable<string>)null, x => x, x => x, DummySelector));
         }
 
         [Test]
         public void FullGroupFirstKeyNull()
         {
-            AssertThrows.ArgumentNull("firstKeySelector",() =>
+            Assert.ThrowsArgumentNullException("firstKeySelector",() =>
                 Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), (Func<string, string>)null, x => x, DummySelector));
         }
 
         [Test]
         public void FullGroupSecondKeyNull()
         {
-            AssertThrows.ArgumentNull("secondKeySelector",() =>
+            Assert.ThrowsArgumentNullException("secondKeySelector",() =>
                 Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, (Func<string, string>)null, DummySelector));
         }
 
         [Test]
         public void FullGroupResultSelectorNull()
         {
-            AssertThrows.ArgumentNull("resultSelector", () =>
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
                 Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, (Func<string, IEnumerable<string>, IEnumerable<string>, string>)null));
         }
 

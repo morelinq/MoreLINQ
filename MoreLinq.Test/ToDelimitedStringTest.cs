@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithNullSequence()
         {
-            AssertThrows.ArgumentNull("source",() =>
+            Assert.ThrowsArgumentNullException("source",() =>
                 MoreEnumerable.ToDelimitedString<int>(null, ","));
         }
 

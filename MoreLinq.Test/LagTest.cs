@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         public void TestLagNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 sequence.Lag(10, (val, lagVal) => val));
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagNegativeOffsetException()
         {
-            AssertThrows.OutOfRange("offset",() =>
+            Assert.ThrowsArgumentOutOfRangeException("offset",() =>
                 Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
         }
 
@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagZeroOffset()
         {
-            AssertThrows.OutOfRange("offset", () =>
+            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
                 Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
         }
 

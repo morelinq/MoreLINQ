@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         {
             string[] first = null;
             string[] second = { "aaa" };
-            AssertThrows.ArgumentNull("first",() =>
+            Assert.ThrowsArgumentNullException("first",() =>
                 first.ExceptBy(second, x => x.Length));
         }
 
@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         {
             string[] first = { "aaa" };
             string[] second = null;
-            AssertThrows.ArgumentNull("second", () =>
+            Assert.ThrowsArgumentNullException("second", () =>
                 first.ExceptBy(second, x => x.Length));
         }
 
@@ -56,7 +56,7 @@ namespace MoreLinq.Test
         {
             string[] first = { "aaa" };
             string[] second = { "aaa" };
-            AssertThrows.ArgumentNull("keySelector", () =>
+            Assert.ThrowsArgumentNullException("keySelector", () =>
                 first.ExceptBy(second, (Func<string, string>)null));
         }
         
@@ -89,7 +89,7 @@ namespace MoreLinq.Test
         {
             string[] first = null;
             string[] second = { "aaa" };
-            AssertThrows.ArgumentNull("first", () =>
+            Assert.ThrowsArgumentNullException("first", () =>
                 first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
@@ -98,7 +98,7 @@ namespace MoreLinq.Test
         {
             string[] first = { "aaa" };
             string[] second = null;
-            AssertThrows.ArgumentNull("second", () =>
+            Assert.ThrowsArgumentNullException("second", () =>
                 first.ExceptBy(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
@@ -107,7 +107,7 @@ namespace MoreLinq.Test
         {
             string[] first = { "aaa" };
             string[] second = { "aaa" };
-            AssertThrows.ArgumentNull("keySelector", () =>
+            Assert.ThrowsArgumentNullException("keySelector", () =>
                 first.ExceptBy(second, null, EqualityComparer<string>.Default));
         }
 

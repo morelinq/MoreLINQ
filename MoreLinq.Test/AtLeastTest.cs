@@ -30,14 +30,14 @@ namespace MoreLinq.Test
         public void AtLeastWithNullSequence()
         {
             IEnumerable<int> sequence = null;
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 sequence.AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithNegativeCount()
         {
-            AssertThrows.OutOfRange("count", () =>
+            Assert.ThrowsArgumentOutOfRangeException("count", () =>
                 new[] { 1 }.AtLeast(-1));
         }
 

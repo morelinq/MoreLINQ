@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithNullTailSequence()
         {
-            AssertThrows.ArgumentNull("tail",() =>
+            Assert.ThrowsArgumentNullException("tail",() =>
                 MoreEnumerable.Concat("head", null));
         }
 
@@ -91,7 +91,7 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithNullHeadSequence()
         {
-            AssertThrows.ArgumentNull("head",() =>
+            Assert.ThrowsArgumentNullException("head",() =>
                 MoreEnumerable.Concat(null, "tail"));
         }
 

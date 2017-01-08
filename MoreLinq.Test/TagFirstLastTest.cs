@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastNullSource()
         {
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.TagFirstLast<object, object>(null, delegate { return null; }));
         }
 
         [Test]
         public void TagFirstLastNullResultSelector()
         {
-            AssertThrows.ArgumentNull("resultSelector", () =>
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
                 new object[0].TagFirstLast<object, object>(null));
         }
 

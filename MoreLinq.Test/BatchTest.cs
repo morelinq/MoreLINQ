@@ -28,28 +28,28 @@ namespace MoreLinq.Test
         [Test]
         public void BatchNullSequence()
         {
-            AssertThrows.ArgumentNull("source", () =>
+            Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.Batch<object>(null, 1));
         }
 
         [Test]
         public void BatchZeroSize()
         {
-            AssertThrows.OutOfRange("size",() =>
+            Assert.ThrowsArgumentOutOfRangeException("size",() =>
                 new object[0].Batch(0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            AssertThrows.OutOfRange("size",() =>
+            Assert.ThrowsArgumentOutOfRangeException("size",() =>
                 new object[0].Batch(-1));
         }
 
         [Test]
         public void BatchWithNullResultSelector()
         {
-            AssertThrows.ArgumentNull("resultSelector",() =>
+            Assert.ThrowsArgumentNullException("resultSelector",() =>
                 new object[0].Batch<object, object>(1, null));
         }
 
