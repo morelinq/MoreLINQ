@@ -29,11 +29,8 @@ namespace MoreLinq.Test
         public void TestSegmentNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Segment(curr => false);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                sequence.Segment(curr => false));
         }
 
         /// <summary>
@@ -43,11 +40,8 @@ namespace MoreLinq.Test
         public void TestSegmentNullSequenceException2()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Segment((curr, index) => false);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                sequence.Segment((curr, index) => false));
         }
 
         /// <summary>
@@ -57,22 +51,16 @@ namespace MoreLinq.Test
         public void TestSegmentNullSequenceException3()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Segment((curr, prev, index) => false);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                sequence.Segment((curr, prev, index) => false));
         }
 
         [Test]
         public void TestSegmentIdentifierNullException()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Segment((Func<int, bool>)null);
-            });
+            AssertException.ThrowsArgumentNull("newSegmentPredicate",() =>
+                sequence.Segment((Func<int, bool>)null));
         }
 
         /// <summary>

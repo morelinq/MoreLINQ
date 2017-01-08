@@ -26,19 +26,15 @@ namespace MoreLinq.Test
         [Test]
         public void PadNullSource()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Pad<object>(null, 0);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.Pad<object>(null, 0));
         }
 
         [Test]
         public void PadNegativeWidth()
         {
-            Assert.Throws<ArgumentException>(() =>
-            {
-                new object[0].Pad(-1);
-            });
+            AssertException.ThrowsArgument("width",() =>
+                new object[0].Pad(-1));
         }
 
         [Test]

@@ -28,11 +28,8 @@ namespace MoreLinq.Test
         public void TestRandomSubsetNullSequence()
         {
             const IEnumerable<int> nullSequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                nullSequence.RandomSubset(10);
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                nullSequence.RandomSubset(10));
         }
 
         /// <summary>
@@ -42,11 +39,8 @@ namespace MoreLinq.Test
         public void TestRandomSubsetNullSequence2()
         {
             const IEnumerable<int> nullSequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                nullSequence.RandomSubset(10, new Random());
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                nullSequence.RandomSubset(10, new Random()));
         }
 
         /// <summary>

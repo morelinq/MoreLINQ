@@ -28,11 +28,8 @@ namespace MoreLinq.Test
         public void TestNullSequenceException1()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Incremental((prev, next) => prev + next);
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                sequence.Incremental((prev, next) => prev + next));
         }
 
         /// <summary>
@@ -42,11 +39,8 @@ namespace MoreLinq.Test
         public void TestNullSequenceException2()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Incremental((prev, next, i) => prev + next);
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                sequence.Incremental((prev, next, i) => prev + next));
         }
 
         /// <summary>

@@ -19,10 +19,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestNullGeneratorException1()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Random(null);
-            });
+            AssertException.ThrowsArgumentNull("rand",() =>
+                MoreEnumerable.Random(null));
         }
 
         /// <summary>
@@ -32,13 +30,9 @@ namespace MoreLinq.Test
         public void TestNullGeneratorException2()
         {
             const int maxValue = 10;
-
             Assert.Greater(maxValue, 0);
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Random(null, maxValue);
-            });
+            AssertException.ThrowsArgumentNull("rand", () =>
+                MoreEnumerable.Random(null, maxValue));
         }
 
         /// <summary>
@@ -49,13 +43,9 @@ namespace MoreLinq.Test
         {
             const int minValue = 10;
             const int maxValue = 100;
-
             Assert.LessOrEqual(minValue, maxValue);
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Random(null, minValue, maxValue);
-            });
+            AssertException.ThrowsArgumentNull("rand", () =>
+                MoreEnumerable.Random(null, minValue, maxValue));
         }
 
         /// <summary>
@@ -64,10 +54,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestNullGeneratorException4()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.RandomDouble(null);
-            });
+            AssertException.ThrowsArgumentNull("rand", () =>
+                MoreEnumerable.RandomDouble(null));
         }
 
         /// <summary>

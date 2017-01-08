@@ -44,10 +44,8 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNullTailSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Prepend(null, "head");
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.Prepend(null, "head"));
         }
 
         [Test]

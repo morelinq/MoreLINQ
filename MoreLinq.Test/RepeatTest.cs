@@ -56,10 +56,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatSequenceANullException()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Repeat<object>(null, 42);
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                MoreEnumerable.Repeat<object>(null, 42));
         }
     }
 }

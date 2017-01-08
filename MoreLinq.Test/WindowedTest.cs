@@ -27,11 +27,8 @@ namespace MoreLinq.Test
         public void TestSlidingWindowNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Windowed(10);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                sequence.Windowed(10));
         }
 
         /// <summary>

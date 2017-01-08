@@ -31,11 +31,8 @@ namespace MoreLinq.Test
         {
             const IEnumerable<int> sequenceA = null;
             var sequenceB = new BreakingSequence<int>();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB));
         }
 
         /// <summary>
@@ -45,11 +42,8 @@ namespace MoreLinq.Test
         public void TestSortedMergeOtherSequencesNullException()
         {
             var sequenceA = new BreakingSequence<int>();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequenceA.SortedMerge(OrderByDirection.Ascending, (IEnumerable<int>[])null);
-            });
+            AssertException.ThrowsArgumentNull("otherSequences",() =>
+                sequenceA.SortedMerge(OrderByDirection.Ascending, (IEnumerable<int>[])null));
         }
 
         /// <summary>

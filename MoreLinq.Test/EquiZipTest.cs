@@ -97,28 +97,22 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithNullFirstSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
-            });
+            AssertException.ThrowsArgumentNull("first", () =>
+                MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
         public void ZipWithNullSecondSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>());
-            });
+            AssertException.ThrowsArgumentNull("second", () =>
+                new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
         public void ZipWithNullResultSelector()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null);
-            });
+            AssertException.ThrowsArgumentNull("resultSelector", () =>
+                new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 
         [Test]

@@ -28,10 +28,8 @@ namespace MoreLinq.Test
         [Test]
         public void BatchNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Batch<object>(null, 1);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.Batch<object>(null, 1));
         }
 
         [Test]
@@ -55,10 +53,8 @@ namespace MoreLinq.Test
         [Test]
         public void BatchWithNullResultSelector()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new object[0].Batch<object, object>(1, null);
-            });
+            AssertException.ThrowsArgumentNull("resultSelector",() =>
+                new object[0].Batch<object, object>(1, null));
         }
 
         [Test]

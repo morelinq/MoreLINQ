@@ -26,10 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastNullSource()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.TakeLast<object>(null, 0);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.TakeLast<object>(null, 0));
         }
 
         [Test]

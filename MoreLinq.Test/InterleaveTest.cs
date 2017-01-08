@@ -27,11 +27,8 @@ namespace MoreLinq.Test
         public void TestInterleaveNullSequenceArgument()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Interleave(new int[] { });
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                sequence.Interleave(new int[] { }));
         }
 
         /// <summary>
@@ -42,11 +39,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Interleave(null);
-            });
+            AssertException.ThrowsArgumentNull("otherSequences", () =>
+                sequence.Interleave(null));
         }
 
         /// <summary>
@@ -57,11 +51,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Interleave(Enumerable.Range(1, count), null);
-            });
+            AssertException.ThrowsArgumentNull("otherSequences",() =>
+                sequence.Interleave(Enumerable.Range(1, count), null));
         }
 
         /// <summary>

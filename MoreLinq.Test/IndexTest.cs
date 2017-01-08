@@ -26,19 +26,15 @@ namespace MoreLinq.Test
         [Test]
         public void IndexNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Index<object>(null);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.Index<object>(null));
         }
 
         [Test]
         public void IndexNullSequenceStartIndex()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Index<object>(null, 0);
-            });
+            AssertException.ThrowsArgumentNull("source",() =>
+                MoreEnumerable.Index<object>(null, 0));
         }
 
         [Test]

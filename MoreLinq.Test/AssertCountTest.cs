@@ -26,10 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountNullSequence()
         {
-            Assert.Throws<ArgumentNullException>( () =>
-            {
-                MoreEnumerable.AssertCount<object>(null, 0);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.AssertCount<object>(null, 0));
         }
 
         [Test]

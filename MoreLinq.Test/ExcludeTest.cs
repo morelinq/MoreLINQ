@@ -27,11 +27,8 @@ namespace MoreLinq.Test
         public void TestExcludeNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Exclude(0, 10);
-            });
+            AssertException.ThrowsArgumentNull("sequence", () =>
+                sequence.Exclude(0, 10));
         }
 
         /// <summary>

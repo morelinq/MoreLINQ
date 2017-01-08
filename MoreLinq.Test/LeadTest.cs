@@ -28,11 +28,8 @@ namespace MoreLinq.Test
         public void TestLeadNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sequence.Lead(5, (val, leadVal) => val);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                sequence.Lead(5, (val, leadVal) => val));
         }
 
         /// <summary>

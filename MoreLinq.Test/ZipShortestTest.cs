@@ -75,28 +75,22 @@ namespace MoreLinq.Test
         [Test]
         public void ZipShortestWithNullFirstSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.ZipShortest(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
-            });
+            AssertException.ThrowsArgumentNull("first", () =>
+                MoreEnumerable.ZipShortest(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
         public void ZipShortestWithNullSecondSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new[] { 1, 2, 3 }.ZipShortest(null, BreakingFunc.Of<int, int, int>());
-            });
+            AssertException.ThrowsArgumentNull("second", () =>
+                new[] { 1, 2, 3 }.ZipShortest(null, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
         public void ZipShortestWithNullResultSelector()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new[] { 1, 2, 3 }.ZipShortest<int, int, int>(new[] { 4, 5, 6 }, null);
-            });
+            AssertException.ThrowsArgumentNull("resultSelector",() =>
+                new[] { 1, 2, 3 }.ZipShortest<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 
         [Test]

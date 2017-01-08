@@ -27,19 +27,15 @@ namespace MoreLinq.Test
         [Test]
         public void MinByNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                ((IEnumerable<string>)null).MinBy(x => x.Length);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                ((IEnumerable<string>)null).MinBy(x => x.Length));
         }
 
         [Test]
         public void MinByNullSelector()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                SampleData.Strings.MinBy<string, int>(null);
-            });
+            AssertException.ThrowsArgumentNull("selector",() =>
+                SampleData.Strings.MinBy<string, int>(null));
         }
 
         [Test]

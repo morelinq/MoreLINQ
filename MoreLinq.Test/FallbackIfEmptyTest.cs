@@ -28,17 +28,17 @@ namespace MoreLinq.Test
         [Test]
         public void FallbackIfEmptyWithNullSequence()
         {
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4, 5)).ParamName);
+            AssertException.ThrowsArgumentNull("source", () => MoreEnumerable.FallbackIfEmpty(null, 1));
+            AssertException.ThrowsArgumentNull("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2));
+            AssertException.ThrowsArgumentNull("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3));
+            AssertException.ThrowsArgumentNull("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4));
+            AssertException.ThrowsArgumentNull("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4, 5));
         }
 
         [Test]
         public void FallbackIfEmptyWithNullFallbackParams()
         {
-            Assert.AreEqual("fallback", Assert.Throws<ArgumentNullException>(() => new[] { 1 }.FallbackIfEmpty(null)).ParamName);
+           AssertException.ThrowsArgumentNull("fallback", () => new[] { 1 }.FallbackIfEmpty(null));
         }
 
         [Test]

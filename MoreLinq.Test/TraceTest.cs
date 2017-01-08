@@ -64,10 +64,8 @@ namespace MoreLinq.Test
         [Test]
         public void TraceSequenceWithNullFormatter()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new object[0].Trace((Func<object, string>)null);
-            });
+            AssertException.ThrowsArgumentNull("formatter", () =>
+                new object[0].Trace((Func<object, string>)null));
         }
 
         [Test]

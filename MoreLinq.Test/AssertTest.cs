@@ -26,19 +26,15 @@ namespace MoreLinq.Test
         [Test]
         public void AssertNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.Assert<object>(null, delegate { return false; }); 
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.Assert<object>(null, delegate { return false; }));
         }
 
         [Test]
         public void AssertNullPredicate()
         {
-            Assert.Throws<ArgumentNullException>(() => 
-            {
-                new object[0].Assert(null);
-            });
+            AssertException.ThrowsArgumentNull("predicate",() => 
+                new object[0].Assert(null));
         }
 
         [Test]

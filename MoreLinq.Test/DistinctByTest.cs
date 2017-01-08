@@ -35,20 +35,16 @@ namespace MoreLinq.Test
         public void DistinctByNullSequence()
         {
             string[] source = null;
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                source.DistinctBy(x => x.Length);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                source.DistinctBy(x => x.Length));
         }
 
         [Test]
         public void DistinctByNullKeySelector()
         {
             string[] source = { };
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                source.DistinctBy((Func<string, string>)null);
-            });
+            AssertException.ThrowsArgumentNull("keySelector", () =>
+                source.DistinctBy((Func<string, string>)null));
         }
 
         [Test]
@@ -69,20 +65,16 @@ namespace MoreLinq.Test
         public void DistinctByNullSequenceWithComparer()
         {
             string[] source = null;
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                source.DistinctBy(x => x, StringComparer.Ordinal);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                source.DistinctBy(x => x, StringComparer.Ordinal));
         }
 
         [Test]
         public void DistinctByNullKeySelectorWithComparer()
         {
             string[] source = { };
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                source.DistinctBy(null, StringComparer.Ordinal);
-            });
+            AssertException.ThrowsArgumentNull("keySelector", () =>
+                source.DistinctBy(null, StringComparer.Ordinal));
         }
 
         [Test]

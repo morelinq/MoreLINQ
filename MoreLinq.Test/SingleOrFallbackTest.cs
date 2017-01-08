@@ -30,19 +30,15 @@ namespace MoreLinq.Test
         [Test]
         public void SingleOrFallbackWithNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>());
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>()));
         }
 
         [Test]
         public void SingleOrFallbackWithNullFallback()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new[] { 1 }.SingleOrFallback(null);
-            });
+            AssertException.ThrowsArgumentNull("fallback",() =>
+                new[] { 1 }.SingleOrFallback(null));
         }
 
         [Test]

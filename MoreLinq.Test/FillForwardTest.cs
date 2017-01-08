@@ -28,39 +28,34 @@ namespace MoreLinq.Test
         [Test]
         public void FillForwardWithNullSequence()
         {
-            var e = Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FillForward<object>(null));
-            Assert.That(e.ParamName, Is.EqualTo("source"));
+            AssertException.ThrowsArgumentNull("source", () => MoreEnumerable.FillForward<object>(null));
         }
 
         [Test]
         public void FillForwardWithNullPredicate()
         {
-            var e = Assert.Throws<ArgumentNullException>(() => new object[0].FillForward(null));
-            Assert.That(e.ParamName, Is.EqualTo("predicate"));
+            AssertException.ThrowsArgumentNull("predicate", () => new object[0].FillForward(null));
         }
 
         [Test]
         public void FillForwardWithFillSelectorButNullSequence()
         {
-            var e = Assert.Throws<ArgumentNullException>(() =>
+            AssertException.ThrowsArgumentNull("source", () =>
                 MoreEnumerable.FillForward<object>(null, _ => false, delegate { return null; }));
-            Assert.That(e.ParamName, Is.EqualTo("source"));
         }
 
         [Test]
         public void FillForwardWithFillSelectorButNullPredicate()
         {
-            var e = Assert.Throws<ArgumentNullException>(() =>
+            AssertException.ThrowsArgumentNull("predicate", () =>
                 new object[0].FillForward(null, delegate { return null; }));
-            Assert.That(e.ParamName, Is.EqualTo("predicate"));
         }
 
         [Test]
         public void FillForwardWithNullFillSelector()
         {
-            var e = Assert.Throws<ArgumentNullException>(() =>
+            AssertException.ThrowsArgumentNull("fillSelector", () =>
                 new object[0].FillForward(_ => false, null));
-            Assert.That(e.ParamName, Is.EqualTo("fillSelector"));
         }
 
         [Test]

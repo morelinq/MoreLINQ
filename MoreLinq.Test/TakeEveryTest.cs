@@ -26,10 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                MoreEnumerable.TakeEvery<object>(null, 1);
-            });
+            AssertException.ThrowsArgumentNull("source", () =>
+                MoreEnumerable.TakeEvery<object>(null, 1));
         }
 
         [Test]
