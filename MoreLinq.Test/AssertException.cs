@@ -18,6 +18,26 @@ namespace MoreLinq.Test
             ThrowsArgumentException<ArgumentException>(argumentName, code);
         }
 
+        public static void ThrowsOutOfRange(string argumentName, TestDelegate code)
+        {
+            ThrowsArgumentException<ArgumentOutOfRangeException>(argumentName, code);
+        }
+
+        public static void ThrowsInvalidOperation(TestDelegate code)
+        {
+            Throws<InvalidOperationException>(code);
+        }
+
+        public static void ThrowsSequence(TestDelegate code)
+        {
+            Throws<SequenceException>(code);
+        }
+
+        public static void ThrowsException(TestDelegate code)
+        {
+            Throws<Exception>(code);
+        }
+
         private static void ThrowsArgumentException<TActual>(string argumentName, TestDelegate code) where TActual : ArgumentException
         {
             var e = Throws<TActual>(code);

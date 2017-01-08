@@ -83,28 +83,22 @@ namespace MoreLinq.Test
         [Test]
         public void FoldWithTooFewItems()
         {
-            Assert.Throws<Exception>(() =>
-            {
-                Enumerable.Range(1, 3).Fold((a, b, c, d) => a + b + c + d);
-            });
+            AssertException.ThrowsException(() =>
+                Enumerable.Range(1, 3).Fold((a, b, c, d) => a + b + c + d));
         }
 
         [Test]
         public void FoldWithEmptySequence()
         {
-            Assert.Throws<Exception>(() =>
-            {
-                Enumerable.Empty<int>().Fold(a => a);
-            });
+            AssertException.ThrowsException(() =>
+                Enumerable.Empty<int>().Fold(a => a));
         }
 
         [Test]
         public void FoldWithTooManyItems()
         {
-            Assert.Throws<Exception>(() =>
-            {
-                Enumerable.Range(1, 3).Fold((a, b) => a + b);
-            });
+            AssertException.ThrowsException(() =>
+                Enumerable.Range(1, 3).Fold((a, b) => a + b));
         }
 
         [Test]

@@ -47,10 +47,8 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                new string[0].MaxBy(x => x.Length);
-            });
+            AssertException.ThrowsInvalidOperation(() =>
+                new string[0].MaxBy(x => x.Length));
         }
 
         [Test]

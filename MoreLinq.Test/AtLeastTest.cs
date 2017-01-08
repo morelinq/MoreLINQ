@@ -37,10 +37,8 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithNegativeCount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                new[] { 1 }.AtLeast(-1);
-            });
+            AssertException.ThrowsOutOfRange("count", () =>
+                new[] { 1 }.AtLeast(-1));
         }
 
         private static IEnumerable<int> GetSequence()

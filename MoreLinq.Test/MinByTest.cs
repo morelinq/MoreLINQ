@@ -47,10 +47,8 @@ namespace MoreLinq.Test
         [Test]
         public void MinByEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                new string[0].MinBy(x => x.Length);
-            });
+            AssertException.ThrowsInvalidOperation(() =>
+                new string[0].MinBy(x => x.Length));
         }
 
         [Test]

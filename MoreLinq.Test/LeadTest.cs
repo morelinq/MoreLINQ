@@ -38,10 +38,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadNegativeOffset()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal);
-            });
+            AssertException.ThrowsOutOfRange("offset", () =>
+                Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
         }
 
         /// <summary>
@@ -50,10 +48,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadZeroOffset()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal);
-            });
+            AssertException.ThrowsOutOfRange("offset", () =>
+                Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
         }
 
         /// <summary>

@@ -66,19 +66,15 @@ namespace MoreLinq.Test
         [Test]
         public void SingleOrFallbackWithLongSequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                new[] { 10, 20, 30 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>());
-            });
+            AssertException.ThrowsInvalidOperation(() =>
+                new[] { 10, 20, 30 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>()));
         }
 
         [Test]
         public void SingleOrFallbackWithLongSequenceIListOptimized()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>());
-            });
+            AssertException.ThrowsInvalidOperation(() =>
+                new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>()));
         }
     }
 }

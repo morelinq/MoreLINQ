@@ -54,19 +54,15 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume();
-            });
+            AssertException.ThrowsInvalidOperation(() =>
+                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume();
-            });
+            AssertException.ThrowsInvalidOperation(() =>
+                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
         }
 
         [Test]

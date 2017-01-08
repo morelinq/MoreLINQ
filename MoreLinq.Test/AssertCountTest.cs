@@ -33,10 +33,8 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountNegativeCount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                new object[0].AssertCount(-1);
-            });
+            AssertException.ThrowsOutOfRange("count",() =>
+                new object[0].AssertCount(-1));
         }
 
         [Test]
@@ -48,19 +46,15 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountShortSequence()
         {
-            Assert.Throws<SequenceException>(() =>
-            {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume();
-            });
+            AssertException.ThrowsSequence(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume());
         }
 
         [Test]
         public void AssertCountLongSequence()
         {
-            Assert.Throws<SequenceException>(() =>
-            {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume();
-            });
+            AssertException.ThrowsSequence(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume());
         }
 
         [Test]

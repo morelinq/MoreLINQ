@@ -44,10 +44,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                Enumerable.Range(1, 10).Repeat(-3);
-            });
+            AssertException.ThrowsOutOfRange("count",() =>
+                Enumerable.Range(1, 10).Repeat(-3));
         }
 
         /// <summary>

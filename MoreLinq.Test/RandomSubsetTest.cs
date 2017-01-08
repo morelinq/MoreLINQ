@@ -49,10 +49,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                Enumerable.Range(1, 10).RandomSubset(-5);
-            });
+            AssertException.ThrowsOutOfRange("subsetSize", () =>
+                Enumerable.Range(1, 10).RandomSubset(-5));
         }
 
         /// <summary>
@@ -61,10 +59,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                Enumerable.Range(1, 10).RandomSubset(-1, new Random());
-            });
+            AssertException.ThrowsOutOfRange("subsetSize", () =>
+                Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
         }
 
         /// <summary>
@@ -123,7 +119,7 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            AssertException.ThrowsOutOfRange("subsetSize", () =>
             {
                 sequence.RandomSubset(subsetSize).Count();
             });
@@ -140,7 +136,7 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            AssertException.ThrowsOutOfRange("subsetSize", () =>
             {
                 sequence.RandomSubset(subsetSize, new Random(1234)).Count();
             });

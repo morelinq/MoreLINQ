@@ -29,10 +29,8 @@ namespace MoreLinq.Test
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                sequence.Subsets(-5);
-            });
+            AssertException.ThrowsOutOfRange("subsetSize",() =>
+                sequence.Subsets(-5));
         }
 
         /// <summary>
@@ -45,7 +43,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Subsets(count + 5);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            AssertException.ThrowsOutOfRange("subsetSize", () =>
             {
                 result.Count(); // this particular exception is deferred until sequence evaluation
             });
