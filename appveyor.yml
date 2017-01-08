@@ -1,0 +1,25 @@
+version: '{build}'
+build_script:
+- ps: >-
+    $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
+
+    $id = $id.Substring(0, 13)
+
+    .\pack.cmd ci-$id
+test_script:
+- cmd: test.cmd
+artifacts:
+- path: dist\*.nupkg
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/morelinq/api/v2/package
+  api_key:
+    secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
+  symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
+notifications:
+- provider: Email
+  to:
+  - morelinq-roll@googlegroups.com
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
