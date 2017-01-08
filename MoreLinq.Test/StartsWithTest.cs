@@ -29,14 +29,14 @@ namespace MoreLinq.Test
         [TestCase(null, new[] {1})]
         public void StartsWithThrowsIfFirstIsNull(IEnumerable<int> first, IEnumerable<int> second)
         {
-            AssertException.ThrowsArgumentNull("first", () =>
+            AssertThrows.ArgumentNull("first", () =>
                 first.StartsWith(second));
         }
 
         [TestCase(new[] {1}, null)]
         public void StartsWithThrowsIfSecondAIsNull(IEnumerable<int> first, IEnumerable<int> second)
         {
-            AssertException.ThrowsArgumentNull("second", () =>
+            AssertThrows.ArgumentNull("second", () =>
                 first.StartsWith(second));
         }
 

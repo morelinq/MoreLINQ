@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void PreScanNullSequence()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.PreScan(null, SampleData.Plus, 0));
         }
 
         [Test]
         public void PreScanNullOperation()
         {
-            AssertException.ThrowsArgumentNull("transformation",() =>
+            AssertThrows.ArgumentNull("transformation",() =>
                 SampleData.Values.PreScan(null, 0));
         }
 

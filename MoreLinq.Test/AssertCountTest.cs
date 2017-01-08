@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountNullSequence()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.AssertCount<object>(null, 0));
         }
 
         [Test]
         public void AssertCountNegativeCount()
         {
-            AssertException.ThrowsOutOfRange("count",() =>
+            AssertThrows.OutOfRange("count",() =>
                 new object[0].AssertCount(-1));
         }
 
@@ -46,14 +46,14 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountShortSequence()
         {
-            AssertException.ThrowsSequence(() =>
+            AssertThrows.Sequence(() =>
                 "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume());
         }
 
         [Test]
         public void AssertCountLongSequence()
         {
-            AssertException.ThrowsSequence(() =>
+            AssertThrows.Sequence(() =>
                 "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume());
         }
 

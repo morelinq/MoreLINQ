@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         public void TestLeadNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 sequence.Lead(5, (val, leadVal) => val));
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadNegativeOffset()
         {
-            AssertException.ThrowsOutOfRange("offset", () =>
+            AssertThrows.OutOfRange("offset", () =>
                 Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
         }
 
@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadZeroOffset()
         {
-            AssertException.ThrowsOutOfRange("offset", () =>
+            AssertThrows.OutOfRange("offset", () =>
                 Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
         }
 

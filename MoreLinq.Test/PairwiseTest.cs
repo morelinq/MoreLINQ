@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void PairwiseNullSource()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.Pairwise<object, object>(null, delegate { return 0; }));
         }
 
         [Test]
         public void PairwiseNullResultSelector()
         {
-            AssertException.ThrowsArgumentNull("resultSelector", () =>
+            AssertThrows.ArgumentNull("resultSelector", () =>
                 new object[0].Pairwise<object, object>(null));
         }
 

@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         public void TestCartesianSequenceANullException()
         {
             const IEnumerable<int> sequence = null;
-            AssertException.ThrowsArgumentNull("first", () =>
+            AssertThrows.ArgumentNull("first", () =>
                 sequence.Cartesian(Enumerable.Repeat(1, 10), (a, b) => a + b));
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         public void TestCartesianSequenceBNullException()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            AssertException.ThrowsArgumentNull("second",() =>
+            AssertThrows.ArgumentNull("second",() =>
                 sequence.Cartesian<int, int, int>(null, (a, b) => a + b));
         }
 
@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         public void TestCartesianResultSelectorNullException()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            AssertException.ThrowsArgumentNull("resultSelector", () =>
+            AssertThrows.ArgumentNull("resultSelector", () =>
                 sequence.Cartesian(sequence, (Func<int, int, int>)null));
         }
 

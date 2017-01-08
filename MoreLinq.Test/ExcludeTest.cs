@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         public void TestExcludeNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            AssertException.ThrowsArgumentNull("sequence", () =>
+            AssertThrows.ArgumentNull("sequence", () =>
                 sequence.Exclude(0, 10));
         }
 
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeNegativeStartIndexException()
         {
-            AssertException.ThrowsOutOfRange("startIndex",() =>
+            AssertThrows.OutOfRange("startIndex",() =>
                 Enumerable.Range(1, 10).Exclude(-10, 10));
         }
 
@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeNegativeCountException()
         {
-            AssertException.ThrowsOutOfRange("count",() =>
+            AssertThrows.OutOfRange("count",() =>
                 Enumerable.Range(1, 10).Exclude(0, -5));
         }
 

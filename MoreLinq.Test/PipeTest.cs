@@ -29,14 +29,14 @@ namespace MoreLinq.Test
         [Test]
         public void PipeNullSequence()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); }));
         }
 
         [Test]
         public void PipeNullAction()
         {
-            AssertException.ThrowsArgumentNull("action", () =>
+            AssertThrows.ArgumentNull("action", () =>
                 new[] { 1, 2, 3 }.Pipe(null));
         }
 

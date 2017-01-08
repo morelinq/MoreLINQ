@@ -27,14 +27,14 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByNullSequence()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 ((IEnumerable<string>)null).MaxBy(x => x.Length));
         }
 
         [Test]
         public void MaxByNullSelector()
         {
-            AssertException.ThrowsArgumentNull("selector",() =>
+            AssertThrows.ArgumentNull("selector",() =>
                 SampleData.Strings.MaxBy<string, int>(null));
         }
 
@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByEmptySequence()
         {
-            AssertException.ThrowsInvalidOperation(() =>
+            AssertThrows.InvalidOperation(() =>
                 new string[0].MaxBy(x => x.Length));
         }
 

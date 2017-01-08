@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         public void TestSlidingWindowNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 sequence.Windowed(10));
         }
 
@@ -39,7 +39,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertException.ThrowsOutOfRange("size",() =>
+            AssertThrows.OutOfRange("size",() =>
                 sequence.Windowed(-5));
         }
 

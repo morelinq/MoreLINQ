@@ -27,14 +27,14 @@ namespace MoreLinq.Test
         [Test]
         public void SkipUntilNullSource()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
         }
 
         [Test]
         public void SkipUntilNullPredicate()
         {
-            AssertException.ThrowsArgumentNull("source",() =>
+            AssertThrows.ArgumentNull("source",() =>
                 MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
         }
 

@@ -30,14 +30,14 @@ namespace MoreLinq.Test
         [Test]
         public void SingleOrFallbackWithNullSequence()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>()));
         }
 
         [Test]
         public void SingleOrFallbackWithNullFallback()
         {
-            AssertException.ThrowsArgumentNull("fallback",() =>
+            AssertThrows.ArgumentNull("fallback",() =>
                 new[] { 1 }.SingleOrFallback(null));
         }
 
@@ -66,14 +66,14 @@ namespace MoreLinq.Test
         [Test]
         public void SingleOrFallbackWithLongSequence()
         {
-            AssertException.ThrowsInvalidOperation(() =>
+            AssertThrows.InvalidOperation(() =>
                 new[] { 10, 20, 30 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>()));
         }
 
         [Test]
         public void SingleOrFallbackWithLongSequenceIListOptimized()
         {
-            AssertException.ThrowsInvalidOperation(() =>
+            AssertThrows.InvalidOperation(() =>
                 new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>()));
         }
     }

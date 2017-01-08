@@ -44,7 +44,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            AssertException.ThrowsOutOfRange("count",() =>
+            AssertThrows.OutOfRange("count",() =>
                 Enumerable.Range(1, 10).Repeat(-3));
         }
 
@@ -54,7 +54,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatSequenceANullException()
         {
-            AssertException.ThrowsArgumentNull("sequence", () =>
+            AssertThrows.ArgumentNull("sequence", () =>
                 MoreEnumerable.Repeat<object>(null, 42));
         }
     }

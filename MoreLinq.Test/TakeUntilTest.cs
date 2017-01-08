@@ -27,14 +27,14 @@ namespace MoreLinq.Test
         [Test]
         public void TakeUntilNullSource()
         {
-            AssertException.ThrowsArgumentNull("source",() =>
+            AssertThrows.ArgumentNull("source",() =>
                 MoreEnumerable.TakeUntil<string>(null, x => x.Length == 1));
         }
 
         [Test]
         public void TakeUntilNullPredicate()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.TakeUntil<string>(null, x => x.Length == 1));
         }
 

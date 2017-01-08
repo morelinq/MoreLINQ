@@ -28,14 +28,14 @@ namespace MoreLinq.Test
         [Test]
         public void GroupAdjacentNullSource()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; }));
         }
 
         [Test]
         public void GroupAdjacentNullKeySelector()
         {
-            AssertException.ThrowsArgumentNull("keySelector", () =>
+            AssertThrows.ArgumentNull("keySelector", () =>
                 new object[0].GroupAdjacent<object, object>(null));
         }
 

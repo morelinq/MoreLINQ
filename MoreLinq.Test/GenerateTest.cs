@@ -51,7 +51,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateWithNullGenerator()
         {
-            AssertException.ThrowsArgumentNull("generator", () =>
+            AssertThrows.ArgumentNull("generator", () =>
                 MoreEnumerable.Generate(0, null));
         }
 
@@ -64,7 +64,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateByIndexWithNullGenerator()
         {
-            AssertException.ThrowsArgumentNull("generator",() =>
+            AssertThrows.ArgumentNull("generator",() =>
                 MoreEnumerable.GenerateByIndex<int>(null));
         }
 

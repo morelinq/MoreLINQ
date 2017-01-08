@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         public void TestRandomSubsetNullSequence()
         {
             const IEnumerable<int> nullSequence = null;
-            AssertException.ThrowsArgumentNull("sequence", () =>
+            AssertThrows.ArgumentNull("sequence", () =>
                 nullSequence.RandomSubset(10));
         }
 
@@ -39,7 +39,7 @@ namespace MoreLinq.Test
         public void TestRandomSubsetNullSequence2()
         {
             const IEnumerable<int> nullSequence = null;
-            AssertException.ThrowsArgumentNull("sequence", () =>
+            AssertThrows.ArgumentNull("sequence", () =>
                 nullSequence.RandomSubset(10, new Random()));
         }
 
@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            AssertException.ThrowsOutOfRange("subsetSize", () =>
+            AssertThrows.OutOfRange("subsetSize", () =>
                 Enumerable.Range(1, 10).RandomSubset(-5));
         }
 
@@ -59,7 +59,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            AssertException.ThrowsOutOfRange("subsetSize", () =>
+            AssertThrows.OutOfRange("subsetSize", () =>
                 Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
         }
 
@@ -119,7 +119,7 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertException.ThrowsOutOfRange("subsetSize", () =>
+            AssertThrows.OutOfRange("subsetSize", () =>
             {
                 sequence.RandomSubset(subsetSize).Count();
             });
@@ -136,7 +136,7 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertException.ThrowsOutOfRange("subsetSize", () =>
+            AssertThrows.OutOfRange("subsetSize", () =>
             {
                 sequence.RandomSubset(subsetSize, new Random(1234)).Count();
             });

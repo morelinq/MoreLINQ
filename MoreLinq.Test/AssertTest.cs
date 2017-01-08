@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void AssertNullSequence()
         {
-            AssertException.ThrowsArgumentNull("source", () =>
+            AssertThrows.ArgumentNull("source", () =>
                 MoreEnumerable.Assert<object>(null, delegate { return false; }));
         }
 
         [Test]
         public void AssertNullPredicate()
         {
-            AssertException.ThrowsArgumentNull("predicate",() => 
+            AssertThrows.ArgumentNull("predicate",() => 
                 new object[0].Assert(null));
         }
 
@@ -54,14 +54,14 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            AssertException.ThrowsInvalidOperation(() =>
+            AssertThrows.InvalidOperation(() =>
                 new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            AssertException.ThrowsInvalidOperation(() =>
+            AssertThrows.InvalidOperation(() =>
                 new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
         }
 

@@ -34,7 +34,7 @@ namespace MoreLinq.Test
         [Test, TestCaseSource("GetNotNullTestCases")]
         public void NotNull(TestCase testCase)
         {
-            AssertException.ThrowsArgumentNull(testCase.ParameterName, 
+            AssertThrows.ArgumentNull(testCase.ParameterName, 
                 () => testCase.Invoke());
         }
 
