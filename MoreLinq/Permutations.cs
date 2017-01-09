@@ -24,7 +24,6 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {
-        #region Nested Classes
         /// <summary>
         /// The private implementation class that produces permutations of a sequence.
         /// </summary>
@@ -189,7 +188,6 @@ namespace MoreLinq
             }
             #endregion
         }
-        #endregion
 
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.

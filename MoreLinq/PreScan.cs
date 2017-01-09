@@ -31,7 +31,7 @@ namespace MoreLinq
         /// element is a special case, it is set to the identity). More
         /// generally, the pre-scan allows any commutative binary operation,
         /// not just a sum.
-        /// The inclusive version of PreScan is <see cref="Scan{TSource}"/>.
+        /// The inclusive version of PreScan is <see cref="MoreEnumerable.Scan{TSource}"/>.
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
@@ -51,7 +51,7 @@ namespace MoreLinq
         /// <param name="transformation">Transformation operation</param>
         /// <param name="identity">Identity element (see remarks)</param>
         /// <returns>The scanned sequence</returns>
-        
+
         public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation, TSource identity)
         {
