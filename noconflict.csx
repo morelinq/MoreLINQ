@@ -79,7 +79,7 @@ var q =
             select md
     };
 
-var @void = SyntaxFactory.ParseTypeName("void");
+var @void = ParseTypeName("void");
 
 var output =
     CompilationUnit()
@@ -103,7 +103,7 @@ var output =
                     from md in f.Methods
                     group md by (string) md.Identifier.Value into g
                     select ClassDeclaration(g.Key + "Extension")
-                        .WithModifiers(TokenList(SyntaxFactory.ParseTokens("public static")))
+                        .WithModifiers(TokenList(ParseTokens("public static")))
                         .WithLeadingTrivia(ParseLeadingTrivia($"/// <summary><c>{g.Key}</c> extension.</summary>{Environment.NewLine}"))
                         .WithMembers(List<MemberDeclarationSyntax>(
                             from md in g
@@ -123,7 +123,7 @@ var output =
                                     .WithTypeParameterList(md.TypeParameterList)
                                     .WithConstraintClauses(md.ConstraintClauses)
                                     .WithParameterList(md.ParameterList)
-                                    .WithBody(SyntaxFactory.Block(
+                                    .WithBody(Block(
                                         md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
                                         ? (StatementSyntax)ExpressionStatement(call)
                                         : ReturnStatement(call)))))))))
