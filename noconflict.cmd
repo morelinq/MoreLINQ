@@ -14,8 +14,8 @@ csi noconflict.csx %*
 goto :EOF
 
 :gen-all
-     call :gen NoConflict.cs -x "^ToDataTable$" -u System.Linq ^
-  && call :gen NoConflict.ToDataTable.cs -i "^ToDataTable$" -u System.Data -u System.Linq.Expressions
+     call :gen NoConflict.g.cs -x "^ToDataTable$" -u System.Linq ^
+  && call :gen NoConflict.ToDataTable.g.cs -i "^ToDataTable$" -u System.Data -u System.Linq.Expressions
 goto :EOF
 
 :gen
