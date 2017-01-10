@@ -101,32 +101,35 @@ var output =
                 .WithMembers(List<MemberDeclarationSyntax>(
                     from f in q
                     from md in f.Methods
-                    let call =
-                        InvocationExpression(
-                            MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                IdentifierName("MoreEnumerable"),
-                                IdentifierName(md.Identifier)),
-                            ArgumentList(SeparatedList<ArgumentSyntax>(
-                                from p in md.ParameterList.Parameters
-                                select Argument(IdentifierName(p.Identifier)))))
-                    select ClassDeclaration(md.Identifier.Value + "Extension")
-                        .WithModifiers(TokenList(SyntaxFactory.ParseTokens("public static partial")))
-                        .WithLeadingTrivia(ParseLeadingTrivia($"/// <summary><c>{md.Identifier}</c> extension.</summary>{Environment.NewLine}"))
-                        .WithMembers(SingletonList<MemberDeclarationSyntax>(
-                            MethodDeclaration(md.ReturnType, md.Identifier)
-                                .WithAttributeLists(md.AttributeLists)
-                                .WithModifiers(md.Modifiers)
-                                .WithTypeParameterList(md.TypeParameterList)
-                                .WithConstraintClauses(md.ConstraintClauses)
-                                .WithParameterList(md.ParameterList)
-                                .WithBody(SyntaxFactory.Block(
-                                    md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
-                                    ? (StatementSyntax)ExpressionStatement(call)
-                                    : ReturnStatement(call)))))))))
+                    group md by (string) md.Identifier.Value into g
+                    select ClassDeclaration(g.Key + "Extension")
+                        .WithModifiers(TokenList(SyntaxFactory.ParseTokens("public static")))
+                        .WithLeadingTrivia(ParseLeadingTrivia($"/// <summary><c>{g.Key}</c> extension.</summary>{Environment.NewLine}"))
+                        .WithMembers(List<MemberDeclarationSyntax>(
+                            from md in g
+                            let call =
+                                InvocationExpression(
+                                    MemberAccessExpression(
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        IdentifierName("MoreEnumerable"),
+                                        IdentifierName(md.Identifier)),
+                                    ArgumentList(SeparatedList<ArgumentSyntax>(
+                                        from p in md.ParameterList.Parameters
+                                        select Argument(IdentifierName(p.Identifier)))))
+                            select
+                                MethodDeclaration(md.ReturnType, md.Identifier)
+                                    .WithAttributeLists(md.AttributeLists)
+                                    .WithModifiers(md.Modifiers)
+                                    .WithTypeParameterList(md.TypeParameterList)
+                                    .WithConstraintClauses(md.ConstraintClauses)
+                                    .WithParameterList(md.ParameterList)
+                                    .WithBody(SyntaxFactory.Block(
+                                        md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
+                                        ? (StatementSyntax)ExpressionStatement(call)
+                                        : ReturnStatement(call)))))))))
     .NormalizeWhitespace();
 
-const string header = $@"
+var header = $@"
     #region License and Terms
     // MoreLINQ - Extensions to LINQ to Objects
     // Copyright (C) 2008 Jonathan Skeet.
