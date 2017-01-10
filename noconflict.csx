@@ -80,11 +80,23 @@ var q =
     };
 
 var @void = ParseTypeName("void");
+var indent = new string('\x20', 4);
+var indent2 = indent + indent;
+var indent3 = indent2 + indent;
+var lf = "\n";
+
+var bt = new // brace tokens
+{
+    Open  = ParseToken("{"),
+    Close = ParseToken("}"),
+};
 
 var output =
     CompilationUnit()
         .WithMembers(SingletonList<MemberDeclarationSyntax>(
             NamespaceDeclaration(IdentifierName("MoreLinq.NoConflict"))
+                .WithNamespaceKeyword(ParseToken("namespace").WithTrailingTrivia(Space))
+                .WithOpenBraceToken(bt.Open.WithLeadingTrivia(LineFeed).WithTrailingTrivia(LineFeed))
                 .WithUsings(List(
                     from nss in new []
                     {
@@ -96,15 +108,17 @@ var output =
                         usings.AsEnumerable(),
                     }
                     from ns in nss
-                    select UsingDirective(ParseName(ns))
+                    select UsingDirective(ParseName(ns)).WithUsingKeyword(ParseToken("using").WithTrailingTrivia(Space).WithLeadingTrivia(Whitespace("    "))).WithTrailingTrivia(LineFeed)
                 ))
                 .WithMembers(List<MemberDeclarationSyntax>(
                     from f in q
                     from md in f.Methods
                     group md by (string) md.Identifier.Value into g
                     select ClassDeclaration(g.Key + "Extension")
+                        .WithKeyword(ParseToken("class").WithLeadingTrivia(Space).WithTrailingTrivia(Space))
                         .WithModifiers(TokenList(ParseTokens("public static")))
-                        .WithLeadingTrivia(ParseLeadingTrivia($"/// <summary><c>{g.Key}</c> extension.</summary>{Environment.NewLine}"))
+                        .WithLeadingTrivia(ParseLeadingTrivia(lf + indent + $"/// <summary><c>{g.Key}</c> extension.</summary>" + lf + indent))
+                        .WithOpenBraceToken(bt.Open.WithLeadingTrivia(Whitespace(lf + indent)).WithTrailingTrivia(LineFeed))
                         .WithMembers(List<MemberDeclarationSyntax>(
                             from md in g
                             let call =
@@ -116,6 +130,7 @@ var output =
                                     ArgumentList(SeparatedList<ArgumentSyntax>(
                                         from p in md.ParameterList.Parameters
                                         select Argument(IdentifierName(p.Identifier)))))
+                                    .WithLeadingTrivia(Space)
                             select
                                 MethodDeclaration(md.ReturnType, md.Identifier)
                                     .WithAttributeLists(md.AttributeLists)
@@ -123,11 +138,14 @@ var output =
                                     .WithTypeParameterList(md.TypeParameterList)
                                     .WithConstraintClauses(md.ConstraintClauses)
                                     .WithParameterList(md.ParameterList)
-                                    .WithBody(Block(
-                                        md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
-                                        ? (StatementSyntax)ExpressionStatement(call)
-                                        : ReturnStatement(call)))))))))
-    .NormalizeWhitespace();
+                                    .WithBody(
+                                        Block(md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
+                                              ? (StatementSyntax)ExpressionStatement(call)
+                                              : ReturnStatement(call))
+                                            .WithOpenBraceToken(bt.Open.WithLeadingTrivia(Whitespace(indent2))
+                                                                       .WithTrailingTrivia(Whitespace(lf + indent3)))
+                                            .WithCloseBraceToken(bt.Close.WithLeadingTrivia(Whitespace(" " + lf + indent2))))))
+                        .WithCloseBraceToken(bt.Close.WithLeadingTrivia(Whitespace(lf + indent)).WithTrailingTrivia(LineFeed))))));
 
 var header = $@"
     #region License and Terms
@@ -157,5 +175,9 @@ var header = $@"
     // Generated: {DateTimeOffset.Now.ToString("r")}
 ";
 
-Console.WriteLine(Regex.Replace(header, @"(?m:^\x20+)", string.Empty).TrimStart());
-Console.WriteLine(output.ToFullString());
+static string NormalizeLineEndings(string s) =>
+    s?.Replace("\r", string.Empty).Replace("\n", Environment.NewLine);
+
+header = Regex.Replace(header, @"(?m:^\x20+)", string.Empty).TrimStart();
+Console.WriteLine(NormalizeLineEndings(header));
+Console.WriteLine(NormalizeLineEndings(output.ToFullString()));
