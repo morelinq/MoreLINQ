@@ -53,7 +53,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
     <Compile Remove="ToDataTable.cs" />
-    <Compile Remove="NoConflict.ToDataTable.cs" />
+    <Compile Remove="NoConflict.ToDataTable.g.cs" />
   </ItemGroup>
 
 </Project>
