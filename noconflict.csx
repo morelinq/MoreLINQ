@@ -91,6 +91,7 @@ var imports =
         new []
         {
             "System",
+            "System.CodeDom.Compiler",
             "System.Collections.Generic",
         },
         usings.AsEnumerable(),
@@ -136,6 +137,8 @@ var classes =
     into m
     select $@"
     /// <summary><c>{m.Name}</c> extension.</summary>
+
+    [GeneratedCode(""MoreLinq.NoConflictScript"", ""0.1"")]
     public static class {m.Name}Extension
     {{
 {string.Join(null, from mo in m.Overloads select mo.ToFullString())}
