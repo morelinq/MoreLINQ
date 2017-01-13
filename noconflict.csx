@@ -85,99 +85,97 @@ var indent2 = indent + indent;
 var indent3 = indent2 + indent;
 var lf = "\n";
 
-var bt = new // brace tokens
-{
-    Open  = ParseToken("{"),
-    Close = ParseToken("}"),
-};
+var imports =
+    from nss in new[]
+    {
+        new []
+        {
+            "System",
+            "System.Collections.Generic",
+        },
+        usings.AsEnumerable(),
+    }
+    from ns in nss
+    select indent + $"using {ns};";
 
-var output =
-    CompilationUnit()
-        .WithMembers(SingletonList<MemberDeclarationSyntax>(
-            NamespaceDeclaration(IdentifierName("MoreLinq.NoConflict"))
-                .WithNamespaceKeyword(ParseToken("namespace").WithTrailingTrivia(Space))
-                .WithOpenBraceToken(bt.Open.WithLeadingTrivia(LineFeed).WithTrailingTrivia(LineFeed))
-                .WithUsings(List(
-                    from nss in new []
-                    {
-                        new []
-                        {
-                            "System",
-                            "System.Collections.Generic",
-                        },
-                        usings.AsEnumerable(),
-                    }
-                    from ns in nss
-                    select UsingDirective(ParseName(ns)).WithUsingKeyword(ParseToken("using").WithTrailingTrivia(Space).WithLeadingTrivia(Whitespace("    "))).WithTrailingTrivia(LineFeed)
-                ))
-                .WithMembers(List<MemberDeclarationSyntax>(
-                    from f in q
-                    from md in f.Methods
-                    group md by (string) md.Identifier.Value into g
-                    select ClassDeclaration(g.Key + "Extension")
-                        .WithKeyword(ParseToken("class").WithLeadingTrivia(Space).WithTrailingTrivia(Space))
-                        .WithModifiers(TokenList(ParseTokens("public static")))
-                        .WithLeadingTrivia(ParseLeadingTrivia(lf + indent + $"/// <summary><c>{g.Key}</c> extension.</summary>" + lf + indent))
-                        .WithOpenBraceToken(bt.Open.WithLeadingTrivia(Whitespace(lf + indent)).WithTrailingTrivia(LineFeed))
-                        .WithMembers(List<MemberDeclarationSyntax>(
-                            from md in g
-                            let call =
-                                InvocationExpression(
-                                    MemberAccessExpression(
-                                        SyntaxKind.SimpleMemberAccessExpression,
-                                        IdentifierName("MoreEnumerable"),
-                                        IdentifierName(md.Identifier)),
-                                    ArgumentList(SeparatedList<ArgumentSyntax>(
-                                        from p in md.ParameterList.Parameters
-                                        select Argument(IdentifierName(p.Identifier)))))
-                                    .WithLeadingTrivia(Space)
-                            select
-                                MethodDeclaration(md.ReturnType, md.Identifier)
-                                    .WithAttributeLists(md.AttributeLists)
-                                    .WithModifiers(md.Modifiers)
-                                    .WithTypeParameterList(md.TypeParameterList)
-                                    .WithConstraintClauses(md.ConstraintClauses)
-                                    .WithParameterList(md.ParameterList)
-                                    .WithBody(
-                                        Block(md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
-                                              ? (StatementSyntax)ExpressionStatement(call)
-                                              : ReturnStatement(call))
-                                            .WithOpenBraceToken(bt.Open.WithLeadingTrivia(Whitespace(indent2))
-                                                                       .WithTrailingTrivia(Whitespace(lf + indent3)))
-                                            .WithCloseBraceToken(bt.Close.WithLeadingTrivia(Whitespace(" " + lf + indent2))))))
-                        .WithCloseBraceToken(bt.Close.WithLeadingTrivia(Whitespace(lf + indent)).WithTrailingTrivia(LineFeed))))));
+var classes =
+    from f in q
+    from md in f.Methods
+    group md by (string) md.Identifier.Value into g
+    select new
+    {
+        Name = g.Key,
+        Overloads =
+            from md in g
+            let call =
+                InvocationExpression(
+                    MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        IdentifierName("MoreEnumerable"),
+                        IdentifierName(md.Identifier)),
+                    ArgumentList(SeparatedList<ArgumentSyntax>(
+                        from p in md.ParameterList.Parameters
+                        select Argument(IdentifierName(p.Identifier)))))
+                    .WithLeadingTrivia(Space)
+            select
+                MethodDeclaration(md.ReturnType, md.Identifier)
+                    .WithAttributeLists(md.AttributeLists)
+                    .WithModifiers(md.Modifiers)
+                    .WithTypeParameterList(md.TypeParameterList)
+                    .WithConstraintClauses(md.ConstraintClauses)
+                    .WithParameterList(md.ParameterList)
+                    .WithBody(
+                        // TODO Replace with expression-bodied
+                        Block(md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
+                              ? (StatementSyntax)ExpressionStatement(call)
+                              : ReturnStatement(call))
+                            .WithOpenBraceToken(ParseToken("{").WithLeadingTrivia(Whitespace(indent2))
+                                                               .WithTrailingTrivia(Whitespace(lf + indent3)))
+                            .WithCloseBraceToken(ParseToken("}").WithLeadingTrivia(Whitespace(" " + lf + indent2))))
+    }
+    into m
+    select $@"
+    /// <summary><c>{m.Name}</c> extension.</summary>
+    public static class {m.Name}Extension
+    {{
+{string.Join(null, from mo in m.Overloads select mo.ToFullString())}
+    }}";
 
-var header = $@"
-    #region License and Terms
-    // MoreLINQ - Extensions to LINQ to Objects
-    // Copyright (C) 2008 Jonathan Skeet.
-    // Portions Copyright (C) 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
-    // Portions Copyright (C) 2010 Johannes Rudolph, Leopold Bushkin.
-    // Portions Copyright (C) 2015 Felipe Sateler, ""sholland"".
-    // Portions Copyright (C) 2016 Leandro F. Vieira (leandromoh).
-    // Portions Copyright (C) Microsoft. All rights reserved.
-    //
-    // Licensed under the Apache License, Version 2.0 (the ""License"");
-    // you may not use this file except in compliance with the License.
-    // You may obtain a copy of the License at
-    //
-    //     http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an ""AS IS"" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    #endregion
+var template = $@"
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (C) 2008 Jonathan Skeet.
+// Portions Copyright (C) 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
+// Portions Copyright (C) 2010 Johannes Rudolph, Leopold Bushkin.
+// Portions Copyright (C) 2015 Felipe Sateler, ""sholland"".
+// Portions Copyright (C) 2016 Leandro F. Vieira (leandromoh).
+// Portions Copyright (C) Microsoft. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the ""License"");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an ""AS IS"" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
 
-    // This code was generated by a tool. Any changes made manually will be lost
-    // the next time this code is regenerated.
-    // Generated: {DateTimeOffset.Now.ToString("r")}
+// This code was generated by a tool. Any changes made manually will be lost
+// the next time this code is regenerated.
+// Generated: {DateTimeOffset.Now.ToString("r")}
+
+namespace MoreLinq.NoConflict
+{{
+{string.Join("\n", imports)}
+{string.Join("\n", classes)}
+}}
 ";
 
-static string NormalizeLineEndings(string s) =>
-    s?.Replace("\r", string.Empty).Replace("\n", Environment.NewLine);
-
-header = Regex.Replace(header, @"(?m:^\x20+)", string.Empty).TrimStart();
-Console.WriteLine(NormalizeLineEndings(header));
-Console.WriteLine(NormalizeLineEndings(output.ToFullString()));
+Console.WriteLine(template.Trim()
+                          // normalize line endings
+                          .Replace("\r", string.Empty)
+                          .Replace("\n", Environment.NewLine));
