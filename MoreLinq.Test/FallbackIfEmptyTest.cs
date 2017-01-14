@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Linq;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;

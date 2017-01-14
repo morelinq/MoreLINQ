@@ -17,7 +17,6 @@
 
 #pragma warning disable 612 // 'ToDelimitedString' is obsolete
 
-using System;
 using System.Globalization;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;
