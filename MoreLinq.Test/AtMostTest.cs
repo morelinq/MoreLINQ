@@ -29,13 +29,15 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.AtMost<int>(null, 1));
+            Assert.ThrowsArgumentNullException("source",
+                () => MoreEnumerable.AtMost<int>(null, 1));
         }
 
         [Test]
         public void AtMostWithNegativeCount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.AtMost(-1));
+            Assert.ThrowsArgumentOutOfRangeException("count",
+                () => new[] { 1 }.AtMost(-1));
         }
 
         [Test]

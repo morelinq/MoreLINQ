@@ -29,13 +29,15 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.Exactly<int>(null, 1));
+            Assert.ThrowsArgumentNullException("source",
+                () => MoreEnumerable.Exactly<int>(null, 1));
         }
 
         [Test]
         public void ExactlyWithNegativeCount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Exactly(-1));
+            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+                new[] { 1 }.Exactly(-1));
         }
 
         [Test]

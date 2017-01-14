@@ -29,13 +29,15 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.AtLeast<int>(null, 1));
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.AtLeast<int>(null, 1));
         }
 
         [Test]
         public void AtLeastWithNegativeCount()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.AtLeast(-1));
+            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+                new[] { 1 }.AtLeast(-1));
         }
 
         [Test]

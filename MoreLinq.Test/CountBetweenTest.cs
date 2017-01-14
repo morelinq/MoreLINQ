@@ -29,25 +29,29 @@ namespace MoreLinq.Test
         [Test]
         public void CountBetweenWithNullSequence()
         {
-            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.CountBetween<int>(null, 1, 2));
+            Assert.ThrowsArgumentNullException("source",
+                () => MoreEnumerable.CountBetween<int>(null, 1, 2));
         }
 
         [Test]
         public void CountBetweenWithNegativeMin()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.CountBetween(-1, 0));
+            Assert.ThrowsArgumentOutOfRangeException("min", () =>
+                new[] { 1 }.CountBetween(-1, 0));
         }
 
         [Test]
         public void CountBetweenWithNegativeMax()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.CountBetween(0, -1));
+            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+               new[] { 1 }.CountBetween(0, -1));
         }
 
         [Test]
         public void CountBetweenWithMaxLesserThanMin()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.CountBetween(1, 0));
+            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+                new[] { 1 }.CountBetween(1, 0));
         }
 
         [Test]
