@@ -27,17 +27,17 @@ namespace MoreLinq.Test
     public class PipeTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullSequence()
         {
-            MoreEnumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); });
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); }));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PipeNullAction()
         {
-            new[] { 1, 2, 3 }.Pipe(null);
+            Assert.ThrowsArgumentNullException("action", () =>
+                new[] { 1, 2, 3 }.Pipe(null));
         }
 
         [Test]

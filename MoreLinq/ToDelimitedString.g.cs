@@ -15,6 +15,16 @@
 // limitations under the License.
 #endregion
 
+#if !MORELINQ
+//
+// For projects that may include/embed this source file directly, suppress the
+// following warnings since the hosting project may not require CLS compliance
+// and MoreEnumerable will most probably be internal.
+//
+#pragma warning disable 3019 // CLS compliance checking will not be performed on 'type' because it is not visible from outside this assembly
+#pragma warning disable 3021 // 'type' does not need a CLSCompliant attribute because the assembly does not have a CLSCompliant attribute
+#endif
+
 namespace MoreLinq
 {
     using System;
@@ -39,6 +49,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<bool> source)
         {
             return ToDelimitedString(source, null);
@@ -87,6 +98,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<byte> source)
         {
             return ToDelimitedString(source, null);
@@ -135,6 +147,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<char> source)
         {
             return ToDelimitedString(source, null);
@@ -183,6 +196,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<decimal> source)
         {
             return ToDelimitedString(source, null);
@@ -231,6 +245,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<double> source)
         {
             return ToDelimitedString(source, null);
@@ -279,6 +294,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<float> source)
         {
             return ToDelimitedString(source, null);
@@ -327,6 +343,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<int> source)
         {
             return ToDelimitedString(source, null);
@@ -375,6 +392,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<long> source)
         {
             return ToDelimitedString(source, null);
@@ -423,6 +441,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
         [CLSCompliant(false)]
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<sbyte> source)
         {
             return ToDelimitedString(source, null);
@@ -471,6 +490,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<short> source)
         {
             return ToDelimitedString(source, null);
@@ -519,6 +539,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<string> source)
         {
             return ToDelimitedString(source, null);
@@ -567,6 +588,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
         [CLSCompliant(false)]
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<uint> source)
         {
             return ToDelimitedString(source, null);
@@ -615,6 +637,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
         [CLSCompliant(false)]
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<ulong> source)
         {
             return ToDelimitedString(source, null);
@@ -663,6 +686,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
         [CLSCompliant(false)]
+        [Obsolete]
         public static string ToDelimitedString(this IEnumerable<ushort> source)
         {
             return ToDelimitedString(source, null);

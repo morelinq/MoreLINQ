@@ -18,20 +18,20 @@ namespace MoreLinq.Test
         /// Verify that passing an empty loop count sequence results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullLoopCountsException()
         {
-            EmptyLoopBody.NestedLoops(null);
+            Assert.ThrowsArgumentNullException("loopCounts",() =>
+                EmptyLoopBody.NestedLoops(null));
         }
 
         /// <summary>
         /// Verify that passing negative loop counts results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void TestNegativeLoopCountsException()
         {
-            EmptyLoopBody.NestedLoops(Enumerable.Range(-10, 10));
+            Assert.ThrowsArgumentException("loopCounts", () =>
+                EmptyLoopBody.NestedLoops(Enumerable.Range(-10, 10)));
         }
 
         /// <summary>

@@ -28,8 +28,11 @@ namespace MoreLinq.Test
         [Test]
         public void PartialSortByWithNullSequence()
         {
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e, Comparer<object>.Default)).ParamName);
+            Assert.ThrowsArgumentNullException("source", () => 
+                MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e));
+
+            Assert.ThrowsArgumentNullException("source", () => 
+                MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e, Comparer<object>.Default));
         }
 
         [Test]
