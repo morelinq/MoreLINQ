@@ -35,9 +35,13 @@ This method has 2 overloads.
 
 ### AtLeast
 
-Returns true when the number of elements in the given sequence is greater 
-than or equal to the given integer. This method throws an exception if the 
-given integer is negative
+Determines whether or not the number of elements in the sequence is greater 
+than or equal to the given integer.
+
+### AtMost
+
+Determines whether or not the number of elements in the sequence is lesser 
+than or equal to the given integer.
 
 ### Batch
 
@@ -62,6 +66,11 @@ This method has 2 overloads.
 Completely consumes the given sequence. This method uses immediate execution,
 and doesn't store any data during execution
 
+### CountBetween
+
+Determines whether or not the number of elements in the sequence is between an 
+inclusive range of minimum and maximum integers.
+
 ### CountBy
 
 Applies a key-generating function to each element of a sequence and returns a
@@ -84,6 +93,11 @@ Returns a projection of tuples, where each tuple contains the N-th element
 from each of the argument sequences.
 
 This method has 3 overloads.
+
+### Exactly
+
+Determines whether or not the number of elements in the sequence is equals 
+to the given integer.
 
 ### ExceptBy
 
@@ -422,5 +436,4 @@ Returns a projection of tuples, where each tuple contains the N-th element
 from each of the argument sequences.
 
 This method has 3 overloads.
-
 
