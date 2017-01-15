@@ -27,32 +27,27 @@ namespace MoreLinq.Test
     public class CountBetweenTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CountBetweenWithNullSequence()
         {
-            IEnumerable<int> sequence = null;
-            sequence.CountBetween(1, 2);
+            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.CountBetween<int>(null, 1, 2));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CountBetweenWithNegativeMin()
         {
-            new[] { 1 }.CountBetween(-1, 0);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.CountBetween(-1, 0));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CountBetweenWithNegativeMax()
         {
-            new[] { 1 }.CountBetween(0, -1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.CountBetween(0, -1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CountBetweenWithMaxLesserThanMin()
         {
-            new[] { 1 }.CountBetween(1, 0);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.CountBetween(1, 0));
         }
 
         [Test]
@@ -61,17 +56,14 @@ namespace MoreLinq.Test
             Assert.IsTrue(new[] { 1 }.CountBetween(1, 1));
         }
 
-        [Test]
-        public void CountBetweenRangeTests()
+        [TestCase(1, 1, 2, 4, false)]
+        [TestCase(1, 2, 2, 4, true)]
+        [TestCase(1, 3, 2, 4, true)]
+        [TestCase(1, 4, 2, 4, true)]
+        [TestCase(1, 5, 2, 4, false)]
+        public void CountBetweenRangeTests(int start, int count, int min, int max, bool expecting)
         {
-            Assert.IsFalse(Enumerable.Range(1, 1).CountBetween(2, 4));
-
-            Assert.IsTrue(Enumerable.Range(1, 2).CountBetween(2, 4));
-            Assert.IsTrue(Enumerable.Range(1, 3).CountBetween(2, 4));
-            Assert.IsTrue(Enumerable.Range(1, 4).CountBetween(2, 4));
-
-            Assert.IsFalse(Enumerable.Range(1, 5).CountBetween(2, 4));
+            Assert.That(Enumerable.Range(start, count).CountBetween(min, max), Is.EqualTo(expecting));
         }
-
     }
 }

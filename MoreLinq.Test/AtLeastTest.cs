@@ -29,141 +29,122 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithNullSequence()
         {
-            IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.AtLeast(1));
+            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.AtLeast<int>(null, 1));
         }
 
         [Test]
         public void AtLeastWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
-                new[] { 1 }.AtLeast(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.AtLeast(-1));
         }
 
-        private static IEnumerable<int> GetSequence()
-        {
-            return new InfiniteSequence<int>(0);
-        }
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
-            Assert.IsTrue(GetEmptySequence().AtLeast(0));
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtLeast(0));
         }
+
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastOneElement()
         {
-            Assert.IsFalse(GetEmptySequence().AtLeast(1));
+            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(1));
         }
+
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElements()
         {
-            Assert.IsFalse(GetEmptySequence().AtLeast(2));
-        }
-        private static IEnumerable<int> GetEmptySequence()
-        {
-            return LinqEnumerable.Empty<int>();
+            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(2));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElements()
         {
-            Assert.IsTrue(GetSingleElementSequence().AtLeast(0));
+            Assert.IsTrue(new[] { 1 }.AtLeast(0));
         }
+
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElement()
         {
-            Assert.IsTrue(GetSingleElementSequence().AtLeast(1));
+            Assert.IsTrue(new[] { 1 }.AtLeast(1));
         }
+
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElements()
         {
-            Assert.IsFalse(GetSingleElementSequence().AtLeast(2));
-        }
-        private static IEnumerable<int> GetSingleElementSequence()
-        {
-            return GetSequence().Take(1);
+            Assert.IsFalse(new[] { 1 }.AtLeast(2));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastZeroElements()
         {
-            Assert.IsTrue(GetManyElementSequence().AtLeast(0));
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(0));
         }
+
         [Test]
         public void AtLeastWithManyElementsHasAtLeastOneElement()
         {
-            Assert.IsTrue(GetManyElementSequence().AtLeast(1));
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(1));
         }
+
         [Test]
         public void AtLeastWithManyElementsHasAtLeastManyElements()
         {
-            Assert.IsTrue(GetManyElementSequence().AtLeast(2));
-        }
-        private static IEnumerable<int> GetManyElementSequence()
-        {
-            return GetSequence().Take(3);
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(2));
         }
 
         //ICollection<T> Optimization Tests
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElementsForCollections()
         {
-            Assert.IsTrue(GetEmptyArray().AtLeast(0));
+            Assert.IsTrue(new int[] { }.AtLeast(0));
         }
+
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastOneElementForCollections()
         {
-            Assert.IsFalse(GetEmptyArray().AtLeast(1));
+            Assert.IsFalse(new int[] { }.AtLeast(1));
         }
+
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElementsForCollections()
         {
-            Assert.IsFalse(GetEmptyArray().AtLeast(2));
-        }
-        private static IEnumerable<int> GetEmptyArray()
-        {
-            return new int[] { };
+            Assert.IsFalse(new int[] { }.AtLeast(2));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElementsForCollections()
         {
-            Assert.IsTrue(GetSingleElementArray().AtLeast(0));
+            Assert.IsTrue(new int[] { 1 }.AtLeast(0));
         }
+
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElementForCollections()
         {
-            Assert.IsTrue(GetSingleElementArray().AtLeast(1));
+            Assert.IsTrue(new int[] { 1 }.AtLeast(1));
         }
+
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElementsForCollections()
         {
-            Assert.IsFalse(GetSingleElementArray().AtLeast(2));
-        }
-        private static IEnumerable<int> GetSingleElementArray()
-        {
-            return GetSingleElementSequence().ToArray();
+            Assert.IsFalse(new int[] { 1 }.AtLeast(2));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastZeroElementsForCollections()
         {
-            Assert.IsTrue(GetManyElementArray().AtLeast(0));
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(0));
         }
+
         [Test]
         public void AtLeastWithManyElementsHasAtLeastOneElementForCollections()
         {
-            Assert.IsTrue(GetManyElementArray().AtLeast(1));
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(1));
         }
+
         [Test]
         public void AtLeastWithManyElementsHasAtLeastManyElementsForCollections()
         {
-            Assert.IsTrue(GetManyElementArray().AtLeast(2));
-        }
-        private static IEnumerable<int> GetManyElementArray()
-        {
-            return GetManyElementSequence().ToArray();
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(2));
         }
 
         [Test]

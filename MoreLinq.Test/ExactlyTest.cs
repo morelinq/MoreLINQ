@@ -27,56 +27,39 @@ namespace MoreLinq.Test
     public class ExactlyTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExactlyWithNullSequence()
         {
-            IEnumerable<int> sequence = null;
-            sequence.Exactly(1);
+            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.Exactly<int>(null, 1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ExactlyWithNegativeCount()
         {
-            new[] { 1 }.Exactly(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.Exactly(-1));
         }
 
-        private static IEnumerable<int> GetSequence()
-        {
-            return new InfiniteSequence<int>(0);
-        }
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
-            Assert.IsTrue(GetEmptySequence().Exactly(0));
+            Assert.IsTrue(LinqEnumerable.Empty<int>().Exactly(0));
         }
-        private static IEnumerable<int> GetEmptySequence()
-        {
-            return LinqEnumerable.Empty<int>();
-        }
+
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyOneElement()
         {
-            Assert.IsFalse(GetEmptySequence().Exactly(1));
+            Assert.IsFalse(LinqEnumerable.Empty<int>().Exactly(1));
         }
+
         [Test]
         public void ExactlyWithSingleElementHasExactlyOneElements()
         {
-            Assert.IsTrue(GetSingleElementSequence().Exactly(1));
+            Assert.IsTrue(new[] { 1 }.Exactly(1));
         }
+
         [Test]
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
-            Assert.IsFalse(GetManyElementSequence().Exactly(1));
-        }
-        private static IEnumerable<int> GetSingleElementSequence()
-        {
-            return GetSequence().Take(1);
-        }
-
-        private static IEnumerable<int> GetManyElementSequence()
-        {
-            return GetSequence().Take(3);
+            Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(1));
         }
     }
 }

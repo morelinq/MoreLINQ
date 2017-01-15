@@ -27,68 +27,51 @@ namespace MoreLinq.Test
     public class AtMostTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AtMostWithNullSequence()
         {
-            IEnumerable<int> sequence = null;
-            sequence.AtMost(1);
+            Assert.Throws<ArgumentNullException>(() => MoreEnumerable.AtMost<int>(null, 1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AtMostWithNegativeCount()
         {
-            new[] { 1 }.AtMost(-1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new[] { 1 }.AtMost(-1));
         }
 
-        private static IEnumerable<int> GetSequence()
-        {
-            return new InfiniteSequence<int>(0);
-        }
         [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
-            Assert.IsTrue(GetEmptySequence().AtMost(0));
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(0));
         }
+
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
-            Assert.IsTrue(GetEmptySequence().AtMost(1));
-        }
-        private static IEnumerable<int> GetEmptySequence()
-        {
-            return LinqEnumerable.Empty<int>();
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(1));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostZeroElements()
         {
-            Assert.IsFalse(GetSingleElementSequence().AtMost(0));
+            Assert.IsFalse(new[] { 1 }.AtMost(0));
         }
+
         [Test]
         public void AtMostWithSingleElementHasAtMostOneElement()
         {
-            Assert.IsTrue(GetSingleElementSequence().AtMost(1));
+            Assert.IsTrue(new[] { 1 }.AtMost(1));
         }
+
         [Test]
         public void AtMostWithSingleElementHasAtMostManyElements()
         {
-            Assert.IsTrue(GetSingleElementSequence().AtMost(2));
-        }
-        private static IEnumerable<int> GetSingleElementSequence()
-        {
-            return GetSequence().Take(1);
+            Assert.IsTrue(new[] { 1 }.AtMost(2));
         }
 
         [Test]
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
-            Assert.IsFalse(GetManyElementSequence().AtMost(1));
-        }
-
-        private static IEnumerable<int> GetManyElementSequence()
-        {
-            return GetSequence().Take(3);
+            Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(1));
         }
     }
 }

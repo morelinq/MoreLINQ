@@ -29,10 +29,10 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="min">The minimum number of items a sequence must have for this
+        /// <param name="count">The minimum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is greater than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
@@ -42,11 +42,11 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
-        public static bool AtLeast<T>(this IEnumerable<T> source, int min)
+        public static bool AtLeast<T>(this IEnumerable<T> source, int count)
         {
-            if (min < 0) throw new ArgumentOutOfRangeException("min", "min must not be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
 
-            return QuantityIterator(source, min, count => count >= min);
+            return QuantityIterator(source, count, n => n >= count);
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="max">The maximun number of items a sequence must have for this
+        /// <param name="count">The maximun number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="max"/> is negative</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is lesser than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
@@ -68,11 +68,11 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
-        public static bool AtMost<T>(this IEnumerable<T> source, int max)
+        public static bool AtMost<T>(this IEnumerable<T> source, int count)
         {
-            if (max < 0) throw new ArgumentOutOfRangeException("max", "max must not be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
 
-            return QuantityIterator(source, max + 1, count => count <= max);
+            return QuantityIterator(source, count + 1, n => n <= count);
         }
 
         /// <summary>
@@ -80,10 +80,10 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="length">The exactly number of items a sequence must have for this
+        /// <param name="count">The exactly number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is negative</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
         /// <returns><c>true</c> if the number of elements in the sequence is equals
         /// to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
@@ -93,11 +93,11 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
-        public static bool Exactly<T>(this IEnumerable<T> source, int length)
+        public static bool Exactly<T>(this IEnumerable<T> source, int count)
         {
-            if (length < 0) throw new ArgumentOutOfRangeException("length", "length must not be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
 
-            return QuantityIterator(source, length + 1, count => count == length);
+            return QuantityIterator(source, count + 1, n => n == count);
         }
 
         /// <summary>
@@ -123,10 +123,10 @@ namespace MoreLinq
         /// </example>
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
         {
-            if (min < 0) throw new ArgumentOutOfRangeException("min", "min must not be negative.");
-            if (max < min) throw new ArgumentOutOfRangeException("max", "max must be greater than or equals to min.");
+            if (min < 0) throw new ArgumentOutOfRangeException("min", "Minimum count cannot be negative.");
+            if (max < min) throw new ArgumentOutOfRangeException("max", "Maximum count must be greater than or equal to the minimum count.");
 
-            return QuantityIterator(source, max + 1, count => min <= count && count <= max);
+            return QuantityIterator(source, max + 1, n => min <= n && n <= max);
         }
 
 
