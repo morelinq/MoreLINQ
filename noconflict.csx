@@ -82,7 +82,6 @@ var q =
 var indent = new string('\x20', 4);
 var indent2 = indent + indent;
 var indent3 = indent2 + indent;
-var lf = "\n";
 
 var imports =
     from nss in new[]
@@ -126,7 +125,7 @@ var classes =
                                     select Argument(IdentifierName(p.Identifier)))))
                                 .WithLeadingTrivia(Space))
                             .WithLeadingTrivia(Whitespace(indent3)))
-                    .WithSemicolonToken(ParseToken(";"))
+                    .WithSemicolonToken(ParseToken(";").WithTrailingTrivia(LineFeed))
     }
     into m
     select $@"
