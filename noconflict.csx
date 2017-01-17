@@ -79,7 +79,6 @@ var q =
             select md
     };
 
-var @void = ParseTypeName("void");
 var indent = new string('\x20', 4);
 var indent2 = indent + indent;
 var indent3 = indent2 + indent;
@@ -108,16 +107,6 @@ var classes =
         Name = g.Key,
         Overloads =
             from md in g
-            let call =
-                InvocationExpression(
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName("MoreEnumerable"),
-                        IdentifierName(md.Identifier)),
-                    ArgumentList(SeparatedList<ArgumentSyntax>(
-                        from p in md.ParameterList.Parameters
-                        select Argument(IdentifierName(p.Identifier)))))
-                    .WithLeadingTrivia(Space)
             select
                 MethodDeclaration(md.ReturnType, md.Identifier)
                     .WithAttributeLists(md.AttributeLists)
@@ -125,14 +114,19 @@ var classes =
                     .WithTypeParameterList(md.TypeParameterList)
                     .WithConstraintClauses(md.ConstraintClauses)
                     .WithParameterList(md.ParameterList)
-                    .WithBody(
-                        // TODO Replace with expression-bodied
-                        Block(md.ReturnType.WithoutTrivia().IsEquivalentTo(@void)
-                              ? (StatementSyntax)ExpressionStatement(call)
-                              : ReturnStatement(call))
-                            .WithOpenBraceToken(ParseToken("{").WithLeadingTrivia(Whitespace(indent2))
-                                                               .WithTrailingTrivia(Whitespace(lf + indent3)))
-                            .WithCloseBraceToken(ParseToken("}").WithLeadingTrivia(Whitespace(" " + lf + indent2))))
+                    .WithExpressionBody(
+                        ArrowExpressionClause(
+                            InvocationExpression(
+                                MemberAccessExpression(
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    IdentifierName("MoreEnumerable"),
+                                    IdentifierName(md.Identifier)),
+                                ArgumentList(SeparatedList<ArgumentSyntax>(
+                                    from p in md.ParameterList.Parameters
+                                    select Argument(IdentifierName(p.Identifier)))))
+                                .WithLeadingTrivia(Space))
+                            .WithLeadingTrivia(Whitespace(indent3)))
+                    .WithSemicolonToken(ParseToken(";"))
     }
     into m
     select $@"
