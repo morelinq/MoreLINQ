@@ -49,7 +49,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns an infinite sequence of random integers between 0 and <paramref name="maxValue"/>/>.
+        /// Returns an infinite sequence of random integers between 0 and <paramref name="maxValue"/>.
         /// </summary>
         /// <param name="maxValue">exclusive upper bound for the random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
@@ -62,7 +62,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns an infinite sequence of random integers between 0 and <paramref name="maxValue"/>/>
+        /// Returns an infinite sequence of random integers between 0 and <paramref name="maxValue"/>
         /// using the supplied random number generator.
         /// </summary>
         /// <param name="rand">Random generator used to produce values</param>
