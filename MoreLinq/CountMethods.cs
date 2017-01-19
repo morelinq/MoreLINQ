@@ -44,7 +44,7 @@ namespace MoreLinq
         /// </example>
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
         {
-            if (count < 0) throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
             return QuantityIterator(source, count, n => n >= count);
         }
@@ -70,7 +70,7 @@ namespace MoreLinq
         /// </example>
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
         {
-            if (count < 0) throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
             return QuantityIterator(source, count + 1, n => n <= count);
         }
@@ -95,7 +95,7 @@ namespace MoreLinq
         /// </example>
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
         {
-            if (count < 0) throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
             return QuantityIterator(source, count + 1, n => n == count);
         }
@@ -123,8 +123,8 @@ namespace MoreLinq
         /// </example>
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
         {
-            if (min < 0) throw new ArgumentOutOfRangeException("min", "Minimum count cannot be negative.");
-            if (max < min) throw new ArgumentOutOfRangeException("max", "Maximum count must be greater than or equal to the minimum count.");
+            if (min < 0) throw new ArgumentOutOfRangeException(nameof(min), "Minimum count cannot be negative.");
+            if (max < min) throw new ArgumentOutOfRangeException(nameof(max), "Maximum count must be greater than or equal to the minimum count.");
 
             return QuantityIterator(source, max + 1, n => min <= n && n <= max);
         }
@@ -132,7 +132,7 @@ namespace MoreLinq
 
         private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, Func<int, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var col = source as ICollection<T>;
             if (col != null)

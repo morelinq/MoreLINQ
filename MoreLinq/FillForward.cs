@@ -65,8 +65,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return FillForwardImpl(source, predicate, null);
         }
@@ -95,9 +95,9 @@ namespace MoreLinq
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
-            if (fillSelector == null) throw new ArgumentNullException("fillSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (fillSelector == null) throw new ArgumentNullException(nameof(fillSelector));
 
             return FillForwardImpl(source, predicate, fillSelector);
         }

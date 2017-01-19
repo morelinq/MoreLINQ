@@ -79,7 +79,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<bool> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Boolean);
         }
 
@@ -128,7 +128,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<byte> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Byte);
         }
 
@@ -177,7 +177,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<char> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Char);
         }
 
@@ -226,7 +226,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<decimal> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Decimal);
         }
 
@@ -275,7 +275,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<double> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Double);
         }
 
@@ -324,7 +324,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<float> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Single);
         }
 
@@ -373,7 +373,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<int> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int32);
         }
 
@@ -422,7 +422,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<long> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int64);
         }
 
@@ -471,7 +471,7 @@ namespace MoreLinq
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
         }
 
@@ -520,7 +520,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<short> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int16);
         }
 
@@ -569,7 +569,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString(this IEnumerable<string> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.String);
         }
 
@@ -618,7 +618,7 @@ namespace MoreLinq
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<uint> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt32);
         }
 
@@ -667,7 +667,7 @@ namespace MoreLinq
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ulong> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt64);
         }
 
@@ -716,7 +716,7 @@ namespace MoreLinq
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
         }
 

@@ -116,7 +116,7 @@ namespace MoreLinq
 <#= attribute #>
         public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
         }
 

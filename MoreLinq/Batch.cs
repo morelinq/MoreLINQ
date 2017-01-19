@@ -56,9 +56,9 @@ namespace MoreLinq
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (size <= 0) throw new ArgumentOutOfRangeException("size");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return BatchImpl(source, size, resultSelector);
         }
 

@@ -67,7 +67,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
         }
 

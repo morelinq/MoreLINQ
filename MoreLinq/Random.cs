@@ -43,7 +43,7 @@ namespace MoreLinq
         
         public static IEnumerable<int> Random(Random rand)
         {
-            if (rand == null) throw new ArgumentNullException("rand");
+            if (rand == null) throw new ArgumentNullException(nameof(rand));
 
             return RandomImpl(rand, r => r.Next());
         }
@@ -56,7 +56,7 @@ namespace MoreLinq
         
         public static IEnumerable<int> Random(int maxValue)
         {
-            if (maxValue < 0) throw new ArgumentOutOfRangeException("maxValue");
+            if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
 
             return Random(new Random(), maxValue);
         }
@@ -72,8 +72,8 @@ namespace MoreLinq
         
         public static IEnumerable<int> Random(Random rand, int maxValue)
         {
-            if (rand == null) throw new ArgumentNullException("rand");
-            if (maxValue < 0) throw new ArgumentOutOfRangeException("maxValue");
+            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
 
             return RandomImpl(rand, r => r.Next(maxValue));
         }
@@ -103,9 +103,9 @@ namespace MoreLinq
         
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
-            if (rand == null) throw new ArgumentNullException("rand");
+            if (rand == null) throw new ArgumentNullException(nameof(rand));
             if (minValue > maxValue)
-                throw new ArgumentOutOfRangeException( "minValue", 
+                throw new ArgumentOutOfRangeException( nameof(minValue), 
                     string.Format("The argument minValue ({0}) is greater than maxValue ({1})", minValue, maxValue) );
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
@@ -131,7 +131,7 @@ namespace MoreLinq
         
         public static IEnumerable<double> RandomDouble(Random rand)
         {
-            if (rand == null) throw new ArgumentNullException("rand");
+            if (rand == null) throw new ArgumentNullException(nameof(rand));
 
             return RandomImpl(rand, r => r.NextDouble());
         }
