@@ -437,3 +437,48 @@ from each of the argument sequences.
 
 This method has 3 overloads.
 
+
+## Running on dnx451
+MoreLinq assembly can be used in Full DNX applications. Below is an example of dnx451 HelloWorld console application.
+###Program.cs
+```
+using System;
+using System.Linq;
+using MoreLinq;
+
+public class Program
+{
+    public static void Main (string[] args)
+    {
+        Console.WriteLine("Hello World 2");
+        Console.WriteLine(MoreLinq.MoreEnumerable.ToDelimitedString(Enumerable.Range(1, 10), ";"));
+        Console.WriteLine(Enumerable.Range(-10, 10).ToDelimitedString(";"));
+
+        Console.ReadLine();
+    }
+}
+```
+###Project.json
+```
+{
+  "version": "1.0.0-*",
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+  "commands": {
+    "ConsoleApplication": "ConsoleApplication"
+  },
+  "dependencies": {
+    "morelinq": "1.4.0-*"
+  },
+  "frameworks": {
+    "dnx451": {
+    }
+  }
+}
+```
+###How to run it:
+```
+dnu restore
+dnx run
+```
