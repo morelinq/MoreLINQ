@@ -33,7 +33,7 @@ namespace MoreLinq
         /// </returns>
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (count < 1)
                 return source;

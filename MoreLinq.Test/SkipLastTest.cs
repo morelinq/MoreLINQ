@@ -16,10 +16,7 @@
 #endregion
 
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq.Test
 {
@@ -27,19 +24,18 @@ namespace MoreLinq.Test
     public class SkipLastTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SkipLastWithNullSequence()
         {
-            (null as IEnumerable<int>).SkipLast(1);
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.SkipLast<int>(null, 1));
         }
 
-        [Test]
-        public void SkipLastWithCountLesserThanOne()
+        [TestCase(1, 5, 0)]
+        [TestCase(1, 5, -1)]
+        public void SkipLastWithCountLesserThanOne(int start, int count, int skip)
         {
-            var numbers = Enumerable.Range(1, 5);
+            var numbers = Enumerable.Range(start, count);
 
-            Assert.IsTrue(numbers.SkipLast(-1).SequenceEqual(numbers));
-            Assert.IsTrue(numbers.SkipLast(0).SequenceEqual(numbers));
+            Assert.IsTrue(numbers.SkipLast(skip).SequenceEqual(numbers));
         }
 
         [Test]
@@ -55,13 +51,11 @@ namespace MoreLinq.Test
             Assert.IsTrue(expectations.SequenceEqual(randomSequence.SkipLast(skip)));
         }
 
-        [Test]
-        public void SkipLastWithSequenceShorterThanCount()
+        [TestCase(1, 5, 5)]
+        [TestCase(1, 5, 6)]
+        public void SkipLastWithSequenceShorterThanCount(int start, int count, int skip)
         {
-            var numbers = Enumerable.Range(1, 5);
-
-            Assert.IsFalse(numbers.SkipLast(5).Any());
-            Assert.IsFalse(numbers.SkipLast(6).Any());
+            Assert.IsFalse(Enumerable.Range(start, count).SkipLast(skip).Any());
         }
 
         [Test]
