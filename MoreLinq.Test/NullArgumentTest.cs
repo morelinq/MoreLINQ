@@ -26,14 +26,16 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
+    using NUnit.Framework.Interfaces;
+
     [TestFixture]
     public class NullArgumentTest
     {
         [Test, TestCaseSource("GetNotNullTestCases")]
         public void NotNull(TestCase testCase)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => testCase.Invoke());
-            Assert.That(ex.ParamName, Is.EqualTo(testCase.ParameterName));
+            Assert.ThrowsArgumentNullException(testCase.ParameterName, 
+                () => testCase.Invoke());
         }
 
         [Test, TestCaseSource("GetCanBeNullTestCases")]
@@ -106,11 +108,11 @@ namespace MoreLinq.Test
         {
             if (!definition.IsGenericMethodDefinition) return definition;
 
-            var typeArguments = definition.GetGenericArguments().Select(InstantiateType).ToArray();
+            var typeArguments = definition.GetGenericArguments().Select(t => InstantiateType(t.GetTypeInfo())).ToArray();
             return definition.MakeGenericMethod(typeArguments);
         }
 
-        private static Type InstantiateType(Type typeParameter)
+        private static Type InstantiateType(TypeInfo typeParameter)
         {
             var constraints = typeParameter.GetGenericParameterConstraints();
 
@@ -122,16 +124,18 @@ namespace MoreLinq.Test
 
         private static bool IsReferenceType(ParameterInfo parameter)
         {
-            return !parameter.ParameterType.IsValueType; // class or interface
+            return !parameter.ParameterType.GetTypeInfo().IsValueType; // class or interface
         }
 
         private static bool CanBeNull(ParameterInfo parameter)
         {
-            var nullableTypes = new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) };
+            var nullableTypes =
+                from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
+                select t.GetTypeInfo();
             var nullableParameters = new[] { "Assert.errorSelector", "ToDataTable.expressions", "ToDelimitedString.delimiter", "Trace.format" };
 
-            var type = parameter.ParameterType;
-            type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+            var type = parameter.ParameterType.GetTypeInfo();
+            type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
             var param = parameter.Member.Name + "." + parameter.Name;
 
             return nullableTypes.Contains(type) || nullableParameters.Contains(param);
@@ -143,10 +147,10 @@ namespace MoreLinq.Test
             if (type == typeof (string)) return "";
             if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
-            if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
+            if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
 
-            return CreateGenericInterfaceInstance(type);
+            return CreateGenericInterfaceInstance(type.GetTypeInfo());
         }
 
         private static bool HasDefaultConstructor(Type type)
@@ -163,11 +167,11 @@ namespace MoreLinq.Test
             return lambda.Compile();
         }
 
-        private static object CreateGenericInterfaceInstance(Type type)
+        private static object CreateGenericInterfaceInstance(TypeInfo type)
         {
             Debug.Assert(type.IsGenericType && type.IsInterface);
             var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
-            var definition = typeof (GenericArgs).GetNestedType(name);
+            var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
             var instantiation = definition.MakeGenericType(type.GetGenericArguments());
             return Activator.CreateInstance(instantiation);
         }

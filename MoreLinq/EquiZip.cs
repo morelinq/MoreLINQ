@@ -54,9 +54,9 @@ namespace MoreLinq
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
         }
@@ -96,10 +96,10 @@ namespace MoreLinq
              IEnumerable<T2> second, IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (third == null) throw new ArgumentNullException("third");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return EquiZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
         }
@@ -142,11 +142,11 @@ namespace MoreLinq
              IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, 
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (third == null) throw new ArgumentNullException("third");
-            if (fourth == null) throw new ArgumentNullException("fourth");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return EquiZipImpl(first, second, third, fourth, resultSelector);
         }

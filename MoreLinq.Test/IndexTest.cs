@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,17 +23,17 @@ namespace MoreLinq.Test
     public class IndexTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IndexNullSequence()
         {
-            MoreEnumerable.Index<object>(null);
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.Index<object>(null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IndexNullSequenceStartIndex()
         {
-            MoreEnumerable.Index<object>(null, 0);
+            Assert.ThrowsArgumentNullException("source",() =>
+                MoreEnumerable.Index<object>(null, 0));
         }
 
         [Test]

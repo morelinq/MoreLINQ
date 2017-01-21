@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -25,22 +24,22 @@ namespace MoreLinq.Test
         /// Verify that invoking Incremental on a <c>null</c> sequence result in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullSequenceException1()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Incremental((prev, next) => prev + next);
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                sequence.Incremental((prev, next) => prev + next));
         }
 
         /// <summary>
         /// Verify that invoking Incremental on a <c>null</c> sequence result in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullSequenceException2()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Incremental((prev, next, i) => prev + next);
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                sequence.Incremental((prev, next, i) => prev + next));
         }
 
         /// <summary>

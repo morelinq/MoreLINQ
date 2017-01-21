@@ -37,8 +37,8 @@ namespace MoreLinq
         
         public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (size <= 0) throw new ArgumentOutOfRangeException("size");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
             return WindowedImpl(source, size);
         }

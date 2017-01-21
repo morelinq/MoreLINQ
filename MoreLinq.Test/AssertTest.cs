@@ -24,17 +24,17 @@ namespace MoreLinq.Test
     public class AssertTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AssertNullSequence()
         {
-            MoreEnumerable.Assert<object>(null, delegate { return false; });
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.Assert<object>(null, delegate { return false; }));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AssertNullPredicate()
         {
-            new object[0].Assert(null);
+            Assert.ThrowsArgumentNullException("predicate",() => 
+                new object[0].Assert(null));
         }
 
         [Test]
@@ -52,17 +52,17 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume();
+            Assert.Throws<InvalidOperationException>(() =>
+                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume();
+            Assert.Throws<InvalidOperationException>(() =>
+                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
         }
 
         [Test]

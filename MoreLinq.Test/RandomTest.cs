@@ -17,59 +17,58 @@ namespace MoreLinq.Test
         /// Verify that passing an <c>null</c> random generator results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullGeneratorException1()
         {
-            MoreEnumerable.Random(null);
+            Assert.ThrowsArgumentNullException("rand",() =>
+                MoreEnumerable.Random(null));
         }
 
         /// <summary>
         /// Verify that passing an <c>null</c> random generator results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullGeneratorException2()
         {
             const int maxValue = 10;
-
-            Assert.Greater( maxValue, 0 );
-            MoreEnumerable.Random(null, maxValue);
+            Assert.Greater(maxValue, 0);
+            Assert.ThrowsArgumentNullException("rand", () =>
+                MoreEnumerable.Random(null, maxValue));
         }
 
         /// <summary>
         /// Verify that passing an <c>null</c> random generator results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullGeneratorException3()
         {
             const int minValue = 10;
             const int maxValue = 100;
-
             Assert.LessOrEqual(minValue, maxValue);
-            MoreEnumerable.Random(null, minValue, maxValue);
+            Assert.ThrowsArgumentNullException("rand", () =>
+                MoreEnumerable.Random(null, minValue, maxValue));
         }
 
         /// <summary>
         /// Verify that passing an <c>null</c> random generator results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestNullGeneratorException4()
         {
-            MoreEnumerable.RandomDouble(null);
+            Assert.ThrowsArgumentNullException("rand", () =>
+                MoreEnumerable.RandomDouble(null));
         }
 
         /// <summary>
         /// Verify that passing a negative maximum value yields an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestNegativeMaxValueException()
         {
             const int maxValue = -10;
-            Assert.Less( maxValue, 0 );
-            MoreEnumerable.Random(maxValue);
+            Assert.Less(maxValue, 0);
+
+            Assert.ThrowsArgumentOutOfRangeException("maxValue",() =>
+                MoreEnumerable.Random(maxValue));
         }
 
         /// <summary>
@@ -77,14 +76,15 @@ namespace MoreLinq.Test
         /// in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestMinValueGreaterThanMaxValueException()
         {
             const int minValue = 100;
             const int maxValue = 10;
 
             Assert.Greater(minValue, maxValue);
-            MoreEnumerable.Random(minValue, maxValue);
+
+            Assert.ThrowsArgumentOutOfRangeException("minValue",() =>
+                MoreEnumerable.Random(minValue, maxValue));
         }
 
         /// <summary>

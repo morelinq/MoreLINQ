@@ -58,9 +58,9 @@ namespace MoreLinq
         
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
-            if (offset <= 0) throw new ArgumentOutOfRangeException("offset");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
             return LeadImpl(source, offset, defaultLeadValue, resultSelector);
         }

@@ -25,42 +25,42 @@ namespace MoreLinq.Test
         /// Verify that invoking RandomSubsets on a <c>null</c> sequence results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestRandomSubsetNullSequence()
         {
             const IEnumerable<int> nullSequence = null;
-            nullSequence.RandomSubset(10);
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                nullSequence.RandomSubset(10));
         }
 
         /// <summary>
         /// Verify that invoking RandomSubsets on a <c>null</c> sequence results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestRandomSubsetNullSequence2()
         {
             const IEnumerable<int> nullSequence = null;
-            nullSequence.RandomSubset(10, new Random());
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                nullSequence.RandomSubset(10, new Random()));
         }
 
         /// <summary>
         /// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            Enumerable.Range(1, 10).RandomSubset(-5);
+            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+                Enumerable.Range(1, 10).RandomSubset(-5));
         }
 
         /// <summary>
         /// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            Enumerable.Range(1, 10).RandomSubset(-1, new Random());
+            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+                Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
         }
 
         /// <summary>
@@ -113,14 +113,16 @@ namespace MoreLinq.Test
         /// results in an exception. Only thrown when the resulting random sequence is enumerated.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestRandomSubsetLongerThanSequence()
         {
             const int count = 100;
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            sequence.RandomSubset(subsetSize).Count();
+            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            {
+                sequence.RandomSubset(subsetSize).Count();
+            });
         }
 
         /// <summary>
@@ -128,14 +130,16 @@ namespace MoreLinq.Test
         /// results in an exception. Only thrown when the resulting random sequence is enumerated.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestRandomSubsetLongerThanSequence2()
         {
             const int count = 100;
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            sequence.RandomSubset(subsetSize, new Random(1234)).Count();
+            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            {
+                sequence.RandomSubset(subsetSize, new Random(1234)).Count();
+            });
         }
 
         /// <summary>

@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,17 +23,17 @@ namespace MoreLinq.Test
     public class PairwiseTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PairwiseNullSource()
         {
-            MoreEnumerable.Pairwise<object, object>(null, delegate { return 0; });
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.Pairwise<object, object>(null, delegate { return 0; }));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PairwiseNullResultSelector()
         {
-            new object[0].Pairwise<object, object>(null);
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
+                new object[0].Pairwise<object, object>(null));
         }
 
         [Test]

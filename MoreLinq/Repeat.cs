@@ -32,8 +32,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence, int count)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
-            if (count < 0) throw new ArgumentOutOfRangeException("count", "Repeat count must be greater than or equal to zero.");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Repeat count must be greater than or equal to zero.");
             return RepeatImpl(sequence, count);
         }
 

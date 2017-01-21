@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Linq;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;
@@ -28,17 +27,17 @@ namespace MoreLinq.Test
         [Test]
         public void FallbackIfEmptyWithNullSequence()
         {
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4, 5)).ParamName);
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1));
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2));
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3));
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4));
+            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4, 5));
         }
 
         [Test]
         public void FallbackIfEmptyWithNullFallbackParams()
         {
-            Assert.AreEqual("fallback", Assert.Throws<ArgumentNullException>(() => new[] { 1 }.FallbackIfEmpty(null)).ParamName);
+           Assert.ThrowsArgumentNullException("fallback", () => new[] { 1 }.FallbackIfEmpty(null));
         }
 
         [Test]

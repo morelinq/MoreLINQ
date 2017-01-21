@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NUnit.Framework;
 
@@ -42,20 +41,20 @@ namespace MoreLinq.Test
         /// Verify that repeat throws an exception when the repeat count is negative.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestNegativeRepeatCount()
         {
-            Enumerable.Range(1, 10).Repeat(-3);
+            Assert.ThrowsArgumentOutOfRangeException("count",() =>
+                Enumerable.Range(1, 10).Repeat(-3));
         }
 
         /// <summary>
         /// Verify applying Repeat to a <c>null</c> sequence results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestRepeatSequenceANullException()
         {
-            MoreEnumerable.Repeat<object>(null, 42);
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                MoreEnumerable.Repeat<object>(null, 42));
         }
     }
 }
