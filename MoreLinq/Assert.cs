@@ -62,8 +62,8 @@ namespace MoreLinq
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, 
             Func<TSource, bool> predicate, Func<TSource, Exception> errorSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return AssertImpl(source, predicate, errorSelector ?? delegate { return null; });
         }

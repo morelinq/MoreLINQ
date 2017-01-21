@@ -55,8 +55,8 @@ namespace MoreLinq
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (transformation == null) throw new ArgumentNullException("transformation");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (transformation == null) throw new ArgumentNullException(nameof(transformation));
             return ScanImpl(source, transformation);
         }
 
@@ -102,8 +102,8 @@ namespace MoreLinq
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (transformation == null) throw new ArgumentNullException("transformation");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (transformation == null) throw new ArgumentNullException(nameof(transformation));
             return ScanImpl(source, seed, transformation);
         }
 

@@ -26,17 +26,17 @@ namespace MoreLinq.Test
     public class GroupAdjacentTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupAdjacentNullSource()
         {
-            MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; });
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; }));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupAdjacentNullKeySelector()
         {
-            new object[0].GroupAdjacent<object, object>(null);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+                new object[0].GroupAdjacent<object, object>(null));
         }
 
         [Test]

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -25,31 +24,31 @@ namespace MoreLinq.Test
         /// Verify that lag throws an exception if invoked on a <c>null</c> sequence
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestLagNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Lag(10, (val, lagVal) => val);
+            Assert.ThrowsArgumentNullException("source", () =>
+                sequence.Lag(10, (val, lagVal) => val));
         }
 
         /// <summary>
         /// Verify that lagging by a negative offset results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestLagNegativeOffsetException()
         {
-            Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val);
+            Assert.ThrowsArgumentOutOfRangeException("offset",() =>
+                Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
         }
 
         /// <summary>
         /// Verify that attempting to lag by a zero offset will result in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestLagZeroOffset()
         {
-            Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal);
+            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+                Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
         }
 
         /// <summary>

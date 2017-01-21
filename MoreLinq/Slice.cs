@@ -41,9 +41,9 @@ namespace MoreLinq
         
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             // optimization for anything implementing IList<T>
             var asList = sequence as IList<T>;

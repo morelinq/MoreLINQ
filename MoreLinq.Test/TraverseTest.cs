@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -26,17 +25,17 @@ namespace MoreLinq.Test
     public class TraverseTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TraverseBreadthFirstNullGenerator()
         {
-            MoreEnumerable.TraverseBreadthFirst(new object(), null);
+            Assert.ThrowsArgumentNullException("childrenSelector", () =>
+                MoreEnumerable.TraverseBreadthFirst(new object(), null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TraverseDepthFirstNullGenerator()
         {
-            MoreEnumerable.TraverseDepthFirst(new object(), null);
+            Assert.ThrowsArgumentNullException("childrenSelector",() =>
+                MoreEnumerable.TraverseDepthFirst(new object(), null));
         }
 
         [Test]

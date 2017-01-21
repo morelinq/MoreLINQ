@@ -28,7 +28,7 @@ namespace MoreLinq
             Func<T, T, T, TResult> folder3,
             Func<T, T, T, T, TResult> folder4)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (   count == 1 && folder1 == null
                 || count == 2 && folder2 == null
                 || count == 3 && folder3 == null

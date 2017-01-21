@@ -41,7 +41,7 @@ namespace MoreLinq
         public static TSource[] Acquire<TSource>(this IEnumerable<TSource> source)
             where TSource : IDisposable
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
 
             var disposables = new List<TSource>();
             try
