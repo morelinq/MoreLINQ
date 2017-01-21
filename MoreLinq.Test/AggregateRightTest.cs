@@ -19,7 +19,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq.Test
 {
@@ -29,24 +28,24 @@ namespace MoreLinq.Test
         // Overload 1 Test
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight1WithNullSequence()
         {
-            (null as IEnumerable<int>).AggregateRight((a, b) => a + b);
+            Assert.ThrowsArgumentNullException("source", 
+                () => MoreEnumerable.AggregateRight<int>(null, (a, b) => a + b));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight1WithNullFunc()
         {
-            Enumerable.Range(1, 5).AggregateRight(null);
+            Assert.ThrowsArgumentNullException("func", 
+                () => Enumerable.Range(1, 5).AggregateRight(null));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void AggregateRight1WithEmptySequence()
         {
-            new int[] { }.AggregateRight((a, b) => a + b);
+            Assert.Throws<InvalidOperationException>(
+                () => new int[] { }.AggregateRight((a, b) => a + b));
         }
 
         [Test]
@@ -54,76 +53,72 @@ namespace MoreLinq.Test
         {
             var numbersAsString = Enumerable.Range(1, 5).Select(x => x.ToString());
 
-            Assert.IsTrue("(1+(2+(3+(4+5))))" == numbersAsString.AggregateRight((a, b) => string.Format("({0}+{1})", a, b)));
+            Assert.That(numbersAsString.AggregateRight((a, b) => string.Format("({0}+{1})", a, b)), Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
 
         // Overload 2 Test
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight2WithNullSequence()
         {
-            (null as IEnumerable<int>).AggregateRight(1, (a, b) => a + b);
+            Assert.ThrowsArgumentNullException("source",
+                () => MoreEnumerable.AggregateRight<int, int>(null, 1, (a, b) => a + b));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight2WithNullFunc()
         {
-            Enumerable.Range(1, 5).AggregateRight(6, null);
+            Assert.ThrowsArgumentNullException("func",
+                () => Enumerable.Range(1, 5).AggregateRight(6, null));
         }
 
         [Test]
         public void AggregateRight2WithEmptySequence()
         {
-            Assert.IsTrue(5 == new int[] { }.AggregateRight(5, (a, b) => a + b));
-            Assert.IsTrue("c" == new string[] { }.AggregateRight("c", (a, b) => a + b));
+            Assert.That(new int[] { }.AggregateRight(5, (a, b) => a + b), Is.EqualTo(5));
+            Assert.That(new string[] { }.AggregateRight("c", (a, b) => a + b), Is.EqualTo("c"));
         }
 
         [Test]
         public void AggregateRight2SimpleTest()
         {
-            var numbers = Enumerable.Range(1, 4);
-
-            Assert.IsTrue("(1+(2+(3+(4+5))))" == numbers.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b)));
+            Assert.That(Enumerable.Range(1, 4).AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b)), Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
 
         // Overload 3 Test
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight3WithNullSequence()
         {
-            (null as IEnumerable<int>).AggregateRight(1, (a, b) => a + b, a => a % 2 == 0);
+            Assert.ThrowsArgumentNullException("source",
+                () => MoreEnumerable.AggregateRight<int, int, bool>(null, 1, (a, b) => a + b, a => a % 2 == 0));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight3WithNullFunc()
         {
-            Enumerable.Range(1, 5).AggregateRight(6, null, a => a % 2 == 0);
+            Assert.ThrowsArgumentNullException("func",
+                () => Enumerable.Range(1, 5).AggregateRight(6, null, a => a % 2 == 0));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AggregateRight3WithNullResultSelector()
         {
-            Enumerable.Range(1, 5).AggregateRight(6, (a, b) => a + b, (Func<int, bool>) null);
+            Assert.ThrowsArgumentNullException("resultSelector",
+                () => Enumerable.Range(1, 5).AggregateRight(6, (a, b) => a + b, (Func<int, bool>)null));
         }
 
         [Test]
         public void AggregateRight3WithEmptySequence()
         {
-            Assert.IsFalse(new int[] { }.AggregateRight(5, (a, b) => a + b, a => a % 2 == 0));
-            Assert.IsTrue(new string[] { }.AggregateRight("ab", (a, b) => a + b, a => a.Length % 2 == 0));
+            Assert.That(new int[] { }.AggregateRight(5, (a, b) => a + b, a => a == 5), Is.EqualTo(true));
+            Assert.That(new string[] { }.AggregateRight("ab", (a, b) => a + b, a => a.Length == 2), Is.EqualTo(true));
         }
 
         [Test]
         public void AggregateRight3SimpleTest()
         {
-            var numbers = Enumerable.Range(1, 4);
-
-            Assert.IsTrue("(1+(2+(3+(4+5))))".Length == numbers.AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length));
+            Assert.That(Enumerable.Range(1, 4).AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length), Is.EqualTo("(1+(2+(3+(4+5))))".Length));
         }
     }
 }
