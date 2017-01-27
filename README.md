@@ -313,7 +313,10 @@ on the original sequence.
 
 This method has 3 overloads.
 
-### SingleOrFallback
+### ~~SingleOrFallback~~
+
+Consider using `FallbackIfEmpty` instead. `SingleOrFallback` may be removed in
+a future version. For more information, see issue [#122][#122].
 
 Returns the single element in the given sequence, or the result of executing a
 fallback delegate if the sequence is empty. This method throws an exception if
@@ -437,3 +440,5 @@ from each of the argument sequences.
 
 This method has 3 overloads.
 
+
+[#122]: https://github.com/morelinq/MoreLINQ/issues/122
