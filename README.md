@@ -155,7 +155,10 @@ selector function.
 
 This method has 4 overloads.
 
-### Incremental
+### ~~Incremental~~
+
+Use `Pairwise` instead, which is identical to `Incremental`. `Incremental`
+will be removed in a future version.
 
 Computes an incremental value between every adjacent element in a sequence:
 {N,N+1}, {N+1,N+2}, .
