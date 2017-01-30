@@ -32,7 +32,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void AppendWithEmptyTailSequence()
+        public void AppendWithEmptyHeadSequence()
         {
             string[] head = { };
             var tail = "first";
@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void AppendWithNullTailSequence()
+        public void AppendWithNullHeadSequence()
         {
             Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.Append(null, "tail"));
