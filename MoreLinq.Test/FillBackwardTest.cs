@@ -20,6 +20,8 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
+    using System.Linq;
+
     [TestFixture]
     public class FillBackwardTest
     {
@@ -38,6 +40,27 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void FillBackwardWithFillSelectorButNullSequence()
+        {
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.FillBackward<object>(null, _ => false, delegate { return null; }));
+        }
+
+        [Test]
+        public void FillBackwardWithFillSelectorButNullPredicate()
+        {
+            Assert.ThrowsArgumentNullException("predicate", () =>
+                new object[0].FillBackward(null, delegate { return null; }));
+        }
+
+        [Test]
+        public void FillBackwardWithNullFillSelector()
+        {
+            Assert.ThrowsArgumentNullException("fillSelector", () =>
+                new object[0].FillBackward(_ => false, null));
+        }
+
+        [Test]
         public void FillBackwardIsLazy()
         {
             new BreakingSequence<object>().FillBackward();
@@ -50,6 +73,31 @@ namespace MoreLinq.Test
             var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
             var result = input.FillBackward();
             Assert.That(result, Is.EquivalentTo(new[] { 1, 1, 1, 2, 3, 3, 3, 3, 4, na, na }));
+        }
+
+        [Test]
+        public void FillBackwardWithFillSelector()
+        {
+            var xs = new[] { 0, 0, 1, 2, 0, 0, 0, 3, 4, 0, 0 };
+
+            var result =
+                xs.Select(x => new { X = x, Y = x })
+                  .FillBackward(e => e.X == 0, (nm, m) => new { m.X, nm.Y });
+
+            Assert.That(result, Is.EquivalentTo(new[]
+            {
+                new { X = 0, Y = 1 },
+                new { X = 0, Y = 1 },
+                new { X = 1, Y = 1 },
+                new { X = 2, Y = 2 },
+                new { X = 0, Y = 3 },
+                new { X = 0, Y = 3 },
+                new { X = 0, Y = 3 },
+                new { X = 3, Y = 3 },
+                new { X = 4, Y = 4 },
+                new { X = 0, Y = 0 },
+                new { X = 0, Y = 0 },
+            }));
         }
     }
 }

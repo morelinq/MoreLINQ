@@ -120,7 +120,7 @@ sequence is empty.
 Returns a sequence with each null reference or value in the source replaced
 with the following non-null reference or value in that sequence.
 
-This method has 2 overloads.
+This method has 3 overloads.
 
 ### FillForward
 
