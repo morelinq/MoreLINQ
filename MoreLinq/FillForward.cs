@@ -82,7 +82,8 @@ namespace MoreLinq
         /// an element in the sequence is considered missing.</param>
         /// <param name="fillSelector">The function used to produce the element
         /// that will replace the missing one. It receives the previous
-        /// non-element as well as the current element considered missing.</param>
+        /// non-missing element as well as the current element considered
+        /// missing.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> with missing values replaced.
