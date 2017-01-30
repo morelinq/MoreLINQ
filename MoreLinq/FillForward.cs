@@ -74,15 +74,17 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with one based on the previous non-missing element seen in that
-        /// sequence. An  additional parameter specifies a function used to
-        /// determine if an element is considered missing or not.
+        /// sequence. Additional parameters specifiy two functions, one used to
+        /// determine if an element is considered missing or not and another
+        /// to provide the replacement for the missing element.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The function used to determine if
         /// an element in the sequence is considered missing.</param>
         /// <param name="fillSelector">The function used to produce the element
         /// that will replace the missing one. It receives the previous
-        /// non-element as well as the current element considered missing.</param>
+        /// non-missing element as well as the current element considered
+        /// missing.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> with missing values replaced.
@@ -108,8 +110,7 @@ namespace MoreLinq
             var seed = default(T);
             foreach (var item in source)
             {
-                var blank = predicate(item);
-                if (blank)
+                if (predicate(item))
                 {
                     yield return seeded
                                ? fillSelector != null
