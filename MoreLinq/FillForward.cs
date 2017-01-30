@@ -114,7 +114,7 @@ namespace MoreLinq
                 {
                     yield return seeded
                                ? fillSelector != null
-                                 ? fillSelector(seed, item)
+                                 ? fillSelector(item, seed)
                                  : seed
                                : item;
                 }

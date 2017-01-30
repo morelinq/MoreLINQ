@@ -99,8 +99,8 @@ namespace MoreLinq.Test
                     Value     = int.Parse(val),
                 });
 
-            data = data.FillForward(e => e.Continent == "-", (f, e) => new { f.Continent, e.Country, e.City, e.Value })
-                        .FillForward(e => e.Country   == "-", (f, e) => new { e.Continent, f.Country, e.City, e.Value });
+            data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
+                        .FillForward(e => e.Country   == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
 
 
             Assert.That(data, Is.EquivalentTo(new[]

@@ -119,7 +119,7 @@ namespace MoreLinq
                         foreach (var blank in blanks)
                         {
                             yield return fillSelector != null
-                                       ? fillSelector(item, blank)
+                                       ? fillSelector(blank, item)
                                        : item;
                         }
 

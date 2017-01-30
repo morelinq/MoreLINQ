@@ -82,7 +82,7 @@ namespace MoreLinq.Test
 
             var result =
                 xs.Select(x => new { X = x, Y = x })
-                  .FillBackward(e => e.X == 0, (nm, m) => new { m.X, nm.Y });
+                  .FillBackward(e => e.X == 0, (m, nm) => new { m.X, nm.Y });
 
             Assert.That(result, Is.EquivalentTo(new[]
             {
