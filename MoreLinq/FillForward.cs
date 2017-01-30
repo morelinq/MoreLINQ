@@ -109,8 +109,7 @@ namespace MoreLinq
             var seed = default(T);
             foreach (var item in source)
             {
-                var blank = predicate(item);
-                if (blank)
+                if (predicate(item))
                 {
                     yield return seeded
                                ? fillSelector != null
