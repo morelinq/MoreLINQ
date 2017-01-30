@@ -1,14 +1,14 @@
 {
   "name": "morelinq",
   "title": "MoreLINQ",
-  "description": "This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, CountBy, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, FillForward, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, PartialSort, PartialSortBy, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, TraverseBreadthFirst, TraverseDepthFirst, Windowed, ZipLongest, ZipShortest",
+  "description": "This project enhances LINQ to Objects with the following methods: Acquire, Assert, AssertCount, Batch, Cartesian, CountBy, Concat, Consume, DistinctBy, EquiZip, ExceptBy, Exclude, FillBackward, FillForward, Fold, ForEach, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, PartialSort, PartialSortBy, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, SingleOrFallback, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToHashSet, Trace, TraverseBreadthFirst, TraverseDepthFirst, Windowed, ZipLongest, ZipShortest",
   "language": "en-US",
   "authors": [
     "MoreLINQ Developers."
   ],
   "copyright": "\u00a9 2008 Jonathan Skeet. Portions \u00a9 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions \u00a9 2010 Johannes Rudolph, Leopold Bushkin. Portions \u00a9 2015 Felipe Sateler, \u201csholland\u201d. Portions \u00a9 2016 Leandro F. Vieira (leandromoh). Portions \u00a9 Microsoft. All rights reserved.",
   "packOptions": {
-    "releaseNotes": "Adds new operators: AtMost, CountBetween, Exactly, FillForward. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.\nObsolete: Incremental, some overloads of ToDelimitedString, SingleOrFallback (since 2.0)",
+    "releaseNotes": "Adds new operators: AtMost, CountBetween, Exactly, FillBackward, FillForward. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.\nObsolete: Incremental, some overloads of ToDelimitedString, SingleOrFallback (since 2.0)",
     "summary": "This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.",
     "owners": [
       "Jon Skeet",

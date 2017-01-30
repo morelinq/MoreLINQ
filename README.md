@@ -115,6 +115,13 @@ Excludes elements from a sequence starting at a given index
 Returns the elements of a sequence and falls back to another if the original
 sequence is empty.
 
+### FillBackward
+
+Returns a sequence with each null reference or value in the source replaced
+with the following non-null reference or value in that sequence.
+
+This method has 3 overloads.
+
 ### FillForward
 
 Returns a sequence with each null reference or value in the source replaced
