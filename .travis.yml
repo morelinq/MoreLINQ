@@ -1,0 +1,15 @@
+language: csharp
+solution: MoreLinq.sln
+mono: latest
+dist: trusty
+sudo: required
+dotnet: 1.0.0-preview2-003131
+
+install:
+  - dotnet restore
+
+script:
+  - dotnet build -c Debug MoreLinq
+  - dotnet build -c Debug MoreLinq.Test
+  - dotnet test -f netcoreapp1.0 MoreLinq.Test
+  - sh ./travis-test.sh
