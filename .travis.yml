@@ -12,4 +12,4 @@ script:
   - dotnet build -c Debug MoreLinq
   - dotnet build -c Debug MoreLinq.Test
   - dotnet test -f netcoreapp1.0 MoreLinq.Test
-  - sh ./travis-test.sh
+  - sh ./travis-mono-test.sh
