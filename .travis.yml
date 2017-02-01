@@ -4,12 +4,15 @@ mono: latest
 dist: trusty
 sudo: required
 dotnet: 1.0.0-preview2-003131
+env:
+  - CONFIGURATION=Debug
+  - CONFIGURATION=Release
 
 install:
   - dotnet restore
 
 script:
-  - dotnet build -c Debug MoreLinq
-  - dotnet build -c Debug MoreLinq.Test
-  - dotnet test -f netcoreapp1.0 MoreLinq.Test
+  - dotnet build -c $CONFIGURATION MoreLinq
+  - dotnet build -c $CONFIGURATION MoreLinq.Test
+  - dotnet test -c $CONFIGURATION -f netcoreapp1.0 MoreLinq.Test
   - sh ./travis-mono-test.sh
