@@ -25,6 +25,8 @@ namespace MoreLinq
     {
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
+        /// This operator is the right-associative version of the 
+        /// <see cref="Enumerable.Aggregate{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">Source sequence.</param>
@@ -38,23 +40,25 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// This operator executes immediately.
-        /// This operator is the right-associative version of the Aggregate LINQ operator.
         /// </remarks>
         public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            IList<TSource> e = (source as IList<TSource>) ?? source.ToList();
+            var list = (source as IList<TSource>) ?? source.ToList();
 
-            if (e.Count == 0) throw new InvalidOperationException("Sequence contains no elements");
+            if (list.Count == 0)
+                throw new InvalidOperationException("Sequence contains no elements.");
 
-            return AggregateRightImpl(e, e.Last(), func, e.Count - 1);
+            return AggregateRightImpl(list, list.Last(), func, list.Count - 1);
         }
 
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
         /// The specified seed value is used as the initial accumulator value.
+        /// This operator is the right-associative version of the 
+        /// <see cref="Enumerable.Aggregate{TSource, TAccumulate}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
@@ -71,22 +75,23 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// This operator executes immediately.
-        /// This operator is the right-associative version of the Aggregate LINQ operator.
         /// </remarks>
         public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            IList<TSource> e = (source as IList<TSource>) ?? source.ToList();
+            var list = (source as IList<TSource>) ?? source.ToList();
 
-            return AggregateRightImpl(e, seed, func, e.Count);
+            return AggregateRightImpl(list, seed, func, list.Count);
         }
 
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
         /// The specified seed value is used as the initial accumulator value, 
         /// and the specified function is used to select the result value.
+        /// This operator is the right-associative version of the 
+        /// <see cref="Enumerable.Aggregate{TSource, TAccumulate, TResult}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate}, Func{TAccumulate, TResult})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
@@ -105,7 +110,6 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// This operator executes immediately.
-        /// This operator is the right-associative version of the Aggregate LINQ operator.
         /// </remarks>
         public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
         {
@@ -116,14 +120,14 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        private static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> e, TResult current, Func<TSource, TResult, TResult> func, int i)
+        private static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {
-                current = func(e[i], current);
+                accumulator = func(list[i], accumulator);
             }
 
-            return current;
+            return accumulator;
         }
     }
 }
