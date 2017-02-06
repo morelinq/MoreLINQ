@@ -48,7 +48,7 @@ namespace MoreLinq
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
 
             return RunLengthEncodeImpl(sequence, comparer ?? EqualityComparer<T>.Default);
         }

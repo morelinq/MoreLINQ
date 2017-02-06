@@ -57,8 +57,8 @@ namespace MoreLinq
         
         public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return TagFirsLastImpl(source, resultSelector);
         }
 

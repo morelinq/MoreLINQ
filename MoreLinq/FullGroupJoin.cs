@@ -82,11 +82,11 @@ namespace MoreLinq
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (firstKeySelector == null) throw new ArgumentNullException("firstKeySelector");
-            if (secondKeySelector == null) throw new ArgumentNullException("secondKeySelector");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (firstKeySelector == null) throw new ArgumentNullException(nameof(firstKeySelector));
+            if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return FullGroupJoinImpl(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer);
         }

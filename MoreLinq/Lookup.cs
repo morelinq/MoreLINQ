@@ -51,9 +51,9 @@ namespace MoreLinq
 
         internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
             Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
             foreach (TSource item in source) {
                 lookup.GetGrouping(keySelector(item), true).Add(elementSelector(item));
@@ -266,7 +266,7 @@ namespace MoreLinq
         {
             get
             {
-                if (index < 0 || index >= count) throw new ArgumentOutOfRangeException("index");
+                if (index < 0 || index >= count) throw new ArgumentOutOfRangeException(nameof(index));
                 return elements[index];
             }
             set

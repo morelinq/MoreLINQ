@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Linq;
 using NUnit.Framework;
 
@@ -49,10 +48,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateWithNullGenerator()
         {
-            MoreEnumerable.Generate(0, null);
+            Assert.ThrowsArgumentNullException("generator", () =>
+                MoreEnumerable.Generate(0, null));
         }
 
         [Test]
@@ -62,10 +61,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GenerateByIndexWithNullGenerator()
         {
-            MoreEnumerable.GenerateByIndex<int>(null);
+            Assert.ThrowsArgumentNullException("generator",() =>
+                MoreEnumerable.GenerateByIndex<int>(null));
         }
 
         [Test]

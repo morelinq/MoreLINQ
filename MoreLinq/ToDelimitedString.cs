@@ -41,6 +41,7 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
 
+        [Obsolete]
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source)
         {
             return ToDelimitedString(source, null);
@@ -66,7 +67,7 @@ namespace MoreLinq
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
         }
 

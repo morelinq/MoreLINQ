@@ -35,7 +35,7 @@ namespace MoreLinq.Test
     /// "read" operation.
     /// </summary>
     /// <typeparam name="T">Type of elements to read.</typeparam>
-    [Serializable]
+
     internal class SequenceReader<T> : IDisposable
     {
         private IEnumerator<T> enumerator;

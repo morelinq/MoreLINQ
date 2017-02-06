@@ -33,7 +33,6 @@ namespace MoreLinq
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content). 
-        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
@@ -52,15 +51,14 @@ namespace MoreLinq
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content).
-        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
         /// </remarks>
         
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (size <= 0) throw new ArgumentOutOfRangeException("size");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return BatchImpl(source, size, resultSelector);
         }
 
@@ -90,7 +88,7 @@ namespace MoreLinq
                 }
 
                 // Select is necessary so bucket contents are streamed too
-                yield return resultSelector(bucket.Select(x => x));
+                yield return resultSelector(bucket);
                
                 bucket = null;
                 count = 0;
@@ -99,7 +97,8 @@ namespace MoreLinq
             // Return the last bucket with all remaining elements
             if (bucket != null && count > 0)
             {
-                yield return resultSelector(bucket.Take(count));
+                Array.Resize(ref bucket, count);
+                yield return resultSelector(bucket);
             }
         }
     }
