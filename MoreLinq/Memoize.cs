@@ -1,6 +1,6 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,19 +24,19 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a <see cref="IBufferedEnumerable{T}"/> that lazily creates an in-memory
+        /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
         /// cache of the enumeration on first iteration, if it is not already an
         /// in-memory source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <returns>A <see cref="IBufferedEnumerable{T}"/>.</returns>
-        public static IBufferedEnumerable<T> Memoize<T>(this IEnumerable<T> source)
+        /// <returns>The source <see cref="IEnumerable{T}"/> cached.</returns>
+        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
             return source.Memoize(false, false);
         }
 
         /// <summary>
-        /// Returns a <see cref="IBufferedEnumerable{T}"/> that lazily creates an in-memory
+        /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
         /// cache of the enumeration on first iteration, if it is not already an
         /// in-memory source.
         /// An additional argument specifies if buffering must happen even if the source implements
@@ -50,28 +50,22 @@ namespace MoreLinq
         /// <param name="disposeOnEarlyExit">Indicates if the call to dispose method of source's enumerator, 
         /// and therefore the close of the buffering, must happen at the end of the first iteration (true) 
         /// or only when source is entirely iterated (false).</param>
-        /// <returns>A <see cref="IBufferedEnumerable{T}"/>.</returns>
-        public static IBufferedEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool forceBuffering, bool disposeOnEarlyExit)
+        /// <returns>The source <see cref="IEnumerable{T}"/> cached.</returns>
+        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool forceBuffering, bool disposeOnEarlyExit)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            if (!forceBuffering && source is ICollection<T>)
+            {
+                return source;
+            }
 
             return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source, forceBuffering, disposeOnEarlyExit);
         }
     }
 
-    /// <summary>
-    /// An enumeration that, when being iterated, lazily iterates through the source enumeration 
-    /// and cache the elements already iterated for future iterations. It supports partial iterations.
-    /// </summary>
-    /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-    public interface IBufferedEnumerable<T> : IEnumerable<T>
+    internal class MemoizedEnumerable<T> : IEnumerable<T>
     {
-
-    }
-
-    internal class MemoizedEnumerable<T> : IBufferedEnumerable<T>, IEnumerable<T>
-    {
-        private readonly ICollection<T> collection;
         private readonly IList<T> cache;
         private readonly bool disposeOnEarlyExit;
         private IEnumerable<T> source;
@@ -80,52 +74,46 @@ namespace MoreLinq
 
         public MemoizedEnumerable(IEnumerable<T> sequence, bool forceBuffering, bool shouldDisposeOnEarlyExit)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
-            if (!forceBuffering && sequence is ICollection<T>)
-            {
-                collection = (ICollection<T>)sequence;
-            }
-            else
-            {
-                source = sequence;
-                cache = new List<T>();
-                disposeOnEarlyExit = shouldDisposeOnEarlyExit;
-            }
+            source = sequence;
+            cache = new List<T>();
+            disposeOnEarlyExit = shouldDisposeOnEarlyExit;
         }
 
-        private IEnumerator<T> GetMemoizedEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            if (sourceEnumerator == null && !disposed) sourceEnumerator = source.GetEnumerator();
+            if (sourceEnumerator == null && !disposed)
+                sourceEnumerator = source.GetEnumerator();
 
             int index = 0;
+            bool hasValue = false;
 
             try
             {
                 while (true)
                 {
-                    while (index < cache.Count)
+                    if (index < cache.Count)
                     {
-                        T item = cache[index];
-                        index++;
-                        yield return item;
+                        hasValue = true;
                     }
 
-                    if (!disposed && sourceEnumerator.MoveNext())
+                    else if ((hasValue = !disposed && sourceEnumerator.MoveNext()))
                     {
                         cache.Add(sourceEnumerator.Current);
-                        index++;
-                        yield return sourceEnumerator.Current;
                     }
-                    else
-                    {
-                        if (!disposed)
-                        {
-                            DisposeSourceResources();
-                        }
 
-                        yield break;
+                    else if (!disposed)
+                    {
+                        DisposeSourceResources();
                     }
+
+                    if (hasValue)
+                        yield return cache[index];
+                    else
+                        break;
+
+                    index++;
                 }
             }
             finally
@@ -135,11 +123,6 @@ namespace MoreLinq
                     DisposeSourceResources();
                 }
             }
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return collection != null ? collection.GetEnumerator() : GetMemoizedEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

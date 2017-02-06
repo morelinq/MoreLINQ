@@ -1,6 +1,6 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace MoreLinq.Test
 {
@@ -26,10 +27,10 @@ namespace MoreLinq.Test
     public class MemoizeTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MemoizeWithNullSequence()
         {
-            (null as IEnumerable<int>).Memoize();
+            Assert.Throws<ArgumentNullException>(
+                () => MoreEnumerable.Memoize<int>(null));
         }
 
         [Test]
@@ -114,8 +115,8 @@ namespace MoreLinq.Test
         {
             List<int> list = Enumerable.Range(1, 10).ToList();
 
-            Assert.IsInstanceOf<List<int>.Enumerator>(list.Memoize().GetEnumerator());
-            Assert.IsInstanceOf<List<int>.Enumerator>(list.Memoize(false, false).GetEnumerator());
+            Assert.IsInstanceOf<List<int>>(list.Memoize());
+            Assert.IsInstanceOf<List<int>>(list.Memoize(false, false));
         }
 
         [Test]
@@ -123,7 +124,7 @@ namespace MoreLinq.Test
         {
             List<int> list = Enumerable.Range(1, 10).ToList();
 
-            Assert.IsNotInstanceOf<List<int>.Enumerator>(list.Memoize(true, false).GetEnumerator());
+            Assert.IsNotInstanceOf<List<int>>(list.Memoize(true, false));
         }
 
         [Test]
@@ -143,17 +144,17 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MemoizeDisponsingOnEarlyExit()
         {
-            TestSequence().Memoize(false, true).Take(1).ToList();
+            Assert.Throws<InvalidOperationException>(
+                () => TestSequence().Memoize(false, true).Take(1).ToList());
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MemoizeDisponsingAfterSourceWasEntirelyIterated()
         {
-            TestSequence().Memoize().ToList();
+            Assert.Throws<InvalidOperationException>(
+                () => TestSequence().Memoize().ToList());
         }
 
         private IEnumerable<int> TestSequence()
