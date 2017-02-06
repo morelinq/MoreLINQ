@@ -29,7 +29,10 @@ namespace MoreLinq.Test
         [TestCase(27, 172)]
         public void SequenceAscendingTest(int start, int stop)
         {
-            Assert.That(MoreEnumerable.Sequence(start, stop), Is.EqualTo(Enumerable.Range(start, stop - start + 1)));
+            var result = MoreEnumerable.Sequence(start, stop);
+            var expectations = Enumerable.Range(start, stop - start + 1);
+
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [TestCase(10, 1)]
@@ -37,7 +40,10 @@ namespace MoreLinq.Test
         [TestCase(172, 27)]
         public void SequenceDescendingTest(int start, int stop)
         {
-            Assert.That(MoreEnumerable.Sequence(start, stop), Is.EqualTo(Enumerable.Range(stop, start - stop + 1).Reverse()));
+            var result = MoreEnumerable.Sequence(start, stop);
+            var expectations = Enumerable.Range(stop, start - stop + 1).Reverse();
+
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
 
@@ -46,7 +52,10 @@ namespace MoreLinq.Test
         [TestCase(27, 172, 9)]
         public void SequenceAscendingWithAscendingStepTest(int start, int stop, int step)
         {
-            Assert.That(MoreEnumerable.Sequence(start, stop, step), Is.EqualTo(Enumerable.Range(start, stop - start + 1).TakeEvery(step)));
+            var result = MoreEnumerable.Sequence(start, stop, step);
+            var expectations = Enumerable.Range(start, stop - start + 1).TakeEvery(step);
+
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [TestCase(1, 10, -1)]
@@ -54,7 +63,10 @@ namespace MoreLinq.Test
         [TestCase(27, 172, -9)]
         public void SequenceAscendingWithDescendigStepTest(int start, int stop, int step)
         {
-            Assert.That(MoreEnumerable.Sequence(start, stop, step), Is.EqualTo(Enumerable.Empty<int>()));
+            var result = MoreEnumerable.Sequence(start, stop, step);
+            var expectations = Enumerable.Empty<int>();
+
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [TestCase(10, 1, 1)]
@@ -62,7 +74,10 @@ namespace MoreLinq.Test
         [TestCase(172, 27, 9)]
         public void SequenceDescendingWithAscendingStepTest(int start, int stop, int step)
         {
-            Assert.That(MoreEnumerable.Sequence(start, stop, step), Is.EqualTo(Enumerable.Empty<int>()));
+            var result = MoreEnumerable.Sequence(start, stop, step);
+            var expectations = Enumerable.Empty<int>();
+
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [TestCase(10, 1, -1)]
@@ -70,7 +85,10 @@ namespace MoreLinq.Test
         [TestCase(172, 27, -9)]
         public void SequenceDescendingWithDescendigStepTest(int start, int stop, int step)
         {
-            Assert.That(MoreEnumerable.Sequence(start, stop, step), Is.EqualTo(Enumerable.Range(stop, start - stop + 1).Reverse().TakeEvery(Math.Abs(step))));
+            var result = MoreEnumerable.Sequence(start, stop, step);
+            var expectations = Enumerable.Range(stop, start - stop + 1).Reverse().TakeEvery(Math.Abs(step));
+
+            Assert.That(result, Is.EqualTo(expectations));
         }
     }
 }
