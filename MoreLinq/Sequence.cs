@@ -1,6 +1,6 @@
 ﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,31 +17,31 @@
 
 namespace MoreLinq
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Generates a sequence of integral numbers within the specified range.
+        /// Generates a sequence of integral numbers within the (inclusive) specified range.
+        /// If sequence is ascending the step is +1, otherwise -1.
         /// </summary>
         /// <param name="start">The value of the first integer in the sequence.</param>
         /// <param name="stop">The value of the last integer in the sequence.</param>
         /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
         /// <example>
         /// <code>
-        /// string result = Sequence(6, 0);
+        /// var result = MoreEnumerable.Sequence(6, 0);
         /// </code>
         /// The <c>result</c> variable will contain <c>{ 6, 5, 4, 3, 2, 1, 0 }</c>.
         /// </example>
+
         public static IEnumerable<int> Sequence(int start, int stop)
         {
             return Sequence(start, stop, start < stop ? 1 : -1);
         }
 
         /// <summary>
-        /// Generates a sequence of integral numbers within the specified range.
+        /// Generates a sequence of integral numbers within the (inclusive) specified range.
         /// An additional argument specifies the step between the numbers.
         /// </summary>
         /// <param name="start">The value of the first integer in the sequence.</param>
@@ -50,18 +50,21 @@ namespace MoreLinq
         /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
         /// <example>
         /// <code>
-        /// string result = Sequence(6, 0, -2);
+        /// var result = MoreEnumerable.Sequence(6, 0, -2);
         /// </code>
         /// The <c>result</c> variable will contain <c>{ 6, 4, 2, 0 }</c>.
         /// </example>
+
         public static IEnumerable<int> Sequence(int start, int stop, int step)
         {
-            var func = step >= 0 ? () => stop >= start : new Func<bool>(() => stop <= start);
+            int initial = start;
+            long current = start;
 
-            while (func())
+            while (step >= 0 ? stop >= current && initial <= current
+                             : stop <= current && initial >= current)
             {
-                yield return start;
-                start = checked(start + step);
+                yield return (int)current;
+                current = current + step;
             }
         }
     }

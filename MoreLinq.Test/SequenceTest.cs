@@ -1,6 +1,6 @@
 ﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,19 +15,21 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System;
-using System.Linq;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+    using System;
+    using System.Linq;
+
     [TestFixture]
     public class SequenceTest
     {
+        [TestCase(-10, -4)]
+        [TestCase(-1, 5)]
         [TestCase(1, 10)]
         [TestCase(30, 55)]
         [TestCase(27, 172)]
-        public void SequenceAscendingTest(int start, int stop)
+        public void SequenceWithAscendingRange(int start, int stop)
         {
             var result = MoreEnumerable.Sequence(start, stop);
             var expectations = Enumerable.Range(start, stop - start + 1);
@@ -35,10 +37,12 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
+        [TestCase(-4, -10)]
+        [TestCase(5, -1)]
         [TestCase(10, 1)]
         [TestCase(55, 30)]
         [TestCase(172, 27)]
-        public void SequenceDescendingTest(int start, int stop)
+        public void SequenceWithDescendingRange(int start, int stop)
         {
             var result = MoreEnumerable.Sequence(start, stop);
             var expectations = Enumerable.Range(stop, start - stop + 1).Reverse();
@@ -46,11 +50,12 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-
+        [TestCase(-10, -4, 2)]
+        [TestCase(-1, 5, 3)]
         [TestCase(1, 10, 1)]
         [TestCase(30, 55, 4)]
         [TestCase(27, 172, 9)]
-        public void SequenceAscendingWithAscendingStepTest(int start, int stop, int step)
+        public void SequenceWithAscendingRangeWithAscendingStep(int start, int stop, int step)
         {
             var result = MoreEnumerable.Sequence(start, stop, step);
             var expectations = Enumerable.Range(start, stop - start + 1).TakeEvery(step);
@@ -58,10 +63,12 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
+        [TestCase(-10, -4, -2)]
+        [TestCase(-1, 5, -3)]
         [TestCase(1, 10, -1)]
         [TestCase(30, 55, -4)]
         [TestCase(27, 172, -9)]
-        public void SequenceAscendingWithDescendigStepTest(int start, int stop, int step)
+        public void SequenceWithAscendingRangeWithDescendigStep(int start, int stop, int step)
         {
             var result = MoreEnumerable.Sequence(start, stop, step);
             var expectations = Enumerable.Empty<int>();
@@ -69,10 +76,12 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
+        [TestCase(-4, -10, 2)]
+        [TestCase(5, -1, 3)]
         [TestCase(10, 1, 1)]
         [TestCase(55, 30, 4)]
         [TestCase(172, 27, 9)]
-        public void SequenceDescendingWithAscendingStepTest(int start, int stop, int step)
+        public void SequenceWithDescendingRangeWithAscendingStep(int start, int stop, int step)
         {
             var result = MoreEnumerable.Sequence(start, stop, step);
             var expectations = Enumerable.Empty<int>();
@@ -80,15 +89,55 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
+        [TestCase(-4, -10, -2)]
+        [TestCase(5, -1, -3)]
         [TestCase(10, 1, -1)]
         [TestCase(55, 30, -4)]
         [TestCase(172, 27, -9)]
-        public void SequenceDescendingWithDescendigStepTest(int start, int stop, int step)
+        public void SequenceWithDescendingRangeWithDescendigStep(int start, int stop, int step)
         {
             var result = MoreEnumerable.Sequence(start, stop, step);
             var expectations = Enumerable.Range(stop, start - stop + 1).Reverse().TakeEvery(Math.Abs(step));
 
             Assert.That(result, Is.EqualTo(expectations));
+        }
+
+        [TestCase(int.MaxValue, int.MaxValue, true, -1)]
+        [TestCase(int.MaxValue, int.MaxValue, true, 1)]
+        [TestCase(int.MaxValue, int.MaxValue, false, 1)]
+        [TestCase(0, 0, true, -1)]
+        [TestCase(0, 0, true, 1)]
+        [TestCase(0, 0, false, 1)]
+        [TestCase(int.MinValue, int.MinValue, true, -1)]
+        [TestCase(int.MinValue, int.MinValue, true, 1)]
+        [TestCase(int.MinValue, int.MinValue, false, 1)]
+        public void SequenceWithStartEqualsStop(int start, int stop, bool useStep, int step)
+        {
+            var result = useStep ? MoreEnumerable.Sequence(start, stop, step)
+                                 : MoreEnumerable.Sequence(start, stop);
+
+            Assert.That(start, Is.EqualTo(result.Single()));
+        }
+
+        [TestCase(int.MaxValue - 1, int.MaxValue, 1, 2)]
+        [TestCase(int.MinValue + 1, int.MinValue, -1, 2)]
+        [TestCase(0, int.MaxValue, 10000000, (int.MaxValue / 10000000) + 1)]
+        [TestCase(int.MinValue, int.MaxValue, int.MaxValue, 3)]
+        public void SequenceEdgeCases(int start, int stop, int step, int count)
+        {
+            var result = MoreEnumerable.Sequence(start, stop, step);
+
+            Assert.AreEqual(result.Count(), count);
+        }
+
+        [TestCase(5, 10)]
+        [TestCase(int.MaxValue, int.MaxValue)]
+        [TestCase(int.MinValue, int.MaxValue)]
+        public void SequenceWithStepZero(int start, int stop)
+        {
+            var result = MoreEnumerable.Sequence(start, stop, 0);
+
+            Assert.IsTrue(result.Take(100).All(x => x == start));
         }
     }
 }
