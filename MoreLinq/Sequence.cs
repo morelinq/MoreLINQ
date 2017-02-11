@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -28,6 +28,9 @@ namespace MoreLinq
         /// <param name="start">The value of the first integer in the sequence.</param>
         /// <param name="stop">The value of the last integer in the sequence.</param>
         /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         /// <example>
         /// <code>
         /// var result = MoreEnumerable.Sequence(6, 0);
@@ -42,12 +45,16 @@ namespace MoreLinq
 
         /// <summary>
         /// Generates a sequence of integral numbers within the (inclusive) specified range.
-        /// An additional argument specifies the step between the numbers.
+        /// An additional parameter specifies the steps in which the integers of the sequence increase or decrease.
         /// </summary>
         /// <param name="start">The value of the first integer in the sequence.</param>
         /// <param name="stop">The value of the last integer in the sequence.</param>
         /// <param name="step">The step to define the next number.</param>
         /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
+        /// <remarks>
+        /// Case <paramref name="step"/> is equals to zero, this operator returns an infinite sequence where all elements are equals to <paramref name="start"/>.
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         /// <example>
         /// <code>
         /// var result = MoreEnumerable.Sequence(6, 0, -2);
@@ -57,7 +64,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Sequence(int start, int stop, int step)
         {
-            int initial = start;
+            var initial = start;
             long current = start;
 
             while (step >= 0 ? stop >= current && initial <= current
