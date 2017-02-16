@@ -28,17 +28,17 @@ namespace MoreLinq.Test
     public class SingleOrFallbackTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullSequence()
         {
-            MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>());
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SingleOrFallbackWithNullFallback()
         {
-            new[] {1}.SingleOrFallback(null);
+            Assert.ThrowsArgumentNullException("fallback",() =>
+                new[] { 1 }.SingleOrFallback(null));
         }
 
         [Test]
@@ -64,17 +64,17 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void SingleOrFallbackWithLongSequence()
         {
-            new[] { 10, 20, 30 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>());
+            Assert.Throws<InvalidOperationException>(() =>
+                new[] { 10, 20, 30 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>()));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void SingleOrFallbackWithLongSequenceIListOptimized()
         {
-            new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>());
+            Assert.Throws<InvalidOperationException>(() =>
+                new[] { 10, 20, 30 }.SingleOrFallback(BreakingFunc.Of<int>()));
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -25,31 +24,31 @@ namespace MoreLinq.Test
         /// Verify that Lead throws an exception if invoked on a <c>null</c> sequence.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestLeadNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Lead(5, (val, leadVal) => val);
+            Assert.ThrowsArgumentNullException("source", () =>
+                sequence.Lead(5, (val, leadVal) => val));
         }
 
         /// <summary>
         /// Verify that attempting to lead by a negative offset will result in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestLeadNegativeOffset()
         {
-            Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal);
+            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+                Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
         }
 
         /// <summary>
         /// Verify that attempting to lead by a zero offset will result in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestLeadZeroOffset()
         {
-            Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal);
+            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+                Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
         }
 
         /// <summary>

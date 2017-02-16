@@ -40,7 +40,7 @@ namespace MoreLinq
             var memberExpression = body as MemberExpression;
             if ((memberExpression == null) || (memberExpression.Expression.NodeType != ExpressionType.Parameter))
             {
-                throw new ArgumentException(string.Format("Illegal expression: {0}", lambda), "lambda");
+                throw new ArgumentException(string.Format("Illegal expression: {0}", lambda), nameof(lambda));
             }
 
             return memberExpression.Member;
@@ -65,7 +65,7 @@ namespace MoreLinq
             //
 
             if (expressions.Any(e => e == null))
-                throw new ArgumentException("One of the supplied expressions was null.", "expressions");
+                throw new ArgumentException("One of the supplied expressions was null.", nameof(expressions));
 
             try
             {
@@ -73,7 +73,7 @@ namespace MoreLinq
             }
             catch (ArgumentException e)
             {
-                throw new ArgumentException("One of the supplied expressions is not allowed.", "expressions", e);
+                throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
             }
         }
 
@@ -125,10 +125,10 @@ namespace MoreLinq
                     var column = info.Column;
 
                     if (column == null)
-                        throw new ArgumentException(string.Format("Column named '{0}' is missing.", member.Name), "table");
+                        throw new ArgumentException(string.Format("Column named '{0}' is missing.", member.Name), nameof(table));
 
                     if (info.Type != column.DataType)
-                        throw new ArgumentException(string.Format("Column named '{0}' has wrong data type. It should be {1} when it is {2}.", member.Name, info.Type, column.DataType), "table");
+                        throw new ArgumentException(string.Format("Column named '{0}' has wrong data type. It should be {1} when it is {2}.", member.Name, info.Type, column.DataType), nameof(table));
 
                     members[column.Ordinal] = member;
                 }
@@ -182,8 +182,8 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
             where TTable : DataTable
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (table == null) throw new ArgumentNullException("table");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (table == null) throw new ArgumentNullException(nameof(table));
 
             var members = PrepareMemberInfos(expressions).ToArray();
             members = BuildOrBindSchema(table, members);

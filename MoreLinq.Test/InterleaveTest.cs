@@ -24,35 +24,35 @@ namespace MoreLinq.Test
         /// Verify that invoking Interleave on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestInterleaveNullSequenceArgument()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Interleave(new int[] { });
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                sequence.Interleave(new int[] { }));
         }
 
         /// <summary>
         /// Verify that invoking Interleave with a <c>null</c> otherSequences parameter results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestInterleaveNullOtherSequencesArgument()
         {
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
-            sequence.Interleave(null);
+            Assert.ThrowsArgumentNullException("otherSequences", () =>
+                sequence.Interleave(null));
         }
 
         /// <summary>
         /// Verify that invoking Interleave with a <c>null</c> element in the otherSequences collection results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestInterleaveNullEntryInOtherSequences()
         {
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
-            sequence.Interleave(Enumerable.Range(1, count), null);
+            Assert.ThrowsArgumentNullException("otherSequences",() =>
+                sequence.Interleave(Enumerable.Range(1, count), null));
         }
 
         /// <summary>

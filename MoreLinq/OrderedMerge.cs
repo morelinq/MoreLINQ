@@ -184,7 +184,7 @@ namespace MoreLinq
             Func<T, T, TResult> bothSelector,
             IComparer<TKey> comparer)
         {
-            if (keySelector == null) throw new ArgumentNullException("keySelector"); // Argument name changes to 'firstKeySelector'
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector)); // Argument name changes to 'firstKeySelector'
             return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
         }
 
@@ -278,13 +278,13 @@ namespace MoreLinq
             Func<TFirst, TSecond, TResult> bothSelector,
             IComparer<TKey> comparer)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (firstKeySelector == null) throw new ArgumentNullException("firstKeySelector");
-            if (secondKeySelector == null) throw new ArgumentNullException("secondKeySelector");
-            if (firstSelector == null) throw new ArgumentNullException("firstSelector");
-            if (bothSelector == null) throw new ArgumentNullException("bothSelector");
-            if (secondSelector == null) throw new ArgumentNullException("secondSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (firstKeySelector == null) throw new ArgumentNullException(nameof(firstKeySelector));
+            if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
+            if (firstSelector == null) throw new ArgumentNullException(nameof(firstSelector));
+            if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
+            if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
 
             return OrderedMergeImpl(first, second,
                                     firstKeySelector, secondKeySelector,

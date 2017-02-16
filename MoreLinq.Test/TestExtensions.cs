@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
@@ -73,5 +72,9 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
+        internal static void Add<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, TKey key, TValue value)
+        {
+            list.Add(new KeyValuePair<TKey, TValue>(key, value));
+        }
     }
 }

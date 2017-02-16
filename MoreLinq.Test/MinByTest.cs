@@ -25,17 +25,17 @@ namespace MoreLinq.Test
     public class MinByTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MinByNullSequence()
         {
-            ((IEnumerable<string>)null).MinBy(x => x.Length);
+            Assert.ThrowsArgumentNullException("source", () =>
+                ((IEnumerable<string>)null).MinBy(x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void MinByNullSelector()
         {
-            SampleData.Strings.MinBy<string, int>(null);
+            Assert.ThrowsArgumentNullException("selector",() =>
+                SampleData.Strings.MinBy<string, int>(null));
         }
 
         [Test]
@@ -45,10 +45,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MinByEmptySequence()
         {
-            new string[0].MinBy(x => x.Length);
+            Assert.Throws<InvalidOperationException>(() =>
+                new string[0].MinBy(x => x.Length));
         }
 
         [Test]

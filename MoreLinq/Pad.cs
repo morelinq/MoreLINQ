@@ -77,8 +77,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (width < 0) throw new ArgumentException(null, "width");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (width < 0) throw new ArgumentException(null, nameof(width));
             return PadImpl(source, width, padding, null);
         }
 
@@ -108,9 +108,9 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (paddingSelector == null) throw new ArgumentNullException("paddingSelector");
-            if (width < 0) throw new ArgumentException(null, "width");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
+            if (width < 0) throw new ArgumentException(null, nameof(width));
             return PadImpl(source, width, default(TSource), paddingSelector);
         }
 

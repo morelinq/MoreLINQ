@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,10 +23,10 @@ namespace MoreLinq.Test
     public class TakeLastTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TakeLastNullSource()
         {
-            MoreEnumerable.TakeLast<object>(null, 0);
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.TakeLast<object>(null, 0));
         }
 
         [Test]
@@ -55,6 +54,15 @@ namespace MoreLinq.Test
         public void TakeLastIsLazy()
         {
             new BreakingSequence<object>().TakeLast(1);
+        }
+
+        [Test]
+        public void TakeLastDisposesSequenceEnumerator()
+        {
+            using (var seq = TestingSequence.Of(1,2,3))
+            {
+                seq.TakeLast(1).Consume();
+            }
         }
     }
 }

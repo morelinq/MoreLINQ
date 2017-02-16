@@ -72,70 +72,72 @@ namespace MoreLinq.Test
 
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ToDataTableNullSequence()
         {
             IEnumerable<TestObject> source = null;
-            source.ToDataTable();
+
+            Assert.ThrowsArgumentNullException("source",() =>
+                source.ToDataTable());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ToDataTableNullTable()
         {
             DataTable dt = null;
-            m_TestObjects.ToDataTable(dt);
+
+            Assert.ThrowsArgumentNullException("table",() =>
+                m_TestObjects.ToDataTable(dt));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableNullMemberExpressionMethod()
         {
             Expression<Func<TestObject, object>> expression = null;
 
-            m_TestObjects.ToDataTable<TestObject>(expression);
+            Assert.ThrowsArgumentException("expressions",() =>
+                m_TestObjects.ToDataTable<TestObject>(expression));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableTableWithWrongColumnNames()
         {
             var dt = new DataTable();
             dt.Columns.Add("Test");
 
-            m_TestObjects.ToDataTable(dt);
+            Assert.ThrowsArgumentException("table",() =>
+                m_TestObjects.ToDataTable(dt));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableTableWithWrongColumnDataType()
         {
             var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
-            m_TestObjects.ToDataTable(dt, t=>t.AString);
+            Assert.ThrowsArgumentException("table",() =>
+                m_TestObjects.ToDataTable(dt, t=>t.AString));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableMemberExpressionMethod()
         {
-            m_TestObjects.ToDataTable(t => t.ToString());
+            Assert.ThrowsArgumentException("lambda", () =>
+                m_TestObjects.ToDataTable(t => t.ToString()));
         }
 
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableMemberExpressionNonMember()
         {
-            m_TestObjects.ToDataTable(t => t.ToString().Length);
+            Assert.ThrowsArgumentException("lambda", () =>
+                m_TestObjects.ToDataTable(t => t.ToString().Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void ToDataTableMemberExpressionIndexer()
         {
-            m_TestObjects.ToDataTable(t => t[0]);
+            Assert.ThrowsArgumentException("lambda",() =>
+                m_TestObjects.ToDataTable(t => t[0]));
         }
 
         [Test]
