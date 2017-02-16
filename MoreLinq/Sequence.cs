@@ -52,7 +52,8 @@ namespace MoreLinq
         /// <param name="step">The step to define the next number.</param>
         /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
         /// <remarks>
-        /// Case <paramref name="step"/> is equals to zero, this operator returns an infinite sequence where all elements are equals to <paramref name="start"/>.
+        /// When <paramref name="step"/> is equals to zero, this operator returns an 
+        /// infinite sequence where all elements are equals to <paramref name="start"/>.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>

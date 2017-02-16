@@ -323,6 +323,12 @@ on the original sequence.
 
 This method has 3 overloads.
 
+### Sequence
+
+Generates a sequence of integral numbers within the (inclusive) specified range.
+
+This method has 2 overloads.
+
 ### ~~SingleOrFallback~~
 
 Consider using `FallbackIfEmpty` instead. `SingleOrFallback` may be removed in
