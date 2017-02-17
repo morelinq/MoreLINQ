@@ -1,0 +1,77 @@
+{
+  "version": "2.0.0",
+  "name": "MoreLinq.Test",
+  "title": "MoreLinq.Test",
+  "authors": [
+    "MoreLINQ Developers"
+  ],
+  "packOptions": {
+    "tags": [
+      "linq",
+      "extensions"
+    ]
+  },
+  "dependencies": {
+    "MoreLinq": {
+      "target": "project"
+    },
+    "NUnit": "3.4.1",
+    "dotnet-test-nunit": "3.4.0-*"
+  },
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": false,
+    "warningsAsErrors": true,
+    "xmlDoc": false
+  },
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [
+          "TRACE",
+          "DEBUG"
+        ],
+        "optimize": false
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [
+          "TRACE"
+        ],
+        "optimize": true
+      }
+    }
+  },
+  "testRunner": "nunit",
+  "frameworks": {
+    "netcoreapp1.0": {
+      "buildOptions": {
+        "compile": {
+          "exclude": [
+            "TraceTest.cs",
+            "ToDataTableTest.cs"
+          ]
+        }
+      },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
+    },
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Data.DataSetExtensions": "4.0.0.0",
+        "System.Data": "4.0.0.0",
+        "System.Xml": "4.0.0.0",
+        "System.Xml.Linq": "4.0.0.0"
+      }
+    }
+  }
+}

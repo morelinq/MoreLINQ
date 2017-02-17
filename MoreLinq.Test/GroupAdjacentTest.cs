@@ -26,17 +26,17 @@ namespace MoreLinq.Test
     public class GroupAdjacentTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupAdjacentNullSource()
         {
-            MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; });
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; }));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GroupAdjacentNullKeySelector()
         {
-            new object[0].GroupAdjacent<object, object>(null);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+                new object[0].GroupAdjacent<object, object>(null));
         }
 
         [Test]
@@ -47,6 +47,8 @@ namespace MoreLinq.Test
             bs.GroupAdjacent(delegate { return 0; }, o => o);
             bs.GroupAdjacent(delegate { return 0; }, o => o, EqualityComparer<int>.Default);
             bs.GroupAdjacent(delegate { return 0; }, EqualityComparer<int>.Default);
+            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g);
+            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g, EqualityComparer<int>.Default);
         }
 
         [Test]
@@ -106,7 +108,10 @@ namespace MoreLinq.Test
                 new { Month = 2, Value = 321 },                 
                 new { Month = 3, Value = 789 },                 
                 new { Month = 3, Value = 456 },                 
-                new { Month = 3, Value = 123 },                 
+                new { Month = 3, Value = 123 },
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 781 },
             };
 
             var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2);
@@ -116,6 +121,7 @@ namespace MoreLinq.Test
                 AssertGrouping(reader, 1, 123 * 2, 456 * 2, 789 * 2);
                 AssertGrouping(reader, 2, 987 * 2, 654 * 2, 321 * 2);
                 AssertGrouping(reader, 3, 789 * 2, 456 * 2, 123 * 2);
+                AssertGrouping(reader, 1, 123 * 2, 456 * 2, 781 * 2);
                 reader.ReadEnd();
             }
         }
@@ -133,7 +139,10 @@ namespace MoreLinq.Test
                 new { Month = "FEB", Value = 321 },                 
                 new { Month = "mar", Value = 789 },                 
                 new { Month = "Mar", Value = 456 },                 
-                new { Month = "MAR", Value = 123 },                 
+                new { Month = "MAR", Value = 123 },
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 781 },
             };
 
             var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2, StringComparer.OrdinalIgnoreCase);
@@ -143,6 +152,67 @@ namespace MoreLinq.Test
                 AssertGrouping(reader, "jan", 123 * 2, 456 * 2, 789 * 2);
                 AssertGrouping(reader, "feb", 987 * 2, 654 * 2, 321 * 2);
                 AssertGrouping(reader, "mar", 789 * 2, 456 * 2, 123 * 2);
+                AssertGrouping(reader, "jan", 123 * 2, 456 * 2, 781 * 2);
+                reader.ReadEnd();
+            }
+        }
+
+        [Test]
+        public void GroupAdjacentSourceSequenceResultSelector()
+        {
+            var source = new[]
+            {
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 789 },
+                new { Month = 2, Value = 987 },
+                new { Month = 2, Value = 654 },
+                new { Month = 2, Value = 321 },
+                new { Month = 3, Value = 789 },
+                new { Month = 3, Value = 456 },
+                new { Month = 3, Value = 123 },
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 781 },
+            };
+
+            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
+
+            using (var reader = groupings.Read()) {
+                AssertResult(reader, 123 + 456 + 789);
+                AssertResult(reader, 987 + 654 + 321);
+                AssertResult(reader, 789 + 456 + 123);
+                AssertResult(reader, 123 + 456 + 781);
+                reader.ReadEnd();
+            }
+        }
+
+        [Test]
+        public void GroupAdjacentSourceSequenceResultSelectorComparer()
+        {
+            var source = new[]
+            {
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 789 },
+                new { Month = "feb", Value = 987 },
+                new { Month = "Feb", Value = 654 },
+                new { Month = "FEB", Value = 321 },
+                new { Month = "mar", Value = 789 },
+                new { Month = "Mar", Value = 456 },
+                new { Month = "MAR", Value = 123 },
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 781 },
+            };
+
+            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
+
+            using (var reader = groupings.Read()) {
+                AssertResult(reader, 123 + 456 + 789);
+                AssertResult(reader, 987 + 654 + 321);
+                AssertResult(reader, 789 + 456 + 123);
+                AssertResult(reader, 123 + 456 + 781);
                 reader.ReadEnd();
             }
         }
@@ -154,6 +224,13 @@ namespace MoreLinq.Test
             Assert.That(grouping, Is.Not.Null);
             Assert.That(grouping.Key, Is.EqualTo(key));
             grouping.AssertSequenceEqual(elements);
+        }
+
+        static void AssertResult<TElement>(SequenceReader<TElement> reader, TElement element)
+        {
+            var result = reader.Read();
+            Assert.That(result, Is.Not.Null);
+            Assert.AreEqual(element, result);
         }
     }
 }

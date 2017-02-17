@@ -73,24 +73,24 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullFirstSequence()
         {
-            MoreEnumerable.ZipLongest(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            Assert.ThrowsArgumentNullException("first", () =>
+                MoreEnumerable.ZipLongest(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            new[] { 1, 2, 3 }.ZipLongest(null, BreakingFunc.Of<int, int, int>());
+            Assert.ThrowsArgumentNullException("second", () =>
+                new[] { 1, 2, 3 }.ZipLongest(null, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            new[] { 1, 2, 3 }.ZipLongest<int, int, int>(new[] { 4, 5, 6 }, null);
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
+                new[] { 1, 2, 3 }.ZipLongest<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 
         [Test]

@@ -15,11 +15,6 @@
 // limitations under the License.
 #endregion
 
-
-#if NO_HASHSET
-using System.Linq;
-#endif
-
 namespace MoreLinq
 {
     using System;
@@ -42,7 +37,7 @@ namespace MoreLinq
         /// <param name="keySelector">Projection for determining "distinctness"</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
-        
+
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
         {
@@ -66,19 +61,18 @@ namespace MoreLinq
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence consisting of distinct elements from the source sequence,
         /// comparing them by the specified key projection.</returns>
-        
+
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             return DistinctByImpl(source, keySelector, comparer);
         }
 
         private static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-#if !NO_HASHSET
             var knownKeys = new HashSet<TKey>(comparer);
             foreach (var element in source)
             {
@@ -87,17 +81,6 @@ namespace MoreLinq
                     yield return element;
                 }
             }
-#else
-            //
-            // On platforms where LINQ is available but no HashSet<T>
-            // (like on Silverlight), implement this operator using 
-            // existing LINQ operators. Using GroupBy is slightly less
-            // efficient since it has do all the grouping work before
-            // it can start to yield any one element from the source.
-            //
-
-            return source.GroupBy(keySelector, comparer).Select(g => g.First());
-#endif
         }
     }
 }

@@ -47,9 +47,9 @@ namespace MoreLinq
         
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
         {
-            if (rand == null) throw new ArgumentNullException("rand");
-            if (sequence == null) throw new ArgumentNullException("sequence");
-            if (subsetSize < 0) throw new ArgumentOutOfRangeException("subsetSize");
+            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
 
             return RandomSubsetImpl(sequence, subsetSize, rand);
         }
@@ -64,7 +64,7 @@ namespace MoreLinq
 
             var seqArray = sequence.ToArray();
             if (seqArray.Length < subsetSize)
-                throw new ArgumentOutOfRangeException("subsetSize", "Subset size must be <= sequence.Count()");
+                throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
 
             var m = 0;                // keeps track of count items shuffled
             var w = seqArray.Length;  // upper bound of shrinking swap range

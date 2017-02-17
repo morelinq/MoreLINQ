@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -26,31 +25,31 @@ namespace MoreLinq.Test
     public class BatchTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void BatchNullSequence()
         {
-            MoreEnumerable.Batch<object>(null, 1);
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.Batch<object>(null, 1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchZeroSize()
         {
-            new object[0].Batch(0);
+            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+                new object[0].Batch(0));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void BatchNegativeSize()
         {
-            new object[0].Batch(-1);
+            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+                new object[0].Batch(-1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void BatchWithNullResultSelector()
         {
-            new object[0].Batch<object, object>(1, null);
+            Assert.ThrowsArgumentNullException("resultSelector",() =>
+                new object[0].Batch<object, object>(1, null));
         }
 
         [Test]
@@ -87,13 +86,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchSequenceYieldsBatches()
+        public void BatchSequenceYieldsListsOfBatches()
         {
             var result = new[] { 1, 2, 3 }.Batch(2);
             using (var reader = result.Read())
             {
-                Assert.That(reader.Read(), Is.Not.InstanceOf(typeof(ICollection<int>)));
-                Assert.That(reader.Read(), Is.Not.InstanceOf(typeof(ICollection<int>)));
+                Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
+                Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
                 reader.ReadEnd();
             }
         }

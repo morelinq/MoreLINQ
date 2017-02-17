@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,24 +23,24 @@ namespace MoreLinq.Test
     public class TakeEveryTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TakeEveryNullSequence()
         {
-            MoreEnumerable.TakeEvery<object>(null, 1);
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.TakeEvery<object>(null, 1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TakeEveryNegativeSkip()
         {
-            new object[0].TakeEvery(-1);
+            Assert.ThrowsArgumentOutOfRangeException("step",() =>
+                new object[0].TakeEvery(-1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TakeEveryOutOfRangeZeroStep()
         {
-            new object[0].TakeEvery(0);
+            Assert.ThrowsArgumentOutOfRangeException("step", () =>
+                new object[0].TakeEvery(0));
         }
 
         [Test]

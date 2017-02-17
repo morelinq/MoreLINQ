@@ -33,9 +33,9 @@ namespace MoreLinq
         
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
-            if (startIndex < 0) throw new ArgumentOutOfRangeException("startIndex");
-            if (count < 0) throw new ArgumentOutOfRangeException("count");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             return ExcludeImpl(sequence, startIndex, count);
         }

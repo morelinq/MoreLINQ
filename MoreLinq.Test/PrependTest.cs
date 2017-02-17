@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -42,10 +41,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PrependWithNullTailSequence()
         {
-            MoreEnumerable.Prepend(null, "head");
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.Prepend(null, "head"));
         }
 
         [Test]

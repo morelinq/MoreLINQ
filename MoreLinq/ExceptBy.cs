@@ -79,9 +79,9 @@ namespace MoreLinq {
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
             return SetFilterImpl(first, second.Select(keySelector), keySelector, keyComparer, (hs, k) => hs.Add(k));
         }
