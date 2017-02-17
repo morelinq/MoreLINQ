@@ -43,8 +43,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",() =>
-                Enumerable.Range(1, 10).Repeat(-3));
+            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+                 Enumerable.Range(1, 10).Repeat(-3));
         }
 
         /// <summary>
@@ -55,6 +55,39 @@ namespace MoreLinq.Test
         {
             Assert.ThrowsArgumentNullException("sequence", () =>
                 MoreEnumerable.Repeat<object>(null, 42));
+        }
+
+        /// <summary>
+        /// Verify applying Repeat without passing count produces a circular sequence
+        /// </summary>
+        [Test]
+        public void TestRepeatForeverBehavior()
+        {
+            var value = 3;
+
+            var result = new[] { value }.Repeat();
+
+            Assert.IsTrue(result.Take(100).All(x => x == value));
+        }
+
+        /// <summary>
+        /// Verify applying Repeat without passing count to a 
+        /// <c>null</c> sequence results in an exception.
+        /// </summary>
+        [Test]
+        public void TestRepeatForeverSequenceANullException()
+        {
+            Assert.ThrowsArgumentNullException("sequence", () =>
+                MoreEnumerable.Repeat<object>(null, 42));
+        }
+
+        /// <summary>
+        /// Verify that the repeat method returns results in a lazy manner.
+        /// </summary>
+        [Test]
+        public void TestRepeatForeverIsLazy()
+        {
+            new BreakingSequence<int>().Repeat();
         }
     }
 }
