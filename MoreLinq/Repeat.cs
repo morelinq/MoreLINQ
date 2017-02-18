@@ -38,8 +38,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Repeats the specific sequences indefinitely, or equivalently, creates a circular sequence
-        /// from the original source sequence.
+        /// Repeats the specific sequences forever.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
         /// <param name="sequence">The sequence to repeat</param>
@@ -50,6 +49,7 @@ namespace MoreLinq
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             return RepeatImpl(sequence, null);
         }
+
 
         private static IEnumerable<T> RepeatImpl<T>(this IEnumerable<T> sequence, int? count)
         {

@@ -61,13 +61,30 @@ namespace MoreLinq.Test
         /// Verify applying Repeat without passing count produces a circular sequence
         /// </summary>
         [Test]
-        public void TestRepeatForeverBehavior()
+        public void TestRepeatForeverBehaviorSingleElementList()
         {
             var value = 3;
 
             var result = new[] { value }.Repeat();
 
             Assert.IsTrue(result.Take(100).All(x => x == value));
+        }
+
+        /// <summary>
+        /// Verify applying Repeat without passing count produces a circular sequence
+        /// </summary>
+        [Test]
+        public void TestRepeatForeverBehaviorManyElementsList()
+        {
+            const int repeatCount = 30;
+            var sequence = Enumerable.Range(1, 10);
+            var result = sequence.Repeat();
+
+            var expectedResult = Enumerable.Empty<int>();
+            for (var i = 0; i < repeatCount; i++)
+                expectedResult = expectedResult.Concat(sequence);
+
+            Assert.IsTrue(result.Take(300).SequenceEqual(expectedResult));
         }
 
         /// <summary>
@@ -78,7 +95,7 @@ namespace MoreLinq.Test
         public void TestRepeatForeverSequenceANullException()
         {
             Assert.ThrowsArgumentNullException("sequence", () =>
-                MoreEnumerable.Repeat<object>(null, 42));
+                MoreEnumerable.Repeat<object>(null));
         }
 
         /// <summary>

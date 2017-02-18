@@ -300,7 +300,9 @@ This method has 2 overloads.
 
 ### Repeat
 
-Repeats the specific sequences times
+Repeats the specific sequences times.
+
+This method has 2 overloads.
 
 ### RunLengthEncode
 
