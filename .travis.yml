@@ -1,4 +1,7 @@
 language: csharp
+os:
+  - linux
+  - osx
 solution: MoreLinq.sln
 mono: latest
 dist: trusty
