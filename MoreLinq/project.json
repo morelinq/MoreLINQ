@@ -8,7 +8,7 @@
   ],
   "copyright": "\u00a9 2008 Jonathan Skeet. Portions \u00a9 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions \u00a9 2010 Johannes Rudolph, Leopold Bushkin. Portions \u00a9 2015 Felipe Sateler, \u201csholland\u201d. Portions \u00a9 2016 Leandro F. Vieira (leandromoh). Portions \u00a9 Microsoft. All rights reserved.",
   "packOptions": {
-    "releaseNotes": "Adds new operators: AtMost, CountBetween, Exactly, FillBackward, FillForward, Sequence. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.\nObsolete: Incremental, some overloads of ToDelimitedString, SingleOrFallback (since 2.0)",
+    "releaseNotes": "Adds new operators: Sequence. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.",
     "summary": "This project enhances LINQ to Objects with extra methods, in a manner which keeps to the spirit of LINQ.",
     "owners": [
       "Jon Skeet",
