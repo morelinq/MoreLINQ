@@ -31,6 +31,20 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void AtLeastSequenceWithFirstNullSequence()
+        {
+            Assert.ThrowsArgumentNullException("first", () =>
+                MoreEnumerable.AtLeast<int>(null, LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastSequenceWithSecondNullSequence()
+        {
+            Assert.ThrowsArgumentNullException("second", () =>
+                MoreEnumerable.AtLeast<int>(LinqEnumerable.Empty<int>(), null));
+        }
+
+        [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
             Assert.IsTrue(LinqEnumerable.Empty<int>().AtLeast(0));
@@ -82,6 +96,222 @@ namespace MoreLinq.Test
         public void AtLeastWithManyElementsHasAtLeastManyElements()
         {
             Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(2));
+        }
+
+        [Test]
+        public void AtLeastWithEmptyCollectionHasAtLeastEmptyCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtLeast(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastEmptyCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 0).AtLeast(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastWithEmptyCollectionHasAtLeastEmptySequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtLeast(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastEmptySequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 0).AtLeast(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtLeastWithEmptyCollectionHasAtLeastCollectionWithOneElement()
+        {
+            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtLeastWithEmptyCollectionHasAtLeastSequenceWithOneElement()
+        {
+            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastCollectionWithOneElement()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 0).AtLeast(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastSequenceWithOneElement()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 0).AtLeast(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtLeastWithEmptyCollectionHasAtLeastCollectionWithManyElements()
+        {
+            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtLeastWithEmptyCollectionHasAtLeastSequenceWithManyElements()
+        {
+            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastCollectionWithManyElements()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 0).AtLeast(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtLeastWithEmptySequenceHasAtLeastSequenceWithManyElements()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 0).AtLeast(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementCollectionHasAtLeastEmptyCollection()
+        {
+            Assert.IsTrue(new[] { 1 }.AtLeast(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementCollectionHasAtLeastEmptySequence()
+        {
+            Assert.IsTrue(new[] { 1 }.AtLeast(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementSequenceHasAtLeastEmptyCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtLeast(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementSequenceHasAtLeastEmptySequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtLeast(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementCollectionHasAtLeastSingleElementCollection()
+        {
+            Assert.IsTrue(new[] { 1 }.AtLeast(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementCollectionHasAtLeastSingleElementSequence()
+        {
+            Assert.IsTrue(new[] { 1 }.AtLeast(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementSequenceHasAtLeastSingleElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtLeast(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementSequenceHasAtLeastSingleElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtLeast(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementCollectionHasAtLeastManyElementCollection()
+        {
+            Assert.IsFalse(new[] { 1 }.AtLeast(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementCollectionHasAtLeastManyElementSequence()
+        {
+            Assert.IsFalse(new[] { 1 }.AtLeast(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementSequenceHasAtLeastManyElementCollection()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 1).AtLeast(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtLeastWithSingleElementSequenceHasAtLeastManyElementSequence()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 1).AtLeast(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementCollectionHasAtLeastEmptyCollection()
+        {
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementCollectionHasAtLeastEmptySequence()
+        {
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementSequenceHasAtLeastEmptyCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 3).AtLeast(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementSequenceHasAtLeastEmptySequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 3).AtLeast(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementCollectionHasAtLeastOneElementCollection()
+        {
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementCollectionHasAtLeastOneElementSequence()
+        {
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementSequenceHasAtLeastOneElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 3).AtLeast(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementSequenceHasAtLeastOneElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 3).AtLeast(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementCollectionHasAtLeastManyElementCollection()
+        {
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementCollectionHasAtLeastManyElementSequence()
+        {
+            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementSequenceHasAtLeastManyElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 3).AtLeast(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtLeastWithManyElementSequenceHasAtLeastManyElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 3).AtLeast(LinqEnumerable.Range(1, 2)));
         }
 
         //ICollection<T> Optimization Tests

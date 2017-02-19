@@ -31,6 +31,20 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void AtMostSequenceWithFirstNullSequence()
+        {
+            Assert.ThrowsArgumentNullException("first",
+                () => MoreEnumerable.AtMost<int>(null, LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtMostSequenceWithSecondNullSequence()
+        {
+            Assert.ThrowsArgumentNullException("second",
+                () => MoreEnumerable.AtMost<int>(LinqEnumerable.Empty<int>(), null));
+        }
+
+        [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
             Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(0));
@@ -64,6 +78,151 @@ namespace MoreLinq.Test
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
             Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(1));
+        }
+
+        //Enumerables
+        [Test]
+        public void AtMostWithEmptyCollectionHasAtMostEmptyCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtMostWithEmptyCollectionHasAtMostEmptySequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtMostWithEmptySequenceHasAtMostEmptyCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 0).AtMost(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtMostWithEmptySequenceHasAtMostEmptySequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 0).AtMost(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtMostWithEmptyCollectionHasAtMostOneElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtMostWithEmptyCollectionHasAtMostOneElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtMostWithEmptySequenceHasAtMostOneElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 0).AtMost(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtMostWithEmptySequenceHasAtMostOneElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 0).AtMost(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementCollectionHasAtMostZeroElementCollection()
+        {
+            Assert.IsFalse(new[] { 1 }.AtMost(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementCollectionHasAtMostZeroElementSequence()
+        {
+            Assert.IsFalse(new[] { 1 }.AtMost(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementSequenceHasAtMostZeroElementCollection()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 1).AtMost(LinqEnumerable.Empty<int>()));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementSequenceHasAtMostZeroElementSequence()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 1).AtMost(LinqEnumerable.Range(1, 0)));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementCollectionHasAtMostOneElementCollection()
+        {
+            Assert.IsTrue(new[] { 1 }.AtMost(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementCollectionHasAtMostOneElementSequence()
+        {
+            Assert.IsTrue(new[] { 1 }.AtMost(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementSequenceHasAtMostOneElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtMost(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementSequenceHasAtMostOneElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtMost(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementCollectionHasAtMostManyElementCollection()
+        {
+            Assert.IsTrue(new[] { 1 }.AtMost(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementCollectionHasAtMostManyElementSequence()
+        {
+            Assert.IsTrue(new[] { 1 }.AtMost(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementSequenceHasAtMostManyElementCollection()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtMost(new[] { 1, 2 }));
+        }
+
+        [Test]
+        public void AtMostWithSingleElementSequenceHasAtMostManyElementSequence()
+        {
+            Assert.IsTrue(LinqEnumerable.Range(1, 1).AtMost(LinqEnumerable.Range(1, 2)));
+        }
+
+        [Test]
+        public void AtMostWithManyElementCollectionHasAtMostOneElementCollection()
+        {
+            Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtMostWithManyElementCollectionHasAtMostOneElementSequence()
+        {
+            Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(LinqEnumerable.Range(1, 1)));
+        }
+
+        [Test]
+        public void AtMostWithManyElementSequenceHasAtMostOneElementCollection()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 3).AtMost(new[] { 1 }));
+        }
+
+        [Test]
+        public void AtMostWithManyElementSequenceHasAtMostOneElementSequence()
+        {
+            Assert.IsFalse(LinqEnumerable.Range(1, 3).AtMost(LinqEnumerable.Range(1, 1)));
         }
     }
 }
