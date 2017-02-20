@@ -1,6 +1,6 @@
 ﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,33 +29,33 @@ namespace MoreLinq.Test
             Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.SkipLast<int>(null, 1));
         }
 
-        [TestCase(1, 5, 0)]
-        [TestCase(1, 5, -1)]
-        public void SkipLastWithCountLesserThanOne(int start, int count, int skip)
+        [TestCase( 0)]
+        [TestCase(-1)]
+        public void SkipLastWithCountLesserThanOne(int skip)
         {
-            var numbers = Enumerable.Range(start, count);
+            var numbers = Enumerable.Range(1, 5);
 
             Assert.IsTrue(numbers.SkipLast(skip).SequenceEqual(numbers));
         }
 
         [Test]
-        public void SkipLastSimpleTest()
+        public void SkipLast()
         {
-            int take = 100;
-            int skip = 20;
+            const int take = 100;
+            const int skip = 20;
 
-            var randomSequence = MoreEnumerable.Random(0, 100).Take(take).ToArray();
+            var sequence = Enumerable.Range(1, take);
 
-            var expectations = randomSequence.Take(take - skip);
+            var expectations = sequence.Take(take - skip);
 
-            Assert.IsTrue(expectations.SequenceEqual(randomSequence.SkipLast(skip)));
+            Assert.That(expectations, Is.EquivalentTo(sequence.SkipLast(skip)));
         }
 
-        [TestCase(1, 5, 5)]
-        [TestCase(1, 5, 6)]
-        public void SkipLastWithSequenceShorterThanCount(int start, int count, int skip)
+        [TestCase(5)]
+        [TestCase(6)]
+        public void SkipLastWithSequenceShorterThanCount(int skip)
         {
-            Assert.IsFalse(Enumerable.Range(start, count).SkipLast(skip).Any());
+            Assert.IsFalse(Enumerable.Range(1, 5).SkipLast(skip).Any());
         }
 
         [Test]

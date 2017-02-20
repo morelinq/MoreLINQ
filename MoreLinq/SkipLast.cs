@@ -1,6 +1,6 @@
 ﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ namespace MoreLinq
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> containing the source sequence elements except for the bypassed ones at the end.
         /// </returns>
+		
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -45,7 +46,7 @@ namespace MoreLinq
             return SkipLastImpl(source, count);
         }
 
-        private static IEnumerable<T> SkipLastImpl<T>(this IEnumerable<T> source, int count)
+        private static IEnumerable<T> SkipLastImpl<T>(IEnumerable<T> source, int count)
         {
             var queue = new Queue<T>(count);
 
