@@ -77,14 +77,17 @@ namespace MoreLinq.Test
         public void TestRepeatForeverBehaviorManyElementsList()
         {
             const int repeatCount = 30;
-            var sequence = Enumerable.Range(1, 10);
+            const int rangeCount = 10;
+            const int takeCount = repeatCount * rangeCount;
+
+            var sequence = Enumerable.Range(1, rangeCount);
             var result = sequence.Repeat();
 
             var expectedResult = Enumerable.Empty<int>();
             for (var i = 0; i < repeatCount; i++)
                 expectedResult = expectedResult.Concat(sequence);
 
-            Assert.IsTrue(result.Take(300).SequenceEqual(expectedResult));
+            Assert.That(expectedResult, Is.EquivalentTo(result.Take(takeCount)));
         }
 
         /// <summary>

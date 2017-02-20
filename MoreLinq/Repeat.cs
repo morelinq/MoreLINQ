@@ -23,7 +23,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Repeats the specific sequences <paramref name="count"/> times.
+        /// Repeats the sequence <paramref name="count"/> times.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
         /// <param name="sequence">The sequence to repeat</param>
@@ -38,7 +38,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Repeats the specific sequences forever.
+        /// Repeats the sequence forever.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
         /// <param name="sequence">The sequence to repeat</param>
@@ -51,7 +51,7 @@ namespace MoreLinq
         }
 
 
-        private static IEnumerable<T> RepeatImpl<T>(this IEnumerable<T> sequence, int? count)
+        private static IEnumerable<T> RepeatImpl<T>(IEnumerable<T> sequence, int? count)
         {
             while (count == null || count-- > 0)
             {

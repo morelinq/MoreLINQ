@@ -300,7 +300,7 @@ This method has 2 overloads.
 
 ### Repeat
 
-Repeats the specific sequences times.
+Repeats the sequence indefinitely or a specific number of times.
 
 This method has 2 overloads.
 
