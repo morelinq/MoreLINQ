@@ -23,7 +23,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Repeats the sequence <paramref name="count"/> times.
+        /// Repeats the sequence the specified number of times.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
         /// <param name="sequence">The sequence to repeat</param>
