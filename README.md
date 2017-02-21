@@ -115,6 +115,13 @@ Excludes elements from a sequence starting at a given index
 Returns the elements of a sequence and falls back to another if the original
 sequence is empty.
 
+### FillBackward
+
+Returns a sequence with each null reference or value in the source replaced
+with the following non-null reference or value in that sequence.
+
+This method has 3 overloads.
+
 ### FillForward
 
 Returns a sequence with each null reference or value in the source replaced
@@ -155,7 +162,10 @@ selector function.
 
 This method has 4 overloads.
 
-### Incremental
+### ~~Incremental~~
+
+Use `Pairwise` instead, which is identical to `Incremental`. `Incremental`
+will be removed in a future version.
 
 Computes an incremental value between every adjacent element in a sequence:
 {N,N+1}, {N+1,N+2}, .
@@ -313,7 +323,16 @@ on the original sequence.
 
 This method has 3 overloads.
 
-### SingleOrFallback
+### Sequence
+
+Generates a sequence of integral numbers within the (inclusive) specified range.
+
+This method has 2 overloads.
+
+### ~~SingleOrFallback~~
+
+Consider using `FallbackIfEmpty` instead. `SingleOrFallback` may be removed in
+a future version. For more information, see issue [#122][#122].
 
 Returns the single element in the given sequence, or the result of executing a
 fallback delegate if the sequence is empty. This method throws an exception if
@@ -437,3 +456,5 @@ from each of the argument sequences.
 
 This method has 3 overloads.
 
+
+[#122]: https://github.com/morelinq/MoreLINQ/issues/122

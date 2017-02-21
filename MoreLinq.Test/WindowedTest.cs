@@ -5,25 +5,25 @@ using NUnit.Framework;
 namespace MoreLinq.Test
 {
     /// <summary>
-    /// Verify the behavior of the SlidingWindow operator
+    /// Verify the behavior of the Windowed operator
     /// </summary>
     [TestFixture]
     public class WindowedTests
     {
         /// <summary>
-        /// Verify that SlidingWindow behaves in a lazy manner
+        /// Verify that Windowed behaves in a lazy manner
         /// </summary>
         [Test]
-        public void TestSlidingWindowIsLazy()
+        public void TestWindowedIsLazy()
         {
             new BreakingSequence<int>().Windowed(1);
         }
 
         /// <summary>
-        /// Verify that invoking SlidingWindow on a <c>null</c> sequence results in an exception
+        /// Verify that invoking Windowed on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        public void TestSlidingWindowNullSequenceException()
+        public void TestWindowedNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
             Assert.ThrowsArgumentNullException("source", () =>
@@ -34,7 +34,7 @@ namespace MoreLinq.Test
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
-        public void TestSlidingWindowNegativeWindowSizeException()
+        public void TestWindowedNegativeWindowSizeException()
         {
             var sequence = Enumerable.Repeat(1, 10);
 
@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         /// is an empty sequence
         /// </summary>
         [Test]
-        public void TestSlidingWindowEmptySequence()
+        public void TestWindowedEmptySequence()
         {
             var sequence = Enumerable.Empty<int>();
             var result = sequence.Windowed(5);
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
         /// degenerates to the original sequence.
         /// </summary>
         [Test]
-        public void TestSlidingWindowOfSingleElement()
+        public void TestWindowedOfSingleElement()
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
@@ -79,7 +79,7 @@ namespace MoreLinq.Test
         /// in a empty sequence.
         /// </summary>
         [Test]
-        public void TestSlidingWindowLargerThanSequence()
+        public void TestWindowedLargerThanSequence()
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
@@ -95,7 +95,7 @@ namespace MoreLinq.Test
         /// in N sequences, where N = (source.Count() - windowSize) + 1.
         /// </summary>
         [Test]
-        public void TestSlidingWindowSmallerThanSequence()
+        public void TestWindowedSmallerThanSequence()
         {
             const int count = 100;
             const int windowSize = count / 3;
