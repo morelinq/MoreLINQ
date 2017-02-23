@@ -340,6 +340,10 @@ Returns the single element in the given sequence, or the result of executing a
 fallback delegate if the sequence is empty. This method throws an exception if
 there is more than one element in the sequence
 
+### SkipLast
+
+Bypasses a specified number of elements at the end of the sequence.
+
 ### SkipUntil
 
 Skips items from the input sequence until the given predicate returns true
