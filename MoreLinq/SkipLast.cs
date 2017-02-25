@@ -26,6 +26,7 @@ namespace MoreLinq
         /// <summary>
         /// Bypasses a specified number of elements at the end of the sequence.
         /// </summary>
+        /// <typeparam name="T">Type of the source sequence</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="count">The number of elements to bypass at the end of the source sequence.</param>
         /// <returns>
