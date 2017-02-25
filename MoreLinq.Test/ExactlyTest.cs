@@ -34,14 +34,14 @@ namespace MoreLinq.Test
         public void ExactlySequenceWithFirstNullSequence()
         {
             Assert.ThrowsArgumentNullException("first",
-                () => MoreEnumerable.Exactly<int>(null, LinqEnumerable.Empty<int>()));
+                () => MoreEnumerable.Exactly<int, int>(null, LinqEnumerable.Empty<int>()));
         }
 
         [Test]
         public void ExactlySequenceWithSecondNullSequence()
         {
             Assert.ThrowsArgumentNullException("second",
-                () => MoreEnumerable.Exactly<int>(LinqEnumerable.Empty<int>(), null));
+                () => MoreEnumerable.Exactly<int, int>(LinqEnumerable.Empty<int>(), null));
         }
 
         [Test]

@@ -52,7 +52,8 @@ namespace MoreLinq
         /// Determines whether or not the number of elements in the first sequence is greater than
         /// or equal to the number of elements in the second sequence.
         /// </summary>
-        /// <typeparam name="T">Element type of sequence</typeparam>
+        /// <typeparam name="T1">Element type of the first sequence</typeparam>
+        /// <typeparam name="T2">Element type of the second sequence</typeparam>
         /// <param name="first">The first sequence</param>
         /// <param name="second">The second sequence</param>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
@@ -67,9 +68,9 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
-        public static bool AtLeast<T>(this IEnumerable<T> first, IEnumerable<T> second)
+        public static bool AtLeast<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
         {
-            return QuantityIterator(first, second, (a, b) => a >= b, AtLeast, AtMost);
+            return first.CompareCount(second) >= 0;
         }
 
         /// <summary>
@@ -102,7 +103,8 @@ namespace MoreLinq
         /// Determines whether or not the number of elements in the first sequence is lesser than
         /// or equal to the number of elements in the second sequence.
         /// </summary>
-        /// <typeparam name="T">Element type of sequence</typeparam>
+        /// <typeparam name="T1">Element type of the first sequence</typeparam>
+        /// <typeparam name="T2">Element type of the second sequence</typeparam>
         /// <param name="first">The first sequence</param>
         /// <param name="second">The second sequence</param>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
@@ -117,9 +119,9 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
-        public static bool AtMost<T>(this IEnumerable<T> first, IEnumerable<T> second)
+        public static bool AtMost<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
         {
-            return QuantityIterator(first, second, (a, b) => a <= b, AtMost, AtLeast);
+            return first.CompareCount(second) <= 0;
         }
 
         /// <summary>
@@ -151,7 +153,8 @@ namespace MoreLinq
         /// Determines whether or not the number of elements in the first sequence is equal to 
         /// the number of elements in the second sequence.
         /// </summary>
-        /// <typeparam name="T">Element type of sequence</typeparam>
+        /// <typeparam name="T1">Element type of the first sequence</typeparam>
+        /// <typeparam name="T2">Element type of the second sequence</typeparam>
         /// <param name="first">The first sequence</param>
         /// <param name="second">The second sequence</param>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
@@ -166,9 +169,9 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
-        public static bool Exactly<T>(this IEnumerable<T> first, IEnumerable<T> second)
+        public static bool Exactly<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
         {
-            return QuantityIterator(first, second, (a, b) => a == b, Exactly, Exactly);
+            return first.CompareCount(second) == 0;
         }
 
         /// <summary>
@@ -200,6 +203,65 @@ namespace MoreLinq
             return QuantityIterator(source, max + 1, n => min <= n && n <= max);
         }
 
+        /// <summary>
+        /// Compares two sequences and returns an integer that indicates whether the first sequence 
+        /// has fewer, the same or more elements than the second sequence.
+        /// </summary>
+        /// <typeparam name="T1">Element type of the first sequence</typeparam>
+        /// <typeparam name="T2">Element type of the second sequence</typeparam>
+        /// <param name="first">The first sequence</param>
+        /// <param name="second">The second sequence</param>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
+        /// <returns><c>-1</c> if the first sequence has fewer elements, <c>0</c> if they have the same number of elements 
+        /// or <c>1</c> if the second sequence has more elements.</returns>
+        /// <example>
+        /// <code>
+        /// var first = { 123, 456 };
+        /// var second = { 789 };
+        /// var result = first.CompareCount(second);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>1</c>.
+        /// </example>
+        public static int CompareCount<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+
+            var firstCol = first as ICollection<T1>;
+            var secondCol = second as ICollection<T2>;
+
+            if (firstCol != null)
+            {
+                if (secondCol != null)
+                {
+                    return firstCol.Count.CompareTo(secondCol.Count);
+                }
+
+                return firstCol.Count.CompareTo(QuantityIterator(second, firstCol.Count + 1));
+            }
+
+            if (secondCol != null)
+            {
+                return QuantityIterator(first, secondCol.Count + 1).CompareTo(secondCol.Count);
+            }
+
+            bool firstHasNext;
+            bool secondHasNext;
+
+            using (var e1 = first.GetEnumerator())
+            using (var e2 = second.GetEnumerator())
+            {
+                do
+                {
+                    firstHasNext = e1.MoveNext();
+                    secondHasNext = e2.MoveNext();
+                }
+                while (firstHasNext && secondHasNext);
+            }
+
+            return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
+        }
 
         static bool QuantityIterator<T>(IEnumerable<T> source, int limit, Func<int, bool> predicate)
         {
@@ -227,44 +289,22 @@ namespace MoreLinq
             return predicate(count);
         }
 
-        private static bool QuantityIterator<T>(IEnumerable<T> first, IEnumerable<T> second, Func<int, int, bool> collectionPredicate, Func<IEnumerable<T>, int, bool> enumerablePredicate, Func<IEnumerable<T>, int, bool> enumerablePredicateInvert)
+        private static int QuantityIterator<T>(IEnumerable<T> source, int limit)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
+            var count = 0;
 
-            var firstCol = first as ICollection<T>;
-            var secondCol = second as ICollection<T>;
-
-            if (firstCol != null)
+            using (var e = source.GetEnumerator())
             {
-                if (secondCol != null)
+                while (e.MoveNext())
                 {
-                    return collectionPredicate(firstCol.Count, secondCol.Count);
+                    if (++count == limit)
+                    {
+                        break;
+                    }
                 }
-
-                return enumerablePredicateInvert(second, firstCol.Count);
             }
 
-            if (secondCol != null)
-            {
-                return enumerablePredicate(first, secondCol.Count);
-            }
-
-            using (var e = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
-            {
-                var eHasElement = false;
-                var e2HasElement = false;
-
-                do
-                {
-                    eHasElement = e.MoveNext();
-                    e2HasElement = e2.MoveNext();
-                }
-                while (eHasElement && e2HasElement);
-
-                return collectionPredicate(Convert.ToInt32(eHasElement), Convert.ToInt32(e2HasElement));
-            }
+            return count;
         }
     }
 }

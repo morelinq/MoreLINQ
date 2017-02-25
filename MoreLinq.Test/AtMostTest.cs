@@ -34,14 +34,14 @@ namespace MoreLinq.Test
         public void AtMostSequenceWithFirstNullSequence()
         {
             Assert.ThrowsArgumentNullException("first",
-                () => MoreEnumerable.AtMost<int>(null, LinqEnumerable.Empty<int>()));
+                () => MoreEnumerable.AtMost<int, int>(null, LinqEnumerable.Empty<int>()));
         }
 
         [Test]
         public void AtMostSequenceWithSecondNullSequence()
         {
             Assert.ThrowsArgumentNullException("second",
-                () => MoreEnumerable.AtMost<int>(LinqEnumerable.Empty<int>(), null));
+                () => MoreEnumerable.AtMost<int, int>(LinqEnumerable.Empty<int>(), null));
         }
 
         [Test]
