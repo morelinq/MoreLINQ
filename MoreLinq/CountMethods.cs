@@ -213,8 +213,8 @@ namespace MoreLinq
         /// <param name="second">The second sequence</param>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
         /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
-        /// <returns><c>-1</c> if the first sequence has fewer elements, <c>0</c> if they have the same number of elements 
-        /// or <c>1</c> if the second sequence has more elements.</returns>
+        /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements 
+        /// or <c>1</c> if the first sequence has the most elements.</returns>
         /// <example>
         /// <code>
         /// var first = { 123, 456 };
