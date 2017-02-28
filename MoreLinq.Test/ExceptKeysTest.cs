@@ -34,30 +34,30 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptKeysNullFirstSequence()
         {
             string[] first = null;
             int[] second = { 1 };
-            first.ExceptKeys(second, x => x.Length);
+            Assert.ThrowsArgumentNullException("first", () =>
+             first.ExceptKeys(second, x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptKeysNullSecondSequence()
         {
             string[] first = { "aaa" };
             int[] second = null;
-            first.ExceptKeys(second, x => x.Length);
+            Assert.ThrowsArgumentNullException("second", () =>
+             first.ExceptKeys(second, x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptKeysNullKeySelector()
         {
             string[] first = { "aaa" };
             int[] second = { 1 };
-            first.ExceptKeys(second, (Func<string, int>)null);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+             first.ExceptKeys(second, (Func<string, int>)null));
         }
         
         [Test]
@@ -85,30 +85,30 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptKeysNullFirstSequenceWithComparer()
         {
             string[] first = null;
             int[] second = { 1 };
-            first.ExceptKeys(second, x => x.Length, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("first", () =>
+             first.ExceptKeys(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptKeysNullSecondSequenceWithComparer()
         {
             string[] first = { "aaa" };
             int[] second = null;
-            first.ExceptKeys(second, x => x.Length, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("second", () =>
+             first.ExceptKeys(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptKeysNullKeySelectorWithComparer()
         {
             string[] first = { "aaa" };
             int[] second = { 1 };
-            first.ExceptKeys(second, null, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+             first.ExceptKeys(second, null, EqualityComparer<int>.Default));
         }
 
         [Test]

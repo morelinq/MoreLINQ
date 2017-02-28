@@ -31,27 +31,27 @@ namespace MoreLinq.Test {
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IntersectAllByNullFirstSequence() {
             string[] first = null;
             string[] second = { "aaa" };
-            first.IntersectAllBy(second, x => x.Length);
+            Assert.ThrowsArgumentNullException("first", () =>
+             first.IntersectAllBy(second, x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IntersectAllByNullSecondSequence() {
             string[] first = { "aaa" };
             string[] second = null;
-            first.IntersectAllBy(second, x => x.Length);
+            Assert.ThrowsArgumentNullException("second", () =>
+             first.IntersectAllBy(second, x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IntersectAllByNullKeySelector() {
             string[] first = { "aaa" };
             string[] second = { "aaa" };
-            first.IntersectAllBy<string, string>(second, (Func<string, string>)null);
+            Assert.ThrowsArgumentNullException("keySelector", () => 
+             first.IntersectAllBy<string, string>(second, (Func<string, string>)null));
         }
 
         [Test]
@@ -76,27 +76,27 @@ namespace MoreLinq.Test {
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IntersectAllByNullFirstSequenceWithComparer() {
             string[] first = null;
             string[] second = { "aaa" };
-            first.IntersectAllBy(second, x => x.Length, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("first", () =>
+             first.IntersectAllBy(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IntersectAllByNullSecondSequenceWithComparer() {
             string[] first = { "aaa" };
             string[] second = null;
-            first.IntersectAllBy(second, x => x.Length, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("second", () =>
+             first.IntersectAllBy(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void IntersectAllByNullKeySelectorWithComparer() {
             string[] first = { "aaa" };
             string[] second = { "aaa" };
-            first.IntersectAllBy(second, null, EqualityComparer<string>.Default);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+             first.IntersectAllBy(second, null, EqualityComparer<string>.Default));
         }
 
         [Test]

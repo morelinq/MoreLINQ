@@ -34,32 +34,32 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptAllKeysNullFirstSequence()
         {
             string[] first = null;
             int[] second = { 1 };
-            first.ExceptAllKeys(second, x => x.Length);
+            Assert.ThrowsArgumentNullException("first", () =>
+             first.ExceptAllKeys(second, x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptAllKeysNullSecondSequence()
         {
             string[] first = { "aaa" };
             int[] second = null;
-            first.ExceptAllKeys(second, x => x.Length);
+            Assert.ThrowsArgumentNullException("second", () =>
+             first.ExceptAllKeys(second, x => x.Length));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptAllKeysNullKeySelector()
         {
             string[] first = { "aaa" };
             int[] second = { 1 };
-            first.ExceptAllKeys(second, (Func<string, int>)null);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+             first.ExceptAllKeys(second, (Func<string, int>)null));
         }
-        
+
         [Test]
         public void ExceptAllKeysIsLazy()
         {
@@ -79,36 +79,36 @@ namespace MoreLinq.Test
         public void ExceptAllKeysWithComparer()
         {
             string[] first = { "first", "second", "third", "fourth" };
-            string[] second = { "FIRST" , "thiRD", "FIFTH" };
+            string[] second = { "FIRST", "thiRD", "FIFTH" };
             var result = first.ExceptAllKeys(second, word => word, StringComparer.OrdinalIgnoreCase);
             result.AssertSequenceEqual("second", "fourth");
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptAllKeysNullFirstSequenceWithComparer()
         {
             string[] first = null;
             int[] second = { 1 };
-            first.ExceptAllKeys(second, x => x.Length, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("first", () =>
+             first.ExceptAllKeys(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptAllKeysNullSecondSequenceWithComparer()
         {
             string[] first = { "aaa" };
             int[] second = null;
-            first.ExceptAllKeys(second, x => x.Length, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("second", () =>
+             first.ExceptAllKeys(second, x => x.Length, EqualityComparer<int>.Default));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExceptAllKeysNullKeySelectorWithComparer()
         {
             string[] first = { "aaa" };
             int[] second = { 1 };
-            first.ExceptAllKeys(second, null, EqualityComparer<int>.Default);
+            Assert.ThrowsArgumentNullException("keySelector", () =>
+             first.ExceptAllKeys(second, null, EqualityComparer<int>.Default));
         }
 
         [Test]
