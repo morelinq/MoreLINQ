@@ -6,7 +6,7 @@ solution: MoreLinq.sln
 mono: latest
 dist: trusty
 sudo: required
-dotnet: 1.0.0-preview2-003131
+dotnet: 1.0.1
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
@@ -15,7 +15,6 @@ install:
   - dotnet restore
 
 script:
-  - dotnet build -c $CONFIGURATION MoreLinq
-  - dotnet build -c $CONFIGURATION MoreLinq.Test
-  - dotnet test -c $CONFIGURATION -f netcoreapp1.0 MoreLinq.Test
+  - ./msbuild.sh /v:m /p:Configuration=$CONFIGURATION
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - sh ./travis-mono-test.sh
