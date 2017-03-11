@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Linq;
 using NUnit.Framework;
 
@@ -91,35 +90,31 @@ namespace MoreLinq.Test
                                      BreakingFunc.Of<Tuple<int, int>, int>());
         }
 
-        [Test]
-        public void UnfoldTupleWithNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("generator", () =>
-                MoreEnumerable.Unfold<int, int>(3, null));
-        }
 
         [Test]
-        public void UnfoldTupleInfiniteSequence()
+        public void UnfoldGenericSingleElementSequence()
         {
-            var result = MoreEnumerable.Unfold(1, x => Tuple.Create(x, x + 1)).Take(100);
-            var expectations = MoreEnumerable.Generate(1, x => x + 1).Take(100);
+            var result = MoreEnumerable.Unfold(0, x => new { result = x, state = x + 1 },
+                                                  x => x.result == 0,
+                                                  e => e.state,
+                                                  e => e.result);
+
+            var expectations = new[] { 0 };
 
             Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
-        public void UnfoldTupleFiniteSequence()
+        public void UnfoldGenericEmptySequence()
         {
-            var result = MoreEnumerable.Unfold(1, x => x <= 100 ? Tuple.Create(x, x + 1) : null);
-            var expectations = MoreEnumerable.Generate(1, x => x + 1).Take(100);
+            var result = MoreEnumerable.Unfold(0, x => new { result = x, state = x + 1 },
+                                                  x => x.result < 0,
+                                                  e => e.state,
+                                                  e => e.result);
+
+            var expectations = new int[] {  };
 
             Assert.That(result, Is.EqualTo(expectations));
-        }
-
-        [Test]
-        public void UnfoldTupleIsLazy()
-        {
-            MoreEnumerable.Unfold(1, BreakingFunc.Of<int, System.Tuple<bool, int>>());
         }
     }
 }
