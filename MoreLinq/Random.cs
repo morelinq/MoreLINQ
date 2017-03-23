@@ -19,9 +19,15 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
 
     public static partial class MoreEnumerable
     {
+        static int _seed = unchecked((int) DateTime.Now.Ticks);
+        [ThreadStatic] static Random _sharedRandom;
+
+        static Random ThreadRandom => _sharedRandom ?? (_sharedRandom = new Random(Interlocked.Increment(ref _seed)));
+
         /// <summary>
         /// Returns an infinite sequence of random integers using the standard 
         /// .NET random number generator.
@@ -30,7 +36,7 @@ namespace MoreLinq
         
         public static IEnumerable<int> Random()
         {
-            return Random(new Random());
+            return Random(ThreadRandom);
         }
 
         /// <summary>
@@ -58,7 +64,7 @@ namespace MoreLinq
         {
             if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
 
-            return Random(new Random(), maxValue);
+            return Random(ThreadRandom, maxValue);
         }
 
         /// <summary>
@@ -88,7 +94,7 @@ namespace MoreLinq
         
         public static IEnumerable<int> Random(int minValue, int maxValue)
         {
-            return Random(new Random(), minValue, maxValue);
+            return Random(ThreadRandom, minValue, maxValue);
         }
 
         /// <summary>
@@ -118,7 +124,7 @@ namespace MoreLinq
         
         public static IEnumerable<double> RandomDouble()
         {
-            return RandomDouble(new Random());
+            return RandomDouble(ThreadRandom);
         }
 
         /// <summary>
