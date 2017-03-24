@@ -17,6 +17,7 @@
 
 using System.Linq;
 using NUnit.Framework;
+using System;
 
 namespace MoreLinq.Test
 {
@@ -24,42 +25,42 @@ namespace MoreLinq.Test
     public class UnfoldTest
     {
         [Test]
-        public void UnfoldGenericWithNullGenerator()
+        public void UnfoldWithNullGenerator()
         {
             Assert.ThrowsArgumentNullException("generator", () =>
-                MoreEnumerable.Unfold<int, Tuple<int, int>, int>(0, null, _ => true, e => e.First, e => e.Second));
+                MoreEnumerable.Unfold<int, System.Tuple<int, int>, int>(0, null, _ => true, e => e.Item1, e => e.Item2));
         }
 
         [Test]
-        public void UnfoldGenericWithNullPredicate()
+        public void UnfoldWithNullPredicate()
         {
             Assert.ThrowsArgumentNullException("predicate", () =>
-                MoreEnumerable.Unfold(0, e => new Tuple<int, int>(e, e + 1), null, e => e.First, e => e.Second));
+                MoreEnumerable.Unfold(0, e => Tuple.Create(e, e + 1), null, e => e.Item1, e => e.Item2));
         }
 
         [Test]
-        public void UnfoldGenericWithNullStateSelector()
+        public void UnfoldWithNullStateSelector()
         {
             Assert.ThrowsArgumentNullException("stateSelector", () =>
-                MoreEnumerable.Unfold(0, e => new Tuple<int, int>(e, e + 1), _ => true, null, e => e.Second));
+                MoreEnumerable.Unfold(0, e => Tuple.Create(e, e + 1), _ => true, null, e => e.Item2));
         }
 
         [Test]
-        public void UnfoldGenericWithNullResultSelector()
+        public void UnfoldWithNullResultSelector()
         {
             Assert.ThrowsArgumentNullException("resultSelector", () =>
-                MoreEnumerable.Unfold<int, Tuple<int, int>, int>(0, e => new Tuple<int, int>(e, e + 1), 
-                                                                    _ => true, 
-                                                                    e => e.First, 
+                MoreEnumerable.Unfold<int, System.Tuple<int, int>, int>(0, e => Tuple.Create(e, e + 1),
+                                                                    _ => true,
+                                                                    e => e.Item1,
                                                                     null));
         }
 
         [Test]
-        public void UnfoldGenericInfiniteSequence()
+        public void UnfoldInfiniteSequence()
         {
-            var result = MoreEnumerable.Unfold(1, x => new { result = x, state = x + 1 }, 
-                                                  _ => true, 
-                                                  e => e.state, 
+            var result = MoreEnumerable.Unfold(1, x => new { result = x, state = x + 1 },
+                                                  _ => true,
+                                                  e => e.state,
                                                   e => e.result)
                                        .Take(100);
 
@@ -69,7 +70,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void UnfoldGenericFiniteSequence()
+        public void UnfoldFiniteSequence()
         {
             var result = MoreEnumerable.Unfold(1, x => new { result = x, state = x + 1 },
                                                   e => e.result <= 100,
@@ -82,7 +83,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void UnfoldGenericIsLazy()
+        public void UnfoldIsLazy()
         {
             MoreEnumerable.Unfold(0, BreakingFunc.Of<int, Tuple<int, int>>(),
                                      BreakingFunc.Of<Tuple<int, int>, bool>(),
@@ -92,7 +93,7 @@ namespace MoreLinq.Test
 
 
         [Test]
-        public void UnfoldGenericSingleElementSequence()
+        public void UnfoldSingleElementSequence()
         {
             var result = MoreEnumerable.Unfold(0, x => new { result = x, state = x + 1 },
                                                   x => x.result == 0,
@@ -105,14 +106,14 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void UnfoldGenericEmptySequence()
+        public void UnfoldEmptySequence()
         {
             var result = MoreEnumerable.Unfold(0, x => new { result = x, state = x + 1 },
                                                   x => x.result < 0,
                                                   e => e.state,
                                                   e => e.result);
 
-            var expectations = new int[] {  };
+            var expectations = new int[] { };
 
             Assert.That(result, Is.EqualTo(expectations));
         }
