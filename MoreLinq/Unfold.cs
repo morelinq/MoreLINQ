@@ -35,7 +35,8 @@ namespace MoreLinq
         /// Function that takes a state and computes the next state and the next element of the sequence.
         /// </param>
         /// <param name="predicate">
-        /// Function to determine if the unfolding should continue based on the current input.
+        /// Function to determine if the unfolding should continue based the
+        /// result of the <paramref name="generator"/> function.
         /// </param>
         /// <param name="stateSelector">
         /// Function to select the state from the result of the <paramref name="generator"/> function.
