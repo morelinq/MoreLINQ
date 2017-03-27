@@ -28,6 +28,21 @@ namespace MoreLinq
         /// .NET random number generator.
         /// </summary>
         /// <returns>An infinite sequence of random integers</returns>
+        /// <remarks>
+        /// The implementation internally uses a shared, thread-local instance of
+        /// <see cref="System.Random" /> to generate a random number on each
+        /// iteration. The actual <see cref="System.Random" /> instance used
+        /// therefore will depend on the thread on which a single iteration is
+        /// taking place; that is the call to
+        /// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
+        /// overall iteration takes place on different threads (e.g.
+        /// via asynchronous awaits completing on different threads) then various
+        /// different <see cref="System.Random" /> instances will be involved
+        /// in the generation of the sequence of random numbers. Because the
+        /// <see cref="System.Random" /> instance is shared, if multiple sequences
+        /// are generated on the same thread, the order of enumeration affects the
+        /// resulting sequences.
+        /// </remarks>
 
         public static IEnumerable<int> Random()
         {
@@ -54,6 +69,21 @@ namespace MoreLinq
         /// </summary>
         /// <param name="maxValue">exclusive upper bound for the random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
+        /// <remarks>
+        /// The implementation internally uses a shared, thread-local instance of
+        /// <see cref="System.Random" /> to generate a random number on each
+        /// iteration. The actual <see cref="System.Random" /> instance used
+        /// therefore will depend on the thread on which a single iteration is
+        /// taking place; that is the call to
+        /// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
+        /// overall iteration takes place on different threads (e.g.
+        /// via asynchronous awaits completing on different threads) then various
+        /// different <see cref="System.Random" /> instances will be involved
+        /// in the generation of the sequence of random numbers. Because the
+        /// <see cref="System.Random" /> instance is shared, if multiple sequences
+        /// are generated on the same thread, the order of enumeration affects the
+        /// resulting sequences.
+        /// </remarks>
         
         public static IEnumerable<int> Random(int maxValue)
         {
@@ -86,6 +116,21 @@ namespace MoreLinq
         /// <param name="minValue">Inclusive lower bound of the values returned</param>
         /// <param name="maxValue">Exclusive upper bound of the values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
+        /// <remarks>
+        /// The implementation internally uses a shared, thread-local instance of
+        /// <see cref="System.Random" /> to generate a random number on each
+        /// iteration. The actual <see cref="System.Random" /> instance used
+        /// therefore will depend on the thread on which a single iteration is
+        /// taking place; that is the call to
+        /// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
+        /// overall iteration takes place on different threads (e.g.
+        /// via asynchronous awaits completing on different threads) then various
+        /// different <see cref="System.Random" /> instances will be involved
+        /// in the generation of the sequence of random numbers. Because the
+        /// <see cref="System.Random" /> instance is shared, if multiple sequences
+        /// are generated on the same thread, the order of enumeration affects the
+        /// resulting sequences.
+        /// </remarks>
         
         public static IEnumerable<int> Random(int minValue, int maxValue)
         {
@@ -116,6 +161,21 @@ namespace MoreLinq
         /// Returns an infinite sequence of random double values between 0.0 and 1.0
         /// </summary>
         /// <returns>An infinite sequence of random doubles</returns>
+        /// <remarks>
+        /// The implementation internally uses a shared, thread-local instance of
+        /// <see cref="System.Random" /> to generate a random number on each
+        /// iteration. The actual <see cref="System.Random" /> instance used
+        /// therefore will depend on the thread on which a single iteration is
+        /// taking place; that is the call to
+        /// <see cref="System.Collections.IEnumerator.MoveNext()" />. If the
+        /// overall iteration takes place on different threads (e.g.
+        /// via asynchronous awaits completing on different threads) then various
+        /// different <see cref="System.Random" /> instances will be involved
+        /// in the generation of the sequence of random numbers. Because the
+        /// <see cref="System.Random" /> instance is shared, if multiple sequences
+        /// are generated on the same thread, the order of enumeration affects the
+        /// resulting sequences.
+        /// </remarks>
         
         public static IEnumerable<double> RandomDouble()
         {
