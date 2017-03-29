@@ -20,6 +20,13 @@ Ensures that a source sequence of objects are all acquired successfully. If
 the acquisition of any one fails then those successfully acquired till that
 point are disposed
 
+### AggregateRight
+
+Applies a right-associative accumulator function over a sequence.
+This operator is the right-associative version of the Aggregate LINQ operator.
+
+This method has 3 overloads.
+
 ### Assert
 
 Asserts that all elements of a sequence meet a given condition otherwise
