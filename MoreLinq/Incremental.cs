@@ -36,7 +36,9 @@ namespace MoreLinq
         /// <param name="sequence">The sequence of elements to incrementally process</param>
         /// <param name="resultSelector">A projection applied to each pair of adjacent elements in the sequence</param>
         /// <returns>A sequence of elements resulting from projection every adjacent pair</returns>
-        
+
+        [Obsolete("Use Pairwise instead, which is identical to Incremental. " +
+                  "Incremental will be removed in a future version.")]
         public static IEnumerable<TResult> Incremental<TSource, TResult>(this IEnumerable<TSource> sequence, Func<TSource, TSource, TResult> resultSelector)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -59,7 +61,9 @@ namespace MoreLinq
         /// <param name="sequence">The sequence of elements to incrementally process</param>
         /// <param name="resultSelector">A projection applied to each pair of adjacent elements in the sequence</param>
         /// <returns>A sequence of elements resulting from projection every adjacent pair</returns>
-        
+
+        [Obsolete("Use Index with Pairwise instead." +
+                  "Incremental will be removed in a future version.")]
         public static IEnumerable<TResult> Incremental<TSource, TResult>(this IEnumerable<TSource> sequence, Func<TSource, TSource, int, TResult> resultSelector)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));

@@ -80,7 +80,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
         {
-            // See: http://code.google.com/p/morelinq/issues/detail?id=43
+            // See: https://github.com/morelinq/MoreLINQ/issues/43
             var result = new object[] { null, null, "foo" }.ToDelimitedString(",");
             Assert.That(result, Is.EqualTo(",,foo"));
         }

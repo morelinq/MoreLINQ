@@ -1,3 +1,5 @@
+#pragma warning disable 618 // 'Incremental' is obsolete
+
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
