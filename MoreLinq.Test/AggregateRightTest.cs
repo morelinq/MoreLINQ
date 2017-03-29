@@ -30,14 +30,14 @@ namespace MoreLinq.Test
         [Test]
         public void AggregateRightWithNullSequence()
         {
-            Assert.ThrowsArgumentNullException("source", 
+            Assert.ThrowsArgumentNullException("source",
                 () => MoreEnumerable.AggregateRight<int>(null, (a, b) => a + b));
         }
 
         [Test]
         public void AggregateRightWithNullFunc()
         {
-            Assert.ThrowsArgumentNullException("func", 
+            Assert.ThrowsArgumentNullException("func",
                 () => Enumerable.Range(1, 5).AggregateRight(null));
         }
 
@@ -46,6 +46,16 @@ namespace MoreLinq.Test
         {
             Assert.Throws<InvalidOperationException>(
                 () => new int[0].AggregateRight((a, b) => a + b));
+        }
+
+        [Test]
+        public void AggregateRightFuncIsNotInvokedOnSingleElementSequence()
+        {
+            const int value = 1;
+
+            var result = new[] { value }.AggregateRight(BreakingFunc.Of<int, int, int>());
+
+            Assert.That(result, Is.EqualTo(value));
         }
 
         [Test]
@@ -80,6 +90,16 @@ namespace MoreLinq.Test
         public void AggregateRightSeedWithEmptySequence(object defaultValue)
         {
             Assert.That(new int[0].AggregateRight(defaultValue, (a, b) => b), Is.EqualTo(defaultValue));
+        }
+
+        [Test]
+        public void AggregateRightSeedFuncIsNotInvokedOnEmptySequence()
+        {
+            const int value = 1;
+
+            var result = new int[0].AggregateRight(value, BreakingFunc.Of<int, int, int>());
+
+            Assert.That(result, Is.EqualTo(value));
         }
 
         [Test]
