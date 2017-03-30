@@ -86,6 +86,9 @@ namespace MoreLinq
         /// element as well as the current element considered missing.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
         /// An <see cref="IEnumerable{T}"/> with missing values replaced.
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> with missing elements filled.
+        /// </returns>
         /// <remarks>
         /// This method uses deferred execution semantics and streams its
         /// results. If elements are missing at the end of the sequence then
