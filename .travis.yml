@@ -39,6 +39,11 @@ before_install:
     fi
 
   - msbuild /version
+  - |
+  # Handle too many files on OS X
+    if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
+      ulimit -n 4096
+    fi
 
 install:
   - dotnet restore
