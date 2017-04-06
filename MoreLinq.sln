@@ -1,14 +1,13 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
 		build.cmd = build.cmd
 		buildw.cmd = buildw.cmd
 		COPYING.txt = COPYING.txt
-		global.json = global.json
+		msbuild.cmd = msbuild.cmd
 		pack.cmd = pack.cmd
 		packw.cmd = packw.cmd
 		README.md = README.md
@@ -16,16 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		testw.cmd = testw.cmd
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lic", "lic", "{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corefx", "corefx", "{F73528F4-B669-4AFF-84C9-D62B77CA3848}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MoreLinq", "MoreLinq\MoreLinq.xproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A87}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.xproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,9 +41,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{1FDCB4C3-96A8-4482-A505-9E8A8D2E0737} = {835F8FFA-471F-4322-B721-A897F27872FA}
-		{F73528F4-B669-4AFF-84C9-D62B77CA3848} = {1FDCB4C3-96A8-4482-A505-9E8A8D2E0737}
 	EndGlobalSection
 EndGlobal

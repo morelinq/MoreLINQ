@@ -7,10 +7,9 @@ which dotnet 2>/dev/null || {
     echo>&2 https://dot.net
     exit 1
 }
-dotnet --info \
-&& dotnet restore \
-&& for p in MoreLinq MoreLinq.Test; do
-    for c in Debug Release; do
-        dotnet build -c $c $p || exit
-    done
+set -e
+dotnet --info
+dotnet restore
+for c in Debug Release; do
+    ./msbuild.sh /v:m /p:Configuration=$c
 done

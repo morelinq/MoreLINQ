@@ -4,4 +4,11 @@ VERSION_SUFFIX=
 if [ ! -z "$1" ]; then VERSION_SUFFIX="--version-suffix $1"; fi
 set -e
 ./build.sh
-dotnet pack -c Release $VERSION_SUFFIX MoreLinq
+if [ ! -d dist ]; then mkdir dist; fi
+./msbuild.sh /v:m /t:Pack                      \
+                  /p:Configuration=Release     \
+                  /p:IncludeSymbols=false      \
+                  /p:IncludeSource=false       \
+                  /p:PackageOutputPath=../dist \
+                  $VERSION_SUFFIX              \
+                  MoreLinq/MoreLinq.csproj

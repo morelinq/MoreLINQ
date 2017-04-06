@@ -1,4 +1,5 @@
 version: '{build}'
+image: Visual Studio 2017
 build_script:
 - ps: >-
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
