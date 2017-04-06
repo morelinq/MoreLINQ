@@ -17,17 +17,13 @@
 
 using System;
 using NUnit.Framework;
+using Tuple = System.ValueTuple;
 
 namespace MoreLinq.Test
 {
     [TestFixture]
     public class EquiZipTest
     {
-        private static Tuple<TFirst, TSecond> Tuple<TFirst, TSecond>(TFirst a, TSecond b)
-        {
-            return new Tuple<TFirst, TSecond>(a, b);
-        }
-
         [Test]
         public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
         {
@@ -67,15 +63,15 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithEqualLengthSequencesFailStrategy()
         {
-            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
+            zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
         }
 
         [Test]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
             Assert.Throws<InvalidOperationException>(() =>
                 zipped.Consume());
@@ -84,7 +80,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
             Assert.Throws<InvalidOperationException>(() =>
                 zipped.Consume());

@@ -28,40 +28,41 @@ namespace MoreLinq.Test
         public void UnfoldWithNullGenerator()
         {
             Assert.ThrowsArgumentNullException("generator", () =>
-                MoreEnumerable.Unfold<int, System.Tuple<int, int>, int>(0, null, _ => true, e => e.Item1, e => e.Item2));
+                MoreEnumerable.Unfold(0, (Func<int, (int State, int Result)>) null,
+                                      _ => true, e => e.State, e => e.Result));
         }
 
         [Test]
         public void UnfoldWithNullPredicate()
         {
             Assert.ThrowsArgumentNullException("predicate", () =>
-                MoreEnumerable.Unfold(0, e => Tuple.Create(e, e + 1), null, e => e.Item1, e => e.Item2));
+                MoreEnumerable.Unfold(0, e => (e, e + 1), null, e => e.Item1, e => e.Item2));
         }
 
         [Test]
         public void UnfoldWithNullStateSelector()
         {
             Assert.ThrowsArgumentNullException("stateSelector", () =>
-                MoreEnumerable.Unfold(0, e => Tuple.Create(e, e + 1), _ => true, null, e => e.Item2));
+                MoreEnumerable.Unfold(0, e => (e, e + 1), _ => true, null, e => e.Item2));
         }
 
         [Test]
         public void UnfoldWithNullResultSelector()
         {
             Assert.ThrowsArgumentNullException("resultSelector", () =>
-                MoreEnumerable.Unfold<int, System.Tuple<int, int>, int>(0, e => Tuple.Create(e, e + 1),
-                                                                    _ => true,
-                                                                    e => e.Item1,
-                                                                    null));
+                MoreEnumerable.Unfold(0, e => (e, e + 1),
+                                         _ => true,
+                                         e => e.State,
+                                         (Func<(int Result, int State), int>) null));
         }
 
         [Test]
         public void UnfoldInfiniteSequence()
         {
-            var result = MoreEnumerable.Unfold(1, x => new { result = x, state = x + 1 },
+            var result = MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
                                                   _ => true,
-                                                  e => e.state,
-                                                  e => e.result)
+                                                  e => e.State,
+                                                  e => e.Result)
                                        .Take(100);
 
             var expectations = MoreEnumerable.Generate(1, x => x + 1).Take(100);
@@ -72,10 +73,10 @@ namespace MoreLinq.Test
         [Test]
         public void UnfoldFiniteSequence()
         {
-            var result = MoreEnumerable.Unfold(1, x => new { result = x, state = x + 1 },
-                                                  e => e.result <= 100,
-                                                  e => e.state,
-                                                  e => e.result);
+            var result = MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
+                                                  e => e.Result <= 100,
+                                                  e => e.State,
+                                                  e => e.Result);
 
             var expectations = MoreEnumerable.Generate(1, x => x + 1).Take(100);
 
@@ -85,20 +86,20 @@ namespace MoreLinq.Test
         [Test]
         public void UnfoldIsLazy()
         {
-            MoreEnumerable.Unfold(0, BreakingFunc.Of<int, Tuple<int, int>>(),
-                                     BreakingFunc.Of<Tuple<int, int>, bool>(),
-                                     BreakingFunc.Of<Tuple<int, int>, int>(),
-                                     BreakingFunc.Of<Tuple<int, int>, int>());
+            MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
+                                     BreakingFunc.Of<(int, int), bool>(),
+                                     BreakingFunc.Of<(int, int), int>(),
+                                     BreakingFunc.Of<(int, int), int>());
         }
 
 
         [Test]
         public void UnfoldSingleElementSequence()
         {
-            var result = MoreEnumerable.Unfold(0, x => new { result = x, state = x + 1 },
-                                                  x => x.result == 0,
-                                                  e => e.state,
-                                                  e => e.result);
+            var result = MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
+                                                  x => x.Result == 0,
+                                                  e => e.State,
+                                                  e => e.Result);
 
             var expectations = new[] { 0 };
 
@@ -108,10 +109,10 @@ namespace MoreLinq.Test
         [Test]
         public void UnfoldEmptySequence()
         {
-            var result = MoreEnumerable.Unfold(0, x => new { result = x, state = x + 1 },
-                                                  x => x.result < 0,
-                                                  e => e.state,
-                                                  e => e.result);
+            var result = MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
+                                                  x => x.Result < 0,
+                                                  e => e.State,
+                                                  e => e.Result);
 
             var expectations = new int[] { };
 

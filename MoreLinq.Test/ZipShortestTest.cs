@@ -17,17 +17,13 @@
 
 using System;
 using NUnit.Framework;
+using Tuple = System.ValueTuple;
 
 namespace MoreLinq.Test
 {
     [TestFixture]
     public class ZipShortestTest
     {
-        private static Tuple<TFirst, TSecond> Tuple<TFirst, TSecond>(TFirst a, TSecond b)
-        {
-            return new Tuple<TFirst, TSecond>(a, b);
-        }
-
         [Test]
         public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
         {
@@ -51,25 +47,25 @@ namespace MoreLinq.Test
         [Test]
         public void ZipShortestWithEqualLengthSequences()
         {
-            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
+            zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
         }
 
         [Test]
         public void ZipShortestWithFirstSequenceShorterThanSecond()
         {
-            var zipped = new[] { 1, 2 }.ZipShortest(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2 }.ZipShortest(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+            zipped.AssertSequenceEqual((1, 4), (2, 5));
         }
 
         [Test]
         public void ZipShortestWithFirstSequnceLongerThanSecond()
         {
-            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+            zipped.AssertSequenceEqual((1, 4), (2, 5));
         }
 
         [Test]
