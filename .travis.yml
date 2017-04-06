@@ -40,7 +40,7 @@ before_install:
 
   - msbuild /version
   - |
-  # Handle too many files on OS X
+    # Handle too many files on OS X
     if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
       ulimit -n 4096
     fi
