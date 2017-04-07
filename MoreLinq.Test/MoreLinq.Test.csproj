@@ -4,7 +4,7 @@
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
     <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>MoreLINQ Developers</Authors>
-    <TargetFrameworks>netcoreapp1.0;net451</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;net452</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
@@ -63,7 +63,7 @@
     <Compile Remove="TraceTest.cs;ToDataTableTest.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
