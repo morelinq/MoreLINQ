@@ -10,6 +10,14 @@ which dotnet 2>/dev/null || {
 set -e
 dotnet --info
 dotnet restore
+dotnet restore MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj
+codegen() {
+    dotnet run -p MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- $2 $3 $4 $5 $6 $7 $8 $9 > $1
+}
+printf "Generating no-conflict wrappers..."
+codegen MoreLinq/NoConflict.g.cs -x "^ToDataTable$" -u System.Linq MoreLinq
+codegen MoreLinq/NoConflict.ToDataTable.g.cs -i "^ToDataTable$" -u System.Data MoreLinq -u System.Linq.Expressions
+printf "Done.\n"
 for c in Debug Release; do
     ./msbuild.sh /v:m /p:Configuration=$c
 done
