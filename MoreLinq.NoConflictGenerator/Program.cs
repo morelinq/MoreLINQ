@@ -1,4 +1,4 @@
-﻿#region Copyright (C) 2017 Atif Aziz. All rights reserved.
+#region Copyright (C) 2017 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -148,7 +148,7 @@ namespace MoreLinq.NoConflictGenerator
                                                 SyntaxKind.SimpleMemberAccessExpression,
                                                 IdentifierName("MoreEnumerable"),
                                                 IdentifierName(md.Identifier)),
-                                            ArgumentList(SeparatedList<ArgumentSyntax>(
+                                            ArgumentList(SeparatedList(
                                                 from p in md.ParameterList.Parameters
                                                 select Argument(IdentifierName(p.Identifier)))))
                                             .WithLeadingTrivia(Space))
