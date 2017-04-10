@@ -36,7 +36,6 @@ namespace MoreLinq.NoConflictGenerator
             string includePattern = null;
             string excludePattern = null;
             var usings = new List<string>();
-            var tail = new List<string>();
 
             Exception MissingArgValue() =>
                 new InvalidOperationException("Missing argument value.");
