@@ -110,18 +110,15 @@ namespace MoreLinq.NoConflictGenerator
             var indent2 = indent + indent;
             var indent3 = indent2 + indent;
 
+            var baseImports = new []
+            {
+                "System",
+                "System.CodeDom.Compiler",
+                "System.Collections.Generic",
+            };
+
             var imports =
-                from nss in new[]
-                {
-                    new []
-                    {
-                        "System",
-                        "System.CodeDom.Compiler",
-                        "System.Collections.Generic",
-                    },
-                    usings.AsEnumerable(),
-                }
-                from ns in nss
+                from ns in baseImports.Concat(usings)
                 select indent + $"using {ns};";
 
             var classes =
