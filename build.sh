@@ -12,7 +12,9 @@ dotnet --info
 dotnet restore
 dotnet restore MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj
 codegen() {
-    dotnet run -p MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- $2 $3 $4 $5 $6 $7 $8 $9 > $1
+    dest="$1"
+    shift
+    dotnet run -p MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- "$@" > "$dest"
 }
 printf "Generating no-conflict wrappers..."
 codegen MoreLinq/NoConflict.g.cs -x "^ToDataTable$" -u System.Linq MoreLinq
