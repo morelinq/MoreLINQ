@@ -25,14 +25,14 @@ namespace MoreLinq.Test
     public class ToDictionaryTest
     {
         [Test]
-        public void ToDictionaryWithNullSequence()
+        public void ToDictionaryWithNullKeyValuePairSequence()
         {
             Assert.ThrowsArgumentNullException("source", () =>
                 MoreEnumerable.ToDictionary((IEnumerable<KeyValuePair<object, object>>) null));
         }
 
         [Test]
-        public void ToDictionary()
+        public void ToDictionaryWithKeyValuePairs()
         {
             var pairs = new[]
             {
@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ToDictionary2()
+        public void ToDictionaryWithCouples()
         {
             var pairs = new[]
             {
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ToDictionaryWithComparer()
+        public void ToDictionaryWithKeyValuePairsWithComparer()
         {
             var pairs = new[]
             {
@@ -83,7 +83,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ToDictionaryWithComparer2()
+        public void ToDictionaryWithCouplesWithComparer()
         {
             var pairs = new[]
             {
