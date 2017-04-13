@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    using System.Collections.Generic;
-
     [TestFixture]
     public class ToDictionaryTest
     {
@@ -75,7 +75,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create("baz", 789),
             };
 
-            var dict = pairs.ToDictionary();
+            var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict["FOO"], Is.EqualTo(123));
             Assert.That(dict["BAR"], Is.EqualTo(456));
@@ -92,7 +92,7 @@ namespace MoreLinq.Test
                 ("baz", 789),
             };
 
-            var dict = pairs.ToDictionary();
+            var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict["FOO"], Is.EqualTo(123));
             Assert.That(dict["BAR"], Is.EqualTo(456));
