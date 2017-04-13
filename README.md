@@ -446,6 +446,13 @@ Combines `OrderBy` (where element is key) and `Take` in a single operation.
 
 Combines `OrderBy` and `Take` in a single operation.
 
+### ToDictionary
+
+Creates a [dictionary][dict] from a sequence of [key-value pair][kvp] elements
+or tuples of 2.
+
+This method has 4 overloads.
+
 ### Trace
 
 Traces the elements of a source sequence for diagnostics.
@@ -479,3 +486,5 @@ This method has 3 overloads.
 
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
+[dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
+[kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
