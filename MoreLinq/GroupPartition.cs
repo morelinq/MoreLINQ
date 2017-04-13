@@ -32,6 +32,7 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return source.Partition(true, false, (t, f, _) => resultSelector(t, f));
         }
 
@@ -43,6 +44,7 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return source.Partition(true, false, null, (t, f, n, _) => resultSelector(t, f, n));
         }
 
@@ -68,6 +70,7 @@ namespace MoreLinq
             TKey key, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return PartitionImpl(source, 1, key, default(TKey), default(TKey), comparer,
                                  (a, b, c, rest) => resultSelector(a, rest));
         }
@@ -94,6 +97,7 @@ namespace MoreLinq
             TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return PartitionImpl(source, 2, key1, key2, default(TKey), comparer,
                                  (a, b, c, rest) => resultSelector(a, b, rest));
         }
