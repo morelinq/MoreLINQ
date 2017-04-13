@@ -254,6 +254,14 @@ Returns a sequence resulting from applying a function to each element in the
 source sequence and its predecessor, with the exception of the first element
 which is only returned as the predecessor of the second element
 
+### PartialSort
+
+Combines `OrderBy` (where element is key) and `Take` in a single operation.
+
+### PartialSortBy
+
+Combines `OrderBy` and `Take` in a single operation.
+
 ### Permutations
 
 Generates a sequence of lists that represent the permutations of the original
@@ -421,6 +429,20 @@ depends on the current culture of the executing thread.
 
 This method has 30 overloads.
 
+### ToDictionary
+
+Creates a [dictionary][dict] from a sequence of [key-value pair][kvp] elements
+or tuples of 2.
+
+This method has 4 overloads.
+
+### ToHashSet
+
+Returns a of the source items using the default equality comparer for the
+type.
+
+This method has 2 overloads.
+
 ### TraverseBreadthFirst
 
 Traverses a tree in a breadth-first fashion, starting at a root node and using
@@ -430,28 +452,6 @@ a user-defined function to get the children at each node of the tree.
 
 Traverses a tree in a depth-first fashion, starting at a root node and using a
 user-defined function to get the children at each node of the tree.
-
-### ToHashSet
-
-Returns a of the source items using the default equality comparer for the
-type. 
-
-This method has 2 overloads.
-
-### PartialSort
-
-Combines `OrderBy` (where element is key) and `Take` in a single operation.
-
-### PartialSortBy
-
-Combines `OrderBy` and `Take` in a single operation.
-
-### ToDictionary
-
-Creates a [dictionary][dict] from a sequence of [key-value pair][kvp] elements
-or tuples of 2.
-
-This method has 4 overloads.
 
 ### Trace
 
