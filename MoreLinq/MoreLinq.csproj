@@ -7,7 +7,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>2.4.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
-    <TargetFrameworks>net35;net45;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;netstandard1.0</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -36,7 +36,7 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net45' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net40' ">
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -47,7 +47,7 @@
     <DefineConstants>$(DefineConstants);MORELINQ;NO_VALUE_TUPLES</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
   </PropertyGroup>
 
@@ -59,7 +59,7 @@
     <Compile Remove="ToDataTable.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net45'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net40'">
     <PackageReference Include="System.ValueTuple">
       <Version>4.3.0</Version>
     </PackageReference>
