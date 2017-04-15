@@ -264,9 +264,10 @@ Combines `OrderBy` and `Take` in a single operation.
 
 ### Partition
 
-Partitions a grouping by Boolean keys or up to 3 sets of keys.
+Partitions a sequence by a predicate, or a grouping by Boolean keys or up to 3
+sets of keys.
 
-This method has 8 overloads.
+This method has 9 overloads.
 
 ### Permutations
 

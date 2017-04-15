@@ -25,6 +25,25 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
+        /// Partitions or splits a sequence by a predicate.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">The predicate function.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of true elements
+        /// and false elements, respectively, passed as arguments.
+        /// </param>
+        /// <typeparam name="T">Type of source elements.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<T, TResult>(this IEnumerable<T> source,
+            Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector) =>
+            source.GroupBy(predicate).Partition(resultSelector);
+
+        /// <summary>
         /// Partitions a grouping by Boolean keys into a projection of true
         /// elements and false elements, respectively.
         /// </summary>

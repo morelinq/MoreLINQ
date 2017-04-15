@@ -26,6 +26,17 @@ namespace MoreLinq.Test
     public class PartitionTest
     {
         [Test]
+        public void PartitionWithResultSelector()
+        {
+            var (evens, odds) =
+                Enumerable.Range(0, 10)
+                          .Partition(x => x % 2 == 0, ValueTuple.Create);
+
+            Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
+        }
+
+        [Test]
         public void PartitionBooleanGrouping()
         {
             var (evens, odds) =
