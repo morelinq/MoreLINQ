@@ -26,18 +26,29 @@ namespace MoreLinq.Test
     public class PartitionTest
     {
         [Test]
+        public void Partition()
+        {
+            var (evens, odds) =
+                Enumerable.Range(0, 10)
+                          .Partition(x => x % 2 == 0);
+
+            Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
+        }
+
+        [Test]
         public void PartitionWithEmptySequence()
         {
             var (evens, odds) =
                 Enumerable.Empty<int>()
-                          .Partition(x => x % 2 == 0, Tuple.Create);
+                          .Partition(x => x % 2 == 0);
 
             Assert.That(evens, Is.Empty);
             Assert.That(odds,  Is.Empty);
         }
 
         [Test]
-        public void PartitionBasic()
+        public void PartitionWithResultSelector()
         {
             var (evens, odds) =
                 Enumerable.Range(0, 10)
@@ -53,7 +64,7 @@ namespace MoreLinq.Test
             var (evens, odds) =
                 Enumerable.Range(0, 10)
                           .GroupBy(x => x % 2 == 0)
-                          .Partition(Tuple.Create);
+                          .Partition((t, f) => Tuple.Create(t, f));
 
             Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
             Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
@@ -66,7 +77,7 @@ namespace MoreLinq.Test
 
             var (lt5, gte5, nils) =
                 xs.GroupBy(x => x != null ? x < 5 : (bool?) null)
-                  .Partition(Tuple.Create);
+                  .Partition((t, f, n) => Tuple.Create(t, f, n));
 
             Assert.That(lt5,  Is.EquivalentTo(new[] { 1, 2, 3 }));
             Assert.That(gte5, Is.EquivalentTo(new[] { 5, 6, 7, 9, 10 }));
