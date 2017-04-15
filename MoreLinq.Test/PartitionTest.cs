@@ -23,7 +23,7 @@ namespace MoreLinq.Test
     using System;
 
     [TestFixture]
-    public class GroupPartitionTest
+    public class PartitionTest
     {
         [Test]
         public void PartitionBooleanGrouping()
