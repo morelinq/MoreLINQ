@@ -40,8 +40,11 @@ namespace MoreLinq
         /// </returns>
 
         public static TResult Partition<T, TResult>(this IEnumerable<T> source,
-            Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector) =>
-            source.GroupBy(predicate).Partition(resultSelector);
+            Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+        {
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            return source.GroupBy(predicate).Partition(resultSelector);
+        }
 
         /// <summary>
         /// Partitions a grouping by Boolean keys into a projection of true
