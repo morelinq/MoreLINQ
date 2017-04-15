@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,222 +15,169 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
+    using System;
+
     [TestFixture]
-    public class GroupAdjacentTest
+    public class GroupPartitionTest
     {
         [Test]
-        public void GroupAdjacentNullSource()
+        public void PartitionBooleanGrouping()
         {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; }));
+            var (evens, odds) =
+                Enumerable.Range(0, 10)
+                          .GroupBy(x => x % 2 == 0)
+                          .Partition(ValueTuple.Create);
+
+            Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
         }
 
         [Test]
-        public void GroupAdjacentNullKeySelector()
+        public void PartitionNullableBooleanGrouping()
         {
-            Assert.ThrowsArgumentNullException("keySelector", () =>
-                new object[0].GroupAdjacent<object, object>(null));
+            var xs = new int?[] { 1, 2, 3, null, 5, 6, 7, null, 9, 10 };
+
+            var (lt5, gte5, nils) =
+                xs.GroupBy(x => x != null ? x < 5 : (bool?) null)
+                  .Partition(ValueTuple.Create);
+
+            Assert.That(lt5,  Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(gte5, Is.EquivalentTo(new[] { 5, 6, 7, 9, 10 }));
+            Assert.That(nils, Is.EquivalentTo(new int?[] { null, null }));
         }
 
         [Test]
-        public void GroupAdjacentIsLazy()
+        public void PartitionBooleanGroupingWithSingleKey()
         {
-            var bs = new BreakingSequence<object>();
-            bs.GroupAdjacent(delegate { return 0; });
-            bs.GroupAdjacent(delegate { return 0; }, o => o);
-            bs.GroupAdjacent(delegate { return 0; }, o => o, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(delegate { return 0; }, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g);
-            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g, EqualityComparer<int>.Default);
-        }
+            var (m3, etc) =
+                Enumerable.Range(0, 10)
+                          .GroupBy(x => x % 3)
+                          .Partition(0, ValueTuple.Create);
 
-        [Test]
-        public void GroupAdjacentSourceSequence()
-        {
-            const string one = "one";
-            const string two = "two";
-            const string three = "three";
-            const string four = "four";
-            const string five = "five";
-            const string six = "six";
-            const string seven = "seven";
-            const string eight = "eight";
-            const string nine = "nine";
-            const string ten = "ten";
+            Assert.That(m3, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
 
-            var source = new[] { one, two, three, four, five, six, seven, eight, nine, ten };
-            var groupings = source.GroupAdjacent(s => s.Length);
-            
-            using (var reader = groupings.Read())
+            using (var r = etc.Read())
             {
-                AssertGrouping(reader, 3, one, two);
-                AssertGrouping(reader, 5, three);
-                AssertGrouping(reader, 4, four, five);
-                AssertGrouping(reader, 3, six);
-                AssertGrouping(reader, 5, seven, eight);
-                AssertGrouping(reader, 4, nine);
-                AssertGrouping(reader, 3, ten);
-                reader.ReadEnd();
+                var r1 = r.Read();
+                Assert.That(r1.Key, Is.EqualTo(1));
+                Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
+
+                var r2 = r.Read();
+                Assert.That(r2.Key, Is.EqualTo(2));
+                Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
+
+                r.ReadEnd();
             }
         }
 
         [Test]
-        public void GroupAdjacentSourceSequenceComparer()
+        public void PartitionBooleanGroupingWitTwoKeys()
         {
-            var source = new[] { "foo", "FOO", "Foo", "bar", "BAR", "Bar" };
-            var groupings = source.GroupAdjacent(s => s, StringComparer.OrdinalIgnoreCase);
+            var (ms, r1, etc) =
+                Enumerable.Range(0, 10)
+                          .GroupBy(x => x % 3)
+                          .Partition(0, 1, ValueTuple.Create);
 
-            using (var reader = groupings.Read())
+            Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
+            Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
+
+            using (var r = etc.Read())
             {
-                AssertGrouping(reader, "foo", "foo", "FOO", "Foo");
-                AssertGrouping(reader, "bar", "bar", "BAR", "Bar");
-                reader.ReadEnd();
+                var r2 = r.Read();
+                Assert.That(r2.Key, Is.EqualTo(2));
+                Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
+                r.ReadEnd();
             }
         }
 
         [Test]
-        public void GroupAdjacentSourceSequenceElementSelector()
+        public void PartitionBooleanGroupingWitThreeKeys()
         {
-            var source = new[]
-            {
-                new { Month = 1, Value = 123 },                 
-                new { Month = 1, Value = 456 },                 
-                new { Month = 1, Value = 789 },                 
-                new { Month = 2, Value = 987 },                 
-                new { Month = 2, Value = 654 },                 
-                new { Month = 2, Value = 321 },                 
-                new { Month = 3, Value = 789 },                 
-                new { Month = 3, Value = 456 },                 
-                new { Month = 3, Value = 123 },
-                new { Month = 1, Value = 123 },
-                new { Month = 1, Value = 456 },
-                new { Month = 1, Value = 781 },
-            };
+            var (ms, r1, r2, etc) =
+                Enumerable.Range(0, 10)
+                    .GroupBy(x => x % 3)
+                    .Partition(0, 1, 2, ValueTuple.Create);
 
-            var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2);
+            Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
+            Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
+            Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
+            using (var r = etc.Read())
+                r.ReadEnd();
+        }
 
-            using (var reader = groupings.Read())
+        [Test]
+        public void PartitionBooleanGroupingWithSingleKeyWithComparer()
+        {
+            var words =
+                new[] { "foo", "bar", "FOO", "Bar" };
+
+            var (foo, etc) =
+                words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+                    .Partition("foo", StringComparer.OrdinalIgnoreCase, Tuple.Create);
+
+            Assert.That(foo, Is.EquivalentTo(new[] { "foo", "FOO" }));
+
+            using (var r = etc.Read())
             {
-                AssertGrouping(reader, 1, 123 * 2, 456 * 2, 789 * 2);
-                AssertGrouping(reader, 2, 987 * 2, 654 * 2, 321 * 2);
-                AssertGrouping(reader, 3, 789 * 2, 456 * 2, 123 * 2);
-                AssertGrouping(reader, 1, 123 * 2, 456 * 2, 781 * 2);
-                reader.ReadEnd();
+                var bar = r.Read();
+                Assert.That(bar, Is.EquivalentTo(new[] { "bar", "Bar" }));
+                r.ReadEnd();
             }
         }
 
         [Test]
-        public void GroupAdjacentSourceSequenceElementSelectorComparer()
+        public void PartitionBooleanGroupingWithTwoKeysWithComparer()
         {
-            var source = new[]
-            {
-                new { Month = "jan", Value = 123 },                 
-                new { Month = "Jan", Value = 456 },                 
-                new { Month = "JAN", Value = 789 },                 
-                new { Month = "feb", Value = 987 },                 
-                new { Month = "Feb", Value = 654 },                 
-                new { Month = "FEB", Value = 321 },                 
-                new { Month = "mar", Value = 789 },                 
-                new { Month = "Mar", Value = 456 },                 
-                new { Month = "MAR", Value = 123 },
-                new { Month = "jan", Value = 123 },
-                new { Month = "Jan", Value = 456 },
-                new { Month = "JAN", Value = 781 },
-            };
+            var words =
+                new[] { "foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX" };
 
-            var groupings = source.GroupAdjacent(e => e.Month, e => e.Value * 2, StringComparer.OrdinalIgnoreCase);
+            var (foos, bar, etc) =
+                words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+                     .Partition("foo", "bar", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
-            using (var reader = groupings.Read())
+            Assert.That(foos, Is.EquivalentTo(new[] { "foo", "FOO" }));
+            Assert.That(bar, Is.EquivalentTo(new[] { "bar", "Bar" }));
+
+            using (var r = etc.Read())
             {
-                AssertGrouping(reader, "jan", 123 * 2, 456 * 2, 789 * 2);
-                AssertGrouping(reader, "feb", 987 * 2, 654 * 2, 321 * 2);
-                AssertGrouping(reader, "mar", 789 * 2, 456 * 2, 123 * 2);
-                AssertGrouping(reader, "jan", 123 * 2, 456 * 2, 781 * 2);
-                reader.ReadEnd();
+                var baz = r.Read();
+                Assert.That(baz.Key, Is.EqualTo("baz"));
+                Assert.That(baz, Is.EquivalentTo(new[] { "baz", "bAz" }));
+
+                var qux = r.Read();
+                Assert.That(qux.Key, Is.EqualTo("QUx"));
+                Assert.That(qux, Is.EquivalentTo(new[] { "QUx", "QuX" }));
+
+                r.ReadEnd();
             }
         }
 
         [Test]
-        public void GroupAdjacentSourceSequenceResultSelector()
+        public void PartitionBooleanGroupingWithThreeKeysWithComparer()
         {
-            var source = new[]
+            var words =
+                new[] { "foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX" };
+
+            var (foos, bar, baz, etc) =
+                words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+                    .Partition("foo", "bar", "baz", StringComparer.OrdinalIgnoreCase, Tuple.Create);
+
+            Assert.That(foos, Is.EquivalentTo(new[] { "foo", "FOO" }));
+            Assert.That(bar, Is.EquivalentTo(new[] { "bar", "Bar" }));
+            Assert.That(baz, Is.EquivalentTo(new[] { "baz", "bAz" }));
+
+            using (var r = etc.Read())
             {
-                new { Month = 1, Value = 123 },
-                new { Month = 1, Value = 456 },
-                new { Month = 1, Value = 789 },
-                new { Month = 2, Value = 987 },
-                new { Month = 2, Value = 654 },
-                new { Month = 2, Value = 321 },
-                new { Month = 3, Value = 789 },
-                new { Month = 3, Value = 456 },
-                new { Month = 3, Value = 123 },
-                new { Month = 1, Value = 123 },
-                new { Month = 1, Value = 456 },
-                new { Month = 1, Value = 781 },
-            };
-
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
-
-            using (var reader = groupings.Read()) {
-                AssertResult(reader, 123 + 456 + 789);
-                AssertResult(reader, 987 + 654 + 321);
-                AssertResult(reader, 789 + 456 + 123);
-                AssertResult(reader, 123 + 456 + 781);
-                reader.ReadEnd();
+                var qux = r.Read();
+                Assert.That(qux.Key, Is.EqualTo("QUx"));
+                Assert.That(qux, Is.EquivalentTo(new[] { "QUx", "QuX" }));
+                r.ReadEnd();
             }
-        }
-
-        [Test]
-        public void GroupAdjacentSourceSequenceResultSelectorComparer()
-        {
-            var source = new[]
-            {
-                new { Month = "jan", Value = 123 },
-                new { Month = "Jan", Value = 456 },
-                new { Month = "JAN", Value = 789 },
-                new { Month = "feb", Value = 987 },
-                new { Month = "Feb", Value = 654 },
-                new { Month = "FEB", Value = 321 },
-                new { Month = "mar", Value = 789 },
-                new { Month = "Mar", Value = 456 },
-                new { Month = "MAR", Value = 123 },
-                new { Month = "jan", Value = 123 },
-                new { Month = "Jan", Value = 456 },
-                new { Month = "JAN", Value = 781 },
-            };
-
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
-
-            using (var reader = groupings.Read()) {
-                AssertResult(reader, 123 + 456 + 789);
-                AssertResult(reader, 987 + 654 + 321);
-                AssertResult(reader, 789 + 456 + 123);
-                AssertResult(reader, 123 + 456 + 781);
-                reader.ReadEnd();
-            }
-        }
-
-        static void AssertGrouping<TKey, TElement>(SequenceReader<IGrouping<TKey, TElement>> reader, 
-            TKey key, params TElement[] elements)
-        {
-            var grouping = reader.Read();
-            Assert.That(grouping, Is.Not.Null);
-            Assert.That(grouping.Key, Is.EqualTo(key));
-            grouping.AssertSequenceEqual(elements);
-        }
-
-        static void AssertResult<TElement>(SequenceReader<TElement> reader, TElement element)
-        {
-            var result = reader.Read();
-            Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(element, result);
         }
     }
 }
