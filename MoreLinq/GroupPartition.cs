@@ -28,6 +28,16 @@ namespace MoreLinq
         /// Partitions a grouping by Boolean keys into a projection of true
         /// elements and false elements, respectively.
         /// </summary>
+        /// <typeparam name="T">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of true elements
+        /// and false elements, respectively, passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -40,6 +50,17 @@ namespace MoreLinq
         /// Partitions a grouping by nullable Boolean keys into a projection of
         /// true elements, false elements and null elements, respectively.
         /// </summary>
+        /// <typeparam name="T">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of true elements,
+        /// false elements and null elements, respectively, passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -52,6 +73,19 @@ namespace MoreLinq
         /// Partitions a grouping into a projection of elements matching a key
         /// and those groups that do not.
         /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key">The key to partition.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of elements
+        /// matching <paramref name="key"/> and those groups that do not,
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key,
@@ -63,6 +97,20 @@ namespace MoreLinq
         /// and those groups that do not. An additional parameter specifies how
         /// to compare keys for equality.
         /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key">The key to partition.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of the group
+        /// matching <paramref name="key"/> and those groups that do not,
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key, IEqualityComparer<TKey> comparer,
@@ -77,6 +125,21 @@ namespace MoreLinq
         /// Partitions a grouping into a projection of elements matching a
         /// set of two keys and those groups that do not.
         /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition.</param>
+        /// <param name="key2">The second key to partition.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of the group
+        /// matching <paramref name="key1"/>, elements of the group matching
+        /// <paramref name="key2"/> and those groups that do not,
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2,
@@ -88,6 +151,22 @@ namespace MoreLinq
         /// set of two keys and those groups that do not. An additional
         /// parameter specifies how to compare keys for equality.
         /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition.</param>
+        /// <param name="key2">The second key to partition.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of the group
+        /// matching <paramref name="key1"/>, elements of the group matching
+        /// <paramref name="key2"/> and those groups that do not,
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
@@ -102,6 +181,22 @@ namespace MoreLinq
         /// Partitions a grouping into a projection of elements matching a
         /// set of three keys and those groups that do not.
         /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition.</param>
+        /// <param name="key2">The second key to partition.</param>
+        /// <param name="key3">The third key to partition.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of groups
+        /// matching <paramref name="key1"/>, <paramref name="key2"/> and
+        /// <paramref name="key3"/> and those groups that do not, passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3,
@@ -113,6 +208,23 @@ namespace MoreLinq
         /// set of three keys and those groups that do not. An additional
         /// parameter specifies how to compare keys for equality.
         /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition.</param>
+        /// <param name="key2">The second key to partition.</param>
+        /// <param name="key3">The third key to partition.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of groups
+        /// matching <paramref name="key1"/>, <paramref name="key2"/> and
+        /// <paramref name="key3"/> and those groups that do not, passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
