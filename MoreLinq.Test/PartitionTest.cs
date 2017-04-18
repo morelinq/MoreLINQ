@@ -18,6 +18,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Tuple = System.ValueTuple;
 
 namespace MoreLinq.Test
 {
@@ -29,7 +30,7 @@ namespace MoreLinq.Test
         {
             var (evens, odds) =
                 Enumerable.Range(0, 10)
-                          .Partition(x => x % 2 == 0, ValueTuple.Create);
+                          .Partition(x => x % 2 == 0, Tuple.Create);
 
             Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
             Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
@@ -41,7 +42,7 @@ namespace MoreLinq.Test
             var (evens, odds) =
                 Enumerable.Range(0, 10)
                           .GroupBy(x => x % 2 == 0)
-                          .Partition(ValueTuple.Create);
+                          .Partition(Tuple.Create);
 
             Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
             Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
@@ -54,7 +55,7 @@ namespace MoreLinq.Test
 
             var (lt5, gte5, nils) =
                 xs.GroupBy(x => x != null ? x < 5 : (bool?) null)
-                  .Partition(ValueTuple.Create);
+                  .Partition(Tuple.Create);
 
             Assert.That(lt5,  Is.EquivalentTo(new[] { 1, 2, 3 }));
             Assert.That(gte5, Is.EquivalentTo(new[] { 5, 6, 7, 9, 10 }));
@@ -67,7 +68,7 @@ namespace MoreLinq.Test
             var (m3, etc) =
                 Enumerable.Range(0, 10)
                           .GroupBy(x => x % 3)
-                          .Partition(0, ValueTuple.Create);
+                          .Partition(0, Tuple.Create);
 
             Assert.That(m3, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
 
@@ -91,7 +92,7 @@ namespace MoreLinq.Test
             var (ms, r1, etc) =
                 Enumerable.Range(0, 10)
                           .GroupBy(x => x % 3)
-                          .Partition(0, 1, ValueTuple.Create);
+                          .Partition(0, 1, Tuple.Create);
 
             Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
             Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
@@ -111,7 +112,7 @@ namespace MoreLinq.Test
             var (ms, r1, r2, etc) =
                 Enumerable.Range(0, 10)
                     .GroupBy(x => x % 3)
-                    .Partition(0, 1, 2, ValueTuple.Create);
+                    .Partition(0, 1, 2, Tuple.Create);
 
             Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
             Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
