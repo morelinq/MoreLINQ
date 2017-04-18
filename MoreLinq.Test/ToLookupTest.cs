@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,13 +23,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToLookupTest
     {
-        [Test]
-        public void ToLookupWithNullKeyValuePairSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.ToLookup((IEnumerable<KeyValuePair<object, object>>) null));
-        }
-
         [Test]
         public void ToLookupWithKeyValuePairs()
         {
