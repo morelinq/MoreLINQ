@@ -15,13 +15,12 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Linq;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    using System;
-
     [TestFixture]
     public class PartitionTest
     {
