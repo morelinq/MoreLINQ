@@ -117,8 +117,7 @@ namespace MoreLinq.Test
             Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
             Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
             Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
-            using (var r = etc.Read())
-                r.ReadEnd();
+            Assert.That(etc, Is.Empty);
         }
 
         [Test]
