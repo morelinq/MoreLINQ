@@ -267,7 +267,7 @@ Combines `OrderBy` and `Take` in a single operation.
 Partitions a sequence by a predicate, or a grouping by Boolean keys or up to 3
 sets of keys.
 
-This method has 9 overloads.
+This method has 10 overloads.
 
 ### Permutations
 
