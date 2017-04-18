@@ -33,7 +33,8 @@ namespace MoreLinq
         /// <param name="predicate">The predicate function.</param>
         /// <typeparam name="T">Type of source elements.</typeparam>
         /// <returns>
-        /// A tuple of true elements and false elements, respectively.
+        /// A tuple of elements staisfying the predicate and those that do not,
+        /// respectively.
         /// </returns>
         /// <example>
         /// <code>
@@ -58,8 +59,9 @@ namespace MoreLinq
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The predicate function.</param>
         /// <param name="resultSelector">
-        /// Function that projects the result from sequences of true elements
-        /// and false elements, respectively, passed as arguments.
+        /// Function that projects the result from sequences of elements that
+        /// satisfy the predicate and those that do not, respectively, passed as
+        /// arguments.
         /// </param>
         /// <typeparam name="T">Type of source elements.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
