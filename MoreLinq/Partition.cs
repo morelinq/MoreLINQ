@@ -92,8 +92,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching a key
-        /// and those groups that do not.
+        /// Partitions a grouping and projects a result from group elements
+        /// matching a key and those groups that do not.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
@@ -116,9 +116,9 @@ namespace MoreLinq
             Partition(source, key, null, resultSelector);
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching a key
-        /// and those groups that do not. An additional parameter specifies how
-        /// to compare keys for equality.
+        /// Partitions a grouping and projects a result from group elements
+        /// matching a key and those groups that do not. An additional parameter
+        /// specifies how to compare keys for equality.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
@@ -146,8 +146,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching a
-        /// set of two keys and those groups that do not.
+        /// Partitions a grouping and projects a result from elements of
+        /// groups matching a set of two keys and those groups that do not.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
@@ -172,9 +172,9 @@ namespace MoreLinq
             Partition(source, key1, key2, null, resultSelector);
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching a
-        /// set of two keys and those groups that do not. An additional
-        /// parameter specifies how to compare keys for equality.
+        /// Partitions a grouping and projects a result from elements of
+        /// groups matching a set of two keys and those groups that do not.
+        /// An additional parameter specifies how to compare keys for equality.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
@@ -204,8 +204,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching a
-        /// set of three keys and those groups that do not.
+        /// Partitions a grouping and projects a result from elements groups
+        /// matching a set of three keys and those groups that do not.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
@@ -231,9 +231,9 @@ namespace MoreLinq
             Partition(source, key1, key2, key3, null, resultSelector);
 
         /// <summary>
-        /// Partitions a grouping into a projection of elements matching a
-        /// set of three keys and those groups that do not. An additional
-        /// parameter specifies how to compare keys for equality.
+        /// Partitions a grouping and projects a result from elements groups
+        /// matching a set of three keys and those groups that do not. An
+        /// additional parameter specifies how to compare keys for equality.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
