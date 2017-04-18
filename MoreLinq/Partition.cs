@@ -38,6 +38,16 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <example>
+        /// <code>
+        /// var (evens, odds) =
+        ///     Enumerable.Range(0, 10)
+        ///               .Partition(x => x % 2 == 0, ValueTuple.Create);
+        /// </code>
+        /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
+        /// and then 8. The <c>odds</c> variable, when iterated over, will yield
+        /// 1, 3, 5, 7 and then 9.
+        /// </example>
 
         public static TResult Partition<T, TResult>(this IEnumerable<T> source,
             Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
