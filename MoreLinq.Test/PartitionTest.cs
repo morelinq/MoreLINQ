@@ -26,7 +26,18 @@ namespace MoreLinq.Test
     public class PartitionTest
     {
         [Test]
-        public void PartitionWithResultSelector()
+        public void PartitionWithEmptySequence()
+        {
+            var (evens, odds) =
+                Enumerable.Empty<int>()
+                          .Partition(x => x % 2 == 0, Tuple.Create);
+
+            Assert.That(evens, Is.Empty);
+            Assert.That(odds,  Is.Empty);
+        }
+
+        [Test]
+        public void PartitionBasic()
         {
             var (evens, odds) =
                 Enumerable.Range(0, 10)
