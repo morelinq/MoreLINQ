@@ -102,7 +102,8 @@ namespace MoreLinq
         /// <param name="key">The key to partition.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from sequences of elements
-        /// matching <paramref name="key"/> and those groups that do not,
+        /// matching <paramref name="key"/> and those groups that do not (in
+        /// the order in which they appear in <paramref name="source"/>),
         /// passed as arguments.
         /// </param>
         /// <returns>
@@ -127,7 +128,8 @@ namespace MoreLinq
         /// <param name="comparer">The comparer for keys.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from elements of the group
-        /// matching <paramref name="key"/> and those groups that do not,
+        /// matching <paramref name="key"/> and those groups that do not (in
+        /// the order in which they appear in <paramref name="source"/>),
         /// passed as arguments.
         /// </param>
         /// <returns>
@@ -156,8 +158,9 @@ namespace MoreLinq
         /// <param name="resultSelector">
         /// Function that projects the result from elements of the group
         /// matching <paramref name="key1"/>, elements of the group matching
-        /// <paramref name="key2"/> and those groups that do not,
-        /// passed as arguments.
+        /// <paramref name="key2"/> and those groups that do not (in the order
+        /// in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
         /// </param>
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
@@ -183,8 +186,9 @@ namespace MoreLinq
         /// <param name="resultSelector">
         /// Function that projects the result from elements of the group
         /// matching <paramref name="key1"/>, elements of the group matching
-        /// <paramref name="key2"/> and those groups that do not,
-        /// passed as arguments.
+        /// <paramref name="key2"/> and those groups that do not (in the order
+        /// in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
         /// </param>
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
@@ -213,7 +217,8 @@ namespace MoreLinq
         /// <param name="resultSelector">
         /// Function that projects the result from elements of groups
         /// matching <paramref name="key1"/>, <paramref name="key2"/> and
-        /// <paramref name="key3"/> and those groups that do not, passed as
+        /// <paramref name="key3"/> and those groups that do not (in the order
+        /// in which they appear in <paramref name="source"/>), passed as
         /// arguments.
         /// </param>
         /// <returns>
@@ -241,8 +246,9 @@ namespace MoreLinq
         /// <param name="resultSelector">
         /// Function that projects the result from elements of groups
         /// matching <paramref name="key1"/>, <paramref name="key2"/> and
-        /// <paramref name="key3"/> and those groups that do not, passed as
-        /// arguments.
+        /// <paramref name="key3"/> and those groups that do not (in
+        /// the order in which they appear in <paramref name="source"/>),
+        /// passed as arguments.
         /// </param>
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
