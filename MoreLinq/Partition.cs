@@ -27,7 +27,7 @@ namespace MoreLinq
         #if !NO_VALUE_TUPLES
 
         /// <summary>
-        /// Partitions or splits a sequence by a predicate.
+        /// Partitions or splits a sequence in two using a predicate.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The predicate function.</param>
@@ -52,7 +52,8 @@ namespace MoreLinq
         #endif
 
         /// <summary>
-        /// Partitions or splits a sequence by a predicate.
+        /// Partitions or splits a sequence in two using a predicate and then
+        /// projects a result from the two.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The predicate function.</param>
