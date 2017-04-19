@@ -41,7 +41,6 @@
   <ItemGroup>
       <Compile Include="*Test.cs" />
       <Compile Include="Assert.cs" />
-      <Compile Include="AssertUtil.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
