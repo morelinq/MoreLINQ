@@ -12,11 +12,6 @@ namespace MoreLinq.Test
         {
             return new ComparerFunc<T>(compare);
         }
-
-        public static ComparerFunc<T> As<T>(T sample, Func<T, T, int> compare)
-        {
-            return new ComparerFunc<T>(compare);
-        }
     }
 
     sealed class ComparerFunc<T> : IComparer<T>
