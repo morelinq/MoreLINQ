@@ -8,10 +8,8 @@ namespace MoreLinq.Test
     /// </summary>
     sealed class ComparerFunc
     {
-        public static ComparerFunc<T> As<T>(Func<T, T, int> compare)
-        {
-            return new ComparerFunc<T>(compare);
-        }
+        public static ComparerFunc<T> As<T>(Func<T, T, int> compare) =>
+            new ComparerFunc<T>(compare);
     }
 
     sealed class ComparerFunc<T> : IComparer<T>
@@ -32,14 +30,6 @@ namespace MoreLinq.Test
         {
             return CompareFunc(x, y);
         }
-        #endregion
-
-        #region Static Methods
-        public static ComparerFunc<T> As(Func<T, T, int> compare)
-        {
-            return new ComparerFunc<T>(compare);
-        }
-
         #endregion
     }
 }
