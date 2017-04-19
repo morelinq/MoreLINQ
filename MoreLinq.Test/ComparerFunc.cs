@@ -6,7 +6,7 @@ namespace MoreLinq.Test
     /// <summary>
     /// Utility class that allows Func{T,T,int} to be used as an IComparer{T}
     /// </summary>
-    public sealed class ComparerFunc
+    sealed class ComparerFunc
     {
         public static ComparerFunc<T> As<T>(Func<T, T, int> compare)
         {
@@ -19,7 +19,7 @@ namespace MoreLinq.Test
         }
     }
 
-    public sealed class ComparerFunc<T> : IComparer<T>
+    sealed class ComparerFunc<T> : IComparer<T>
     {
         private readonly Func<T, T, int> CompareFunc;
 
