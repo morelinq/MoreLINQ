@@ -73,15 +73,13 @@ namespace MoreLinq.NoConflictGenerator
                 }
             }
 
-            var includePredicate
-                = string.IsNullOrEmpty(includePattern)
-                ? (_ => true)
-                : new Func<string, bool>(new Regex(includePattern).IsMatch);
+            Func<string, bool> PredicateFromPattern(string pattern, bool @default) =>
+                string.IsNullOrEmpty(pattern)
+                ? delegate { return @default; }
+                : new Func<string, bool>(new Regex(pattern).IsMatch);
 
-            var excludePredicate
-                = string.IsNullOrEmpty(excludePattern)
-                ? (_ => false)
-                : new Func<string, bool>(new Regex(excludePattern).IsMatch);
+            var includePredicate = PredicateFromPattern(includePattern, true);
+            var excludePredicate = PredicateFromPattern(excludePattern, false);
 
             var thisAssemblyName = typeof(Program).GetTypeInfo().Assembly.GetName();
 
