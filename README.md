@@ -262,6 +262,13 @@ Combines `OrderBy` (where element is key) and `Take` in a single operation.
 
 Combines `OrderBy` and `Take` in a single operation.
 
+### Partition
+
+Partitions a sequence by a predicate, or a grouping by Boolean keys or up to 3
+sets of keys.
+
+This method has 10 overloads.
+
 ### Permutations
 
 Generates a sequence of lists that represent the permutations of the original
