@@ -20,8 +20,8 @@
     <Language>en-US</Language>
     <ProjectSummary>MoreLINQ fills in a few gaps left by LINQ to Objects.</ProjectSummary>
     <DocumentationSources>
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net35\MoreLinq.dll" />
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net35\MoreLinq.xml" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net40\MoreLinq.dll" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net40\MoreLinq.xml" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
@@ -44,7 +44,7 @@
       </ComponentConfig>
     </ComponentConfigurations>
     <PresentationStyle>VS2013</PresentationStyle>
-    <FrameworkVersion>.NET Framework 3.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
 <NamespaceSummaryItem name="MoreLinq" isDocumented="True" xmlns="">Provides types and extension methods that extend LINQ to Objects.</NamespaceSummaryItem></NamespaceSummaries>

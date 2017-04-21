@@ -39,7 +39,7 @@ namespace MoreLinq.Test
             var sequenceAscending = sequence.Select(x => x.ToString());
             var sequenceDescending = sequenceAscending.Reverse();
 
-            var comparer = new ComparerFunc<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
             var resultAsc1 = sequenceAscending.OrderBy(x => x, comparer, OrderByDirection.Descending);
             var resultAsc2 = sequenceAscending.OrderByDescending(x => x, comparer);
@@ -103,7 +103,7 @@ namespace MoreLinq.Test
                                    new {A = "2", B = "1"},
                                };
 
-            var comparer = new ComparerFunc<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
             var resultA1 = sequence.OrderBy(x => x.A, comparer, OrderByDirection.Ascending)
                                      .ThenBy(y => y.B, comparer, OrderByDirection.Ascending);

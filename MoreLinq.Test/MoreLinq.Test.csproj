@@ -41,13 +41,12 @@
   <ItemGroup>
       <Compile Include="*Test.cs" />
       <Compile Include="Assert.cs" />
-      <Compile Include="AssertUtil.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
-      <Compile Include="ComparerFunc.cs" />
+      <Compile Include="Comparer.cs" />
       <Compile Include="CurrentThreadCultureScope.cs" />
-      <Compile Include="EqualityComparerFunc.cs" />
+      <Compile Include="EqualityComparer.cs" />
       <Compile Include="KeyValuePair.cs" />
       <Compile Include="Program.cs" />
       <Compile Include="SampleData.cs" />
