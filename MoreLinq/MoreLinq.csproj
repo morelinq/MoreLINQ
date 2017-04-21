@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>This project enhances LINQ to Objects with the following methods: Acquire, AggregateRight, Assert, AssertCount, AtLeast, AtMost, Batch, Cartesian, CountBetween, CountBy, Concat, Consume, DistinctBy, EquiZip, Exactly, ExceptBy, Exclude, FallbackIfEmpty, FillBackward, FillForward, Fold, ForEach, FullGroupJoin, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, Sequence, SingleOrFallback, SkipLast, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToDictionary, ToHashSet, Trace, TraverseBreadthFirst, TraverseDepthFirst, Unfold, Windowed, ZipLongest, ZipShortest</Description>
+    <Description>This project enhances LINQ to Objects with the following methods: Acquire, AggregateRight, Assert, AssertCount, AtLeast, AtMost, Batch, Cartesian, CountBetween, CountBy, Concat, Consume, DistinctBy, EquiZip, Exactly, ExceptBy, Exclude, FallbackIfEmpty, FillBackward, FillForward, Fold, ForEach, FullGroupJoin, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, MaxBy, MinBy, NestedLoops, OrderBy, OrderedMerge, Pad, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RunLengthEncode, Scan, Segment, Sequence, SingleOrFallback, SkipLast, SkipUntil, Slice, SortedMerge, Split, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToDataTable, ToDelimitedString, ToDictionary, ToHashSet, ToLookup, Trace, TraverseBreadthFirst, TraverseDepthFirst, Unfold, Windowed, ZipLongest, ZipShortest</Description>
     <Copyright>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin. Portions &#169; 2015 Felipe Sateler, “sholland”. Portions &#169; 2016 Leandro F. Vieira (leandromoh). Portions &#169; Microsoft. All rights reserved.</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -18,7 +18,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>MoreLinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
-    <PackageReleaseNotes>Adds new operators: ToDictionary (overloads), Partition. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds new operators: ToDictionary (overloads), ToLookup (overloads), Partition. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
