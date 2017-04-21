@@ -29,7 +29,7 @@ namespace MoreLinq
         /// in-memory source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <returns>The source <see cref="IEnumerable{T}"/> cached.</returns>
+        /// <returns>Returns a sequence that corresponds to a cached version of the input sequence.</returns>
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
             return source.Memoize(false, false);
@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <param name="disposeOnEarlyExit">Indicates if the call to dispose method of source's enumerator, 
         /// and therefore the close of the buffering, must happen at the end of the first iteration (true) 
         /// or only when source is entirely iterated (false).</param>
-        /// <returns>The source <see cref="IEnumerable{T}"/> cached.</returns>
+        /// <returns>Returns a sequence that corresponds to a cached version of the input sequence.</returns>
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool forceBuffering, bool disposeOnEarlyExit)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -60,7 +60,7 @@ namespace MoreLinq
                 return source;
             }
 
-            return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source, forceBuffering, disposeOnEarlyExit);
+            return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source, disposeOnEarlyExit);
         }
     }
 
@@ -72,7 +72,7 @@ namespace MoreLinq
         private IEnumerator<T> sourceEnumerator;
         private bool disposed;
 
-        public MemoizedEnumerable(IEnumerable<T> sequence, bool forceBuffering, bool shouldDisposeOnEarlyExit)
+        public MemoizedEnumerable(IEnumerable<T> sequence, bool shouldDisposeOnEarlyExit)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
@@ -86,8 +86,8 @@ namespace MoreLinq
             if (sourceEnumerator == null && !disposed)
                 sourceEnumerator = source.GetEnumerator();
 
-            int index = 0;
-            bool hasValue = false;
+            var index = 0;
+            var hasValue = false;
 
             try
             {

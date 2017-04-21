@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
-using System.Collections.ObjectModel;
 
 namespace MoreLinq.Test
 {
@@ -49,7 +48,7 @@ namespace MoreLinq.Test
         {
             var flow = new List<string>();
 
-            bool firstVisitAtInnerLoopDone = false;
+            var firstVisitAtInnerLoopDone = false;
 
             //add 1-3 to cache (so enter inner loop)
             //consume 4-5 already cached
@@ -96,7 +95,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MemoizeWithPartialIteration()
+        public void MemoizeWithPartialIterationBeforeCompleteIteration()
         {
             var buffer = Enumerable.Range(0, 10).Memoize();
 
@@ -113,61 +112,54 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeWithInMemoryCollection()
         {
-            List<int> list = Enumerable.Range(1, 10).ToList();
+            var list = Enumerable.Range(1, 10).ToList();
 
             Assert.IsInstanceOf<List<int>>(list.Memoize());
             Assert.IsInstanceOf<List<int>>(list.Memoize(false, false));
         }
 
         [Test]
-        public void MemoizeForcingBufferingICollection()
+        public void MemoizeWithForcedBuffering()
         {
-            List<int> list = Enumerable.Range(1, 10).ToList();
+            var list = Enumerable.Range(1, 10).ToList();
 
             Assert.IsNotInstanceOf<List<int>>(list.Memoize(true, false));
         }
 
         [Test]
-        public void MemoizeIsEnumeratedOnlyOnce()
+        public void MemoizeEnumeratesOnlyOnce()
         {
-            var memoized = new SingleUseEnumerable<int>(Enumerable.Range(1, 10)).Memoize();
+            var memoized = Enumerable.Range(1, 10).AsTestingSequence().Memoize();
 
             Assert.IsTrue(memoized.ToList().Count == 10);
             Assert.IsTrue(memoized.ToList().Count == 10);
         }
 
         [Test]
-        public void MemoizeNotDisponsingOnEarlyExit()
+        public void MemoizeDoesNotDisponseOnEarlyExitByDefault()
         {
-            TestSequence().Memoize().Take(1).ToList();
-            TestSequence().Memoize(false, false).Take(1).ToList();
+            Assert.Throws<AssertionException>(() =>
+            {
+                using (var xs = new[] { 1, 2 }.AsTestingSequence())
+                {
+                    xs.Memoize().Take(1).Consume();
+                    xs.Memoize(false, false).Take(1).Consume();
+                }
+            });
         }
 
         [Test]
-        public void MemoizeDisponsingOnEarlyExit()
+        public void MemoizeWithDisponseOnEarlyExitTrue()
         {
-            Assert.Throws<InvalidOperationException>(
-                () => TestSequence().Memoize(false, true).Take(1).ToList());
+            using (var xs = new[] { 1, 2 }.AsTestingSequence())
+                xs.Memoize(false, true).Take(1).Consume();
         }
 
         [Test]
-        public void MemoizeDisponsingAfterSourceWasEntirelyIterated()
+        public void MemoizeDisponsesAfterSourceIsIteratedEntirely()
         {
-            Assert.Throws<InvalidOperationException>(
-                () => TestSequence().Memoize().ToList());
-        }
-
-        private IEnumerable<int> TestSequence()
-        {
-            try
-            {
-                yield return 1;
-                yield return 2;
-            }
-            finally
-            {
-                throw new InvalidOperationException("leaking resources");
-            }
+            using (var xs = new[] { 1, 2 }.AsTestingSequence())
+                xs.Memoize().Consume();
         }
     }
 }
