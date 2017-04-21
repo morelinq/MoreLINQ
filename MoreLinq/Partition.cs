@@ -164,7 +164,7 @@ namespace MoreLinq
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="key">The key to partition.</param>
+        /// <param name="key">The key to partition on.</param>
         /// <param name="comparer">The comparer for keys.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from elements of the group
@@ -193,8 +193,8 @@ namespace MoreLinq
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="key1">The first key to partition.</param>
-        /// <param name="key2">The second key to partition.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from elements of the group
         /// matching <paramref name="key1"/>, elements of the group matching
@@ -220,8 +220,8 @@ namespace MoreLinq
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="key1">The first key to partition.</param>
-        /// <param name="key2">The second key to partition.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
         /// <param name="comparer">The comparer for keys.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from elements of the group
@@ -251,9 +251,9 @@ namespace MoreLinq
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="key1">The first key to partition.</param>
-        /// <param name="key2">The second key to partition.</param>
-        /// <param name="key3">The third key to partition.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
+        /// <param name="key3">The third key to partition on.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from elements of groups
         /// matching <paramref name="key1"/>, <paramref name="key2"/> and
@@ -279,9 +279,9 @@ namespace MoreLinq
         /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="key1">The first key to partition.</param>
-        /// <param name="key2">The second key to partition.</param>
-        /// <param name="key3">The third key to partition.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
+        /// <param name="key3">The third key to partition on.</param>
         /// <param name="comparer">The comparer for keys.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from elements of groups
