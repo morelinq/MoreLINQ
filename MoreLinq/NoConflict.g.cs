@@ -33,7 +33,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Acquire</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class AcquireExtension
+    public static partial class AcquireExtension
     {
         /// <summary>
         /// Ensures that a source sequence of <see cref="IDisposable"/> 
@@ -60,7 +60,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>AggregateRight</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class AggregateRightExtension
+    public static partial class AggregateRightExtension
     {
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
@@ -141,7 +141,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Assert</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class AssertExtension
+    public static partial class AssertExtension
     {
         /// <summary>
         /// Asserts that all elements of a sequence meet a given condition
@@ -187,7 +187,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>AssertCount</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class AssertCountExtension
+    public static partial class AssertCountExtension
     {
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Batch</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class BatchExtension
+    public static partial class BatchExtension
     {
         /// <summary>
         /// Batches the source sequence into sized buckets.
@@ -274,7 +274,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Cartesian</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class CartesianExtension
+    public static partial class CartesianExtension
     {
         /// <summary>
         /// Returns the Cartesian product of two sequences by combining each element of the first set with each in the second
@@ -296,7 +296,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Concat</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ConcatExtension
+    public static partial class ConcatExtension
     {
         /// <summary>
         /// Returns a sequence consisting of the head element and the given tail elements.
@@ -327,7 +327,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Consume</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ConsumeExtension
+    public static partial class ConsumeExtension
     {
         /// <summary>
         /// Completely consumes the given sequence. This method uses immediate execution,
@@ -344,7 +344,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>CountBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class CountByExtension
+    public static partial class CountByExtension
     {
         /// <summary>
         /// Applies a key-generating function to each element of a sequence and returns a sequence of 
@@ -378,7 +378,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>AtLeast</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class AtLeastExtension
+    public static partial class AtLeastExtension
     {
         /// <summary>
         /// Determines whether or not the number of elements in the sequence is greater than
@@ -407,7 +407,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>AtMost</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class AtMostExtension
+    public static partial class AtMostExtension
     {
 
         /// <summary>
@@ -437,7 +437,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Exactly</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ExactlyExtension
+    public static partial class ExactlyExtension
     {
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>CountBetween</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class CountBetweenExtension
+    public static partial class CountBetweenExtension
     {
 
         /// <summary>
@@ -498,7 +498,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>DistinctBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class DistinctByExtension
+    public static partial class DistinctByExtension
     {
         /// <summary>
         /// Returns all distinct elements of the given source, where "distinctness"
@@ -547,7 +547,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>EndsWith</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class EndsWithExtension
+    public static partial class EndsWithExtension
     {
         /// <summary>
         /// Determines whether the end of the first sequence is equivalent to
@@ -596,7 +596,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>EquiZip</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class EquiZipExtension
+    public static partial class EquiZipExtension
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -711,7 +711,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ExceptBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ExceptByExtension
+    public static partial class ExceptByExtension
     {
         /// <summary>
         /// Returns the set of elements in the first sequence which aren't
@@ -769,7 +769,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Exclude</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ExcludeExtension
+    public static partial class ExcludeExtension
     {
         /// <summary>
         /// Excludes <paramref name="count"/> elements from a sequence starting at a given index
@@ -788,7 +788,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>FallbackIfEmpty</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class FallbackIfEmptyExtension
+    public static partial class FallbackIfEmptyExtension
     {
         /// <summary>
         /// Returns the elements of the specified sequence or the specified
@@ -910,7 +910,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>FillBackward</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class FillBackwardExtension
+    public static partial class FillBackwardExtension
     {
         /// <summary>
         /// Returns a sequence with each null reference or value in the source
@@ -986,7 +986,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>FillForward</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class FillForwardExtension
+    public static partial class FillForwardExtension
     {
         /// <summary>
         /// Returns a sequence with each null reference or value in the source
@@ -1062,7 +1062,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Fold</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class FoldExtension
+    public static partial class FoldExtension
     {
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1149,7 +1149,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ForEach</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ForEachExtension
+    public static partial class ForEachExtension
     {
         /// <summary>
         /// Immediately executes the given action on each element in the source sequence.
@@ -1178,7 +1178,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>FullGroupJoin</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class FullGroupJoinExtension
+    public static partial class FullGroupJoinExtension
     {
         /// <summary>
         /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
@@ -1242,7 +1242,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>GroupAdjacent</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class GroupAdjacentExtension
+    public static partial class GroupAdjacentExtension
     {
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a 
@@ -1446,7 +1446,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Index</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class IndexExtension
+    public static partial class IndexExtension
     {
         /// <summary>
         /// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/> 
@@ -1482,7 +1482,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Interleave</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class InterleaveExtension
+    public static partial class InterleaveExtension
     {
         /// <summary>
         /// Interleaves the elements of two or more sequences into a single sequence, skipping sequences as they are consumed
@@ -1512,7 +1512,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Lag</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class LagExtension
+    public static partial class LagExtension
     {
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
@@ -1553,7 +1553,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Lead</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class LeadExtension
+    public static partial class LeadExtension
     {
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
@@ -1595,7 +1595,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>MaxBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class MaxByExtension
+    public static partial class MaxByExtension
     {
         /// <summary>
         /// Returns the maximal element of the given sequence, based on
@@ -1647,7 +1647,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>MinBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class MinByExtension
+    public static partial class MinByExtension
     {
         /// <summary>
         /// Returns the minimal element of the given sequence, based on
@@ -1699,7 +1699,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>NestedLoops</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class NestedLoopsExtension
+    public static partial class NestedLoopsExtension
     {
         // This extension method was developed (primarily) to support the
         // implementation of the Permutations() extension methods. However,
@@ -1722,7 +1722,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>OrderBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class OrderByExtension
+    public static partial class OrderByExtension
     {
         /// <summary>
         /// Sorts the elements of a sequence in a particular direction (ascending, descending) according to a key
@@ -1756,7 +1756,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ThenBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ThenByExtension
+    public static partial class ThenByExtension
     {
 
         /// <summary>
@@ -1791,7 +1791,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>OrderedMerge</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class OrderedMergeExtension
+    public static partial class OrderedMergeExtension
     {
         /// <summary>
         /// Merges two ordered sequences into one. Where the elements equal
@@ -2037,7 +2037,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Pad</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PadExtension
+    public static partial class PadExtension
     {
         /// <summary>
         /// Pads a sequence with default values if it is narrower (shorter 
@@ -2124,7 +2124,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Pairwise</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PairwiseExtension
+    public static partial class PairwiseExtension
     {
         /// <summary>
         /// Returns a sequence resulting from applying a function to each 
@@ -2160,7 +2160,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>PartialSort</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PartialSortExtension
+    public static partial class PartialSortExtension
     {
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey})"/>,
@@ -2246,7 +2246,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>PartialSortBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PartialSortByExtension
+    public static partial class PartialSortByExtension
     {
 
         /// <summary>
@@ -2342,10 +2342,243 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Partition</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class PartitionExtension
+    {
+        /// <summary>
+        /// Partitions or splits a sequence in two using a predicate and then
+        /// projects a result from the two.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">The predicate function.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of elements that
+        /// satisfy the predicate and those that do not, respectively, passed as
+        /// arguments.
+        /// </param>
+        /// <typeparam name="T">Type of source elements.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+        /// <example>
+        /// <code>
+        /// var (evens, odds) =
+        ///     Enumerable.Range(0, 10)
+        ///               .Partition(x => x % 2 == 0, ValueTuple.Create);
+        /// </code>
+        /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
+        /// and then 8. The <c>odds</c> variable, when iterated over, will yield
+        /// 1, 3, 5, 7 and then 9.
+        /// </example>
+
+        public static TResult Partition<T, TResult>(this IEnumerable<T> source,
+            Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+            => MoreEnumerable.Partition(source,predicate,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping by Boolean keys into a projection of true
+        /// elements and false elements, respectively.
+        /// </summary>
+        /// <typeparam name="T">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of true elements
+        /// and false elements, respectively, passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
+            Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+            => MoreEnumerable.Partition(source,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping by nullable Boolean keys into a projection of
+        /// true elements, false elements and null elements, respectively.
+        /// </summary>
+        /// <typeparam name="T">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of true elements,
+        /// false elements and null elements, respectively, passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
+            Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
+            => MoreEnumerable.Partition(source,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping and projects a result from group elements
+        /// matching a key and those groups that do not.
+        /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key">The key to partition.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from sequences of elements
+        /// matching <paramref name="key"/> and those groups that do not (in
+        /// the order in which they appear in <paramref name="source"/>),
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
+            TKey key,
+            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping and projects a result from group elements
+        /// matching a key and those groups that do not. An additional parameter
+        /// specifies how to compare keys for equality.
+        /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key">The key to partition on.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of the group
+        /// matching <paramref name="key"/> and those groups that do not (in
+        /// the order in which they appear in <paramref name="source"/>),
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
+            TKey key, IEqualityComparer<TKey> comparer,
+            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+            => MoreEnumerable.Partition(source,key,comparer,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping and projects a result from elements of
+        /// groups matching a set of two keys and those groups that do not.
+        /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of the group
+        /// matching <paramref name="key1"/>, elements of the group matching
+        /// <paramref name="key2"/> and those groups that do not (in the order
+        /// in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
+            TKey key1, TKey key2,
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping and projects a result from elements of
+        /// groups matching a set of two keys and those groups that do not.
+        /// An additional parameter specifies how to compare keys for equality.
+        /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of the group
+        /// matching <paramref name="key1"/>, elements of the group matching
+        /// <paramref name="key2"/> and those groups that do not (in the order
+        /// in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
+            TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
+            => MoreEnumerable.Partition(source,key1,key2,comparer,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping and projects a result from elements groups
+        /// matching a set of three keys and those groups that do not.
+        /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
+        /// <param name="key3">The third key to partition on.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of groups
+        /// matching <paramref name="key1"/>, <paramref name="key2"/> and
+        /// <paramref name="key3"/> and those groups that do not (in the order
+        /// in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
+            TKey key1, TKey key2, TKey key3,
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,key3,resultSelector);
+
+        /// <summary>
+        /// Partitions a grouping and projects a result from elements groups
+        /// matching a set of three keys and those groups that do not. An
+        /// additional parameter specifies how to compare keys for equality.
+        /// </summary>
+        /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="key1">The first key to partition on.</param>
+        /// <param name="key2">The second key to partition on.</param>
+        /// <param name="key3">The third key to partition on.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <param name="resultSelector">
+        /// Function that projects the result from elements of groups
+        /// matching <paramref name="key1"/>, <paramref name="key2"/> and
+        /// <paramref name="key3"/> and those groups that do not (in
+        /// the order in which they appear in <paramref name="source"/>),
+        /// passed as arguments.
+        /// </param>
+        /// <returns>
+        /// The return value from <paramref name="resultSelector"/>.
+        /// </returns>
+
+        public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
+            TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,key3,comparer,resultSelector);
+
+    }
+
     /// <summary><c>Permutations</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PermutationsExtension
+    public static partial class PermutationsExtension
     {
 
         /// <summary>
@@ -2371,7 +2604,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Pipe</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PipeExtension
+    public static partial class PipeExtension
     {
         /// <summary>
         /// Executes the given action on each element in the source sequence
@@ -2397,7 +2630,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Prepend</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PrependExtension
+    public static partial class PrependExtension
     {
         /// <summary>
         /// Prepends a single value to a sequence.
@@ -2426,7 +2659,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>PreScan</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class PreScanExtension
+    public static partial class PreScanExtension
     {
         /// <summary>
         /// Performs a pre-scan (exclusive prefix sum) on a sequence of elements.
@@ -2467,7 +2700,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>RandomSubset</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class RandomSubsetExtension
+    public static partial class RandomSubsetExtension
     {
         /// <summary>
         /// Returns a sequence of a specified size of random elements from the original sequence
@@ -2497,7 +2730,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Rank</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class RankExtension
+    public static partial class RankExtension
     {
         /// <summary>
         /// Ranks each item in the sequence in descending ordering using a default comparer.
@@ -2525,7 +2758,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>RankBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class RankByExtension
+    public static partial class RankByExtension
     {
 
         /// <summary>
@@ -2558,7 +2791,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Repeat</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class RepeatExtension
+    public static partial class RepeatExtension
     {
         /// <summary>
         /// Repeats the sequence the specified number of times.
@@ -2586,7 +2819,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>RunLengthEncode</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class RunLengthEncodeExtension
+    public static partial class RunLengthEncodeExtension
     {
         /// <summary>
         /// Run-length encodes a sequence by converting consecutive instances of the same element into
@@ -2617,7 +2850,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Scan</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ScanExtension
+    public static partial class ScanExtension
     {
         /// <summary>
         /// Peforms a scan (inclusive prefix sum) on a sequence of elements.
@@ -2682,7 +2915,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Segment</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SegmentExtension
+    public static partial class SegmentExtension
     {
         /// <summary>
         /// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
@@ -2731,7 +2964,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>SkipLast</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SkipLastExtension
+    public static partial class SkipLastExtension
     {
         /// <summary>
         /// Bypasses a specified number of elements at the end of the sequence.
@@ -2751,7 +2984,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>SkipUntil</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SkipUntilExtension
+    public static partial class SkipUntilExtension
     {
         /// <summary>
         /// Skips items from the input sequence until the given predicate returns true
@@ -2791,7 +3024,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Slice</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SliceExtension
+    public static partial class SliceExtension
     {
         /// <summary>
         /// Extracts <paramref name="count"/> elements from a sequence at a particular zero-based starting index
@@ -2817,7 +3050,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>SortedMerge</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SortedMergeExtension
+    public static partial class SortedMergeExtension
     {
         /// <summary>
         /// Merges two or more sequences that are in a common order (either ascending or descending) into
@@ -2867,7 +3100,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Split</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SplitExtension
+    public static partial class SplitExtension
     {
 
         /// <summary>
@@ -3087,7 +3320,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>StartsWith</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class StartsWithExtension
+    public static partial class StartsWithExtension
     {
         /// <summary>
         /// Determines whether the beginning of the first sequence is
@@ -3138,7 +3371,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Subsets</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class SubsetsExtension
+    public static partial class SubsetsExtension
     {
         /// <summary>
         /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets
@@ -3183,7 +3416,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>TagFirstLast</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class TagFirstLastExtension
+    public static partial class TagFirstLastExtension
     {
         /// <summary>
         /// Returns a sequence resulting from applying a function to each 
@@ -3225,7 +3458,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>TakeEvery</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class TakeEveryExtension
+    public static partial class TakeEveryExtension
     {
         /// <summary>
         /// Returns every N-th element of a sequence.
@@ -3255,7 +3488,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>TakeLast</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class TakeLastExtension
+    public static partial class TakeLastExtension
     {
         /// <summary>
         /// Returns a specified number of contiguous elements from the end of 
@@ -3288,7 +3521,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>TakeUntil</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class TakeUntilExtension
+    public static partial class TakeUntilExtension
     {
         /// <summary>
         /// Returns items from the input sequence until the given predicate returns true
@@ -3328,7 +3561,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ToDelimitedString</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ToDelimitedStringExtension
+    public static partial class ToDelimitedStringExtension
     {
 
         /// <summary>
@@ -3634,10 +3867,48 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>ToDictionary</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class ToDictionaryExtension
+    {
+        /// <summary>
+        /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
+        /// <see cref="KeyValuePair{TKey,TValue}" /> elements.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of key-value pairs.</param>
+        /// <returns>
+        /// A <see cref="Dictionary{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)             => MoreEnumerable.ToDictionary(source);
+
+        /// <summary>
+        /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
+        /// <see cref="KeyValuePair{TKey,TValue}" /> elements. An additional
+        /// parameter specifies a comparer for keys.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of key-value pairs.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <returns>
+        /// A <see cref="Dictionary{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            IEqualityComparer<TKey> comparer)             => MoreEnumerable.ToDictionary(source,comparer);
+
+    }
+
     /// <summary><c>ToHashSet</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ToHashSetExtension
+    public static partial class ToHashSetExtension
     {
         /// <summary>
         /// Returns a <see cref="HashSet{T}"/> of the source items using the default equality
@@ -3672,10 +3943,48 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>ToLookup</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class ToLookupExtension
+    {
+        /// <summary>
+        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// <see cref="KeyValuePair{TKey,TValue}" /> elements.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of key-value pairs.</param>
+        /// <returns>
+        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)             => MoreEnumerable.ToLookup(source);
+
+        /// <summary>
+        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// <see cref="KeyValuePair{TKey,TValue}" /> elements. An additional
+        /// parameter specifies a comparer for keys.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of key-value pairs.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <returns>
+        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            IEqualityComparer<TKey> comparer)             => MoreEnumerable.ToLookup(source,comparer);
+
+    }
+
     /// <summary><c>Trace</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class TraceExtension
+    public static partial class TraceExtension
     {
         /// <summary>
         /// Traces the elements of a source sequence for diagnostics.
@@ -3737,7 +4046,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>Windowed</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class WindowedExtension
+    public static partial class WindowedExtension
     {
         /// <summary>
         /// Processes a sequence into a series of subsequences representing a windowed subset of the original
@@ -3759,7 +4068,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ZipLongest</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ZipLongestExtension
+    public static partial class ZipLongestExtension
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -3800,7 +4109,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ZipShortest</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ZipShortestExtension
+    public static partial class ZipShortestExtension
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element 

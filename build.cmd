@@ -12,8 +12,9 @@ if "%1"=="docs" shift & goto :docs
 dotnet --info ^
   && dotnet restore ^
   && dotnet restore MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj ^
-  && call :codegen MoreLinq\NoConflict.g.cs -x "^ToDataTable$" -u System.Linq MoreLinq ^
-  && call :codegen MoreLinq\NoConflict.ToDataTable.g.cs -i "^ToDataTable$" -u System.Data MoreLinq -u System.Linq.Expressions ^
+  && call :codegen MoreLinq\NoConflict.g.cs -x "[/\\](ToDataTable|(.+)\.Tuple)\.cs$" -u System.Linq MoreLinq ^
+  && call :codegen MoreLinq\NoConflict.Tuple.g.cs -i "[/\\]To.+\.Tuple\.cs$" -u System.Linq --no-class-lead MoreLinq ^
+  && call :codegen MoreLinq\NoConflict.ToDataTable.g.cs -i "[/\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq ^
   && for %%i in (debug release) do call msbuild.cmd "MoreLinq.sln" /v:m /p:Configuration=%%i %* || exit /b 1
 goto :EOF
 

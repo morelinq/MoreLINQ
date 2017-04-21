@@ -34,7 +34,7 @@ namespace MoreLinq.NoConflict
     /// <summary><c>ToDataTable</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static class ToDataTableExtension
+    public static partial class ToDataTableExtension
     {
 
         /// <summary>

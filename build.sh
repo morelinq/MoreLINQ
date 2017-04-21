@@ -17,8 +17,9 @@ codegen() {
     dotnet run -p MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- "$@" > "$dest"
 }
 printf "Generating no-conflict wrappers..."
-codegen MoreLinq/NoConflict.g.cs -x "^ToDataTable$" -u System.Linq MoreLinq
-codegen MoreLinq/NoConflict.ToDataTable.g.cs -i "^ToDataTable$" -u System.Data MoreLinq -u System.Linq.Expressions
+codegen MoreLinq/NoConflict.g.cs -x "[/\\\\](ToDataTable|(.+)\.Tuple)\.cs$" -u System.Linq MoreLinq
+codegen MoreLinq/NoConflict.Tuple.g.cs -i "[/\\\\]To.+\.Tuple\.cs$" -u System.Linq --no-class-lead MoreLinq
+codegen MoreLinq/NoConflict.ToDataTable.g.cs -i "[/\\\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq
 printf "Done.\n"
 for c in Debug Release; do
     ./msbuild.sh /v:m /p:Configuration=$c

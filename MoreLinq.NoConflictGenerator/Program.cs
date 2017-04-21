@@ -36,6 +36,7 @@ namespace MoreLinq.NoConflictGenerator
             string includePattern = null;
             string excludePattern = null;
             var usings = new List<string>();
+            var noClassLead = false;
 
             Exception MissingArgValue() =>
                 new InvalidOperationException("Missing argument value.");
@@ -57,6 +58,9 @@ namespace MoreLinq.NoConflictGenerator
                         case "-u":
                         case "--using":
                             usings.Add(Read(arg, MissingArgValue));
+                            break;
+                        case "--no-class-lead":
+                            noClassLead = true;
                             break;
                         case "":
                             continue;
@@ -83,6 +87,7 @@ namespace MoreLinq.NoConflictGenerator
 
             var q =
                 from fp in Directory.EnumerateFiles(dir, "*.cs")
+                where !excludePredicate(fp) && includePredicate(fp)
                 select new
                 {
                     SourcePath = fp,
@@ -101,8 +106,6 @@ namespace MoreLinq.NoConflictGenerator
                         && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
                         && md.Modifiers.Any(m => (string)m.Value == "public")
                         && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
-                        && includePredicate(mn)
-                        && !excludePredicate(mn)
                         select md
                 };
 
@@ -152,11 +155,11 @@ namespace MoreLinq.NoConflictGenerator
                                 .WithSemicolonToken(ParseToken(";").WithTrailingTrivia(LineFeed))
                 }
                 into m
-                select $@"
+                select (!noClassLead ? $@"
     /// <summary><c>{m.Name}</c> extension.</summary>
 
-    [GeneratedCode(""{thisAssemblyName.Name}"", ""{thisAssemblyName.Version}"")]
-    public static class {m.Name}Extension
+    [GeneratedCode(""{thisAssemblyName.Name}"", ""{thisAssemblyName.Version}"")]" : null) + $@"
+    public static partial class {m.Name}Extension
     {{
 {string.Join(null, from mo in m.Overloads select mo.ToFullString())}
     }}";
