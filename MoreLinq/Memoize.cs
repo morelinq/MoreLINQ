@@ -68,6 +68,7 @@ namespace MoreLinq
     {
         private readonly IList<T> cache;
         private readonly bool disposeOnEarlyExit;
+        private readonly object locker;
         private IEnumerable<T> source;
         private IEnumerator<T> sourceEnumerator;
         private bool disposed;
@@ -79,12 +80,14 @@ namespace MoreLinq
             source = sequence;
             cache = new List<T>();
             disposeOnEarlyExit = shouldDisposeOnEarlyExit;
+            locker = new object();
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             if (sourceEnumerator == null && !disposed)
-                sourceEnumerator = source.GetEnumerator();
+                lock (locker)
+                    sourceEnumerator = source.GetEnumerator();
 
             var index = 0;
             var hasValue = false;
@@ -93,19 +96,22 @@ namespace MoreLinq
             {
                 while (true)
                 {
-                    if (index < cache.Count)
+                    lock (locker)
                     {
-                        hasValue = true;
-                    }
+                        if (index < cache.Count)
+                        {
+                            hasValue = true;
+                        }
 
-                    else if ((hasValue = !disposed && sourceEnumerator.MoveNext()))
-                    {
-                        cache.Add(sourceEnumerator.Current);
-                    }
+                        else if ((hasValue = !disposed && sourceEnumerator.MoveNext()))
+                        {
+                            cache.Add(sourceEnumerator.Current);
+                        }
 
-                    else if (!disposed)
-                    {
-                        DisposeSourceResources();
+                        else if (!disposed)
+                        {
+                            DisposeSourceResources();
+                        }
                     }
 
                     if (hasValue)
