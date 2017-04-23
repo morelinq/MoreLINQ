@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoreLinq.Test
 {
@@ -160,6 +161,33 @@ namespace MoreLinq.Test
         {
             using (var xs = new[] { 1, 2 }.AsTestingSequence())
                 xs.Memoize().Consume();
+        }
+
+        [Test]
+        public static void MemoizeIsThreadSafe()
+        {
+            var sequence = Enumerable.Range(1, 1000000);
+            var memoized = sequence.Memoize();
+            var taskConsumed = new List<List<int>>();
+
+            var tasks = Enumerable.Range(1, 5).Select(_ =>
+            {
+                var list = new List<int>();
+                taskConsumed.Add(list);
+
+                return new Task(() =>
+                {
+                    foreach (var x in memoized)
+                        list.Add(x);
+                });
+            }).ToArray();
+
+            tasks.ForEach(t => t.Start());
+
+            Task.WaitAll(tasks);
+
+            sequence.AssertSequenceEqual(memoized);
+            taskConsumed.ForEach(consumed => consumed.AssertSequenceEqual(memoized));
         }
     }
 }
