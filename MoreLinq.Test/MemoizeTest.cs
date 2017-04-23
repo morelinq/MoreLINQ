@@ -166,7 +166,7 @@ namespace MoreLinq.Test
         [Test]
         public static void MemoizeIsThreadSafe()
         {
-            var sequence = Enumerable.Range(1, 1000000);
+            var sequence = Enumerable.Range(1, 100000);
             var memoized = sequence.Memoize();
             var taskConsumed = new List<List<int>>();
 
