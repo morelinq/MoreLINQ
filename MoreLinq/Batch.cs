@@ -61,6 +61,25 @@ namespace MoreLinq
             return BatchImpl(source, size, resultSelector);
         }
 
+        /// <summary>
+        /// Batches the sequence based on the first and last match predicates.
+        /// </summary>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="firstMatchPredicate">Predicate to identify the first element of the result sequence</param>
+        /// <param name="lastMatchPredicate">Predicate to identify the last element of the result sequence</param>
+        /// <returns>A sequence where the first element satisfies the firstMatchPredicate and the last element matches the lastMatchPredicate. Elements in between should not satisfy the predicates.</returns>
+        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source,
+                                                                       Func<TSource, bool> firstMatchPredicate,
+                                                                       Func<TSource, bool> lastMatchPredicate)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (firstMatchPredicate == null) throw new ArgumentNullException("firstMatchPredicate");
+            if (lastMatchPredicate == null) throw new ArgumentNullException("lastMatchPredicate");
+
+            return BatchByPredicatesImpl(source, firstMatchPredicate, lastMatchPredicate);
+        }
+
         private static IEnumerable<TResult> BatchImpl<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
@@ -98,6 +117,39 @@ namespace MoreLinq
             {
                 Array.Resize(ref bucket, count);
                 yield return resultSelector(bucket);
+            }
+        }
+
+        private static IEnumerable<IEnumerable<TSource>> BatchByPredicatesImpl<TSource>(this IEnumerable<TSource> source,
+                                                                       Func<TSource, bool> firstMatchPredicate,
+                                                                       Func<TSource, bool> lastMatchPredicate)
+        {
+            Debug.Assert(source != null);
+            Debug.Assert(firstMatchPredicate != null);
+            Debug.Assert(lastMatchPredicate != null);
+
+            var currentBatch = new List<TSource>();            
+            foreach (var item in source)
+            {
+                var firstMatched = firstMatchPredicate(item);
+                if (firstMatched)
+                {
+                    currentBatch.Clear();
+                    currentBatch.Add(item);
+                    continue;
+                }
+
+                var lastMatched = lastMatchPredicate(item);
+                if (lastMatched)
+                {
+                    currentBatch.Add(item);
+                    yield return currentBatch;
+
+                    currentBatch = new List<TSource>();
+                    continue;
+                }
+
+                currentBatch.Add(item);
             }
         }
     }
