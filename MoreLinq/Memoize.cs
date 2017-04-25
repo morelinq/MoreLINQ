@@ -126,9 +126,9 @@ namespace MoreLinq
             finally
             {
                 if (!disposed && disposeOnEarlyExit)
-                {
-                    DisposeSourceResources();
-                }
+                    lock (locker)
+                        if (!disposed && disposeOnEarlyExit)
+                            DisposeSourceResources();
             }
         }
 
