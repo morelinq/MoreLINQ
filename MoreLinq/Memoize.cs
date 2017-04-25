@@ -87,7 +87,8 @@ namespace MoreLinq
         {
             if (sourceEnumerator == null && !disposed)
                 lock (locker)
-                    sourceEnumerator = source.GetEnumerator();
+                    if (sourceEnumerator == null && !disposed)
+                        sourceEnumerator = source.GetEnumerator();
 
             var index = 0;
             var hasValue = false;
