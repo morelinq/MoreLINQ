@@ -187,9 +187,9 @@ This method has 3 overloads.
 
 ### Fold
 
-Returns the result of applying a function to a sequence of 1 element.
+Returns the result of applying a function to a sequence with 1 to 16 elements.
 
-This method has 4 overloads.
+This method has 16 overloads.
 
 ### ForEach
 
