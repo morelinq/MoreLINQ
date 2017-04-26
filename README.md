@@ -140,7 +140,7 @@ This method has 3 overloads.
 
 Returns the result of applying a function to a sequence of 1 element.
 
-This method has 4 overloads.
+This method has 16 overloads.
 
 ### ForEach
 
