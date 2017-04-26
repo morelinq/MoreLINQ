@@ -42,7 +42,7 @@ namespace MoreLinq
             };
 
         foreach (var e in overloads) { #>
-<#          if (e.Count == 4) { #>
+<#          if (e.Count == 5) { #>
         #if FUNC16
 
 <# } #>
