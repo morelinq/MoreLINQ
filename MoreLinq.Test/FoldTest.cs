@@ -25,62 +25,6 @@ namespace MoreLinq.Test
     public class FoldTest
     {
         [Test]
-        public void Fold1WithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",() =>
-                MoreEnumerable.Fold<object, object>(null, a => null));
-        }
-
-        [Test]
-        public void Fold2WithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Fold<object, object>(null, (a, b) => null));
-        }
-
-        [Test]
-        public void Fold3WithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Fold<object, object>(null, (a, b, c) => null));
-        }
-        
-        [Test]
-        public void Fold4WithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Fold<object, object>(null, (a, b, c, d) => null));
-        }
-
-        [Test]
-        public void Fold1WithNullFolder()
-        {
-            Assert.ThrowsArgumentNullException("folder",() =>
-                new object[0].Fold((Func<object, object>)null));
-        }
-
-        [Test]
-        public void Fold2WithNullFolder()
-        {
-            Assert.ThrowsArgumentNullException("folder",() =>
-                new object[0].Fold((Func<object, object, object>)null));
-        }
-        
-        [Test]
-        public void Fold3WithNullFolder()
-        {
-            Assert.ThrowsArgumentNullException("folder", () =>
-                new object[0].Fold((Func<object, object, object, object>)null));
-        }
-        
-        [Test]
-        public void Fold4WithNullFolder()
-        {
-            Assert.ThrowsArgumentNullException("folder", () =>
-                new object[0].Fold((Func<object, object, object, object, object>)null));
-        }
-
-        [Test]
         public void FoldWithTooFewItems()
         {
             Assert.Throws<InvalidOperationException>(() =>
