@@ -23,6 +23,7 @@
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
