@@ -31,14 +31,14 @@ namespace MoreLinq.Test
     [TestFixture]
     public class NullArgumentTest
     {
-        [Test, TestCaseSource("GetNotNullTestCases")]
+        [Test, TestCaseSource(nameof(GetNotNullTestCases))]
         public void NotNull(TestCase testCase)
         {
             Assert.ThrowsArgumentNullException(testCase.ParameterName, 
                 () => testCase.Invoke());
         }
 
-        [Test, TestCaseSource("GetCanBeNullTestCases")]
+        [Test, TestCaseSource(nameof(GetCanBeNullTestCases))]
         public void CanBeNull(TestCase testCase)
         {
             Assert.DoesNotThrow(() => testCase.Invoke());
@@ -198,7 +198,7 @@ namespace MoreLinq.Test
             {
                 public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
                 {
-                    if (keySelector == null) throw new ArgumentNullException("keySelector");
+                    if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
                     return this;
                 }
             }

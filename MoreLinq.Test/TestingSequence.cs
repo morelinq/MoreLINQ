@@ -31,7 +31,7 @@ namespace MoreLinq.Test
 
         internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return new TestingSequence<T>(source);
         }
     }

@@ -131,21 +131,21 @@ namespace MoreLinq.Test
         public void FullGroupPreservesOrder()
         {
             var listA = new[] {
-                Tuple.Create(3, 1),
-                Tuple.Create(1, 1),
-                Tuple.Create(2, 1),
-                Tuple.Create(1, 2),
-                Tuple.Create(1, 3),
-                Tuple.Create(3, 2),
-                Tuple.Create(1, 4),
-                Tuple.Create(3, 3),
+                (3, 1),
+                (1, 1),
+                (2, 1),
+                (1, 2),
+                (1, 3),
+                (3, 2),
+                (1, 4),
+                (3, 3),
             };
             var listB = new[] {
-                Tuple.Create(4, 1),
-                Tuple.Create(3, 1),
-                Tuple.Create(2, 1),
-                Tuple.Create(0, 1),
-                Tuple.Create(3, 0),
+                (4, 1),
+                (3, 1),
+                (2, 1),
+                (0, 1),
+                (3, 0),
             };
 
             var result = listA.FullGroupJoin(listB, x => x.Item1, x => x.Item1, (key, first, second) => new { key, first, second }).ToList();

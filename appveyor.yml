@@ -1,4 +1,5 @@
 version: '{build}'
+image: Visual Studio 2017
 build_script:
 - ps: >-
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
@@ -16,6 +17,8 @@ deploy:
   api_key:
     secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
   symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
+  on:
+    branch: master
 notifications:
 - provider: Email
   to:
