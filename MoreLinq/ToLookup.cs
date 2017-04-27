@@ -23,14 +23,14 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// Creates a <see cref="ILookup{TKey,TValue}" /> from a sequence of
         /// <see cref="KeyValuePair{TKey,TValue}" /> elements.
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <typeparam name="TValue">The type of the value.</typeparam>
         /// <param name="source">The source sequence of key-value pairs.</param>
         /// <returns>
-        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// A <see cref="ILookup{TKey,TValue}"/> containing the values
         /// mapped to their keys.
         /// </returns>
 
@@ -38,7 +38,7 @@ namespace MoreLinq
             source.ToLookup(null);
 
         /// <summary>
-        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// Creates a <see cref="ILookup{TKey,TValue}" /> from a sequence of
         /// <see cref="KeyValuePair{TKey,TValue}" /> elements. An additional
         /// parameter specifies a comparer for keys.
         /// </summary>
@@ -47,7 +47,7 @@ namespace MoreLinq
         /// <param name="source">The source sequence of key-value pairs.</param>
         /// <param name="comparer">The comparer for keys.</param>
         /// <returns>
-        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// A <see cref="ILookup{TKey,TValue}"/> containing the values
         /// mapped to their keys.
         /// </returns>
 
