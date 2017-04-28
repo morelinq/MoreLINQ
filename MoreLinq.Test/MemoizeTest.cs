@@ -191,7 +191,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MemoizeAvoidsRevaluation()
+        public void MemoizeWithMemoizedSourceReturnsSame()
         {
             var memoized = Enumerable.Range(0, 9).Memoize();
             var reevaluated = memoized.Memoize();
