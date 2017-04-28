@@ -30,6 +30,10 @@ namespace MoreLinq
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <returns>Returns a sequence that corresponds to a cached version of the input sequence.</returns>
+        /// <remarks>
+        /// Enumeration of the result sequence is thread-safe, that is, multiple independent IEnumerator values 
+        /// may be used simultaneously from different threads.
+        /// </remarks>
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
             return source.Memoize(false, false);
@@ -51,6 +55,10 @@ namespace MoreLinq
         /// and therefore the close of the buffering, must happen at the end of the first iteration (true) 
         /// or only when source is entirely iterated (false).</param>
         /// <returns>Returns a sequence that corresponds to a cached version of the input sequence.</returns>
+        /// <remarks>
+        /// Enumeration of the result sequence is thread-safe, that is, multiple independent IEnumerator values 
+        /// may be used simultaneously from different threads.
+        /// </remarks>
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool forceBuffering, bool disposeOnEarlyExit)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
