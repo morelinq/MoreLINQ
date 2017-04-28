@@ -189,5 +189,14 @@ namespace MoreLinq.Test
             sequence.AssertSequenceEqual(memoized);
             taskConsumed.ForEach(consumed => consumed.AssertSequenceEqual(memoized));
         }
+
+        [Test]
+        public void MemoizeAvoidsRevaluation()
+        {
+            var memoized = Enumerable.Range(0, 9).Memoize();
+            var reevaluated = memoized.Memoize();
+
+            Assert.That(memoized, Is.SameAs(reevaluated));
+        }
     }
 }
