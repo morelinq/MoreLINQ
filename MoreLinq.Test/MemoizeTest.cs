@@ -194,9 +194,9 @@ namespace MoreLinq.Test
         public void MemoizeWithMemoizedSourceReturnsSame()
         {
             var memoized = Enumerable.Range(0, 9).Memoize();
-            var reevaluated = memoized.Memoize();
+            var memoizedAgain = memoized.Memoize();
 
-            Assert.That(memoized, Is.SameAs(reevaluated));
+            Assert.That(memoized, Is.SameAs(memoizedAgain));
         }
     }
 }
