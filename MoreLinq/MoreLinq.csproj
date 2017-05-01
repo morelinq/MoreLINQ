@@ -20,7 +20,9 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
-    <PackageReleaseNotes>Adds new operators: Fold (overloads), ToDictionary (overloads), ToLookup (overloads), Partition. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds new operators: Fold (overloads), ToDictionary (overloads), ToLookup (overloads), Partition. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.
+
+2.4.1 is a maintenance release that addresses packaging issues. There are no new features or bug fixes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
