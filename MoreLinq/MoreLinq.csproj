@@ -18,7 +18,7 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>MoreLinq</PackageId>
+    <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
     <PackageReleaseNotes>Adds new operators: Fold (overloads), ToDictionary (overloads), ToLookup (overloads), Partition. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
