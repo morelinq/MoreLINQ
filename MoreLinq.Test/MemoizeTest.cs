@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace MoreLinq.Test
 {
@@ -159,26 +159,27 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 50000);
             var memoized = sequence.AsTestingSequence().Memoize();
-            var taskConsumed = new List<List<int>>();
 
-            var tasks = Enumerable.Range(1, 5).Select(_ =>
-            {
-                var list = new List<int>();
-                taskConsumed.Add(list);
+            var lists = Enumerable.Range(0, Environment.ProcessorCount * 2)
+                                  .Select(_ => new List<int>())
+                                  .ToArray();
 
-                return new Task(() =>
+            var start = new Barrier(lists.Length);
+
+            var threads =
+                from list in lists
+                select new Thread(() =>
                 {
-                    foreach (var x in memoized)
-                        list.Add(x);
+                    start.SignalAndWait();
+                    list.AddRange(memoized);
                 });
-            }).ToArray();
 
-            tasks.ForEach(t => t.Start());
+            threads.Pipe(t => t.Start())
+                   .ToArray() // start all before joining
+                   .ForEach(t => t.Join());
 
-            Task.WaitAll(tasks);
-
-            sequence.AssertSequenceEqual(memoized);
-            taskConsumed.ForEach(consumed => consumed.AssertSequenceEqual(memoized));
+            Assert.That(sequence, Is.EquivalentTo(memoized));
+            lists.ForEach(list => Assert.That(list, Is.EquivalentTo(memoized)));
         }
 
         [Test]
