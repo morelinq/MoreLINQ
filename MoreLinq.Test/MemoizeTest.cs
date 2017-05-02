@@ -116,15 +116,6 @@ namespace MoreLinq.Test
             var list = Enumerable.Range(1, 10).ToList();
 
             Assert.IsInstanceOf<List<int>>(list.Memoize());
-            Assert.IsInstanceOf<List<int>>(list.Memoize(false, false));
-        }
-
-        [Test]
-        public void MemoizeWithForcedBuffering()
-        {
-            var list = Enumerable.Range(1, 10).ToList();
-
-            Assert.IsNotInstanceOf<List<int>>(list.Memoize(true, false));
         }
 
         [Test]
@@ -144,7 +135,7 @@ namespace MoreLinq.Test
                 using (var xs = new[] { 1, 2 }.AsTestingSequence())
                 {
                     xs.Memoize().Take(1).Consume();
-                    xs.Memoize(false, false).Take(1).Consume();
+                    xs.Memoize(false).Take(1).Consume();
                 }
             });
         }
@@ -153,7 +144,7 @@ namespace MoreLinq.Test
         public void MemoizeWithDisponseOnEarlyExitTrue()
         {
             using (var xs = new[] { 1, 2 }.AsTestingSequence())
-                xs.Memoize(false, true).Take(1).Consume();
+                xs.Memoize(true).Take(1).Consume();
         }
 
         [Test]

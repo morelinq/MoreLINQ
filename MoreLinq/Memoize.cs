@@ -44,21 +44,15 @@ namespace MoreLinq
 
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
-            return source.Memoize(false, false);
+            return source.Memoize(false);
         }
 
         /// <summary>
         /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
         /// cache of the enumeration on first iteration, if it is not already an
         /// in-memory source.
-        /// An additional argument specifies if buffering must happen even if the source implements
-        /// <see cref="ICollection{T}"/> (otherwise it is assumed that the source already serves as 
-        /// a buffer adequately).
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <param name="forceBuffering">Force buffering, even if source is an <see cref="ICollection{T}" />
-        /// (otherwise source is assumed to already be in-memory and enumerated quickly, and hence that
-        /// buffering again would be a waste).</param>
         /// <param name="disposeOnEarlyExit">Indicates if the call to dispose method of source's enumerator, 
         /// and therefore the close of the buffering, must happen at the end of the first iteration (true) 
         /// or only when source is entirely iterated (false).</param>
@@ -75,11 +69,11 @@ namespace MoreLinq
         /// simultaneously) may iterate over the sequence.
         /// </remarks>
 
-        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool forceBuffering, bool disposeOnEarlyExit)
+        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool disposeOnEarlyExit)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (!forceBuffering && source is ICollection<T>)
+            if (source is ICollection<T>)
             {
                 return source;
             }
