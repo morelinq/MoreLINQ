@@ -154,7 +154,7 @@ namespace MoreLinq.Test
                 xs.Memoize().Consume();
         }
 
-        [Test]
+        [Test, Explicit]
         public static void MemoizeIsThreadSafe()
         {
             var sequence = Enumerable.Range(1, 50000);
