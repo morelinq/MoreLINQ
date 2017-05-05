@@ -44,33 +44,6 @@ namespace MoreLinq
 
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
-            return source.Memoize(false);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
-        /// cache of the enumeration on first iteration, if it is not already an
-        /// in-memory source.
-        /// </summary>
-        /// <param name="source">The source sequence.</param>
-        /// <param name="disposeOnEarlyExit">Indicates if the call to dispose method of source's enumerator, 
-        /// and therefore the close of the buffering, must happen at the end of the first iteration (true) 
-        /// or only when source is entirely iterated (false).</param>
-        /// <returns>Returns a sequence that corresponds to a cached version of the input sequence.</returns>
-        /// <remarks>
-        /// The returned <see cref="IEnumerable{T}"/> will cache items from
-        /// <paramref name="source"/> in a thread-safe manner such that it can
-        /// be shared between threads. Each thread can call its
-        /// <see cref="IEnumerable{T}.GetEnumerator"/> to acquire an iterator
-        /// but the same iterator should not be used simultanesouly from
-        /// multiple threads. The sequence supplied in <paramref name="source"/>
-        /// is not expected to be thread-safe but it is required to be
-        /// thread-agnostic because different threads (though never
-        /// simultaneously) may iterate over the sequence.
-        /// </remarks>
-
-        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source, bool disposeOnEarlyExit)
-        {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             if (source is ICollection<T>)
@@ -78,75 +51,74 @@ namespace MoreLinq
                 return source;
             }
 
-            return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source, disposeOnEarlyExit);
+            return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source);
         }
     }
 
-    internal class MemoizedEnumerable<T> : IEnumerable<T>
+    internal class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
     {
-        private readonly IList<T> cache;
-        private readonly bool disposeOnEarlyExit;
+        private IList<T> cache;
         private readonly object locker;
-        private IEnumerable<T> source;
+        private readonly IEnumerable<T> source;
         private IEnumerator<T> sourceEnumerator;
-        private bool disposed;
 
-        public MemoizedEnumerable(IEnumerable<T> sequence, bool shouldDisposeOnEarlyExit)
+        public MemoizedEnumerable(IEnumerable<T> sequence)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
             source = sequence;
-            cache = new List<T>();
-            disposeOnEarlyExit = shouldDisposeOnEarlyExit;
             locker = new object();
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            if (sourceEnumerator == null && !disposed)
-                lock (locker)
-                    if (sourceEnumerator == null && !disposed)
-                        sourceEnumerator = source.GetEnumerator();
-
-            var index = 0;
-            var hasValue = false;
-
-            try
+            if (cache == null)
             {
-                while (true)
+                lock (locker)
                 {
-                    lock (locker)
+                    if (cache == null)
                     {
-                        if (index < cache.Count)
-                        {
-                            hasValue = true;
-                        }
-
-                        else if ((hasValue = !disposed && sourceEnumerator.MoveNext()))
-                        {
-                            cache.Add(sourceEnumerator.Current);
-                        }
-
-                        else if (!disposed)
-                        {
-                            DisposeSourceResources();
-                        }
+                        var cache = new List<T>(); // for exception safety, allocate then...
+                        sourceEnumerator = source.GetEnumerator(); // (because this can fail)
+                        this.cache = cache; // ...commit to state
                     }
-
-                    if (hasValue)
-                        yield return cache[index];
-                    else
-                        break;
-
-                    index++;
                 }
             }
-            finally
+
+            var index = 0;
+
+            while (true)
             {
-                if (!disposed && disposeOnEarlyExit)
-                    lock (locker)
-                        if (!disposed && disposeOnEarlyExit)
-                            DisposeSourceResources();
+                bool hasValue;
+                lock (locker)
+                {
+                    if (index < cache.Count)
+                    {
+                        hasValue = true;
+                    }
+                    else if (sourceEnumerator == null)
+                    {
+                        hasValue = false;
+                    }
+                    else if (sourceEnumerator.MoveNext()) // TODO exception safety?
+                    {
+                        hasValue = true;
+                        cache.Add(sourceEnumerator.Current);
+                    }
+                    else
+                    {
+                        hasValue = false;
+                        sourceEnumerator.Dispose();
+                        sourceEnumerator = null;
+                    }
+                }
+
+                if (hasValue)
+                    yield return cache[index];
+                else
+                    break;
+
+                index++;
             }
         }
 
@@ -155,12 +127,18 @@ namespace MoreLinq
             return GetEnumerator();
         }
 
-        private void DisposeSourceResources()
+        public void Dispose()
         {
-            disposed = true;
-            sourceEnumerator.Dispose();
-            source = null;
-            sourceEnumerator = null;
+            if (cache == null)
+                return;
+            lock (locker)
+            {
+                if (cache == null)
+                    return;
+                cache = null;
+                sourceEnumerator?.Dispose(); // TODO Test nullability
+                sourceEnumerator = null;
+            }
         }
     }
 }

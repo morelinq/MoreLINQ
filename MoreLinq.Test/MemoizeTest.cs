@@ -135,7 +135,7 @@ namespace MoreLinq.Test
                 using (var xs = new[] { 1, 2 }.AsTestingSequence())
                 {
                     xs.Memoize().Take(1).Consume();
-                    xs.Memoize(false).Take(1).Consume();
+                    xs.Memoize().Take(1).Consume();
                 }
             });
         }
@@ -144,7 +144,11 @@ namespace MoreLinq.Test
         public void MemoizeWithDisponseOnEarlyExitTrue()
         {
             using (var xs = new[] { 1, 2 }.AsTestingSequence())
-                xs.Memoize(true).Take(1).Consume();
+            {
+                var memoized = xs.Memoize();
+                using ((IDisposable) memoized)
+                    memoized.Take(1).Consume();
+            }
         }
 
         [Test]
@@ -180,6 +184,32 @@ namespace MoreLinq.Test
 
             Assert.That(sequence, Is.EquivalentTo(memoized));
             lists.ForEach(list => Assert.That(list, Is.EquivalentTo(memoized)));
+        }
+
+        [Test]
+        public static void MemoizeRestartsAfterDisposal()
+        {
+            var starts = 0;
+
+            IEnumerable<int> TestSequence()
+            {
+                starts++;
+                yield return 1;
+                yield return 2;
+            }
+
+            var memoized = TestSequence().Memoize();
+
+            void Run()
+            {
+                using ((IDisposable) memoized)
+                    memoized.Take(1).Consume();
+            }
+
+            Run();
+            Assert.That(starts, Is.EqualTo(1));
+            Run();
+            Assert.That(starts, Is.EqualTo(2));
         }
 
         [Test]
