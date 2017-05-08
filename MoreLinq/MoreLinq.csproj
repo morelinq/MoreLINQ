@@ -44,6 +44,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyInfo.g.cs</LastGenOutput>
     </None>
+    <None Update="ToDelimitedString.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net40' ">
@@ -89,6 +93,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AssemblyInfo.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ToDelimitedString.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
