@@ -54,15 +54,9 @@ namespace MoreLinq.Test
                 _enumerable = enumerable;
             }
 
-            public IEnumerator<T> GetEnumerator()
-            {
-                return new VerifiableEnumerator(this);
-            }
+            public IEnumerator<T> GetEnumerator() => new VerifiableEnumerator(this);
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenDisposed(Action<IEnumerable<T>> action)
             {
@@ -133,10 +127,7 @@ namespace MoreLinq.Test
                     }
                 }
 
-                object IEnumerator.Current
-                {
-                    get { return Current; }
-                }
+                object IEnumerator.Current => Current;
             }
         }
 
@@ -146,9 +137,7 @@ namespace MoreLinq.Test
         /// <typeparam name="T">Type of the element being enumerated</typeparam>
         /// <param name="sequence">The enumerable sequence to wrap verification around</param>
         /// <returns>A verifiable enumerator that wraps <paramref name="sequence"/></returns>
-        public static IVerifiableEnumerable<T> AsVerifiable<T>(this IEnumerable<T> sequence)
-        {
-            return sequence as IVerifiableEnumerable<T> ?? new VerifiableEnumerable<T>(sequence);
-        }
+        public static IVerifiableEnumerable<T> AsVerifiable<T>(this IEnumerable<T> sequence) =>
+            sequence as IVerifiableEnumerable<T> ?? new VerifiableEnumerable<T>(sequence);
     }
 }

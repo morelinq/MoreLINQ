@@ -94,20 +94,14 @@ namespace MoreLinq.Test
         /// Tires to read the next value otherwise return the default.
         /// </summary>
 
-        public T TryRead()
-        {
-            return TryRead(default(T));
-        }
+        public T TryRead() => TryRead(default(T));
 
         /// <summary>
         /// Tires to read the next value otherwise return a given default.
         /// </summary>
 
-        public T TryRead(T defaultValue)
-        {
-            T result;
-            return TryRead(out result) ? result : defaultValue;
-        }
+        public T TryRead(T defaultValue) =>
+            TryRead(out T result) ? result : defaultValue;
 
         /// <summary>
         /// Reads a value otherwise throws <see cref="InvalidOperationException"/>
@@ -117,14 +111,8 @@ namespace MoreLinq.Test
         /// Returns the read value;
         /// </returns>
 
-        public T Read()
-        {
-            T result;
-            if (!TryRead(out result))
-                throw new InvalidOperationException();
-
-            return result;
-        }
+        public T Read() =>
+            TryRead(out T result) ? result : throw new InvalidOperationException();
 
         /// <summary>
         /// Reads the end. If the end has not been reached then it

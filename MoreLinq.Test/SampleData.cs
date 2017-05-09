@@ -39,10 +39,7 @@ namespace MoreLinq.Test
 
         class ReverseCharComparerImpl : IComparer<char>
         {
-            public int Compare(char x, char y)
-            {
-                return y.CompareTo(x);
-            }
+            public int Compare(char x, char y) => y.CompareTo(x);
         }
     }
 }

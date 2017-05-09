@@ -83,12 +83,10 @@ namespace MoreLinq.Test
             trace.AssertSequenceEqual("1,234", "#NULL", "5,678");
         }
 
-        static IEnumerable<string> Lines(string str)
-        {
-            return Lines(string.IsNullOrEmpty(str)
-                         ? TextReader.Null
-                         : new StringReader(str));
-        }
+        static IEnumerable<string> Lines(string str) =>
+            Lines(string.IsNullOrEmpty(str)
+            ? TextReader.Null
+            : new StringReader(str));
 
         static IEnumerable<string> Lines(TextReader reader)
         {

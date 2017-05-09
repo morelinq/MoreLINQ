@@ -38,12 +38,8 @@ namespace MoreLinq.Test
 
             public object this[int index]
             {
-                get
-                {
-                    return new object();
-                }
-                set
-                { }
+                get => new object();
+                set { }
             }
 
 
@@ -205,7 +201,7 @@ namespace MoreLinq.Test
         struct Point
         {
             public static Point Empty = new Point();
-            public bool IsEmpty { get { return X == 0 && Y == 0; } }
+            public bool IsEmpty => X == 0 && Y == 0;
             public int X { get; }
             public int Y { get; }
             public Point(int x, int y) : this() { X = x; Y = y; }

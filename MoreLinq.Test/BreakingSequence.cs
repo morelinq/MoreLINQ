@@ -27,14 +27,7 @@ namespace MoreLinq.Test
     /// </summary>
     sealed class BreakingSequence<T> : IEnumerable<T>
     {
-        public IEnumerator<T> GetEnumerator()
-        {
-            throw new InvalidOperationException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() => throw new InvalidOperationException();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
