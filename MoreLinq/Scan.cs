@@ -50,7 +50,6 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        /// <exception cref="System.InvalidOperationException">If <paramref name="source"/> is empty.</exception>
         
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)

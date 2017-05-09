@@ -103,8 +103,8 @@ namespace MoreLinq.Test
 
             Assert.False(first.EndsWith(second));
             Assert.False(first.EndsWith(second, null));
-            Assert.False(first.EndsWith(second, new EqualityComparerFunc<int>((f, s) => false)));
-            Assert.True(first.EndsWith(second, new EqualityComparerFunc<int>((f, s) => true)));
+            Assert.False(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
+            Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
     }
 }
