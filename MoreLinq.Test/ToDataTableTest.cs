@@ -28,22 +28,18 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        private class TestObject
+        class TestObject
         {
             public int KeyField;
-            public Nullable<Guid> ANullableGuidField;
+            public Guid? ANullableGuidField;
 
-            public string AString { get; set; }
-            public Nullable<decimal> ANullableDecimal { get; set; }
+            public string AString { get; }
+            public decimal? ANullableDecimal { get; }
 
             public object this[int index]
             {
-                get
-                {
-                    return new object();
-                }
-                set
-                { }
+                get => new object();
+                set { }
             }
 
 
@@ -58,7 +54,7 @@ namespace MoreLinq.Test
         }
 
 
-        private readonly IReadOnlyCollection<TestObject> _testObjects;
+        readonly IReadOnlyCollection<TestObject> _testObjects;
 
 
         public ToDataTableTest()
@@ -205,9 +201,9 @@ namespace MoreLinq.Test
         struct Point
         {
             public static Point Empty = new Point();
-            public bool IsEmpty { get { return X == 0 && Y == 0; } }
-            public int X { get; set; }
-            public int Y { get; set; }
+            public bool IsEmpty => X == 0 && Y == 0;
+            public int X { get; }
+            public int Y { get; }
             public Point(int x, int y) : this() { X = x; Y = y; }
         }
 

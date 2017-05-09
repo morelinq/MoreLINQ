@@ -19,9 +19,9 @@ using System;
 
 namespace MoreLinq.Test
 {
-    internal abstract class Scope<T> : IDisposable
+    abstract class Scope<T> : IDisposable
     {
-        private readonly T _old;
+        readonly T _old;
 
         protected Scope(T current)
         {

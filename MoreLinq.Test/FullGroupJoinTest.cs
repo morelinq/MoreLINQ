@@ -44,14 +44,14 @@ namespace MoreLinq.Test
         public void FullGroupFirstKeyNull()
         {
             Assert.ThrowsArgumentNullException("firstKeySelector",() =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), (Func<string, string>)null, x => x, DummySelector));
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), null, x => x, DummySelector));
         }
 
         [Test]
         public void FullGroupSecondKeyNull()
         {
             Assert.ThrowsArgumentNullException("secondKeySelector",() =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, (Func<string, string>)null, DummySelector));
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, null, DummySelector));
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
+        static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
         {
             return t1;
         }

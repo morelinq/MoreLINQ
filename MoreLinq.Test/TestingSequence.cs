@@ -22,18 +22,15 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    internal static class TestingSequence
+    static class TestingSequence
     {
-        internal static TestingSequence<T> Of<T>(params T[] elements)
-        {
-            return new TestingSequence<T>(elements);
-        }
+        internal static TestingSequence<T> Of<T>(params T[] elements) =>
+            new TestingSequence<T>(elements);
 
-        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return new TestingSequence<T>(source);
-        }
+        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
+            source != null
+            ? new TestingSequence<T>(source)
+            : throw new ArgumentNullException(nameof(source));
     }
 
     /// <summary>
@@ -41,14 +38,14 @@ namespace MoreLinq.Test
     /// when it is disposed itself and also whether GetEnumerator() is
     /// called exactly once or not.
     /// </summary>
-    internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
+    sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        private bool? _disposed;
-        private IEnumerable<T> _sequence;
+        bool? _disposed;
+        IEnumerable<T> _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence)
         {
-            this._sequence = sequence;
+            _sequence = sequence;
         }
 
         void IDisposable.Dispose()
@@ -59,7 +56,7 @@ namespace MoreLinq.Test
         /// <summary>
         /// Checks that the iterator was disposed, and then resets.
         /// </summary>
-        private void AssertDisposed()
+        void AssertDisposed()
         {
             if (_disposed == null)
                 return;
@@ -69,56 +66,36 @@ namespace MoreLinq.Test
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(this._sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = new DisposeTestingSequenceEnumerator(this._sequence.GetEnumerator());
+            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
-            this._sequence = null;
+            _sequence = null;
             return enumerator;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private class DisposeTestingSequenceEnumerator : IEnumerator<T>
+        class DisposeTestingSequenceEnumerator : IEnumerator<T>
         {
-            private readonly IEnumerator<T> _sequence;
+            readonly IEnumerator<T> _sequence;
 
             public event EventHandler Disposed;
 
             public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
             {
-                this._sequence = sequence;
+                _sequence = sequence;
             }
 
-            public T Current
-            {
-                get { return _sequence.Current; }
-            }
+            public T Current => _sequence.Current;
+            object IEnumerator.Current => Current;
+            public bool MoveNext() => _sequence.MoveNext();
+            public void Reset() => _sequence.Reset();
 
             public void Dispose()
             {
                 _sequence.Dispose();
-                var disposed = Disposed;
-                if (disposed != null)
-                    disposed(this, EventArgs.Empty);
-            }
-
-            object IEnumerator.Current
-            {
-                get { return Current; }
-            }
-
-            public bool MoveNext()
-            {
-                return _sequence.MoveNext();
-            }
-
-            public void Reset()
-            {
-                _sequence.Reset();
+                Disposed?.Invoke(this, EventArgs.Empty);
             }
         }
     }

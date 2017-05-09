@@ -21,7 +21,7 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    internal static class TestExtensions
+    static class TestExtensions
     {
         /// <summary>
         /// Just to make our testing easier so we can chain the assertion call.
@@ -58,9 +58,7 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static void Add<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, TKey key, TValue value)
-        {
+        internal static void Add<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, TKey key, TValue value) =>
             list.Add(new KeyValuePair<TKey, TValue>(key, value));
-        }
     }
 }

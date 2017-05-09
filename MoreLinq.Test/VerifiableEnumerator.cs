@@ -37,32 +37,26 @@ namespace MoreLinq.Test
     /// </summary>
     public static class VerifyEnumeratorDisposalExt
     {
-        private class VerifiableEnumerable<T> : IVerifiableEnumerable<T>
+        class VerifiableEnumerable<T> : IVerifiableEnumerable<T>
         {
-            private readonly IEnumerable<T> _enumerable;
+            readonly IEnumerable<T> _enumerable;
 
-            private static readonly Action<IEnumerable<T>> DefaultAction = s => { return; };
+            static readonly Action<IEnumerable<T>> DefaultAction = s => { };
 
-            private Action<IEnumerable<T>> _onEnumerateAction = DefaultAction;
-            private Action<IEnumerable<T>> _onDisposeAction = DefaultAction;
-            private Action<IEnumerable<T>> _onMoveNextAction = DefaultAction;
-            private Action<IEnumerable<T>> _onResetAction = DefaultAction;
-            private Action<IEnumerable<T>> _onCurrentAction = DefaultAction;
+            Action<IEnumerable<T>> _onEnumerateAction = DefaultAction;
+            Action<IEnumerable<T>> _onDisposeAction = DefaultAction;
+            Action<IEnumerable<T>> _onMoveNextAction = DefaultAction;
+            Action<IEnumerable<T>> _onResetAction = DefaultAction;
+            Action<IEnumerable<T>> _onCurrentAction = DefaultAction;
 
             public VerifiableEnumerable(IEnumerable<T> enumerable)
             {
                 _enumerable = enumerable;
             }
 
-            public IEnumerator<T> GetEnumerator()
-            {
-                return new VerifiableEnumerator(this);
-            }
+            public IEnumerator<T> GetEnumerator() => new VerifiableEnumerator(this);
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenDisposed(Action<IEnumerable<T>> action)
             {
@@ -94,10 +88,10 @@ namespace MoreLinq.Test
                 return this;
             }
 
-            private class VerifiableEnumerator : IEnumerator<T>
+            class VerifiableEnumerator : IEnumerator<T>
             {
-                private readonly IEnumerator<T> _enumerator;
-                private readonly VerifiableEnumerable<T> _enumerable;
+                readonly IEnumerator<T> _enumerator;
+                readonly VerifiableEnumerable<T> _enumerable;
 
                 public VerifiableEnumerator(VerifiableEnumerable<T> enumerable)
                 {
@@ -133,10 +127,7 @@ namespace MoreLinq.Test
                     }
                 }
 
-                object IEnumerator.Current
-                {
-                    get { return Current; }
-                }
+                object IEnumerator.Current => Current;
             }
         }
 
@@ -146,9 +137,7 @@ namespace MoreLinq.Test
         /// <typeparam name="T">Type of the element being enumerated</typeparam>
         /// <param name="sequence">The enumerable sequence to wrap verification around</param>
         /// <returns>A verifiable enumerator that wraps <paramref name="sequence"/></returns>
-        public static IVerifiableEnumerable<T> AsVerifiable<T>(this IEnumerable<T> sequence)
-        {
-            return sequence as IVerifiableEnumerable<T> ?? new VerifiableEnumerable<T>(sequence);
-        }
+        public static IVerifiableEnumerable<T> AsVerifiable<T>(this IEnumerable<T> sequence) =>
+            sequence as IVerifiableEnumerable<T> ?? new VerifiableEnumerable<T>(sequence);
     }
 }

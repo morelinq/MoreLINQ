@@ -10,9 +10,9 @@ namespace MoreLinq.Test
     [TestFixture]
     public class NestedLoopTest
     {
-        private static void DoNothing() { }
+        static void DoNothing() { }
 
-        private static readonly Action EmptyLoopBody = DoNothing;
+        static readonly Action EmptyLoopBody = DoNothing;
 
         /// <summary>
         /// Verify that passing an empty loop count sequence results in an exception.
