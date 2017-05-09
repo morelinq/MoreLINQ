@@ -95,9 +95,7 @@ namespace MoreLinq.Test
             public void Dispose()
             {
                 _sequence.Dispose();
-                var disposed = Disposed;
-                if (disposed != null)
-                    disposed(this, EventArgs.Empty);
+                Disposed?.Invoke(this, EventArgs.Empty);
             }
         }
     }
