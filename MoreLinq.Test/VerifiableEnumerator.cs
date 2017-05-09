@@ -37,17 +37,17 @@ namespace MoreLinq.Test
     /// </summary>
     public static class VerifyEnumeratorDisposalExt
     {
-        private class VerifiableEnumerable<T> : IVerifiableEnumerable<T>
+        class VerifiableEnumerable<T> : IVerifiableEnumerable<T>
         {
-            private readonly IEnumerable<T> _enumerable;
+            readonly IEnumerable<T> _enumerable;
 
-            private static readonly Action<IEnumerable<T>> DefaultAction = s => { return; };
+            static readonly Action<IEnumerable<T>> DefaultAction = s => { return; };
 
-            private Action<IEnumerable<T>> _onEnumerateAction = DefaultAction;
-            private Action<IEnumerable<T>> _onDisposeAction = DefaultAction;
-            private Action<IEnumerable<T>> _onMoveNextAction = DefaultAction;
-            private Action<IEnumerable<T>> _onResetAction = DefaultAction;
-            private Action<IEnumerable<T>> _onCurrentAction = DefaultAction;
+            Action<IEnumerable<T>> _onEnumerateAction = DefaultAction;
+            Action<IEnumerable<T>> _onDisposeAction = DefaultAction;
+            Action<IEnumerable<T>> _onMoveNextAction = DefaultAction;
+            Action<IEnumerable<T>> _onResetAction = DefaultAction;
+            Action<IEnumerable<T>> _onCurrentAction = DefaultAction;
 
             public VerifiableEnumerable(IEnumerable<T> enumerable)
             {
@@ -94,10 +94,10 @@ namespace MoreLinq.Test
                 return this;
             }
 
-            private class VerifiableEnumerator : IEnumerator<T>
+            class VerifiableEnumerator : IEnumerator<T>
             {
-                private readonly IEnumerator<T> _enumerator;
-                private readonly VerifiableEnumerable<T> _enumerable;
+                readonly IEnumerator<T> _enumerator;
+                readonly VerifiableEnumerable<T> _enumerable;
 
                 public VerifiableEnumerator(VerifiableEnumerable<T> enumerable)
                 {

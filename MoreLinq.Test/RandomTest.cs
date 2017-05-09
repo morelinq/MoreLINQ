@@ -11,7 +11,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class RandomTest
     {
-        private const int RandomTrials = 10000;
+        const int RandomTrials = 10000;
 
         /// <summary>
         /// Verify that passing an <c>null</c> random generator results in an exception.

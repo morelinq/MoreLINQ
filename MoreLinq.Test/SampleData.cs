@@ -24,7 +24,7 @@ namespace MoreLinq.Test
     /// <summary>
     /// Data and functions to use throughout tests.
     /// </summary>
-    internal static class SampleData
+    static class SampleData
     {
         internal static readonly ReadOnlyCollection<string> Strings = new ReadOnlyCollection<string>(
             new[] { "ax", "hello", "world", "aa", "ab", "ay", "az" });
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
 
         internal static readonly IComparer<char> ReverseCharComparer = new ReverseCharComparerImpl();
 
-        private class ReverseCharComparerImpl : IComparer<char>
+        class ReverseCharComparerImpl : IComparer<char>
         {
             public int Compare(char x, char y)
             {

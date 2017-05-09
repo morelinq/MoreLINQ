@@ -229,14 +229,14 @@ namespace MoreLinq.Test
             Assert.IsTrue(sequence.SequenceEqual(sequenceClone));
         }
 
-        private static double RelativeStandardDeviation(IEnumerable<double> values)
+        static double RelativeStandardDeviation(IEnumerable<double> values)
         {
             var average = values.Average();
             var standardDeviation = StandardDeviationInternal(values, average);
             return (standardDeviation * 100.0) / average;
         }
 
-        private static double StandardDeviationInternal(IEnumerable<double> values, double average)
+        static double StandardDeviationInternal(IEnumerable<double> values, double average)
         {
             return Math.Sqrt(values.Select(value => Math.Pow(value - average, 2.0)).Average());
         }

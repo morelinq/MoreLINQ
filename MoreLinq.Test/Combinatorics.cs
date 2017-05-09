@@ -1,7 +1,7 @@
 
 namespace MoreLinq.Test
 {
-    internal static class Combinatorics
+    static class Combinatorics
     {
         public static double Factorial(int n)
         {

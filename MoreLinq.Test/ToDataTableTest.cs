@@ -28,7 +28,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        private class TestObject
+        class TestObject
         {
             public int KeyField;
             public Nullable<Guid> ANullableGuidField;
@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         }
 
 
-        private readonly IReadOnlyCollection<TestObject> _testObjects;
+        readonly IReadOnlyCollection<TestObject> _testObjects;
 
 
         public ToDataTableTest()

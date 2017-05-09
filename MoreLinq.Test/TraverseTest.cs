@@ -65,7 +65,7 @@ namespace MoreLinq.Test
             res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         }
 
-        private class Tree<T>
+        class Tree<T>
         {
             public T Value { get; }
             public IEnumerable<Tree<T>> Children { get; }
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private static class Tree {
+        static class Tree {
             public static Tree<T> New<T>(T value, params Tree<T>[] children) {
                 return new Tree<T>(value, children);
             }

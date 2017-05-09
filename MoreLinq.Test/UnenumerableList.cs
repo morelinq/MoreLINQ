@@ -13,7 +13,7 @@ namespace MoreLinq.Test
     /// <typeparam name="T"></typeparam>
     class UnenumerableList<T> : IList<T>
     {
-        private readonly List<T> _list = new List<T>();
+        readonly List<T> _list = new List<T>();
 
         // intentionally implemented to thow exception - ensures iteration is not used in Slice
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }

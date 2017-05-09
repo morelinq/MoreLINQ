@@ -22,7 +22,7 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    internal static class TestingSequence
+    static class TestingSequence
     {
         internal static TestingSequence<T> Of<T>(params T[] elements)
         {
@@ -41,10 +41,10 @@ namespace MoreLinq.Test
     /// when it is disposed itself and also whether GetEnumerator() is
     /// called exactly once or not.
     /// </summary>
-    internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
+    sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        private bool? _disposed;
-        private IEnumerable<T> _sequence;
+        bool? _disposed;
+        IEnumerable<T> _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence)
         {
@@ -59,7 +59,7 @@ namespace MoreLinq.Test
         /// <summary>
         /// Checks that the iterator was disposed, and then resets.
         /// </summary>
-        private void AssertDisposed()
+        void AssertDisposed()
         {
             if (_disposed == null)
                 return;
@@ -82,9 +82,9 @@ namespace MoreLinq.Test
             return GetEnumerator();
         }
 
-        private class DisposeTestingSequenceEnumerator : IEnumerator<T>
+        class DisposeTestingSequenceEnumerator : IEnumerator<T>
         {
-            private readonly IEnumerator<T> _sequence;
+            readonly IEnumerator<T> _sequence;
 
             public event EventHandler Disposed;
 

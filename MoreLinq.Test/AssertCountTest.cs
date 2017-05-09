@@ -112,8 +112,8 @@ namespace MoreLinq.Test
                 Assert.That(e.Count, Is.EqualTo(4));
             }
         }
-        
-        private sealed class TestException : Exception
+
+        sealed class TestException : Exception
         {
             public int Cmp { get; }
             public int Count { get; }

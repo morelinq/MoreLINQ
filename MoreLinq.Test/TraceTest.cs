@@ -83,14 +83,14 @@ namespace MoreLinq.Test
             trace.AssertSequenceEqual("1,234", "#NULL", "5,678");
         }
 
-        private static IEnumerable<string> Lines(string str)
+        static IEnumerable<string> Lines(string str)
         {
             return Lines(string.IsNullOrEmpty(str)
                          ? TextReader.Null
                          : new StringReader(str));
         }
 
-        private static IEnumerable<string> Lines(TextReader reader)
+        static IEnumerable<string> Lines(TextReader reader)
         {
             Debug.Assert(reader != null);
             string line;
@@ -98,7 +98,7 @@ namespace MoreLinq.Test
                 yield return line;
         }
 
-        private static string CaptureTrace(Action action)
+        static string CaptureTrace(Action action)
         {
             var writer = new StringWriter();
             var listener = new TextWriterTraceListener(writer);

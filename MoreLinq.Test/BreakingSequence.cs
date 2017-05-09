@@ -25,7 +25,7 @@ namespace MoreLinq.Test
     /// Enumerable sequence which throws InvalidOperationException as soon as its
     /// enumerator is requested. Used to check lazy evaluation.
     /// </summary>
-    internal sealed class BreakingSequence<T> : IEnumerable<T>
+    sealed class BreakingSequence<T> : IEnumerable<T>
     {
         public IEnumerator<T> GetEnumerator()
         {

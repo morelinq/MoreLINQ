@@ -21,7 +21,7 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
-    internal static class TestExtensions
+    static class TestExtensions
     {
         /// <summary>
         /// Just to make our testing easier so we can chain the assertion call.

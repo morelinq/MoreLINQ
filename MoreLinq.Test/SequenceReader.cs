@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace MoreLinq.Test
 {
-    internal static class SequenceReader
+    static class SequenceReader
     {
         public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
         {
@@ -35,10 +35,9 @@ namespace MoreLinq.Test
     /// "read" operation.
     /// </summary>
     /// <typeparam name="T">Type of elements to read.</typeparam>
-
-    internal class SequenceReader<T> : IDisposable
+    class SequenceReader<T> : IDisposable
     {
-        private IEnumerator<T> _enumerator;
+        IEnumerator<T> _enumerator;
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -61,7 +60,7 @@ namespace MoreLinq.Test
             this._enumerator = enumerator;
         }
 
-        private static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
+        static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.GetEnumerator();

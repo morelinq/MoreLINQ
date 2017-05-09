@@ -160,7 +160,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
+        static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
         {
             return t1;
         }
