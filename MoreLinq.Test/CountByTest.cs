@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 }.CountBy(c => c);
 
-            var expectations = new List<KeyValuePair<int, int>>()
+            var expectations = new List<KeyValuePair<int, int>>
             {
                 { 1, 4 },
                 { 2, 3 },
@@ -65,7 +65,7 @@ namespace MoreLinq.Test
         {
             var result = Enumerable.Range(1, 100).CountBy(c => c % 2);
 
-            var expectations = new List<KeyValuePair<int, int>>()
+            var expectations = new List<KeyValuePair<int, int>>
             {
                 { 1, 50 },
                 { 0, 50 },
@@ -79,7 +79,7 @@ namespace MoreLinq.Test
         {
             var result = new[] { "a", "B", "c", "A", "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
 
-            var expectations = new List<KeyValuePair<string, int>>()
+            var expectations = new List<KeyValuePair<string, int>>
             {
                 { "a", 3 },
                 { "B", 2 },
