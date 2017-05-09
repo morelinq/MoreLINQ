@@ -44,14 +44,14 @@ namespace MoreLinq.Test
         public void FullGroupFirstKeyNull()
         {
             Assert.ThrowsArgumentNullException("firstKeySelector",() =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), (Func<string, string>)null, x => x, DummySelector));
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), null, x => x, DummySelector));
         }
 
         [Test]
         public void FullGroupSecondKeyNull()
         {
             Assert.ThrowsArgumentNullException("secondKeySelector",() =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, (Func<string, string>)null, DummySelector));
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, null, DummySelector));
         }
 
         [Test]
