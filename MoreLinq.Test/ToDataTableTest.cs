@@ -58,16 +58,14 @@ namespace MoreLinq.Test
         }
 
 
-        private IList<TestObject> _testObjects;
+        private readonly IReadOnlyCollection<TestObject> _testObjects;
 
 
         public ToDataTableTest()
         {
-            _testObjects = new List<TestObject>();
-            for (var i = 0; i < 3; i++)
-            {
-                _testObjects.Add(new TestObject(i));
-            }
+            _testObjects = Enumerable.Range(0, 3)
+                                     .Select(i => new TestObject(i))
+                                     .ToArray();
         }
 
 
