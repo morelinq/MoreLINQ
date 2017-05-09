@@ -95,7 +95,7 @@ namespace MoreLinq.Test
         }
 
         static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
-            string.Format("{0}: '{1}' ({2});\n{3}", definition.Name, parameter.Name, parameter.Position, definition);
+            $"{definition.Name}: '{parameter.Name}' ({parameter.Position});\n{definition}";
 
         static MethodInfo InstantiateMethod(MethodInfo definition)
         {
