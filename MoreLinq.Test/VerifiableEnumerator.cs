@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         {
             readonly IEnumerable<T> _enumerable;
 
-            static readonly Action<IEnumerable<T>> DefaultAction = s => { return; };
+            static readonly Action<IEnumerable<T>> DefaultAction = s => { };
 
             Action<IEnumerable<T>> _onEnumerateAction = DefaultAction;
             Action<IEnumerable<T>> _onDisposeAction = DefaultAction;
