@@ -33,8 +33,8 @@ namespace MoreLinq.Test
             public int KeyField;
             public Nullable<Guid> ANullableGuidField;
 
-            public string AString { get; set; }
-            public Nullable<decimal> ANullableDecimal { get; set; }
+            public string AString { get; }
+            public Nullable<decimal> ANullableDecimal { get; }
 
             public object this[int index]
             {
@@ -206,8 +206,8 @@ namespace MoreLinq.Test
         {
             public static Point Empty = new Point();
             public bool IsEmpty { get { return X == 0 && Y == 0; } }
-            public int X { get; set; }
-            public int Y { get; set; }
+            public int X { get; }
+            public int Y { get; }
             public Point(int x, int y) : this() { X = x; Y = y; }
         }
 

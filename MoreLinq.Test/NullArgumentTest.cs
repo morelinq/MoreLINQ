@@ -46,9 +46,9 @@ namespace MoreLinq.Test
 
         public class TestCase
         {
-            public MethodInfo Method { get; private set; }
-            public object[] Arguments { get; private set; }
-            public string ParameterName { get; private set; }
+            public MethodInfo Method { get; }
+            public object[] Arguments { get; }
+            public string ParameterName { get; }
 
             public TestCase(MethodInfo method, object[] arguments, string parameterName)
             {

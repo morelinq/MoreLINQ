@@ -67,8 +67,8 @@ namespace MoreLinq.Test
 
         private class Tree<T>
         {
-            public T Value { get; private set; }
-            public IEnumerable<Tree<T>> Children { get; private set; }
+            public T Value { get; }
+            public IEnumerable<Tree<T>> Children { get; }
 
             public Tree(T value, IEnumerable<Tree<T>> children)
             {

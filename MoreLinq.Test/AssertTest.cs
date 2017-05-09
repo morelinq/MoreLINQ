@@ -81,7 +81,7 @@ namespace MoreLinq.Test
 
         class ValueException : Exception
         {
-            public object Value { get; private set; }
+            public object Value { get; }
             public ValueException(object value) { Value = value; }
         }
     }

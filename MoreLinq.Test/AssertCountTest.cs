@@ -115,8 +115,8 @@ namespace MoreLinq.Test
         
         private sealed class TestException : Exception
         {
-            public int Cmp { get; private set; }
-            public int Count { get; private set; }
+            public int Cmp { get; }
+            public int Count { get; }
 
             public TestException(int cmp, int count)
             {
