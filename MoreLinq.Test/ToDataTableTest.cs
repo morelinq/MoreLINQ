@@ -31,10 +31,10 @@ namespace MoreLinq.Test
         class TestObject
         {
             public int KeyField;
-            public Nullable<Guid> ANullableGuidField;
+            public Guid? ANullableGuidField;
 
             public string AString { get; }
-            public Nullable<decimal> ANullableDecimal { get; }
+            public decimal? ANullableDecimal { get; }
 
             public object this[int index]
             {
