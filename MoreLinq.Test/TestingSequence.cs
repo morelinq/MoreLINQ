@@ -48,7 +48,7 @@ namespace MoreLinq.Test
 
         internal TestingSequence(IEnumerable<T> sequence)
         {
-            this._sequence = sequence;
+            _sequence = sequence;
         }
 
         void IDisposable.Dispose()
@@ -69,11 +69,11 @@ namespace MoreLinq.Test
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(this._sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = new DisposeTestingSequenceEnumerator(this._sequence.GetEnumerator());
+            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
-            this._sequence = null;
+            _sequence = null;
             return enumerator;
         }
 
@@ -90,7 +90,7 @@ namespace MoreLinq.Test
 
             public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
             {
-                this._sequence = sequence;
+                _sequence = sequence;
             }
 
             public T Current

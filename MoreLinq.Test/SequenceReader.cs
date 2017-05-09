@@ -57,7 +57,7 @@ namespace MoreLinq.Test
         public SequenceReader(IEnumerator<T> enumerator)
         {
             if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            this._enumerator = enumerator;
+            _enumerator = enumerator;
         }
 
         static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
@@ -157,9 +157,9 @@ namespace MoreLinq.Test
 
         public virtual void Dispose()
         {
-            var e = this._enumerator;
+            var e = _enumerator;
             if (e == null) return;
-            this._enumerator = null;
+            _enumerator = null;
             e.Dispose();
         }
     }
