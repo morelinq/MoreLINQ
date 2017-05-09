@@ -113,19 +113,19 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElementsForCollections()
         {
-            Assert.IsTrue(new int[] { 1 }.AtLeast(0));
+            Assert.IsTrue(new[] { 1 }.AtLeast(0));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElementForCollections()
         {
-            Assert.IsTrue(new int[] { 1 }.AtLeast(1));
+            Assert.IsTrue(new[] { 1 }.AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElementsForCollections()
         {
-            Assert.IsFalse(new int[] { 1 }.AtLeast(2));
+            Assert.IsFalse(new[] { 1 }.AtLeast(2));
         }
 
         [Test]
