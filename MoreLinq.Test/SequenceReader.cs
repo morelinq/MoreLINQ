@@ -38,7 +38,7 @@ namespace MoreLinq.Test
 
     internal class SequenceReader<T> : IDisposable
     {
-        private IEnumerator<T> enumerator;
+        private IEnumerator<T> _enumerator;
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         public SequenceReader(IEnumerator<T> enumerator)
         {
             if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            this.enumerator = enumerator;
+            this._enumerator = enumerator;
         }
 
         private static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
@@ -83,7 +83,7 @@ namespace MoreLinq.Test
 
             value = default(T);
 
-            var e = enumerator;
+            var e = _enumerator;
             if (!e.MoveNext())
                 return false;
 
@@ -136,7 +136,7 @@ namespace MoreLinq.Test
         {
             EnsureNotDisposed();
 
-            if (enumerator.MoveNext())
+            if (_enumerator.MoveNext())
                 throw new InvalidOperationException();
         }
 
@@ -147,7 +147,7 @@ namespace MoreLinq.Test
 
         protected void EnsureNotDisposed()
         {
-            if (enumerator == null)
+            if (_enumerator == null)
                 throw new ObjectDisposedException(GetType().FullName);
         }
 
@@ -158,9 +158,9 @@ namespace MoreLinq.Test
 
         public virtual void Dispose()
         {
-            var e = this.enumerator;
+            var e = this._enumerator;
             if (e == null) return;
-            this.enumerator = null;
+            this._enumerator = null;
             e.Dispose();
         }
     }

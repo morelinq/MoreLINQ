@@ -43,12 +43,12 @@ namespace MoreLinq.Test
     /// </summary>
     internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        private bool? disposed;
-        private IEnumerable<T> sequence;
+        private bool? _disposed;
+        private IEnumerable<T> _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence)
         {
-            this.sequence = sequence;
+            this._sequence = sequence;
         }
 
         void IDisposable.Dispose()
@@ -61,19 +61,19 @@ namespace MoreLinq.Test
         /// </summary>
         private void AssertDisposed()
         {
-            if (disposed == null)
+            if (_disposed == null)
                 return;
-            Assert.IsTrue(disposed, "Expected sequence to be disposed.");
-            disposed = null;
+            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+            _disposed = null;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(this.sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = new DisposeTestingSequenceEnumerator(this.sequence.GetEnumerator());
-            disposed = false;
-            enumerator.Disposed += delegate { disposed = true; };
-            this.sequence = null;
+            Assert.That(this._sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            var enumerator = new DisposeTestingSequenceEnumerator(this._sequence.GetEnumerator());
+            _disposed = false;
+            enumerator.Disposed += delegate { _disposed = true; };
+            this._sequence = null;
             return enumerator;
         }
 
@@ -84,23 +84,23 @@ namespace MoreLinq.Test
 
         private class DisposeTestingSequenceEnumerator : IEnumerator<T>
         {
-            private readonly IEnumerator<T> sequence;
+            private readonly IEnumerator<T> _sequence;
 
             public event EventHandler Disposed;
 
             public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
             {
-                this.sequence = sequence;
+                this._sequence = sequence;
             }
 
             public T Current
             {
-                get { return sequence.Current; }
+                get { return _sequence.Current; }
             }
 
             public void Dispose()
             {
-                sequence.Dispose();
+                _sequence.Dispose();
                 var disposed = Disposed;
                 if (disposed != null)
                     disposed(this, EventArgs.Empty);
@@ -113,12 +113,12 @@ namespace MoreLinq.Test
 
             public bool MoveNext()
             {
-                return sequence.MoveNext();
+                return _sequence.MoveNext();
             }
 
             public void Reset()
             {
-                sequence.Reset();
+                _sequence.Reset();
             }
         }
     }

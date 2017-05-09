@@ -99,11 +99,11 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             const int startIndex = 3;
-            const int ExcludeCount = 5;
+            const int excludeCount = 5;
             var sequence = Enumerable.Repeat(1, count);
-            var result = sequence.Exclude(startIndex, ExcludeCount);
+            var result = sequence.Exclude(startIndex, excludeCount);
 
-            Assert.IsTrue(result.SequenceEqual(sequence.Take(startIndex).Concat(sequence.Skip(startIndex + ExcludeCount))));
+            Assert.IsTrue(result.SequenceEqual(sequence.Take(startIndex).Concat(sequence.Skip(startIndex + excludeCount))));
         }
 
         /// <summary>
