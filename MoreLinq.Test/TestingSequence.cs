@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,7 +43,7 @@ namespace MoreLinq.Test
     /// </summary>
     internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        private bool disposed;
+        private bool? disposed;
         private IEnumerable<T> sequence;
 
         internal TestingSequence(IEnumerable<T> sequence)
@@ -61,14 +61,17 @@ namespace MoreLinq.Test
         /// </summary>
         private void AssertDisposed()
         {
+            if (disposed == null)
+                return;
             Assert.IsTrue(disposed, "Expected sequence to be disposed.");
-            disposed = false;
+            disposed = null;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             Assert.That(this.sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
             var enumerator = new DisposeTestingSequenceEnumerator(this.sequence.GetEnumerator());
+            disposed = false;
             enumerator.Disposed += delegate { disposed = true; };
             this.sequence = null;
             return enumerator;
@@ -99,7 +102,7 @@ namespace MoreLinq.Test
             {
                 sequence.Dispose();
                 var disposed = Disposed;
-                if (disposed != null) 
+                if (disposed != null)
                     disposed(this, EventArgs.Empty);
             }
 
