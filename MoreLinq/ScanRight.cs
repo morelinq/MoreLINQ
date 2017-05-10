@@ -30,11 +30,14 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
         /// <param name="source">Source sequence.</param>
-        /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
+        /// <param name="func">
+        /// A right-associative accumulator function to be invoked on each element.
+        /// Its first argument is the current value in the sequence; second argument is the previous accumulator value.
+        /// </param>
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code>
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => string.Format("({0}/{1})", a, b));
         /// </code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
@@ -58,6 +61,7 @@ namespace MoreLinq
         /// <summary>
         /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
         /// The specified seed value is used as the initial accumulator value.
+        /// This operator is the right-associative version of the 
         /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -68,8 +72,7 @@ namespace MoreLinq
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code>
-        /// var numbers = Enumerable.Range(1, 4);
-        /// string result = numbers.AggregateRight("5", (a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
         /// </code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
