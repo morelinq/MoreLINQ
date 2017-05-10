@@ -89,6 +89,7 @@ namespace MoreLinq
 
             while (true)
             {
+                T current;
                 lock (locker)
                 {
                     if (cache == null) // Cache disposed during iteration?
@@ -110,9 +111,12 @@ namespace MoreLinq
                             break;
                         }
                     }
+
+                    current = cache[index];
                 }
 
-                yield return cache[index++];
+                yield return current;
+                index++;
             }
         }
 
