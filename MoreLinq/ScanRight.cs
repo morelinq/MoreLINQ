@@ -50,12 +50,18 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
+            return ScanRightImpl(source, func);
+        }
+
+        private static IEnumerable<TSource> ScanRightImpl<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+        {
             var list = (source as IList<TSource>) ?? source.ToList();
 
             if (list.Count == 0)
-                return Enumerable.Empty<TSource>();
+                yield break;
 
-            return ScanRightImpl(list, list.Last(), func, list.Count - 1);
+            foreach (var item in ScanRightImpl(list, list.Last(), func, list.Count - 1))
+                yield return item;
         }
 
         /// <summary>
@@ -85,9 +91,15 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
+            return ScanRightImpl(source, seed, func);
+        }
+
+        private static IEnumerable<TAccumulate> ScanRightImpl<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+        {
             var list = (source as IList<TSource>) ?? source.ToList();
 
-            return ScanRightImpl(list, seed, func, list.Count);
+            foreach (var item in ScanRightImpl(list, seed, func, list.Count))
+                yield return item;
         }
 
         private static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
@@ -101,8 +113,7 @@ namespace MoreLinq
                 stack.Push(accumulator);
             }
 
-            foreach (var item in stack)
-                yield return item;
+            return stack;
         }
     }
 }
