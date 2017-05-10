@@ -213,6 +213,24 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public static void MemoizeIteratorThrowsWhenCacheDisposedDuringIteration()
+        {
+            var sequence = Enumerable.Range(1, 10);
+            var memoized = sequence.Memoize();
+            var disposable = (IDisposable) memoized;
+
+            using (var reader = memoized.Read())
+            {
+                Assert.That(reader.Read(), Is.EqualTo(1));
+
+                disposable.Dispose();
+
+                var e = Assert.Throws<ObjectDisposedException>(() => reader.Read());
+                Assert.That(e.ObjectName, Is.EqualTo("MemoizedEnumerable"));
+            }
+        }
+
+        [Test]
         public void MemoizeWithMemoizedSourceReturnsSame()
         {
             var memoized = Enumerable.Range(0, 9).Memoize();

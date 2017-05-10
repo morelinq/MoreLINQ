@@ -89,36 +89,30 @@ namespace MoreLinq
 
             while (true)
             {
-                bool hasValue;
                 lock (locker)
                 {
-                    if (index < cache.Count)
+                    if (cache == null) // Cache disposed during iteration?
+                        throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
+
+                    if (index >= cache.Count)
                     {
-                        hasValue = true;
-                    }
-                    else if (sourceEnumerator == null)
-                    {
-                        hasValue = false;
-                    }
-                    else if (sourceEnumerator.MoveNext()) // TODO exception safety?
-                    {
-                        hasValue = true;
-                        cache.Add(sourceEnumerator.Current);
-                    }
-                    else
-                    {
-                        hasValue = false;
-                        sourceEnumerator.Dispose();
-                        sourceEnumerator = null;
+                        if (sourceEnumerator == null)
+                            break;
+
+                        if (sourceEnumerator.MoveNext()) // TODO exception safety?
+                        {
+                            cache.Add(sourceEnumerator.Current);
+                        }
+                        else
+                        {
+                            sourceEnumerator.Dispose();
+                            sourceEnumerator = null;
+                            break;
+                        }
                     }
                 }
 
-                if (hasValue)
-                    yield return cache[index];
-                else
-                    break;
-
-                index++;
+                yield return cache[index++];
             }
         }
 
