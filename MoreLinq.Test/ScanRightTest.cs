@@ -71,6 +71,12 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
+        [Test]
+        public void ScanRightIsLazy()
+        {
+            new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
+        }
+
         // Overload 2 Test
 
         [Test]
@@ -114,6 +120,12 @@ namespace MoreLinq.Test
             var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
 
             Assert.That(result, Is.EqualTo(expectations));
+        }
+
+        [Test]
+        public void ScanRightSeedIsLazy()
+        {
+            new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
         }
     }
 }
