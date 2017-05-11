@@ -25,8 +25,9 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {      
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets
-        /// of any size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of
+        /// the subsets of any size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>power set</em> of a set.
         /// </summary>
         /// <remarks>
         /// This operator produces all of the subsets of a given sequence. Subsets are returned
@@ -49,8 +50,10 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of the
-        /// specified size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all
+        /// subsets of a given size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>combinations</em> or
+        /// <em>k-subsets</em> of a set.
         /// </summary>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <param name="subsetSize">The size of the subsets to produce</param>
