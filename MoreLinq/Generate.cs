@@ -44,16 +44,15 @@ namespace MoreLinq
         public static IEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, TResult> generator)
         {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
-            return GenerateImpl(initial, generator);
-        }
 
-        private static IEnumerable<TResult> GenerateImpl<TResult>(TResult initial, Func<TResult, TResult> generator)
-        {
-            var current = initial;
-            while (true)
+            return _(); IEnumerable<TResult> _()
             {
-                yield return current;
-                current = generator(current);
+                var current = initial;
+                while (true)
+                {
+                    yield return current;
+                    current = generator(current);
+                }
             }
         }
     }
