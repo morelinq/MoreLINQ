@@ -64,34 +64,33 @@ namespace MoreLinq
             //       that it's an intuitive - or even desirable - behavior. So it's being omitted.
             if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-            return LagImpl(source, offset, defaultLagValue, resultSelector);
-        }
-
-        private static IEnumerable<TResult> LagImpl<TSource, TResult>(IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
-        {
-            using (var iter = source.GetEnumerator())
+            return _(); IEnumerable<TResult> _()
             {
-                var lagQueue = new Queue<TSource>(offset);
-                // until we progress far enough, the lagged value is defaultLagValue
-                var hasMore = true;
-                // NOTE: The if statement below takes advantage of short-circuit evaluation
-                //       to ensure we don't advance the iterator when we reach the lag offset.
-                //       Do not reorder the terms in the condition!
-                while (offset-- > 0 && (hasMore = iter.MoveNext()))
+                using (var iter = source.GetEnumerator())
                 {
-                    lagQueue.Enqueue(iter.Current);
-                    // until we reach the lag offset, the lagged value is the defaultLagValue
-                    yield return resultSelector(iter.Current, defaultLagValue);
-                }
-
-                if (hasMore) // check that we didn't consume the sequence yet
-                {
-                    // now the lagged value is derived from the sequence
-                    while (iter.MoveNext())
+                    var i = offset;
+                    var lagQueue = new Queue<TSource>(offset);
+                    // until we progress far enough, the lagged value is defaultLagValue
+                    var hasMore = true;
+                    // NOTE: The if statement below takes advantage of short-circuit evaluation
+                    //       to ensure we don't advance the iterator when we reach the lag offset.
+                    //       Do not reorder the terms in the condition!
+                    while (i-- > 0 && (hasMore = iter.MoveNext()))
                     {
-                        var lagValue = lagQueue.Dequeue();
-                        yield return resultSelector(iter.Current, lagValue);
                         lagQueue.Enqueue(iter.Current);
+                        // until we reach the lag offset, the lagged value is the defaultLagValue
+                        yield return resultSelector(iter.Current, defaultLagValue);
+                    }
+
+                    if (hasMore) // check that we didn't consume the sequence yet
+                    {
+                        // now the lagged value is derived from the sequence
+                        while (iter.MoveNext())
+                        {
+                            var lagValue = lagQueue.Dequeue();
+                            yield return resultSelector(iter.Current, lagValue);
+                            lagQueue.Enqueue(iter.Current);
+                        }
                     }
                 }
             }
