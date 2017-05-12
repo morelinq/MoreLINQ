@@ -49,5 +49,14 @@ namespace MoreLinq.Test
                 r.ReadEnd();
             }
         }
+
+        [Test]
+        public void CreateDisposesEnumeratorWhenOwnEnumeratorDisposed()
+        {
+            var xs = new[] { 123, 456 };
+            using (var ts = xs.AsTestingSequence())
+            using (var e = MoreEnumerable.Create(() => ts.GetEnumerator()).Read())
+                Assert.That(e.Read(), Is.EqualTo(xs[0]));
+        }
     }
 }
