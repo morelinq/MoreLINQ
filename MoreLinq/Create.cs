@@ -18,6 +18,7 @@
 namespace MoreLinq
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -37,12 +38,15 @@ namespace MoreLinq
         public static IEnumerable<T> Create<T>(Func<IEnumerator<T>> factory)
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));
-            return _(); IEnumerable<T> _()
-            {
-                using (var e = factory())
-                    while (e.MoveNext())
-                        yield return e.Current;
-            }
+            return new DelegatingEnumerable<T>(factory);
+        }
+
+        sealed class DelegatingEnumerable<T> : IEnumerable<T>
+        {
+            readonly Func<IEnumerator<T>> _delegatee;
+            public DelegatingEnumerable(Func<IEnumerator<T>> delegatee) => _delegatee = delegatee;
+            public IEnumerator<T> GetEnumerator() => _delegatee();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

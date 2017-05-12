@@ -43,8 +43,8 @@ namespace MoreLinq.Test
         {
             var item = new object();
             using (var items = Enumerable.Repeat(item, 1).AsTestingSequence())
+            using (var r = MoreEnumerable.Create(() => items.GetEnumerator()).Read())
             {
-                var r = MoreEnumerable.Create(() => items.GetEnumerator()).Read();
                 Assert.That(r.Read(), Is.EqualTo(item));
                 r.ReadEnd();
             }
