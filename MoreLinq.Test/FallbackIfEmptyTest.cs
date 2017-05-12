@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Linq;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;
@@ -72,6 +73,34 @@ namespace MoreLinq.Test
             source.FallbackIfEmpty(func, func, func, func).AssertSequenceEqual(source);
             source.FallbackIfEmpty(func, func, func, func, func).AssertSequenceEqual(source);
             source.FallbackIfEmpty(func, func, func, func, func, func).AssertSequenceEqual(source);
+        }
+
+        [Test]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible()
+        {
+            var source = new int[] { 1 };
+            // ReSharper disable PossibleMultipleEnumeration
+            Assert.AreSame(source.FallbackIfEmpty(12), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source);
+            Assert.AreSame(source.FallbackIfEmpty(() => 12), source);
+            Assert.AreSame(source.FallbackIfEmpty(() => 12, () => 23), source);
+            Assert.AreSame(source.FallbackIfEmpty(() => 12, () => 23, () => 34), source);
+            Assert.AreSame(source.FallbackIfEmpty(() => 12, () => 23, () => 34, () => 45), source);
+            Assert.AreSame(source.FallbackIfEmpty(() => 12, () => 23, () => 34, () => 45, () => 56), source);
+            Assert.AreSame(source.FallbackIfEmpty(() => 12, () => 23, () => 34, () => 45, () => 56, () => 67), source);
+            // ReSharper restore PossibleMultipleEnumeration
+        }
+
+        [Test]
+        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible()
+        {
+            var source = new int[0];
+            var fallback = new int[] { 1 };
+            Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
         }
 
         [Test]
