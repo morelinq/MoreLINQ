@@ -61,6 +61,8 @@ namespace MoreLinq
         private readonly object locker;
         private readonly IEnumerable<T> source;
         private IEnumerator<T> sourceEnumerator;
+        private int? errorIndex;
+        private Exception error;
 
         public MemoizedEnumerable(IEnumerable<T> sequence)
         {
@@ -100,7 +102,22 @@ namespace MoreLinq
                         if (sourceEnumerator == null)
                             break;
 
-                        if (sourceEnumerator.MoveNext()) // TODO exception safety?
+                        if (index == errorIndex)
+                            throw this.error;
+
+                        bool moved;
+                        try
+                        {
+                            moved = sourceEnumerator.MoveNext();
+                        }
+                        catch (Exception ex)
+                        {
+                            this.error = ex;
+                            errorIndex = index;
+                            throw;
+                        }
+
+                        if (moved)
                         {
                             cache.Add(sourceEnumerator.Current);
                         }
@@ -134,6 +151,8 @@ namespace MoreLinq
                 if (cache == null)
                     return;
                 cache = null;
+                error = null;
+                errorIndex = null;
                 sourceEnumerator?.Dispose();
                 sourceEnumerator = null;
             }

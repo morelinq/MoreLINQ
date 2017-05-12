@@ -242,5 +242,32 @@ namespace MoreLinq.Test
 
             Assert.That(memoized, Is.SameAs(memoizedAgain));
         }
+
+        [Test]
+        public void Memoize()
+        {
+            var error = new Exception("This is a test exception.");
+
+            IEnumerable<int> TestSequence()
+            {
+                yield return 123;
+                throw error;
+            }
+
+            var xs = TestSequence();
+            var memoized = xs.Memoize();
+            using ((IDisposable) memoized)
+            using (var r1 = memoized.Read())
+            using (var r2 = memoized.Read())
+            {
+                Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
+                var e1 = Assert.Throws<Exception>(() => r1.Read());
+                Assert.That(e1, Is.SameAs(error));
+                var e2 = Assert.Throws<Exception>(() => r2.Read());
+                Assert.That(e2, Is.SameAs(error));
+            }            
+            using (var r1 = memoized.Read())
+                Assert.That(r1.Read(), Is.EqualTo(123));
+        } 
     }
 }
