@@ -50,18 +50,16 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return ScanRightImpl(source, func);
-        }
+            return _(); IEnumerable<TSource> _()
+            {
+                var list = (source as IList<TSource>) ?? source.ToList();
 
-        private static IEnumerable<TSource> ScanRightImpl<TSource>(IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
-        {
-            var list = (source as IList<TSource>) ?? source.ToList();
+                if (list.Count == 0)
+                    yield break;
 
-            if (list.Count == 0)
-                yield break;
-
-            foreach (var item in ScanRightImpl(list, list.Last(), func, list.Count - 1))
-                yield return item;
+                foreach (var item in ScanRightImpl(list, list.Last(), func, list.Count - 1))
+                    yield return item;
+            }
         }
 
         /// <summary>
@@ -91,15 +89,13 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return ScanRightImpl(source, seed, func);
-        }
+            return _(); IEnumerable<TAccumulate> _()
+            {
+                var list = (source as IList<TSource>) ?? source.ToList();
 
-        private static IEnumerable<TAccumulate> ScanRightImpl<TSource, TAccumulate>(IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
-        {
-            var list = (source as IList<TSource>) ?? source.ToList();
-
-            foreach (var item in ScanRightImpl(list, seed, func, list.Count))
-                yield return item;
+                foreach (var item in ScanRightImpl(list, seed, func, list.Count))
+                    yield return item;
+            }
         }
 
         private static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
