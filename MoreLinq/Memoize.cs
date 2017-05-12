@@ -134,7 +134,7 @@ namespace MoreLinq
                 if (cache == null)
                     return;
                 cache = null;
-                sourceEnumerator?.Dispose(); // TODO Test nullability
+                sourceEnumerator?.Dispose();
                 sourceEnumerator = null;
             }
         }
