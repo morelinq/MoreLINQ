@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void FallbackIfEmptyWithNullFallbackParams()
         {
-           Assert.ThrowsArgumentNullException("fallback", () => new[] { 1 }.FallbackIfEmpty(null));
+           Assert.ThrowsArgumentNullException("fallback", () => new[] { 1 }.FallbackIfEmpty((int[])null));
         }
 
         [Test]
@@ -51,7 +51,27 @@ namespace MoreLinq.Test
             source.FallbackIfEmpty(12, 23, 34, 45).AssertSequenceEqual(12, 23, 34, 45);
             source.FallbackIfEmpty(12, 23, 34, 45, 56).AssertSequenceEqual(12, 23, 34, 45, 56);
             source.FallbackIfEmpty(12, 23, 34, 45, 56, 67).AssertSequenceEqual(12, 23, 34, 45, 56, 67);
+            source.FallbackIfEmpty(() => 12).AssertSequenceEqual(12);
+            source.FallbackIfEmpty(() => 12, () => 23).AssertSequenceEqual(12, 23);
+            source.FallbackIfEmpty(() => 12, () => 23, () => 34).AssertSequenceEqual(12, 23, 34);
+            source.FallbackIfEmpty(() => 12, () => 23, () => 34, () => 45).AssertSequenceEqual(12, 23, 34, 45);
+            source.FallbackIfEmpty(() => 12, () => 23, () => 34, () => 45, () => 56).AssertSequenceEqual(12, 23, 34, 45, 56);
+            source.FallbackIfEmpty(() => 12, () => 23, () => 34, () => 45, () => 56, () => 67).AssertSequenceEqual(12, 23, 34, 45, 56, 67);
             // ReSharper restore PossibleMultipleEnumeration
+        }
+
+        [Test]
+        public void FallbackIfEmptyDoesNotInvokeFunctionsIfCollectionIsNonEmpty()
+        {
+            var func = BreakingFunc.Of<int>();
+            var source = new[] { 1 };
+
+            source.FallbackIfEmpty(func).AssertSequenceEqual(source);
+            source.FallbackIfEmpty(func, func).AssertSequenceEqual(source);
+            source.FallbackIfEmpty(func, func, func).AssertSequenceEqual(source);
+            source.FallbackIfEmpty(func, func, func, func).AssertSequenceEqual(source);
+            source.FallbackIfEmpty(func, func, func, func, func).AssertSequenceEqual(source);
+            source.FallbackIfEmpty(func, func, func, func, func, func).AssertSequenceEqual(source);
         }
 
         [Test]
