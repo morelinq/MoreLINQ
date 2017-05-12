@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -50,16 +50,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return _(); IEnumerable<TSource> _()
-            {
-                var list = (source as IList<TSource>) ?? source.ToList();
-
-                if (list.Count == 0)
-                    yield break;
-
-                foreach (var item in ScanRightImpl(list, list.Last(), func, list.Count - 1))
-                    yield return item;
-            }
+            return ScanRightImpl(source, func,
+                                 list => list.Count > 0
+                                       ? new ScanRightSeedCount<TSource>(list.Last(), list.Count - 1)
+                                       : (ScanRightSeedCount<TSource>?) null);
         }
 
         /// <summary>
@@ -89,17 +83,30 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return _(); IEnumerable<TAccumulate> _()
-            {
-                var list = (source as IList<TSource>) ?? source.ToList();
+            return ScanRightImpl(source, func, list => new ScanRightSeedCount<TAccumulate>(seed, list.Count));
+        }
 
-                foreach (var item in ScanRightImpl(list, seed, func, list.Count))
-                    yield return item;
+        struct ScanRightSeedCount<T> // TODO Use a tuple when we can drop .NET 3.5 target
+        {
+            public readonly T    Seed;
+            public readonly int  Count;
+
+            public ScanRightSeedCount(T seed, int count)
+            {
+                Seed   = seed;
+                Count  = count;
             }
         }
 
-        private static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        private static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IList<TSource>, ScanRightSeedCount<TResult>?> seeder)
         {
+            var list = (source as IList<TSource>) ?? source.ToList();
+
+            var r = seeder(list);
+            if (!r.HasValue)
+                yield break;
+            var accumulator = r.Value.Seed;
+            var i = r.Value.Count;
             var stack = new Stack<TResult>(i + 1);
             stack.Push(accumulator);
 
@@ -109,7 +116,8 @@ namespace MoreLinq
                 stack.Push(accumulator);
             }
 
-            return stack;
+            foreach (var item in stack)
+                yield return item;
         }
     }
 }
