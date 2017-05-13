@@ -106,6 +106,7 @@ namespace MoreLinq
                 else
                 {
                     dic[key] = keys.Count;
+                    index = keys.Count;
                     keys.Add(key);
                     counts.Add(1);
                 }
