@@ -39,19 +39,19 @@ namespace MoreLinq
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
-            return TraverseBreadthFirstImpl(root, childrenSelector);
-        }
 
-        private static IEnumerable<T> TraverseBreadthFirstImpl<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
-        {
-            var queue = new Queue<T>();
-            queue.Enqueue(root);
+            return _(); IEnumerable<T> _()
+            {
+                var queue = new Queue<T>();
+                queue.Enqueue(root);
 
-            while (queue.Count != 0) {
-                var current = queue.Dequeue();
-                yield return current;
-                foreach (var child in childrenSelector(current))
-                    queue.Enqueue(child);
+                while (queue.Count != 0)
+                {
+                    var current = queue.Dequeue();
+                    yield return current;
+                    foreach (var child in childrenSelector(current))
+                        queue.Enqueue(child);
+                }
             }
         }
 
