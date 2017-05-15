@@ -244,7 +244,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void Memoize()
+        public void MemoizeRethrowsErrorDuringIterationToAllIteratorsUntilDisposed()
         {
             var error = new Exception("This is a test exception.");
 
