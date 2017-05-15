@@ -43,9 +43,31 @@ namespace MoreLinq
         
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
-            if (sequence == null)
-                throw new ArgumentNullException(nameof(sequence));
-            return SubsetsImpl(sequence);
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+
+            return _(); IEnumerable<IList<T>> _()
+            {
+                var sequenceAsList = sequence.ToList();
+                var sequenceLength = sequenceAsList.Count;
+
+                // the first subset is the empty set
+                yield return new List<T>();
+
+                // all other subsets are computed using the subset generator
+                // this check also resolves the case of permuting empty sets
+                if (sequenceLength > 0)
+                {
+                    for (var i = 1; i < sequenceLength; i++)
+                    {
+                        // each intermediate subset is a lexographically ordered K-subset
+                        var subsetGenerator = new SubsetGenerator<T>(sequenceAsList, i);
+                        foreach (var subset in subsetGenerator)
+                            yield return subset;
+                    }
+
+                    yield return sequenceAsList; // the last subet is the original set itself
+                }
+            }
         }
 
         /// <summary>
@@ -84,37 +106,6 @@ namespace MoreLinq
             // may change after further thought and review.
 
             return new SubsetGenerator<T>(sequence, subsetSize);
-        }
-
-        /// <summary>
-        /// Underlying implementation for Subsets() overload.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <returns>Sequence of lists representing all subsets of a sequence</returns>
-        
-        private static IEnumerable<IList<T>> SubsetsImpl<T>(IEnumerable<T> sequence)
-        {
-            var sequenceAsList = sequence.ToList();
-            var sequenceLength = sequenceAsList.Count;
-
-            // the first subset is the empty set
-            yield return new List<T>();
-
-            // all other subsets are computed using the subset generator
-            // this check also resolves the case of permuting empty sets
-            if (sequenceLength > 0)
-            {
-                for (var i = 1; i < sequenceLength; i++)
-                {
-                    // each intermediate subset is a lexographically ordered K-subset
-                    var subsetGenerator = new SubsetGenerator<T>(sequenceAsList, i);
-                    foreach (var subset in subsetGenerator)
-                        yield return subset;
-                }
-
-                yield return sequenceAsList; // the last subet is the original set itself
-            }
         }
 
         /// <summary>
