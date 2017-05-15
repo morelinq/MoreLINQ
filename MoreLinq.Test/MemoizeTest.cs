@@ -254,7 +254,8 @@ namespace MoreLinq.Test
                 throw error;
             }
 
-            var xs = TestSequence();
+            var disposed = false;
+            var xs = TestSequence().AsVerifiable().WhenDisposed(_ => disposed = true);
             var memoized = xs.Memoize();
             using ((IDisposable) memoized)
             using (var r1 = memoized.Read())
@@ -263,11 +264,14 @@ namespace MoreLinq.Test
                 Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
                 var e1 = Assert.Throws<Exception>(() => r1.Read());
                 Assert.That(e1, Is.SameAs(error));
+
+                Assert.That(disposed, Is.True);
+
                 var e2 = Assert.Throws<Exception>(() => r2.Read());
                 Assert.That(e2, Is.SameAs(error));
-            }            
+            }
             using (var r1 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(123));
-        } 
+        }
     }
 }

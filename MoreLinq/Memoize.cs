@@ -99,11 +99,11 @@ namespace MoreLinq
 
                     if (index >= cache.Count)
                     {
+                        if (index == errorIndex)
+                            throw error;
+
                         if (sourceEnumerator == null)
                             break;
-
-                        if (index == errorIndex)
-                            throw this.error;
 
                         bool moved;
                         try
@@ -115,9 +115,11 @@ namespace MoreLinq
                             // TODO preserve stack trace for throw later
                             // This requires ExceptionDispatchInfo that is
                             // available from .NET Framework 4.5 and onward.
-                            
+
                             this.error = ex;
                             errorIndex = index;
+                            sourceEnumerator.Dispose();
+                            sourceEnumerator = null;
                             throw;
                         }
 
