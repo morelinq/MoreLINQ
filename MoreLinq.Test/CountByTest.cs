@@ -61,6 +61,23 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void CountByWithSecondOccurenceImmediatelyAfterFirst()
+        {
+            var result = "jaffer".CountBy(c => c);
+
+            var expectations = new List<KeyValuePair<char, int>>()
+            {
+                { 'j', 1 },
+                { 'a', 1 },
+                { 'f', 2 },
+                { 'e', 1 },
+                { 'r', 1 },
+            };
+
+            result.AssertSequenceEqual(expectations);
+        }
+		
+        [Test]
         public void CountByEvenOddTest()
         {
             var result = Enumerable.Range(1, 100).CountBy(c => c % 2);
