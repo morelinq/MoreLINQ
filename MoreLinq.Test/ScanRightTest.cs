@@ -16,8 +16,6 @@
 #endregion
 
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MoreLinq.Test
@@ -25,22 +23,8 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ScanRightTest
     {
-        // Overload 1 Test
-
-        [Test]
-        public void ScanRightWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.ScanRight<int>(null, (a, b) => a + b));
-        }
-
-        [Test]
-        public void ScanRightWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).ScanRight(null));
-        }
-
+        // ScanRight(source, func)
+	
         [Test]
         public void ScanRightWithEmptySequence()
         {
@@ -77,22 +61,8 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
         }
 
-        // Overload 2 Test
-
-        [Test]
-        public void ScanRightSeedWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.ScanRight<int, int>(null, 1, (a, b) => a + b));
-        }
-
-        [Test]
-        public void ScanRightSeedWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).ScanRight(6, null));
-        }
-
+        // ScanRight(source, seed, func)
+		
         [TestCase(5)]
         [TestCase("c")]
         [TestCase(true)]

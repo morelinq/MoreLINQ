@@ -43,6 +43,7 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
+        /// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
         /// </remarks>
 
         public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
@@ -76,6 +77,7 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
+        /// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
         /// </remarks>
 
         public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
