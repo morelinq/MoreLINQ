@@ -286,73 +286,52 @@ namespace MoreLinq
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
 
-            return OrderedMergeImpl(first, second,
-                                    firstKeySelector, secondKeySelector,
-                                    firstSelector, secondSelector, bothSelector,
-                                    comparer ?? Comparer<TKey>.Default);
-        }
-
-        static IEnumerable<TResult> OrderedMergeImpl<TFirst, TSecond, TKey, TResult>(
-            IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TKey> firstKeySelector,
-            Func<TSecond, TKey> secondKeySelector,
-            Func<TFirst, TResult> firstSelector,
-            Func<TSecond, TResult> secondSelector,
-            Func<TFirst, TSecond, TResult> bothSelector,
-            IComparer<TKey> comparer)
-        {
-            Debug.Assert(first != null);
-            Debug.Assert(second != null);
-            Debug.Assert(firstKeySelector != null);
-            Debug.Assert(secondKeySelector != null);
-            Debug.Assert(firstSelector != null);
-            Debug.Assert(secondSelector != null);
-            Debug.Assert(bothSelector != null);
-            Debug.Assert(comparer != null);
-
-            using (var e1 = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
+            comparer = comparer ?? Comparer<TKey>.Default;
+            return _(); IEnumerable<TResult> _()
             {
-                var gotFirst = e1.MoveNext();
-                var gotSecond = e2.MoveNext();
-
-                while (gotFirst || gotSecond)
+                using (var e1 = first.GetEnumerator())
+                using (var e2 = second.GetEnumerator())
                 {
-                    if (gotFirst && gotSecond)
-                    {
-                        var element1 = e1.Current;
-                        var key1 = firstKeySelector(element1);
-                        var element2 = e2.Current;
-                        var key2 = secondKeySelector(element2);
-                        var comparison = comparer.Compare(key1, key2);
+                    var gotFirst = e1.MoveNext();
+                    var gotSecond = e2.MoveNext();
 
-                        if (comparison < 0)
+                    while (gotFirst || gotSecond)
+                    {
+                        if (gotFirst && gotSecond)
                         {
-                            yield return firstSelector(element1);
-                            gotFirst = e1.MoveNext();
+                            var element1 = e1.Current;
+                            var key1 = firstKeySelector(element1);
+                            var element2 = e2.Current;
+                            var key2 = secondKeySelector(element2);
+                            var comparison = comparer.Compare(key1, key2);
+
+                            if (comparison < 0)
+                            {
+                                yield return firstSelector(element1);
+                                gotFirst = e1.MoveNext();
+                            }
+                            else if (comparison > 0)
+                            {
+                                yield return secondSelector(element2);
+                                gotSecond = e2.MoveNext();
+                            }
+                            else
+                            {
+                                yield return bothSelector(element1, element2);
+                                gotFirst = e1.MoveNext();
+                                gotSecond = e2.MoveNext();
+                            }
                         }
-                        else if (comparison > 0)
+                        else if (gotSecond)
                         {
-                            yield return secondSelector(element2);
+                            yield return secondSelector(e2.Current);
                             gotSecond = e2.MoveNext();
                         }
-                        else
+                        else // (gotFirst)
                         {
-                            yield return bothSelector(element1, element2);
+                            yield return firstSelector(e1.Current);
                             gotFirst = e1.MoveNext();
-                            gotSecond = e2.MoveNext();
                         }
-                    }
-                    else if (gotSecond)
-                    {
-                        yield return secondSelector(e2.Current);
-                        gotSecond = e2.MoveNext();
-                    }
-                    else // (gotFirst)
-                    {
-                        yield return firstSelector(e1.Current);
-                        gotFirst = e1.MoveNext();
                     }
                 }
             }
