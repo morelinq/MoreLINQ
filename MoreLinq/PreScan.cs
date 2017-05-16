@@ -51,26 +51,25 @@ namespace MoreLinq
         /// <param name="transformation">Transformation operation</param>
         /// <param name="identity">Identity element (see remarks)</param>
         /// <returns>The scanned sequence</returns>
-        
+
         public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation, TSource identity)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return PreScanImpl(source, transformation, identity);
-        }
 
-        private static IEnumerable<T> PreScanImpl<T>(IEnumerable<T> source, Func<T, T, T> f, T id)
-        {
-            // special case, the first element is set to the identity
-            var aggregator = id;
-
-            foreach (var i in source)
+            return _(); IEnumerable<TSource> _()
             {
-                yield return aggregator;
+                // special case, the first element is set to the identity
+                var aggregator = identity;
 
-                // aggregate the next element in the sequence
-                aggregator = f(aggregator, i);
+                foreach (var i in source)
+                {
+                    yield return aggregator;
+
+                    // aggregate the next element in the sequence
+                    aggregator = transformation(aggregator, i);
+                }
             }
         }
     }
