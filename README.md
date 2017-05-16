@@ -94,6 +94,13 @@ projected type.
 
 This method has 2 overloads.
 
+### EndsWith
+
+Determines whether the end of the first sequence is equivalent to the second
+sequence.
+
+This method has 2 overloads.
+
 ### EquiZip
 
 Returns a projection of tuples, where each tuple contains the N-th element
@@ -387,6 +394,13 @@ This method has 2 overloads.
 Splits the source sequence by a separator.
 
 This method has 12 overloads.
+
+### StartsWith
+
+Determines whether the beginning of the first sequence is equivalent to the
+second sequence.
+
+This method has 2 overloads.
 
 ### Subsets
 
