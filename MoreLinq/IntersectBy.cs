@@ -1,4 +1,4 @@
-#region License and Terms
+﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 // 
@@ -20,11 +20,11 @@ namespace MoreLinq {
     using System.Collections.Generic;
     using System.Linq;
 
-    static partial class MoreEnumerable {
+    partial class MoreEnumerable {
 
         /// <summary>
-        /// Returns the set of distinct elements in the first sequence which aren't
-        /// in the second sequence, according to a given key selector.
+        /// Returns the set of distinct elements from the first sequence which are also 
+        /// in the second sequence, according to the given key selector.
         /// </summary>
         /// <remarks>
         /// This is a set operation; if multiple elements in <paramref name="first"/> have
@@ -33,28 +33,29 @@ namespace MoreLinq {
         /// but the entire set of keys from <paramref name="second"/> is cached as soon as execution begins.
         /// Duplicate keys from <paramref name="second"/> are not relevant and are discarded when <paramref name="second"/> is cached.
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements in the input sequences.</typeparam>
+        /// <typeparam name="TSource">The type of the source and result elements.</typeparam>
         /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>, and used for equality comparison.</typeparam>
         /// <param name="first">The set of potentially included elements.</param>
-        /// <param name="second">The set of elements whose keys may prevent elements in <paramref name="first"/> from being returned.</param>
+        /// <param name="second">The set of elements whose keys may allow elements in <paramref name="first"/> to be returned.</param>
         /// <param name="keySelector">The mapping from source element to key.</param>
-        /// <returns>The set of distinct elements from <paramref name="first"/> whose key was not also a key for
-        /// any element in <paramref name="second"/>.</returns>
+        /// <returns>The set of distinct elements from <paramref name="first"/> whose key is also the key
+        /// of an element in <paramref name="second" />, according to the given key selector.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="first"/>, <paramref name="second"/>, or 
         /// <paramref name="keySelector"/> is <c>null</c>.</exception>
-        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+        public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector) {
+
             if (first == null) throw new ArgumentNullException("first");
             if (second == null) throw new ArgumentNullException("second");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
 
-            return SetFilterImpl(first, second.Select(keySelector), keySelector, null, (hs, k) => hs.Add(k));
+            return SetFilterImpl(first, second.Select(keySelector), keySelector, null, (hs, k) => hs.Remove(k));
         }
 
         /// <summary>
-        /// Returns the set of distinct elements in the first sequence which aren't
-        /// in the second sequence, according to a given key selector and equality comparer.
+        /// Returns the set of distinct elements from the first sequence which are also 
+        /// in the second sequence, according to the given key selector and equality comparer.
         /// </summary>
         /// <remarks>
         /// This is a set operation; if multiple elements in <paramref name="first"/> have
@@ -63,27 +64,28 @@ namespace MoreLinq {
         /// but the entire set of keys from <paramref name="second"/> is cached as soon as execution begins.
         /// Duplicate keys from <paramref name="second"/> are not relevant and are discarded when <paramref name="second"/> is cached.
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements in the input sequences.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>, used for equality comparison.</typeparam>
+        /// <typeparam name="TSource">The type of the source and result elements.</typeparam>
+        /// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>, and used for equality comparison.</typeparam>
         /// <param name="first">The set of potentially included elements.</param>
-        /// <param name="second">The set of elements whose keys may prevent elements in <paramref name="first"/> from being returned.</param>
+        /// <param name="second">The set of elements whose keys may allow elements in <paramref name="first"/> to be returned.</param>
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <param name="keyComparer">The equality comparer to use to determine whether or not keys are equal.
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
-        /// <returns>The set of distinct elements from <paramref name="first"/> whose key was not also a key for
-        /// any element in <paramref name="second"/>.</returns>
+        /// <returns>The set of distinct elements from <paramref name="first"/> whose key is also the key
+        /// of an element in <paramref name="second" />, according to the given key selector.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="first"/>, <paramref name="second"/>, or 
         /// <paramref name="keySelector"/> is <c>null</c>.
         /// If <paramref name="keyComparer"/> is <c>null</c>, the default equality comparer for <typeparamref name="TSource"/> is used.</exception>
-        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
+        public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer) {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return SetFilterImpl(first, second.Select(keySelector), keySelector, keyComparer, (hs, k) => hs.Add(k));
+            if (first == null) throw new ArgumentNullException("first");
+            if (second == null) throw new ArgumentNullException("second");
+            if (keySelector == null) throw new ArgumentNullException("keySelector");
+
+            return SetFilterImpl(first, second.Select(keySelector), keySelector, keyComparer, (hs, k) => hs.Remove(k));
         }
     }
 }
