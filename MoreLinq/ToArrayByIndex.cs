@@ -120,13 +120,23 @@ namespace MoreLinq
             if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e))
-                                .Select(e => e.Key >= 0 ? e : throw new IndexOutOfRangeException())
-                                .ToList();
+            var lastIndex = -1;
+            var indexed = (List<KeyValuePair<int, T>>) null;
+            List<KeyValuePair<int, T>> Indexed() => indexed ?? (indexed = new List<KeyValuePair<int, T>>());
 
-            var lastIndex = indexed.Select(e => e.Key).DefaultIfEmpty(-1).Max();
+            foreach (var e in source)
+            {
+                var i = indexSelector(e);
+                if (i < 0)
+                    throw new IndexOutOfRangeException();
+                lastIndex = Math.Max(i, lastIndex);
+                Indexed().Add(new KeyValuePair<int, T>(i, e));
+            }
+
             var length = lastIndex + 1;
-            return indexed.ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
+            return length == 0
+                 ? new TResult[0]
+                 : Indexed().ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
         }
 
         /// <summary>
