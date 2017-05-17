@@ -182,18 +182,8 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return SplitImpl(source, separator, comparer ?? EqualityComparer<TSource>.Default, count, resultSelector);
-        }
 
-        private static IEnumerable<TResult> SplitImpl<TSource, TResult>(IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer, int count,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(comparer != null);
-            Debug.Assert(count >= 0);
-            Debug.Assert(resultSelector != null);
-
+            comparer = comparer ?? EqualityComparer<TSource>.Default;
             return Split(source, item => comparer.Equals(item, separator), count, resultSelector);
         }
 
