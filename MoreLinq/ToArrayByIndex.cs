@@ -122,7 +122,7 @@ namespace MoreLinq
 
             var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e))
                                 .ToList();
-            var array = new TResult[indexed.Max(e => e.Key) + 1];
+            var array = new TResult[indexed.Select(e => e.Key).DefaultIfEmpty(-1).Max() + 1];
             foreach (var e in indexed)
                 array[e.Key] = resultSelector(e.Value, e.Key);
             return array;
