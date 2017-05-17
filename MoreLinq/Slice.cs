@@ -38,7 +38,7 @@ namespace MoreLinq
         /// <param name="startIndex">The zero-based index at which to begin slicing</param>
         /// <param name="count">The number of items to slice out of the index</param>
         /// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
-        
+
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -46,23 +46,15 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             // optimization for anything implementing IList<T>
-            var asList = sequence as IList<T>;
-            return asList != null
-                ? SliceImpl(asList, startIndex, count)
-                : SliceImpl(sequence, startIndex, count);
-        }
-
-        private static IEnumerable<T> SliceImpl<T>(IEnumerable<T> sequence, int startIndex, int count)
-        {
-            return sequence.Skip(startIndex).Take(count);
-        }
-
-        private static IEnumerable<T> SliceImpl<T>(IList<T> list, int startIndex, int count)
-        {
-            var listCount = list.Count;
-            var index = startIndex;
-            while (index < listCount && count-- > 0)
-                yield return list[index++];
+            return !(sequence is IList<T> list)
+                 ? sequence.Skip(startIndex).Take(count)
+                 : _(count); IEnumerable<T> _(int countdown)
+                 {
+                     var listCount = list.Count;
+                     var index = startIndex;
+                     while (index < listCount && countdown-- > 0)
+                         yield return list[index++];
+                 }
         }
     }
 }
