@@ -123,14 +123,10 @@ namespace MoreLinq
             var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e))
                                 .Select(e => e.Key >= 0 ? e : throw new IndexOutOfRangeException())
                                 .ToList();
-            var array = new TResult[indexed.Select(e => e.Key).DefaultIfEmpty(-1).Max() + 1];
-            foreach (var e in indexed)
-            {
-                if (e.Key > array.Length)
-                    throw new IndexOutOfRangeException();
-                array[e.Key] = resultSelector(e.Value, e.Key);
-            }
-            return array;
+
+            var lastIndex = indexed.Select(e => e.Key).DefaultIfEmpty(-1).Max();
+            var length = lastIndex + 1;
+            return indexed.ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
         }
 
         /// <summary>
