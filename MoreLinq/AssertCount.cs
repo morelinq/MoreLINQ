@@ -98,26 +98,23 @@ namespace MoreLinq
                     throw errorSelector(collection.Count.CompareTo(count), count);
                 return source;
             }
-            
-            return ExpectingCountYieldingImpl(source, count, errorSelector);
-        }
 
-        private static IEnumerable<TSource> ExpectingCountYieldingImpl<TSource>(IEnumerable<TSource> source, 
-            int count, Func<int, int, Exception> errorSelector)
-        {
-            var iterations = 0;
-            foreach (var element in source)
+            return _(); IEnumerable<TSource> _()
             {
-                iterations++;
-                if (iterations > count)
+                var iterations = 0;
+                foreach (var element in source)
                 {
-                    throw errorSelector(1, count);
+                    iterations++;
+                    if (iterations > count)
+                    {
+                        throw errorSelector(1, count);
+                    }
+                    yield return element;
                 }
-                yield return element;
-            }
-            if (iterations != count)
-            {
-                throw errorSelector(-1, count);
+                if (iterations != count)
+                {
+                    throw errorSelector(-1, count);
+                }
             }
         }
     }

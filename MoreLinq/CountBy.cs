@@ -53,66 +53,60 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return CountByImpl(source, keySelector, comparer);
-        }
-
-        static IEnumerable<KeyValuePair<TKey, int>> CountByImpl<TSource, TKey>(
-            IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> comparer)
-        {
-            List<TKey> keys;
-            List<int> counts;
-
-            // Avoid the temptation to inline the CountByLoop method, which
-            // exists solely to separate the scope & lifetimes of the locals
-            // needed for the actual looping of the source & production of the
-            // results (that happens once at the start of iteration) from
-            // those needed to simply yield the results. It is harder to reason
-            // about the lifetimes (if the code is inlined) with respect to how
-            // the compiler will rewrite the iterator code as a state machine.
-            // For background, see:
-            // http://blog.stephencleary.com/2010/02/q-should-i-set-variables-to-null-to.html
-
-            CountByLoop(source, keySelector, comparer ?? EqualityComparer<TKey>.Default,
-                        out keys, out counts);
-
-            for (var i = 0; i < keys.Count; i++)
-                yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
-        }
-
-        static void CountByLoop<TSource, TKey>(IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer,
-            out List<TKey> keys, out List<int> counts)
-        {
-            var dic = new Dictionary<TKey, int>(comparer);
-            keys = new List<TKey>();
-            counts = new List<int>();
-            var havePrevKey = false;
-            var prevKey = default(TKey);
-            var index = 0;
-
-            foreach (var item in source)
+            return _(); IEnumerable<KeyValuePair<TKey, int>> _()
             {
-                var key = keySelector(item);
+                List<TKey> keys;
+                List<int> counts;
 
-                if (// key same as the previous? then re-use the index
-                    (havePrevKey && comparer.GetHashCode(prevKey) == comparer.GetHashCode(key)
-                                  && comparer.Equals(prevKey, key))
-                    // otherwise try & find index of the key
-                    || dic.TryGetValue(key, out index))
-                {
-                    counts[index]++;
-                }
-                else
-                {
-                    dic[key] = keys.Count;
-                    index = keys.Count;
-                    keys.Add(key);
-                    counts.Add(1);
-                }
+                // Avoid the temptation to inline the Loop method, which
+                // exists solely to separate the scope & lifetimes of the
+                // locals needed for the actual looping of the source &
+                // production of the results (that happens once at the start
+                // of iteration) from those needed to simply yield the
+                // results. It is harder to reason about the lifetimes (if the
+                // code is inlined) with respect to how the compiler will
+                // rewrite the iterator code as a state machine. For
+                // background, see:
+                // http://blog.stephencleary.com/2010/02/q-should-i-set-variables-to-null-to.html
 
-                prevKey = key;
-                havePrevKey = true;
+                Loop(comparer ?? EqualityComparer<TKey>.Default);
+
+                for (var i = 0; i < keys.Count; i++)
+                    yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
+
+                void Loop(IEqualityComparer<TKey> cmp)
+                {
+                    var dic = new Dictionary<TKey, int>(cmp);
+                    keys = new List<TKey>();
+                    counts = new List<int>();
+                    var havePrevKey = false;
+                    var prevKey = default(TKey);
+                    var index = 0;
+
+                    foreach (var item in source)
+                    {
+                        var key = keySelector(item);
+
+                        if (// key same as the previous? then re-use the index
+                            (havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
+                                          && cmp.Equals(prevKey, key))
+                            // otherwise try & find index of the key
+                            || dic.TryGetValue(key, out index))
+                        {
+                            counts[index]++;
+                        }
+                        else
+                        {
+                            dic[key] = keys.Count;
+                            index = keys.Count;
+                            keys.Add(key);
+                            counts.Add(1);
+                        }
+
+                        prevKey = key;
+                        havePrevKey = true;
+                    }
+                }
             }
         }
     }

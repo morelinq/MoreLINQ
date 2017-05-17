@@ -61,26 +61,18 @@ namespace MoreLinq
             if (stateSelector == null) throw new ArgumentNullException(nameof(stateSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return UnfoldImpl(state, generator, predicate, stateSelector, resultSelector);
-        }
-
-
-        private static IEnumerable<TResult> UnfoldImpl<TState, T, TResult>(
-            TState state,
-            Func<TState, T> generator,
-            Func<T, bool> predicate,
-            Func<T, TState> stateSelector,
-            Func<T, TResult> resultSelector)
-        {
-            while (true)
+            return _(); IEnumerable<TResult> _()
             {
-                var step = generator(state);
+                while (true)
+                {
+                    var step = generator(state);
 
-                if (!predicate(step))
-                    yield break;
+                    if (!predicate(step))
+                        yield break;
 
-                yield return resultSelector(step);
-                state = stateSelector(step);
+                    yield return resultSelector(step);
+                    state = stateSelector(step);
+                }
             }
         }
     }

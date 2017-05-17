@@ -210,15 +210,13 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
-            return PermutationsImpl(sequence);
-        }
-
-        private static IEnumerable<IList<T>> PermutationsImpl<T>(IEnumerable<T> sequence)
-        {
-            using (var iter = new PermutationEnumerator<T>(sequence))
+            return _(); IEnumerable<IList<T>> _()
             {
-                while (iter.MoveNext())
-                    yield return iter.Current;
+                using (var iter = new PermutationEnumerator<T>(sequence))
+                {
+                    while (iter.MoveNext())
+                        yield return iter.Current;
+                }
             }
         }
     }

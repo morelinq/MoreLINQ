@@ -49,27 +49,26 @@ namespace MoreLinq
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return TakeLastImpl(source, count);
-        }
 
-        private static IEnumerable<T> TakeLastImpl<T>(IEnumerable<T> source, int count)
-        {
-            Debug.Assert(source != null);
-
-            if (count <= 0)
-                yield break;
-
-            var q = new Queue<T>(count);
-
-            foreach (var item in source)
+            return _(); IEnumerable<TSource> _()
             {
-                if (q.Count == count)
-                    q.Dequeue();
-                q.Enqueue(item);
-            }
+                Debug.Assert(source != null);
 
-            foreach (var item in q)
-                yield return item;
-       }
+                if (count <= 0)
+                    yield break;
+
+                var q = new Queue<TSource>(count);
+
+                foreach (var item in source)
+                {
+                    if (q.Count == count)
+                        q.Dequeue();
+                    q.Enqueue(item);
+                }
+
+                foreach (var item in q)
+                    yield return item;
+            }
+        }
     }
 }

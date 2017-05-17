@@ -56,23 +56,18 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-            return SkipUntilImpl(source, predicate);
-        }
 
-        private static IEnumerable<TSource> SkipUntilImpl<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-        {
-            using (var iterator = source.GetEnumerator())
+            return _(); IEnumerable<TSource> _()
             {
-                while (iterator.MoveNext())
+                using (var iterator = source.GetEnumerator())
                 {
-                    if (predicate(iterator.Current))
+                    while (iterator.MoveNext())
                     {
-                        break;
+                        if (predicate(iterator.Current))
+                            break;
                     }
-                }
-                while (iterator.MoveNext())
-                {
-                    yield return iterator.Current;
+                    while (iterator.MoveNext())
+                        yield return iterator.Current;
                 }
             }
         }

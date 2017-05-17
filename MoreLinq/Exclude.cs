@@ -37,24 +37,22 @@ namespace MoreLinq
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            return ExcludeImpl(sequence, startIndex, count);
-        }
-
-        private static IEnumerable<T> ExcludeImpl<T>(IEnumerable<T> sequence, int startIndex, int count)
-        {
-            var index = -1;
-            var endIndex = startIndex + count;
-            using (var iter = sequence.GetEnumerator())
+            return _(); IEnumerable<T> _()
             {
-                // yield the first part of the sequence
-                while (iter.MoveNext() && ++index < startIndex)
-                    yield return iter.Current;
-                // skip the next part (up to count items)
-                while (++index < endIndex && iter.MoveNext())
-                    continue;
-                // yield the remainder of the sequence
-                while (iter.MoveNext())
-                    yield return iter.Current;
+                var index = -1;
+                var endIndex = startIndex + count;
+                using (var iter = sequence.GetEnumerator())
+                {
+                    // yield the first part of the sequence
+                    while (iter.MoveNext() && ++index < startIndex)
+                        yield return iter.Current;
+                    // skip the next part (up to count items)
+                    while (++index < endIndex && iter.MoveNext())
+                        continue;
+                    // yield the remainder of the sequence
+                    while (iter.MoveNext())
+                        yield return iter.Current;
+                }
             }
         }
     }

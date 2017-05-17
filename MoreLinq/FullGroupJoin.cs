@@ -88,30 +88,23 @@ namespace MoreLinq
             if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return FullGroupJoinImpl(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer);
-        }
+            return _(); IEnumerable<TResult> _()
+            {
+                comparer = comparer ?? EqualityComparer<TKey>.Default;
 
-        private static IEnumerable<TResult> FullGroupJoinImpl<TFirst, TSecond, TKey, TResult>(IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TKey> firstKeySelector,
-            Func<TSecond, TKey> secondKeySelector,
-            Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
-        {
-            comparer = comparer ?? EqualityComparer<TKey>.Default;
+                var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+                var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
-            var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
-            var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
-            
-            foreach (var a in alookup) {
-                yield return resultSelector(a.Key, a, blookup[a.Key]);
-            }
+                foreach (var a in alookup) {
+                    yield return resultSelector(a.Key, a, blookup[a.Key]);
+                }
 
-            foreach (var b in blookup) {
-                if (alookup.Contains(b.Key))
-                    continue;
-                // We can skip the lookup because we are iterating over keys not found in the first sequence
-                yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
+                foreach (var b in blookup) {
+                    if (alookup.Contains(b.Key))
+                        continue;
+                    // We can skip the lookup because we are iterating over keys not found in the first sequence
+                    yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
+                }
             }
         }
     }
