@@ -11,7 +11,7 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    class UnenumerableList<T> : IList<T>
+    sealed class UnenumerableList<T> : IList<T>
     {
         readonly List<T> _list = new List<T>();
 
