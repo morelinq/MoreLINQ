@@ -121,11 +121,12 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e))
+                                .Select(e => e.Key >= 0 ? e : throw new IndexOutOfRangeException())
                                 .ToList();
             var array = new TResult[indexed.Select(e => e.Key).DefaultIfEmpty(-1).Max() + 1];
             foreach (var e in indexed)
             {
-                if (e.Key < 0 || e.Key > array.Length)
+                if (e.Key > array.Length)
                     throw new IndexOutOfRangeException();
                 array[e.Key] = resultSelector(e.Value, e.Key);
             }
