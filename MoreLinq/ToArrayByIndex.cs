@@ -116,9 +116,9 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (indexSelector == null) throw new ArgumentNullException("indexSelector");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var indexed = source.Select(e => new KeyValuePair<int, T>(indexSelector(e), e))
                                 .ToList();
@@ -221,10 +221,10 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (length < 0) throw new ArgumentOutOfRangeException("length");
-            if (indexSelector == null) throw new ArgumentNullException("indexSelector");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var array = new TResult[length];
             foreach (var e in source)
