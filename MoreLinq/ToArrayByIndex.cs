@@ -124,7 +124,11 @@ namespace MoreLinq
                                 .ToList();
             var array = new TResult[indexed.Select(e => e.Key).DefaultIfEmpty(-1).Max() + 1];
             foreach (var e in indexed)
+            {
+                if (e.Key < 0 || e.Key > array.Length)
+                    throw new IndexOutOfRangeException();
                 array[e.Key] = resultSelector(e.Value, e.Key);
+            }
             return array;
         }
 
@@ -230,6 +234,8 @@ namespace MoreLinq
             foreach (var e in source)
             {
                 var i = indexSelector(e);
+                if (i < 0 || i > array.Length)
+                    throw new IndexOutOfRangeException();
                 array[i] = resultSelector(e, i);
             }
             return array;

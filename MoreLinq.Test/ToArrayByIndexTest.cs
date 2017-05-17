@@ -20,6 +20,8 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
+    using System;
+
     [TestFixture]
     public class ToArrayByIndexTest
     {
@@ -39,27 +41,59 @@ namespace MoreLinq.Test
         [TestCase(10, new[] { 5, 2, 9, 3 })]
         public void ToArrayByIndex(int length, int[] indicies)
         {
-            var inputs = indicies.Select(i => new { Index = i }).ToArray();
-            var result = length < 0 ? inputs.ToArrayByIndex(e => e.Index)
-                       : inputs.ToArrayByIndex(length, e => e.Index);
+            var input = indicies.Select(i => new { Index = i }).ToArray();
+            var result = length < 0 ? input.ToArrayByIndex(e => e.Index)
+                       : input.ToArrayByIndex(length, e => e.Index);
             var nils = result.ToList();
 
             var lastIndex = length < 0
-                          ? inputs.Select(e => e.Index).DefaultIfEmpty(-1).Max()
+                          ? input.Select(e => e.Index).DefaultIfEmpty(-1).Max()
                           : length - 1;
             var expectedLength = lastIndex + 1;
             Assert.That(result.Count, Is.EqualTo(expectedLength));
 
-            foreach (var e in from e in inputs
+            foreach (var e in from e in input
                               orderby e.Index descending
                               select e)
             {
-                Assert.That(result[e.Index], Is.SameAs(inputs.Single(inp => inp.Index == e.Index)));
+                Assert.That(result[e.Index], Is.SameAs(input.Single(inp => inp.Index == e.Index)));
                 nils.RemoveAt(e.Index);
             }
 
-            Assert.That(nils.Count, Is.EqualTo(expectedLength - inputs.Length));
+            Assert.That(nils.Count, Is.EqualTo(expectedLength - input.Length));
             Assert.That(nils.All(e => e == null), Is.True);
+        }
+
+        [Test]
+        public void ToArrayByIndexWithBadIndexSelectorThrows()
+        {
+            var input = new[] { 42 };
+            Assert.Throws<IndexOutOfRangeException>(() =>
+                input.ToArrayByIndex(_ => -1));
+        }
+
+        [Test]
+        public void ToArrayByIndexWithBadIndexSelectorWithResultSelectorThrows()
+        {
+            var input = new[] { 42 };
+            Assert.Throws<IndexOutOfRangeException>(() =>
+                input.ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
+        }
+
+        [Test]
+        public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows()
+        {
+            var input = new[] { 42 };
+            Assert.Throws<IndexOutOfRangeException>(() =>
+                input.ToArrayByIndex(10, _ => -1));
+        }
+
+        [Test]
+        public void ToArrayByIndexWithLengthWithBadIndexSelectorWithResultSelectorThrows()
+        {
+            var input = new[] { 42 };
+            Assert.Throws<IndexOutOfRangeException>(() =>
+                input.ToArrayByIndex(10, _ => -1, BreakingFunc.Of<int, object>()));
         }
     }
 }
