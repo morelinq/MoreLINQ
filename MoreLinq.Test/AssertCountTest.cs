@@ -24,17 +24,17 @@ namespace MoreLinq.Test
     public class AssertCountTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AssertCountNullSequence()
         {
-            MoreEnumerable.AssertCount<object>(null, 0);
+            Assert.ThrowsArgumentNullException("source", () =>
+                MoreEnumerable.AssertCount<object>(null, 0));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertCountNegativeCount()
         {
-            new object[0].AssertCount(-1);
+            Assert.ThrowsArgumentOutOfRangeException("count",() =>
+                new object[0].AssertCount(-1));
         }
 
         [Test]
@@ -44,17 +44,17 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(SequenceException))]
         public void AssertCountShortSequence()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume();
+            Assert.Throws<SequenceException>(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume());
         }
 
         [Test]
-        [ExpectedException(typeof(SequenceException))]
         public void AssertCountLongSequence()
         {
-            "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume();
+            Assert.Throws<SequenceException>(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume());
         }
 
         [Test]
@@ -112,11 +112,11 @@ namespace MoreLinq.Test
                 Assert.That(e.Count, Is.EqualTo(4));
             }
         }
-        
-        private sealed class TestException : Exception
+
+        sealed class TestException : Exception
         {
-            public int Cmp { get; private set; }
-            public int Count { get; private set; }
+            public int Cmp { get; }
+            public int Count { get; }
 
             public TestException(int cmp, int count)
             {

@@ -26,17 +26,19 @@ using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
+    using NUnit.Framework.Interfaces;
+
     [TestFixture]
     public class NullArgumentTest
     {
-        [Test, TestCaseSource("GetNotNullTestCases")]
+        [Test, TestCaseSource(nameof(GetNotNullTestCases))]
         public void NotNull(TestCase testCase)
         {
-            var ex = Assert.Throws<ArgumentNullException>(() => testCase.Invoke());
-            Assert.That(ex.ParamName, Is.EqualTo(testCase.ParameterName));
+            Assert.ThrowsArgumentNullException(testCase.ParameterName,
+                () => testCase.Invoke());
         }
 
-        [Test, TestCaseSource("GetCanBeNullTestCases")]
+        [Test, TestCaseSource(nameof(GetCanBeNullTestCases))]
         public void CanBeNull(TestCase testCase)
         {
             Assert.DoesNotThrow(() => testCase.Invoke());
@@ -44,9 +46,9 @@ namespace MoreLinq.Test
 
         public class TestCase
         {
-            public MethodInfo Method { get; private set; }
-            public object[] Arguments { get; private set; }
-            public string ParameterName { get; private set; }
+            public MethodInfo Method { get; }
+            public object[] Arguments { get; }
+            public string ParameterName { get; }
 
             public TestCase(MethodInfo method, object[] arguments, string parameterName)
             {
@@ -68,23 +70,18 @@ namespace MoreLinq.Test
             }
         }
 
-        private static IEnumerable<ITestCaseData> GetNotNullTestCases()
-        {
-            return GetTestCases(canBeNull: false);
-        }
+        static IEnumerable<ITestCaseData> GetNotNullTestCases() =>
+            GetTestCases(canBeNull: false);
 
-        private static IEnumerable<ITestCaseData> GetCanBeNullTestCases()
-        {
-            return GetTestCases(canBeNull: true);
-        }
+        static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
+            GetTestCases(canBeNull: true);
 
-        private static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull)
-        {
-            var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly;
-            return typeof (MoreEnumerable).GetMethods(flags).SelectMany(m => CreateTestCases(m, canBeNull));
-        }
+        static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull) =>
+            from m in typeof (MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            from t in CreateTestCases(m, canBeNull)
+            select t;
 
-        private static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull)
+        static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull)
         {
             var method = InstantiateMethod(methodDefinition);
             var parameters = method.GetParameters().ToList();
@@ -97,20 +94,18 @@ namespace MoreLinq.Test
                 select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
         }
 
-        private static string GetTestName(MethodInfo definition, ParameterInfo parameter)
-        {
-            return string.Format("{0}: '{1}' ({2});\n{3}", definition.Name, parameter.Name, parameter.Position, definition);
-        }
+        static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
+            $"{definition.Name}: '{parameter.Name}' ({parameter.Position});\n{definition}";
 
-        private static MethodInfo InstantiateMethod(MethodInfo definition)
+        static MethodInfo InstantiateMethod(MethodInfo definition)
         {
             if (!definition.IsGenericMethodDefinition) return definition;
 
-            var typeArguments = definition.GetGenericArguments().Select(InstantiateType).ToArray();
+            var typeArguments = definition.GetGenericArguments().Select(t => InstantiateType(t.GetTypeInfo())).ToArray();
             return definition.MakeGenericMethod(typeArguments);
         }
 
-        private static Type InstantiateType(Type typeParameter)
+        static Type InstantiateType(TypeInfo typeParameter)
         {
             var constraints = typeParameter.GetGenericParameterConstraints();
 
@@ -120,41 +115,39 @@ namespace MoreLinq.Test
             throw new NotImplementedException("NullArgumentTest.InstantiateType");
         }
 
-        private static bool IsReferenceType(ParameterInfo parameter)
-        {
-            return !parameter.ParameterType.IsValueType; // class or interface
-        }
+        static bool IsReferenceType(ParameterInfo parameter) =>
+            !parameter.ParameterType.GetTypeInfo().IsValueType;
 
-        private static bool CanBeNull(ParameterInfo parameter)
+        static bool CanBeNull(ParameterInfo parameter)
         {
-            var nullableTypes = new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) };
+            var nullableTypes =
+                from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
+                select t.GetTypeInfo();
             var nullableParameters = new[] { "Assert.errorSelector", "ToDataTable.expressions", "ToDelimitedString.delimiter", "Trace.format" };
 
-            var type = parameter.ParameterType;
-            type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+            var type = parameter.ParameterType.GetTypeInfo();
+            type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
             var param = parameter.Member.Name + "." + parameter.Name;
 
             return nullableTypes.Contains(type) || nullableParameters.Contains(param);
         }
 
-        private static object CreateInstance(Type type)
+        static object CreateInstance(Type type)
         {
             if (type == typeof (int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
             if (type == typeof (string)) return "";
             if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
-            if (type.IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
+            if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
 
-            return CreateGenericInterfaceInstance(type);
+            return CreateGenericInterfaceInstance(type.GetTypeInfo());
         }
 
-        private static bool HasDefaultConstructor(Type type)
-        {
-            return type.GetConstructor(Type.EmptyTypes) != null;
-        }
+        static bool HasDefaultConstructor(Type type) =>
+            type.GetConstructor(Type.EmptyTypes) != null;
 
-        private static Delegate CreateDelegateInstance(Type type)
+        static Delegate CreateDelegateInstance(Type type)
         {
             var invoke = type.GetMethod("Invoke");
             var parameters = invoke.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name));
@@ -163,11 +156,11 @@ namespace MoreLinq.Test
             return lambda.Compile();
         }
 
-        private static object CreateGenericInterfaceInstance(Type type)
+        static object CreateGenericInterfaceInstance(TypeInfo type)
         {
             Debug.Assert(type.IsGenericType && type.IsInterface);
             var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
-            var definition = typeof (GenericArgs).GetNestedType(name);
+            var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
             var instantiation = definition.MakeGenericType(type.GetGenericArguments());
             return Activator.CreateInstance(instantiation);
         }
@@ -175,39 +168,39 @@ namespace MoreLinq.Test
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
         static class GenericArgs
         {
-            private class Enumerator<T> : IEnumerator<T>
+            class Enumerator<T> : IEnumerator<T>
             {
-                public bool MoveNext() { return false; }
+                public bool MoveNext() => false;
                 public T Current { get; private set; }
-                object IEnumerator.Current { get { return Current; } }
+                object IEnumerator.Current => Current;
                 public void Reset() { }
                 public void Dispose() { }
             }
 
             public class Enumerable<T> : IEnumerable<T>
             {
-                public IEnumerator<T> GetEnumerator() { return new Enumerator<T>(); }
-                IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+                public IEnumerator<T> GetEnumerator() => new Enumerator<T>();
+                IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             }
 
             public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
             {
                 public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
                 {
-                    if (keySelector == null) throw new ArgumentNullException("keySelector");
+                    if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
                     return this;
                 }
             }
 
             public class Comparer<T> : IComparer<T>
             {
-                public int Compare(T x, T y) { return -1; }
+                public int Compare(T x, T y) => -1;
             }
 
             public class EqualityComparer<T> : IEqualityComparer<T>
             {
-                public bool Equals(T x, T y) { return false; }
-                public int GetHashCode(T obj) { return 0; }
+                public bool Equals(T x, T y) => false;
+                public int GetHashCode(T obj) => 0;
             }
         }
     }

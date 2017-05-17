@@ -208,7 +208,7 @@ namespace MoreLinq
         
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
             return PermutationsImpl(sequence);
         }

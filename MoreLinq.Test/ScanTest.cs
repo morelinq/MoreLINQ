@@ -42,7 +42,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanIsLazy()
         {
-            new BreakingSequence<object>().Scan<object>(delegate { throw new NotImplementedException(); });
+            new BreakingSequence<object>().Scan(delegate { throw new NotImplementedException(); });
         }
 
         [Test]

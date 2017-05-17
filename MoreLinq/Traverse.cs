@@ -38,7 +38,7 @@ namespace MoreLinq
         /// </remarks>
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
-            if (childrenSelector == null) throw new ArgumentNullException("childrenSelector");
+            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
             return TraverseBreadthFirstImpl(root, childrenSelector);
         }
 
@@ -70,7 +70,7 @@ namespace MoreLinq
         /// </remarks>
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
-            if (childrenSelector == null) throw new ArgumentNullException("childrenSelector");
+            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
             return TraverseDepthFirstImpl(root, childrenSelector);
         }
 

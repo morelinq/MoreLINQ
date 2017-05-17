@@ -27,38 +27,38 @@ namespace MoreLinq.Test
     public class FullGroupJoinTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupFirstNull()
         {
-            ((IEnumerable<string>)null).FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, DummySelector);
+            Assert.ThrowsArgumentNullException("first", () =>
+                ((IEnumerable<string>)null).FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, DummySelector));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupSecondNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin((IEnumerable<string>)null, x => x, x => x, DummySelector);
+            Assert.ThrowsArgumentNullException("second", () =>
+                Enumerable.Empty<string>().FullGroupJoin((IEnumerable<string>)null, x => x, x => x, DummySelector));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupFirstKeyNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), (Func<string, string>)null, x => x, DummySelector);
+            Assert.ThrowsArgumentNullException("firstKeySelector",() =>
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), null, x => x, DummySelector));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupSecondKeyNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, (Func<string, string>)null, DummySelector);
+            Assert.ThrowsArgumentNullException("secondKeySelector",() =>
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, null, DummySelector));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void FullGroupResultSelectorNull()
         {
-            Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, (Func<string, IEnumerable<string>, IEnumerable<string>, string>)null);
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
+                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, (Func<string, IEnumerable<string>, IEnumerable<string>, string>)null));
         }
 
         [Test]
@@ -131,21 +131,21 @@ namespace MoreLinq.Test
         public void FullGroupPreservesOrder()
         {
             var listA = new[] {
-                Tuple.Create(3, 1),
-                Tuple.Create(1, 1),
-                Tuple.Create(2, 1),
-                Tuple.Create(1, 2),
-                Tuple.Create(1, 3),
-                Tuple.Create(3, 2),
-                Tuple.Create(1, 4),
-                Tuple.Create(3, 3),
+                (3, 1),
+                (1, 1),
+                (2, 1),
+                (1, 2),
+                (1, 3),
+                (3, 2),
+                (1, 4),
+                (3, 3),
             };
             var listB = new[] {
-                Tuple.Create(4, 1),
-                Tuple.Create(3, 1),
-                Tuple.Create(2, 1),
-                Tuple.Create(0, 1),
-                Tuple.Create(3, 0),
+                (4, 1),
+                (3, 1),
+                (2, 1),
+                (0, 1),
+                (3, 0),
             };
 
             var result = listA.FullGroupJoin(listB, x => x.Item1, x => x.Item1, (key, first, second) => new { key, first, second }).ToList();
@@ -160,7 +160,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
+        static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
         {
             return t1;
         }

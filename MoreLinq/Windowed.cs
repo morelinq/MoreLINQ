@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public static partial class MoreEnumerable
     {
@@ -27,8 +26,6 @@ namespace MoreLinq
         /// Processes a sequence into a series of subsequences representing a windowed subset of the original
         /// </summary>
         /// <remarks>
-        /// This operator is guaranteed to return at least one result, even if the source sequence is smaller
-        /// than the window size.<br/>
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
         /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
@@ -39,8 +36,8 @@ namespace MoreLinq
         
         public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (size <= 0) throw new ArgumentOutOfRangeException("size");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
             return WindowedImpl(source, size);
         }
@@ -50,15 +47,13 @@ namespace MoreLinq
             using (var iter = source.GetEnumerator())
             {
                 // generate the first window of items
-                var countLeft = size;
-                var window = new List<TSource>();
-                // NOTE: The order of evaluation in the if() below is important
-                //       because it relies on short-circuit behavior to ensure
-                //       we don't move the iterator once the window is complete
-                while (countLeft-- > 0 && iter.MoveNext())
-                {
-                    window.Add(iter.Current);
-                }
+                var window = new TSource[size];
+                int i;
+                for (i = 0; i < size && iter.MoveNext(); i++)
+                    window[i] = iter.Current;
+
+                if (i < size)
+                    yield break;
 
                 // return the first window (whatever size it may be)
                 yield return window;
@@ -69,8 +64,11 @@ namespace MoreLinq
                     // NOTE: If we used a circular queue rather than a list, 
                     //       we could make this quite a bit more efficient.
                     //       Sadly the BCL does not offer such a collection.
-                    window = new List<TSource>(window.Skip(1)) { iter.Current };
-                    yield return window;
+                    var newWindow = new TSource[size];
+                    Array.Copy(window, 1, newWindow, 0, size - 1);
+                    newWindow[size - 1] = iter.Current;
+                    yield return newWindow;
+                    window = newWindow;
                 }
             }
         }

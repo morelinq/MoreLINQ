@@ -26,41 +26,41 @@ namespace MoreLinq.Test
         /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSegmentNullSequenceException()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Segment(curr => false);
+            Assert.ThrowsArgumentNullException("source", () =>
+                sequence.Segment(curr => false));
         }
 
         /// <summary>
         /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSegmentNullSequenceException2()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Segment((curr,index) => false);
+            Assert.ThrowsArgumentNullException("source", () =>
+                sequence.Segment((curr, index) => false));
         }
 
         /// <summary>
         /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSegmentNullSequenceException3()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Segment((curr,prev,index) => false);
+            Assert.ThrowsArgumentNullException("source", () =>
+                sequence.Segment((curr, prev, index) => false));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void TestSegmentIdentifierNullException()
         {
             const IEnumerable<int> sequence = null;
-            sequence.Segment((Func<int,bool>)null);
+            Assert.ThrowsArgumentNullException("newSegmentPredicate",() =>
+                sequence.Segment((Func<int, bool>)null));
         }
 
         /// <summary>

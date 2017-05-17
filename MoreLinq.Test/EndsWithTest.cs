@@ -16,7 +16,6 @@
 #endregion
 
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -27,32 +26,38 @@ namespace MoreLinq.Test
     {
         [TestCase(null, null)]
         [TestCase(null, new[] {1})]
-        [TestCase(new[] {1}, null)]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void EndsWithThrowsIfFirstOrSecondAreNull(IEnumerable<int> first, IEnumerable<int> second)
+        public void EndsWithThrowsIfFirsIsNull(IEnumerable<int> first, IEnumerable<int> second)
         {
-            first.EndsWith(second);
+            Assert.ThrowsArgumentNullException("first", () =>
+                first.EndsWith(second));
         }
 
-        [TestCase(new[] {1, 2, 3}, new[] {2, 3}, Result = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, Result = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {0, 1, 2, 3}, Result = false)]
+        [TestCase(new[] {1}, null)]
+        public void EndsWithThrowsIfSecondIsNull(IEnumerable<int> first, IEnumerable<int> second)
+        {
+            Assert.ThrowsArgumentNullException("second", () =>
+                first.EndsWith(second));
+        }
+
+        [TestCase(new[] {1, 2, 3}, new[] {2, 3}, ExpectedResult = true)]
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
+        [TestCase(new[] {1, 2, 3}, new[] {0, 1, 2, 3}, ExpectedResult = false)]
         public bool EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
         {
             return first.EndsWith(second);
         }
 
-        [TestCase(new[] {'1', '2', '3'}, new[] {'2', '3'}, Result = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, Result = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'0', '1', '2', '3'}, Result = false)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'2', '3'}, ExpectedResult = true)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, ExpectedResult = true)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'0', '1', '2', '3'}, ExpectedResult = false)]
         public bool EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
         {
             return first.EndsWith(second);
         }
 
-        [TestCase("123", "23", Result = true)]
-        [TestCase("123", "123", Result = true)]
-        [TestCase("123", "0123", Result = false)]
+        [TestCase("123", "23", ExpectedResult = true)]
+        [TestCase("123", "123", ExpectedResult = true)]
+        [TestCase("123", "0123", ExpectedResult = false)]
         public bool EndsWithWithStrings(string first, string second)
         {
             // Conflict with String.EndsWith(), which has precedence in this case
@@ -71,8 +76,8 @@ namespace MoreLinq.Test
             Assert.False(new int[0].EndsWith(new[] {1,2,3}));
         }
 
-        [TestCase("", "", Result = true)]
-        [TestCase("1", "", Result = true)]
+        [TestCase("", "", ExpectedResult = true)]
+        [TestCase("1", "", ExpectedResult = true)]
         public bool EndsWithReturnsTrueIfSecondIsEmpty(string first, string second)
         {
             // Conflict with String.EndsWith(), which has precedence in this case
@@ -98,8 +103,8 @@ namespace MoreLinq.Test
 
             Assert.False(first.EndsWith(second));
             Assert.False(first.EndsWith(second, null));
-            Assert.False(first.EndsWith(second, new EqualityComparerFunc<int>((f, s) => false)));
-            Assert.True(first.EndsWith(second, new EqualityComparerFunc<int>((f, s) => true)));
+            Assert.False(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
+            Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
     }
 }

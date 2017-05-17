@@ -25,8 +25,9 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {      
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets
-        /// of any size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of
+        /// the subsets of any size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>power set</em> of a set.
         /// </summary>
         /// <remarks>
         /// This operator produces all of the subsets of a given sequence. Subsets are returned
@@ -44,13 +45,15 @@ namespace MoreLinq
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             return SubsetsImpl(sequence);
         }
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of the
-        /// specified size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all
+        /// subsets of a given size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>combinations</em> or
+        /// <em>k-subsets</em> of a set.
         /// </summary>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <param name="subsetSize">The size of the subsets to produce</param>
@@ -66,9 +69,9 @@ namespace MoreLinq
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             if (subsetSize < 0)
-                throw new ArgumentOutOfRangeException("subsetSize", "Subset size must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be >= 0");
 
             // NOTE: Theres an interesting trade-off that we have to make in this operator.
             // Ideally, we would throw an exception here if the {subsetSize} parameter is
@@ -147,7 +150,7 @@ namespace MoreLinq
                 {
                     // precondition: subsetSize <= set.Count
                     if (subsetSize > set.Count)
-                        throw new ArgumentOutOfRangeException("subsetSize", "Subset size must be <= sequence.Count()");
+                        throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
                     
                     // initialize set arrays...
                     _set = set;
@@ -221,9 +224,9 @@ namespace MoreLinq
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
                 if (sequence == null)
-                    throw new ArgumentNullException("sequence");
+                    throw new ArgumentNullException(nameof(sequence));
                 if (subsetSize < 0)
-                    throw new ArgumentOutOfRangeException("subsetSize", "{subsetSize} must be between 0 and set.Count()");
+                    throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");
                 _subsetSize = subsetSize;
                 _sequence = sequence;
             }

@@ -57,12 +57,12 @@ namespace MoreLinq
         
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             // NOTE: Theoretically, we could assume that negative (or zero-offset) lags could be
             //       re-written as: sequence.Lead( -lagBy, resultSelector ). However, I'm not sure
             //       that it's an intuitive - or even desirable - behavior. So it's being omitted.
-            if (offset <= 0) throw new ArgumentOutOfRangeException("offset");
+            if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
             return LagImpl(source, offset, defaultLagValue, resultSelector);
         }

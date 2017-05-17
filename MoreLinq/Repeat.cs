@@ -23,7 +23,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Repeats the specific sequences <paramref name="count"/> times.
+        /// Repeats the sequence the specified number of times.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
         /// <param name="sequence">The sequence to repeat</param>
@@ -32,14 +32,28 @@ namespace MoreLinq
 
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence, int count)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
-            if (count < 0) throw new ArgumentOutOfRangeException("count", "Repeat count must be greater than or equal to zero.");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Repeat count must be greater than or equal to zero.");
             return RepeatImpl(sequence, count);
         }
 
-        private static IEnumerable<T> RepeatImpl<T>(this IEnumerable<T> sequence, int count)
+        /// <summary>
+        /// Repeats the sequence forever.
+        /// </summary>
+        /// <typeparam name="T">Type of elements in sequence</typeparam>
+        /// <param name="sequence">The sequence to repeat</param>
+        /// <returns>A sequence produced from the infinite repetition of the original source sequence</returns>
+
+        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence)
         {
-            while (count-- > 0)
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            return RepeatImpl(sequence, null);
+        }
+
+
+        private static IEnumerable<T> RepeatImpl<T>(IEnumerable<T> sequence, int? count)
+        {
+            while (count == null || count-- > 0)
             {
                 // TODO buffer to avoid multiple enumerations
                 foreach (var item in sequence)

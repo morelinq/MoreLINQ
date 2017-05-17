@@ -55,9 +55,9 @@ namespace MoreLinq
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return ZipLongestImpl(first, second, resultSelector);
         }

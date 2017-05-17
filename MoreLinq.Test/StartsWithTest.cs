@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,6 @@
 #endregion
 
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -27,32 +26,38 @@ namespace MoreLinq.Test
     {
         [TestCase(null, null)]
         [TestCase(null, new[] {1})]
-        [TestCase(new[] {1}, null)]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void StartsWithThrowsIfFirstOrSecondAreNull(IEnumerable<int> first, IEnumerable<int> second)
+        public void StartsWithThrowsIfFirstIsNull(IEnumerable<int> first, IEnumerable<int> second)
         {
-            first.StartsWith(second);
+            Assert.ThrowsArgumentNullException("first", () =>
+                first.StartsWith(second));
         }
 
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2}, Result = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, Result = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3, 4}, Result = false)]
+        [TestCase(new[] {1}, null)]
+        public void StartsWithThrowsIfSecondAIsNull(IEnumerable<int> first, IEnumerable<int> second)
+        {
+            Assert.ThrowsArgumentNullException("second", () =>
+                first.StartsWith(second));
+        }
+
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2}, ExpectedResult = true)]
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
+        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3, 4}, ExpectedResult = false)]
         public bool StartsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
         {
             return first.StartsWith(second);
         }
 
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2'}, Result = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, Result = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3', '4'}, Result = false)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2'}, ExpectedResult = true)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, ExpectedResult = true)]
+        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3', '4'}, ExpectedResult = false)]
         public bool StartsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
         {
             return first.StartsWith(second);
         }
 
-        [TestCase("123", "12", Result = true)]
-        [TestCase("123", "123", Result = true)]
-        [TestCase("123", "1234", Result = false)]
+        [TestCase("123", "12", ExpectedResult = true)]
+        [TestCase("123", "123", ExpectedResult = true)]
+        [TestCase("123", "1234", ExpectedResult = false)]
         public bool StartsWithWithStrings(string first, string second)
         {
             // Conflict with String.StartsWith(), which has precedence in this case
@@ -71,8 +76,8 @@ namespace MoreLinq.Test
             Assert.False(new int[0].StartsWith(new[] {1,2,3}));
         }
 
-        [TestCase("", "", Result = true)]
-        [TestCase("1", "", Result = true)]
+        [TestCase("", "", ExpectedResult = true)]
+        [TestCase("1", "", ExpectedResult = true)]
         public bool StartsWithReturnsTrueIfSecondIsEmpty(string first, string second)
         {
             // Conflict with String.StartsWith(), which has precedence in this case
@@ -98,8 +103,8 @@ namespace MoreLinq.Test
 
             Assert.False(first.StartsWith(second));
             Assert.False(first.StartsWith(second, null));
-            Assert.False(first.StartsWith(second, new EqualityComparerFunc<int>((f, s) => false)));
-            Assert.True(first.StartsWith(second, new EqualityComparerFunc<int>((f, s) => true)));
+            Assert.False(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
+            Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
     }
 }

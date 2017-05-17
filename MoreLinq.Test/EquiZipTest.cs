@@ -17,17 +17,13 @@
 
 using System;
 using NUnit.Framework;
+using Tuple = System.ValueTuple;
 
 namespace MoreLinq.Test
 {
     [TestFixture]
     public class EquiZipTest
     {
-        private static Tuple<TFirst, TSecond> Tuple<TFirst, TSecond>(TFirst a, TSecond b)
-        {
-            return new Tuple<TFirst, TSecond>(a, b);
-        }
-
         [Test]
         public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
         {
@@ -67,49 +63,48 @@ namespace MoreLinq.Test
         [Test]
         public void ZipWithEqualLengthSequencesFailStrategy()
         {
-            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5), Tuple(3, 6));
+            zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequenceShorterThanSecondFailStrategy()
         {
-            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple);
+            var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.Consume();
+            Assert.Throws<InvalidOperationException>(() =>
+                zipped.Consume());
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void ZipWithFirstSequnceLongerThanSecondFailStrategy()
         {
-            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple);
+            var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            zipped.Consume();
-            zipped.AssertSequenceEqual(Tuple(1, 4), Tuple(2, 5));
+            Assert.Throws<InvalidOperationException>(() =>
+                zipped.Consume());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullFirstSequence()
         {
-            MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>());
+            Assert.ThrowsArgumentNullException("first", () =>
+                MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullSecondSequence()
         {
-            new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>());
+            Assert.ThrowsArgumentNullException("second", () =>
+                new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ZipWithNullResultSelector()
         {
-            new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null);
+            Assert.ThrowsArgumentNullException("resultSelector", () =>
+                new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 
         [Test]

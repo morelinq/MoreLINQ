@@ -68,8 +68,8 @@ namespace MoreLinq
         /// </remarks>
         public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
 
             comparer = comparer ?? EqualityComparer<T>.Default;
 

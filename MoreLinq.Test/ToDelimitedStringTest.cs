@@ -15,7 +15,8 @@
 // limitations under the License.
 #endregion
 
-using System;
+#pragma warning disable 612 // 'ToDelimitedString' is obsolete
+
 using System.Globalization;
 using NUnit.Framework;
 using LinqEnumerable = System.Linq.Enumerable;
@@ -26,10 +27,10 @@ namespace MoreLinq.Test
     public class ToDelimitedStringTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ToDelimitedStringWithNullSequence()
         {
-            MoreEnumerable.ToDelimitedString<int>(null, ",");
+            Assert.ThrowsArgumentNullException("source",() =>
+                MoreEnumerable.ToDelimitedString<int>(null, ","));
         }
 
         [Test]
@@ -50,8 +51,10 @@ namespace MoreLinq.Test
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = new[] {1, 2, 3}.ToDelimitedString();
-                Assert.That(result, Is.EqualTo("1;2;3"));
+                var xs = new[] { 1, 2, 3 };
+                var result = xs.ToDelimitedString();
+                var separator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+                Assert.That(result, Is.EqualTo(string.Join(separator, xs)));
             }
         }
 
@@ -60,8 +63,10 @@ namespace MoreLinq.Test
         {
             using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
             {
-                var result = new[] { 1, 2, 3 }.ToDelimitedString(null);
-                Assert.That(result, Is.EqualTo("1;2;3"));
+                var xs = new[] { 1, 2, 3 };
+                var result = xs.ToDelimitedString(null);
+                var separator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+                Assert.That(result, Is.EqualTo(string.Join(separator, xs)));
             }
         }
 
@@ -75,7 +80,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
         {
-            // See: http://code.google.com/p/morelinq/issues/detail?id=43
+            // See: https://github.com/morelinq/MoreLINQ/issues/43
             var result = new object[] { null, null, "foo" }.ToDelimitedString(",");
             Assert.That(result, Is.EqualTo(",,foo"));
         }
