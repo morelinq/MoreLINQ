@@ -38,20 +38,6 @@ namespace MoreLinq.Test
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
             Assert.That(actual, Is.EquivalentTo(expected));
 
-        internal static string InsertBetween(this string delimiter, IEnumerable<string> items)
-        {
-            var builder = new StringBuilder();
-            foreach (var item in items)
-            {
-                if (builder.Length != 0)
-                {
-                    builder.Append(delimiter);
-                }
-                builder.Append(item);
-            }
-            return builder.ToString();
-        }
-
         internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
         {
             foreach (var split in str.Split(separators))
