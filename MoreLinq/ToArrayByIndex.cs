@@ -82,6 +82,7 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
             Func<T, int> indexSelector, Func<T, TResult> resultSelector)
         {
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return source.ToArrayByIndex(indexSelector, (e, _) => resultSelector(e));
         }
 
