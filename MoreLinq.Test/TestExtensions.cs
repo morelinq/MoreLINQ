@@ -43,8 +43,5 @@ namespace MoreLinq.Test
             foreach (var split in str.Split(separators))
                 yield return split;
         }
-
-        internal static void Add<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, TKey key, TValue value) =>
-            list.Add(new KeyValuePair<TKey, TValue>(key, value));
     }
 }
