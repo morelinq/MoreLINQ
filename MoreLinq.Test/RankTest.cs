@@ -29,10 +29,10 @@ namespace MoreLinq.Test
         {
             const IEnumerable<int> sequence = null;
 
-            Assert.Throws<ArgumentNullException>(() => sequence.Rank());
-            Assert.Throws<ArgumentNullException>(() => sequence.Rank(Comparer<int>.Default));
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy(x => x));
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy(x => x, Comparer<int>.Default));
+            Assert.ThrowsArgumentNullException("source", () => sequence.Rank());
+            Assert.ThrowsArgumentNullException("source", () => sequence.Rank(Comparer<int>.Default));
+            Assert.ThrowsArgumentNullException("source", () => sequence.RankBy(x => x));
+            Assert.ThrowsArgumentNullException("source", () => sequence.RankBy(x => x, Comparer<int>.Default));
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy((Func<int, int>)null));
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy((Func<int, int>)null, null));
+            Assert.ThrowsArgumentNullException("keySelector", () => sequence.RankBy((Func<int, int>)null));
+            Assert.ThrowsArgumentNullException("keySelector", () => sequence.RankBy((Func<int, int>)null, null));
         }
 
         /// <summary>

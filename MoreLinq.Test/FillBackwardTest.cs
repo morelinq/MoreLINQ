@@ -28,15 +28,15 @@ namespace MoreLinq.Test
         [Test]
         public void FillBackwardWithNullSequence()
         {
-            var e = Assert.Throws<ArgumentNullException>(() => MoreEnumerable.FillBackward<object>(null));
-            Assert.That(e.ParamName, Is.EqualTo("source"));
+            Assert.ThrowsArgumentNullException("source",
+                () => MoreEnumerable.FillBackward<object>(null));
         }
 
         [Test]
         public void FillBackwardWithNullPredicate()
         {
-            var e = Assert.Throws<ArgumentNullException>(() => new object[0].FillBackward(null));
-            Assert.That(e.ParamName, Is.EqualTo("predicate"));
+            Assert.ThrowsArgumentNullException("predicate",
+                () => new object[0].FillBackward(null));
         }
 
         [Test]
