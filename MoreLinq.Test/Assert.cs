@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
     sealed class Assert : NUnit.Framework.Assert
     {
+        [Obsolete("This is redundant with the NullArgumentTest fixture.")]
         public static void ThrowsArgumentNullException(string expectedParamName, TestDelegate code)
         {
             ThrowsArgumentException<ArgumentNullException>(expectedParamName, code);
