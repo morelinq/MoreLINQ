@@ -72,7 +72,7 @@ namespace MoreLinq
             int count, Func<int, int, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (count < 0) throw new ArgumentException(null, nameof(count));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
             return AssertCountImpl(source, count, errorSelector);

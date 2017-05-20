@@ -33,8 +33,11 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",() =>
-                new object[0].AssertCount(-1));
+            var source = new object[0];
+            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+                source.AssertCount(-1));
+            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+                source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()));
         }
 
         [Test]
