@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -52,8 +53,11 @@ namespace MoreLinq
         /// </returns>
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
-            IEqualityComparer<TKey> comparer) =>
-            source.ToDictionary(e => e.Key, e => e.Value, comparer);
+            IEqualityComparer<TKey> comparer)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return source.ToDictionary(e => e.Key, e => e.Value, comparer);
+        }
 
         #if !NO_VALUE_TUPLES
 
@@ -88,8 +92,11 @@ namespace MoreLinq
         /// </returns>
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
-            IEqualityComparer<TKey> comparer) =>
-            source.ToDictionary(e => e.Key, e => e.Value, comparer);
+            IEqualityComparer<TKey> comparer)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return source.ToDictionary(e => e.Key, e => e.Value, comparer);
+        }
 
         #endif
     }

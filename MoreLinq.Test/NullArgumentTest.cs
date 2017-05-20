@@ -32,56 +32,46 @@ namespace MoreLinq.Test
     public class NullArgumentTest
     {
         [Test, TestCaseSource(nameof(GetNotNullTestCases))]
-        public void NotNull(TestCase testCase)
-        {
-            Assert.ThrowsArgumentNullException(testCase.ParameterName,
-                () => testCase.Invoke());
-        }
+        public void NotNull(Action testCase) =>
+            testCase();
 
         [Test, TestCaseSource(nameof(GetCanBeNullTestCases))]
-        public void CanBeNull(TestCase testCase)
-        {
-            Assert.DoesNotThrow(() => testCase.Invoke());
-        }
-
-        public class TestCase
-        {
-            public MethodInfo Method { get; }
-            public object[] Arguments { get; }
-            public string ParameterName { get; }
-
-            public TestCase(MethodInfo method, object[] arguments, string parameterName)
-            {
-                Method = method;
-                Arguments = arguments;
-                ParameterName = parameterName;
-            }
-
-            public object Invoke()
-            {
-                try
-                {
-                    return Method.Invoke(null, Arguments);
-                }
-                catch (TargetInvocationException ex)
-                {
-                    throw ex.InnerException;
-                }
-            }
-        }
+        public void CanBeNull(Action testCase) =>
+            testCase();
 
         static IEnumerable<ITestCaseData> GetNotNullTestCases() =>
-            GetTestCases(canBeNull: false);
+            GetTestCases(canBeNull: false, testCaseFactory: (method, args, paramName) => () =>
+            {
+                Exception e = null;
+
+                try
+                {
+                    method.Invoke(null, args);
+                }
+                catch (TargetInvocationException tie)
+                {
+                    e = tie.InnerException;
+                }
+
+                Assert.That(e, Is.Not.Null, $"No exception was thrown when {nameof(ArgumentNullException)} was expected.");
+                Assert.That(e, Is.InstanceOf<ArgumentNullException>());
+                var ane = (ArgumentNullException) e;
+                Assert.That(ane.ParamName, Is.EqualTo(paramName));
+                var stackTrace = new StackTrace(ane, false);
+                var stackFrame = stackTrace.GetFrames().First();
+                var actualType = stackFrame.GetMethod().DeclaringType;
+                Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
+            });
 
         static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
-            GetTestCases(canBeNull: true);
+            GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
 
-        static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull) =>
+        static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory) =>
             from m in typeof (MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-            from t in CreateTestCases(m, canBeNull)
+            from t in CreateTestCases(m, canBeNull, testCaseFactory)
             select t;
 
-        static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull)
+        static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory)
         {
             var method = InstantiateMethod(methodDefinition);
             var parameters = method.GetParameters().ToList();
@@ -89,7 +79,7 @@ namespace MoreLinq.Test
             return from param in parameters
                 where IsReferenceType(param) && CanBeNull(param) == canBeNull
                 let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-                let testCase = new TestCase(method, arguments, param.Name)
+                let testCase = testCaseFactory(method, arguments, param.Name)
                 let testName = GetTestName(methodDefinition, param)
                 select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
         }
