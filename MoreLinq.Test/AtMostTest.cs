@@ -24,13 +24,6 @@ namespace MoreLinq.Test
     public class AtMostTest
     {
         [Test]
-        public void AtMostWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AtMost<int>(null, 1));
-        }
-
-        [Test]
         public void AtMostWithNegativeCount()
         {
             Assert.ThrowsArgumentOutOfRangeException("count",
