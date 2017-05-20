@@ -23,20 +23,6 @@ namespace MoreLinq.Test
     public class IndexTest
     {
         [Test]
-        public void IndexNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Index<object>(null));
-        }
-
-        [Test]
-        public void IndexNullSequenceStartIndex()
-        {
-            Assert.ThrowsArgumentNullException("source",() =>
-                MoreEnumerable.Index<object>(null, 0));
-        }
-
-        [Test]
         public void IndexIsLazy()
         {
             var bs = new BreakingSequence<object>();
