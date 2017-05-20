@@ -82,6 +82,7 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<T> source,
             Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
             return source.GroupBy(predicate).Partition(resultSelector);
         }
