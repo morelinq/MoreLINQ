@@ -21,17 +21,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Lead throws an exception if invoked on a <c>null</c> sequence.
-        /// </summary>
-        [Test]
-        public void TestLeadNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Lead(5, (val, leadVal) => val));
-        }
-
-        /// <summary>
         /// Verify that attempting to lead by a negative offset will result in an exception.
         /// </summary>
         [Test]
