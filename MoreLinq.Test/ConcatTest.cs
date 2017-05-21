@@ -46,13 +46,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ConcatWithNullTailSequence()
-        {
-            Assert.ThrowsArgumentNullException("tail",() =>
-                MoreEnumerable.Concat("head", null));
-        }
-
-        [Test]
         public void ConcatWithNullHead()
         {
             var tail = new[] { "second", "third" };
@@ -85,13 +78,6 @@ namespace MoreLinq.Test
             var tail = "first";
             var whole = head.Concat(tail);
             whole.AssertSequenceEqual("first");
-        }
-
-        [Test]
-        public void ConcatWithNullHeadSequence()
-        {
-            Assert.ThrowsArgumentNullException("head",() =>
-                MoreEnumerable.Concat(null, "tail"));
         }
 
         [Test]
