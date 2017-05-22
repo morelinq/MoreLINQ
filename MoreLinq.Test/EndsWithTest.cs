@@ -24,21 +24,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class EndsWithTest
     {
-        [TestCase(null, null)]
-        [TestCase(null, new[] {1})]
-        public void EndsWithThrowsIfFirsIsNull(IEnumerable<int> first, IEnumerable<int> second)
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                first.EndsWith(second));
-        }
-
-        [TestCase(new[] {1}, null)]
-        public void EndsWithThrowsIfSecondIsNull(IEnumerable<int> first, IEnumerable<int> second)
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                first.EndsWith(second));
-        }
-
         [TestCase(new[] {1, 2, 3}, new[] {2, 3}, ExpectedResult = true)]
         [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
         [TestCase(new[] {1, 2, 3}, new[] {0, 1, 2, 3}, ExpectedResult = false)]
