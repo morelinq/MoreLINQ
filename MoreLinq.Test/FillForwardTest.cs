@@ -25,39 +25,6 @@ namespace MoreLinq.Test
     public class FillForwardTest
     {
         [Test]
-        public void FillForwardWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FillForward<object>(null));
-        }
-
-        [Test]
-        public void FillForwardWithNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("predicate", () => new object[0].FillForward(null));
-        }
-
-        [Test]
-        public void FillForwardWithFillSelectorButNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.FillForward<object>(null, _ => false, delegate { return null; }));
-        }
-
-        [Test]
-        public void FillForwardWithFillSelectorButNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("predicate", () =>
-                new object[0].FillForward(null, delegate { return null; }));
-        }
-
-        [Test]
-        public void FillForwardWithNullFillSelector()
-        {
-            Assert.ThrowsArgumentNullException("fillSelector", () =>
-                new object[0].FillForward(_ => false, null));
-        }
-
-        [Test]
         public void FillForwardIsLazy()
         {
             new BreakingSequence<object>().FillForward();
