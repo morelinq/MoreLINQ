@@ -268,5 +268,39 @@ namespace MoreLinq.Test
             using (var r1 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(123));
         }
+
+        [Test]
+        public void MemoizeRethrowsErrorDuringIterationStartToAllIteratorsUntilDisposed()
+        {
+            var error = new Exception("This is a test exception.");
+
+            var i = 0;
+            IEnumerable<int> TestSequence()
+            {
+                if (0 == i++) // throw at start for first iteration only
+                    throw error;
+                yield return 42;
+            }
+
+            var disposed = false;
+            var xs = TestSequence().AsVerifiable().WhenDisposed(_ => disposed = true);
+            var memoized = xs.Memoize();
+            using ((IDisposable) memoized)
+            using (var r1 = memoized.Read())
+            using (var r2 = memoized.Read())
+            {
+                var e1 = Assert.Throws<Exception>(() => r1.Read());
+                Assert.That(e1, Is.SameAs(error));
+
+                Assert.That(disposed, Is.True);
+
+                var e2 = Assert.Throws<Exception>(() => r2.Read());
+                Assert.That(e2, Is.SameAs(error));
+            }
+
+            using (var r1 = memoized.Read())
+            using (var r2 = memoized.Read())
+                Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
+        }
     }
 }
