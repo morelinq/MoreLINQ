@@ -114,8 +114,7 @@ namespace MoreLinq.Test
         public void MemoizeWithInMemoryCollection()
         {
             var list = Enumerable.Range(1, 10).ToList();
-
-            Assert.IsInstanceOf<List<int>>(list.Memoize());
+            Assert.That(list.Memoize(), Is.SameAs(list));
         }
 
         [Test]
