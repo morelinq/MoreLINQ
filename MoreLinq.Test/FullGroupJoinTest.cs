@@ -27,41 +27,6 @@ namespace MoreLinq.Test
     public class FullGroupJoinTest
     {
         [Test]
-        public void FullGroupFirstNull()
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                ((IEnumerable<string>)null).FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, DummySelector));
-        }
-
-        [Test]
-        public void FullGroupSecondNull()
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                Enumerable.Empty<string>().FullGroupJoin((IEnumerable<string>)null, x => x, x => x, DummySelector));
-        }
-
-        [Test]
-        public void FullGroupFirstKeyNull()
-        {
-            Assert.ThrowsArgumentNullException("firstKeySelector",() =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), null, x => x, DummySelector));
-        }
-
-        [Test]
-        public void FullGroupSecondKeyNull()
-        {
-            Assert.ThrowsArgumentNullException("secondKeySelector",() =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, null, DummySelector));
-        }
-
-        [Test]
-        public void FullGroupResultSelectorNull()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector", () =>
-                Enumerable.Empty<string>().FullGroupJoin(Enumerable.Empty<string>(), x => x, x => x, (Func<string, IEnumerable<string>, IEnumerable<string>, string>)null));
-        }
-
-        [Test]
         public void FullGroupIsLazy()
         {
             var listA = new BreakingSequence<int>();
