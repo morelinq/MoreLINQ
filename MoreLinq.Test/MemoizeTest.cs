@@ -128,7 +128,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MemoizeDoesNotDisponseOnEarlyExitByDefault()
+        public void MemoizeDoesNotDisposeOnEarlyExitByDefault()
         {
             Assert.Throws<AssertionException>(() =>
             {
@@ -141,7 +141,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MemoizeWithDisponseOnEarlyExitTrue()
+        public void MemoizeWithDisposeOnEarlyExitTrue()
         {
             using (var xs = new[] { 1, 2 }.AsTestingSequence())
             {
@@ -152,7 +152,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MemoizeDisponsesAfterSourceIsIteratedEntirely()
+        public void MemoizeDisposesAfterSourceIsIteratedEntirely()
         {
             using (var xs = new[] { 1, 2 }.AsTestingSequence())
             {
