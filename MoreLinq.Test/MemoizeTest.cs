@@ -154,11 +154,7 @@ namespace MoreLinq.Test
         public void MemoizeDisposesAfterSourceIsIteratedEntirely()
         {
             using (var xs = new[] { 1, 2 }.AsTestingSequence())
-            {
-                var memoized = xs.Memoize();
-                using ((IDisposable) memoized)
-                    memoized.Consume();
-            }
+                xs.Memoize().Consume();
         }
 
         [Test, Explicit]
