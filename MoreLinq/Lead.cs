@@ -62,31 +62,27 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-            return LeadImpl(source, offset, defaultLeadValue, resultSelector);
-        }
-
-        private static IEnumerable<TResult> LeadImpl<TSource, TResult>(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
-        {
-            var leadQueue = new Queue<TSource>();
-            using (var iter = source.GetEnumerator())
+            return _(); IEnumerable<TResult> _()
             {
-                bool hasMore;
-                // first, prefetch and populate the lead queue with the next step of
-                // items to be streamed out to the consumer of the sequence
-                while ((hasMore = iter.MoveNext()) && leadQueue.Count < offset)
-                    leadQueue.Enqueue(iter.Current);
-                // next, while the source sequence has items, yield the result of
-                // the projection function applied to the top of queue and current item
-                while (hasMore)
+                var leadQueue = new Queue<TSource>();
+                using (var iter = source.GetEnumerator())
                 {
-                    yield return resultSelector(leadQueue.Dequeue(), iter.Current);
-                    leadQueue.Enqueue(iter.Current);
-                    hasMore = iter.MoveNext();
-                }
-                // yield the remaining values in the lead queue with the default lead value
-                while (leadQueue.Count > 0)
-                {
-                    yield return resultSelector(leadQueue.Dequeue(), defaultLeadValue);
+                    bool hasMore;
+                    // first, prefetch and populate the lead queue with the next step of
+                    // items to be streamed out to the consumer of the sequence
+                    while ((hasMore = iter.MoveNext()) && leadQueue.Count < offset)
+                        leadQueue.Enqueue(iter.Current);
+                    // next, while the source sequence has items, yield the result of
+                    // the projection function applied to the top of queue and current item
+                    while (hasMore)
+                    {
+                        yield return resultSelector(leadQueue.Dequeue(), iter.Current);
+                        leadQueue.Enqueue(iter.Current);
+                        hasMore = iter.MoveNext();
+                    }
+                    // yield the remaining values in the lead queue with the default lead value
+                    while (leadQueue.Count > 0)
+                        yield return resultSelector(leadQueue.Dequeue(), defaultLeadValue);
                 }
             }
         }

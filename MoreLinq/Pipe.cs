@@ -42,15 +42,14 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
-            return PipeImpl(source, action);
-        }
 
-        private static IEnumerable<T> PipeImpl<T>(this IEnumerable<T> source, Action<T> action)
-        {
-            foreach (var element in source)
+            return _(); IEnumerable<T> _()
             {
-                action(element);
-                yield return element;
+                foreach (var element in source)
+                {
+                    action(element);
+                    yield return element;
+                }
             }
         }
     }

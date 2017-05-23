@@ -41,14 +41,8 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         
-        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
-            int count)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-
-            return AssertCountImpl(source, count, defaultErrorSelector);
-        }
+        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count) =>
+            AssertCountImpl(source, count, defaultErrorSelector);
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -69,14 +63,8 @@ namespace MoreLinq
         /// </remarks>
         
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
-            int count, Func<int, int, Exception> errorSelector)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (count < 0) throw new ArgumentException(null, nameof(count));
-            if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
-
-            return AssertCountImpl(source, count, errorSelector);
-        }
+            int count, Func<int, int, Exception> errorSelector) =>
+            AssertCountImpl(source, count, errorSelector);
 
         private static Exception OnAssertCountFailure(int cmp, int count)
         {
@@ -91,6 +79,10 @@ namespace MoreLinq
         private static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
+
             var collection = source as ICollection<TSource>; // Optimization for collections
             if (collection != null)
             {
@@ -98,26 +90,23 @@ namespace MoreLinq
                     throw errorSelector(collection.Count.CompareTo(count), count);
                 return source;
             }
-            
-            return ExpectingCountYieldingImpl(source, count, errorSelector);
-        }
 
-        private static IEnumerable<TSource> ExpectingCountYieldingImpl<TSource>(IEnumerable<TSource> source, 
-            int count, Func<int, int, Exception> errorSelector)
-        {
-            var iterations = 0;
-            foreach (var element in source)
+            return _(); IEnumerable<TSource> _()
             {
-                iterations++;
-                if (iterations > count)
+                var iterations = 0;
+                foreach (var element in source)
                 {
-                    throw errorSelector(1, count);
+                    iterations++;
+                    if (iterations > count)
+                    {
+                        throw errorSelector(1, count);
+                    }
+                    yield return element;
                 }
-                yield return element;
-            }
-            if (iterations != count)
-            {
-                throw errorSelector(-1, count);
+                if (iterations != count)
+                {
+                    throw errorSelector(-1, count);
+                }
             }
         }
     }

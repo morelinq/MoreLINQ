@@ -10,8 +10,8 @@ namespace MoreLinq.Test
     /// method of <see cref="IEnumerable"/> - either because they should be using the indexer or because they are
     /// expected to be lazily evaluated.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    class UnenumerableList<T> : IList<T>
+
+    sealed class UnenumerableList<T> : IList<T>
     {
         readonly List<T> _list = new List<T>();
 

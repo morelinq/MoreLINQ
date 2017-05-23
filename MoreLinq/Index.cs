@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -52,6 +53,7 @@ namespace MoreLinq
         
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Select((item, index) => new KeyValuePair<int, TSource>(startIndex + index, item));
         }
     }
