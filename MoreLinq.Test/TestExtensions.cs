@@ -18,6 +18,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace MoreLinq.Test
 {
@@ -37,6 +38,19 @@ namespace MoreLinq.Test
 
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
             Assert.That(actual, Is.EquivalentTo(expected));
+
+        internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
+        {
+            var i = 0;
+            foreach (var item in actual)
+            {
+                Assert.That(i, Is.LessThan(expectations.Length), "Actual sequence has more items than expected.");
+                var expectation = expectations[i];
+                Assert.That(item, expectation, "Unexpected element in sequence at index " + i);
+                i++;
+            }
+            Assert.That(i, Is.EqualTo(expectations.Length), "Actual sequence has fewer items than expected.");
+        }
 
         internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
         {
