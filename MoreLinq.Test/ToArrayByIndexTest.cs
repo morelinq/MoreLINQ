@@ -80,12 +80,13 @@ namespace MoreLinq.Test
                 input.ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
         }
 
-        [Test]
-        public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows()
+        [TestCase(10, -1)]
+        [TestCase(10, 10)]
+        public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows(int length, int badIndex)
         {
             var input = new[] { 42 };
             Assert.Throws<IndexOutOfRangeException>(() =>
-                input.ToArrayByIndex(10, _ => -1));
+                input.ToArrayByIndex(length, _ => badIndex));
         }
 
         [Test]
