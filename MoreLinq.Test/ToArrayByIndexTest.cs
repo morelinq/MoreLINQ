@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace MoreLinq.Test
 {
-    using System;
-
     [TestFixture]
     public class ToArrayByIndexTest
     {
@@ -86,6 +86,36 @@ namespace MoreLinq.Test
 
             Assert.Throws<IndexOutOfRangeException>(() =>
                 input.ToArrayByIndex(10, _ => -1, BreakingFunc.Of<int, object>()));
+        }
+
+        [Test]
+        public void ToArrayByIndexOverwritesAtSameIndex()
+        {
+            var a = new { Index = 2 };
+            var b = new { Index = 2 };
+            var input = new[] { a, b };
+
+            {
+                var expectations = new IResolveConstraint[]
+                {
+                    Is.Null, Is.Null, Is.SameAs(b)
+                };
+
+                input.ToArrayByIndex(e => e.Index).AssertSequence(expectations);
+                input.ToArrayByIndex(e => e.Index, e => e).AssertSequence(expectations);
+            }
+
+            {
+                var expectations = new IResolveConstraint[]
+                {
+                    Is.Null, Is.Null, Is.SameAs(b), Is.Null
+                };
+
+                const int length = 4;
+                input.ToArrayByIndex(length, e => e.Index).AssertSequence(expectations);
+                input.ToArrayByIndex(length, e => e.Index, e => e).AssertSequence(expectations);
+                input.ToArrayByIndex(length, e => e.Index, (e, _) => e).AssertSequence(expectations);
+            }
         }
     }
 }
