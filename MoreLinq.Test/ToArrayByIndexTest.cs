@@ -68,14 +68,10 @@ namespace MoreLinq.Test
         public void ToArrayByIndexWithBadIndexSelectorThrows()
         {
             var input = new[] { 42 };
+
             Assert.Throws<IndexOutOfRangeException>(() =>
                 input.ToArrayByIndex(_ => -1));
-        }
 
-        [Test]
-        public void ToArrayByIndexWithBadIndexSelectorWithResultSelectorThrows()
-        {
-            var input = new[] { 42 };
             Assert.Throws<IndexOutOfRangeException>(() =>
                 input.ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
         }
@@ -87,12 +83,7 @@ namespace MoreLinq.Test
             var input = new[] { 42 };
             Assert.Throws<IndexOutOfRangeException>(() =>
                 input.ToArrayByIndex(length, _ => badIndex));
-        }
 
-        [Test]
-        public void ToArrayByIndexWithLengthWithBadIndexSelectorWithResultSelectorThrows()
-        {
-            var input = new[] { 42 };
             Assert.Throws<IndexOutOfRangeException>(() =>
                 input.ToArrayByIndex(10, _ => -1, BreakingFunc.Of<int, object>()));
         }
