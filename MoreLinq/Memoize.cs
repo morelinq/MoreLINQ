@@ -80,35 +80,14 @@ namespace MoreLinq
                 {
                     if (cache == null)
                     {
-                        var cache = new List<T>(); // for exception safety, allocate then...
-                        sourceEnumerator = source.GetEnumerator(); // (because this can fail)
-                        this.cache = cache; // ...commit to state
-                    }
-                }
-            }
-
-            var index = 0;
-
-            while (true)
-            {
-                T current;
-                lock (locker)
-                {
-                    if (cache == null) // Cache disposed during iteration?
-                        throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
-
-                    if (index >= cache.Count)
-                    {
-                        if (index == errorIndex)
+                        if (error != null)
                             throw error;
 
-                        if (sourceEnumerator == null)
-                            break;
-
-                        bool moved;
                         try
                         {
-                            moved = sourceEnumerator.MoveNext();
+                            var cache = new List<T>(); // for exception safety, allocate then...
+                            sourceEnumerator = source.GetEnumerator(); // (because this can fail)
+                            this.cache = cache; // ...commit to state
                         }
                         catch (Exception ex)
                         {
@@ -116,30 +95,69 @@ namespace MoreLinq
                             // This requires ExceptionDispatchInfo that is
                             // available from .NET Framework 4.5 and onward.
 
-                            this.error = ex;
-                            errorIndex = index;
-                            sourceEnumerator.Dispose();
-                            sourceEnumerator = null;
+                            error = ex;
                             throw;
                         }
+                    }
+                }
+            }
 
-                        if (moved)
+            return _(); IEnumerator<T> _()
+            {
+                var index = 0;
+
+                while (true)
+                {
+                    T current;
+                    lock (locker)
+                    {
+                        if (cache == null) // Cache disposed during iteration?
+                            throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
+
+                        if (index >= cache.Count)
                         {
-                            cache.Add(sourceEnumerator.Current);
+                            if (index == errorIndex)
+                                throw error;
+
+                            if (sourceEnumerator == null)
+                                break;
+
+                            bool moved;
+                            try
+                            {
+                                moved = sourceEnumerator.MoveNext();
+                            }
+                            catch (Exception ex)
+                            {
+                                // TODO preserve stack trace for throw later
+                                // This requires ExceptionDispatchInfo that is
+                                // available from .NET Framework 4.5 and onward.
+
+                                this.error = ex;
+                                errorIndex = index;
+                                sourceEnumerator.Dispose();
+                                sourceEnumerator = null;
+                                throw;
+                            }
+
+                            if (moved)
+                            {
+                                cache.Add(sourceEnumerator.Current);
+                            }
+                            else
+                            {
+                                sourceEnumerator.Dispose();
+                                sourceEnumerator = null;
+                                break;
+                            }
                         }
-                        else
-                        {
-                            sourceEnumerator.Dispose();
-                            sourceEnumerator = null;
-                            break;
-                        }
+
+                        current = cache[index];
                     }
 
-                    current = cache[index];
+                    yield return current;
+                    index++;
                 }
-
-                yield return current;
-                index++;
             }
         }
 
@@ -150,14 +168,10 @@ namespace MoreLinq
 
         public void Dispose()
         {
-            if (cache == null)
-                return;
             lock (locker)
             {
-                if (cache == null)
-                    return;
-                cache = null;
                 error = null;
+                cache = null;
                 errorIndex = null;
                 sourceEnumerator?.Dispose();
                 sourceEnumerator = null;

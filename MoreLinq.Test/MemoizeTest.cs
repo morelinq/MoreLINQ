@@ -17,9 +17,10 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using System.Linq;
 using System.Threading;
+using Delegate = Delegating.Delegate;
+using NUnit.Framework;
 
 namespace MoreLinq.Test
 {
@@ -301,6 +302,32 @@ namespace MoreLinq.Test
             using (var r1 = memoized.Read())
             using (var r2 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
+        }
+
+        [Test]
+        public void MemoizeRethrowsErrorDuringFirstIterationStartToAllIterationsUntilDisposed()
+        {
+            var error = new Exception("An error on the first call!");
+
+            var obj = new object();
+            var calls = 0;
+            IEnumerator<object> GetEnumerator()
+            {
+                if (0 == calls++)
+                    throw error;
+                return Enumerable.Repeat(obj, 1).GetEnumerator();
+            }
+
+            var memo = Delegate.Enumerable(() => GetEnumerator()).Memoize();
+
+            for (var i = 0; i < 2; i++)
+            {
+                var e = Assert.Throws<Exception>(() => memo.First());
+                Assert.That(e, Is.SameAs(error));
+            }
+
+            ((IDisposable) memo).Dispose();
+            Assert.That(memo.Single(), Is.EqualTo(obj));
         }
     }
 }
