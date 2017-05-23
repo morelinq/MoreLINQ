@@ -146,7 +146,7 @@ namespace MoreLinq
         /// the index at which an element will be placed in the array.
         /// </summary>
         /// <param name="source">The source sequence for the array.</param>
-        /// <param name="length">The length of the resulting array.</param>
+        /// <param name="length">The (non-negative) length of the resulting array.</param>
         /// <param name="indexSelector">
         /// A function that maps an element to its index.</param>
         /// <typeparam name="T">
@@ -175,7 +175,7 @@ namespace MoreLinq
         /// elements are projected into the array via an additional function.
         /// </summary>
         /// <param name="source">The source sequence for the array.</param>
-        /// <param name="length">The length of the resulting array.</param>
+        /// <param name="length">The (non-negative) length of the resulting array.</param>
         /// <param name="indexSelector">
         /// A function that maps an element to its index.</param>
         /// <param name="resultSelector">
@@ -210,7 +210,7 @@ namespace MoreLinq
         /// elements are projected into the array via an additional function.
         /// </summary>
         /// <param name="source">The source sequence for the array.</param>
-        /// <param name="length">The length of the resulting array.</param>
+        /// <param name="length">The (non-negative) length of the resulting array.</param>
         /// <param name="indexSelector">
         /// A function that maps an element to its index.</param>
         /// <param name="resultSelector">
