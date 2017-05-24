@@ -308,17 +308,13 @@ namespace MoreLinq.Test
         public void MemoizeRethrowsErrorDuringFirstIterationStartToAllIterationsUntilDisposed()
         {
             var error = new Exception("An error on the first call!");
-
             var obj = new object();
             var calls = 0;
-            IEnumerator<object> GetEnumerator()
-            {
-                if (0 == calls++)
-                    throw error;
-                return Enumerable.Repeat(obj, 1).GetEnumerator();
-            }
+            var source = Delegate.Enumerable(() => 0 == calls++
+                                                 ? throw error
+                                                 : Enumerable.Repeat(obj, 1).GetEnumerator());
 
-            var memo = Delegate.Enumerable(() => GetEnumerator()).Memoize();
+            var memo = source.Memoize();
 
             for (var i = 0; i < 2; i++)
             {
