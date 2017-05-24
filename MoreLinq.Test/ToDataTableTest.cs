@@ -64,25 +64,6 @@ namespace MoreLinq.Test
                                      .ToArray();
         }
 
-
-        [Test]
-        public void ToDataTableNullSequence()
-        {
-            IEnumerable<TestObject> source = null;
-
-            Assert.ThrowsArgumentNullException("source",() =>
-                source.ToDataTable());
-        }
-
-        [Test]
-        public void ToDataTableNullTable()
-        {
-            DataTable dt = null;
-
-            Assert.ThrowsArgumentNullException("table",() =>
-                _testObjects.ToDataTable(dt));
-        }
-
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
         {
