@@ -20,17 +20,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking Windowed on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestWindowedNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Windowed(10));
-        }
-
-        /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
