@@ -28,20 +28,6 @@ namespace MoreLinq.Test
     public class SingleOrFallbackTest
     {
         [Test]
-        public void SingleOrFallbackWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>()));
-        }
-
-        [Test]
-        public void SingleOrFallbackWithNullFallback()
-        {
-            Assert.ThrowsArgumentNullException("fallback",() =>
-                new[] { 1 }.SingleOrFallback(null));
-        }
-
-        [Test]
         public void SingleOrFallbackWithEmptySequence()
         {
             Assert.AreEqual(5, LinqEnumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
