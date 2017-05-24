@@ -24,20 +24,6 @@ namespace MoreLinq.Test
     public class TakeUntilTest
     {
         [Test]
-        public void TakeUntilNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source",() =>
-                MoreEnumerable.TakeUntil<string>(null, x => x.Length == 1));
-        }
-
-        [Test]
-        public void TakeUntilNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.TakeUntil<string>(null, x => x.Length == 1));
-        }
-
-        [Test]
         public void TakeUntilPredicateNeverFalse()
         {
             var sequence = Enumerable.Range(0, 5).TakeUntil(x => x != 100);
