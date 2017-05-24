@@ -25,20 +25,6 @@ namespace MoreLinq.Test
     public class TraverseTest
     {
         [Test]
-        public void TraverseBreadthFirstNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("childrenSelector", () =>
-                MoreEnumerable.TraverseBreadthFirst(new object(), null));
-        }
-
-        [Test]
-        public void TraverseDepthFirstNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("childrenSelector",() =>
-                MoreEnumerable.TraverseDepthFirst(new object(), null));
-        }
-
-        [Test]
         public void TraverseDepthFirstFNullGenerator()
         {
             MoreEnumerable.TraverseDepthFirst(new object(), o => new BreakingSequence<object>());
