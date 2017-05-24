@@ -23,13 +23,6 @@ namespace MoreLinq.Test
     public class TakeEveryTest
     {
         [Test]
-        public void TakeEveryNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.TakeEvery<object>(null, 1));
-        }
-
-        [Test]
         public void TakeEveryNegativeSkip()
         {
             Assert.ThrowsArgumentOutOfRangeException("step",() =>
