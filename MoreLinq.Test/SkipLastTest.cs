@@ -23,12 +23,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class SkipLastTest
     {
-        [Test]
-        public void SkipLastWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.SkipLast<int>(null, 1));
-        }
-
         [TestCase( 0)]
         [TestCase(-1)]
         public void SkipLastWithCountLesserThanOne(int skip)
