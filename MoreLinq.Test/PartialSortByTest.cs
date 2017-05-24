@@ -26,16 +26,6 @@ namespace MoreLinq.Test
     public class PartialSortByTests
     {
         [Test]
-        public void PartialSortByWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () => 
-                MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e));
-
-            Assert.ThrowsArgumentNullException("source", () => 
-                MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e, Comparer<object>.Default));
-        }
-
-        [Test]
         public void PartialSortBy()
         {
             var ns = MoreEnumerable.RandomDouble().Take(10).ToArray();
