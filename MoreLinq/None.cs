@@ -40,6 +40,7 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="TSource">Type of elements.</typeparam>
         /// <param name="source">The sequence to check.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
         /// <returns>true if no elements in the source sequence pass the test in the specified predicate; otherwise, false.</returns>
         public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
