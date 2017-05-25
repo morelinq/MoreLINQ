@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,20 +23,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class MaxByTest
     {
-        [Test]
-        public void MaxByNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                ((IEnumerable<string>)null).MaxBy(x => x.Length));
-        }
-
-        [Test]
-        public void MaxByNullSelector()
-        {
-            Assert.ThrowsArgumentNullException("selector",() =>
-                SampleData.Strings.MaxBy<string, int>(null));
-        }
-
         [Test]
         public void MaxByNullComparer()
         {

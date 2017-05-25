@@ -23,13 +23,6 @@ namespace MoreLinq.Test
     public class TakeLastTest
     {
         [Test]
-        public void TakeLastNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.TakeLast<object>(null, 0));
-        }
-
-        [Test]
         public void TakeLast()
         {
             var result = new[]{ 12, 34, 56, 78, 910, 1112 }.TakeLast(3);

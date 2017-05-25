@@ -48,16 +48,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify applying Repeat to a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRepeatSequenceANullException()
-        {
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                MoreEnumerable.Repeat<object>(null, 42));
-        }
-
-        /// <summary>
         /// Verify applying Repeat without passing count produces a circular sequence
         /// </summary>
         [Test]
@@ -88,17 +78,6 @@ namespace MoreLinq.Test
                 expectedResult = expectedResult.Concat(sequence);
 
             Assert.That(expectedResult, Is.EquivalentTo(result.Take(takeCount)));
-        }
-
-        /// <summary>
-        /// Verify applying Repeat without passing count to a 
-        /// <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRepeatForeverSequenceANullException()
-        {
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                MoreEnumerable.Repeat<object>(null));
         }
 
         /// <summary>

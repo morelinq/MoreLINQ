@@ -24,20 +24,6 @@ namespace MoreLinq.Test
     public class SkipUntilTest
     {
         [Test]
-        public void SkipUntilNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
-        }
-
-        [Test]
-        public void SkipUntilNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("source",() =>
-                MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
-        }
-
-        [Test]
         public void SkipUntilPredicateNeverFalse()
         {
             var sequence = Enumerable.Range(0, 5).SkipUntil(x => x != 100);

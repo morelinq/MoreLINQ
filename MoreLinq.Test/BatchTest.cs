@@ -25,13 +25,6 @@ namespace MoreLinq.Test
     public class BatchTest
     {
         [Test]
-        public void BatchNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Batch<object>(null, 1));
-        }
-
-        [Test]
         public void BatchZeroSize()
         {
             Assert.ThrowsArgumentOutOfRangeException("size",() =>
@@ -43,13 +36,6 @@ namespace MoreLinq.Test
         {
             Assert.ThrowsArgumentOutOfRangeException("size",() =>
                 new object[0].Batch(-1));
-        }
-
-        [Test]
-        public void BatchWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector",() =>
-                new object[0].Batch<object, object>(1, null));
         }
 
         [Test]

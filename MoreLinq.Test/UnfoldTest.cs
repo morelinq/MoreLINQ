@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -17,45 +17,12 @@
 
 using System.Linq;
 using NUnit.Framework;
-using System;
 
 namespace MoreLinq.Test
 {
     [TestFixture]
     public class UnfoldTest
     {
-        [Test]
-        public void UnfoldWithNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("generator", () =>
-                MoreEnumerable.Unfold(0, (Func<int, (int State, int Result)>) null,
-                                      _ => true, e => e.State, e => e.Result));
-        }
-
-        [Test]
-        public void UnfoldWithNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("predicate", () =>
-                MoreEnumerable.Unfold(0, e => (e, e + 1), null, e => e.Item1, e => e.Item2));
-        }
-
-        [Test]
-        public void UnfoldWithNullStateSelector()
-        {
-            Assert.ThrowsArgumentNullException("stateSelector", () =>
-                MoreEnumerable.Unfold(0, e => (e, e + 1), _ => true, null, e => e.Item2));
-        }
-
-        [Test]
-        public void UnfoldWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector", () =>
-                MoreEnumerable.Unfold(0, e => (e, e + 1),
-                                         _ => true,
-                                         e => e.State,
-                                         (Func<(int Result, int State), int>) null));
-        }
-
         [Test]
         public void UnfoldInfiniteSequence()
         {

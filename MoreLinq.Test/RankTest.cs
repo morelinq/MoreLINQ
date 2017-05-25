@@ -22,32 +22,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Rank throws an exception when invoked on a <c>null</c> sequence
-        /// </summary>
-        [Test]
-        public void TestRankSequenceNullException()
-        {
-            const IEnumerable<int> sequence = null;
-
-            Assert.Throws<ArgumentNullException>(() => sequence.Rank());
-            Assert.Throws<ArgumentNullException>(() => sequence.Rank(Comparer<int>.Default));
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy(x => x));
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy(x => x, Comparer<int>.Default));
-        }
-
-        /// <summary>
-        /// Verify that Rank throws an exception if the key selector is <c>null</c>
-        /// </summary>
-        [Test]
-        public void TestRankKeySelectorNullException()
-        {
-            var sequence = Enumerable.Repeat(1, 10);
-
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy((Func<int, int>)null));
-            Assert.Throws<ArgumentNullException>(() => sequence.RankBy((Func<int, int>)null, null));
-        }
-
-        /// <summary>
         /// Verify that Rank uses the default comparer when comparer is <c>null</c>
         /// </summary>
         [Test]

@@ -23,20 +23,6 @@ namespace MoreLinq.Test
     public class PreScanTest
     {
         [Test]
-        public void PreScanNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.PreScan(null, SampleData.Plus, 0));
-        }
-
-        [Test]
-        public void PreScanNullOperation()
-        {
-            Assert.ThrowsArgumentNullException("transformation",() =>
-                SampleData.Values.PreScan(null, 0));
-        }
-
-        [Test]
         public void PreScanSum()
         {
             var result = SampleData.Values.PreScan(SampleData.Plus, 0);

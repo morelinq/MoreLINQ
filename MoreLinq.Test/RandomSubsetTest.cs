@@ -22,28 +22,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking RandomSubsets on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRandomSubsetNullSequence()
-        {
-            const IEnumerable<int> nullSequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                nullSequence.RandomSubset(10));
-        }
-
-        /// <summary>
-        /// Verify that invoking RandomSubsets on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRandomSubsetNullSequence2()
-        {
-            const IEnumerable<int> nullSequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                nullSequence.RandomSubset(10, new Random()));
-        }
-
-        /// <summary>
         /// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
         /// </summary>
         [Test]

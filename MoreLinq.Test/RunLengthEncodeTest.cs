@@ -22,28 +22,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking RunLengthEncode on an empty sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestRunLengthEncodeNullSequence()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                sequence.RunLengthEncode());
-        }
-
-        /// <summary>
-        /// Verify that invoking RunLengthEncode on an empty sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestRunLengthEncodeNullSequence2()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence",() =>
-                sequence.RunLengthEncode(EqualityComparer<int>.Default));
-        }
-
-        /// <summary>
         /// Verify that run-length encoding an empty sequence results in an empty sequence.
         /// </summary>
         [Test]

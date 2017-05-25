@@ -27,20 +27,6 @@ namespace MoreLinq.Test
         // Overload 1 Test
 
         [Test]
-        public void AggregateRightWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AggregateRight<int>(null, (a, b) => a + b));
-        }
-
-        [Test]
-        public void AggregateRightWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).AggregateRight(null));
-        }
-
-        [Test]
         public void AggregateRightWithEmptySequence()
         {
             Assert.Throws<InvalidOperationException>(
@@ -68,20 +54,6 @@ namespace MoreLinq.Test
         }
 
         // Overload 2 Test
-
-        [Test]
-        public void AggregateRightSeedWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AggregateRight<int, int>(null, 1, (a, b) => a + b));
-        }
-
-        [Test]
-        public void AggregateRightSeedWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).AggregateRight(6, null));
-        }
 
         [TestCase(5)]
         [TestCase("c")]
@@ -111,27 +83,6 @@ namespace MoreLinq.Test
         }
 
         // Overload 3 Test
-
-        [Test]
-        public void AggregateRightResultorWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AggregateRight<int, int, bool>(null, 1, (a, b) => a + b, a => a % 2 == 0));
-        }
-
-        [Test]
-        public void AggregateRightResultorWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).AggregateRight(6, null, a => a % 2 == 0));
-        }
-
-        [Test]
-        public void AggregateRightResultorWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector",
-                () => Enumerable.Range(1, 5).AggregateRight(6, (a, b) => a + b, (Func<int, bool>)null));
-        }
 
         [TestCase(5)]
         [TestCase("c")]

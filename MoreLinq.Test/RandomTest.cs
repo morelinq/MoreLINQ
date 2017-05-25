@@ -14,51 +14,6 @@ namespace MoreLinq.Test
         const int RandomTrials = 10000;
 
         /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException1()
-        {
-            Assert.ThrowsArgumentNullException("rand",() =>
-                MoreEnumerable.Random(null));
-        }
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException2()
-        {
-            const int maxValue = 10;
-            Assert.Greater(maxValue, 0);
-            Assert.ThrowsArgumentNullException("rand", () =>
-                MoreEnumerable.Random(null, maxValue));
-        }
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException3()
-        {
-            const int minValue = 10;
-            const int maxValue = 100;
-            Assert.LessOrEqual(minValue, maxValue);
-            Assert.ThrowsArgumentNullException("rand", () =>
-                MoreEnumerable.Random(null, minValue, maxValue));
-        }
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException4()
-        {
-            Assert.ThrowsArgumentNullException("rand", () =>
-                MoreEnumerable.RandomDouble(null));
-        }
-
-        /// <summary>
         /// Verify that passing a negative maximum value yields an exception
         /// </summary>
         [Test]

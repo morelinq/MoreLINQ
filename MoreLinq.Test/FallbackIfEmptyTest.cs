@@ -25,22 +25,6 @@ namespace MoreLinq.Test
     public class FallbackIfEmptyTest
     {
         [Test]
-        public void FallbackIfEmptyWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4, 5));
-        }
-
-        [Test]
-        public void FallbackIfEmptyWithNullFallbackParams()
-        {
-           Assert.ThrowsArgumentNullException("fallback", () => new[] { 1 }.FallbackIfEmpty(null));
-        }
-
-        [Test]
         public void FallbackIfEmptyWithEmptySequence()
         {
             var source = LinqEnumerable.Empty<int>().Select(x => x);

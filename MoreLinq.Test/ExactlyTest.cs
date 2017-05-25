@@ -24,13 +24,6 @@ namespace MoreLinq.Test
     public class ExactlyTest
     {
         [Test]
-        public void ExactlyWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.Exactly<int>(null, 1));
-        }
-
-        [Test]
         public void ExactlyWithNegativeCount()
         {
             Assert.ThrowsArgumentOutOfRangeException("count", () =>

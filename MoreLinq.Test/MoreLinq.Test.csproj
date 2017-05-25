@@ -24,6 +24,7 @@
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject />
     <LangVersion>7</LangVersion>
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

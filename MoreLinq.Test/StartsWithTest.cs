@@ -24,21 +24,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class StartsWithTest
     {
-        [TestCase(null, null)]
-        [TestCase(null, new[] {1})]
-        public void StartsWithThrowsIfFirstIsNull(IEnumerable<int> first, IEnumerable<int> second)
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                first.StartsWith(second));
-        }
-
-        [TestCase(new[] {1}, null)]
-        public void StartsWithThrowsIfSecondAIsNull(IEnumerable<int> first, IEnumerable<int> second)
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                first.StartsWith(second));
-        }
-
         [TestCase(new[] {1, 2, 3}, new[] {1, 2}, ExpectedResult = true)]
         [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
         [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3, 4}, ExpectedResult = false)]

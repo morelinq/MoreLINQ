@@ -25,13 +25,6 @@ namespace MoreLinq.Test
     public class CountBetweenTest
     {
         [Test]
-        public void CountBetweenWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.CountBetween<int>(null, 1, 2));
-        }
-
-        [Test]
         public void CountBetweenWithNegativeMin()
         {
             Assert.ThrowsArgumentOutOfRangeException("min", () =>

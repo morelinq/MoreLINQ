@@ -24,13 +24,6 @@ namespace MoreLinq.Test
     public class AtLeastTest
     {
         [Test]
-        public void AtLeastWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.AtLeast<int>(null, 1));
-        }
-
-        [Test]
         public void AtLeastWithNegativeCount()
         {
             Assert.ThrowsArgumentOutOfRangeException("count", () =>

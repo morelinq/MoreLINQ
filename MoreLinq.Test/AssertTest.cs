@@ -24,20 +24,6 @@ namespace MoreLinq.Test
     public class AssertTest
     {
         [Test]
-        public void AssertNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Assert<object>(null, delegate { return false; }));
-        }
-
-        [Test]
-        public void AssertNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("predicate",() => 
-                new object[0].Assert(null));
-        }
-
-        [Test]
         public void AssertIsLazy()
         {
             new BreakingSequence<object>().Assert(delegate { throw new NotImplementedException(); });

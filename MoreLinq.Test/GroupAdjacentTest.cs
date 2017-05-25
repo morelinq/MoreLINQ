@@ -26,20 +26,6 @@ namespace MoreLinq.Test
     public class GroupAdjacentTest
     {
         [Test]
-        public void GroupAdjacentNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; }));
-        }
-
-        [Test]
-        public void GroupAdjacentNullKeySelector()
-        {
-            Assert.ThrowsArgumentNullException("keySelector", () =>
-                new object[0].GroupAdjacent<object, object>(null));
-        }
-
-        [Test]
         public void GroupAdjacentIsLazy()
         {
             var bs = new BreakingSequence<object>();

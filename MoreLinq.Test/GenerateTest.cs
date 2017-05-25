@@ -48,23 +48,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void GenerateWithNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("generator", () =>
-                MoreEnumerable.Generate(0, null));
-        }
-
-        [Test]
         public void GenerateByIndexIsLazy()
         {
             MoreEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
-        }
-
-        [Test]
-        public void GenerateByIndexWithNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("generator",() =>
-                MoreEnumerable.GenerateByIndex<int>(null));
         }
 
         [Test]

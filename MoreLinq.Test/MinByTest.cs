@@ -16,7 +16,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace MoreLinq.Test
@@ -24,20 +23,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class MinByTest
     {
-        [Test]
-        public void MinByNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                ((IEnumerable<string>)null).MinBy(x => x.Length));
-        }
-
-        [Test]
-        public void MinByNullSelector()
-        {
-            Assert.ThrowsArgumentNullException("selector",() =>
-                SampleData.Strings.MinBy<string, int>(null));
-        }
-
         [Test]
         public void MinByNullComparer()
         {

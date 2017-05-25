@@ -20,17 +20,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking exclude on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestExcludeNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                sequence.Exclude(0, 10));
-        }
-
-        /// <summary>
         /// Verify that a negative startIndex parameter results in an exception
         /// </summary>
         [Test]
