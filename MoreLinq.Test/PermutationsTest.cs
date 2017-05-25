@@ -157,18 +157,6 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().Permutations();
         }
 
-
-        /// <summary>
-        /// Verify that invoking Permutations() on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestPermutationNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                sequence.Permutations());
-        }
-
         /// <summary>
         /// Verify that each permutation produced is a new object, this ensures that callers
         /// can request permutations and cache or store them without them being overwritten.
