@@ -15,16 +15,6 @@ namespace MoreLinq.Test
         static readonly Action EmptyLoopBody = DoNothing;
 
         /// <summary>
-        /// Verify that passing an empty loop count sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullLoopCountsException()
-        {
-            Assert.ThrowsArgumentNullException("loopCounts",() =>
-                EmptyLoopBody.NestedLoops(null));
-        }
-
-        /// <summary>
         /// Verify that passing negative loop counts results in an exception
         /// </summary>
         [Test]
