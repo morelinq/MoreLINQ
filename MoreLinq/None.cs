@@ -44,7 +44,7 @@ namespace MoreLinq
         public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return !(LinqEnumerable.Any(source, predicate));
+            return !LinqEnumerable.Any(source, predicate);
         }
     }
 }
