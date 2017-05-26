@@ -1,8 +1,8 @@
-using System;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     sealed class Assert : NUnit.Framework.Assert
     {
         [Obsolete("This is redundant with the NullArgumentTest fixture.")]

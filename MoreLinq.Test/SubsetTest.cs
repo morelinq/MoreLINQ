@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Linq;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests of the Subset() family of extension methods.
     /// </summary>

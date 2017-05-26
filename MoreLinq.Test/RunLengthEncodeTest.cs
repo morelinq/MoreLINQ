@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the RunLengthEncode() operator
     /// </summary>

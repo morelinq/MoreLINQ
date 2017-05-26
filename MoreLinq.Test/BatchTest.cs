@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class BatchTest
     {

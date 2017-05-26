@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests of the various overloads of <see cref="MoreEnumerable"/>.Random()
     /// </summary>

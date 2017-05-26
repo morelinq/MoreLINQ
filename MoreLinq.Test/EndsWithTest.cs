@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using NUnit.Framework;
+
     [TestFixture]
     public class EndsWithTest
     {

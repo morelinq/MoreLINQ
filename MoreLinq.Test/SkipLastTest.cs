@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Linq;
-
 namespace MoreLinq.Test
 {
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SkipLastTest
     {

@@ -15,12 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
-using NUnit.Framework;
-
-
 namespace MoreLinq.Test
 {
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FullGroupJoinTest
     {

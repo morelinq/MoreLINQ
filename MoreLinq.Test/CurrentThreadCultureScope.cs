@@ -15,10 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System.Globalization;
-
 namespace MoreLinq.Test
 {
+    using System.Globalization;
+
     sealed class CurrentThreadCultureScope : Scope<CultureInfo>
     {
         public CurrentThreadCultureScope(CultureInfo @new) : 

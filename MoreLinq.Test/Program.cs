@@ -1,10 +1,10 @@
-using NUnit.Common;
-using NUnitLite;
-using System;
-using System.Reflection;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Reflection;
+    using NUnit.Common;
+    using NUnitLite;
+
     static class Program
     {
         static int Main(string[] args) =>

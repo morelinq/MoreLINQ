@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GroupAdjacentTest
     {

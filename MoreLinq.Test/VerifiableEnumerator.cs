@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface representing an <see cref="IEnumerable{T}"/> that exposed verification checkpoints for testing.
     /// </summary>

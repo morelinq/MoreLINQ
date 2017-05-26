@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     static class TestingSequence
     {
         internal static TestingSequence<T> Of<T>(params T[] elements) =>

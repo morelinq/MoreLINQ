@@ -15,17 +15,16 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using NUnit.Framework;
     using NUnit.Framework.Interfaces;
 
     [TestFixture]

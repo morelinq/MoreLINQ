@@ -15,10 +15,10 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class PadTest
     {

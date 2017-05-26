@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Data and functions to use throughout tests.
     /// </summary>

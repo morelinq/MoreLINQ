@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using NUnit.Framework.Constraints;
+
     static class TestExtensions
     {
         /// <summary>

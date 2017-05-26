@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System;
-using System.Linq;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Linq;
+    using NUnit.Framework;
+    using LinqEnumerable = System.Linq.Enumerable;
+
     [TestFixture]
     public class CountByTest
     {

@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// This class implement <see cref="IList{T}"/> but specifically prohibits enumeration using GetEnumerator().
     /// It is provided to assist in testing extension methods that MUST NOT call the GetEnumerator()

@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using System.Linq;
+    using NUnit.Framework;
+    using LinqEnumerable = System.Linq.Enumerable;
+
     [TestFixture]
     public class FallbackIfEmptyTest
     {

@@ -1,8 +1,8 @@
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Linq;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the Repeat() extension method.
     /// </summary>

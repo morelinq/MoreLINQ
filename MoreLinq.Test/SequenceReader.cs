@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+
     static class SequenceReader
     {
         public static SequenceReader<T> Read<T>(this IEnumerable<T> source)

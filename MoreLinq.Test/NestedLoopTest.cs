@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Linq;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the behavior of the NestedLoops extension method.
     /// </summary>

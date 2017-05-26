@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-using Tuple = System.ValueTuple;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+    using Tuple = System.ValueTuple;
+
     [TestFixture]
     public class EquiZipTest
     {

@@ -17,12 +17,13 @@
 
 #pragma warning disable 612 // 'ToDelimitedString' is obsolete
 
-using System.Globalization;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq.Test
 {
+    using System.Globalization;
+    using NUnit.Framework;
+    using LinqEnumerable = System.Linq.Enumerable;
+
     [TestFixture]
     public class ToDelimitedStringTest
     {

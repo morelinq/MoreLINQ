@@ -15,16 +15,16 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ToDataTableTest
     {

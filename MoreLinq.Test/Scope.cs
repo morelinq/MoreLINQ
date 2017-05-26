@@ -15,10 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System;
-
 namespace MoreLinq.Test
 {
+    using System;
+
     abstract class Scope<T> : IDisposable
     {
         readonly T _old;

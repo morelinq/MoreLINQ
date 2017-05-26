@@ -15,11 +15,11 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+    using LinqEnumerable = System.Linq.Enumerable;
+
     [TestFixture]
     public class ExactlyTest
     {

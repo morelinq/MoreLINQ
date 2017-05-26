@@ -17,9 +17,9 @@
 
 namespace MoreLinq.Test
 {
-    using NUnit.Framework;
     using System;
     using System.Linq;
+    using NUnit.Framework;
 
     [TestFixture]
     public class SequenceTest
