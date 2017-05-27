@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -50,25 +51,28 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return _(); IEnumerable<TSource> _()
-            {
-                Debug.Assert(source != null);
-
-                if (count <= 0)
-                    yield break;
-
-                var q = new Queue<TSource>(count);
-
-                foreach (var item in source)
+            return 
+                source is ICollection<TSource> col
+                ? col.Skip(col.Count - count)
+                : _(); IEnumerable<TSource> _()
                 {
-                    if (q.Count == count)
-                        q.Dequeue();
-                    q.Enqueue(item);
-                }
+                    Debug.Assert(source != null);
 
-                foreach (var item in q)
-                    yield return item;
-            }
+                    if (count <= 0)
+                        yield break;
+
+                    var q = new Queue<TSource>(count);
+
+                    foreach (var item in source)
+                    {
+                        if (q.Count == count)
+                            q.Dequeue();
+                        q.Enqueue(item);
+                    }
+
+                    foreach (var item in q)
+                        yield return item;
+                }
         }
     }
 }
