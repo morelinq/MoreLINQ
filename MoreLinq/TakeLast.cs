@@ -56,8 +56,6 @@ namespace MoreLinq
                 ? col.Skip(col.Count - count)
                 : _(); IEnumerable<TSource> _()
                 {
-                    Debug.Assert(source != null);
-
                     if (count <= 0)
                         yield break;
 
