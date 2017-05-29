@@ -18,6 +18,8 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
+    using System.Linq;
 
     [TestFixture]
     public class TakeLastTest
@@ -25,22 +27,37 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.TakeLast(3);
-            result.AssertSequenceEqual(78, 910, 1112);
+            void Test(IEnumerable<int> source) 
+                => source.TakeLast(3).AssertSequenceEqual(78, 910, 1112);
+            
+            var collection = new[]{ 12, 34, 56, 78, 910, 1112 };
+
+            Test(collection);
+            Test(collection.Select(x => x));
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(5);
-            result.AssertSequenceEqual(12, 34, 56);
+            void Test(IEnumerable<int> source) 
+                => source.TakeLast(5).AssertSequenceEqual(12, 34, 56);
+
+            var collection = new[] { 12, 34, 56 };
+
+            Test(collection);
+            Test(collection.Select(x => x));
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(-2);
-            Assert.IsFalse(result.GetEnumerator().MoveNext());
+            void Test(IEnumerable<int> source) 
+                => Assert.IsFalse(source.TakeLast(-2).GetEnumerator().MoveNext());
+
+            var collection = new[] { 12, 34, 56 };
+
+            Test(collection);
+            Test(collection.Select(x => x));
         }
 
         [Test]
@@ -53,6 +70,11 @@ namespace MoreLinq.Test
         public void TakeLastDisposesSequenceEnumerator()
         {
             using (var seq = TestingSequence.Of(1,2,3))
+            {
+                seq.TakeLast(1).Consume();
+            }
+
+            using (var seq = new[]{ 1,2,3 }.AsTestingSequence())
             {
                 seq.TakeLast(1).Consume();
             }
