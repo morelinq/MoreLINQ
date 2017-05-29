@@ -52,8 +52,6 @@ namespace MoreLinq
 
             return _(); IEnumerable<TSource> _()
             {
-                Debug.Assert(source != null);
-
                 if (count <= 0)
                     yield break;
 
