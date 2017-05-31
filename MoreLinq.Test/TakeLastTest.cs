@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
-    using System.Collections.Generic;
     using System.Linq;
 
     [TestFixture]
@@ -27,37 +26,22 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            void Test(IEnumerable<int> source) 
-                => source.TakeLast(3).AssertSequenceEqual(78, 910, 1112);
-            
-            var collection = new[]{ 12, 34, 56, 78, 910, 1112 };
-
-            Test(collection);
-            Test(collection.Select(x => x));
+            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.Select(x => x).TakeLast(3);
+            result.AssertSequenceEqual(78, 910, 1112);
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            void Test(IEnumerable<int> source) 
-                => source.TakeLast(5).AssertSequenceEqual(12, 34, 56);
-
-            var collection = new[] { 12, 34, 56 };
-
-            Test(collection);
-            Test(collection.Select(x => x));
+            var result = new[] { 12, 34, 56 }.Select(x => x).TakeLast(5);
+            result.AssertSequenceEqual(12, 34, 56);
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            void Test(IEnumerable<int> source) 
-                => Assert.IsFalse(source.TakeLast(-2).GetEnumerator().MoveNext());
-
-            var collection = new[] { 12, 34, 56 };
-
-            Test(collection);
-            Test(collection.Select(x => x));
+            var result = new[] { 12, 34, 56 }.Select(x => x).TakeLast(-2);
+            Assert.IsFalse(result.GetEnumerator().MoveNext());
         }
 
         [Test]
@@ -73,11 +57,29 @@ namespace MoreLinq.Test
             {
                 seq.TakeLast(1).Consume();
             }
+        }
 
-            using (var seq = new[]{ 1,2,3 }.AsTestingSequence())
-            {
-                seq.TakeLast(1).Consume();
-            }
+        // ICollection<T> Optimization Tests
+
+        [Test]
+        public void TakeLastForCollection()
+        {
+            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.TakeLast(3);
+            result.AssertSequenceEqual(78, 910, 1112);
+        }
+
+        [Test]
+        public void TakeLastOnSequenceShortOfCountForCollection()
+        {
+            var result = new[] { 12, 34, 56 }.TakeLast(5);
+            result.AssertSequenceEqual(12, 34, 56);
+        }
+
+        [Test]
+        public void TakeLastWithNegativeCountForCollection()
+        {
+            var result = new[] { 12, 34, 56 }.TakeLast(-2);
+            Assert.IsFalse(result.GetEnumerator().MoveNext());
         }
     }
 }
