@@ -25,7 +25,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Performs a Full Group Join between two sequences.
+        /// Performs a full group-join between two sequences.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
@@ -54,7 +54,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Performs a Full Group Join between two sequences.
+        /// Performs a full group-join between two sequences.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
