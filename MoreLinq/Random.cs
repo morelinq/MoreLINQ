@@ -65,7 +65,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns an infinite sequence of random integers between 0 and <paramref name="maxValue"/>.
+        /// Returns an infinite sequence of random integers between zero and
+        /// a given maximum.
         /// </summary>
         /// <param name="maxValue">exclusive upper bound for the random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
@@ -93,8 +94,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns an infinite sequence of random integers between 0 and <paramref name="maxValue"/>
-        /// using the supplied random number generator.
+        /// Returns an infinite sequence of random integers between zero and a
+        /// given maximum using the supplied random number generator.
         /// </summary>
         /// <param name="rand">Random generator used to produce values</param>
         /// <param name="maxValue">Exclusive upper bound for random values returned</param>
@@ -110,8 +111,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns an infinite sequence of random integers between <paramref name="minValue"/> and
-        /// <paramref name="maxValue"/>.
+        /// Returns an infinite sequence of random integers between a given
+        /// minimum and a maximum.
         /// </summary>
         /// <param name="minValue">Inclusive lower bound of the values returned</param>
         /// <param name="maxValue">Exclusive upper bound of the values returned</param>
@@ -138,8 +139,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns an infinite sequence of random integers between <paramref name="minValue"/> and
-        /// <paramref name="maxValue"/> using the supplied random number generator.
+        /// Returns an infinite sequence of random integers between a given
+        /// minumum and a maximum using the supplied random number generator.
         /// </summary>
         /// <param name="rand">Generator used to produce random numbers</param>
         /// <param name="minValue">Inclusive lower bound of the values returned</param>
