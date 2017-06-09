@@ -19,12 +19,12 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Pads a sequence with default values if it is narrower (shorter 
+        /// Pads a sequence with default values in its beginning if it is narrower (shorter 
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -40,10 +40,9 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.PadLeft(5);
+        /// var result = numbers.PadLeft(5);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// 123, 456, 789 and two zeroes, in turn.
+        /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
         public static IEnumerable<TSource> PadLeft<TSource>(this IEnumerable<TSource> source, int width)
@@ -52,8 +51,9 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Pads a sequence with a given filler value if it is narrower (shorter 
+        /// Pads a sequence with a given filler value in its beginning if it is narrower (shorter 
         /// in length) than a given width.
+        /// An additional parameter specifies the value to use for padding.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to pad.</param>
@@ -69,10 +69,9 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.PadLeft(5, -1);
+        /// var result = numbers.PadLeft(5, -1);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// 123, 456, and 789 followed by two occurrences of -1, in turn.
+        /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
         /// </example>
 
         public static IEnumerable<TSource> PadLeft<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
@@ -83,8 +82,9 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Pads a sequence with a dynamic filler value if it is narrower (shorter 
+        /// Pads a sequence with a dynamic filler value in its beginning if it is narrower (shorter 
         /// in length) than a given width.
+        /// An additional parameter specifies the function to calculate padding.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to pad.</param>
@@ -99,11 +99,10 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
-        /// int[] numbers = { 0, 1, 2 };
-        /// IEnumerable&lt;int&gt; result = numbers.PadLeft(5, i => -i);
+        /// int[] numbers = { 123, 456, 789 };
+        /// var result = numbers.PadLeft(6, i => -i);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// 0, 1, 2, -3 and -4, in turn.
+        /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
         /// </example>
 
         public static IEnumerable<TSource> PadLeft<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
@@ -117,35 +116,47 @@ namespace MoreLinq
         private static IEnumerable<T> PadLeftImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T> paddingSelector)
         {
-            using (var e = source.GetEnumerator())
+            if (source is ICollection<T> col)
             {
-                var list = new List<T>(width);
-
-                for (int i = 0; i < width && e.MoveNext(); i++)
-                {
-                    list.Add(e.Current);
-                }
-
-                if (list.Count < width)
-                {
-                    var len = width - list.Count;
-
-                    for (int i = 0; i < len; i++)
-                        yield return paddingSelector != null ? paddingSelector(i) : padding;
-
-                    foreach (var item in list)
-                        yield return item;
-                }
-                else
-                {
-                    foreach (var item in list)
-                        yield return item;
-
-                    while (e.MoveNext())
-                        yield return e.Current;
-                }
+                if (col.Count < width) 
+                    return Enumerable.Range(0, width - col.Count)
+                                     .Select((x, i) => paddingSelector != null ? paddingSelector(i) : padding)
+                                     .Concat(col);
+                
+                return col;
             }
 
+            return _(); IEnumerable<T> _()
+            {
+                using (var e = source.GetEnumerator())
+                {
+                    var list = new List<T>(width);
+
+                    for (int i = 0; i < width && e.MoveNext(); i++)
+                    {
+                        list.Add(e.Current);
+                    }
+
+                    if (list.Count < width)
+                    {
+                        var len = width - list.Count;
+
+                        for (int i = 0; i < len; i++)
+                            yield return paddingSelector != null ? paddingSelector(i) : padding;
+
+                        foreach (var item in list)
+                            yield return item;
+                    }
+                    else
+                    {
+                        foreach (var item in list)
+                            yield return item;
+
+                        while (e.MoveNext())
+                            yield return e.Current;
+                    }
+                }
+            }
         }
     }
 }

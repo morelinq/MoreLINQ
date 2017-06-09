@@ -18,6 +18,10 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    
 
     [TestFixture]
     public class PadLeftTest
@@ -39,22 +43,19 @@ namespace MoreLinq.Test
         [Test]
         public void PadLeftWideSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(2);
-            result.AssertSequenceEqual(123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(2), new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadLeftEqualSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(3);
-            result.AssertSequenceEqual(123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(3), new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadLeftNarrowSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(5);
-            result.AssertSequenceEqual(0, 0, 123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(5), new[] { 0, 0, 123, 456, 789 });
         }
 
         // PadLeft(source, width, padding)
@@ -74,22 +75,19 @@ namespace MoreLinq.Test
         [Test]
         public void PadLeftPaddingWideSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(2, -1);
-            result.AssertSequenceEqual(123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(2, -1), new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadLeftPaddingEqualSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(3, -1);
-            result.AssertSequenceEqual(123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(3, -1), new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadLeftPaddingNarrowSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(5, -1);
-            result.AssertSequenceEqual(-1, -1, 123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(5, -1), new[] { -1, -1, 123, 456, 789 });
         }
 
         // PadLeft(source, width, paddingSelector)
@@ -109,22 +107,26 @@ namespace MoreLinq.Test
         [Test]
         public void PadLeftSelectorWideSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(2, x => x * x);
-            result.AssertSequenceEqual(123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(2, y => y * y), new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadLeftSelectorEqualSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(3, x => x * x);
-            result.AssertSequenceEqual(123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(3, y => y * y), new[] { 123, 456, 789 });
         }
 
         [Test]
         public void PadLeftSelectorNarrowSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.PadLeft(7, x => x * x);
-            result.AssertSequenceEqual(0, 1, 4, 9, 123, 456, 789);
+            AssertPadLeft(new[] { 123, 456, 789 }, x => x.PadLeft(7, y => y * y), new[] { 0, 1, 4, 9, 123, 456, 789 });
+        }
+
+        static void AssertPadLeft<T>(ICollection<T> col, Func<IEnumerable<T>, IEnumerable<T>> selector, IEnumerable<T> expected) 
+        {
+            // test that the behaviour of PadLeft does not change when passed a collection
+            selector(col).AssertSequenceEqual(expected);
+            selector(col.Select(x => x)).AssertSequenceEqual(expected);
         }
     }
 }
