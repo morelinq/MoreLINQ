@@ -120,42 +120,40 @@ namespace MoreLinq
             {
                 if (col.Count < width) 
                     return Enumerable.Range(0, width - col.Count)
-                                     .Select((x, i) => paddingSelector != null ? paddingSelector(i) : padding)
+                                     .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
                                      .Concat(col);
-                
                 return col;
             }
 
             return _(); IEnumerable<T> _()
             {
+                var array = new T[width];
+                var count = 0;
+
                 using (var e = source.GetEnumerator())
                 {
-                    var list = new List<T>(width);
+                    for (; count < width && e.MoveNext(); count++)
+                        array[count] = e.Current;
 
-                    for (int i = 0; i < width && e.MoveNext(); i++)
+                    if (count == width)
                     {
-                        list.Add(e.Current);
-                    }
-
-                    if (list.Count < width)
-                    {
-                        var len = width - list.Count;
-
-                        for (int i = 0; i < len; i++)
-                            yield return paddingSelector != null ? paddingSelector(i) : padding;
-
-                        foreach (var item in list)
-                            yield return item;
-                    }
-                    else
-                    {
-                        foreach (var item in list)
-                            yield return item;
+                        for (var i = 0; i < count; i++)
+                            yield return array[i];
 
                         while (e.MoveNext())
                             yield return e.Current;
+
+                        yield break;
                     }
                 }
+
+                var len = width - count;
+
+                for (var i = 0; i < len; i++)
+                    yield return paddingSelector != null ? paddingSelector(i) : padding;
+
+                for (var i = 0; i < count; i++)
+                    yield return array[i];
             }
         }
     }
