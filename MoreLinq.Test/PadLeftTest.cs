@@ -30,7 +30,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadLeftWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width",() => new int[0].PadLeft(-1));
+            Assert.ThrowsArgumentException("width", () => new int[0].PadLeft(-1));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadLeftWithPaddingWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width",() => new int[0].PadLeft(-1, 1));
+            Assert.ThrowsArgumentException("width", () => new int[0].PadLeft(-1, 1));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadLeftWithSelectorWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width",() => new int[0].PadLeft(-1, x => x));
+            Assert.ThrowsArgumentException("width", () => new int[0].PadLeft(-1, x => x));
         }
 
         [Test]
