@@ -402,6 +402,12 @@ Splits the source sequence by a separator.
 
 This method has 12 overloads.
 
+### SplitAt
+
+Splits the sequence in two at the given index.
+
+This method has 2 overloads.
+
 ### StartsWith
 
 Determines whether the beginning of the first sequence is equivalent to the
