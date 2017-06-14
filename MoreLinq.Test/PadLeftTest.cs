@@ -22,7 +22,6 @@ namespace MoreLinq.Test
     using System.Linq;
     using System.Collections.Generic;
 
-
     [TestFixture]
     public class PadLeftTest
     {
@@ -40,10 +39,10 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().PadLeft(0);
         }
 
-        [TestCase(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 5, new[] { 0, 0, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 4, new[] {        0, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 5, new[] {   0,   0, 123, 456, 789 })]
         public void PadLeft(ICollection<int> source, int width, IEnumerable<int> expected)
         {
             AssertPadLeft(source, x => x.PadLeft(width), expected);
@@ -63,10 +62,10 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().PadLeft(0, -1);
         }
 
-        [TestCase(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 4, new[] { -1, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 5, new[] { -1, -1, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 4, new[] {       -1, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 5, new[] {  -1,  -1, 123, 456, 789 })]
         public void PadLeftWithPadding(ICollection<int> source, int width, IEnumerable<int> expected)
         {
             AssertPadLeft(source, x => x.PadLeft(width, -1), expected);
@@ -86,12 +85,12 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().PadLeft(0, x => x);
         }
 
-        [TestCase(new[] { 123, 456, 789 }, 2, new[] { 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 4, new[] { 0, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 5, new[] { 0, -1, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 6, new[] { 0, -1, -4, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 7, new[] { 0, -1, -4, -9, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 2, new[] {                    123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 3, new[] {                    123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 4, new[] {                 0, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 5, new[] {            0,  -1, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 6, new[] {        0, -1,  -4, 123, 456, 789 })]
+        [TestCase(new[] { 123, 456, 789 }, 7, new[] {   0,  -1, -4,  -9, 123, 456, 789 })]
         public void PadLeftWithSelector(ICollection<int> source, int width, IEnumerable<int> expected)
         {
             AssertPadLeft(source, x => x.PadLeft(width, y => y * -y), expected);
