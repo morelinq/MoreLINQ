@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -67,7 +67,7 @@ namespace MoreLinq.Test
         public IEnumerator<T> GetEnumerator()
         {
             Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
+            var enumerator = new DisposeNotificationEnumerator<T>(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
             _sequence = null;
@@ -75,28 +75,28 @@ namespace MoreLinq.Test
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
 
-        class DisposeTestingSequenceEnumerator : IEnumerator<T>
+    sealed class DisposeNotificationEnumerator<T> : IEnumerator<T>
+    {
+        readonly IEnumerator<T> _sequence;
+
+        public event EventHandler Disposed;
+
+        public DisposeNotificationEnumerator(IEnumerator<T> sequence)
         {
-            readonly IEnumerator<T> _sequence;
+            _sequence = sequence;
+        }
 
-            public event EventHandler Disposed;
+        public T Current => _sequence.Current;
+        object IEnumerator.Current => Current;
+        public bool MoveNext() => _sequence.MoveNext();
+        public void Reset() => _sequence.Reset();
 
-            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
-            {
-                _sequence = sequence;
-            }
-
-            public T Current => _sequence.Current;
-            object IEnumerator.Current => Current;
-            public bool MoveNext() => _sequence.MoveNext();
-            public void Reset() => _sequence.Reset();
-
-            public void Dispose()
-            {
-                _sequence.Dispose();
-                Disposed?.Invoke(this, EventArgs.Empty);
-            }
+        public void Dispose()
+        {
+            _sequence.Dispose();
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
     }
 }
