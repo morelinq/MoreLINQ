@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         [TestCase(new[] { 123, 456, 789 }, 5, new[] {   0,   0, 123, 456, 789 })]
         public void PadLeft(ICollection<int> source, int width, IEnumerable<int> expected)
         {
-            AssertPadLeft(source, x => x.PadLeft(width), expected);
+            AssertEqual(source, x => x.PadLeft(width), expected);
         }
 
         // PadLeft(source, width, padding)
@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         [TestCase(new[] { 123, 456, 789 }, 5, new[] {  -1,  -1, 123, 456, 789 })]
         public void PadLeftWithPadding(ICollection<int> source, int width, IEnumerable<int> expected)
         {
-            AssertPadLeft(source, x => x.PadLeft(width, -1), expected);
+            AssertEqual(source, x => x.PadLeft(width, -1), expected);
         }
 
         // PadLeft(source, width, paddingSelector)
@@ -93,14 +93,16 @@ namespace MoreLinq.Test
         [TestCase(new[] { 123, 456, 789 }, 7, new[] {   0,  -1, -4,  -9, 123, 456, 789 })]
         public void PadLeftWithSelector(ICollection<int> source, int width, IEnumerable<int> expected)
         {
-            AssertPadLeft(source, x => x.PadLeft(width, y => y * -y), expected);
+            AssertEqual(source, x => x.PadLeft(width, y => y * -y), expected);
         }
 
-        static void AssertPadLeft<T>(ICollection<T> col, Func<IEnumerable<T>, IEnumerable<T>> selector, IEnumerable<T> expected) 
+        static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
         {
-            // test that the behaviour of PadLeft does not change when passed a collection
-            selector(col).AssertSequenceEqual(expected);
-            selector(col.Select(x => x)).AssertSequenceEqual(expected);
+            // Test that the behaviour does not change whether a collection
+            // or a sequence is used as the source.
+
+            op(input).AssertSequenceEqual(expected);
+            op(input.Select(x => x)).AssertSequenceEqual(expected);
         }
     }
 }
