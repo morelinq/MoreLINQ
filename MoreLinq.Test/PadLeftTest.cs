@@ -21,7 +21,7 @@ namespace MoreLinq.Test
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    
+
 
     [TestFixture]
     public class PadLeftTest
@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         // PadLeft(source, width)
 
         [Test]
-        public void PadLeftNegativeWidth()
+        public void PadLeftWithNegativeWidth()
         {
             Assert.ThrowsArgumentException("width",() => new int[0].PadLeft(-1));
         }
@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         // PadLeft(source, width, padding)
 
         [Test]
-        public void PadLeftPaddingNegativeWidth()
+        public void PadLeftWithPaddingWithNegativeWidth()
         {
             Assert.ThrowsArgumentException("width",() => new int[0].PadLeft(-1, 1));
         }
 
         [Test]
-        public void PadLeftPaddingIsLazy()
+        public void PadLeftWithPaddingIsLazy()
         {
             new BreakingSequence<int>().PadLeft(0, -1);
         }
@@ -67,21 +67,21 @@ namespace MoreLinq.Test
         [TestCase(new[] { 123, 456, 789 }, 3, new[] { 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 4, new[] { -1, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 5, new[] { -1, -1, 123, 456, 789 })]
-        public void PadLeftPadding(ICollection<int> source, int width, IEnumerable<int> expected)
+        public void PadLeftWithPadding(ICollection<int> source, int width, IEnumerable<int> expected)
         {
             AssertPadLeft(source, x => x.PadLeft(width, -1), expected);
         }
 
         // PadLeft(source, width, paddingSelector)
-        
+
         [Test]
-        public void PadLeftSelectorNegativeWidth()
+        public void PadLeftWithSelectorWithNegativeWidth()
         {
             Assert.ThrowsArgumentException("width",() => new int[0].PadLeft(-1, x => x));
         }
 
         [Test]
-        public void PadLeftSelectorIsLazy()
+        public void PadLeftWithSelectorIsLazy()
         {
             new BreakingSequence<int>().PadLeft(0, x => x);
         }
@@ -92,7 +92,7 @@ namespace MoreLinq.Test
         [TestCase(new[] { 123, 456, 789 }, 5, new[] { 0, -1, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 6, new[] { 0, -1, -4, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 7, new[] { 0, -1, -4, -9, 123, 456, 789 })]
-        public void PadLeftSelector(ICollection<int> source, int width, IEnumerable<int> expected)
+        public void PadLeftWithSelector(ICollection<int> source, int width, IEnumerable<int> expected)
         {
             AssertPadLeft(source, x => x.PadLeft(width, y => y * -y), expected);
         }
