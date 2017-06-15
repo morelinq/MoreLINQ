@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     static partial class MoreEnumerable
     {
@@ -45,7 +44,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return LinqEnumerable.Concat(LinqEnumerable.Repeat(value, 1), source);
+            return source is EdgedSequence<TSource> seq
+                 ? seq.Prepending(value)
+                 : new EdgedSequence<TSource>(source).Prepending(value);
         }
     }
 }
