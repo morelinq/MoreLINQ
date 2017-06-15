@@ -50,9 +50,9 @@ namespace MoreLinq
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
         {
             if (head == null) throw new ArgumentNullException(nameof(head));
-            return head is EdgedSequence<T> seq
-                 ? seq.Appending(tail)
-                 : new EdgedSequence<T>(head).Appending(tail);
+            return head is PcNode<T> node
+                 ? node.Concat(tail)
+                 : PcNode.Source(head).Concat(tail);
         }
     }
 }

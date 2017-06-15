@@ -44,9 +44,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source is EdgedSequence<TSource> seq
-                 ? seq.Prepending(value)
-                 : new EdgedSequence<TSource>(source).Prepending(value);
+            return source is PcNode<TSource> node
+                 ? node.Prepend(value)
+                 : PcNode.Source(source).Prepend(value);
         }
     }
 }

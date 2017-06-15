@@ -101,14 +101,23 @@ namespace MoreLinq.Test
         public void ConcatMany()
         {
             IEnumerable<int> xs = new[] {  1,  2,  3,  4,  5,  6,  7,  8,  9, 10 };
-            foreach (var e in new[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }.Index())
-            {
-                var s = xs.Concat(e.Value);
-                Assert.That(s, e.Key == 0 ? Is.Not.SameAs(xs) : Is.SameAs(xs));
-                xs = s;
-            }
+
+            foreach (var e in new[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 })
+                xs = xs.Concat(e);
+
             xs.AssertSequenceEqual( 1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
                                    11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+        }
+
+        [Test]
+        public void ConcatWithSharedSource()
+        {
+            var first  = new [] { 1 }.Concat(2);
+            var second = first.Concat(3).Concat(4);
+            var third  = first.Concat(4).Concat(8);
+
+            second.AssertSequenceEqual(1, 2, 3, 4);
+            third.AssertSequenceEqual(1, 2, 4, 8);
         }
     }
 }
