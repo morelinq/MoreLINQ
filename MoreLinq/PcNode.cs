@@ -80,8 +80,7 @@ namespace MoreLinq
             public T Value { get; }
             public bool IsPrepend { get; }
 
-            public Item(PcNode<T> next, T item, bool isPrepend) :
-                base(next)
+            public Item(PcNode<T> next, T item, bool isPrepend) : base(next)
             {
                 Value = item;
                 IsPrepend = isPrepend;
@@ -91,9 +90,7 @@ namespace MoreLinq
         public class Source : PcNode<T>
         {
             public IEnumerable<T> Value { get; }
-
-            public Source(IEnumerable<T> source) :
-                base(null) => Value = source;
+            public Source(IEnumerable<T> source) : base(null) => Value = source;
         }
 
         /// <summary>
@@ -124,7 +121,7 @@ namespace MoreLinq
 
             public T this[int index]
                 => index < 0 || index >= Count ? throw new IndexOutOfRangeException(nameof(index))
-                    : Count == 1 ? _item : _items[index];
+                 : Count == 1 ? _item : _items[index];
 
             public List Add(T item)
             {
