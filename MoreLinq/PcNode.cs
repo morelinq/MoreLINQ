@@ -40,6 +40,32 @@ namespace MoreLinq
 
     abstract class PcNode<T> : IEnumerable<T>
     {
+        public sealed class Item : PcNode<T>
+        {
+            public T Value { get; }
+            public bool IsPrepend { get; }
+            public int ConcatCount { get; }
+            public PcNode<T> Next { get; }
+
+            public Item(T item, bool isPrepend, PcNode<T> next)
+            {
+                if (next == null) throw new ArgumentNullException(nameof(next));
+
+                Value       = item;
+                IsPrepend   = isPrepend;
+                ConcatCount = next is Item nextItem
+                            ? nextItem.ConcatCount + (isPrepend ? 0 : 1)
+                            : 1;
+                Next        = next;
+            }
+        }
+
+        public sealed class Source : PcNode<T>
+        {
+            public IEnumerable<T> Value { get; }
+            public Source(IEnumerable<T> source) => Value = source;
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             var i = 0;
@@ -102,30 +128,5 @@ namespace MoreLinq
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public sealed class Item : PcNode<T>
-        {
-            public T Value { get; }
-            public bool IsPrepend { get; }
-            public int ConcatCount { get; }
-            public PcNode<T> Next { get; }
-
-            public Item(T item, bool isPrepend, PcNode<T> next)
-            {
-                if (next == null) throw new ArgumentNullException(nameof(next));
-
-                Value       = item;
-                IsPrepend   = isPrepend;
-                ConcatCount = next is Item nextItem
-                            ? nextItem.ConcatCount + (isPrepend ? 0 : 1)
-                            : 1;
-                Next        = next;
-            }
-        }
-
-        public sealed class Source : PcNode<T>
-        {
-            public IEnumerable<T> Value { get; }
-            public Source(IEnumerable<T> source) => Value = source;
-        }
     }
 }
