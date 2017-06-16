@@ -47,7 +47,7 @@ namespace MoreLinq
         public IEnumerator<T> GetEnumerator()
         {
             var concats = new List();
-            for (PcNode<T> current = this; current != null; current = current.Next)
+            for (var current = this; current != null; current = current.Next)
             {
                 switch (current)
                 {
