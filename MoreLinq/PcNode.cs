@@ -42,22 +42,61 @@ namespace MoreLinq
     {
         public IEnumerator<T> GetEnumerator()
         {
-            var concats = new List();
+            var i = 0;
+            T[] concats = null;       // Array for > 4 concatenations
+            var concat1 = default(T); // Slots for up to 4 concatenations
+            var concat2 = default(T);
+            var concat3 = default(T);
+            var concat4 = default(T);
 
             var current = this;
             for (; current is Item item; current = item.Next)
             {
                 if (item.IsPrepend)
+                {
                     yield return item.Value;
+                }
                 else
-                    concats = concats.Add(item.Value);
+                {
+                    if (concats == null)
+                    {
+                        if (i == 0 && item.ConcatCount > 4)
+                        {
+                            concats = new T[item.ConcatCount];
+                        }
+                        else
+                        {
+                            switch (i++)
+                            {
+                                case 0: concat1 = item.Value; break;
+                                case 1: concat2 = item.Value; break;
+                                case 2: concat3 = item.Value; break;
+                                case 3: concat4 = item.Value; break;
+                                default: throw new IndexOutOfRangeException();
+                            }
+                            continue;
+                        }
+                    }
+
+                    concats[i++] = item.Value;
+                }
             }
 
             var source = (Source) current;
 
             foreach (var item in source.Value)
                 yield return item;
-            for (var i = 0; i < concats.Count; i++)
+
+            if (concats == null)
+            {
+                if (i == 4) { yield return concat4; i--; }
+                if (i == 3) { yield return concat3; i--; }
+                if (i == 2) { yield return concat2; i--; }
+                if (i == 1) { yield return concat1; i--; }
+                yield break;
+            }
+
+            for (i--; i >= 0; i--)
                 yield return concats[i];
         }
 
@@ -67,13 +106,19 @@ namespace MoreLinq
         {
             public T Value { get; }
             public bool IsPrepend { get; }
+            public int ConcatCount { get; }
             public PcNode<T> Next { get; }
 
             public Item(T item, bool isPrepend, PcNode<T> next)
             {
-                Value = item;
-                IsPrepend = isPrepend;
-                Next = next;
+                if (next == null) throw new ArgumentNullException(nameof(next));
+
+                Value       = item;
+                IsPrepend   = isPrepend;
+                ConcatCount = next is Item nextItem
+                            ? nextItem.ConcatCount + (isPrepend ? 0 : 1)
+                            : 1;
+                Next        = next;
             }
         }
 
@@ -81,63 +126,6 @@ namespace MoreLinq
         {
             public IEnumerable<T> Value { get; }
             public Source(IEnumerable<T> source) => Value = source;
-        }
-
-        /// <summary>
-        /// A list that encapsulates one or more values.
-        /// </summary>
-        /// <remarks>
-        /// While each modification of the list returns a new list, the
-        /// underlying buffer is shared. It is therefore not appropriate
-        /// or designed to be used as an immutable list. The immutability
-        /// of the structure is purely a tactical implementation detail.
-        /// </remarks>
-
-        struct List : IEnumerable<T>
-        {
-            readonly T _item;
-            readonly T[] _items;
-
-            List(T singleton) : this(1, singleton, null) { }
-            List(int count, T[] items) : this(count, default(T), items) { }
-            List(int count, T item, T[] items)
-            {
-                Count = count;
-                _item = item;
-                _items = items;
-            }
-
-            public int Count { get; }
-
-            public T this[int index]
-                => index < 0 || index >= Count ? throw new IndexOutOfRangeException(nameof(index))
-                 : Count == 1 ? _item : _items[index];
-
-            public List Add(T item)
-            {
-                switch (Count)
-                {
-                    case 0: return new List(item);
-                    case 1: return new List(2, new[] { _item, item, default(T), default(T) });
-                    default:
-                        var items = _items;
-                        var capacity = items.Length;
-                        var count = Count + 1;
-                        if (count > capacity)
-                            capacity *= 2;
-                        Array.Resize(ref items, capacity);
-                        items[count - 1] = item;
-                        return new List(count, items);
-                }
-            }
-
-            public IEnumerator<T> GetEnumerator()
-            {
-                for (var i = 0; i < Count; i++)
-                    yield return this[i];
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

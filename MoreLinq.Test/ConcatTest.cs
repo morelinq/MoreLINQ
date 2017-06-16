@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -97,17 +98,25 @@ namespace MoreLinq.Test
         }
         #endregion
 
-        [Test]
-        public void ConcatMany()
+        [TestCaseSource(nameof(ContactManySource))]
+        public void ConcatMany(int[] head, int[] tail)
         {
-            IEnumerable<int> xs = new[] {  1,  2,  3,  4,  5,  6,  7,  8,  9, 10 };
-
-            foreach (var e in new[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 })
-                xs = xs.Concat(e);
-
-            xs.AssertSequenceEqual( 1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
-                                   11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+            tail.Aggregate(head.AsEnumerable(), (xs, x) => xs.Concat(x))
+                .AssertSequenceEqual(head.Concat(tail));
         }
+
+        public static IEnumerable<object> ContactManySource =>
+            from x in Enumerable.Range(0, 11)
+            from y in Enumerable.Range(1, 20 - x)
+            select new
+            {
+                Head = Enumerable.Range(1, x).ToArray(),
+                Tail = Enumerable.Range(x + 1, y).ToArray(),
+            }
+            into e
+            select new TestCaseData(e.Head,
+                                    e.Tail).SetName("Head = [" + string.Join(", ", e.Head) + "], " +
+                                                    "Tail = [" + string.Join(", ", e.Tail) + "]");
 
         [Test]
         public void ConcatWithSharedSource()
