@@ -21,18 +21,6 @@ namespace MoreLinq
     using System.Collections;
     using System.Collections.Generic;
 
-    static class PcNode
-    {
-        public static PcNode<T>.Source Source<T>(IEnumerable<T> source) =>
-            new PcNode<T>.Source(source);
-
-        public static PcNode<T> Prepend<T>(this PcNode<T> node, T item) =>
-            new PcNode<T>.Item(item, isPrepend: true, next: node);
-
-        public static PcNode<T> Concat<T>(this PcNode<T> node, T item) =>
-            new PcNode<T>.Item(item, isPrepend: false, next: node);
-    }
-
     /// <summary>
     /// Prepend-Concat node is a single linked-list of the discriminated union
     /// of a prepend item, a concat item and the source.
@@ -40,7 +28,12 @@ namespace MoreLinq
 
     abstract class PcNode<T> : IEnumerable<T>
     {
-        public sealed class Item : PcNode<T>
+        public static PcNode<T> WithSource(IEnumerable<T> source) => new Source(source);
+
+        public PcNode<T> Prepend(T item) => new Item(item, isPrepend: true , next: this);
+        public PcNode<T> Concat(T item)  => new Item(item, isPrepend: false, next: this);
+
+        sealed class Item : PcNode<T>
         {
             public T Value { get; }
             public bool IsPrepend { get; }
@@ -60,7 +53,7 @@ namespace MoreLinq
             }
         }
 
-        public sealed class Source : PcNode<T>
+        sealed class Source : PcNode<T>
         {
             public IEnumerable<T> Value { get; }
             public Source(IEnumerable<T> source) => Value = source;

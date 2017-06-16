@@ -46,7 +46,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source is PcNode<TSource> node
                  ? node.Prepend(value)
-                 : PcNode.Source(source).Prepend(value);
+                 : PcNode<TSource>.WithSource(source).Prepend(value);
         }
     }
 }

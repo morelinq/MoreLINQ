@@ -52,7 +52,7 @@ namespace MoreLinq
             if (head == null) throw new ArgumentNullException(nameof(head));
             return head is PcNode<T> node
                  ? node.Concat(tail)
-                 : PcNode.Source(head).Concat(tail);
+                 : PcNode<T>.WithSource(head).Concat(tail);
         }
     }
 }
