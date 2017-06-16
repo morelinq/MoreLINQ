@@ -122,7 +122,7 @@ namespace MoreLinq
             }
         }
 
-        public class Source : PcNode<T>
+        public sealed class Source : PcNode<T>
         {
             public IEnumerable<T> Value { get; }
             public Source(IEnumerable<T> source) => Value = source;
