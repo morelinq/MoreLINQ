@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -56,17 +57,25 @@ namespace MoreLinq.Test
             new BreakingSequence<string>().Prepend("head");
         }
 
-        [Test]
-        public void PrependMany()
+        [TestCaseSource(nameof(PrependManySource))]
+        public void PrependMany(int[] head, int[] tail)
         {
-            IEnumerable<int> xs = new[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-
-            foreach (var e in new[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }.Index())
-                xs = xs.Prepend(e.Value);
-
-            xs.AssertSequenceEqual( 1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
-                                   11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+            head.Aggregate(tail.AsEnumerable(), (xs, x) => xs.Prepend(x))
+                .AssertSequenceEqual(head.Concat(tail));
         }
+
+        public static IEnumerable<object> PrependManySource =>
+            from x in Enumerable.Range(0, 11)
+            from y in Enumerable.Range(1, 11)
+            select new
+            {
+                Head = Enumerable.Range(0, y).Select(n => 0 - n).ToArray(),
+                Tail = Enumerable.Range(1, x).ToArray(),
+            }
+            into e
+            select new TestCaseData(e.Head,
+                                    e.Tail).SetName("Head = [" + string.Join(", ", e.Head) + "], " +
+                                                    "Tail = [" + string.Join(", ", e.Tail) + "]");
 
         [Test]
         public void PrependWithSharedSource()
