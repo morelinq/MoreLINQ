@@ -27,10 +27,10 @@ namespace MoreLinq
             new PcNode<T>.Source(source);
 
         public static PcNode<T> Prepend<T>(this PcNode<T> node, T item) =>
-            new PcNode<T>.Item(node, item, isPrepend: true);
+            new PcNode<T>.Item(item, isPrepend: true, next: node);
 
         public static PcNode<T> Concat<T>(this PcNode<T> node, T item) =>
-            new PcNode<T>.Item(node, item, isPrepend: false);
+            new PcNode<T>.Item(item, isPrepend: false, next: node);
     }
 
     /// <summary>
@@ -40,37 +40,25 @@ namespace MoreLinq
 
     abstract class PcNode<T> : IEnumerable<T>
     {
-        public PcNode<T> Next { get; }
-
-        protected PcNode(PcNode<T> next) => Next = next;
-
         public IEnumerator<T> GetEnumerator()
         {
             var concats = new List();
-            for (var current = this; current != null; current = current.Next)
+
+            var current = this;
+            for (; current is Item item; current = item.Next)
             {
-                switch (current)
-                {
-                    case Item item:
-                    {
-                        if (item.IsPrepend)
-                            yield return item.Value;
-                        else
-                            concats = concats.Add(item.Value);
-                        break;
-                    }
-                    case Source source:
-                    {
-                        foreach (var item in source.Value)
-                            yield return item;
-                        for (var i = 0; i < concats.Count; i++)
-                            yield return concats[i];
-                        break;
-                    }
-                    default:
-                        throw new NotSupportedException("Unsupported node: " + current);
-                }
+                if (item.IsPrepend)
+                    yield return item.Value;
+                else
+                    concats = concats.Add(item.Value);
             }
+
+            var source = (Source) current;
+
+            foreach (var item in source.Value)
+                yield return item;
+            for (var i = 0; i < concats.Count; i++)
+                yield return concats[i];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -79,18 +67,20 @@ namespace MoreLinq
         {
             public T Value { get; }
             public bool IsPrepend { get; }
+            public PcNode<T> Next { get; }
 
-            public Item(PcNode<T> next, T item, bool isPrepend) : base(next)
+            public Item(T item, bool isPrepend, PcNode<T> next)
             {
                 Value = item;
                 IsPrepend = isPrepend;
+                Next = next;
             }
         }
 
         public class Source : PcNode<T>
         {
             public IEnumerable<T> Value { get; }
-            public Source(IEnumerable<T> source) : base(null) => Value = source;
+            public Source(IEnumerable<T> source) => Value = source;
         }
 
         /// <summary>
