@@ -45,9 +45,9 @@ namespace MoreLinq
         public static IEnumerable<T> SwapRange<T>(this IEnumerable<T> source, int index, int count, int putAt)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index count cannot be negative.");
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count count cannot be negative.");
-            if (putAt < 0) throw new ArgumentOutOfRangeException(nameof(putAt), "PutAt count cannot be negative.");
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+            if (putAt < 0) throw new ArgumentOutOfRangeException(nameof(putAt), "PutAt cannot be negative.");
 
             if (putAt == index)
                 return source;
@@ -61,7 +61,7 @@ namespace MoreLinq
             {
                 using (var ector = source.GetEnumerator())
                 {
-                    for(var i = 0; i < x && ector.MoveNext(); i++)
+                    for (var i = 0; i < x && ector.MoveNext(); i++)
                         yield return ector.Current;
 
                     var array = new T[y];

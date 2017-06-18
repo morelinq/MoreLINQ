@@ -50,13 +50,16 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().SwapRange(0, 0, 0);
         }
 
-        [TestCase(10, 5, 3)]
-        [TestCase(10, 0, 5)]
+        [TestCase(10, 5,  3)]
+        [TestCase(10, 0,  5)]
+        [TestCase(10, 6,  1)]
+        [TestCase(10, 0, 10)]
+        [TestCase(10, 3, 10)]
         public void SwapRange(int length, int index, int count)
         {
             var source = Enumerable.Range(0, length);
 
-            Enumerable.Range(0, length + 3).ForEach(putAt => 
+            source.ForEach(putAt => 
             {
                 var exclude = source.Exclude(index, count);
                 var slice = source.Slice(index, count);
@@ -69,5 +72,35 @@ namespace MoreLinq.Test
                 }
             });
         }
+
+        public void SwapRangeWithSequenceShorterThanPutAt()
+        {
+            const int length = 10;
+            const int index = 5;
+            const int count = 2;
+
+            var source = Enumerable.Range(0, length);
+
+            Enumerable.Range(length, length + 5).ForEach(putAt => 
+            {
+                var expectations = source.Exclude(index, count).Concat(source.Slice(index, count));
+
+                using (var test = source.AsTestingSequence())
+                {
+                    var result = test.SwapRange(index, count, putAt);
+                    Assert.That(result, Is.EquivalentTo(expectations));
+                }
+            });
+        }
+
+        [Test]
+        public void SwapRangeWithIndexSameAsPutAt()
+        {
+            var source = Enumerable.Range(0, 10);
+            var result = source.SwapRange(5, 3, 5);
+            
+            Assert.That(source, Is.SameAs(result));
+        }
+        
     }
 }
