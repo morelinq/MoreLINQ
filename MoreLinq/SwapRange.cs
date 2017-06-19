@@ -24,22 +24,22 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Generates a sequence of integral numbers within the (inclusive) specified range.
-        /// If sequence is ascending the step is +1, otherwise -1.
+        /// Take a range of the source sequence and put it at other index. 
         /// </summary>
-        /// <param name="source">The value of the first integer in the sequence.</param>
-        /// <param name="index">The value of the last integer in the sequence.</param>
-        /// <param name="count">The value of the last integer in the sequence.</param>
-        /// <param name="putAt">The value of the last integer in the sequence.</param>
-        /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
+        /// <typeparam name="T">Type of the source sequence</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="index">The zero-based index where the range to be swapped begins.</param>
+        /// <param name="count">The count of items to swap.</param>
+        /// <param name="putAt">The index where the specified range will be placed.</param>
+        /// <returns>The sequence with the specified range swapped to the specified position.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
         /// <code>
-        /// var result = MoreEnumerable.Sequence(6, 0);
+        /// var result = Enumerable.Range(0, 6).SwapRange(3, 2, 0);
         /// </code>
-        /// The <c>result</c> variable will contain <c>{ 6, 5, 4, 3, 2, 1, 0 }</c>.
+        /// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
         /// </example>
 
         public static IEnumerable<T> SwapRange<T>(this IEnumerable<T> source, int index, int count, int putAt)
@@ -49,7 +49,7 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
             if (putAt < 0) throw new ArgumentOutOfRangeException(nameof(putAt), "PutAt cannot be negative.");
 
-            if (putAt == index)
+            if (putAt == index || count == 0)
                 return source;
 
             if (putAt < index)
@@ -57,24 +57,24 @@ namespace MoreLinq
             else
                 return _(index, count, putAt - index);
 
-            IEnumerable<T> _(int x, int y, int z)
+            IEnumerable<T> _(int startBuffer, int bufferSize, int beforeYieldBuffer)
             {
                 using (var ector = source.GetEnumerator())
                 {
-                    for (var i = 0; i < x && ector.MoveNext(); i++)
+                    for (var i = 0; i < startBuffer && ector.MoveNext(); i++)
                         yield return ector.Current;
 
-                    var array = new T[y];
-                    var quantity = 0;
+                    var buffer = new T[bufferSize];
+                    var _count = 0;
 
-                    for (; quantity < y && ector.MoveNext(); quantity++)
-                        array[quantity] = ector.Current;
+                    for (; _count < bufferSize && ector.MoveNext(); _count++)
+                        buffer[_count] = ector.Current;
 
-                    for (var i = 0; i < z && ector.MoveNext(); i++)
+                    for (var i = 0; i < beforeYieldBuffer && ector.MoveNext(); i++)
                         yield return ector.Current;
 
-                    for (var i = 0; i < quantity; i++)
-                        yield return array[i];
+                    for (var i = 0; i < _count; i++)
+                        yield return buffer[i];
 
                     while (ector.MoveNext())
                         yield return ector.Current;

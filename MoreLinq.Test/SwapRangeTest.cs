@@ -51,10 +51,16 @@ namespace MoreLinq.Test
         }
 
         [TestCase(10, 5,  3)]
+        [TestCase(10, 3,  5)]
         [TestCase(10, 0,  5)]
+        [TestCase(10, 5,  0)]
         [TestCase(10, 6,  1)]
+        [TestCase(10, 1,  6)]
         [TestCase(10, 0, 10)]
+        [TestCase(10, 10, 0)]
         [TestCase(10, 3, 10)]
+        [TestCase(10, 10, 3)]
+        [TestCase(10, 99, 2)]
         public void SwapRange(int length, int index, int count)
         {
             var source = Enumerable.Range(0, length);
