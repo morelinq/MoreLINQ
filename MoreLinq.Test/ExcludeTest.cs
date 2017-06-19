@@ -39,6 +39,18 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that excluding with count equals zero returns the original source
+        /// </summary>
+        [Test]
+        public void TestExcludeWithCountEqualsZero()
+        {
+            var sequence = Enumerable.Range(1, 10);
+            var resultA = sequence.Exclude(5, 0);
+
+            Assert.IsTrue(resultA.SequenceEqual(sequence));
+        }
+
+        /// <summary>
         /// Verify that excluding from an empty sequence results in an empty sequence
         /// </summary>
         [Test]
