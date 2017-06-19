@@ -347,6 +347,13 @@ Peforms a scan (inclusive prefix sum) on a sequence of elements.
 
 This method has 2 overloads.
 
+### ScanRight
+
+Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+This operator is the right-associative version of the Scan operator.
+
+This method has 2 overloads.
+
 ### Segment
 
 Divides a sequence into multiple sequences by using a segment detector based
@@ -434,6 +441,13 @@ Performs a subsequent ordering of elements in a sequence in a particular
 direction (ascending, descending) according to a key.
 
 This method has 2 overloads.
+
+### ToArrayByIndex
+
+Creates an array from an IEnumerable<T> where a function is used to determine
+the index at which an element will be placed in the array.
+
+This method has 6 overloads.
 
 ### ToDataTable
 
