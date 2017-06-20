@@ -47,7 +47,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, 10);
             var resultA = sequence.Exclude(5, 0);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequence));
+            Assert.That(resultA, Is.SameAs(sequence));
         }
 
         /// <summary>
