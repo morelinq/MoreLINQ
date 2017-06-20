@@ -38,6 +38,9 @@ namespace MoreLinq
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
+            if (count == 0)
+                return sequence;
+
             return _(); IEnumerable<T> _()
             {
                 var index = -1;
