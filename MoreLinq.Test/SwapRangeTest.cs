@@ -107,6 +107,15 @@ namespace MoreLinq.Test
             
             Assert.That(source, Is.SameAs(result));
         }
-        
+
+        [Test]
+        public void SwapRangeWithCountEqualsZero()
+        {
+            var source = Enumerable.Range(0, 10);
+            var result = source.SwapRange(5, 0, 5);
+            
+            Assert.That(source, Is.SameAs(result));
+        }
+		
     }
 }
