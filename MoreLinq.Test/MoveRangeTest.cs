@@ -21,33 +21,33 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class SwapRangeTest
+    public class MoveRangeTest
     {
         [Test]
-        public void SwapRangeWithNegativeIndex()
+        public void MoveRangeWithNegativeIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("index", () =>
-                new[] { 1 }.SwapRange(-1, 0, 0));
+            Assert.ThrowsArgumentOutOfRangeException("oldIndex", () =>
+                new[] { 1 }.MoveRange(-1, 0, 0));
         }
 
         [Test]
-        public void SwapRangeWithNegativeCount()
+        public void MoveRangeWithNegativeCount()
         {
             Assert.ThrowsArgumentOutOfRangeException("count", () =>
-                new[] { 1 }.SwapRange(0, -1, 0));
+                new[] { 1 }.MoveRange(0, -1, 0));
         }
 
         [Test]
-        public void SwapRangeWithNegativePutAt()
+        public void MoveRangeWithNegativeNewIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("putAt", () =>
-                new[] { 1 }.SwapRange(0, 0, -1));
+            Assert.ThrowsArgumentOutOfRangeException("newIndex", () =>
+                new[] { 1 }.MoveRange(0, 0, -1));
         }
 
         [Test]
-        public void SwapRangeIsLazy()
+        public void MoveRangeIsLazy()
         {
-            new BreakingSequence<int>().SwapRange(0, 0, 0);
+            new BreakingSequence<int>().MoveRange(0, 0, 0);
         }
 
         [TestCase(10, 5,  3)]
@@ -61,25 +61,25 @@ namespace MoreLinq.Test
         [TestCase(10, 3, 10)]
         [TestCase(10, 10, 3)]
         [TestCase(10, 99, 2)]
-        public void SwapRange(int length, int index, int count)
+        public void MoveRange(int length, int index, int count)
         {
             var source = Enumerable.Range(0, length);
 
-            source.ForEach(putAt => 
+            source.ForEach(newIndex => 
             {
                 var exclude = source.Exclude(index, count);
                 var slice = source.Slice(index, count);
-                var expectations = exclude.Take(putAt).Concat(slice).Concat(exclude.Skip(putAt));
+                var expectations = exclude.Take(newIndex).Concat(slice).Concat(exclude.Skip(newIndex));
 
                 using (var test = source.AsTestingSequence())
                 {
-                    var result = test.SwapRange(index, count, putAt);
+                    var result = test.MoveRange(index, count, newIndex);
                     Assert.That(result, Is.EquivalentTo(expectations));
                 }
             });
         }
 
-        public void SwapRangeWithSequenceShorterThanPutAt()
+        public void MoveRangeWithSequenceShorterThanNewIndex()
         {
             const int length = 10;
             const int index = 5;
@@ -87,32 +87,32 @@ namespace MoreLinq.Test
 
             var source = Enumerable.Range(0, length);
 
-            Enumerable.Range(length, length + 5).ForEach(putAt => 
+            Enumerable.Range(length, length + 5).ForEach(newIndex => 
             {
                 var expectations = source.Exclude(index, count).Concat(source.Slice(index, count));
 
                 using (var test = source.AsTestingSequence())
                 {
-                    var result = test.SwapRange(index, count, putAt);
+                    var result = test.MoveRange(index, count, newIndex);
                     Assert.That(result, Is.EquivalentTo(expectations));
                 }
             });
         }
 
         [Test]
-        public void SwapRangeWithIndexSameAsPutAt()
+        public void MoveRangeWithOldIndexEqualsNewIndex()
         {
             var source = Enumerable.Range(0, 10);
-            var result = source.SwapRange(5, 3, 5);
+            var result = source.MoveRange(5, 3, 5);
             
             Assert.That(source, Is.SameAs(result));
         }
 
         [Test]
-        public void SwapRangeWithCountEqualsZero()
+        public void MoveRangeWithCountEqualsZero()
         {
             var source = Enumerable.Range(0, 10);
-            var result = source.SwapRange(5, 0, 5);
+            var result = source.MoveRange(5, 0, 5);
             
             Assert.That(source, Is.SameAs(result));
         }
