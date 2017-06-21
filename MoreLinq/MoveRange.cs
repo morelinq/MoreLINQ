@@ -57,11 +57,11 @@ namespace MoreLinq
             else
                 return _(oldIndex, count, newIndex - oldIndex);
 
-            IEnumerable<T> _(int bufferStartoldIndex, int bufferSize, int bufferYieldoldIndex)
+            IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
                 using (var e = source.GetEnumerator())
                 {
-                    for (var i = 0; i < bufferStartoldIndex && e.MoveNext(); i++)
+                    for (var i = 0; i < bufferStartIndex && e.MoveNext(); i++)
                         yield return e.Current;
 
                     var buffer = new T[bufferSize];
@@ -70,7 +70,7 @@ namespace MoreLinq
                     for (; length < bufferSize && e.MoveNext(); length++)
                         buffer[length] = e.Current;
 
-                    for (var i = 0; i < bufferYieldoldIndex && e.MoveNext(); i++)
+                    for (var i = 0; i < bufferYieldIndex && e.MoveNext(); i++)
                         yield return e.Current;
 
                     for (var i = 0; i < length; i++)
