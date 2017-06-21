@@ -24,16 +24,20 @@ namespace MoreLinq
     {
 
         /// <summary>
-        /// Inserts the elements of second sequence into the source at the specified index.
+        /// Inserts the elements of a sequence into another sequence, at the specified index.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <param name="source">Source sequence.</param>
-        /// <param name="second">The sequence whose elements should be inserted into the source.</param>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="second">The sequence that will be inserted into source.</param>
         /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
-        /// <returns>A sequence </returns>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// Plus the elements of <paramref name="second"/>, at the specified index.
+        /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if either <paramref name="index"/> is negative or 
-        /// <paramref name="index"/> is greater than source's length.
+        /// Thrown eagerly if <paramref name="index"/> is negative, and lazily 
+        /// if it is greater than the length of <paramref name="source"/> 
+        /// (after completely iterate the elements of the <paramref name="source"/>).
         /// </exception>
         
         public static IEnumerable<T> InsertAt<T>(this IEnumerable<T> source, IEnumerable<T> second, int index)
