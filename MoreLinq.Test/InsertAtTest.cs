@@ -33,10 +33,23 @@ namespace MoreLinq.Test
         [TestCase(7)]
         [TestCase(8)]
         [TestCase(9)]
-        public void InsertAtWithIndexGreaterThanSourceLength(int count)
+        public void InsertAtWithIndexGreaterThanSourceLengthMaterialized(int count)
         {
             Assert.ThrowsArgumentOutOfRangeException("index", () =>
-                 Enumerable.Range(0, count).InsertAt(new[] { 97, 98, 99 }, count + 1).ToList());
+                 Enumerable.Range(0, count)
+                           .InsertAt(new[] { 97, 98, 99 }, count + 1)
+                           .ToList());
+        }
+
+        [TestCase(7)]
+        [TestCase(8)]
+        [TestCase(9)]
+        public void InsertAtWithIndexGreaterThanSourceLengthLazy(int count)
+        {
+            Enumerable.Range(0, count)
+                      .InsertAt(new[] { 97, 98, 99 }, count + 1)
+                      .Take(count)
+                      .ToList();
         }
 
         [TestCase(3, 0)]
