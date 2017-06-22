@@ -159,7 +159,7 @@ This method has 2 overloads.
 
 Performs a Full Group Join between the and sequences.
 
-This method has 2 overloads.
+This method has 4 overloads.
 
 ### Generate
 
