@@ -17,13 +17,8 @@
 
 namespace MoreLinq
 {
-    #region Imports
-
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-
-    #endregion
 
     static partial class MoreEnumerable
     {
