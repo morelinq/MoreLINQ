@@ -56,14 +56,14 @@ namespace MoreLinq
 
                 var buffer = new List<IEnumerable<T>>();
                 var cached = buffer.Concat(EnumerateOnce(source).Pipe(x => buffer.Add(x)));
-                
+
                 var enumerators = cached.Select((p, i) =>
                 {
                     if (i < list.Count)
                         return list[i];
 
                     if (p == null)
-                        throw new ArgumentNullException($"The sequence at index {i} inside source is null.");
+                        throw new InvalidOperationException($"The sequence at index {i} inside source is null.");
 
                     list.Add(p.GetEnumerator());
 

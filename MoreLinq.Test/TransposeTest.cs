@@ -26,6 +26,25 @@ namespace MoreLinq.Test
     public class TransposeTest
     {
         [Test]
+        public void TransposeWithNullInnerSequence()
+        {
+            var matrix = new int[][]
+            {
+                new int[] { 10, 11 },
+                null,
+                new int[] { },
+                new int[] { 30, 31, 32 }
+            };
+
+            var traspose = matrix.Transpose();
+
+            Assert.That(matrix.First().First(), Is.EqualTo(traspose.First().First()));
+
+            Assert.Throws<InvalidOperationException>(() =>
+                traspose.First().ElementAt(1));
+        }
+
+        [Test]
         public void TransposeWithEqualsLengthEnumerables()
         {
             var matrix = new[]
@@ -99,43 +118,46 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeWithAllEnumerablesInfinite()
+        public void TransposeWithAllSequencesInfinite()
         {
-            const int takeRow = 10, takeLine = 20;
+            var matrix = MoreEnumerable.Generate(1, x => x + 1)
+                                       .Where(x => isPrime(x))
+                                       .Select(x => MoreEnumerable.Generate(x, n => n * x));
 
-            var matrix = MoreEnumerable.Generate(1, n => n + 1)
-                                       .Select(n => new[] { n }.Repeat());
+            var result = matrix.Transpose().Take(5).Select(x => x.Take(3));
 
-            var result = matrix.Transpose().Take(takeRow).Select(x => x.Take(takeLine));
-
-            var expectations = Enumerable.Repeat(Enumerable.Range(1, takeLine), takeRow);
+            var expectations = new[]
+            {
+                new[] { 2,    3,    5 },
+                new[] { 4,    9,   25 },
+                new[] { 8,   27,  125 },
+                new[] { 16,  81,  625 },
+                new[] { 32, 243, 3125 }
+            };
 
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-
-        // add test pra quando inner sequence é nulo null
-
-        [TestCase(2, 3, 5)]
-        [TestCase(5, 10, 15)]
-        [TestCase(4, 6, 3)]
-        public void TransposeWithSomeEnumerablesInfinite(int count, int takeRow, int takeLine)
+        public void TransposeWithSomeSequencesInfinite()
         {
-            var naturals = MoreEnumerable.Generate(1, n => n + 1);
-            var matrix = naturals.Select(x => x % 2 == 0 ? Enumerable.Repeat(x, count)
-                                                         : new [] { x }.Repeat());
+            var matrix = MoreEnumerable.Generate(1, x => x + 1)
+                                       .Where(x => isPrime(x))
+                                       .Select(x => x == 3 ? MoreEnumerable.Generate(x, n => n * x)
+                                                           : MoreEnumerable.Generate(x, n => n * x).Take(3));
 
-            var tranposedSequenceWithoutPadding = naturals.Where(x => x % 2 != 0).Take(takeLine);
+            var result = matrix.Transpose().Take(5).Select(x => x.Take(3));
 
-            var expectations = Enumerable.Repeat(Enumerable.Range(1, takeLine), count)
-                                         .Concat(new [] {tranposedSequenceWithoutPadding }.Repeat())
-                                         .Take(takeRow);
-
-            var result = matrix.Transpose().Take(takeRow).Select(x => x.Take(takeLine));
+            var expectations = new[]
+            {
+                new[] { 2,    3,    5 },
+                new[] { 4,    9,   25 },
+                new[] { 8,   27,  125 },
+                new[] { 16,       625 },
+                new[] { 32,      3125 }
+            };
 
             Assert.That(result, Is.EqualTo(expectations));
         }
-
 
         [Test]
         public void TransposeOrderSequenceAreIteratedIsIrrelevant()
@@ -170,6 +192,21 @@ namespace MoreLinq.Test
             {
                 Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
             });
+        }
+
+        public static bool isPrime(int number)
+        {
+            if (number == 1) return false;
+            if (number == 2) return true;
+
+            var boundary = (int)Math.Floor(Math.Sqrt(number));
+
+            for (int i = 2; i <= boundary; ++i)
+            {
+                if (number % i == 0)  return false;
+            }
+
+            return true;        
         }
     }
 }
