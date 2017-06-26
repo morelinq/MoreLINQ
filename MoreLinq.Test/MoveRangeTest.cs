@@ -52,22 +52,19 @@ namespace MoreLinq.Test
         }
 
         [TestCaseSource(nameof(MoveRangeSource))]
-        public void MoveRange(int length, int fromIndex, int count)
+        public void MoveRange(int length, int fromIndex, int count, int toIndex)
         {
             var source = Enumerable.Range(0, length);
 
-            source.ForEach(toIndex => 
-            {
-                var exclude = source.Exclude(fromIndex, count);
-                var slice = source.Slice(fromIndex, count);
-                var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
+            var exclude = source.Exclude(fromIndex, count);
+            var slice = source.Slice(fromIndex, count);
+            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
 
-                using (var test = source.AsTestingSequence())
-                {
-                    var result = test.MoveRange(fromIndex, count, toIndex);
-                    Assert.That(result, Is.EquivalentTo(expectations));
-                }
-            });
+            using (var test = source.AsTestingSequence())
+            {
+                var result = test.MoveRange(fromIndex, count, toIndex);
+                Assert.That(result, Is.EquivalentTo(expectations));
+            }
         }
 
         public static IEnumerable<object> MoveRangeSource()
@@ -76,7 +73,7 @@ namespace MoreLinq.Test
 
             return from index in Enumerable.Range(0, length)
                    from count in Enumerable.Range(0, length + 1)
-                   select new TestCaseData(length, index, count);
+                   select new TestCaseData(length, index, count, index);
         }
 
         [TestCaseSource(nameof(MoveRangeWithSequenceShorterThanToIndexSource))]
