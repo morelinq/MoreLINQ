@@ -18,15 +18,16 @@
 namespace MoreLinq.Test
 {
     using System.Linq;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
     public class MoveRangeTest
     {
         [Test]
-        public void MoveRangeWithNegativeIndex()
+        public void MoveRangeWithNegativeFromIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("oldIndex", () =>
+            Assert.ThrowsArgumentOutOfRangeException("fromIndex", () =>
                 new[] { 1 }.MoveRange(-1, 0, 0));
         }
 
@@ -38,9 +39,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MoveRangeWithNegativeNewIndex()
+        public void MoveRangeWithNegativeToIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("newIndex", () =>
+            Assert.ThrowsArgumentOutOfRangeException("toIndex", () =>
                 new[] { 1 }.MoveRange(0, 0, -1));
         }
 
@@ -50,60 +51,61 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().MoveRange(0, 0, 0);
         }
 
-        [TestCase(10, 5,  3)]
-        [TestCase(10, 3,  5)]
-        [TestCase(10, 0,  5)]
-        [TestCase(10, 5,  0)]
-        [TestCase(10, 6,  1)]
-        [TestCase(10, 1,  6)]
-        [TestCase(10, 0, 10)]
-        [TestCase(10, 10, 0)]
-        [TestCase(10, 3, 10)]
-        [TestCase(10, 10, 3)]
-        [TestCase(10, 99, 2)]
-        public void MoveRange(int length, int index, int count)
+        [TestCaseSource(nameof(MoveRangeSource))]
+        public void MoveRange(int length, int fromIndex, int count)
         {
             var source = Enumerable.Range(0, length);
 
-            source.ForEach(newIndex => 
+            source.ForEach(toIndex => 
             {
-                var exclude = source.Exclude(index, count);
-                var slice = source.Slice(index, count);
-                var expectations = exclude.Take(newIndex).Concat(slice).Concat(exclude.Skip(newIndex));
+                var exclude = source.Exclude(fromIndex, count);
+                var slice = source.Slice(fromIndex, count);
+                var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
 
                 using (var test = source.AsTestingSequence())
                 {
-                    var result = test.MoveRange(index, count, newIndex);
+                    var result = test.MoveRange(fromIndex, count, toIndex);
                     Assert.That(result, Is.EquivalentTo(expectations));
                 }
             });
         }
 
-        public void MoveRangeWithSequenceShorterThanNewIndex()
+        public static IEnumerable<object> MoveRangeSource()
         {
             const int length = 10;
-            const int index = 5;
-            const int count = 2;
 
+            return from index in Enumerable.Range(0, length)
+                   from count in Enumerable.Range(0, length + 1)
+                   select new TestCaseData(length, index, count);
+        }
+
+        [TestCaseSource(nameof(MoveRangeWithSequenceShorterThanToIndexSource))]
+        public void MoveRangeWithSequenceShorterThanToIndex(int length, int fromIndex, int count, int toIndex)
+        {
             var source = Enumerable.Range(0, length);
 
-            Enumerable.Range(length, length + 5).ForEach(newIndex => 
-            {
-                var expectations = source.Exclude(index, count).Concat(source.Slice(index, count));
+            var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
 
-                using (var test = source.AsTestingSequence())
-                {
-                    var result = test.MoveRange(index, count, newIndex);
-                    Assert.That(result, Is.EquivalentTo(expectations));
-                }
-            });
+            using (var test = source.AsTestingSequence())
+            {
+                var result = test.MoveRange(fromIndex, count, toIndex);
+                Assert.That(result, Is.EquivalentTo(expectations));
+            }
+        }
+
+        public static IEnumerable<object> MoveRangeWithSequenceShorterThanToIndexSource()
+        {
+            const int length = 10;
+
+            return Enumerable.Range(length, length + 5)
+                             .Select(toIndex => new TestCaseData(length, 5, 2, toIndex));
         }
 
         [Test]
-        public void MoveRangeWithOldIndexEqualsNewIndex()
+        public void MoveRangeWithFromIndexEqualsToIndex()
         {
             var source = Enumerable.Range(0, 10);
-            var result = source.MoveRange(5, 3, 5);
+            var result = source.MoveRange(5, 999, 5);
             
             Assert.That(source, Is.SameAs(result));
         }
@@ -112,10 +114,9 @@ namespace MoreLinq.Test
         public void MoveRangeWithCountEqualsZero()
         {
             var source = Enumerable.Range(0, 10);
-            var result = source.MoveRange(5, 0, 5);
+            var result = source.MoveRange(5, 0, 999);
             
             Assert.That(source, Is.SameAs(result));
         }
-		
     }
 }

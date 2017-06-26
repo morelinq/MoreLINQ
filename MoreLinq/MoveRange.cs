@@ -19,19 +19,18 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Take a range of the source sequence and moves it to another position. 
+        /// Return a sequence with a range of elements in the source sequence moved to a new offset.
         /// </summary>
-        /// <typeparam name="T">Type of the source sequence</typeparam>
+        /// <typeparam name="T">Type of the source sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="oldIndex">The zero-based and original index where the range to be moved begins.</param>
+        /// <param name="fromIndex">The zero-based index identifying the first element in the range of elements to move.</param>
         /// <param name="count">The count of items to move.</param>
-        /// <param name="newIndex">The index where the specified range will be placed.</param>
-        /// <returns>The sequence with the specified range moved to the new position.</returns>
+        /// <param name="toIndex">The index where the specified range will be moved.</param>
+        /// <returns>A sequence with the specified range moved to the new position.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -42,20 +41,20 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
         /// </example>
 
-        public static IEnumerable<T> MoveRange<T>(this IEnumerable<T> source, int oldIndex, int count, int newIndex)
+        public static IEnumerable<T> MoveRange<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (oldIndex < 0) throw new ArgumentOutOfRangeException(nameof(oldIndex), "The source index cannot be negative.");
+            if (fromIndex < 0) throw new ArgumentOutOfRangeException(nameof(fromIndex), "The source index cannot be negative.");
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
-            if (newIndex < 0) throw new ArgumentOutOfRangeException(nameof(newIndex), "Target index of range to move cannot be negative.");
+            if (toIndex < 0) throw new ArgumentOutOfRangeException(nameof(toIndex), "Target index of range to move cannot be negative.");
 
-            if (newIndex == oldIndex || count == 0)
+            if (toIndex == fromIndex || count == 0)
                 return source;
 
-            if (newIndex < oldIndex)
-                return _(newIndex, oldIndex - newIndex, count);
+            if (toIndex < fromIndex)
+                return _(toIndex, fromIndex - toIndex, count);
             else
-                return _(oldIndex, count, newIndex - oldIndex);
+                return _(fromIndex, count, toIndex - fromIndex);
 
             IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
