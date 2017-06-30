@@ -24,7 +24,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Pads a sequence with default values in its beginning if it is narrower (shorter 
+        /// Pads a sequence with default values in the beginning if it is narrower (shorter 
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -51,7 +51,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Pads a sequence with a given filler value in its beginning if it is narrower (shorter 
+        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter 
         /// in length) than a given width.
         /// An additional parameter specifies the value to use for padding.
         /// </summary>
@@ -82,7 +82,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Pads a sequence with a dynamic filler value in its beginning if it is narrower (shorter 
+        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter 
         /// in length) than a given width.
         /// An additional parameter specifies the function to calculate padding.
         /// </summary>
