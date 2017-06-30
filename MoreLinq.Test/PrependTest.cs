@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -53,6 +55,37 @@ namespace MoreLinq.Test
         public void PrependIsLazyInTailSequence()
         {
             new BreakingSequence<string>().Prepend("head");
+        }
+
+        [TestCaseSource(nameof(PrependManySource))]
+        public void PrependMany(int[] head, int[] tail)
+        {
+            head.Aggregate(tail.AsEnumerable(), (xs, x) => xs.Prepend(x))
+                .AssertSequenceEqual(head.Concat(tail));
+        }
+
+        public static IEnumerable<object> PrependManySource =>
+            from x in Enumerable.Range(0, 11)
+            from y in Enumerable.Range(1, 11)
+            select new
+            {
+                Head = Enumerable.Range(0, y).Select(n => 0 - n).ToArray(),
+                Tail = Enumerable.Range(1, x).ToArray(),
+            }
+            into e
+            select new TestCaseData(e.Head,
+                                    e.Tail).SetName("Head = [" + string.Join(", ", e.Head) + "], " +
+                                                    "Tail = [" + string.Join(", ", e.Tail) + "]");
+
+        [Test]
+        public void PrependWithSharedSource()
+        {
+            var first  = new [] { 1 }.Prepend(2);
+            var second = first.Prepend(3).Prepend(4);
+            var third  = first.Prepend(4).Prepend(8);
+
+            second.AssertSequenceEqual(4, 3, 2, 1);
+            third.AssertSequenceEqual(8, 4, 2, 1);
         }
     }
 }
