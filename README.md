@@ -255,6 +255,13 @@ a given width.
 
 This method has 3 overloads.
 
+### PadStart
+
+Pads a sequence with default values in the beginning if it is narrower
+(shorter in length) than a given width.
+
+This method has 3 overloads.
+
 ### Pairwise
 
 Returns a sequence resulting from applying a function to each element in the
