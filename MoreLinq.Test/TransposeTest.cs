@@ -66,7 +66,7 @@ namespace MoreLinq.Test
 
             using (var test = innerTestSequences.AsTestingSequence())
             {
-                Assert.That(matrix.Transpose(), Is.EqualTo(expectations));
+                AssertMatrix(matrix.Transpose(), expectations);
             }
 
             innerTestSequences.ForEach(seq => (seq as IDisposable).Dispose());
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
 
             using (var test = innerTestSequences.AsTestingSequence())
             {
-                Assert.That(matrix.Transpose(), Is.EqualTo(expectations));
+                AssertMatrix(matrix.Transpose(), expectations);
             }
 
             innerTestSequences.ForEach(seq => (seq as IDisposable).Dispose());
@@ -135,7 +135,7 @@ namespace MoreLinq.Test
                 new[] { 32, 243, 3125 }
             };
 
-            Assert.That(result, Is.EqualTo(expectations));
+            AssertMatrix(result, expectations);
         }
 
         public void TransposeWithSomeSequencesInfinite()
@@ -156,11 +156,11 @@ namespace MoreLinq.Test
                 new[] { 32,      3125 }
             };
 
-            Assert.That(result, Is.EqualTo(expectations));
+            AssertMatrix(result, expectations);
         }
 
         [Test]
-        public void TransposeOrderSequenceAreIteratedIsIrrelevant()
+        public void TransposeOrderSequencesAreIteratedIsIrrelevant()
         {
             var matrix = new[]
             {
@@ -207,6 +207,15 @@ namespace MoreLinq.Test
             }
 
             return true;        
+        }
+
+        public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> result, IEnumerable<IEnumerable<T>> expectations)
+        {
+            expectations.ZipLongest(result, (a, b) => 
+            {
+                Assert.That(a, Is.EqualTo(b));
+                return (string) null;
+            }).Consume();
         }
     }
 }
