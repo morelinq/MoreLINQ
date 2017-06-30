@@ -8,7 +8,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>2.6.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
-    <TargetFrameworks>net35;net40;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>net40;net35;netstandard1.0</TargetFrameworks>
     <LangVersion>7</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
