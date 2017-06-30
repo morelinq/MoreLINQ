@@ -23,66 +23,66 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
 
     [TestFixture]
-    public class PadLeftTest
+    public class PadStartTest
     {
-        // PadLeft(source, width)
+        // PadStart(source, width)
 
         [Test]
-        public void PadLeftWithNegativeWidth()
+        public void PadStartWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width", () => new int[0].PadLeft(-1));
+            Assert.ThrowsArgumentException("width", () => new int[0].PadStart(-1));
         }
 
         [Test]
-        public void PadLeftIsLazy()
+        public void PadStartIsLazy()
         {
-            new BreakingSequence<int>().PadLeft(0);
+            new BreakingSequence<int>().PadStart(0);
         }
 
         [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 4, new[] {        0, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 5, new[] {   0,   0, 123, 456, 789 })]
-        public void PadLeft(ICollection<int> source, int width, IEnumerable<int> expected)
+        public void PadStart(ICollection<int> source, int width, IEnumerable<int> expected)
         {
-            AssertEqual(source, x => x.PadLeft(width), expected);
+            AssertEqual(source, x => x.PadStart(width), expected);
         }
 
-        // PadLeft(source, width, padding)
+        // PadStart(source, width, padding)
 
         [Test]
-        public void PadLeftWithPaddingWithNegativeWidth()
+        public void PadStartWithPaddingWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width", () => new int[0].PadLeft(-1, 1));
+            Assert.ThrowsArgumentException("width", () => new int[0].PadStart(-1, 1));
         }
 
         [Test]
-        public void PadLeftWithPaddingIsLazy()
+        public void PadStartWithPaddingIsLazy()
         {
-            new BreakingSequence<int>().PadLeft(0, -1);
+            new BreakingSequence<int>().PadStart(0, -1);
         }
 
         [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 4, new[] {       -1, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 5, new[] {  -1,  -1, 123, 456, 789 })]
-        public void PadLeftWithPadding(ICollection<int> source, int width, IEnumerable<int> expected)
+        public void PadStartWithPadding(ICollection<int> source, int width, IEnumerable<int> expected)
         {
-            AssertEqual(source, x => x.PadLeft(width, -1), expected);
+            AssertEqual(source, x => x.PadStart(width, -1), expected);
         }
 
-        // PadLeft(source, width, paddingSelector)
+        // PadStart(source, width, paddingSelector)
 
         [Test]
-        public void PadLeftWithSelectorWithNegativeWidth()
+        public void PadStartWithSelectorWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width", () => new int[0].PadLeft(-1, x => x));
+            Assert.ThrowsArgumentException("width", () => new int[0].PadStart(-1, x => x));
         }
 
         [Test]
-        public void PadLeftWithSelectorIsLazy()
+        public void PadStartWithSelectorIsLazy()
         {
-            new BreakingSequence<int>().PadLeft(0, x => x);
+            new BreakingSequence<int>().PadStart(0, x => x);
         }
 
         [TestCase(new[] { 123, 456, 789 }, 2, new[] {                    123, 456, 789 })]
@@ -91,9 +91,9 @@ namespace MoreLinq.Test
         [TestCase(new[] { 123, 456, 789 }, 5, new[] {            0,  -1, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 6, new[] {        0, -1,  -4, 123, 456, 789 })]
         [TestCase(new[] { 123, 456, 789 }, 7, new[] {   0,  -1, -4,  -9, 123, 456, 789 })]
-        public void PadLeftWithSelector(ICollection<int> source, int width, IEnumerable<int> expected)
+        public void PadStartWithSelector(ICollection<int> source, int width, IEnumerable<int> expected)
         {
-            AssertEqual(source, x => x.PadLeft(width, y => y * -y), expected);
+            AssertEqual(source, x => x.PadStart(width, y => y * -y), expected);
         }
 
         static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)

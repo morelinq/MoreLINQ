@@ -45,9 +45,9 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadLeft<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
         {
-            return PadLeft(source, width, default(TSource));
+            return PadStart(source, width, default(TSource));
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadLeft<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (width < 0) throw new ArgumentException(null, nameof(width));
@@ -105,7 +105,7 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadLeft<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
