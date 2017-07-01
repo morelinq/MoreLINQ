@@ -211,9 +211,13 @@ namespace MoreLinq.Test
 
         public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> result, IEnumerable<IEnumerable<T>> expectations)
         {
+            // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
             expectations.ZipLongest(result, (a, b) => 
             {
-                Assert.That(a, Is.EqualTo(b));
+                a = a ?? new T[0];
+                b = b ?? new T[0];
+                
+                Assert.IsTrue(a.SequenceEqual(b));
                 return (string) null;
             }).Consume();
         }
