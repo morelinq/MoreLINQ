@@ -66,10 +66,10 @@ namespace MoreLinq.Test
 
             using (var test = innerTestSequences.AsTestingSequence())
             {
-                AssertMatrix(matrix.Transpose(), expectations);
+                AssertMatrix(test.Transpose(), expectations);
             }
 
-            innerTestSequences.ForEach(seq => (seq as IDisposable).Dispose());
+            innerTestSequences.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
         [Test]
@@ -94,10 +94,10 @@ namespace MoreLinq.Test
 
             using (var test = innerTestSequences.AsTestingSequence())
             {
-                AssertMatrix(matrix.Transpose(), expectations);
+                AssertMatrix(test.Transpose(), expectations);
             }
 
-            innerTestSequences.ForEach(seq => (seq as IDisposable).Dispose());
+            innerTestSequences.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
         [Test]
@@ -172,8 +172,8 @@ namespace MoreLinq.Test
 
             var transpose = matrix.Transpose().Take(2).ToList();
 
-            Assert.That(transpose[1], Is.EqualTo(new int[] { 11, 31 }));
-            Assert.That(transpose[0], Is.EqualTo(new int[] { 10, 20, 30 }));
+            transpose[1].AssertSequenceEqual(11, 31);
+            transpose[0].AssertSequenceEqual(10, 20, 30);
         }
 
         [Test]
@@ -214,10 +214,11 @@ namespace MoreLinq.Test
             // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
             expectations.ZipLongest(result, (a, b) => 
             {
-                a = a ?? new T[0];
-                b = b ?? new T[0];
-                
-                Assert.IsTrue(a.SequenceEqual(b));
+                var x = a ?? new T[0];
+                var y = b ?? new T[0];
+
+                x.AssertSequenceEqual(y);
+
                 return (string) null;
             }).Consume();
         }
