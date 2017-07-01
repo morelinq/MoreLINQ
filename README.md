@@ -159,7 +159,7 @@ This method has 2 overloads.
 
 Performs a Full Group Join between the and sequences.
 
-This method has 2 overloads.
+This method has 4 overloads.
 
 ### Generate
 
@@ -252,6 +252,13 @@ This method has 7 overloads.
 
 Pads a sequence with default values if it is narrower (shorter in length) than
 a given width.
+
+This method has 3 overloads.
+
+### PadStart
+
+Pads a sequence with default values in the beginning if it is narrower
+(shorter in length) than a given width.
 
 This method has 3 overloads.
 
