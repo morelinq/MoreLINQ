@@ -45,20 +45,18 @@ namespace MoreLinq.Test
             var listA = new[] { 1, 2 };
             var listB = new[] { 2, 3 };
 
-            var result = listA.FullGroupJoin(listB, x => x, x => x, (key, first, second) => new { key, first, second }).ToDictionary(a => a.key);
+            var result = listA.FullGroupJoin(listB, x => x, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(3, result.Keys.Count);
 
-            Assert.IsEmpty(result[1].second);
-            Assert.AreEqual(1, result[1].first.Single());
+            Assert.IsEmpty(result[1].Second);
+            result[1].First.AssertSequenceEqual(1);
 
-            Assert.IsEmpty(result[3].first);
-            Assert.AreEqual(3, result[3].second.Single());
+            Assert.IsEmpty(result[3].First);
+            result[3].Second.AssertSequenceEqual(3);
 
-            Assert.IsNotEmpty(result[2].first);
-            Assert.AreEqual(2, result[2].first.Single());
-            Assert.IsNotEmpty(result[2].second);
-            Assert.AreEqual(2, result[2].second.Single());
+            result[2].First.AssertSequenceEqual(2);
+            result[2].Second.AssertSequenceEqual(2);
         }
 
         [Test]
@@ -67,15 +65,15 @@ namespace MoreLinq.Test
             var listA = new int[] { };
             var listB = new[] { 2, 3 };
 
-            var result = listA.FullGroupJoin(listB, x => x, x => x, (key, first, second) => new { key, first, second }).ToDictionary(a => a.key);
+            var result = listA.FullGroupJoin(listB, x => x, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(2, result.Keys.Count);
 
-            Assert.IsEmpty(result[2].first);
-            Assert.AreEqual(2, result[2].second.Single());
+            Assert.IsEmpty(result[2].First);
+            Assert.AreEqual(2, result[2].Second.Single());
 
-            Assert.IsEmpty(result[3].first);
-            Assert.AreEqual(3, result[3].second.Single());
+            Assert.IsEmpty(result[3].First);
+            Assert.AreEqual(3, result[3].Second.Single());
         }
 
         [Test]
@@ -84,15 +82,15 @@ namespace MoreLinq.Test
             var listA = new[] { 2, 3 };
             var listB = new int[] { };
 
-            var result = listA.FullGroupJoin(listB, x => x, x => x, (key, first, second) => new { key, first, second }).ToDictionary(a => a.key);
+            var result = listA.FullGroupJoin(listB, x => x, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(2, result.Keys.Count);
 
-            Assert.AreEqual(2, result[2].first.Single());
-            Assert.IsEmpty(result[2].second);
+            Assert.AreEqual(2, result[2].First.Single());
+            Assert.IsEmpty(result[2].Second);
 
-            Assert.AreEqual(3, result[3].first.Single());
-            Assert.IsEmpty(result[3].second);
+            Assert.AreEqual(3, result[3].First.Single());
+            Assert.IsEmpty(result[3].Second);
         }
 
         [Test]
@@ -116,15 +114,15 @@ namespace MoreLinq.Test
                 (3, 0),
             };
 
-            var result = listA.FullGroupJoin(listB, x => x.Item1, x => x.Item1, (key, first, second) => new { key, first, second }).ToList();
+            var result = listA.FullGroupJoin(listB, x => x.Item1, x => x.Item1).ToList();
 
             // Order of keys is preserved
-            result.Select(x => x.key).AssertSequenceEqual(3, 1, 2, 4, 0);
+            result.Select(x => x.Key).AssertSequenceEqual(3, 1, 2, 4, 0);
 
             // Order of joined elements is preserved
             foreach (var res in result) {
-                res.first.AssertSequenceEqual(listA.Where(t => t.Item1 == res.key).ToArray());
-                res.second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.key).ToArray());
+                res.First.AssertSequenceEqual(listA.Where(t => t.Item1 == res.Key).ToArray());
+                res.Second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.Key).ToArray());
             }
         }
     }
