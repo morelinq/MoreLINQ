@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using NUnit.Framework;
 
@@ -29,7 +31,11 @@ namespace MoreLinq.Test
             var listA = new BreakingSequence<int>();
             var listB = new BreakingSequence<int>();
 
-            listA.FullGroupJoin(listB, x => x, x => x, DummySelector);
+            int BreakingSelector(int _, IEnumerable<int> a, IEnumerable<int> b)
+            {
+                throw new InvalidOperationException("This method should not be invoked");
+            }
+            listA.FullGroupJoin(listB, x => x, x => x, BreakingSelector);
             Assert.True(true);
         }
 
@@ -120,11 +126,6 @@ namespace MoreLinq.Test
                 res.first.AssertSequenceEqual(listA.Where(t => t.Item1 == res.key).ToArray());
                 res.second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.key).ToArray());
             }
-        }
-
-        static T1 DummySelector<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
-        {
-            return t1;
         }
     }
 }
