@@ -97,7 +97,8 @@ namespace MoreLinq.Test
         [TestCase(OverloadCase.Tuple)]
         public void FullGroupPreservesOrder(OverloadCase overloadCase)
         {
-            var listA = new[] {
+            var listA = new[]
+            {
                 (3, 1),
                 (1, 1),
                 (2, 1),
@@ -107,7 +108,8 @@ namespace MoreLinq.Test
                 (1, 4),
                 (3, 3),
             };
-            var listB = new[] {
+            var listB = new[]
+            {
                 (4, 1),
                 (3, 1),
                 (2, 1),
@@ -121,7 +123,8 @@ namespace MoreLinq.Test
             result.Select(x => x.Key).AssertSequenceEqual(3, 1, 2, 4, 0);
 
             // Order of joined elements is preserved
-            foreach (var res in result) {
+            foreach (var res in result)
+            {
                 res.First.AssertSequenceEqual(listA.Where(t => t.Item1 == res.Key).ToArray());
                 res.Second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.Key).ToArray());
             }
@@ -129,13 +132,14 @@ namespace MoreLinq.Test
 
         private static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> DoJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
         {
-            switch (overloadCase) {
-            case OverloadCase.ResultSelector:
-                return listA.FullGroupJoin(listB, getKey, getKey, (k, f, s) => (k, f, s));
-            case OverloadCase.Tuple:
-                return listA.FullGroupJoin(listB, getKey, getKey);
-            default:
-                throw new ArgumentOutOfRangeException(nameof(overloadCase));
+            switch (overloadCase)
+            {
+                case OverloadCase.ResultSelector:
+                    return listA.FullGroupJoin(listB, getKey, getKey, (k, f, s) => (k, f, s));
+                case OverloadCase.Tuple:
+                    return listA.FullGroupJoin(listB, getKey, getKey);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(overloadCase));
             }
         }
     }
