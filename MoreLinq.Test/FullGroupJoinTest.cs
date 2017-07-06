@@ -25,7 +25,8 @@ namespace MoreLinq.Test
     [TestFixture]
     public class FullGroupJoinTest
     {
-        [Test]
+        public enum OverloadCase { ResultSelector, Tuple }
+
         public void FullGroupIsLazy()
         {
             var listA = new BreakingSequence<int>();
@@ -35,13 +36,14 @@ namespace MoreLinq.Test
             Assert.True(true);
         }
 
-        [Test]
-        public void FullGroupJoinsResults()
+        [TestCase(OverloadCase.ResultSelector)]
+        [TestCase(OverloadCase.Tuple)]
+        public void FullGroupJoinsResults(OverloadCase overloadCase)
         {
             var listA = new[] { 1, 2 };
             var listB = new[] { 2, 3 };
 
-            var result = listA.FullGroupJoin(listB, x => x, x => x).ToDictionary(a => a.Key);
+            var result = DoJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(3, result.Keys.Count);
 
@@ -55,13 +57,14 @@ namespace MoreLinq.Test
             result[2].Second.AssertSequenceEqual(2);
         }
 
-        [Test]
-        public void FullGroupJoinsEmptyLeft()
+        [TestCase(OverloadCase.ResultSelector)]
+        [TestCase(OverloadCase.Tuple)]
+        public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
         {
             var listA = new int[] { };
             var listB = new[] { 2, 3 };
 
-            var result = listA.FullGroupJoin(listB, x => x, x => x).ToDictionary(a => a.Key);
+            var result = DoJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(2, result.Keys.Count);
 
@@ -72,13 +75,14 @@ namespace MoreLinq.Test
             Assert.AreEqual(3, result[3].Second.Single());
         }
 
-        [Test]
-        public void FullGroupJoinsEmptyRight()
+        [TestCase(OverloadCase.ResultSelector)]
+        [TestCase(OverloadCase.Tuple)]
+        public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
         {
             var listA = new[] { 2, 3 };
             var listB = new int[] { };
 
-            var result = listA.FullGroupJoin(listB, x => x, x => x).ToDictionary(a => a.Key);
+            var result = DoJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(2, result.Keys.Count);
 
@@ -89,8 +93,9 @@ namespace MoreLinq.Test
             Assert.IsEmpty(result[3].Second);
         }
 
-        [Test]
-        public void FullGroupPreservesOrder()
+        [TestCase(OverloadCase.ResultSelector)]
+        [TestCase(OverloadCase.Tuple)]
+        public void FullGroupPreservesOrder(OverloadCase overloadCase)
         {
             var listA = new[] {
                 (3, 1),
@@ -110,7 +115,7 @@ namespace MoreLinq.Test
                 (3, 0),
             };
 
-            var result = listA.FullGroupJoin(listB, x => x.Item1, x => x.Item1).ToList();
+            var result = DoJoin(overloadCase, listA, listB, x => x.Item1).ToList();
 
             // Order of keys is preserved
             result.Select(x => x.Key).AssertSequenceEqual(3, 1, 2, 4, 0);
@@ -119,6 +124,18 @@ namespace MoreLinq.Test
             foreach (var res in result) {
                 res.First.AssertSequenceEqual(listA.Where(t => t.Item1 == res.Key).ToArray());
                 res.Second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.Key).ToArray());
+            }
+        }
+
+        private static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> DoJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
+        {
+            switch (overloadCase) {
+            case OverloadCase.ResultSelector:
+                return listA.FullGroupJoin(listB, getKey, getKey, (k, f, s) => (k, f, s));
+            case OverloadCase.Tuple:
+                return listA.FullGroupJoin(listB, getKey, getKey);
+            default:
+                throw new ArgumentOutOfRangeException(nameof(overloadCase));
             }
         }
     }
