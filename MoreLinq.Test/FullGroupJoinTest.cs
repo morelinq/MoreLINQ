@@ -123,10 +123,10 @@ namespace MoreLinq.Test
             result.Select(x => x.Key).AssertSequenceEqual(3, 1, 2, 4, 0);
 
             // Order of joined elements is preserved
-            foreach (var res in result)
+            foreach (var (key, first, second) in result)
             {
-                res.First.AssertSequenceEqual(listA.Where(t => t.Item1 == res.Key).ToArray());
-                res.Second.AssertSequenceEqual(listB.Where(t => t.Item1 == res.Key).ToArray());
+                first.AssertSequenceEqual(listA.Where(t => t.Item1 == key).ToArray());
+                second.AssertSequenceEqual(listB.Where(t => t.Item1 == key).ToArray());
             }
         }
 
@@ -135,7 +135,7 @@ namespace MoreLinq.Test
             switch (overloadCase)
             {
                 case OverloadCase.ResultSelector:
-                    return listA.FullGroupJoin(listB, getKey, getKey, (k, f, s) => (k, f, s));
+                    return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create);
                 case OverloadCase.Tuple:
                     return listA.FullGroupJoin(listB, getKey, getKey);
                 default:
