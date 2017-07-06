@@ -31,11 +31,7 @@ namespace MoreLinq.Test
             var listA = new BreakingSequence<int>();
             var listB = new BreakingSequence<int>();
 
-            int BreakingSelector(int _, IEnumerable<int> a, IEnumerable<int> b)
-            {
-                throw new InvalidOperationException("This method should not be invoked");
-            }
-            listA.FullGroupJoin(listB, x => x, x => x, BreakingSelector);
+            listA.FullGroupJoin(listB, x => x, x => x, BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>());
             Assert.True(true);
         }
 
