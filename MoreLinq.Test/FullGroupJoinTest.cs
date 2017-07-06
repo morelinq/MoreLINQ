@@ -21,11 +21,12 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using System.Linq;
     using NUnit.Framework;
+    using static FullGroupJoinTest.OverloadCase;
 
     [TestFixture]
     public class FullGroupJoinTest
     {
-        public enum OverloadCase { ResultSelector, Tuple }
+        public enum OverloadCase { CustomResult, TupleResult }
 
         public void FullGroupIsLazy()
         {
@@ -36,8 +37,8 @@ namespace MoreLinq.Test
             Assert.True(true);
         }
 
-        [TestCase(OverloadCase.ResultSelector)]
-        [TestCase(OverloadCase.Tuple)]
+        [TestCase(CustomResult)]
+        [TestCase(TupleResult)]
         public void FullGroupJoinsResults(OverloadCase overloadCase)
         {
             var listA = new[] { 1, 2 };
@@ -57,8 +58,8 @@ namespace MoreLinq.Test
             result[2].Second.AssertSequenceEqual(2);
         }
 
-        [TestCase(OverloadCase.ResultSelector)]
-        [TestCase(OverloadCase.Tuple)]
+        [TestCase(CustomResult)]
+        [TestCase(TupleResult)]
         public void FullGroupJoinsEmptyLeft(OverloadCase overloadCase)
         {
             var listA = new int[] { };
@@ -75,8 +76,8 @@ namespace MoreLinq.Test
             Assert.AreEqual(3, result[3].Second.Single());
         }
 
-        [TestCase(OverloadCase.ResultSelector)]
-        [TestCase(OverloadCase.Tuple)]
+        [TestCase(CustomResult)]
+        [TestCase(TupleResult)]
         public void FullGroupJoinsEmptyRight(OverloadCase overloadCase)
         {
             var listA = new[] { 2, 3 };
@@ -93,8 +94,8 @@ namespace MoreLinq.Test
             Assert.IsEmpty(result[3].Second);
         }
 
-        [TestCase(OverloadCase.ResultSelector)]
-        [TestCase(OverloadCase.Tuple)]
+        [TestCase(CustomResult)]
+        [TestCase(TupleResult)]
         public void FullGroupPreservesOrder(OverloadCase overloadCase)
         {
             var listA = new[]
@@ -134,9 +135,9 @@ namespace MoreLinq.Test
         {
             switch (overloadCase)
             {
-                case OverloadCase.ResultSelector:
+                case CustomResult:
                     return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create);
-                case OverloadCase.Tuple:
+                case TupleResult:
                     return listA.FullGroupJoin(listB, getKey, getKey);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(overloadCase));
