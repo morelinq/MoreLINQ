@@ -43,7 +43,7 @@ namespace MoreLinq.Test
             var listA = new[] { 1, 2 };
             var listB = new[] { 2, 3 };
 
-            var result = DoJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
+            var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(3, result.Keys.Count);
 
@@ -64,7 +64,7 @@ namespace MoreLinq.Test
             var listA = new int[] { };
             var listB = new[] { 2, 3 };
 
-            var result = DoJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
+            var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(2, result.Keys.Count);
 
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
             var listA = new[] { 2, 3 };
             var listB = new int[] { };
 
-            var result = DoJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
+            var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
             Assert.AreEqual(2, result.Keys.Count);
 
@@ -117,7 +117,7 @@ namespace MoreLinq.Test
                 (3, 0),
             };
 
-            var result = DoJoin(overloadCase, listA, listB, x => x.Item1).ToList();
+            var result = FullGroupJoin(overloadCase, listA, listB, x => x.Item1).ToList();
 
             // Order of keys is preserved
             result.Select(x => x.Key).AssertSequenceEqual(3, 1, 2, 4, 0);
@@ -130,7 +130,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> DoJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
+        private static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
         {
             switch (overloadCase)
             {
