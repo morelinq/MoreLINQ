@@ -31,20 +31,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ExactlySequenceWithFirstNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("first",
-                () => MoreEnumerable.Exactly<int, int>(null, LinqEnumerable.Empty<int>()));
-        }
-
-        [Test]
-        public void ExactlySequenceWithSecondNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("second",
-                () => MoreEnumerable.Exactly<int, int>(LinqEnumerable.Empty<int>(), null));
-        }
-
-        [Test]
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
             Assert.IsTrue(LinqEnumerable.Empty<int>().Exactly(0));
@@ -66,102 +52,6 @@ namespace MoreLinq.Test
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
             Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(1));
-        }
-
-        [Test]
-        public void ExactlyWithEmptyCollectionHasExactlyEmptyCollection()
-        {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().Exactly(LinqEnumerable.Empty<int>()));
-        }
-
-        [Test]
-        public void ExactlyWithEmptyCollectionHasExactlyEmptySequence()
-        {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().Exactly(LinqEnumerable.Range(1, 0)));
-        }
-
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyEmptyCollection()
-        {
-            Assert.IsTrue(LinqEnumerable.Range(1, 0).Exactly(LinqEnumerable.Empty<int>()));
-        }
-
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyEmptySequence()
-        {
-            Assert.IsTrue(LinqEnumerable.Range(1, 0).Exactly(LinqEnumerable.Range(1, 0)));
-        }
-
-        [Test]
-        public void ExactlyWithEmptyCollectionHasExactlyOneElementCollection()
-        {
-            Assert.IsFalse(LinqEnumerable.Empty<int>().Exactly(new[] { 1 }));
-        }
-
-        [Test]
-        public void ExactlyWithEmptyCollectionHasExactlyOneElementSequence()
-        {
-            Assert.IsFalse(LinqEnumerable.Empty<int>().Exactly(LinqEnumerable.Range(1, 1)));
-        }
-
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyOneElementCollection()
-        {
-            Assert.IsFalse(LinqEnumerable.Range(1, 0).Exactly(new[] { 1 }));
-        }
-
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyOneElementSequence()
-        {
-            Assert.IsFalse(LinqEnumerable.Range(1, 0).Exactly(LinqEnumerable.Range(1, 1)));
-        }
-
-        [Test]
-        public void ExactlyWithSingleElementCollectionHasExactlyOneElementCollection()
-        {
-            Assert.IsTrue(new[] { 1 }.Exactly(new[] { 1 }));
-        }
-
-        [Test]
-        public void ExactlyWithSingleElementCollectionHasExactlyOneElementSequence()
-        {
-            Assert.IsTrue(new[] { 1 }.Exactly(LinqEnumerable.Range(1, 1)));
-        }
-
-        [Test]
-        public void ExactlyWithSingleElementSequenceHasExactlyOneElementCollection()
-        {
-            Assert.IsTrue(LinqEnumerable.Range(1, 1).Exactly(new[] { 1 }));
-        }
-
-        [Test]
-        public void ExactlyWithSingleElementSequenceHasExactlyOneElementSequence()
-        {
-            Assert.IsTrue(LinqEnumerable.Range(1, 1).Exactly(LinqEnumerable.Range(1, 1)));
-        }
-
-        [Test]
-        public void ExactlyWithManyElementCollectionHasExactlyOneElementCollection()
-        {
-            Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(new[] { 1 }));
-        }
-
-        [Test]
-        public void ExactlyWithManyElementCollectionHasExactlyOneElementSequence()
-        {
-            Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(LinqEnumerable.Range(1, 1)));
-        }
-
-        [Test]
-        public void ExactlyWithManyElementSequenceHasExactlyOneElementCollection()
-        {
-            Assert.IsFalse(LinqEnumerable.Range(1, 3).Exactly(new[] { 1 }));
-        }
-
-        [Test]
-        public void ExactlyWithManyElementSequenceHasExactlyOneElementSequence()
-        {
-            Assert.IsFalse(LinqEnumerable.Range(1, 3).Exactly(LinqEnumerable.Range(1, 1)));
         }
     }
 }

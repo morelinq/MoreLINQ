@@ -49,31 +49,6 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Determines whether or not the number of elements in the first sequence is greater than
-        /// or equal to the number of elements in the second sequence.
-        /// </summary>
-        /// <typeparam name="T1">Element type of the first sequence</typeparam>
-        /// <typeparam name="T2">Element type of the second sequence</typeparam>
-        /// <param name="first">The first sequence</param>
-        /// <param name="second">The second sequence</param>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
-        /// <returns><c>true</c> if the number of elements in the first sequence is greater than
-        /// or equal to the number of elements in the second sequence or <c>false</c> otherwise.</returns>
-        /// <example>
-        /// <code>
-        /// var numbers = { 123, 456, 789 };
-        /// var other = { 111, 222 };
-        /// var result = numbers.AtLeast(other);
-        /// </code>
-        /// The <c>result</c> variable will contain <c>true</c>.
-        /// </example>
-        public static bool AtLeast<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
-        {
-            return first.CompareCount(second) >= 0;
-        }
-
-        /// <summary>
         /// Determines whether or not the number of elements in the sequence is lesser than
         /// or equal to the given integer.
         /// </summary>
@@ -100,31 +75,6 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Determines whether or not the number of elements in the first sequence is lesser than
-        /// or equal to the number of elements in the second sequence.
-        /// </summary>
-        /// <typeparam name="T1">Element type of the first sequence</typeparam>
-        /// <typeparam name="T2">Element type of the second sequence</typeparam>
-        /// <param name="first">The first sequence</param>
-        /// <param name="second">The second sequence</param>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
-        /// <returns><c>true</c> if the number of elements in the first sequence is lesser than
-        /// or equal to the number of elements in the second sequence or <c>false</c> otherwise.</returns>
-        /// <example>
-        /// <code>
-        /// var numbers = { 123, 456, 789 };
-        /// var other = { 111, 222 };
-        /// var result = numbers.AtMost(other);
-        /// </code>
-        /// The <c>result</c> variable will contain <c>false</c>.
-        /// </example>
-        public static bool AtMost<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
-        {
-            return first.CompareCount(second) <= 0;
-        }
-
-        /// <summary>
         /// Determines whether or not the number of elements in the sequence is equals to the given integer.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
@@ -147,31 +97,6 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
             return QuantityIterator(source, count + 1, n => n == count);
-        }
-
-        /// <summary>
-        /// Determines whether or not the number of elements in the first sequence is equal to 
-        /// the number of elements in the second sequence.
-        /// </summary>
-        /// <typeparam name="T1">Element type of the first sequence</typeparam>
-        /// <typeparam name="T2">Element type of the second sequence</typeparam>
-        /// <param name="first">The first sequence</param>
-        /// <param name="second">The second sequence</param>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
-        /// <returns><c>true</c> if the number of elements in the first sequence is equal
-        /// to the number of elements in the second sequence or <c>false</c> otherwise.</returns>
-        /// <example>
-        /// <code>
-        /// var numbers = { 123, 456, 789 };
-        /// var other = { 111, 222, 333 };
-        /// var result = numbers.Exactly(other);
-        /// </code>
-        /// The <c>result</c> variable will contain <c>true</c>.
-        /// </example>
-        public static bool Exactly<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
-        {
-            return first.CompareCount(second) == 0;
         }
 
         /// <summary>
