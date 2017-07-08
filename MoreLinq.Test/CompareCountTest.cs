@@ -24,20 +24,6 @@ namespace MoreLinq.Test
     public class CompareCountTest
     {
         [Test]
-        public void CompareCountSequenceWithFirstNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                MoreEnumerable.CompareCount<int, int>(null, LinqEnumerable.Empty<int>()));
-        }
-
-        [Test]
-        public void CompareCountSequenceWithSecondNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                MoreEnumerable.CompareCount<int, int>(LinqEnumerable.Empty<int>(), null));
-        }
-
-        [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountEmptyCollection()
         {
             Assert.AreEqual(0, LinqEnumerable.Empty<int>().CompareCount(LinqEnumerable.Empty<int>()));
