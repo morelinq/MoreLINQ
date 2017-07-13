@@ -50,7 +50,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create('e', 1),
                 KeyValuePair.Create('r', 1));
         }
-                
+
         [Test]
         public void CountByEvenOddTest()
         {
@@ -71,7 +71,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create("B", 2),
                 KeyValuePair.Create("c", 1));
         }
-        
+
         [Test]
         public void CountByHasKeysOrderedLikeGroupBy()
         {
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
 
             countByKeys.AssertSequenceEqual(groupByKeys);
         }
-        
+
         [Test]
         public void CountByIsLazy()
         {

@@ -17,8 +17,8 @@ namespace MoreLinq.Test
         public void TestSegmentIsLazy()
         {
             new BreakingSequence<int>().Segment(curr => false);
-            new BreakingSequence<int>().Segment((curr,i) => false);
-            new BreakingSequence<int>().Segment((curr,prev,i) => false);
+            new BreakingSequence<int>().Segment((curr, i) => false);
+            new BreakingSequence<int>().Segment((curr, prev, i) => false);
         }
 
         /// <summary>

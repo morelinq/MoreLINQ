@@ -33,7 +33,7 @@ namespace MoreLinq.Test
                           .Partition(x => x % 2 == 0);
 
             Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
-            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
+            Assert.That(odds, Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace MoreLinq.Test
                           .Partition(x => x % 2 == 0);
 
             Assert.That(evens, Is.Empty);
-            Assert.That(odds,  Is.Empty);
+            Assert.That(odds, Is.Empty);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace MoreLinq.Test
                           .Partition(x => x % 2 == 0, Tuple.Create);
 
             Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
-            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
+            Assert.That(odds, Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace MoreLinq.Test
                           .Partition((t, f) => Tuple.Create(t, f));
 
             Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
-            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
+            Assert.That(odds, Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
         }
 
         [Test]
@@ -76,10 +76,10 @@ namespace MoreLinq.Test
             var xs = new int?[] { 1, 2, 3, null, 5, 6, 7, null, 9, 10 };
 
             var (lt5, gte5, nils) =
-                xs.GroupBy(x => x != null ? x < 5 : (bool?) null)
+                xs.GroupBy(x => x != null ? x < 5 : (bool?)null)
                   .Partition((t, f, n) => Tuple.Create(t, f, n));
 
-            Assert.That(lt5,  Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(lt5, Is.EquivalentTo(new[] { 1, 2, 3 }));
             Assert.That(gte5, Is.EquivalentTo(new[] { 5, 6, 7, 9, 10 }));
             Assert.That(nils, Is.EquivalentTo(new int?[] { null, null }));
         }

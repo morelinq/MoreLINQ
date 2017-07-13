@@ -124,35 +124,35 @@ namespace MoreLinq
                               .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
                               .Concat(collection)
                 : _(); IEnumerable<T> _()
+            {
+                var array = new T[width];
+                var count = 0;
+
+                using (var e = source.GetEnumerator())
                 {
-                    var array = new T[width];
-                    var count = 0;
+                    for (; count < width && e.MoveNext(); count++)
+                        array[count] = e.Current;
 
-                    using (var e = source.GetEnumerator())
+                    if (count == width)
                     {
-                        for (; count < width && e.MoveNext(); count++)
-                            array[count] = e.Current;
+                        for (var i = 0; i < count; i++)
+                            yield return array[i];
 
-                        if (count == width)
-                        {
-                            for (var i = 0; i < count; i++)
-                                yield return array[i];
+                        while (e.MoveNext())
+                            yield return e.Current;
 
-                            while (e.MoveNext())
-                                yield return e.Current;
-
-                            yield break;
-                        }
+                        yield break;
                     }
-
-                    var len = width - count;
-
-                    for (var i = 0; i < len; i++)
-                        yield return paddingSelector != null ? paddingSelector(i) : padding;
-
-                    for (var i = 0; i < count; i++)
-                        yield return array[i];
                 }
+
+                var len = width - count;
+
+                for (var i = 0; i < len; i++)
+                    yield return paddingSelector != null ? paddingSelector(i) : padding;
+
+                for (var i = 0; i < count; i++)
+                    yield return array[i];
+            }
         }
     }
 }

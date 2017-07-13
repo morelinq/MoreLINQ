@@ -43,7 +43,7 @@ namespace MoreLinq
         /// <param name="sequence">The first sequence in the interleave group</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
-        
+
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
         {
             return Interleave(sequence, ImbalancedInterleaveStrategy.Skip, otherSequences);
@@ -113,17 +113,17 @@ namespace MoreLinq
                                 // otherwise, apply the imbalance strategy
                                 switch (imbalanceStrategy)
                                 {
-                                    case ImbalancedInterleaveStrategy.Pad:
-                                        var newIter = iteratorList[index] = Generate(default(T), x => default(T)).GetEnumerator();
-                                        newIter.MoveNext();
-                                        break;
+                                case ImbalancedInterleaveStrategy.Pad:
+                                    var newIter = iteratorList[index] = Generate(default(T), x => default(T)).GetEnumerator();
+                                    newIter.MoveNext();
+                                    break;
 
-                                    case ImbalancedInterleaveStrategy.Skip:
-                                        iteratorList.RemoveAt(index); // no longer visit this particular iterator
-                                        --iterCount; // reduce the expected number of iterators to visit
-                                        --index; // decrement iterator index to compensate for index shifting
-                                        --consumedIterators; // decrement consumer iterator count to stay in balance
-                                        break;
+                                case ImbalancedInterleaveStrategy.Skip:
+                                    iteratorList.RemoveAt(index); // no longer visit this particular iterator
+                                    --iterCount; // reduce the expected number of iterators to visit
+                                    --index; // decrement iterator index to compensate for index shifting
+                                    --consumedIterators; // decrement consumer iterator count to stay in balance
+                                    break;
                                 }
 
                             }
@@ -142,7 +142,7 @@ namespace MoreLinq
                 finally
                 {
                     Debug.Assert(iteratorList != null || iterators != null);
-                    foreach (var iter in (iteratorList ?? (IList<IEnumerator<T>>) iterators))
+                    foreach (var iter in (iteratorList ?? (IList<IEnumerator<T>>)iterators))
                         iter.Dispose();
                 }
             }

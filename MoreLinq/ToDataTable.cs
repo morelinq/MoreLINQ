@@ -56,7 +56,7 @@ namespace MoreLinq
             {
                 return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
-                             || (m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0)
+                             || (m.MemberType == MemberTypes.Property && ((PropertyInfo)m).GetIndexParameters().Length == 0)
                        select m;
             }
 
@@ -91,9 +91,9 @@ namespace MoreLinq
             var columns = table.Columns;
 
             var schemas = from m in members
-                          let type = m.MemberType == MemberTypes.Property 
-                                   ? ((PropertyInfo) m).PropertyType 
-                                   : ((FieldInfo) m).FieldType
+                          let type = m.MemberType == MemberTypes.Property
+                                   ? ((PropertyInfo)m).PropertyType
+                                   : ((FieldInfo)m).FieldType
                           select new
                           {
                               Member = m,
@@ -159,7 +159,7 @@ namespace MoreLinq
             var array = Expression.NewArrayInit(typeof(object), initializers);
 
             var lambda = Expression.Lambda<Func<T, object[]>>(array, parameter);
-            
+
             return lambda.Compile();
         }
 
@@ -177,7 +177,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> or subclass representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-        
+
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
             where TTable : DataTable
         {
@@ -223,7 +223,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> or subclass representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-        
+
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
@@ -242,7 +242,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-       
+
         public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
@@ -257,7 +257,7 @@ namespace MoreLinq
         /// A <see cref="DataTable"/> representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-        
+
         public static DataTable ToDataTable<T>(this IEnumerable<T> source)
         {
             return ToDataTable(source, new DataTable());

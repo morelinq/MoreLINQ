@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <param name="third">Third sequence</param>
         /// <param name="resultSelector">Function to apply to each triplet of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
-        
+
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> resultSelector)
         {
@@ -93,7 +93,7 @@ namespace MoreLinq
         /// <param name="fourth">Fourth sequence</param>
         /// <param name="resultSelector">Function to apply to each quadruplet of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
-        
+
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, Func<T1, T2, T3, T4, TResult> resultSelector)
         {
@@ -130,7 +130,7 @@ namespace MoreLinq
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences</returns>
-        
+
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
@@ -142,8 +142,8 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1, IEnumerable<T2> s2, 
-            IEnumerable<T3> s3, IEnumerable<T4> s4, 
+            IEnumerable<T1> s1, IEnumerable<T2> s2,
+            IEnumerable<T3> s3, IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             using (var e1 = s1.GetEnumerator())
@@ -155,7 +155,7 @@ namespace MoreLinq
                 {
                     if (e2.MoveNext() && (e3 == null || e3.MoveNext())
                                       && (e4 == null || e4.MoveNext()))
-                    { 
+                    {
                         yield return resultSelector(e1.Current, e2.Current,
                             e3 != null ? e3.Current : default(T3),
                             e4 != null ? e4.Current : default(T4));

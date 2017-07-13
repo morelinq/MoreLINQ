@@ -23,7 +23,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class SkipLastTest
     {
-        [TestCase( 0)]
+        [TestCase(0)]
         [TestCase(-1)]
         public void SkipLastWithCountLesserThanOne(int skip)
         {

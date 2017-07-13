@@ -53,7 +53,7 @@ namespace MoreLinq.Test
 
             var source = new[] { one, two, three, four, five, six, seven, eight, nine, ten };
             var groupings = source.GroupAdjacent(s => s.Length);
-            
+
             using (var reader = groupings.Read())
             {
                 AssertGrouping(reader, 3, one, two);
@@ -86,14 +86,14 @@ namespace MoreLinq.Test
         {
             var source = new[]
             {
-                new { Month = 1, Value = 123 },                 
-                new { Month = 1, Value = 456 },                 
-                new { Month = 1, Value = 789 },                 
-                new { Month = 2, Value = 987 },                 
-                new { Month = 2, Value = 654 },                 
-                new { Month = 2, Value = 321 },                 
-                new { Month = 3, Value = 789 },                 
-                new { Month = 3, Value = 456 },                 
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 789 },
+                new { Month = 2, Value = 987 },
+                new { Month = 2, Value = 654 },
+                new { Month = 2, Value = 321 },
+                new { Month = 3, Value = 789 },
+                new { Month = 3, Value = 456 },
                 new { Month = 3, Value = 123 },
                 new { Month = 1, Value = 123 },
                 new { Month = 1, Value = 456 },
@@ -117,14 +117,14 @@ namespace MoreLinq.Test
         {
             var source = new[]
             {
-                new { Month = "jan", Value = 123 },                 
-                new { Month = "Jan", Value = 456 },                 
-                new { Month = "JAN", Value = 789 },                 
-                new { Month = "feb", Value = 987 },                 
-                new { Month = "Feb", Value = 654 },                 
-                new { Month = "FEB", Value = 321 },                 
-                new { Month = "mar", Value = 789 },                 
-                new { Month = "Mar", Value = 456 },                 
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 789 },
+                new { Month = "feb", Value = 987 },
+                new { Month = "Feb", Value = 654 },
+                new { Month = "FEB", Value = 321 },
+                new { Month = "mar", Value = 789 },
+                new { Month = "Mar", Value = 456 },
                 new { Month = "MAR", Value = 123 },
                 new { Month = "jan", Value = 123 },
                 new { Month = "Jan", Value = 456 },
@@ -164,7 +164,8 @@ namespace MoreLinq.Test
 
             var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
 
-            using (var reader = groupings.Read()) {
+            using (var reader = groupings.Read())
+            {
                 AssertResult(reader, 123 + 456 + 789);
                 AssertResult(reader, 987 + 654 + 321);
                 AssertResult(reader, 789 + 456 + 123);
@@ -194,7 +195,8 @@ namespace MoreLinq.Test
 
             var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
 
-            using (var reader = groupings.Read()) {
+            using (var reader = groupings.Read())
+            {
                 AssertResult(reader, 123 + 456 + 789);
                 AssertResult(reader, 987 + 654 + 321);
                 AssertResult(reader, 789 + 456 + 123);
@@ -203,7 +205,7 @@ namespace MoreLinq.Test
             }
         }
 
-        static void AssertGrouping<TKey, TElement>(SequenceReader<IGrouping<TKey, TElement>> reader, 
+        static void AssertGrouping<TKey, TElement>(SequenceReader<IGrouping<TKey, TElement>> reader,
             TKey key, params TElement[] elements)
         {
             var grouping = reader.Read();

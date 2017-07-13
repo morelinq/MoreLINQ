@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         {
             var source = new[] { 123, 456 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-                  .AssertSequenceEqual(new { Item = 123, IsFirst = true,  IsLast = false },
+                  .AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = false },
                                        new { Item = 456, IsFirst = false, IsLast = true });
         }
 
@@ -50,9 +50,9 @@ namespace MoreLinq.Test
         {
             var source = new[] { 123, 456, 789 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-                  .AssertSequenceEqual(new { Item = 123, IsFirst = true,  IsLast = false },
+                  .AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = false },
                                        new { Item = 456, IsFirst = false, IsLast = false },
-                                       new { Item = 789, IsFirst = false, IsLast = true  });
+                                       new { Item = 789, IsFirst = false, IsLast = true });
         }
     }
 }

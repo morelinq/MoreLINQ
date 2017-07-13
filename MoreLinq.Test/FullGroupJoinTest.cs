@@ -135,14 +135,13 @@ namespace MoreLinq.Test
         {
             switch (overloadCase)
             {
-                case CustomResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create);
-                case TupleResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(overloadCase));
+            case CustomResult:
+                return listA.FullGroupJoin(listB, getKey, getKey);
+            case TupleResult:
+                return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create);
+            default:
+                throw new ArgumentOutOfRangeException(nameof(overloadCase));
             }
         }
     }
 }
-

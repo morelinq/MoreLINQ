@@ -195,9 +195,9 @@ namespace MoreLinq
             {
                 switch (count)
                 {
-                    case null: return fallback;
-                    case int n when n >= 1 && n <= 4: return FallbackOnArgs();
-                    default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
+                case null: return fallback;
+                case int n when n >= 1 && n <= 4: return FallbackOnArgs();
+                default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
                 }
 
                 IEnumerable<T> FallbackOnArgs()

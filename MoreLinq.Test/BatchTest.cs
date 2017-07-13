@@ -27,15 +27,15 @@ namespace MoreLinq.Test
         [Test]
         public void BatchZeroSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
-                new object[0].Batch(0));
+            AssertThrowsArgument.OutOfRangeException("size", () =>
+                 new object[0].Batch(0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
-                new object[0].Batch(-1));
+            AssertThrowsArgument.OutOfRangeException("size", () =>
+                 new object[0].Batch(-1));
         }
 
         [Test]

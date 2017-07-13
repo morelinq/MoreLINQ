@@ -24,7 +24,7 @@ namespace MoreLinq
     // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
     static partial class MoreEnumerable
     {
-        #if !NO_VALUE_TUPLES
+#if !NO_VALUE_TUPLES
 
         /// <summary>
         /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
@@ -81,7 +81,7 @@ namespace MoreLinq
             return FullGroupJoin(first, second, firstKeySelector, secondKeySelector, ValueTuple.Create, comparer);
         }
 
-        #endif
+#endif
 
         /// <summary>
         /// Performs a full group-join between two sequences.
@@ -151,14 +151,16 @@ namespace MoreLinq
             {
                 comparer = comparer ?? EqualityComparer<TKey>.Default;
 
-                var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+                var alookup = Lookup<TKey, TFirst>.CreateForJoin(first, firstKeySelector, comparer);
                 var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
-                foreach (var a in alookup) {
+                foreach (var a in alookup)
+                {
                     yield return resultSelector(a.Key, a, blookup[a.Key]);
                 }
 
-                foreach (var b in blookup) {
+                foreach (var b in blookup)
+                {
                     if (alookup.Contains(b.Key))
                         continue;
                     // We can skip the lookup because we are iterating over keys not found in the first sequence

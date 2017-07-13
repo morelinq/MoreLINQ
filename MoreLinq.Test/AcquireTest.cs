@@ -80,6 +80,6 @@ namespace MoreLinq.Test
             public void Dispose() { Disposed = true; }
         }
 
-        class ApplicationException : Exception {}
+        class ApplicationException : Exception { }
     }
 }

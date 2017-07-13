@@ -106,7 +106,7 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, 10);
             var result = source.Move(5, 999, 5);
-            
+
             Assert.That(source, Is.SameAs(result));
         }
 
@@ -115,7 +115,7 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, 10);
             var result = source.Move(5, 0, 999);
-            
+
             Assert.That(source, Is.SameAs(result));
         }
     }

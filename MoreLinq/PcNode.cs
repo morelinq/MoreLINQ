@@ -30,8 +30,8 @@ namespace MoreLinq
     {
         public static PcNode<T> WithSource(IEnumerable<T> source) => new Source(source);
 
-        public PcNode<T> Prepend(T item) => new Item(item, isPrepend: true , next: this);
-        public PcNode<T> Concat(T item)  => new Item(item, isPrepend: false, next: this);
+        public PcNode<T> Prepend(T item) => new Item(item, isPrepend: true, next: this);
+        public PcNode<T> Concat(T item) => new Item(item, isPrepend: false, next: this);
 
         sealed class Item : PcNode<T>
         {
@@ -44,12 +44,12 @@ namespace MoreLinq
             {
                 if (next == null) throw new ArgumentNullException(nameof(next));
 
-                Value       = item;
-                IsPrepend   = isPrepend;
+                Value = item;
+                IsPrepend = isPrepend;
                 ConcatCount = next is Item nextItem
                             ? nextItem.ConcatCount + (isPrepend ? 0 : 1)
                             : 1;
-                Next        = next;
+                Next = next;
             }
         }
 
@@ -87,11 +87,11 @@ namespace MoreLinq
                         {
                             switch (i++)
                             {
-                                case 0: concat1 = item.Value; break;
-                                case 1: concat2 = item.Value; break;
-                                case 2: concat3 = item.Value; break;
-                                case 3: concat4 = item.Value; break;
-                                default: throw new IndexOutOfRangeException();
+                            case 0: concat1 = item.Value; break;
+                            case 1: concat2 = item.Value; break;
+                            case 2: concat3 = item.Value; break;
+                            case 3: concat4 = item.Value; break;
+                            default: throw new IndexOutOfRangeException();
                             }
                             continue;
                         }
@@ -101,7 +101,7 @@ namespace MoreLinq
                 }
             }
 
-            var source = (Source) current;
+            var source = (Source)current;
 
             foreach (var item in source.Value)
                 yield return item;

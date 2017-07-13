@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        
+
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
         {
@@ -95,7 +95,7 @@ namespace MoreLinq
         /// <param name="seed">Initial state to seed</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        
+
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
         {

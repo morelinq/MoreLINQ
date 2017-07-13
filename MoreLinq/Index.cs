@@ -33,7 +33,7 @@ namespace MoreLinq
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
         /// <remarks>This operator uses deferred execution and streams its 
         /// results.</remarks>
-        
+
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source)
         {
             return source.Index(0);
@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
         /// <remarks>This operator uses deferred execution and streams its 
         /// results.</remarks>
-        
+
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

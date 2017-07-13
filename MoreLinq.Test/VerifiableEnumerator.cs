@@ -120,8 +120,7 @@ namespace MoreLinq.Test
 
                 public T Current
                 {
-                    get
-                    {
+                    get {
                         _enumerable._onCurrentAction(_enumerable);
                         return _enumerator.Current;
                     }

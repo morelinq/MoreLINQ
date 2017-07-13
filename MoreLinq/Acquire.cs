@@ -37,7 +37,7 @@ namespace MoreLinq
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
-        
+
         public static TSource[] Acquire<TSource>(this IEnumerable<TSource> source)
             where TSource : IDisposable
         {

@@ -61,13 +61,13 @@ namespace MoreLinq.Test
                 select Regex.Split(line, "\x20+").Fold((cont, ctry, city, val) => new
                 {
                     Continent = cont,
-                    Country   = ctry,
-                    City      = city,
-                    Value     = int.Parse(val),
+                    Country = ctry,
+                    City = city,
+                    Value = int.Parse(val),
                 });
 
             data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
-                        .FillForward(e => e.Country   == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
+                        .FillForward(e => e.Country == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
 
 
             Assert.That(data, Is.EquivalentTo(new[]

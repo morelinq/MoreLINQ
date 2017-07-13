@@ -42,7 +42,7 @@ namespace MoreLinq.Test
             var sequence = new[] { "a", "A", "a", "b", "b", "B", "B" };
             var result = sequence.RunLengthEncode(StringComparer.CurrentCultureIgnoreCase)
                                  .Select(kvp => new KeyValuePair<string, int>(kvp.Key.ToLower(), kvp.Value));
-            var expectedResult = new[] {new KeyValuePair<string, int>("a", 3), 
+            var expectedResult = new[] {new KeyValuePair<string, int>("a", 3),
                                          new KeyValuePair<string, int>("b", 4)};
 
             Assert.IsTrue(result.SequenceEqual(expectedResult));

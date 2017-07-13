@@ -47,7 +47,7 @@ namespace MoreLinq
         /// buffered. Each grouping is therefore yielded as soon as it 
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
@@ -79,7 +79,7 @@ namespace MoreLinq
         /// buffered. Each grouping is therefore yielded as soon as it 
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -117,7 +117,7 @@ namespace MoreLinq
         /// buffered. Each grouping is therefore yielded as soon as it 
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -155,7 +155,7 @@ namespace MoreLinq
         /// buffered. Each grouping is therefore yielded as soon as it 
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -251,7 +251,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            
+
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
             return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
@@ -274,7 +274,7 @@ namespace MoreLinq
             using (var iterator = source.GetEnumerator())
             {
                 var group = default(TKey);
-                var members = (List<TElement>) null;
+                var members = (List<TElement>)null;
 
                 while (iterator.MoveNext())
                 {
@@ -310,9 +310,9 @@ namespace MoreLinq
                 new Grouping<TKey, TElement>(key, members);
         }
 
-        #if !NO_SERIALIZATION_ATTRIBUTES
+#if !NO_SERIALIZATION_ATTRIBUTES
         [Serializable]
-        #endif
+#endif
         sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
         {
             readonly IEnumerable<TElement> _members;

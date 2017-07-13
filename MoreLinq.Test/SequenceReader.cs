@@ -46,7 +46,8 @@ namespace MoreLinq.Test
         /// <param name="source">Source sequence.</param>
 
         public SequenceReader(IEnumerable<T> source) :
-            this(GetEnumerator(source)) { }
+            this(GetEnumerator(source))
+        { }
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance

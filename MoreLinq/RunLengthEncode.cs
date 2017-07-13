@@ -29,7 +29,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="sequence">The sequence to run length encode</param>
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where the key is the element and the value is the occurrence count</returns>
-        
+
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence)
         {
             return RunLengthEncode(sequence, null);
@@ -44,7 +44,7 @@ namespace MoreLinq
         /// <param name="sequence">The sequence to run length encode</param>
         /// <param name="comparer">The comparer used to identify equivalent items</param>
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where they key is the element and the value is the occurrence count</returns>
-        
+
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
         {
             if (sequence == null)
