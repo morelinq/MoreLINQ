@@ -24,17 +24,17 @@ namespace MoreLinq
     partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a single-element sequence containing the result of invoking the function function
+        /// Returns a single-element sequence containing the result of invoking the function function.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
         /// If the resulting sequence is enumerated multiple times, the function will be
         /// invoked multiple times too.
         /// </remarks>
-        /// <typeparam name="T">The type of the object returned by the function</typeparam>
-        /// <param name="function">The function to evaluate</param>
-        /// <returns>A sequence with the value created from <paramref name="function"/></returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="function"/> is <c>null</c></exception>
+        /// <typeparam name="T">The type of the object returned by the function.</typeparam>
+        /// <param name="function">The function to evaluate.</param>
+        /// <returns>A sequence with the value created from <paramref name="function"/>.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="function"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(Func<T> function)
         {
@@ -53,12 +53,12 @@ namespace MoreLinq
         /// If the resulting sequence is enumerated multiple times, the functions will be
         /// invoked multiple times too.
         /// </remarks>
-        /// <typeparam name="T">The type of the object returned by the functions</typeparam>
-        /// <param name="function1">The first function to evaluate</param>
-        /// <param name="function2">The second function to evaluate</param>
-        /// <returns>A sequence with the value created from <paramref name="function1"/> and <paramref name="function2"/></returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="function1"/> is <c>null</c></exception>
-        /// <exception cref="ArgumentNullException">When <paramref name="function2"/> is <c>null</c></exception>
+        /// <typeparam name="T">The type of the object returned by the functions.</typeparam>
+        /// <param name="function1">The first function to evaluate.</param>
+        /// <param name="function2">The second function to evaluate.</param>
+        /// <returns>A sequence with the value created from <paramref name="function1"/> and <paramref name="function2"/>.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="function1"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">When <paramref name="function2"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2)
         {
@@ -80,14 +80,14 @@ namespace MoreLinq
         /// If the resulting sequence is enumerated multiple times, the functions will be
         /// invoked multiple times too.
         /// </remarks>
-        /// <typeparam name="T">The type of the object returned by the functions</typeparam>
-        /// <param name="function1">The first function to evaluate</param>
-        /// <param name="function2">The second function to evaluate</param>
-        /// <param name="function3">The third function to evaluate</param>
-        /// <returns>A sequence with the value created from <paramref name="function1"/>, <paramref name="function2"/> and <paramref name="function3"/></returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="function1"/> is <c>null</c></exception>
-        /// <exception cref="ArgumentNullException">When <paramref name="function2"/> is <c>null</c></exception>
-        /// <exception cref="ArgumentNullException">When <paramref name="function3"/> is <c>null</c></exception>
+        /// <typeparam name="T">The type of the object returned by the functions.</typeparam>
+        /// <param name="function1">The first function to evaluate.</param>
+        /// <param name="function2">The second function to evaluate.</param>
+        /// <param name="function3">The third function to evaluate.</param>
+        /// <returns>A sequence with the value created from <paramref name="function1"/>, <paramref name="function2"/> and <paramref name="function3"/>.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="function1"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">When <paramref name="function2"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">When <paramref name="function3"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2, Func<T> function3)
         {
@@ -111,10 +111,10 @@ namespace MoreLinq
         /// If the resulting sequence is enumerated multiple times, the functions will be
         /// invoked multiple times too.
         /// </remarks>
-        /// <typeparam name="T">The type of the object returned by the functions</typeparam>
-        /// <param name="functions">The functions to evaluate</param>
-        /// <returns>A sequence with the values created for all of the <paramref name="functions"/></returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c></exception>
+        /// <typeparam name="T">The type of the object returned by the functions.</typeparam>
+        /// <param name="functions">The functions to evaluate.</param>
+        /// <returns>A sequence with the values created for all of the <paramref name="functions"/>.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(params Func<T>[] functions)
         {
