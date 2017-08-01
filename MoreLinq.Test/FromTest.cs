@@ -80,7 +80,7 @@ namespace MoreLinq.Test
         [TestCase(4)]
         public void TestFromInvokesMethodsMultipleTimes(int numArgs)
         {
-            var evals = new int[] { 0, 0, 0, 0 };
+            var evals = new [] { 0, 0, 0, 0 };
             var factories = new Func<int>[]
             {
                 () => { evals[0]++; return -2; },
@@ -91,20 +91,11 @@ namespace MoreLinq.Test
             IEnumerable<int> results;
             switch (numArgs)
             {
-                case 1:
-                    results = MoreEnumerable.From(factories[0]);
-                    break;
-                case 2:
-                    results = MoreEnumerable.From(factories[0], factories[1]);
-                    break;
-                case 3:
-                    results = MoreEnumerable.From(factories[0], factories[1], factories[2]);
-                    break;
-                case 4:
-                    results = MoreEnumerable.From(factories[0], factories[1], factories[2], factories[3]);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(numArgs));
+                case 1: results = MoreEnumerable.From(factories[0]); break;
+                case 2: results = MoreEnumerable.From(factories[0], factories[1]); break;
+                case 3: results = MoreEnumerable.From(factories[0], factories[1], factories[2]); break;
+                case 4: results = MoreEnumerable.From(factories[0], factories[1], factories[2], factories[3]); break;
+                default: throw new ArgumentOutOfRangeException(nameof(numArgs));
             }
 
             results.Consume();
