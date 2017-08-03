@@ -40,38 +40,19 @@ namespace MoreLinq.Test
         [TestCase(4)]
         public void TestFromInvokesMethods(int numArgs)
         {
-            var factories = new Func<int>[]
-            {
-                () => -2,
-                () => 4,
-                () => int.MaxValue,
-                () => int.MinValue,
-            };
-            IEnumerable<int> results;
-            int[] expectedResults;
+            int F1() => -2;
+            int F2() => 4;
+            int F3() => int.MaxValue;
+            int F4() => int.MinValue;
+
             switch (numArgs)
             {
-                case 1:
-                    results = MoreEnumerable.From(factories[0]);
-                    expectedResults = new[] { factories[0]() };
-                    break;
-                case 2:
-                    results = MoreEnumerable.From(factories[0], factories[1]);
-                    expectedResults = new[] { factories[0](), factories[1]() };
-                    break;
-                case 3:
-                    results = MoreEnumerable.From(factories[0], factories[1], factories[2]);
-                    expectedResults = new[] { factories[0](), factories[1](), factories[2]() };
-                    break;
-                case 4:
-                    results = MoreEnumerable.From(factories[0], factories[1], factories[2], factories[3]);
-                    expectedResults = new[] { factories[0](), factories[1](), factories[2](), factories[3]() };
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(numArgs));
+                case 1: MoreEnumerable.From(F1).AssertSequenceEqual(F1()); break;
+                case 2: MoreEnumerable.From(F1, F2).AssertSequenceEqual(F1(), F2()); break;
+                case 3: MoreEnumerable.From(F1, F2, F3).AssertSequenceEqual(F1(), F2(), F3()); break;
+                case 4: MoreEnumerable.From(F1, F2, F3, F4).AssertSequenceEqual(F1(), F2(), F3(), F4()); break;
+                default: throw new ArgumentOutOfRangeException(nameof(numArgs));
             }
-
-            results.AssertSequenceEqual(expectedResults);
         }
 
         [TestCase(1)]
@@ -81,20 +62,18 @@ namespace MoreLinq.Test
         public void TestFromInvokesMethodsMultipleTimes(int numArgs)
         {
             var evals = new [] { 0, 0, 0, 0 };
-            var factories = new Func<int>[]
-            {
-                () => { evals[0]++; return -2; },
-                () => { evals[1]++; return -2; },
-                () => { evals[2]++; return -2; },
-                () => { evals[3]++; return -2; },
-            };
+            int F1() { evals[0]++; return -2; }
+            int F2() { evals[1]++; return -2; }
+            int F3() { evals[2]++; return -2; }
+            int F4() { evals[3]++; return -2; }
+
             IEnumerable<int> results;
             switch (numArgs)
             {
-                case 1: results = MoreEnumerable.From(factories[0]); break;
-                case 2: results = MoreEnumerable.From(factories[0], factories[1]); break;
-                case 3: results = MoreEnumerable.From(factories[0], factories[1], factories[2]); break;
-                case 4: results = MoreEnumerable.From(factories[0], factories[1], factories[2], factories[3]); break;
+                case 1: results = MoreEnumerable.From(F1); break;
+                case 2: results = MoreEnumerable.From(F1, F2); break;
+                case 3: results = MoreEnumerable.From(F1, F2, F3); break;
+                case 4: results = MoreEnumerable.From(F1, F2, F3, F4); break;
                 default: throw new ArgumentOutOfRangeException(nameof(numArgs));
             }
 
