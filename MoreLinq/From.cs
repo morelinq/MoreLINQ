@@ -34,11 +34,9 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the object returned by the function.</typeparam>
         /// <param name="function">The function to evaluate.</param>
         /// <returns>A sequence with the value resulting from invoking <paramref name="function"/>.</returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="function"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(Func<T> function)
         {
-            if (function == null) throw new ArgumentNullException(nameof(function));
             return _(); IEnumerable<T> _()
             {
                 yield return function();
@@ -57,14 +55,9 @@ namespace MoreLinq
         /// <param name="function1">The first function to evaluate.</param>
         /// <param name="function2">The second function to evaluate.</param>
         /// <returns>A sequence with the values resulting from invoking <paramref name="function1"/> and <paramref name="function2"/>.</returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="function1"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentNullException">When <paramref name="function2"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2)
         {
-            if (function1 == null) throw new ArgumentNullException(nameof(function1));
-            if (function2 == null) throw new ArgumentNullException(nameof(function2));
-
             return _(); IEnumerable<T> _()
             {
                 yield return function1();
@@ -85,16 +78,9 @@ namespace MoreLinq
         /// <param name="function2">The second function to evaluate.</param>
         /// <param name="function3">The third function to evaluate.</param>
         /// <returns>A sequence with the values resulting from invoking <paramref name="function1"/>, <paramref name="function2"/> and <paramref name="function3"/>.</returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="function1"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentNullException">When <paramref name="function2"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentNullException">When <paramref name="function3"/> is <c>null</c>.</exception>
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2, Func<T> function3)
         {
-            if (function1 == null) throw new ArgumentNullException(nameof(function1));
-            if (function2 == null) throw new ArgumentNullException(nameof(function2));
-            if (function3 == null) throw new ArgumentNullException(nameof(function3));
-
             return _(); IEnumerable<T> _()
             {
                 yield return function1();
