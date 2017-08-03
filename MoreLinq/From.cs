@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-
 namespace MoreLinq
 {
     using System;
