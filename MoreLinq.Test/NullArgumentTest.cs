@@ -119,7 +119,6 @@ namespace MoreLinq.Test
                 "From.function1",
                 "From.function2",
                 "From.function3",
-                "From.function4",
                 "ToDataTable.expressions",
                 "ToDelimitedString.delimiter",
                 "Trace.format"
