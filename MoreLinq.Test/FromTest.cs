@@ -20,6 +20,7 @@ namespace MoreLinq.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using NUnit.Framework;
 
     class FromTest
@@ -81,14 +82,10 @@ namespace MoreLinq.Test
             results.Consume();
             results.Consume();
 
-            for (int i = 0; i < numArgs; i++)
-            {
-                Assert.That(evals[i], Is.EqualTo(3));
-            }
-            for (int i = numArgs; i < 4; i++)
-            {
-                Assert.That(evals[i], Is.EqualTo(0));
-            }
+            // numArgs functions were evaluated...
+            evals.Take(numArgs).AssertSequenceEqual(Enumerable.Repeat(3, numArgs));
+            // safety check: we didn't evaluate functions past numArgs
+            evals.Skip(numArgs).AssertSequenceEqual(Enumerable.Repeat(0, evals.Length - numArgs));
         }
     }
 }
