@@ -516,6 +516,12 @@ its value, and the next state in the recursive call.
 
 This method has 2 overloads.
 
+### WhereIf
+
+Filters a sequence if provided condition is true.
+
+This method has 2 overloads.
+
 ### Windowed
 
 Processes a sequence into a series of subsequences representing a windowed
