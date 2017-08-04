@@ -112,7 +112,17 @@ namespace MoreLinq.Test
             var nullableTypes =
                 from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
                 select t.GetTypeInfo();
-            var nullableParameters = new[] { "Assert.errorSelector", "ToDataTable.expressions", "ToDelimitedString.delimiter", "Trace.format" };
+            var nullableParameters = new[]
+            {
+                "Assert.errorSelector",
+                "From.function",
+                "From.function1",
+                "From.function2",
+                "From.function3",
+                "ToDataTable.expressions",
+                "ToDelimitedString.delimiter",
+                "Trace.format"
+            };
 
             var type = parameter.ParameterType.GetTypeInfo();
             type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
