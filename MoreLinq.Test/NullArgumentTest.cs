@@ -112,16 +112,19 @@ namespace MoreLinq.Test
             var nullableTypes =
                 from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
                 select t.GetTypeInfo();
+
             var nullableParameters = new[]
             {
-                "Assert.errorSelector",
-                "From.function",
-                "From.function1",
-                "From.function2",
-                "From.function3",
-                "ToDataTable.expressions",
-                "ToDelimitedString.delimiter",
-                "Trace.format"
+                nameof(MoreEnumerable.Assert) + ".errorSelector",
+                nameof(MoreEnumerable.From) + ".function",
+                nameof(MoreEnumerable.From) + ".function1",
+                nameof(MoreEnumerable.From) + ".function2",
+                nameof(MoreEnumerable.From) + ".function3",
+                #if NET451
+                nameof(MoreEnumerable.ToDataTable) + ".expressions",
+                #endif
+                nameof(MoreEnumerable.ToDelimitedString) + ".delimiter",
+                nameof(MoreEnumerable.Trace) + ".format"
             };
 
             var type = parameter.ParameterType.GetTypeInfo();
