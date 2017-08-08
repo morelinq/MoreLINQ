@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Linq;
     using NUnit.Framework;
     using LinqEnumerable = System.Linq.Enumerable;
@@ -38,17 +39,26 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [Test]
-        public void FallbackIfEmptyPreservesSourceCollectionIfPossible()
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(int length)
         {
             var source = new int[] { 1 };
             // ReSharper disable PossibleMultipleEnumeration
-            Assert.AreSame(source.FallbackIfEmpty(12), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source);
+            switch (length) {
+            case 1: Assert.AreSame(source.FallbackIfEmpty(12), source); break;
+            case 2: Assert.AreSame(source.FallbackIfEmpty(12, 23), source); break;
+            case 3: Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source); break;
+            case 4: Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source); break;
+            case 5: Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source); break;
+            case 6: Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source); break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(length));
+            }
             // ReSharper restore PossibleMultipleEnumeration
         }
 
