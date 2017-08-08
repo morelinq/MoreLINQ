@@ -165,7 +165,7 @@ namespace MoreLinq
             {
                 if (collection.Count == 0)
                 {
-                    return fallbackChooser();
+                    return FallbackChooser();
                 }
                 else
                 {
@@ -173,9 +173,9 @@ namespace MoreLinq
                 }
             }
 
-            return nonCollectionIterator();
+            return _();
 
-            IEnumerable<T> nonCollectionIterator()
+            IEnumerable<T> _()
             {
                 using (var e = source.GetEnumerator())
                 {
@@ -187,26 +187,21 @@ namespace MoreLinq
                     }
                 }
 
-                foreach (var item in fallbackChooser())
+                foreach (var item in FallbackChooser())
                     yield return item;
             }
-            IEnumerable<T> fallbackChooser()
+
+            IEnumerable<T> FallbackChooser()
             {
-                if (count > 0 && count <= 4)
+                return (count <= 0 || count > 4) ? fallback : InstancesFallback();
+
+                IEnumerable<T> InstancesFallback()
                 {
-                    return instancesFallback();
+                    yield return fallback1;
+                    if (count > 1) yield return fallback2;
+                    if (count > 2) yield return fallback3;
+                    if (count > 3) yield return fallback4;
                 }
-                else
-                {
-                    return fallback;
-                }
-            }
-            IEnumerable<T> instancesFallback()
-            {
-                yield return fallback1;
-                if (count > 1) yield return fallback2;
-                if (count > 2) yield return fallback3;
-                if (count > 3) yield return fallback4;
             }
         }
     }
