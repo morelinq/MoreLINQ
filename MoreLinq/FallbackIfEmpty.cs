@@ -161,11 +161,14 @@ namespace MoreLinq
             int? count, T fallback1, T fallback2, T fallback3, T fallback4,
             IEnumerable<T> fallback)
         {
-            if (source is ICollection<T> collection) {
-                if (collection.Count == 0) {
+            if (source is ICollection<T> collection)
+            {
+                if (collection.Count == 0)
+                {
                     return fallbackChooser();
                 }
-                else {
+                else
+                {
                     return collection;
                 }
             }
@@ -174,8 +177,10 @@ namespace MoreLinq
 
             IEnumerable<T> nonCollectionIterator()
             {
-                using (var e = source.GetEnumerator()) {
-                    if (e.MoveNext()) {
+                using (var e = source.GetEnumerator())
+                {
+                    if (e.MoveNext())
+                    {
                         do { yield return e.Current; }
                         while (e.MoveNext());
                         yield break;
@@ -187,10 +192,12 @@ namespace MoreLinq
             }
             IEnumerable<T> fallbackChooser()
             {
-                if (count > 0 && count <= 4) {
+                if (count > 0 && count <= 4)
+                {
                     return instancesFallback();
                 }
-                else {
+                else
+                {
                     return fallback;
                 }
             }
