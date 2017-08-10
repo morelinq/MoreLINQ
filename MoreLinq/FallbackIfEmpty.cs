@@ -165,7 +165,7 @@ namespace MoreLinq
             {
                 if (collection.Count == 0)
                 {
-                    return FallbackChooser();
+                    return Fallback();
                 }
                 else
                 {
@@ -187,20 +187,20 @@ namespace MoreLinq
                     }
                 }
 
-                foreach (var item in FallbackChooser())
+                foreach (var item in Fallback())
                     yield return item;
             }
 
-            IEnumerable<T> FallbackChooser()
+            IEnumerable<T> Fallback()
             {
                 switch (count)
                 {
                     case null: return fallback;
-                    case int n when n >= 1 && n <= 4: return InstancesFallback();
+                    case int n when n >= 1 && n <= 4: return FallbackOnArgs();
                     default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
                 }
 
-                IEnumerable<T> InstancesFallback()
+                IEnumerable<T> FallbackOnArgs()
                 {
                     yield return fallback1;
                     if (count > 1) yield return fallback2;
