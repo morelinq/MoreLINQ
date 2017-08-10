@@ -154,7 +154,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
-            return FallbackIfEmptyImpl(source, 0, default(T), default(T), default(T), default(T), fallback);
+            return FallbackIfEmptyImpl(source, null, default(T), default(T), default(T), default(T), fallback);
         }
 
         static IEnumerable<T> FallbackIfEmptyImpl<T>(IEnumerable<T> source,
@@ -193,7 +193,12 @@ namespace MoreLinq
 
             IEnumerable<T> FallbackChooser()
             {
-                return (count <= 0 || count > 4) ? fallback : InstancesFallback();
+                switch (count) {
+                case null: return fallback;
+                case int n when (n >= 1 && n <= 4): return InstancesFallback();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(count), $"value {count} is outside the range");
+                }
 
                 IEnumerable<T> InstancesFallback()
                 {
