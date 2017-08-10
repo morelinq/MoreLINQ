@@ -193,11 +193,11 @@ namespace MoreLinq
 
             IEnumerable<T> FallbackChooser()
             {
-                switch (count) {
-                case null: return fallback;
-                case int n when (n >= 1 && n <= 4): return InstancesFallback();
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(count), $"value {count} is outside the range");
+                switch (count)
+                {
+                    case null: return fallback;
+                    case int n when (n >= 1 && n <= 4): return InstancesFallback();
+                    default: throw new ArgumentOutOfRangeException(nameof(count), $"value {count} is outside the range");
                 }
 
                 IEnumerable<T> InstancesFallback()
