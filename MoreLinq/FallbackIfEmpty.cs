@@ -197,7 +197,7 @@ namespace MoreLinq
                 {
                     case null: return fallback;
                     case int n when n >= 1 && n <= 4: return InstancesFallback();
-                    default: throw new ArgumentOutOfRangeException(nameof(count), $"value {count} is outside the range");
+                    default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
                 }
 
                 IEnumerable<T> InstancesFallback()
