@@ -143,8 +143,7 @@ namespace MoreLinq
         /// Class used to assist in ensuring that groups of disposable iterators
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
-        
-        private sealed class DisposableGroup<T> : IDisposable
+        sealed class DisposableGroup<T> : IDisposable
         {
             public DisposableGroup(IEnumerable<IEnumerator<T>> iterators)
             {

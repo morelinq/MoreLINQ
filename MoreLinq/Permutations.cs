@@ -29,7 +29,7 @@ namespace MoreLinq
         /// The private implementation class that produces permutations of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        private class PermutationEnumerator<T> : IEnumerator<IList<T>>
+        class PermutationEnumerator<T> : IEnumerator<IList<T>>
         {
             // NOTE: The algorithm used to generate permutations uses the fact that any set
             //       can be put into 1-to-1 correspondence with the set of ordinals number (0..n).
@@ -68,12 +68,13 @@ namespace MoreLinq
             //                                   DoSomething();
 
             #region Private Fields
-            private readonly IList<T> m_ValueSet;
-            private readonly int[] m_Permutation;
-            private readonly IEnumerable<Action> m_Generator;
 
-            private IEnumerator<Action> m_GeneratorIterator;
-            private bool m_HasMoreResults;
+            readonly IList<T> m_ValueSet;
+            readonly int[] m_Permutation;
+            readonly IEnumerable<Action> m_Generator;
+
+            IEnumerator<Action> m_GeneratorIterator;
+            bool m_HasMoreResults;
             #endregion
 
             #region Constructors
@@ -134,7 +135,7 @@ namespace MoreLinq
             /// <summary>
             /// Transposes elements in the cached permutation array to produce the next permutation
             /// </summary>
-            private void NextPermutation()
+            void NextPermutation()
             {
                 // find the largest index j with m_Permutation[j] < m_Permutation[j+1]
                 var j = m_Permutation.Length - 2;
@@ -180,7 +181,7 @@ namespace MoreLinq
             /// same.
             /// </remarks>
             /// <returns>List of permuted source sequence values</returns>
-            private IList<T> PermuteValueSet()
+            IList<T> PermuteValueSet()
             {
                 var permutedSet = new T[m_Permutation.Length];
                 for (var i = 0; i < m_Permutation.Length; i++)

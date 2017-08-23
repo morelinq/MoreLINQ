@@ -72,7 +72,7 @@ namespace MoreLinq
             return IncrementalImpl(sequence, resultSelector);
         }
 
-        private static IEnumerable<TResult> IncrementalImpl<TSource, TResult>(IEnumerable<TSource> sequence, Func<TSource, TSource, int, TResult> resultSelector)
+        static IEnumerable<TResult> IncrementalImpl<TSource, TResult>(IEnumerable<TSource> sequence, Func<TSource, TSource, int, TResult> resultSelector)
         {
             using (var iter = sequence.GetEnumerator())
             {

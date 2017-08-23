@@ -131,7 +131,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
+        static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
         {
             switch (overloadCase)
             {

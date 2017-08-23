@@ -51,7 +51,7 @@ namespace MoreLinq
         }
 
 
-        private static IEnumerable<T> RepeatImpl<T>(IEnumerable<T> sequence, int? count)
+        static IEnumerable<T> RepeatImpl<T>(IEnumerable<T> sequence, int? count)
         {
             while (count == null || count-- > 0)
             {

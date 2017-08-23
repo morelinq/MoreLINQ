@@ -114,7 +114,7 @@ namespace MoreLinq
             return PadImpl(source, width, default(TSource), paddingSelector);
         }
 
-        private static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
+        static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T> paddingSelector)
         {
             Debug.Assert(source != null);

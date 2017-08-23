@@ -53,7 +53,7 @@ namespace MoreLinq
             }
         }
 
-        private static int? NextLoopCount(IEnumerator<int> iter)
+        static int? NextLoopCount(IEnumerator<int> iter)
         {
             if (!iter.MoveNext())
                 return null;

@@ -26,7 +26,7 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        private static MemberInfo GetAccessedMember(LambdaExpression lambda)
+        static MemberInfo GetAccessedMember(LambdaExpression lambda)
         {
             var body = lambda.Body;
 
@@ -46,7 +46,7 @@ namespace MoreLinq
             return memberExpression.Member;
         }
 
-        private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
         {
             //
             // If no lambda expressions supplied then reflect them off the source element type.
@@ -81,8 +81,7 @@ namespace MoreLinq
         /// The resulting array may contain null entries and those represent
         /// columns for which there is no source member supplying a value.
         /// </remarks>
-
-        private static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+        static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
         {
             //
             // Retrieve member information needed to 
@@ -137,13 +136,13 @@ namespace MoreLinq
             return members;
         }
 
-        private static UnaryExpression CreateMemberAccessor(Expression parameter, MemberInfo member)
+        static UnaryExpression CreateMemberAccessor(Expression parameter, MemberInfo member)
         {
             var access = Expression.MakeMemberAccess(parameter, member);
             return Expression.Convert(access, typeof(object));
         }
 
-        private static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+        static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
         {
             var parameter = Expression.Parameter(typeof(T), "e");
 

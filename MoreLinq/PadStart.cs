@@ -113,7 +113,7 @@ namespace MoreLinq
             return PadLeftImpl(source, width, default(TSource), paddingSelector);
         }
 
-        private static IEnumerable<T> PadLeftImpl<T>(IEnumerable<T> source,
+        static IEnumerable<T> PadLeftImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T> paddingSelector)
         {
             return
