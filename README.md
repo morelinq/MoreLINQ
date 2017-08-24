@@ -155,6 +155,13 @@ Immediately executes the given action on each element in the source sequence.
 
 This method has 2 overloads.
 
+### From
+
+Returns a sequence containing the values resulting from invoking (in order)
+each function in the source sequence of functions.
+
+This method has 4 overloads.
+
 ### FullGroupJoin
 
 Performs a Full Group Join between the and sequences.
