@@ -51,4 +51,5 @@ install:
 script:
   - ./msbuild.sh /v:m /p:Configuration=$CONFIGURATION
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
   - sh ./travis-mono-test.sh
