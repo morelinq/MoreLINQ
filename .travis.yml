@@ -6,7 +6,7 @@ solution: MoreLinq.sln
 mono: 4.8.0
 dist: trusty
 sudo: required
-dotnet: 1.0.1
+dotnet: 2.0.0
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
