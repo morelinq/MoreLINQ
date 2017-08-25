@@ -120,7 +120,7 @@ namespace MoreLinq.Test
                 nameof(MoreEnumerable.From) + ".function1",
                 nameof(MoreEnumerable.From) + ".function2",
                 nameof(MoreEnumerable.From) + ".function3",
-                #if NET451
+                #if NET451 || NETCOREAPP2_0
                 nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 #endif
                 nameof(MoreEnumerable.ToDelimitedString) + ".delimiter",
