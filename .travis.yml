@@ -3,7 +3,7 @@ os:
   - linux
   - osx
 solution: MoreLinq.sln
-mono: 4.8.0
+mono: 5.0.1
 dist: trusty
 sudo: required
 dotnet: 2.0.0
