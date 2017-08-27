@@ -7,13 +7,6 @@ mono: 5.0.1
 dist: trusty
 sudo: required
 dotnet: 2.0.0
-addons:
-  apt:
-    sources:
-    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
-      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
-    packages:
-    - dotnet-sharedframework-microsoft.netcore.app-1.0.4
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
@@ -57,6 +50,5 @@ install:
 
 script:
   - ./msbuild.sh /v:m /p:Configuration=$CONFIGURATION
-  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
   - sh ./travis-mono-test.sh
