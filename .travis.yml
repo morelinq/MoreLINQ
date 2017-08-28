@@ -2,6 +2,7 @@ language: csharp
 os:
   - linux
   - osx
+osx_image: xcode8.3
 solution: MoreLinq.sln
 mono: 5.0.1
 dist: trusty
