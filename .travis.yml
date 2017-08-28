@@ -2,42 +2,17 @@ language: csharp
 os:
   - linux
   - osx
+osx_image: xcode8.3
 solution: MoreLinq.sln
-mono: 4.8.0
+mono: 5.0.1
 dist: trusty
 sudo: required
-dotnet: 1.0.1
+dotnet: 2.0.0
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
 
-# Ensure MSBuild is installed
 before_install:
-  - | 
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-      echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
-      sudo apt-get -qq update
-      sudo apt-get install msbuild
-    fi
-
-  - |
-    # This is a temporary fix to workaround a problem where Travis picks up a build of Mono on OSX that
-    # includes a broken version of MSBuild.
-    #
-    # See https://github.com/mono/msbuild/commit/cff4013ba3a69f82dc0ae96b3e15af700d8f74ef
-    # for the fix this is replicating.
-    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      MSBUILD_BIN=/Library/Frameworks/Mono.framework/Versions/4.8.0/lib/mono/msbuild/15.0/bin
-
-      if [ ! -d $MSBUILD_BIN ] || [ -f $MSBUILD_BIN/System.Reflection.Metadata.dll ]; then
-        echo "WORKAROUND: Time to remove System.Reflection.Metadata.dll workaround"
-      else
-        echo "WORKAROUND: Copying System.Reflection.Metadata.dll to Mono MSBuild"
-        sudo cp $MSBUILD_BIN/Roslyn/System.Reflection.Metadata.dll $MSBUILD_BIN/System.Reflection.Metadata.dll
-      fi
-    fi
-
   - msbuild /version
   - |
     # Handle too many files on OS X
@@ -50,5 +25,9 @@ install:
 
 script:
   - ./msbuild.sh /v:m /p:Configuration=$CONFIGURATION
-  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
+# TODO Enable testing as a .NET Core App 1.0
+#   Currently, this is failing with the following error:
+#   assembly specified in the dependencies manifest was not found -- package: 'NUnit', version: '3.6.1', path: 'lib/netstandard1.6/nunit.framework.dll'
+# - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
   - sh ./travis-mono-test.sh
