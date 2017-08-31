@@ -23,9 +23,12 @@ addons:
 before_install:
   - msbuild /version
   - |
-    # Handle too many files on OS X
     if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
+      # Handle too many files on OS X
       ulimit -n 4096
+      # Install dotnet core 1 runtime
+      wget 'https://download.microsoft.com/download/D/0/2/D028801E-0802-43C8-9F9F-C7DB0A39B344/dotnet-osx-x64.1.1.2.pkg'
+      sudo installer -pkg dotnet-osx-x64.1.1.2.pkg -target /
     fi
 
 install:
