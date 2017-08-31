@@ -30,4 +30,4 @@ script:
 #   assembly specified in the dependencies manifest was not found -- package: 'NUnit', version: '3.6.1', path: 'lib/netstandard1.6/nunit.framework.dll'
 # - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
-  - sh ./travis-mono-test.sh
+  - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe
