@@ -11,13 +11,24 @@ dotnet: 2.0.0
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
+addons:
+  apt:
+    sources:
+    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
+      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
+    packages:
+    - dotnet-hostfxr-1.0.1
+    - dotnet-sharedframework-microsoft.netcore.app-1.0.5
 
 before_install:
   - msbuild /version
   - |
-    # Handle too many files on OS X
     if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
+      # Handle too many files on OS X
       ulimit -n 4096
+      # Install dotnet core 1 sdk
+      wget --retry-connrefused --waitretry=1 -O /tmp/dn1.pkg 'https://download.microsoft.com/download/B/9/F/B9F1AF57-C14A-4670-9973-CDF47209B5BF/dotnet-dev-osx-x64.1.0.4.pkg'
+      sudo installer -pkg /tmp/dn1.pkg -target /
     fi
 
 install:
@@ -25,9 +36,6 @@ install:
 
 script:
   - ./msbuild.sh /v:m /p:Configuration=$CONFIGURATION
-# TODO Enable testing as a .NET Core App 1.0
-#   Currently, this is failing with the following error:
-#   assembly specified in the dependencies manifest was not found -- package: 'NUnit', version: '3.6.1', path: 'lib/netstandard1.6/nunit.framework.dll'
-# - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
-  - sh ./travis-mono-test.sh
+  - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe
