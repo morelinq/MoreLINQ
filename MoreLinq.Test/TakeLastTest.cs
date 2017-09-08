@@ -28,22 +28,25 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            AssertEqual(new[]{ 12, 34, 56, 78, 910, 1112 }, x => x.TakeLast(3), result =>
-            result.AssertSequenceEqual(78, 910, 1112));
+            AssertEqual(new[] { 12, 34, 56, 78, 910, 1112 },
+                        x => x.TakeLast(3),
+                        result => result.AssertSequenceEqual(78, 910, 1112));
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            AssertEqual(new[] { 12, 34, 56 }, x => x.TakeLast(5), result =>
-            result.AssertSequenceEqual(12, 34, 56));
+            AssertEqual(new[] { 12, 34, 56 },
+                        x => x.TakeLast(5),
+                        result => result.AssertSequenceEqual(12, 34, 56));
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            AssertEqual(new[] { 12, 34, 56 }, x => x.TakeLast(-2), result =>
-            Assert.IsFalse(result.GetEnumerator().MoveNext()));
+            AssertEqual(new[] { 12, 34, 56 },
+                        x => x.TakeLast(-2),
+                        result => Assert.IsFalse(result.GetEnumerator().MoveNext()));
         }
 
         [Test]
