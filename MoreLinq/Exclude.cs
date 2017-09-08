@@ -23,7 +23,8 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Excludes <paramref name="count"/> elements from a sequence starting at a given index
+        /// Excludes a contiguous number of elements from a sequence starting
+        /// at a given index.
         /// </summary>
         /// <typeparam name="T">The type of the elements of the sequence</typeparam>
         /// <param name="sequence">The sequence to exclude elements from</param>
@@ -36,6 +37,9 @@ namespace MoreLinq
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (count == 0)
+                return sequence;
 
             return _(); IEnumerable<T> _()
             {

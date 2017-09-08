@@ -114,28 +114,27 @@ namespace MoreLinq
         /// <summary>
         /// This class is responsible for producing the lexographically ordered k-subsets
         /// </summary>
-        
-        private sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
+        sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
         {
             /// <summary>
             /// SubsetEnumerator uses a snapshot of the original sequence, and an
             /// iterative, reductive swap algorithm to produce all subsets of a
             /// predetermined size less than or equal to the original set size.
             /// </summary>
-
-            private class SubsetEnumerator : IEnumerator<IList<T>>
+            class SubsetEnumerator : IEnumerator<IList<T>>
             {
-                private readonly IList<T> _set;   // the original set of elements
-                private readonly T[] _subset;     // the current subset to return
-                private readonly int[] _indices;  // indices into the original set
+                readonly IList<T> _set;   // the original set of elements
+                readonly T[] _subset;     // the current subset to return
+                readonly int[] _indices;  // indices into the original set
 
                 // TODO: It would be desirable to give these index members clearer names
-                private bool _continue;  // termination indicator, set when all subsets have been produced
-                private int _m;            // previous swap index (upper index)
-                private int _m2;           // current swap index (lower index)
-                private int _k;            // size of the subset being produced
-                private int _n;            // size of the original set (sequence)
-                private int _z;            // count of items excluded from the subet
+                bool _continue;  // termination indicator, set when all subsets have been produced
+
+                int _m;            // previous swap index (upper index)
+                int _m2;           // current swap index (lower index)
+                int _k;            // size of the subset being produced
+                int _n;            // size of the original set (sequence)
+                int _z;            // count of items excluded from the subet
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -202,15 +201,15 @@ namespace MoreLinq
 
                 void IDisposable.Dispose() { }
 
-                private void ExtractSubset()
+                void ExtractSubset()
                 {
                     for (var i = 0; i < _k; i++)
                         _subset[i] = _set[_indices[i] - 1];
                 }
             }
 
-            private readonly IEnumerable<T> _sequence;
-            private readonly int _subsetSize;
+            readonly IEnumerable<T> _sequence;
+            readonly int _subsetSize;
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {

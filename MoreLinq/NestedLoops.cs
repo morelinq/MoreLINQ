@@ -30,7 +30,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Produces a sequence from an action based on the dynamic generation of N nested loops
-        /// who iteration counts are defined by <paramref name="loopCounts"/>.
+        /// whose iteration counts are defined by a sequence of loop counts.
         /// </summary>
         /// <param name="action">Action delegate for which to produce a nested loop sequence</param>
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
@@ -53,7 +53,7 @@ namespace MoreLinq
             }
         }
 
-        private static int? NextLoopCount(IEnumerator<int> iter)
+        static int? NextLoopCount(IEnumerator<int> iter)
         {
             if (!iter.MoveNext())
                 return null;

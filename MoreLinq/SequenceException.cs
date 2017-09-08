@@ -31,7 +31,7 @@ namespace MoreLinq
 #endif
     public class SequenceException : Exception
     {
-        private const string defaultMessage = "Error in sequence.";
+        const string defaultMessage = "Error in sequence.";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceException"/> class. 

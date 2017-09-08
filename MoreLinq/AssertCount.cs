@@ -24,7 +24,7 @@ namespace MoreLinq
     {
         #if MORELINQ
 
-        private static readonly Func<int, int, Exception> defaultErrorSelector = OnAssertCountFailure;
+        static readonly Func<int, int, Exception> defaultErrorSelector = OnAssertCountFailure;
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -66,7 +66,7 @@ namespace MoreLinq
             int count, Func<int, int, Exception> errorSelector) =>
             AssertCountImpl(source, count, errorSelector);
 
-        private static Exception OnAssertCountFailure(int cmp, int count)
+        static Exception OnAssertCountFailure(int cmp, int count)
         {
             var message = cmp < 0 
                         ? "Sequence contains too few elements when exactly {0} were expected."
@@ -76,7 +76,7 @@ namespace MoreLinq
 
         #endif
 
-        private static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
+        static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

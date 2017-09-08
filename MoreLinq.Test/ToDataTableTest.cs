@@ -173,7 +173,7 @@ namespace MoreLinq.Test
             vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
                 .ToDataTable(dt, e => e.Name, e => e.Value);
 
-            var rows = dt.AsEnumerable().ToArray();
+            var rows = dt.Rows.Cast<DataRow>().ToArray();
             Assert.That(rows.Length, Is.EqualTo(vars.Length));
             Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));

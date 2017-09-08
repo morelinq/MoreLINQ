@@ -39,6 +39,18 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that excluding with count equals zero returns the original source
+        /// </summary>
+        [Test]
+        public void TestExcludeWithCountEqualsZero()
+        {
+            var sequence = Enumerable.Range(1, 10);
+            var resultA = sequence.Exclude(5, 0);
+
+            Assert.That(resultA, Is.SameAs(sequence));
+        }
+
+        /// <summary>
         /// Verify that excluding from an empty sequence results in an empty sequence
         /// </summary>
         [Test]
@@ -60,7 +72,7 @@ namespace MoreLinq.Test
         public void TestExcludeSequenceHead()
         {
             const int count = 10;
-            var sequence = Enumerable.Repeat(1, count);
+            var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(0, count / 2);
 
             Assert.IsTrue(result.SequenceEqual(sequence.Skip(count / 2)));
@@ -73,7 +85,7 @@ namespace MoreLinq.Test
         public void TestExcludeSequenceTail()
         {
             const int count = 10;
-            var sequence = Enumerable.Repeat(1, count);
+            var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(count / 2, count);
 
             Assert.IsTrue(result.SequenceEqual(sequence.Take(count / 2)));
@@ -88,7 +100,7 @@ namespace MoreLinq.Test
             const int count = 10;
             const int startIndex = 3;
             const int excludeCount = 5;
-            var sequence = Enumerable.Repeat(1, count);
+            var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(startIndex, excludeCount);
 
             Assert.IsTrue(result.SequenceEqual(sequence.Take(startIndex).Concat(sequence.Skip(startIndex + excludeCount))));
@@ -101,7 +113,7 @@ namespace MoreLinq.Test
         public void TestExcludeEntireSequence()
         {
             const int count = 10;
-            var sequence = Enumerable.Repeat(1, count);
+            var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(0, count);
 
             Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
@@ -114,7 +126,7 @@ namespace MoreLinq.Test
         public void TestExcludeCountGreaterThanSequenceLength()
         {
             const int count = 10;
-            var sequence = Enumerable.Repeat(1, count);
+            var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(1, count * 10);
 
             Assert.IsTrue(result.SequenceEqual(sequence.Take(1)));
@@ -127,7 +139,7 @@ namespace MoreLinq.Test
         public void TestExcludeStartIndexGreaterThanSequenceLength()
         {
             const int count = 10;
-            var sequence = Enumerable.Repeat(1, count);
+            var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(count + 5, count);
 
             Assert.IsTrue(result.SequenceEqual(sequence));

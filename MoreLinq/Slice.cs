@@ -24,7 +24,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Extracts <paramref name="count"/> elements from a sequence at a particular zero-based starting index
+        /// Extracts a contiguous count of elements from a sequence at a particular zero-based starting index
         /// </summary>
         /// <remarks>
         /// If the starting position or count specified result in slice extending past the end of the sequence,

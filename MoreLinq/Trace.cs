@@ -91,7 +91,7 @@ namespace MoreLinq
             return TraceImpl(source, formatter);
         }
 
-        private static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
+        static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
         {
             Debug.Assert(source != null);
             Debug.Assert(formatter != null);
