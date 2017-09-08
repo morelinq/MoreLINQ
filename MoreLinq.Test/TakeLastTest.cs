@@ -19,6 +19,8 @@ namespace MoreLinq.Test
 {
     using NUnit.Framework;
     using System.Linq;
+    using System.Collections.Generic;
+    using System;
 
     [TestFixture]
     public class TakeLastTest
@@ -26,22 +28,22 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.Select(x => x).TakeLast(3);
-            result.AssertSequenceEqual(78, 910, 1112);
+            AssertEqual(new[]{ 12, 34, 56, 78, 910, 1112 }, x => x.TakeLast(3), result =>
+            result.AssertSequenceEqual(78, 910, 1112));
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            var result = new[] { 12, 34, 56 }.Select(x => x).TakeLast(5);
-            result.AssertSequenceEqual(12, 34, 56);
+            AssertEqual(new[] { 12, 34, 56 }, x => x.TakeLast(5), result =>
+            result.AssertSequenceEqual(12, 34, 56));
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            var result = new[] { 12, 34, 56 }.Select(x => x).TakeLast(-2);
-            Assert.IsFalse(result.GetEnumerator().MoveNext());
+            AssertEqual(new[] { 12, 34, 56 }, x => x.TakeLast(-2), result =>
+            Assert.IsFalse(result.GetEnumerator().MoveNext()));
         }
 
         [Test]
@@ -59,27 +61,26 @@ namespace MoreLinq.Test
             }
         }
 
-        // ICollection<T> Optimization Tests
-
         [Test]
-        public void TakeLastForCollection()
+        public void TakeLastOptimizedForCollections()
         {
-            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.TakeLast(3);
-            result.AssertSequenceEqual(78, 910, 1112);
+            var collection = new OnceEnumerationCollection<int>(Enumerable.Range(1, 10));
+
+            foreach (var _ in collection.TakeLast(3))
+            {
+                break;
+            }
+
+            Assert.IsTrue(collection.Count > 0);
         }
 
-        [Test]
-        public void TakeLastOnSequenceShortOfCountForCollection()
+        static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, Action<IEnumerable<T>> action)
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(5);
-            result.AssertSequenceEqual(12, 34, 56);
-        }
+            // Test that the behaviour does not change whether a collection
+            // or a sequence is used as the source.
 
-        [Test]
-        public void TakeLastWithNegativeCountForCollection()
-        {
-            var result = new[] { 12, 34, 56 }.TakeLast(-2);
-            Assert.IsFalse(result.GetEnumerator().MoveNext());
+            action(op(input));
+            action(op(input.Select(x => x)));
         }
     }
 }
