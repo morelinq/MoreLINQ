@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         public void TakeLastWithNegativeCount()
         {
             AssertTakeLast(new[] { 12, 34, 56 },
-                           2,
+                           -2,
                            result => Assert.IsFalse(result.GetEnumerator().MoveNext()));
         }
 
