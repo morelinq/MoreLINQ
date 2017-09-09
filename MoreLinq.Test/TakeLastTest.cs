@@ -28,21 +28,21 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            AssertEqual(new[]{ 12, 34, 56, 78, 910, 1112 }, x => x.TakeLast(3), result =>
+            AssertTakeLast(new[]{ 12, 34, 56, 78, 910, 1112 }, 3, result =>
             result.AssertSequenceEqual(78, 910, 1112));
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            AssertEqual(new[] { 12, 34, 56 }, x => x.TakeLast(5), result =>
+            AssertTakeLast(new[] { 12, 34, 56 }, 5, result =>
             result.AssertSequenceEqual(12, 34, 56));
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            AssertEqual(new[] { 12, 34, 56 }, x => x.TakeLast(-2), result =>
+            AssertTakeLast(new[] { 12, 34, 56 }, -2, result =>
             Assert.IsFalse(result.GetEnumerator().MoveNext()));
         }
 
@@ -64,23 +64,18 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastOptimizedForCollections()
         {
-            var collection = new OnceEnumerationCollection<int>(Enumerable.Range(1, 10));
+            var sequence = new UnenumerableList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-            foreach (var _ in collection.TakeLast(3))
-            {
-                break;
-            }
-
-            Assert.IsTrue(collection.Count > 0);
+            sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
         }
 
-        static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, Action<IEnumerable<T>> action)
+        static void AssertTakeLast<T>(ICollection<T> input, int count, Action<IEnumerable<T>> action)
         {
             // Test that the behaviour does not change whether a collection
             // or a sequence is used as the source.
 
-            action(op(input));
-            action(op(input.Select(x => x)));
+            action(input.TakeLast(count));
+            action(input.Select(x => x).TakeLast(count));
         }
     }
 }
