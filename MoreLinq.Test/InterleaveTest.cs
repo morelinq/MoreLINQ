@@ -30,7 +30,7 @@ namespace MoreLinq.Test
             {
                 try
                 {
-                    sequenceA.Interleave(new BreakingSequence<int>()).ToArray();
+                    sequenceA.Interleave(new BreakingSequence<int>()).Consume();
                     Assert.Fail("{0} was expected", typeof(InvalidOperationException));
                 }
                 catch (InvalidOperationException)
@@ -138,7 +138,7 @@ namespace MoreLinq.Test
 
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
 
-            result.Count();
+            result.Consume();
             Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
         }
     }

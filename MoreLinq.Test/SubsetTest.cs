@@ -45,7 +45,7 @@ namespace MoreLinq.Test
 
             Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
             {
-                result.Count(); // this particular exception is deferred until sequence evaluation
+                result.Consume(); // this particular exception is deferred until sequence evaluation
             });
         }
 

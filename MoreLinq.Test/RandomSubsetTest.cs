@@ -99,7 +99,7 @@ namespace MoreLinq.Test
 
             Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
             {
-                sequence.RandomSubset(subsetSize).Count();
+                sequence.RandomSubset(subsetSize).Consume();
             });
         }
 
@@ -116,7 +116,7 @@ namespace MoreLinq.Test
 
             Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
             {
-                sequence.RandomSubset(subsetSize, new Random(1234)).Count();
+                sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
             });
         }
 
@@ -200,8 +200,8 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(subsetSize);
 
             // force complete enumeration of random subsets
-            resultA.Count();
-            resultB.Count();
+            resultA.Consume();
+            resultB.Consume();
 
             // verify the original sequence is untouched
             Assert.IsTrue(sequence.SequenceEqual(sequenceClone));

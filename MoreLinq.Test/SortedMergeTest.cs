@@ -34,7 +34,7 @@ namespace MoreLinq.Test
             {
                 try
                 {
-                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).ToArray();
+                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume();
                     Assert.Fail("{0} was expected", typeof(InvalidOperationException));
                 }
                 catch (InvalidOperationException)
@@ -181,7 +181,7 @@ namespace MoreLinq.Test
             var sequenceD = Enumerable.Range(1, 0).AsVerifiable().WhenDisposed(s => disposedSequenceD = true);
 
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD);
-            result.Count(); // ensures the sequences are actually merged and iterators are obtained
+            result.Consume(); // ensures the sequences are actually merged and iterators are obtained
 
             Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
         }
