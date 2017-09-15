@@ -77,11 +77,8 @@ namespace MoreLinq
                             yield break;
                         }
                     }
-                    if (e2.MoveNext())
-                    {
-                        do { yield return resultSelector(default(TFirst), e2.Current); }
-                        while (e2.MoveNext());
-                    }
+                    while (e2.MoveNext())
+                        yield return resultSelector(default(TFirst), e2.Current);
                 }
             }
         }
