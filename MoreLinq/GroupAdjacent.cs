@@ -207,9 +207,9 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             // This should be removed once the target framework is bumped to something that supports covariance
-            Func<TKey, IList<TSource>, TResult> resultSelectorWrapper = (key, group) => resultSelector(key, group);
+            TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
 
-            return GroupAdjacentImpl(source, keySelector, i => i, resultSelectorWrapper,
+            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
                                      EqualityComparer<TKey>.Default);
         }
 
