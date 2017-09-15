@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         [Test]
         public void FallbackIfEmptyPreservesSourceCollectionIfPossible()
         {
-            var source = new int[] { 1 };
+            var source = new[] { 1 };
             // ReSharper disable PossibleMultipleEnumeration
             Assert.AreSame(source.FallbackIfEmpty(12), source);
             Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
@@ -56,7 +56,7 @@ namespace MoreLinq.Test
         public void FallbackIfEmptyPreservesFallbackCollectionIfPossible()
         {
             var source = new int[0];
-            var fallback = new int[] { 1 };
+            var fallback = new[] { 1 };
             Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
             Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
         }

@@ -93,8 +93,7 @@ namespace MoreLinq
             #region IEnumerator Members
             public void Reset()
             {
-                if (m_GeneratorIterator != null)
-                    m_GeneratorIterator.Dispose();
+                m_GeneratorIterator?.Dispose();
                 // restore lexographic ordering of the permutation indexes
                 for (var i = 0; i < m_Permutation.Length; i++)
                     m_Permutation[i] = i;
@@ -108,10 +107,7 @@ namespace MoreLinq
 
             public IList<T> Current { get; private set; }
 
-            object IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object IEnumerator.Current => Current;
 
             public bool MoveNext()
             {

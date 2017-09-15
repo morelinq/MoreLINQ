@@ -54,11 +54,8 @@ namespace MoreLinq.Test
         /// </summary>
         /// <param name="enumerator">Source enumerator.</param>
 
-        public SequenceReader(IEnumerator<T> enumerator)
-        {
-            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            _enumerator = enumerator;
-        }
+        public SequenceReader(IEnumerator<T> enumerator) =>
+            _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
         static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
         {

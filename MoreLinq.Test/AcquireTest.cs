@@ -55,7 +55,7 @@ namespace MoreLinq.Test
 
             var allocators = Futures(() => a = new Disposable(),
                                      () => b = new Disposable(),
-                                     () => { throw new ApplicationException(); },
+                                     () => throw new ApplicationException(),
                                      () => c = new Disposable());
 
             try

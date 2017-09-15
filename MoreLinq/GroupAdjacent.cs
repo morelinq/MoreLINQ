@@ -306,10 +306,8 @@ namespace MoreLinq
 
         static class Grouping
         {
-            public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members)
-            {
-                return new Grouping<TKey, TElement>(key, members);
-            }
+            public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members) =>
+                new Grouping<TKey, TElement>(key, members);
         }
 
         #if !NO_SERIALIZATION_ATTRIBUTES
@@ -326,17 +324,10 @@ namespace MoreLinq
                 _members = members;
             }
 
-            public TKey Key { get; private set; }
+            public TKey Key { get; }
 
-            public IEnumerator<TElement> GetEnumerator()
-            {
-                return _members.GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            public IEnumerator<TElement> GetEnumerator() => _members.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }
