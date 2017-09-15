@@ -131,8 +131,6 @@ namespace MoreLinq.Test
             var disposedSequenceC = false;
             var disposedSequenceD = false;
 
-            Action AssertIndicators = () => Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
-
             var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
             var sequenceB = Enumerable.Range(1, count - 1).AsVerifiable().WhenDisposed(s => disposedSequenceB = true);
             var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
@@ -141,7 +139,7 @@ namespace MoreLinq.Test
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
 
             result.Count();
-            AssertIndicators();
+            Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
         }
     }
 }
