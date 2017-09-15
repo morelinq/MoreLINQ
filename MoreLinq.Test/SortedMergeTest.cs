@@ -32,15 +32,9 @@ namespace MoreLinq.Test
         {
             using (var sequenceA = TestingSequence.Of<int>())
             {
-                try
-                {
-                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume();
-                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected and thrown by BreakingSequence
-                }
+                // Expected and thrown by BreakingSequence
+                Assert.Throws<InvalidOperationException>(() =>
+                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
             }
         }
 
