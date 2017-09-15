@@ -131,7 +131,6 @@ namespace MoreLinq.Test
             var disposedSequenceC = false;
             var disposedSequenceD = false;
 
-            Action ResetIndicators = () => { disposedSequenceA = disposedSequenceB = disposedSequenceC = disposedSequenceD = false; };
             Action AssertIndicators = () => Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
 
             var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
@@ -143,7 +142,6 @@ namespace MoreLinq.Test
 
             result.Count();
             AssertIndicators();
-            ResetIndicators();
         }
     }
 }
