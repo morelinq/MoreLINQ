@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MoreLinq.Test": {
+      "commandName": "Project",
+      "commandLineArgs": "--test=MoreLinq.Test.PrependTest --test=MoreLinq.Test.ConcatTest --test=MoreLinq.Test.SwapRangeTest"
+    }
+  }
+}
