@@ -53,13 +53,9 @@ namespace MoreLinq
             }
 
             int? NextLoopCount(IEnumerator<int> iter)
-            {
-                if (!iter.MoveNext())
-                    return null;
-                if (iter.Current < 0)
-                    throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
-                return iter.Current;
-            }
+                => !iter.MoveNext() ? (int?) null
+                 : iter.Current >= 0 ? iter.Current
+                 : throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
         }
     }
 }
