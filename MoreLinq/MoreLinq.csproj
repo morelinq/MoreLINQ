@@ -6,7 +6,7 @@
     <Copyright>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin. Portions &#169; 2015 Felipe Sateler, &#8220;sholland&#8221;. Portions &#169; 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh). Portions &#169; Microsoft. All rights reserved.</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>2.7.0</VersionPrefix>
+    <VersionPrefix>2.8.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net40;net35;netstandard1.0;netstandard2.0</TargetFrameworks>
     <LangVersion>7</LangVersion>
