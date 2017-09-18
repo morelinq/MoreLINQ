@@ -69,7 +69,7 @@ namespace MoreLinq.Test
         {
             Expression<Func<TestObject, object>> expression = null;
 
-            Assert.ThrowsArgumentException("expressions",() =>
+            AssertThrowsArgument.Exception("expressions",() =>
                 _testObjects.ToDataTable<TestObject>(expression));
         }
 
@@ -79,7 +79,7 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("Test");
 
-            Assert.ThrowsArgumentException("table",() =>
+            AssertThrowsArgument.Exception("table",() =>
                 _testObjects.ToDataTable(dt));
         }
 
@@ -89,14 +89,14 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
-            Assert.ThrowsArgumentException("table",() =>
+            AssertThrowsArgument.Exception("table",() =>
                 _testObjects.ToDataTable(dt, t=>t.AString));
         }
 
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            Assert.ThrowsArgumentException("lambda", () =>
+            AssertThrowsArgument.Exception("lambda", () =>
                 _testObjects.ToDataTable(t => t.ToString()));
         }
 
@@ -104,14 +104,14 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            Assert.ThrowsArgumentException("lambda", () =>
+            AssertThrowsArgument.Exception("lambda", () =>
                 _testObjects.ToDataTable(t => t.ToString().Length));
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            Assert.ThrowsArgumentException("lambda",() =>
+            AssertThrowsArgument.Exception("lambda",() =>
                 _testObjects.ToDataTable(t => t[0]));
         }
 
