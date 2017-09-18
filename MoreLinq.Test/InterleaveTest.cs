@@ -28,15 +28,8 @@ namespace MoreLinq.Test
         {
             using (var sequenceA = TestingSequence.Of<int>())
             {
-                try
-                {
-                    sequenceA.Interleave(new BreakingSequence<int>()).Consume();
-                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected and thrown by BreakingSequence
-                }
+                Assert.Throws<InvalidOperationException>(() => // Expected and thrown by BreakingSequence
+                    sequenceA.Interleave(new BreakingSequence<int>()).Consume());
             }
         }
 
