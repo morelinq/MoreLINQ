@@ -359,6 +359,12 @@ Repeats the sequence indefinitely or a specific number of times.
 
 This method has 2 overloads.
 
+### RightJoin
+
+Performs a right outer join between two sequences.
+
+This method has 4 overloads.
+
 ### RunLengthEncode
 
 Run-length encodes a sequence by converting consecutive instances of the same
