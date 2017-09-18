@@ -39,6 +39,7 @@
 
   <ItemGroup>
       <Compile Include="*Test.cs" />
+      <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingSequence.cs" />
