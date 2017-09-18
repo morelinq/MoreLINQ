@@ -227,6 +227,12 @@ by a positive offset.
 
 This method has 2 overloads.
 
+### LeftJoin
+
+Performs a left outer join between two sequences.
+
+This method has 4 overloads.
+
 ### MaxBy
 
 Returns the maximal element of the given sequence, based on the given
