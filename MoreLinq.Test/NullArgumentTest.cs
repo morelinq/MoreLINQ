@@ -21,7 +21,6 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using NUnit.Framework;
@@ -185,9 +184,9 @@ namespace MoreLinq.Test
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             }
 
-            public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
+            public class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T>
             {
-                public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
+                public System.Linq.IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
                 {
                     if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
                     return this;

@@ -1,7 +1,6 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
