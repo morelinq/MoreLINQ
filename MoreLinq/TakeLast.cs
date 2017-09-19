@@ -52,7 +52,7 @@ namespace MoreLinq
 
             return 
                 source is ICollection<TSource> col
-                ? col.Slice(zeroIfNegative(col.Count - count), int.MaxValue)
+                ? col.Slice(Math.Max(0, col.Count - count), int.MaxValue)
                 : _(); IEnumerable<TSource> _()
                 {
                     if (count <= 0)
@@ -70,8 +70,6 @@ namespace MoreLinq
                     foreach (var item in q)
                         yield return item;
                 }
-
-            int zeroIfNegative(int i) => i < 0 ? 0 : i;
         }
     }
 }
