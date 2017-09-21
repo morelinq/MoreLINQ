@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -49,23 +50,26 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return _(); IEnumerable<TSource> _()
-            {
-                if (count <= 0)
-                    yield break;
-
-                var q = new Queue<TSource>(count);
-
-                foreach (var item in source)
+            return 
+                source is ICollection<TSource> col
+                ? col.Slice(Math.Max(0, col.Count - count), int.MaxValue)
+                : _(); IEnumerable<TSource> _()
                 {
-                    if (q.Count == count)
-                        q.Dequeue();
-                    q.Enqueue(item);
-                }
+                    if (count <= 0)
+                        yield break;
 
-                foreach (var item in q)
-                    yield return item;
-            }
+                    var q = new Queue<TSource>(count);
+
+                    foreach (var item in source)
+                    {
+                        if (q.Count == count)
+                            q.Dequeue();
+                        q.Enqueue(item);
+                    }
+
+                    foreach (var item in q)
+                        yield return item;
+                }
         }
     }
 }
