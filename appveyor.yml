@@ -2,8 +2,8 @@ version: '{build}'
 image: Visual Studio 2017
 skip_commits:
   files:
-    - *.md
-    - *.txt
+    - '*.md'
+    - '*.txt'
     - lic/*
 build_script:
 - ps: >-
