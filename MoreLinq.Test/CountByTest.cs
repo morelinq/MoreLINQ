@@ -20,7 +20,6 @@ namespace MoreLinq.Test
     using System;
     using System.Linq;
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class CountByTest
