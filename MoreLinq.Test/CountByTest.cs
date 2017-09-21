@@ -51,7 +51,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create('e', 1),
                 KeyValuePair.Create('r', 1));
         }
-		
+                
         [Test]
         public void CountByEvenOddTest()
         {

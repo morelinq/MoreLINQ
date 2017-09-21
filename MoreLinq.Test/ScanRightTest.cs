@@ -24,7 +24,7 @@ namespace MoreLinq.Test
     public class ScanRightTest
     {
         // ScanRight(source, func)
-	
+        
         [Test]
         public void ScanRightWithEmptySequence()
         {
@@ -62,7 +62,7 @@ namespace MoreLinq.Test
         }
 
         // ScanRight(source, seed, func)
-		
+                
         [TestCase(5)]
         [TestCase("c")]
         [TestCase(true)]
