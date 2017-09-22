@@ -57,10 +57,9 @@ namespace MoreLinq
             if (toIndex == fromIndex || count == 0)
                 return source;
 
-            if (toIndex < fromIndex)
-                return _(toIndex, fromIndex - toIndex, count);
-            else
-                return _(fromIndex, count, toIndex - fromIndex);
+            return toIndex < fromIndex
+                 ? _(toIndex, fromIndex - toIndex, count)
+                 : _(fromIndex, count, toIndex - fromIndex);
 
             IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
