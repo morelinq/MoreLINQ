@@ -15,9 +15,15 @@
 // limitations under the License.
 #endregion
 
+using System.Linq; // Keep this import outside the MoreLinq namespace
+                   // to avoid conflicts. For more, see:
+                   // https://github.com/morelinq/MoreLINQ/issues/351
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
+    using System;
 
     [TestFixture]
     public class TakeLastTest
@@ -25,22 +31,25 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.TakeLast(3);
-            result.AssertSequenceEqual(78, 910, 1112);
+            AssertTakeLast(new[] { 12, 34, 56, 78, 910, 1112 },
+                           3,
+                           result => result.AssertSequenceEqual(78, 910, 1112));
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(5);
-            result.AssertSequenceEqual(12, 34, 56);
+            AssertTakeLast(new[] { 12, 34, 56 },
+                           5,
+                           result => result.AssertSequenceEqual(12, 34, 56));
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(-2);
-            Assert.IsFalse(result.GetEnumerator().MoveNext());
+            AssertTakeLast(new[] { 12, 34, 56 },
+                           -2,
+                           result => Assert.IsFalse(result.GetEnumerator().MoveNext()));
         }
 
         [Test]
@@ -56,6 +65,23 @@ namespace MoreLinq.Test
             {
                 seq.TakeLast(1).Consume();
             }
+        }
+
+        [Test]
+        public void TakeLastOptimizedForCollections()
+        {
+            var sequence = new UnenumerableList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
+        }
+
+        static void AssertTakeLast<T>(ICollection<T> input, int count, Action<IEnumerable<T>> action)
+        {
+            // Test that the behaviour does not change whether a collection
+            // or a sequence is used as the source.
+
+            action(input.TakeLast(count));
+            action(input.Select(x => x).TakeLast(count));
         }
     }
 }

@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagNegativeOffsetException()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset",() =>
+            AssertThrowsArgument.OutOfRangeException("offset",() =>
                 Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
         }
 
@@ -35,7 +35,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagZeroOffset()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
                 Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
         }
 

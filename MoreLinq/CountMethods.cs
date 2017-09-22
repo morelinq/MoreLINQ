@@ -129,7 +129,7 @@ namespace MoreLinq
         }
 
 
-        private static bool QuantityIterator<T>(IEnumerable<T> source, int limit, Func<int, bool> predicate)
+        static bool QuantityIterator<T>(IEnumerable<T> source, int limit, Func<int, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 

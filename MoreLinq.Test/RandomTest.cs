@@ -22,7 +22,7 @@ namespace MoreLinq.Test
             const int maxValue = -10;
             Assert.Less(maxValue, 0);
 
-            Assert.ThrowsArgumentOutOfRangeException("maxValue",() =>
+            AssertThrowsArgument.OutOfRangeException("maxValue",() =>
                 MoreEnumerable.Random(maxValue));
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
 
             Assert.Greater(minValue, maxValue);
 
-            Assert.ThrowsArgumentOutOfRangeException("minValue",() =>
+            AssertThrowsArgument.OutOfRangeException("minValue",() =>
                 MoreEnumerable.Random(minValue, maxValue));
         }
 

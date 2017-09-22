@@ -31,14 +31,8 @@ namespace MoreLinq.Test
             using (var shorter = TestingSequence.Of(1, 2))
             {
                 // Yes, this will throw... but then we should still have disposed both sequences
-                try
-                {
-                    longer.EquiZip(shorter, (x, y) => x + y).Consume();
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected
-                }
+                Assert.Throws<InvalidOperationException>(() =>
+                    longer.EquiZip(shorter, (x, y) => x + y).Consume());
             }
         }
 
@@ -49,14 +43,8 @@ namespace MoreLinq.Test
             using (var shorter = TestingSequence.Of(1, 2))
             {
                 // Yes, this will throw... but then we should still have disposed both sequences
-                try
-                {
-                    shorter.EquiZip(longer, (x, y) => x + y).Consume();
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected
-                }
+                Assert.Throws<InvalidOperationException>(() =>
+                    shorter.EquiZip(longer, (x, y) => x + y).Consume());
             }
         }
 
