@@ -23,7 +23,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Return a sequence with a range of elements in the source sequence moved to a new offset.
+        /// Returns a sequence with a range of elements in the source sequence moved to a new offset.
         /// </summary>
         /// <typeparam name="T">Type of the source sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
