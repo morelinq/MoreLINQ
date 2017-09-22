@@ -17,6 +17,9 @@
 
 namespace MoreLinq.Test
 {
+    // TODO remove System.Linq import when #352 is merged
+    // https://github.com/morelinq/MoreLINQ/pull/352
+
     using System.Linq;
     using System.Collections.Generic;
     using NUnit.Framework;
