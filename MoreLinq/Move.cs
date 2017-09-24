@@ -42,12 +42,12 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
-        /// var result = Enumerable.Range(0, 6).MoveRange(3, 2, 0);
+        /// var result = Enumerable.Range(0, 6).Move(3, 2, 0);
         /// </code>
         /// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
         /// </example>
 
-        public static IEnumerable<T> MoveRange<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
+        public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fromIndex < 0) throw new ArgumentOutOfRangeException(nameof(fromIndex), "The source index cannot be negative.");

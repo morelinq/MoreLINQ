@@ -25,37 +25,37 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class MoveRangeTest
+    public class MoveTest
     {
         [Test]
-        public void MoveRangeWithNegativeFromIndex()
+        public void MoveWithNegativeFromIndex()
         {
             AssertThrowsArgument.OutOfRangeException("fromIndex", () =>
-                new[] { 1 }.MoveRange(-1, 0, 0));
+                new[] { 1 }.Move(-1, 0, 0));
         }
 
         [Test]
-        public void MoveRangeWithNegativeCount()
+        public void MoveWithNegativeCount()
         {
             AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.MoveRange(0, -1, 0));
+                new[] { 1 }.Move(0, -1, 0));
         }
 
         [Test]
-        public void MoveRangeWithNegativeToIndex()
+        public void MoveWithNegativeToIndex()
         {
             AssertThrowsArgument.OutOfRangeException("toIndex", () =>
-                new[] { 1 }.MoveRange(0, 0, -1));
+                new[] { 1 }.Move(0, 0, -1));
         }
 
         [Test]
-        public void MoveRangeIsLazy()
+        public void MoveIsLazy()
         {
-            new BreakingSequence<int>().MoveRange(0, 0, 0);
+            new BreakingSequence<int>().Move(0, 0, 0);
         }
 
-        [TestCaseSource(nameof(MoveRangeSource))]
-        public void MoveRange(int length, int fromIndex, int count, int toIndex)
+        [TestCaseSource(nameof(MoveSource))]
+        public void Move(int length, int fromIndex, int count, int toIndex)
         {
             var source = Enumerable.Range(0, length);
 
@@ -65,12 +65,12 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.MoveRange(fromIndex, count, toIndex);
+                var result = test.Move(fromIndex, count, toIndex);
                 Assert.That(result, Is.EquivalentTo(expectations));
             }
         }
 
-        public static IEnumerable<object> MoveRangeSource()
+        public static IEnumerable<object> MoveSource()
         {
             const int length = 10;
 
@@ -79,8 +79,8 @@ namespace MoreLinq.Test
                    select new TestCaseData(length, index, count, index);
         }
 
-        [TestCaseSource(nameof(MoveRangeWithSequenceShorterThanToIndexSource))]
-        public void MoveRangeWithSequenceShorterThanToIndex(int length, int fromIndex, int count, int toIndex)
+        [TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
+        public void MoveWithSequenceShorterThanToIndex(int length, int fromIndex, int count, int toIndex)
         {
             var source = Enumerable.Range(0, length);
 
@@ -88,12 +88,12 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.MoveRange(fromIndex, count, toIndex);
+                var result = test.Move(fromIndex, count, toIndex);
                 Assert.That(result, Is.EquivalentTo(expectations));
             }
         }
 
-        public static IEnumerable<object> MoveRangeWithSequenceShorterThanToIndexSource()
+        public static IEnumerable<object> MoveWithSequenceShorterThanToIndexSource()
         {
             const int length = 10;
 
@@ -102,19 +102,19 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MoveRangeWithFromIndexEqualsToIndex()
+        public void MoveWithFromIndexEqualsToIndex()
         {
             var source = Enumerable.Range(0, 10);
-            var result = source.MoveRange(5, 999, 5);
+            var result = source.Move(5, 999, 5);
             
             Assert.That(source, Is.SameAs(result));
         }
 
         [Test]
-        public void MoveRangeWithCountEqualsZero()
+        public void MoveWithCountEqualsZero()
         {
             var source = Enumerable.Range(0, 10);
-            var result = source.MoveRange(5, 0, 999);
+            var result = source.Move(5, 0, 999);
             
             Assert.That(source, Is.SameAs(result));
         }
