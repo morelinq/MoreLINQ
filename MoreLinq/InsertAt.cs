@@ -32,12 +32,16 @@ namespace MoreLinq
         /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="source"/>
-        /// Plus the elements of <paramref name="second"/>, at the specified index.
+        /// plus the elements of <paramref name="second"/>, inserted at the specified index.
         /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown eagerly if <paramref name="index"/> is negative, and lazily 
-        /// if it is greater than the length of <paramref name="source"/> 
-        /// (after completely iterate the elements of the <paramref name="source"/>).
+        /// Thrown eagerly if <paramref name="index"/> is negative.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">  
+        /// Thrown lazily if <paramref name="index"/> is greater than the length of <paramref name="source"/> 
+        /// (when trying yield the next element after completely iterating the elements of the <paramref name="source"/>).
         /// </exception>
         
         public static IEnumerable<T> InsertAt<T>(this IEnumerable<T> source, IEnumerable<T> second, int index)

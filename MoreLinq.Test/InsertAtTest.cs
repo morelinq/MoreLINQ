@@ -35,10 +35,12 @@ namespace MoreLinq.Test
         [TestCase(9)]
         public void InsertAtWithIndexGreaterThanSourceLengthMaterialized(int count)
         {
+            var source = Enumerable.Range(0, count).ToList();
+            var result = source.InsertAt(new[] { 97, 98, 99 }, count + 1);
+
             Assert.ThrowsArgumentOutOfRangeException("index", () =>
-                 Enumerable.Range(0, count)
-                           .InsertAt(new[] { 97, 98, 99 }, count + 1)
-                           .ToList());
+                result.ForEach((e, index) => 
+                    Assert.That(e, Is.EqualTo(source[index]))));
         }
 
         [TestCase(7)]
@@ -46,10 +48,13 @@ namespace MoreLinq.Test
         [TestCase(9)]
         public void InsertAtWithIndexGreaterThanSourceLengthLazy(int count)
         {
-            Enumerable.Range(0, count)
-                      .InsertAt(new[] { 97, 98, 99 }, count + 1)
-                      .Take(count)
-                      .ToList();
+            var source = Enumerable.Range(0, count);
+
+            var result = source.InsertAt(new[] { 97, 98, 99 }, count + 1)
+                               .Take(count)
+                               .ToList();
+
+            Assert.That(source, Is.EqualTo(result));
         }
 
         [TestCase(3, 0)]
