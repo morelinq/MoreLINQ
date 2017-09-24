@@ -28,15 +28,8 @@ namespace MoreLinq.Test
         {
             using (var sequenceA = TestingSequence.Of<int>())
             {
-                try
-                {
-                    sequenceA.Interleave(new BreakingSequence<int>()).ToArray();
-                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected and thrown by BreakingSequence
-                }
+                Assert.Throws<InvalidOperationException>(() => // Expected and thrown by BreakingSequence
+                    sequenceA.Interleave(new BreakingSequence<int>()).Consume());
             }
         }
 
@@ -131,9 +124,6 @@ namespace MoreLinq.Test
             var disposedSequenceC = false;
             var disposedSequenceD = false;
 
-            Action ResetIndicators = () => { disposedSequenceA = disposedSequenceB = disposedSequenceC = disposedSequenceD = false; };
-            Action AssertIndicators = () => Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
-
             var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
             var sequenceB = Enumerable.Range(1, count - 1).AsVerifiable().WhenDisposed(s => disposedSequenceB = true);
             var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
@@ -141,9 +131,8 @@ namespace MoreLinq.Test
 
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
 
-            result.Count();
-            AssertIndicators();
-            ResetIndicators();
+            result.Consume();
+            Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
         }
     }
 }

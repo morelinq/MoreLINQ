@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Pads a sequence with default values if it is narrower (shorter 
+        /// Pads a sequence with default values in the beginning if it is narrower (shorter 
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -40,20 +40,20 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pad(5);
+        /// var result = numbers.PadLeft(5);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// 123, 456, 789 and two zeroes, in turn.
+        /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
         {
-            return Pad(source, width, default(TSource));
+            return PadStart(source, width, default(TSource));
         }
 
         /// <summary>
-        /// Pads a sequence with a given filler value if it is narrower (shorter 
+        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter 
         /// in length) than a given width.
+        /// An additional parameter specifies the value to use for padding.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to pad.</param>
@@ -69,22 +69,22 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pad(5, -1);
+        /// var result = numbers.PadLeft(5, -1);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// 123, 456, and 789 followed by two occurrences of -1, in turn.
+        /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadImpl(source, width, padding, null);
+            return PadLeftImpl(source, width, padding, null);
         }
 
         /// <summary>
-        /// Pads a sequence with a dynamic filler value if it is narrower (shorter 
+        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter 
         /// in length) than a given width.
+        /// An additional parameter specifies the function to calculate padding.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to pad.</param>
@@ -99,38 +99,60 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
-        /// int[] numbers = { 0, 1, 2 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pad(5, i => -i);
+        /// int[] numbers = { 123, 456, 789 };
+        /// var result = numbers.PadLeft(6, i => -i);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// 0, 1, 2, -3 and -4, in turn.
+        /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadImpl(source, width, default(TSource), paddingSelector);
+            return PadLeftImpl(source, width, default(TSource), paddingSelector);
         }
 
-        static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
+        static IEnumerable<T> PadLeftImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T> paddingSelector)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(width >= 0);
+            return
+                source is ICollection<T> collection
+                ? collection.Count >= width
+                  ? collection
+                  : Enumerable.Range(0, width - collection.Count)
+                              .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
+                              .Concat(collection)
+                : _(); IEnumerable<T> _()
+                {
+                    var array = new T[width];
+                    var count = 0;
 
-            var count = 0;
-            foreach (var item in source)
-            {
-                yield return item;
-                count++;
-            }
-            while (count < width)
-            {
-                yield return paddingSelector != null ? paddingSelector(count) : padding;
-                count++;
-            }
+                    using (var e = source.GetEnumerator())
+                    {
+                        for (; count < width && e.MoveNext(); count++)
+                            array[count] = e.Current;
+
+                        if (count == width)
+                        {
+                            for (var i = 0; i < count; i++)
+                                yield return array[i];
+
+                            while (e.MoveNext())
+                                yield return e.Current;
+
+                            yield break;
+                        }
+                    }
+
+                    var len = width - count;
+
+                    for (var i = 0; i < len; i++)
+                        yield return paddingSelector != null ? paddingSelector(i) : padding;
+
+                    for (var i = 0; i < count; i++)
+                        yield return array[i];
+                }
         }
     }
 }

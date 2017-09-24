@@ -27,9 +27,9 @@ namespace MoreLinq.Test
         public void AssertCountNegativeCount()
         {
             var source = new object[0];
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                 source.AssertCount(-1));
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                 source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()));
         }
 
@@ -57,56 +57,31 @@ namespace MoreLinq.Test
         public void AssertCountDefaultExceptionMessageVariesWithCase()
         {
             var tokens = "foo,bar,baz".GenerateSplits(',');
-            Exception e1 = null, e2 = null;
-            try
-            {
-                tokens.AssertCount(4).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (Exception e)
-            {
-                e1 = e;
-            }
-            try
-            {
-                tokens.AssertCount(2).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (Exception e)
-            {
-                e2 = e;
-            }
+            var e1 = Assert.Throws<SequenceException>(() => tokens.AssertCount(4).Consume());
+            var e2 = Assert.Throws<SequenceException>(() => tokens.AssertCount(2).Consume());
             Assert.That(e1.Message, Is.Not.EqualTo(e2.Message));
         }
 
         [Test]
         public void AssertCountLongSequenceWithErrorSelector()
         {
-            try
-            {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count)).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (TestException e)
-            {
-                Assert.That(e.Cmp, Is.GreaterThan(0));
-                Assert.That(e.Count, Is.EqualTo(2));
-            }
+            var e =
+                Assert.Throws<TestException>(() =>
+                    "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count))
+                                 .Consume());
+            Assert.That(e.Cmp, Is.GreaterThan(0));
+            Assert.That(e.Count, Is.EqualTo(2));
         }
 
         [Test]
         public void AssertCountShortSequenceWithErrorSelector()
         {
-            try
-            {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count)).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (TestException e)
-            {
-                Assert.That(e.Cmp, Is.LessThan(0));
-                Assert.That(e.Count, Is.EqualTo(4));
-            }
+            var e =
+                Assert.Throws<TestException>(() =>
+                    "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count))
+                                 .Consume());
+            Assert.That(e.Cmp, Is.LessThan(0));
+            Assert.That(e.Count, Is.EqualTo(4));
         }
 
         sealed class TestException : Exception

@@ -26,21 +26,21 @@ namespace MoreLinq.Test
         [Test]
         public void CountBetweenWithNegativeMin()
         {
-            Assert.ThrowsArgumentOutOfRangeException("min", () =>
+            AssertThrowsArgument.OutOfRangeException("min", () =>
                 new[] { 1 }.CountBetween(-1, 0));
         }
 
         [Test]
         public void CountBetweenWithNegativeMax()
         {
-            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+            AssertThrowsArgument.OutOfRangeException("max", () =>
                new[] { 1 }.CountBetween(0, -1));
         }
 
         [Test]
         public void CountBetweenWithMaxLesserThanMin()
         {
-            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+            AssertThrowsArgument.OutOfRangeException("max", () =>
                 new[] { 1 }.CountBetween(1, 0));
         }
 

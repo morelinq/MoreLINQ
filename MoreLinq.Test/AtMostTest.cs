@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",
+            AssertThrowsArgument.OutOfRangeException("count",
                 () => new[] { 1 }.AtMost(-1));
         }
 

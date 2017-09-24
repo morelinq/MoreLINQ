@@ -24,7 +24,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeNegativeStartIndexException()
         {
-            Assert.ThrowsArgumentOutOfRangeException("startIndex",() =>
+            AssertThrowsArgument.OutOfRangeException("startIndex",() =>
                 Enumerable.Range(1, 10).Exclude(-10, 10));
         }
 
@@ -34,7 +34,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeNegativeCountException()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",() =>
+            AssertThrowsArgument.OutOfRangeException("count",() =>
                 Enumerable.Range(1, 10).Exclude(0, -5));
         }
 
