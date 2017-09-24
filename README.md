@@ -235,6 +235,11 @@ projection.
 
 This method has 2 overloads.
 
+### Move
+
+Returns a sequence with a range of elements in the source sequence
+moved to a new offset.
+
 ### NestedLoops
 
 Produces a sequence from an action based on the dynamic generation of N nested
