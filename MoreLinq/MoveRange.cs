@@ -23,14 +23,20 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Return a sequence with a range of elements in the source sequence moved to a new offset.
+        /// Returns a sequence with a range of elements in the source sequence
+        /// moved to a new offset.
         /// </summary>
         /// <typeparam name="T">Type of the source sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="fromIndex">The zero-based index identifying the first element in the range of elements to move.</param>
+        /// <param name="fromIndex">
+        /// The zero-based index identifying the first element in the range of
+        /// elements to move.</param>
         /// <param name="count">The count of items to move.</param>
-        /// <param name="toIndex">The index where the specified range will be moved.</param>
-        /// <returns>A sequence with the specified range moved to the new position.</returns>
+        /// <param name="toIndex">
+        /// The index where the specified range will be moved.</param>
+        /// <returns>
+        /// A sequence with the specified range moved to the new position.
+        /// </returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -51,10 +57,9 @@ namespace MoreLinq
             if (toIndex == fromIndex || count == 0)
                 return source;
 
-            if (toIndex < fromIndex)
-                return _(toIndex, fromIndex - toIndex, count);
-            else
-                return _(fromIndex, count, toIndex - fromIndex);
+            return toIndex < fromIndex
+                 ? _(toIndex, fromIndex - toIndex, count)
+                 : _(fromIndex, count, toIndex - fromIndex);
 
             IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {

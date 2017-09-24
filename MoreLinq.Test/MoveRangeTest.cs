@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -17,6 +17,9 @@
 
 namespace MoreLinq.Test
 {
+    // TODO remove System.Linq import when #352 is merged
+    // https://github.com/morelinq/MoreLINQ/pull/352
+
     using System.Linq;
     using System.Collections.Generic;
     using NUnit.Framework;
@@ -27,21 +30,21 @@ namespace MoreLinq.Test
         [Test]
         public void MoveRangeWithNegativeFromIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("fromIndex", () =>
+            AssertThrowsArgument.OutOfRangeException("fromIndex", () =>
                 new[] { 1 }.MoveRange(-1, 0, 0));
         }
 
         [Test]
         public void MoveRangeWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                 new[] { 1 }.MoveRange(0, -1, 0));
         }
 
         [Test]
         public void MoveRangeWithNegativeToIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("toIndex", () =>
+            AssertThrowsArgument.OutOfRangeException("toIndex", () =>
                 new[] { 1 }.MoveRange(0, 0, -1));
         }
 
