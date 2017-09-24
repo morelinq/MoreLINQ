@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void InsertAtWithNegativeIndex()
         {
-            Assert.ThrowsArgumentOutOfRangeException("index", () =>
+            AssertThrowsArgument.OutOfRangeException("index", () =>
                  Enumerable.Range(1, 10).InsertAt(new[] { 97, 98, 99 }, -1));
         }
 
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
             var source = Enumerable.Range(0, count).ToList();
             var result = source.InsertAt(new[] { 97, 98, 99 }, count + 1);
 
-            Assert.ThrowsArgumentOutOfRangeException("index", () =>
+            AssertThrowsArgument.OutOfRangeException("index", () =>
                 result.ForEach((e, index) => 
                     Assert.That(e, Is.EqualTo(source[index]))));
         }
