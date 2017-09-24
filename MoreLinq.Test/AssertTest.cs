@@ -54,15 +54,10 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomError()
         {
-            try
-            {
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume();
-                Assert.Fail("{0} expected", typeof(ValueException));
-            }
-            catch (ValueException e)
-            {
-                Assert.AreEqual(7, e.Value);
-            }
+            var e =
+                Assert.Throws<ValueException>(() =>
+                    new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
+            Assert.AreEqual(7, e.Value);
         }
 
         class ValueException : Exception

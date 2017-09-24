@@ -26,7 +26,7 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        private static MemberInfo GetAccessedMember(LambdaExpression lambda)
+        static MemberInfo GetAccessedMember(LambdaExpression lambda)
         {
             var body = lambda.Body;
 
@@ -40,13 +40,13 @@ namespace MoreLinq
             var memberExpression = body as MemberExpression;
             if ((memberExpression == null) || (memberExpression.Expression.NodeType != ExpressionType.Parameter))
             {
-                throw new ArgumentException(string.Format("Illegal expression: {0}", lambda), nameof(lambda));
+                throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
 
             return memberExpression.Member;
         }
 
-        private static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
         {
             //
             // If no lambda expressions supplied then reflect them off the source element type.
@@ -81,8 +81,7 @@ namespace MoreLinq
         /// The resulting array may contain null entries and those represent
         /// columns for which there is no source member supplying a value.
         /// </remarks>
-
-        private static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+        static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
         {
             //
             // Retrieve member information needed to 
@@ -125,10 +124,10 @@ namespace MoreLinq
                     var column = info.Column;
 
                     if (column == null)
-                        throw new ArgumentException(string.Format("Column named '{0}' is missing.", member.Name), nameof(table));
+                        throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
                     if (info.Type != column.DataType)
-                        throw new ArgumentException(string.Format("Column named '{0}' has wrong data type. It should be {1} when it is {2}.", member.Name, info.Type, column.DataType), nameof(table));
+                        throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));
 
                     members[column.Ordinal] = member;
                 }
@@ -137,13 +136,13 @@ namespace MoreLinq
             return members;
         }
 
-        private static UnaryExpression CreateMemberAccessor(Expression parameter, MemberInfo member)
+        static UnaryExpression CreateMemberAccessor(Expression parameter, MemberInfo member)
         {
             var access = Expression.MakeMemberAccess(parameter, member);
             return Expression.Convert(access, typeof(object));
         }
 
-        private static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+        static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
         {
             var parameter = Expression.Parameter(typeof(T), "e");
 

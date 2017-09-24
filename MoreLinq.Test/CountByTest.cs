@@ -20,7 +20,6 @@ namespace MoreLinq.Test
     using System;
     using System.Linq;
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class CountByTest
@@ -51,7 +50,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create('e', 1),
                 KeyValuePair.Create('r', 1));
         }
-		
+                
         [Test]
         public void CountByEvenOddTest()
         {
