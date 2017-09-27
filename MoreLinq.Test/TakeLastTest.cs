@@ -15,10 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System.Linq; // Keep this import outside the MoreLinq namespace
-                   // to avoid conflicts. For more, see:
-                   // https://github.com/morelinq/MoreLINQ/issues/351
-
 namespace MoreLinq.Test
 {
     using NUnit.Framework;

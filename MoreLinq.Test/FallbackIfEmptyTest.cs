@@ -17,9 +17,7 @@
 
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class FallbackIfEmptyTest
@@ -27,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void FallbackIfEmptyWithEmptySequence()
         {
-            var source = LinqEnumerable.Empty<int>().Select(x => x);
+            var source = Enumerable.Empty<int>().Select(x => x);
             // ReSharper disable PossibleMultipleEnumeration
             source.FallbackIfEmpty(12).AssertSequenceEqual(12);
             source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
@@ -63,7 +61,7 @@ namespace MoreLinq.Test
 
         public void FallbackIfEmptyWithEmptySequenceCollectionOptimized()
         {
-            var source = LinqEnumerable.Empty<int>();
+            var source = Enumerable.Empty<int>();
             // ReSharper disable PossibleMultipleEnumeration
             source.FallbackIfEmpty(12).AssertSequenceEqual(12);
             source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
