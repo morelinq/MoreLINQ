@@ -24,24 +24,30 @@ namespace MoreLinq
     {
 
         /// <summary>
-        /// Inserts the elements of a sequence into another sequence, at the specified index.
+        /// Inserts the elements of a sequence into another sequence at a
+        /// specified index.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="second">The sequence that will be inserted into source.</param>
-        /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
+        /// <param name="second">The sequence that will be inserted.</param>
+        /// <param name="index">
+        /// The zero-based index at which to insert elements from
+        /// <paramref name="second"/>.</param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="source"/>
-        /// plus the elements of <paramref name="second"/>, inserted at the specified index.
+        /// plus the elements of <paramref name="second"/> inserted at
+        /// the given index.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="second"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown eagerly if <paramref name="index"/> is negative.
+        /// Thrown if <paramref name="index"/> is negative.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">  
-        /// Thrown lazily if <paramref name="index"/> is greater than the length of <paramref name="source"/> 
-        /// (when trying yield the next element after completely iterating the elements of the <paramref name="source"/>).
+        /// Thrown lazily if <paramref name="index"/> is greater than the
+        /// length of <paramref name="source"/>. The validation occurs when
+        /// yielding the next element after having iterated
+        /// <paramref name="source"/> entirely.
         /// </exception>
         
         public static IEnumerable<T> InsertAt<T>(this IEnumerable<T> source, IEnumerable<T> second, int index)
