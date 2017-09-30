@@ -17,14 +17,13 @@
 
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
     public class ScanRightTest
     {
         // ScanRight(source, func)
-	
+        
         [Test]
         public void ScanRightWithEmptySequence()
         {
@@ -62,7 +61,7 @@ namespace MoreLinq.Test
         }
 
         // ScanRight(source, seed, func)
-		
+                
         [TestCase(5)]
         [TestCase("c")]
         [TestCase(true)]

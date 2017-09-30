@@ -22,7 +22,6 @@ namespace MoreLinq.Test
 {
     using System.Globalization;
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class ToDelimitedStringTest
@@ -30,7 +29,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithEmptySequence()
         {
-            Assert.That(LinqEnumerable.Empty<int>().ToDelimitedString(), Is.Empty);
+            Assert.That(Enumerable.Empty<int>().ToDelimitedString(), Is.Empty);
         }
 
         [Test]

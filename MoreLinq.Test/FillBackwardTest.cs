@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
