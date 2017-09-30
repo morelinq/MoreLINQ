@@ -100,7 +100,7 @@ namespace MoreLinq
             }
         }
 
-        private static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IList<TSource>, ScanRightSeedCount<TResult>?> seeder)
+        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IList<TSource>, ScanRightSeedCount<TResult>?> seeder)
         {
             var list = (source as IList<TSource>) ?? source.ToList();
 

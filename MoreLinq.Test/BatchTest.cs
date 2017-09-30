@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -27,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void BatchZeroSize()
         {
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 new object[0].Batch(0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 new object[0].Batch(-1));
         }
 

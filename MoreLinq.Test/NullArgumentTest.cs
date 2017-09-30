@@ -21,7 +21,6 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using NUnit.Framework;
@@ -112,7 +111,20 @@ namespace MoreLinq.Test
             var nullableTypes =
                 from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
                 select t.GetTypeInfo();
-            var nullableParameters = new[] { "Assert.errorSelector", "ToDataTable.expressions", "ToDelimitedString.delimiter", "Trace.format" };
+
+            var nullableParameters = new[]
+            {
+                nameof(MoreEnumerable.Assert) + ".errorSelector",
+                nameof(MoreEnumerable.From) + ".function",
+                nameof(MoreEnumerable.From) + ".function1",
+                nameof(MoreEnumerable.From) + ".function2",
+                nameof(MoreEnumerable.From) + ".function3",
+                #if NET451 || NETCOREAPP2_0
+                nameof(MoreEnumerable.ToDataTable) + ".expressions",
+                #endif
+                nameof(MoreEnumerable.ToDelimitedString) + ".delimiter",
+                nameof(MoreEnumerable.Trace) + ".format"
+            };
 
             var type = parameter.ParameterType.GetTypeInfo();
             type = type.IsGenericType ? type.GetGenericTypeDefinition().GetTypeInfo() : type;
@@ -172,9 +184,9 @@ namespace MoreLinq.Test
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             }
 
-            public class OrderedEnumerable<T> : Enumerable<T>, IOrderedEnumerable<T>
+            public class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T>
             {
-                public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
+                public System.Linq.IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
                 {
                     if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
                     return this;

@@ -207,9 +207,9 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             // This should be removed once the target framework is bumped to something that supports covariance
-            Func<TKey, IList<TSource>, TResult> resultSelectorWrapper = (key, group) => resultSelector(key, group);
+            TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
 
-            return GroupAdjacentImpl(source, keySelector, i => i, resultSelectorWrapper,
+            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
                                      EqualityComparer<TKey>.Default);
         }
 
@@ -253,12 +253,12 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             
             // This should be removed once the target framework is bumped to something that supports covariance
-            Func<TKey, IList<TSource>, TResult> resultSelectorWrapper = (key, group) => resultSelector(key, group);
-            return GroupAdjacentImpl(source, keySelector, i => i, resultSelectorWrapper,
+            TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
+            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
                                      comparer ?? EqualityComparer<TKey>.Default);
         }
 
-        private static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
+        static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
@@ -298,7 +298,7 @@ namespace MoreLinq
             }
         }
 
-        private static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members)
+        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members)
         {
             Debug.Assert(members != null);
             return Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
@@ -306,18 +306,16 @@ namespace MoreLinq
 
         static class Grouping
         {
-            public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members)
-            {
-                return new Grouping<TKey, TElement>(key, members);
-            }
+            public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members) =>
+                new Grouping<TKey, TElement>(key, members);
         }
 
         #if !NO_SERIALIZATION_ATTRIBUTES
         [Serializable]
         #endif
-        private sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
+        sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
         {
-            private readonly IEnumerable<TElement> _members;
+            readonly IEnumerable<TElement> _members;
 
             public Grouping(TKey key, IEnumerable<TElement> members)
             {
@@ -326,17 +324,10 @@ namespace MoreLinq
                 _members = members;
             }
 
-            public TKey Key { get; private set; }
+            public TKey Key { get; }
 
-            public IEnumerator<TElement> GetEnumerator()
-            {
-                return _members.GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            public IEnumerator<TElement> GetEnumerator() => _members.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

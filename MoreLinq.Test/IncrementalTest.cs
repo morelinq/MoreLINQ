@@ -3,7 +3,6 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -29,7 +28,7 @@ namespace MoreLinq.Test
         public void TestNullSequenceException1()
         {
             const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
+            AssertThrowsArgument.NullException("sequence", () =>
                 sequence.Incremental((prev, next) => prev + next));
         }
 
@@ -40,7 +39,7 @@ namespace MoreLinq.Test
         public void TestNullSequenceException2()
         {
             const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
+            AssertThrowsArgument.NullException("sequence", () =>
                 sequence.Incremental((prev, next, i) => prev + next));
         }
 

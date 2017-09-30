@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class AtMostTest
@@ -26,20 +25,20 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",
+            AssertThrowsArgument.OutOfRangeException("count",
                 () => new[] { 1 }.AtMost(-1));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(0));
+            Assert.IsTrue(Enumerable.Empty<int>().AtMost(0));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(1));
+            Assert.IsTrue(Enumerable.Empty<int>().AtMost(1));
         }
 
         [Test]

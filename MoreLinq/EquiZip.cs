@@ -160,8 +160,8 @@ namespace MoreLinq
         {
             using (var e1 = first.GetEnumerator())
             using (var e2 = second.GetEnumerator())
-            using (var e3 = third  != null ? third.GetEnumerator()  : null)
-            using (var e4 = fourth != null ? fourth.GetEnumerator() : null)
+            using (var e3 = third?.GetEnumerator())
+            using (var e4 = fourth?.GetEnumerator())
             {
                 while (e1.MoveNext())
                 {

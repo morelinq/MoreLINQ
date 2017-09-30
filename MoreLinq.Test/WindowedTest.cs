@@ -1,6 +1,5 @@
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -26,7 +25,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 sequence.Windowed(-5));
         }
 

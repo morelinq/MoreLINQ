@@ -155,9 +155,22 @@ Immediately executes the given action on each element in the source sequence.
 
 This method has 2 overloads.
 
+### From
+
+Returns a sequence containing the values resulting from invoking (in order)
+each function in the source sequence of functions.
+
+This method has 4 overloads.
+
 ### FullGroupJoin
 
 Performs a Full Group Join between the and sequences.
+
+This method has 4 overloads.
+
+### FullJoin
+
+Performs a full outer join between two sequences.
 
 This method has 4 overloads.
 
@@ -214,6 +227,12 @@ by a positive offset.
 
 This method has 2 overloads.
 
+### LeftJoin
+
+Performs a left outer join between two sequences.
+
+This method has 4 overloads.
+
 ### MaxBy
 
 Returns the maximal element of the given sequence, based on the given
@@ -227,6 +246,11 @@ Returns the minimal element of the given sequence, based on the given
 projection.
 
 This method has 2 overloads.
+
+### Move
+
+Returns a sequence with a range of elements in the source sequence
+moved to a new offset.
 
 ### NestedLoops
 
@@ -339,6 +363,12 @@ This method has 2 overloads.
 Repeats the sequence indefinitely or a specific number of times.
 
 This method has 2 overloads.
+
+### RightJoin
+
+Performs a right outer join between two sequences.
+
+This method has 4 overloads.
 
 ### RunLengthEncode
 
