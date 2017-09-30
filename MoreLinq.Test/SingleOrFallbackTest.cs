@@ -20,9 +20,7 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Linq;
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class SingleOrFallbackTest
@@ -30,12 +28,12 @@ namespace MoreLinq.Test
         [Test]
         public void SingleOrFallbackWithEmptySequence()
         {
-            Assert.AreEqual(5, LinqEnumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
+            Assert.AreEqual(5, Enumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
         }
         [Test]
         public void SingleOrFallbackWithEmptySequenceIListOptimized()
         {
-            Assert.AreEqual(5, LinqEnumerable.Empty<int>().SingleOrFallback(() => 5));
+            Assert.AreEqual(5, Enumerable.Empty<int>().SingleOrFallback(() => 5));
         }
 
         [Test]

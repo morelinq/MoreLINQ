@@ -7,6 +7,12 @@ skip_commits:
     - lic/*
 build_script:
 - ps: >-
+    grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir MoreLinq.Test\*Test.cs)
+
+    if ($LASTEXITCODE -eq 0) {
+        throw 'Unit tests should not import System.Linq'
+    }
+
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
 
     $id = $id.Substring(0, 13)
