@@ -55,22 +55,16 @@ namespace MoreLinq.Test
 
             var allocators = Futures(() => a = new Disposable(),
                                      () => b = new Disposable(),
-                                     () => { throw new ApplicationException(); },
+                                     () => throw new ApplicationException(),
                                      () => c = new Disposable());
 
-            try
-            {
-                allocators.Acquire();
-                Assert.Fail();
-            }
-            catch (ApplicationException)
-            {
-                Assert.That(a, Is.Not.Null);
-                Assert.That(a.Disposed, Is.True);
-                Assert.That(b, Is.Not.Null);
-                Assert.That(b.Disposed, Is.True);
-                Assert.That(c, Is.Null);
-            }
+            Assert.Throws<ApplicationException>(() => allocators.Acquire());
+
+            Assert.That(a, Is.Not.Null);
+            Assert.That(a.Disposed, Is.True);
+            Assert.That(b, Is.Not.Null);
+            Assert.That(b.Disposed, Is.True);
+            Assert.That(c, Is.Null);
         }
 
         static IEnumerable<T> Futures<T>(params Func<T>[] allocators)

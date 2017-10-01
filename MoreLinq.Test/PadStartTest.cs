@@ -19,7 +19,6 @@ namespace MoreLinq.Test
 {
     using NUnit.Framework;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
 
     [TestFixture]
@@ -30,7 +29,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width", () => new int[0].PadStart(-1));
+            AssertThrowsArgument.Exception("width", () => new int[0].PadStart(-1));
         }
 
         [Test]
@@ -53,7 +52,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithPaddingWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width", () => new int[0].PadStart(-1, 1));
+            AssertThrowsArgument.Exception("width", () => new int[0].PadStart(-1, 1));
         }
 
         [Test]
@@ -76,7 +75,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithSelectorWithNegativeWidth()
         {
-            Assert.ThrowsArgumentException("width", () => new int[0].PadStart(-1, x => x));
+            AssertThrowsArgument.Exception("width", () => new int[0].PadStart(-1, x => x));
         }
 
         [Test]

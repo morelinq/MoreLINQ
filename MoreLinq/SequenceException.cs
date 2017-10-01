@@ -31,7 +31,7 @@ namespace MoreLinq
 #endif
     public class SequenceException : Exception
     {
-        const string defaultMessage = "Error in sequence.";
+        const string DefaultMessage = "Error in sequence.";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceException"/> class. 
@@ -58,7 +58,7 @@ namespace MoreLinq
         /// <param name="innerException">The exception that is the cause of the current exception.</param>
 
         public SequenceException(string message, Exception innerException) :
-            base(string.IsNullOrEmpty(message) ? defaultMessage : message, innerException) { }
+            base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
 
 #if !NO_EXCEPTION_SERIALIZATION
         /// <summary>

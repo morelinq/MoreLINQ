@@ -1,6 +1,5 @@
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -25,7 +24,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadNegativeOffset()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
                 Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
         }
 
@@ -35,7 +34,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadZeroOffset()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
                 Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
         }
 

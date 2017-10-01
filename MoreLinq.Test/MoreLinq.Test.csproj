@@ -39,12 +39,14 @@
 
   <ItemGroup>
       <Compile Include="*Test.cs" />
-      <Compile Include="Assert.cs" />
+      <None Remove="TestResult.xml" />
+      <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
       <Compile Include="Comparer.cs" />
       <Compile Include="CurrentThreadCultureScope.cs" />
+      <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />
       <Compile Include="KeyValuePair.cs" />
       <Compile Include="Program.cs" />

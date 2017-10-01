@@ -36,7 +36,7 @@ namespace MoreLinq
         /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-        /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <param name="first">First sequence</param>
         /// <param name="second">Second sequence</param>
@@ -62,7 +62,7 @@ namespace MoreLinq
         /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-        /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <param name="first">First sequence</param>
         /// <param name="second">Second sequence</param>
@@ -93,7 +93,7 @@ namespace MoreLinq
         /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-        /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
         /// <param name="first">First sequence</param>
@@ -122,7 +122,7 @@ namespace MoreLinq
         /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-        /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
         /// <param name="first">First sequence</param>

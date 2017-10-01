@@ -1,6 +1,5 @@
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -43,7 +42,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                  Enumerable.Range(1, 10).Repeat(-3));
         }
 

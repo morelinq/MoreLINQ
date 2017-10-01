@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
-    using LinqEnumerable = System.Linq.Enumerable;
 
     [TestFixture]
     public class ExactlyTest
@@ -26,20 +25,20 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                 new[] { 1 }.Exactly(-1));
         }
 
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().Exactly(0));
+            Assert.IsTrue(Enumerable.Empty<int>().Exactly(0));
         }
 
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyOneElement()
         {
-            Assert.IsFalse(LinqEnumerable.Empty<int>().Exactly(1));
+            Assert.IsFalse(Enumerable.Empty<int>().Exactly(1));
         }
 
         [Test]

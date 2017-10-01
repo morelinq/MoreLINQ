@@ -160,15 +160,9 @@ namespace MoreLinq
                     _continue = _subset.Length > 0;
                 }
 
-                public IList<T> Current
-                {
-                    get { return (IList<T>)_subset.Clone(); }
-                }
+                public IList<T> Current => (IList<T>)_subset.Clone();
 
-                object IEnumerator.Current
-                {
-                    get { return Current; }
-                }
+                object IEnumerator.Current => Current;
 
                 public bool MoveNext()
                 {
