@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content).
         /// </remarks>
-
+        
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
@@ -80,7 +80,7 @@ namespace MoreLinq
 
                     // Select is necessary so bucket contents are streamed too
                     yield return resultSelector(bucket);
-
+                
                     bucket = null;
                     count = 0;
                 }

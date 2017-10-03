@@ -44,21 +44,21 @@ namespace MoreLinq
                 source is ICollection<T> col
                 ? col.Take(col.Count - count)
                 : _(); IEnumerable<T> _()
-            {
-                var queue = new Queue<T>(count);
-
-                foreach (var item in source)
                 {
-                    if (queue.Count < count)
-                    {
-                        queue.Enqueue(item);
-                        continue;
-                    }
+                    var queue = new Queue<T>(count);
 
-                    yield return queue.Dequeue();
-                    queue.Enqueue(item);
+                    foreach (var item in source)
+                    {
+                        if (queue.Count < count)
+                        {
+                            queue.Enqueue(item);
+                            continue;
+                        }
+
+                        yield return queue.Dequeue();
+                        queue.Enqueue(item);
+                    }
                 }
-            }
         }
     }
 }

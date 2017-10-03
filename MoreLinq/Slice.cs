@@ -49,12 +49,12 @@ namespace MoreLinq
             return !(sequence is IList<T> list)
                  ? sequence.Skip(startIndex).Take(count)
                  : _(count); IEnumerable<T> _(int countdown)
-            {
-                var listCount = list.Count;
-                var index = startIndex;
-                while (index < listCount && countdown-- > 0)
-                    yield return list[index++];
-            }
+                 {
+                     var listCount = list.Count;
+                     var index = startIndex;
+                     while (index < listCount && countdown-- > 0)
+                         yield return list[index++];
+                 }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void TraceSequenceWithSomeNullElements()
         {
-            var trace = Lines(CaptureTrace(() => new int?[] { 1, null, 2, null, 3 }.Trace().Consume()));
+            var trace = Lines(CaptureTrace(() => new int?[] {1, null, 2, null, 3}.Trace().Consume()));
             trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
         }
 
@@ -52,7 +52,8 @@ namespace MoreLinq.Test
         [Test]
         public void TraceSequenceWithFormatting()
         {
-            var trace = Lines(CaptureTrace(delegate {
+            var trace = Lines(CaptureTrace(delegate
+            {
                 using (new CurrentThreadCultureScope(CultureInfo.InvariantCulture))
                     new[] { 1234, 5678 }.Trace("{0:N0}").Consume();
             }));
@@ -63,7 +64,8 @@ namespace MoreLinq.Test
         [Test]
         public void TraceSequenceWithFormatter()
         {
-            var trace = Lines(CaptureTrace(delegate {
+            var trace = Lines(CaptureTrace(delegate
+            {
                 var formatter = CultureInfo.InvariantCulture;
                 new int?[] { 1234, null, 5678 }.Trace(n => n.HasValue
                                                            ? n.Value.ToString("N0", formatter)

@@ -59,7 +59,7 @@ namespace MoreLinq
             return source.ToLookup(e => e.Key, e => e.Value, comparer);
         }
 
-#if !NO_VALUE_TUPLES
+        #if !NO_VALUE_TUPLES
 
         /// <summary>
         /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
@@ -98,6 +98,6 @@ namespace MoreLinq
             return source.ToLookup(e => e.Key, e => e.Value, comparer);
         }
 
-#endif
+        #endif
     }
 }

@@ -25,8 +25,8 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryNegativeSkip()
         {
-            AssertThrowsArgument.OutOfRangeException("step", () =>
-                 new object[0].TakeEvery(-1));
+            AssertThrowsArgument.OutOfRangeException("step",() =>
+                new object[0].TakeEvery(-1));
         }
 
         [Test]

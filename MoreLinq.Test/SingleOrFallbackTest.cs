@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         [Test]
         public void SingleOrFallbackWithSingleElementSequence()
         {
-            Assert.AreEqual(10, new[] { 10 }.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>()));
+            Assert.AreEqual(10, new[]{10}.Select(x => x).SingleOrFallback(BreakingFunc.Of<int>()));
         }
         [Test]
         public void SingleOrFallbackWithSingleElementSequenceIListOptimized()

@@ -139,7 +139,7 @@ namespace MoreLinq
         /// </returns>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
+             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, 
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));

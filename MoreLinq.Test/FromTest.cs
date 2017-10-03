@@ -47,11 +47,11 @@ namespace MoreLinq.Test
 
             switch (numArgs)
             {
-            case 1: MoreEnumerable.From(F1).AssertSequenceEqual(F1()); break;
-            case 2: MoreEnumerable.From(F1, F2).AssertSequenceEqual(F1(), F2()); break;
-            case 3: MoreEnumerable.From(F1, F2, F3).AssertSequenceEqual(F1(), F2(), F3()); break;
-            case 4: MoreEnumerable.From(F1, F2, F3, F4).AssertSequenceEqual(F1(), F2(), F3(), F4()); break;
-            default: throw new ArgumentOutOfRangeException(nameof(numArgs));
+                case 1: MoreEnumerable.From(F1).AssertSequenceEqual(F1()); break;
+                case 2: MoreEnumerable.From(F1, F2).AssertSequenceEqual(F1(), F2()); break;
+                case 3: MoreEnumerable.From(F1, F2, F3).AssertSequenceEqual(F1(), F2(), F3()); break;
+                case 4: MoreEnumerable.From(F1, F2, F3, F4).AssertSequenceEqual(F1(), F2(), F3(), F4()); break;
+                default: throw new ArgumentOutOfRangeException(nameof(numArgs));
             }
         }
 
@@ -61,7 +61,7 @@ namespace MoreLinq.Test
         [TestCase(4)]
         public void TestFromInvokesMethodsMultipleTimes(int numArgs)
         {
-            var evals = new[] { 0, 0, 0, 0 };
+            var evals = new [] { 0, 0, 0, 0 };
             int F1() { evals[0]++; return -2; }
             int F2() { evals[1]++; return -2; }
             int F3() { evals[2]++; return -2; }
@@ -70,11 +70,11 @@ namespace MoreLinq.Test
             IEnumerable<int> results;
             switch (numArgs)
             {
-            case 1: results = MoreEnumerable.From(F1); break;
-            case 2: results = MoreEnumerable.From(F1, F2); break;
-            case 3: results = MoreEnumerable.From(F1, F2, F3); break;
-            case 4: results = MoreEnumerable.From(F1, F2, F3, F4); break;
-            default: throw new ArgumentOutOfRangeException(nameof(numArgs));
+                case 1: results = MoreEnumerable.From(F1); break;
+                case 2: results = MoreEnumerable.From(F1, F2); break;
+                case 3: results = MoreEnumerable.From(F1, F2, F3); break;
+                case 4: results = MoreEnumerable.From(F1, F2, F3, F4); break;
+                default: throw new ArgumentOutOfRangeException(nameof(numArgs));
             }
 
             results.Consume();

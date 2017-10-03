@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         public void TestCartesianOfEmptyAndNonEmpty()
         {
             var sequenceA = Enumerable.Empty<int>();
-            var sequenceB = Enumerable.Repeat(1, 10);
+            var sequenceB = Enumerable.Repeat(1,10);
             var resultA = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
             var resultB = sequenceB.Cartesian(sequenceA, (a, b) => a + b);
 
@@ -54,14 +54,14 @@ namespace MoreLinq.Test
         {
             const int countA = 100;
             const int countB = 75;
-            const int expectedCount = countA * countB;
+            const int expectedCount = countA*countB;
             var sequenceA = Enumerable.Range(1, countA);
             var sequenceB = Enumerable.Range(1, countB);
             var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-            Assert.AreEqual(expectedCount, result.Count());
+            Assert.AreEqual( expectedCount, result.Count() );
         }
-
+        
         /// <summary>
         /// Verify that each combination is produced in the Cartesian product
         /// </summary>

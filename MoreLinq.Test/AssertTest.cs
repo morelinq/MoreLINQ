@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithValidAllElements()
         {
-            var source = new[] { 2, 4, 6, 8 };
+            var source = new[] {2, 4, 6, 8};
             source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
         }
 

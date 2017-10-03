@@ -38,7 +38,7 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
+        
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             return Assert(source, predicate, null);
@@ -58,8 +58,8 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
-        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source,
+        
+        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, 
             Func<TSource, bool> predicate, Func<TSource, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

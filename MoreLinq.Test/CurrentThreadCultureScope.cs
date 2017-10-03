@@ -21,7 +21,7 @@ namespace MoreLinq.Test
 
     sealed class CurrentThreadCultureScope : Scope<CultureInfo>
     {
-        public CurrentThreadCultureScope(CultureInfo @new) :
+        public CurrentThreadCultureScope(CultureInfo @new) : 
             base(CultureInfo.CurrentCulture)
         {
             Install(@new);

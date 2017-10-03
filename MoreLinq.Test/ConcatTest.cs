@@ -121,9 +121,9 @@ namespace MoreLinq.Test
         [Test]
         public void ConcatWithSharedSource()
         {
-            var first = new[] { 1 }.Concat(2);
+            var first  = new [] { 1 }.Concat(2);
             var second = first.Concat(3).Concat(4);
-            var third = first.Concat(4).Concat(8);
+            var third  = first.Concat(4).Concat(8);
 
             second.AssertSequenceEqual(1, 2, 3, 4);
             third.AssertSequenceEqual(1, 2, 4, 8);

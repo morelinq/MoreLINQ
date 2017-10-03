@@ -39,7 +39,8 @@ namespace MoreLinq.Test
             testCase();
 
         static IEnumerable<ITestCaseData> GetNotNullTestCases() =>
-            GetTestCases(canBeNull: false, testCaseFactory: (method, args, paramName) => () => {
+            GetTestCases(canBeNull: false, testCaseFactory: (method, args, paramName) => () =>
+            {
                 Exception e = null;
 
                 try
@@ -53,7 +54,7 @@ namespace MoreLinq.Test
 
                 Assert.That(e, Is.Not.Null, $"No exception was thrown when {nameof(ArgumentNullException)} was expected.");
                 Assert.That(e, Is.InstanceOf<ArgumentNullException>());
-                var ane = (ArgumentNullException)e;
+                var ane = (ArgumentNullException) e;
                 Assert.That(ane.ParamName, Is.EqualTo(paramName));
                 var stackTrace = new StackTrace(ane, false);
                 var stackFrame = stackTrace.GetFrames().First();
@@ -65,7 +66,7 @@ namespace MoreLinq.Test
             GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
 
         static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory) =>
-            from m in typeof(MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            from m in typeof (MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
             from t in CreateTestCases(m, canBeNull, testCaseFactory)
             select t;
 
@@ -75,11 +76,11 @@ namespace MoreLinq.Test
             var parameters = method.GetParameters().ToList();
 
             return from param in parameters
-                   where IsReferenceType(param) && CanBeNull(param) == canBeNull
-                   let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-                   let testCase = testCaseFactory(method, arguments, param.Name)
-                   let testName = GetTestName(methodDefinition, param)
-                   select (ITestCaseData)new TestCaseData(testCase).SetName(testName);
+                where IsReferenceType(param) && CanBeNull(param) == canBeNull
+                let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
+                let testCase = testCaseFactory(method, arguments, param.Name)
+                let testName = GetTestName(methodDefinition, param)
+                select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
         }
 
         static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
@@ -97,7 +98,7 @@ namespace MoreLinq.Test
         {
             var constraints = typeParameter.GetGenericParameterConstraints();
 
-            if (constraints.Length == 0) return typeof(int);
+            if (constraints.Length == 0) return typeof (int);
             if (constraints.Length == 1) return constraints.Single();
 
             throw new NotImplementedException("NullArgumentTest.InstantiateType");
@@ -109,7 +110,7 @@ namespace MoreLinq.Test
         static bool CanBeNull(ParameterInfo parameter)
         {
             var nullableTypes =
-                from t in new[] { typeof(IEqualityComparer<>), typeof(IComparer<>) }
+                from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
                 select t.GetTypeInfo();
 
             var nullableParameters = new[]
@@ -135,8 +136,8 @@ namespace MoreLinq.Test
 
         static object CreateInstance(Type type)
         {
-            if (type == typeof(int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
-            if (type == typeof(string)) return "";
+            if (type == typeof (int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
+            if (type == typeof (string)) return "";
             if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
             if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
@@ -161,7 +162,7 @@ namespace MoreLinq.Test
         {
             Debug.Assert(type.IsGenericType && type.IsInterface);
             var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
-            var definition = typeof(GenericArgs).GetTypeInfo().GetNestedType(name);
+            var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
             var instantiation = definition.MakeGenericType(type.GetGenericArguments());
             return Activator.CreateInstance(instantiation);
         }

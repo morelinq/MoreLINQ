@@ -97,7 +97,8 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () => {
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+            {
                 sequence.RandomSubset(subsetSize).Consume();
             });
         }
@@ -113,7 +114,8 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () => {
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+            {
                 sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
             });
         }

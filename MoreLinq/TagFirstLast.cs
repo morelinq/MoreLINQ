@@ -54,7 +54,7 @@ namespace MoreLinq
         /// <c>{ Number = 456, IsFirst = False, IsLast = False }</c> and 
         /// <c>{ Number = 789, IsFirst = False, IsLast = True }</c> in turn.
         /// </example>
-
+        
         public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

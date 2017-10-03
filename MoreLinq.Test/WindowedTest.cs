@@ -26,8 +26,8 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                 sequence.Windowed(-5));
+            AssertThrowsArgument.OutOfRangeException("size",() =>
+                sequence.Windowed(-5));
         }
 
         /// <summary>

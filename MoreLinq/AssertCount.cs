@@ -22,7 +22,7 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-#if MORELINQ
+        #if MORELINQ
 
         static readonly Func<int, int, Exception> DefaultErrorSelector = OnAssertCountFailure;
 
@@ -40,7 +40,7 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
+        
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count) =>
             AssertCountImpl(source, count, DefaultErrorSelector);
 
@@ -61,22 +61,22 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
-        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
+        
+        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector) =>
             AssertCountImpl(source, count, errorSelector);
 
         static Exception OnAssertCountFailure(int cmp, int count)
         {
-            var message = cmp < 0
+            var message = cmp < 0 
                         ? "Sequence contains too few elements when exactly {0} were expected."
                         : "Sequence contains too many elements when exactly {0} were expected.";
             return new SequenceException(string.Format(message, count.ToString("N0")));
         }
 
-#endif
+        #endif
 
-        static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
+        static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
             int count, Func<int, int, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

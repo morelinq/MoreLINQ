@@ -23,7 +23,7 @@ namespace MoreLinq
     using System.Linq;
 
     public static partial class MoreEnumerable
-    {
+    {      
         /// <summary>
         /// Returns a sequence of <see cref="IList{T}"/> representing all of
         /// the subsets of any size that are part of the original sequence. In
@@ -41,7 +41,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
-
+        
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -87,7 +87,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
         /// </exception>
-
+        
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             if (sequence == null)
@@ -114,7 +114,6 @@ namespace MoreLinq
         /// <summary>
         /// This class is responsible for producing the lexographically ordered k-subsets
         /// </summary>
-
         sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
         {
             /// <summary>
@@ -142,7 +141,7 @@ namespace MoreLinq
                     // precondition: subsetSize <= set.Count
                     if (subsetSize > set.Count)
                         throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
-
+                    
                     // initialize set arrays...
                     _set = set;
                     _subset = new T[subsetSize];

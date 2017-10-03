@@ -35,7 +35,7 @@ namespace MoreLinq
         /// <param name="action">Action delegate for which to produce a nested loop sequence</param>
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
         /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
-
+       
         public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
@@ -53,7 +53,7 @@ namespace MoreLinq
             }
 
             int? NextLoopCount(IEnumerator<int> iter)
-                => !iter.MoveNext() ? (int?)null
+                => !iter.MoveNext() ? (int?) null
                  : iter.Current >= 0 ? iter.Current
                  : throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
         }

@@ -54,7 +54,7 @@ namespace MoreLinq
             return ScanRightImpl(source, func,
                                  list => list.Count > 0
                                        ? new ScanRightSeedCount<TSource>(list.Last(), list.Count - 1)
-                                       : (ScanRightSeedCount<TSource>?)null);
+                                       : (ScanRightSeedCount<TSource>?) null);
         }
 
         /// <summary>
@@ -90,13 +90,13 @@ namespace MoreLinq
 
         struct ScanRightSeedCount<T> // TODO Use a tuple when we can drop .NET 3.5 target
         {
-            public readonly T Seed;
-            public readonly int Count;
+            public readonly T    Seed;
+            public readonly int  Count;
 
             public ScanRightSeedCount(T seed, int count)
             {
-                Seed = seed;
-                Count = count;
+                Seed   = seed;
+                Count  = count;
             }
         }
 

@@ -40,11 +40,11 @@ namespace MoreLinq.Test
             var loopCounts = Enumerable.Range(1, count);
             var nestedLoops = loopBody.NestedLoops(loopCounts.AsTestingSequence());
 
-            nestedLoops.ForEach(act => act()); // perform all actions
+            nestedLoops.ForEach( act => act() ); // perform all actions
 
-            Assert.AreEqual(expectedCount, i);
-            Assert.AreEqual(expectedCount, nestedLoops.Count());
-            Assert.IsTrue(nestedLoops.All(act => act == loopBody));
+            Assert.AreEqual( expectedCount, i );
+            Assert.AreEqual( expectedCount, nestedLoops.Count() );
+            Assert.IsTrue( nestedLoops.All( act => act == loopBody ));
         }
     }
 }

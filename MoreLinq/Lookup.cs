@@ -55,8 +55,7 @@ namespace MoreLinq
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
             Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
-            foreach (TSource item in source)
-            {
+            foreach (TSource item in source) {
                 lookup.GetGrouping(keySelector(item), true).Add(elementSelector(item));
             }
             return lookup;
@@ -65,8 +64,7 @@ namespace MoreLinq
         internal static Lookup<TKey, TElement> CreateForJoin(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
-            foreach (TElement item in source)
-            {
+            foreach (TElement item in source) {
                 TKey key = keySelector(item);
                 if (key != null) lookup.GetGrouping(key, true).Add(item);
             }
@@ -87,7 +85,8 @@ namespace MoreLinq
 
         public IEnumerable<TElement> this[TKey key]
         {
-            get {
+            get
+            {
                 Grouping<TKey, TElement> grouping = GetGrouping(key, false);
                 if (grouping != null) return grouping;
                 return Enumerable.Empty<TElement>();
@@ -102,10 +101,8 @@ namespace MoreLinq
         public IEnumerator<IGrouping<TKey, TElement>> GetEnumerator()
         {
             Grouping<TKey, TElement> g = _lastGrouping;
-            if (g != null)
-            {
-                do
-                {
+            if (g != null) {
+                do {
                     g = g.next;
                     yield return g;
                 } while (g != _lastGrouping);
@@ -115,10 +112,8 @@ namespace MoreLinq
         public IEnumerable<TResult> ApplyResultSelector<TResult>(Func<TKey, IEnumerable<TElement>, TResult> resultSelector)
         {
             Grouping<TKey, TElement> g = _lastGrouping;
-            if (g != null)
-            {
-                do
-                {
+            if (g != null) {
+                do {
                     g = g.next;
                     if (g.count != g.elements.Length) { Array.Resize<TElement>(ref g.elements, g.count); }
                     yield return resultSelector(g.key, g.elements);
@@ -142,8 +137,7 @@ namespace MoreLinq
             int hashCode = InternalGetHashCode(key);
             for (Grouping<TKey, TElement> g = _groupings[hashCode % _groupings.Length]; g != null; g = g.hashNext)
                 if (g.hashCode == hashCode && _comparer.Equals(g.key, key)) return g;
-            if (create)
-            {
+            if (create) {
                 if (_count == _groupings.Length) Resize();
                 int index = hashCode % _groupings.Length;
                 Grouping<TKey, TElement> g = new Grouping<TKey, TElement>();
@@ -152,12 +146,10 @@ namespace MoreLinq
                 g.elements = new TElement[1];
                 g.hashNext = _groupings[index];
                 _groupings[index] = g;
-                if (_lastGrouping == null)
-                {
+                if (_lastGrouping == null) {
                     g.next = g;
                 }
-                else
-                {
+                else {
                     g.next = _lastGrouping.next;
                     _lastGrouping.next = g;
                 }
@@ -173,8 +165,7 @@ namespace MoreLinq
             int newSize = checked(_count * 2 + 1);
             Grouping<TKey, TElement>[] newGroupings = new Grouping<TKey, TElement>[newSize];
             Grouping<TKey, TElement> g = _lastGrouping;
-            do
-            {
+            do {
                 g = g.next;
                 int index = g.hashCode % newSize;
                 g.hashNext = newGroupings[index];
@@ -273,11 +264,13 @@ namespace MoreLinq
 
         TElement IList<TElement>.this[int index]
         {
-            get {
+            get
+            {
                 if (index < 0 || index >= count) throw new ArgumentOutOfRangeException(nameof(index));
                 return elements[index];
             }
-            set {
+            set
+            {
                 throw new NotSupportedException("Lookup is immutable");
             }
         }
