@@ -4,7 +4,6 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
 		build.cmd = build.cmd
 		buildw.cmd = buildw.cmd
 		COPYING.txt = COPYING.txt
