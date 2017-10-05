@@ -8,7 +8,7 @@ trim_trailing_whitespace = true
 [*.xml]
 indent_style = space
 
-[*.cs]
+[*.{cs,tt}]
 charset = utf-8
 indent_style = space
 indent_size = 4
