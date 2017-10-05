@@ -4,6 +4,7 @@ skip_commits:
   files:
     - '*.md'
     - '*.txt'
+    - '.editorconfig'
     - lic/*
 build_script:
 - ps: >-
