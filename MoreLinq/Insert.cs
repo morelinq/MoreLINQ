@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <paramref name="source"/> entirely.
         /// </exception>
         
-        public static IEnumerable<T> InsertAt<T>(this IEnumerable<T> source, IEnumerable<T> second, int index)
+        public static IEnumerable<T> Insert<T>(this IEnumerable<T> source, IEnumerable<T> second, int index)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (second == null) throw new ArgumentNullException(nameof(second));

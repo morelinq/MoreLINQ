@@ -20,22 +20,22 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class InsertAtTest
+    public class InsertTest
     {
         [Test]
-        public void InsertAtWithNegativeIndex()
+        public void InsertWithNegativeIndex()
         {
             AssertThrowsArgument.OutOfRangeException("index", () =>
-                 Enumerable.Range(1, 10).InsertAt(new[] { 97, 98, 99 }, -1));
+                 Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1));
         }
 
         [TestCase(7)]
         [TestCase(8)]
         [TestCase(9)]
-        public void InsertAtWithIndexGreaterThanSourceLengthMaterialized(int count)
+        public void InsertWithIndexGreaterThanSourceLengthMaterialized(int count)
         {
             var source = Enumerable.Range(0, count).ToList();
-            var result = source.InsertAt(new[] { 97, 98, 99 }, count + 1);
+            var result = source.Insert(new[] { 97, 98, 99 }, count + 1);
 
             AssertThrowsArgument.OutOfRangeException("index", () =>
                 result.ForEach((e, index) => 
@@ -45,11 +45,11 @@ namespace MoreLinq.Test
         [TestCase(7)]
         [TestCase(8)]
         [TestCase(9)]
-        public void InsertAtWithIndexGreaterThanSourceLengthLazy(int count)
+        public void InsertWithIndexGreaterThanSourceLengthLazy(int count)
         {
             var source = Enumerable.Range(0, count);
 
-            var result = source.InsertAt(new[] { 97, 98, 99 }, count + 1)
+            var result = source.Insert(new[] { 97, 98, 99 }, count + 1)
                                .Take(count)
                                .ToList();
 
@@ -60,13 +60,13 @@ namespace MoreLinq.Test
         [TestCase(3, 1)]
         [TestCase(3, 2)]
         [TestCase(3, 3)]
-        public void InsertAt(int count, int index)
+        public void Insert(int count, int index)
         {
             var source = Enumerable.Range(1, count);
 
             var second = new[] { 97, 98, 99 };
 
-            var result = source.InsertAt(second, index);
+            var result = source.Insert(second, index);
 
             var expectations = source.Take(index).Concat(second).Concat(source.Skip(index));
 
@@ -74,9 +74,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void InsertAtIsLazy()
+        public void InsertIsLazy()
         {
-            new BreakingSequence<int>().InsertAt(new BreakingSequence<int>(), 0);
+            new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
         }
     }
 }
