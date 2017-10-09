@@ -206,6 +206,10 @@ the source sequence.
 
 This method has 2 overloads.
 
+### Insert
+
+Inserts the elements of a sequence into another sequence at a specified index.
+
 ### Interleave
 
 Interleaves the elements of two or more sequences into a single sequence,
