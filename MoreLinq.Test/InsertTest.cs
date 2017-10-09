@@ -62,10 +62,10 @@ namespace MoreLinq.Test
         [TestCase(3, 3)]
         public void Insert(int count, int index)
         {
-            var source = Enumerable.Range(1, count);
+            var first = Enumerable.Range(1, count);
             var second = new[] { 97, 98, 99 };
-            var result = source.Insert(second, index);
-            var expectations = source.Take(index).Concat(second).Concat(source.Skip(index));
+            var result = first.Insert(second, index);
+            var expectations = first.Take(index).Concat(second).Concat(first.Skip(index));
 
             Assert.That(result, Is.EqualTo(expectations));
         }
