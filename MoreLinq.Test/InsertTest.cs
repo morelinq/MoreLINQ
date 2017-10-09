@@ -38,7 +38,7 @@ namespace MoreLinq.Test
             var result = source.Insert(new[] { 97, 98, 99 }, count + 1);
 
             AssertThrowsArgument.OutOfRangeException("index", () =>
-                result.ForEach((e, index) => 
+                result.ForEach((e, index) =>
                     Assert.That(e, Is.EqualTo(source[index]))));
         }
 
@@ -63,11 +63,8 @@ namespace MoreLinq.Test
         public void Insert(int count, int index)
         {
             var source = Enumerable.Range(1, count);
-
             var second = new[] { 97, 98, 99 };
-
             var result = source.Insert(second, index);
-
             var expectations = source.Take(index).Concat(second).Concat(source.Skip(index));
 
             Assert.That(result, Is.EqualTo(expectations));

@@ -22,7 +22,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-
         /// <summary>
         /// Inserts the elements of a sequence into another sequence at a
         /// specified index.
@@ -43,13 +42,13 @@ namespace MoreLinq
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="index"/> is negative.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">  
+        /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown lazily if <paramref name="index"/> is greater than the
         /// length of <paramref name="source"/>. The validation occurs when
         /// yielding the next element after having iterated
         /// <paramref name="source"/> entirely.
         /// </exception>
-        
+
         public static IEnumerable<T> Insert<T>(this IEnumerable<T> source, IEnumerable<T> second, int index)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
