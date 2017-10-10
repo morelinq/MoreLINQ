@@ -143,17 +143,14 @@ namespace MoreLinq
         /// Class used to assist in ensuring that groups of disposable iterators
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
-        
-        private sealed class DisposableGroup<T> : IDisposable
+        sealed class DisposableGroup<T> : IDisposable
         {
-            public DisposableGroup(IEnumerable<IEnumerator<T>> iterators)
-            {
+            public DisposableGroup(IEnumerable<IEnumerator<T>> iterators) =>
                 Iterators = new List<IEnumerator<T>>(iterators);
-            }
 
-            public List<IEnumerator<T>> Iterators { get; private set; }
+            public List<IEnumerator<T>> Iterators { get; }
 
-            public IEnumerator<T> this[int index] { get { return Iterators[index]; } }
+            public IEnumerator<T> this[int index] => Iterators[index];
 
             public void Exclude(int index)
             {
@@ -161,10 +158,8 @@ namespace MoreLinq
                 Iterators.RemoveAt(index);
             }
 
-            public void Dispose()
-            {
+            public void Dispose() =>
                 Iterators.ForEach(iter => iter.Dispose());
-            }
         }
     }
 }

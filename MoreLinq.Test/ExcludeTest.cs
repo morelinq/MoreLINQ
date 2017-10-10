@@ -1,6 +1,5 @@
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -24,7 +23,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeNegativeStartIndexException()
         {
-            Assert.ThrowsArgumentOutOfRangeException("startIndex",() =>
+            AssertThrowsArgument.OutOfRangeException("startIndex",() =>
                 Enumerable.Range(1, 10).Exclude(-10, 10));
         }
 
@@ -34,8 +33,20 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeNegativeCountException()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",() =>
+            AssertThrowsArgument.OutOfRangeException("count",() =>
                 Enumerable.Range(1, 10).Exclude(0, -5));
+        }
+
+        /// <summary>
+        /// Verify that excluding with count equals zero returns the original source
+        /// </summary>
+        [Test]
+        public void TestExcludeWithCountEqualsZero()
+        {
+            var sequence = Enumerable.Range(1, 10);
+            var resultA = sequence.Exclude(5, 0);
+
+            Assert.That(resultA, Is.SameAs(sequence));
         }
 
         /// <summary>

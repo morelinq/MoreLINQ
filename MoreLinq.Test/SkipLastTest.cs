@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]

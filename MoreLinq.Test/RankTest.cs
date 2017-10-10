@@ -1,7 +1,6 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -125,7 +124,7 @@ namespace MoreLinq.Test
                                };
             var result = sequence.AsTestingSequence().RankBy(x => x.Age).ToArray();
 
-            Assert.AreEqual(sequence.Count(), result.Length);
+            Assert.AreEqual(sequence.Length, result.Length);
             Assert.IsTrue(result.SequenceEqual(sequence.Select(x => x.ExpectedRank)));
         }
 

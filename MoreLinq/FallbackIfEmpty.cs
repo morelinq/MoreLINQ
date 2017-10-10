@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -155,51 +154,58 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
-            return FallbackIfEmptyImpl(source, 0, default(T), default(T), default(T), default(T), fallback);
+            return FallbackIfEmptyImpl(source, null, default(T), default(T), default(T), default(T), fallback);
         }
 
         static IEnumerable<T> FallbackIfEmptyImpl<T>(IEnumerable<T> source,
             int? count, T fallback1, T fallback2, T fallback3, T fallback4,
             IEnumerable<T> fallback)
         {
-            var collection = source as ICollection<T>;
-            if (collection != null && collection.Count == 0)
+            if (source is ICollection<T> collection)
             {
-                //
-                // Replace the empty collection with an empty sequence and
-                // carry on. LINQ's Enumerable.Empty is implemented
-                // intelligently to return the same enumerator instance and so
-                // does not incur an allocation. However, the same cannot be
-                // said for a collection like an empty array or list. This
-                // permits the rest of the logic while keeping the call to
-                // source.GetEnumerator() cheap.
-                //
-
-                source = Enumerable.Empty<T>();
-            }
-
-            using (var e = source.GetEnumerator())
-            {
-                if (e.MoveNext())
+                if (collection.Count == 0)
                 {
-                    do { yield return e.Current; }
-                    while (e.MoveNext());
+                    return Fallback();
                 }
                 else
                 {
-                    e.Dispose(); // eager disposal
-                    if (count > 0 && count <= 4)
+                    return collection;
+                }
+            }
+
+            return _();
+
+            IEnumerable<T> _()
+            {
+                using (var e = source.GetEnumerator())
+                {
+                    if (e.MoveNext())
                     {
-                        yield return fallback1;
-                        if (count > 1) yield return fallback2;
-                        if (count > 2) yield return fallback3;
-                        if (count > 3) yield return fallback4;
+                        do { yield return e.Current; }
+                        while (e.MoveNext());
+                        yield break;
                     }
-                    else
-                    {
-                        foreach (var item in fallback)
-                            yield return item;
-                    }
+                }
+
+                foreach (var item in Fallback())
+                    yield return item;
+            }
+
+            IEnumerable<T> Fallback()
+            {
+                switch (count)
+                {
+                    case null: return fallback;
+                    case int n when n >= 1 && n <= 4: return FallbackOnArgs();
+                    default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
+                }
+
+                IEnumerable<T> FallbackOnArgs()
+                {
+                    yield return fallback1;
+                    if (count > 1) yield return fallback2;
+                    if (count > 2) yield return fallback3;
+                    if (count > 3) yield return fallback4;
                 }
             }
         }

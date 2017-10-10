@@ -1,7 +1,6 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -73,7 +72,7 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
             Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
@@ -116,7 +115,7 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
             Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 

@@ -2,7 +2,6 @@ namespace MoreLinq.Test
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     /// <summary>
@@ -27,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
                 Enumerable.Range(1, 10).RandomSubset(-5));
         }
 
@@ -37,7 +36,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
                 Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
         }
 
@@ -97,9 +96,9 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
             {
-                sequence.RandomSubset(subsetSize).Count();
+                sequence.RandomSubset(subsetSize).Consume();
             });
         }
 
@@ -114,9 +113,9 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
             {
-                sequence.RandomSubset(subsetSize, new Random(1234)).Count();
+                sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
             });
         }
 
@@ -200,8 +199,8 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(subsetSize);
 
             // force complete enumeration of random subsets
-            resultA.Count();
-            resultB.Count();
+            resultA.Consume();
+            resultB.Consume();
 
             // verify the original sequence is untouched
             Assert.IsTrue(sequence.SequenceEqual(sequenceClone));

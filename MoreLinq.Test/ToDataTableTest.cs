@@ -21,7 +21,6 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
-    using System.Linq;
     using System.Linq.Expressions;
     using NUnit.Framework;
 
@@ -69,7 +68,7 @@ namespace MoreLinq.Test
         {
             Expression<Func<TestObject, object>> expression = null;
 
-            Assert.ThrowsArgumentException("expressions",() =>
+            AssertThrowsArgument.Exception("expressions",() =>
                 _testObjects.ToDataTable<TestObject>(expression));
         }
 
@@ -79,7 +78,7 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("Test");
 
-            Assert.ThrowsArgumentException("table",() =>
+            AssertThrowsArgument.Exception("table",() =>
                 _testObjects.ToDataTable(dt));
         }
 
@@ -89,14 +88,14 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
-            Assert.ThrowsArgumentException("table",() =>
+            AssertThrowsArgument.Exception("table",() =>
                 _testObjects.ToDataTable(dt, t=>t.AString));
         }
 
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            Assert.ThrowsArgumentException("lambda", () =>
+            AssertThrowsArgument.Exception("lambda", () =>
                 _testObjects.ToDataTable(t => t.ToString()));
         }
 
@@ -104,14 +103,14 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            Assert.ThrowsArgumentException("lambda", () =>
+            AssertThrowsArgument.Exception("lambda", () =>
                 _testObjects.ToDataTable(t => t.ToString().Length));
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            Assert.ThrowsArgumentException("lambda",() =>
+            AssertThrowsArgument.Exception("lambda",() =>
                 _testObjects.ToDataTable(t => t[0]));
         }
 
@@ -173,7 +172,7 @@ namespace MoreLinq.Test
             vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
                 .ToDataTable(dt, e => e.Name, e => e.Value);
 
-            var rows = dt.AsEnumerable().ToArray();
+            var rows = dt.Rows.Cast<DataRow>().ToArray();
             Assert.That(rows.Length, Is.EqualTo(vars.Length));
             Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));

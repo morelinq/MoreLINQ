@@ -10,7 +10,7 @@ which msbuild 2>/dev/null || {
 }
 
 for d in local/share share; do
-    SDK_DIR=/usr/$d/dotnet/sdk/1.0.1
+    SDK_DIR=/usr/$d/dotnet/sdk/2.0.0
     if [ -d $SDK_DIR ]; then break; fi
 done
 
