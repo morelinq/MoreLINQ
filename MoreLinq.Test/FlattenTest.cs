@@ -1,0 +1,100 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+namespace MoreLinq.Test
+{
+    using NUnit.Framework;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    [TestFixture]
+    public class FlattenTest
+    {
+        [Test]
+        public void FlattenOfType()
+        {
+            var source = new List<object>()
+            {
+                1,
+                2,
+                new List<object>()
+                {
+                    3,
+                    new List<object>()
+                    {
+                        4,
+                        "foo"
+                    },
+                    5,
+                    true,
+                },
+                "bar",
+                6,
+                new List<int>()
+                {
+                    7,
+                    8,
+                    9,
+                    10
+                },
+            };
+
+            var result = source.Flatten();
+
+            Assert.AreEqual(result.Count(), 13);
+
+            result.OfType<int>().AssertSequenceEqual(Enumerable.Range(1, 10));
+            result.OfType<string>().AssertSequenceEqual(new[]{ "foo", "bar" });
+            result.OfType<bool>().AssertSequenceEqual(new[]{ true });
+        }
+
+
+        public void FlattenCast()
+        {
+            var source = new List<object> 
+            { 
+                1, 2, 3, 4, 5,
+                new List<object> 
+                {
+                    6, 7,
+                    new List<object> 
+                    {
+                        8, 9,
+                        new List<object> 
+                        {
+                            10, 11, 12, 
+                        },
+                        13, 14, 15, 
+                    },
+                    16, 17, 
+                },
+                18, 19, 20, 
+            };
+
+            var result = source.Flatten().Cast<int>();
+            var expectations = Enumerable.Range(1, 20); 
+
+            Assert.That(result, Is.EquivalentTo(expectations));
+        }
+
+        [Test]
+        public void FlattenIsLazy()
+        {
+            new BreakingSequence<int>().Flatten();
+        }
+    }
+}
