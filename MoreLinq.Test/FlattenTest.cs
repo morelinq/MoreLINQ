@@ -184,7 +184,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => true);
 
-            // result.AssertSequenceEqual(source);
+            result.AssertSequenceEqual(source);
         }
 
         [Test]

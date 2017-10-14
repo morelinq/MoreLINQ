@@ -142,7 +142,11 @@ namespace MoreLinq.Test
             if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
 
-            return CreateGenericInterfaceInstance(type.GetTypeInfo());
+            var typeInfo = type.GetTypeInfo();
+
+            return typeInfo.IsGenericType
+                    ? CreateGenericInterfaceInstance(typeInfo)
+                    : CreateNonGenericInterfaceInstance(typeInfo);
         }
 
         static bool HasDefaultConstructor(Type type) =>
@@ -166,7 +170,33 @@ namespace MoreLinq.Test
             return Activator.CreateInstance(instantiation);
         }
 
+        static object CreateNonGenericInterfaceInstance(TypeInfo type)
+        {
+            Debug.Assert(!type.IsGenericType && type.IsInterface);
+            var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
+            var definition = typeof (NonGenericArgs).GetTypeInfo().GetNestedType(name);
+            return Activator.CreateInstance(definition);
+        }
+
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
+        static class NonGenericArgs
+        {
+           class Enumerator : IEnumerator
+            {
+                public bool MoveNext() => false;
+                public object Current { get; private set; }
+                object IEnumerator.Current => Current;
+                public void Reset() { }
+                public void Dispose() { }
+            }
+
+            public class Enumerable : IEnumerable
+            {
+                public IEnumerator GetEnumerator() => new Enumerator();
+                IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            }
+        }
+
         static class GenericArgs
         {
             class Enumerator<T> : IEnumerator<T>
