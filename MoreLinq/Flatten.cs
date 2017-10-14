@@ -34,20 +34,44 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         public static IEnumerable<object> Flatten(this IEnumerable source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            return Flatten(source, obj => obj is string);
+        }
 
-            foreach (var e in source)
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <param name="isAtom">
+        /// A function that receives the elements that implements <see cref="IEnumerable"/>
+        /// and returns <c>true</c> case the element must be yielded in the resulting sequence
+        /// or <c>false</c> case the element must be treat as an inner sequence.
+        /// </param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and from all its inner sequences. 
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="isAtom"/> is null.</exception>
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, bool> isAtom)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (isAtom == null) throw new ArgumentNullException(nameof(isAtom));
+
+            return _(source); IEnumerable<object> _(IEnumerable sequence)
             {
-                if (e is IEnumerable seq)
+                foreach (var e in sequence)
                 {
-                    foreach (var i in Flatten(seq))
+                    if (e is IEnumerable inner && !isAtom(inner))
                     {
-                        yield return i;
+                        foreach (var i in _(inner))
+                        {
+                            yield return i;
+                        }
                     }
-                }
-                else
-                {
-                    yield return e;
+                    else
+                    {
+                        yield return e;
+                    }
                 }
             }
         }

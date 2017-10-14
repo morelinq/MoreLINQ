@@ -55,7 +55,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten();
 
-            Assert.AreEqual(result.Count(), 13);
+            Assert.AreEqual(13, result.Count());
 
             result.OfType<int>().AssertSequenceEqual(Enumerable.Range(1, 10));
             result.OfType<string>().AssertSequenceEqual(new[]{ "foo", "bar" });
@@ -95,6 +95,102 @@ namespace MoreLinq.Test
         public void FlattenIsLazy()
         {
             new BreakingSequence<int>().Flatten();
+        }
+
+        [Test]
+        public void FlattenAtom()
+        {
+            var source = new List<object>()
+            {
+                1,
+                2,
+                3,
+                "bar",
+                new List<object>
+                {
+                    4,
+                    new List<bool>
+                    {
+                        true, false
+                    },
+                    5,
+                },
+                6,
+                7,
+            };
+
+            var result = source.Flatten(obj => obj is List<bool>);
+
+            var expectations = new object [] 
+            {
+                1, 
+                2, 
+                3, 
+                'b', 
+                'a', 
+                'r',
+                4,
+                new List<bool> 
+                { 
+                    true, 
+                    false 
+                },
+                5,
+                6,
+                7,
+            };
+
+            Assert.That(result, Is.EquivalentTo(expectations));
+        }
+
+        [Test]
+        public void FlattenAtomAlwaysFalse()
+        {
+            var source = new List<object>()
+            {
+                1,
+                2,
+                3,
+                "bar",
+                new List<bool>()
+                {
+                    true,
+                    false,
+                },
+                6
+            };
+
+            var result = source.Flatten(_ => false);
+
+            result.AssertSequenceEqual(1, 2, 3, 'b', 'a', 'r', true, false, 6);
+        }
+
+        [Test]
+        public void FlattenAtomAlwaysTrue()
+        {
+            var source = new List<object>()
+            {
+                1,
+                2,
+                "bar",
+                3,
+                new List<int>()
+                {
+                    4,
+                    5,
+                },
+                6
+            };
+
+            var result = source.Flatten(_ => true);
+
+            result.AssertSequenceEqual(source);
+        }
+
+        [Test]
+        public void FlattenAtomIsLazy()
+        {
+            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
         }
     }
 }
