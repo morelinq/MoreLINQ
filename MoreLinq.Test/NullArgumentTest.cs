@@ -146,7 +146,7 @@ namespace MoreLinq.Test
 
             return typeInfo.IsGenericType
                     ? CreateGenericInterfaceInstance(typeInfo)
-                    : new NonGenericArgs.Enumerable();
+                    : EmptyEnumerable.Instance;
         }
 
         static bool HasDefaultConstructor(Type type) =>
@@ -170,25 +170,24 @@ namespace MoreLinq.Test
             return Activator.CreateInstance(instantiation);
         }
 
-        // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
-        static class NonGenericArgs
+        static class EmptyEnumerable
         {
-            class Enumerator : IEnumerator
-            {
-                public bool MoveNext() => false;
-                public object Current { get; private set; }
-                object IEnumerator.Current => Current;
-                public void Reset() { }
-                public void Dispose() { }
-            }
+            public static readonly IEnumerable Instance = new Enumerable();
 
-            public class Enumerable : IEnumerable
+            sealed class Enumerable : IEnumerable
             {
                 public IEnumerator GetEnumerator() => new Enumerator();
-                IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+                sealed class Enumerator : IEnumerator
+                {
+                    public bool MoveNext() => false;
+                    object IEnumerator.Current => throw new InvalidOperationException();
+                    public void Reset() { }
+                }
             }
         }
 
+        // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
         static class GenericArgs
         {
             class Enumerator<T> : IEnumerator<T>
