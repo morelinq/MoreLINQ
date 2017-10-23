@@ -18,6 +18,7 @@
 namespace MoreLinq
 {
     using System;
+    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -34,46 +35,70 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         public static IEnumerable<object> Flatten(this IEnumerable source)
         {
-            return Flatten(source, obj => obj is string);
+            return Flatten(source, obj => !(obj is string));
         }
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences.
         /// </summary>
         /// <param name="source">The sequence that will be flattened.</param>
-        /// <param name="isAtom">
+        /// <param name="predicate">
         /// A function that receives the elements that implements <see cref="IEnumerable"/>
-        /// and returns <c>true</c> case the element must be yielded in the resulting sequence
-        /// or <c>false</c> case the element must be treat as an inner sequence.
+        /// and returns <c>true</c> case the element must be treat as an inner sequence
+        /// or <c>false</c> case the element must be yielded in the resulting sequence.
         /// </param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="source"/>
         /// and from all its inner sequences. 
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="isAtom"/> is null.</exception>
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, bool> isAtom)
+        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (isAtom == null) throw new ArgumentNullException(nameof(isAtom));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return _(source); IEnumerable<object> _(IEnumerable sequence)
+            return _(); IEnumerable<object> _()
             {
-                foreach (var e in sequence)
+                var e = source.GetEnumerator();
+                var stack = new Stack<IEnumerator>();
+                var next = false;
+
+                stack.Push(e);
+
+                try
                 {
-                    if (e is IEnumerable inner && !isAtom(inner))
+                    while (stack.Any())
                     {
-                        foreach (var i in _(inner))
+                        e = stack.Pop();
+
+                        while ((next = e.MoveNext()))
                         {
-                            yield return i;
+                            if (e.Current is IEnumerable inner && predicate(inner))
+                            {
+                                stack.Push(e);
+                                stack.Push(inner.GetEnumerator());
+                                break;
+                            }
+                            else
+                            {
+                                yield return e.Current;
+                            }
+                        }
+
+                        if (!next)
+                        {
+                            (e as IDisposable)?.Dispose();
                         }
                     }
-                    else
-                    {
-                        yield return e;
-                    }
                 }
-            }
+                finally
+                {
+                    stack.Prepend(e)
+                         .OfType<IDisposable>()
+                         .ForEach(x => x.Dispose());
+                }
+            };
         }
     }
 }

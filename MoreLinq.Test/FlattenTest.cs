@@ -25,16 +25,16 @@ namespace MoreLinq.Test
     public class FlattenTest
     {
         [Test]
-        public void FlattenOfType()
+        public void Flatten()
         {
-            var source = new List<object>()
+            var source = new object[]
             {
                 1,
                 2,
-                new List<object>()
+                new object[]
                 {
                     3,
-                    new List<object>()
+                    new object[]
                     {
                         4,
                         "foo"
@@ -44,7 +44,7 @@ namespace MoreLinq.Test
                 },
                 "bar",
                 6,
-                new List<int>()
+                new int[]
                 {
                     7,
                     8,
@@ -55,11 +55,24 @@ namespace MoreLinq.Test
 
             var result = source.Flatten();
 
-            Assert.AreEqual(13, result.Count());
+            var expectations = new object[]
+            {
+                1,
+                2,
+                3,
+                4,
+                "foo",
+                5,
+                true,
+                "bar",
+                6,
+                7,
+                8,
+                9,
+                10
+            };
 
-            result.OfType<int>().AssertSequenceEqual(Enumerable.Range(1, 10));
-            result.OfType<string>().AssertSequenceEqual(new[]{ "foo", "bar" });
-            result.OfType<bool>().AssertSequenceEqual(new[]{ true });
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
 
@@ -98,7 +111,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void FlattenAtom()
+        public void FlattenPredicate()
         {
             var source = new List<object>()
             {
@@ -119,7 +132,7 @@ namespace MoreLinq.Test
                 7,
             };
 
-            var result = source.Flatten(obj => obj is List<bool>);
+            var result = source.Flatten(obj => !(obj is List<bool>));
 
             var expectations = new object [] 
             {
@@ -144,7 +157,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void FlattenAtomAlwaysFalse()
+        public void FlattenPredicateAlwaysFalse()
         {
             var source = new List<object>()
             {
@@ -166,7 +179,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void FlattenAtomAlwaysTrue()
+        public void FlattenPredicateAlwaysTrue()
         {
             var source = new List<object>()
             {
@@ -188,7 +201,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void FlattenAtomIsLazy()
+        public void FlattenPredicateIsLazy()
         {
             new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
         }
