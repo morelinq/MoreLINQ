@@ -44,7 +44,7 @@ namespace MoreLinq.Test
                 },
                 "bar",
                 6,
-                new int[]
+                new[]
                 {
                     7,
                     8,
@@ -113,7 +113,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicate()
         {
-            var source = new List<object>()
+            var source = new List<object>
             {
                 1,
                 2,
@@ -159,13 +159,13 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateAlwaysFalse()
         {
-            var source = new List<object>()
+            var source = new List<object>
             {
                 1,
                 2,
                 3,
                 "bar",
-                new List<bool>()
+                new List<bool>
                 {
                     true,
                     false,
@@ -181,13 +181,13 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateAlwaysTrue()
         {
-            var source = new List<object>()
+            var source = new List<object>
             {
                 1,
                 2,
                 "bar",
                 3,
-                new List<int>()
+                new List<int>
                 {
                     4,
                     5,

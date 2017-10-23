@@ -72,7 +72,7 @@ namespace MoreLinq
                         e = stack.Pop();
 
                         bool next;
-                        while ((next = e.MoveNext()))
+                        while (next = e.MoveNext())
                         {
                             if (e.Current is IEnumerable inner && predicate(inner))
                             {
