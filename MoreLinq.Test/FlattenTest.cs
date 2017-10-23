@@ -77,28 +77,28 @@ namespace MoreLinq.Test
 
         public void FlattenCast()
         {
-            var source = new List<object> 
-            { 
+            var source = new List<object>
+            {
                 1, 2, 3, 4, 5,
-                new List<object> 
+                new List<object>
                 {
                     6, 7,
-                    new List<object> 
+                    new List<object>
                     {
                         8, 9,
-                        new List<object> 
+                        new List<object>
                         {
-                            10, 11, 12, 
+                            10, 11, 12,
                         },
-                        13, 14, 15, 
+                        13, 14, 15,
                     },
-                    16, 17, 
+                    16, 17,
                 },
-                18, 19, 20, 
+                18, 19, 20,
             };
 
             var result = source.Flatten().Cast<int>();
-            var expectations = Enumerable.Range(1, 20); 
+            var expectations = Enumerable.Range(1, 20);
 
             Assert.That(result, Is.EquivalentTo(expectations));
         }
@@ -133,19 +133,19 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(obj => !(obj is List<bool>));
 
-            var expectations = new object [] 
+            var expectations = new object []
             {
-                1, 
-                2, 
-                3, 
-                'b', 
-                'a', 
+                1,
+                2,
+                3,
+                'b',
+                'a',
                 'r',
                 4,
-                new List<bool> 
-                { 
-                    true, 
-                    false 
+                new List<bool>
+                {
+                    true,
+                    false
                 },
                 5,
                 6,
