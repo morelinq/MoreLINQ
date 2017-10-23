@@ -62,7 +62,6 @@ namespace MoreLinq
             {
                 var e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
-                var next = false;
 
                 stack.Push(e);
 
@@ -72,6 +71,7 @@ namespace MoreLinq
                     {
                         e = stack.Pop();
 
+                        bool next;
                         while ((next = e.MoveNext()))
                         {
                             if (e.Current is IEnumerable inner && predicate(inner))
