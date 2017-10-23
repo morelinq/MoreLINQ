@@ -30,29 +30,35 @@ namespace MoreLinq
         /// <param name="source">The sequence that will be flattened.</param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="source"/>
-        /// and from all its inner sequences. 
+        /// and all nested sequences (except strings).
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+
         public static IEnumerable<object> Flatten(this IEnumerable source)
         {
             return Flatten(source, obj => !(obj is string));
         }
 
         /// <summary>
-        /// Flattens a sequence containing arbitrarily-nested sequences.
+        /// Flattens a sequence containing arbitrarily-nested sequences. An
+        /// additional parameter specifies a predicate function used to
+        /// determine whether a nested <see cref="IEnumerable"/> should be
+        /// flattened or not.
         /// </summary>
         /// <param name="source">The sequence that will be flattened.</param>
         /// <param name="predicate">
-        /// A function that receives the elements that implements <see cref="IEnumerable"/>
-        /// and returns <c>true</c> case the element must be treat as an inner sequence
-        /// or <c>false</c> case the element must be yielded in the resulting sequence.
+        /// A function that receives each element that implements
+        /// <see cref="IEnumerable"/> and indicates if its elements should be
+        /// recursively flattened into the resulting sequence.
         /// </param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="source"/>
-        /// and from all its inner sequences. 
+        /// and all nested sequences for which the predicate function
+        /// returned <c>true</c>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+
         public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
