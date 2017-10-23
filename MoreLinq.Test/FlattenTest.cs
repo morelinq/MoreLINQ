@@ -175,7 +175,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => false);
 
-            result.AssertSequenceEqual(1, 2, 3, 'b', 'a', 'r', true, false, 6);
+            result.AssertSequenceEqual(source);
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => true);
 
-            result.AssertSequenceEqual(source);
+            result.AssertSequenceEqual(1, 2, 'b', 'a', 'r', 3, 4, 5, 6);
         }
 
         [Test]
