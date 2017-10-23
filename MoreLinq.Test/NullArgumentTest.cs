@@ -173,7 +173,7 @@ namespace MoreLinq.Test
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
         static class NonGenericArgs
         {
-           class Enumerator : IEnumerator
+            class Enumerator : IEnumerator
             {
                 public bool MoveNext() => false;
                 public object Current { get; private set; }
