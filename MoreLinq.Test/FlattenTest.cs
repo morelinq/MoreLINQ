@@ -77,16 +77,16 @@ namespace MoreLinq.Test
 
         public void FlattenCast()
         {
-            var source = new List<object>
+            var source = new object[]
             {
                 1, 2, 3, 4, 5,
-                new List<object>
+                new object[]
                 {
                     6, 7,
-                    new List<object>
+                    new object[]
                     {
                         8, 9,
-                        new List<object>
+                        new object[]
                         {
                             10, 11, 12,
                         },
@@ -112,16 +112,16 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicate()
         {
-            var source = new List<object>
+            var source = new object[]
             {
                 1,
                 2,
                 3,
                 "bar",
-                new List<object>
+                new object[]
                 {
                     4,
-                    new List<bool>
+                    new[]
                     {
                         true, false
                     },
@@ -131,9 +131,9 @@ namespace MoreLinq.Test
                 7,
             };
 
-            var result = source.Flatten(obj => !(obj is List<bool>));
+            var result = source.Flatten(obj => !(obj is IEnumerable<bool>));
 
-            var expectations = new object []
+            var expectations = new object[]
             {
                 1,
                 2,
@@ -142,7 +142,7 @@ namespace MoreLinq.Test
                 'a',
                 'r',
                 4,
-                new List<bool>
+                new[]
                 {
                     true,
                     false
@@ -158,13 +158,13 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateAlwaysFalse()
         {
-            var source = new List<object>
+            var source = new object[]
             {
                 1,
                 2,
                 3,
                 "bar",
-                new List<bool>
+                new[]
                 {
                     true,
                     false,
@@ -180,13 +180,13 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateAlwaysTrue()
         {
-            var source = new List<object>
+            var source = new object[]
             {
                 1,
                 2,
                 "bar",
                 3,
-                new List<int>
+                new[]
                 {
                     4,
                     5,
