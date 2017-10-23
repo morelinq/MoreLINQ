@@ -34,10 +34,8 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source)
-        {
-            return Flatten(source, obj => !(obj is string));
-        }
+        public static IEnumerable<object> Flatten(this IEnumerable source) =>
+            Flatten(source, obj => !(obj is string));
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
