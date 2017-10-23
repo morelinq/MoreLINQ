@@ -75,14 +75,16 @@ namespace MoreLinq
                     {
                         e = stack.Pop();
 
+                        reloop:
+
                         bool next;
                         while (next = e.MoveNext())
                         {
                             if (e.Current is IEnumerable inner && predicate(inner))
                             {
                                 stack.Push(e);
-                                stack.Push(inner.GetEnumerator());
-                                break;
+                                e = inner.GetEnumerator();
+                                goto reloop;
                             }
                             else
                             {
