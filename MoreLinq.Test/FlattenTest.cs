@@ -234,9 +234,7 @@ namespace MoreLinq.Test
                 Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
             }
  
-            inner1.Dispose();
-            inner2.Dispose();
-            inner3.Dispose();
+            new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
         [Test]
@@ -261,9 +259,7 @@ namespace MoreLinq.Test
                 test.Flatten().Consume();
             }
  
-            inner1.Dispose();
-            inner2.Dispose();
-            inner3.Dispose();
+            new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
     }
 }
