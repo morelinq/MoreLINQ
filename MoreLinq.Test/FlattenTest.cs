@@ -256,7 +256,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                test.Flatten().Consume();
+                Assert.Throws<InvalidOperationException>(() =>
+                    test.Flatten().Consume());
             }
  
             new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
