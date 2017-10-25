@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System;
     using System.Collections.Generic;
 
     [TestFixture]
@@ -203,6 +204,66 @@ namespace MoreLinq.Test
         public void FlattenPredicateIsLazy()
         {
             new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
+        }
+
+        [Test]
+        public void FlattenFullIteratedDisposesInnerSequences()
+        {
+            var inner1 = TestingSequence.Of(4, 5);
+            var inner2 = TestingSequence.Of(true, false);
+            var inner3 = TestingSequence.Of<object>(6, inner2, 7);
+
+            var source = new object[]
+            {
+                inner1,
+                inner3,
+            };
+
+            var expectations = new object[]
+            {
+                4, 
+                5,
+                6, 
+                true, 
+                false, 
+                7,
+            };
+
+            using (var test = source.AsTestingSequence())
+            {
+                Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
+            }
+ 
+            inner1.Dispose();
+            inner2.Dispose();
+            inner3.Dispose();
+        }
+
+        [Test]
+        public void FlattenInterruptedIterationDisposesInnerSequences()
+        {
+            var inner1 = TestingSequence.Of(4, 5);
+
+            var inner2 = new[] { true, false }
+                               .Select<bool, bool>(x => throw new InvalidOperationException())
+                               .AsTestingSequence();
+            
+            var inner3 = TestingSequence.Of<object>(6, inner2, 7);
+
+            var source = new object[]
+            {
+                inner1,
+                inner3,
+            };
+
+            using (var test = source.AsTestingSequence())
+            {
+                test.Flatten().Consume();
+            }
+ 
+            inner1.Dispose();
+            inner2.Dispose();
+            inner3.Dispose();
         }
     }
 }
