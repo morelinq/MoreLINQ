@@ -128,20 +128,16 @@ namespace MoreLinq
                         bool next;
                         while (next = e.MoveNext())
                         {
-                            if (e.Current is IEnumerable inner && predicate(inner))
+                            if (IsIEnumerable(e.Current))
                             {
-                                stack.Push(e);
-                                e = inner.GetEnumerator();
                                 goto reloop;
                             }
                             else
                             {
                                 var projected = selector(e.Current);
 
-                                if (projected is IEnumerable innerProjected && predicate(innerProjected))
+                                if (IsIEnumerable(projected))
                                 {
-                                    stack.Push(e);
-                                    e = innerProjected.GetEnumerator();
                                     goto reloop;
                                 }
                                 else
@@ -162,6 +158,20 @@ namespace MoreLinq
                     stack.Prepend(e)
                          .OfType<IDisposable>()
                          .ForEach(x => x.Dispose());
+                }
+
+                bool IsIEnumerable(object o)
+                {
+                    if (o is IEnumerable inner && predicate(inner))
+                    {
+                        stack.Push(e);
+                        e = inner.GetEnumerator();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             };
         }
