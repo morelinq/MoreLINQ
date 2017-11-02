@@ -128,7 +128,7 @@ namespace MoreLinq
                         bool next;
                         while (next = e.MoveNext())
                         {
-                            if (IsIEnumerable(e.Current))
+                            if (IsSequence(e.Current))
                             {
                                 goto reloop;
                             }
@@ -136,7 +136,7 @@ namespace MoreLinq
                             {
                                 var projected = selector(e.Current);
 
-                                if (IsIEnumerable(projected))
+                                if (IsSequence(projected))
                                 {
                                     goto reloop;
                                 }
@@ -160,7 +160,7 @@ namespace MoreLinq
                          .ForEach(x => x.Dispose());
                 }
 
-                bool IsIEnumerable(object o)
+                bool IsSequence(object o)
                 {
                     if (o is IEnumerable inner && predicate(inner))
                     {
