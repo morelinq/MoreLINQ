@@ -331,7 +331,7 @@ namespace MoreLinq.Test
                     case int i:
                         return i;
                     default:
-                        return new[] { };
+                        return new object[] { };
                 }
             });
 
