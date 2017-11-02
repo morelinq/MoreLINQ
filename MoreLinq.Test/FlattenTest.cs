@@ -262,5 +262,91 @@ namespace MoreLinq.Test
  
             new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
+
+        [Test]
+        public void FlattenSelector()
+        {
+            var source = new List<Serie>
+            {
+                new Serie
+                {
+                    Name = "serie1",
+                    Attributes = new List<Attribute>
+                    {
+                        new Attribute { Values = new List<int> { 1, 2 } },
+                        new Attribute { Values = new List<int> { 3, 4 } },
+                    }
+                },
+                new Serie
+                {
+                    Name = "serie2",
+                    Attributes = new List<Attribute>
+                    {
+                        new Attribute { Values = new List<int> { 5, 6 } },
+                    }
+                }
+            };
+
+            var result = source.Flatten(obj => 
+            {
+                switch (obj)
+                {
+                    case Serie s:
+                        return new object[] { s.Name, s.Attributes };
+                    case Attribute a:
+                        return a.Values;
+                    default:
+                        return obj;
+                }
+            });
+
+            result.AssertSequenceEqual("serie1", 1, 2, 3, 4, "serie2", 5, 6);
+        }
+
+        [Test]
+        public void FlattenSelectorFilteringOnlyIntegers()
+        {
+            var source = new object[]
+            {
+                true,
+                false,
+                1,
+                "bar",
+                new object[]
+                {
+                    2,
+                    new[]
+                    {
+                        3,
+                    },
+                },
+                'c',
+                4,
+            };
+
+            var result = source.Flatten(obj => 
+            {
+                switch (obj)
+                {
+                    case int i:
+                        return i;
+                    default:
+                        return new[] { };
+                }
+            });
+
+            result.AssertSequenceEqual(1, 2, 3, 4);
+        }
+
+        class Serie
+        {
+            public string Name;
+            public List<Attribute> Attributes;   
+        }
+
+        class Attribute
+        {
+            public List<int> Values;   
+        }
     }
 }

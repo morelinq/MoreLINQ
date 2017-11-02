@@ -35,7 +35,30 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
         public static IEnumerable<object> Flatten(this IEnumerable source) =>
-            Flatten(source, obj => !(obj is string));
+            Flatten(source, obj => obj, obj => !(obj is string));
+
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences. An
+        /// additional parameter specifies a predicate function used to
+        /// determine whether a nested <see cref="IEnumerable"/> should be
+        /// flattened or not.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <param name="selector">
+        /// A function that receives each element that implements
+        /// <see cref="IEnumerable"/> and indicates if its elements should be
+        /// recursively flattened into the resulting sequence.
+        /// </param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and all nested sequences for which the predicate function
+        /// returned <c>true</c>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="selector"/> is null.</exception>
+
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, object> selector) => 
+            Flatten(source, selector, obj => !(obj is string));
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -57,9 +80,34 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate) => 
+            Flatten(source, obj => obj, predicate);
+
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences. An
+        /// additional parameter specifies a predicate function used to
+        /// determine whether a nested <see cref="IEnumerable"/> should be
+        /// flattened or not.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <param name="selector">The sequence that will be flattened.</param>
+        /// <param name="predicate">
+        /// A function that receives each element that implements
+        /// <see cref="IEnumerable"/> and indicates if its elements should be
+        /// recursively flattened into the resulting sequence.
+        /// </param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and all nested sequences for which the predicate function
+        /// returned <c>true</c>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, object> selector, Func<IEnumerable, bool> predicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
             return _(); IEnumerable<object> _()
@@ -88,7 +136,18 @@ namespace MoreLinq
                             }
                             else
                             {
-                                yield return e.Current;
+                                var projected = selector(e.Current);
+
+                                if (projected is IEnumerable innerProjected && predicate(innerProjected))
+                                {
+                                    stack.Push(e);
+                                    e = innerProjected.GetEnumerator();
+                                    goto reloop;
+                                }
+                                else
+                                {
+                                    yield return projected;
+                                }
                             }
                         }
 
