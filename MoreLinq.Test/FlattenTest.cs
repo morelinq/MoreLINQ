@@ -266,20 +266,20 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenSelector()
         {
-            var source = new List<Serie>
+            var source = new List<Series>
             {
-                new Serie
+                new Series
                 {
-                    Name = "serie1",
+                    Name = "series1",
                     Attributes = new List<Attribute>
                     {
                         new Attribute { Values = new List<int> { 1, 2 } },
                         new Attribute { Values = new List<int> { 3, 4 } },
                     }
                 },
-                new Serie
+                new Series
                 {
-                    Name = "serie2",
+                    Name = "series2",
                     Attributes = new List<Attribute>
                     {
                         new Attribute { Values = new List<int> { 5, 6 } },
@@ -291,7 +291,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case Serie s:
+                    case Series s:
                         return new object[] { s.Name, s.Attributes };
                     case Attribute a:
                         return a.Values;
@@ -300,7 +300,7 @@ namespace MoreLinq.Test
                 }
             });
 
-            result.AssertSequenceEqual("serie1", 1, 2, 3, 4, "serie2", 5, 6);
+            result.AssertSequenceEqual("series1", 1, 2, 3, 4, "series2", 5, 6);
         }
 
         [Test]
@@ -338,7 +338,7 @@ namespace MoreLinq.Test
             result.AssertSequenceEqual(1, 2, 3, 4);
         }
 
-        class Serie
+        class Series
         {
             public string Name;
             public List<Attribute> Attributes;
