@@ -266,23 +266,23 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenSelector()
         {
-            var source = new List<Series>
+            var source = new[]
             {
                 new Series
                 {
                     Name = "series1",
-                    Attributes = new List<Attribute>
+                    Attributes = new[]
                     {
-                        new Attribute { Values = new List<int> { 1, 2 } },
-                        new Attribute { Values = new List<int> { 3, 4 } },
+                        new Attribute { Values = new[] { 1, 2 } },
+                        new Attribute { Values = new[] { 3, 4 } },
                     }
                 },
                 new Series
                 {
                     Name = "series2",
-                    Attributes = new List<Attribute>
+                    Attributes = new[]
                     {
-                        new Attribute { Values = new List<int> { 5, 6 } },
+                        new Attribute { Values = new[] { 5, 6 } },
                     }
                 }
             };
@@ -341,12 +341,12 @@ namespace MoreLinq.Test
         class Series
         {
             public string Name;
-            public List<Attribute> Attributes;
+            public Attribute[] Attributes;
         }
 
         class Attribute
         {
-            public List<int> Values;
+            public int[] Values;
         }
     }
 }
