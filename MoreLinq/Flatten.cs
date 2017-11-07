@@ -57,7 +57,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="selector"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, object> selector) => 
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, object> selector) =>
             Flatten(source, selector, obj => !(obj is string));
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate) => 
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate) =>
             Flatten(source, obj => obj, predicate);
 
         /// <summary>

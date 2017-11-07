@@ -221,11 +221,11 @@ namespace MoreLinq.Test
 
             var expectations = new object[]
             {
-                4, 
+                4,
                 5,
-                6, 
-                true, 
-                false, 
+                6,
+                true,
+                false,
                 7,
             };
 
@@ -233,7 +233,7 @@ namespace MoreLinq.Test
             {
                 Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
             }
- 
+
             new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
@@ -245,7 +245,7 @@ namespace MoreLinq.Test
             var inner2 = new[] { true, false }
                                .Select<bool, bool>(x => throw new InvalidOperationException())
                                .AsTestingSequence();
-            
+
             var inner3 = TestingSequence.Of<object>(6, inner2, 7);
 
             var source = new object[]
@@ -259,7 +259,7 @@ namespace MoreLinq.Test
                 Assert.Throws<InvalidOperationException>(() =>
                     test.Flatten().Consume());
             }
- 
+
             new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
@@ -287,7 +287,7 @@ namespace MoreLinq.Test
                 }
             };
 
-            var result = source.Flatten(obj => 
+            var result = source.Flatten(obj =>
             {
                 switch (obj)
                 {
@@ -324,7 +324,7 @@ namespace MoreLinq.Test
                 4,
             };
 
-            var result = source.Flatten(obj => 
+            var result = source.Flatten(obj =>
             {
                 switch (obj)
                 {
@@ -341,12 +341,12 @@ namespace MoreLinq.Test
         class Serie
         {
             public string Name;
-            public List<Attribute> Attributes;   
+            public List<Attribute> Attributes;
         }
 
         class Attribute
         {
-            public List<int> Values;   
+            public List<int> Values;
         }
     }
 }
