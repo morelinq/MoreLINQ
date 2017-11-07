@@ -58,7 +58,9 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(); 
+            
+            IEnumerable<TResult> _()
             {
                 TSource[] bucket = null;
                 var count = 0;
