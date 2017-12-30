@@ -175,7 +175,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => false);
 
-            result.AssertSequenceEqual(source);
+            Assert.That(result, Is.EquivalentTo(source));
         }
 
         [Test]
@@ -209,58 +209,54 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenFullIteratedDisposesInnerSequences()
         {
-            var inner1 = TestingSequence.Of(4, 5);
-            var inner2 = TestingSequence.Of(true, false);
-            var inner3 = TestingSequence.Of<object>(6, inner2, 7);
-
-            var source = new object[]
+            using (var inner1 = TestingSequence.Of(4, 5))
+            using (var inner2 = TestingSequence.Of(true, false))
+            using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
             {
-                inner1,
-                inner3,
-            };
+                var source = new object[]
+                {
+                    inner1,
+                    inner3,
+                };
 
-            var expectations = new object[]
-            {
-                4, 
-                5,
-                6, 
-                true, 
-                false, 
-                7,
-            };
+                var expectations = new object[]
+                {
+                    4, 
+                    5,
+                    6, 
+                    true, 
+                    false, 
+                    7,
+                };
 
-            using (var test = source.AsTestingSequence())
-            {
-                Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
+                using (var test = source.AsTestingSequence())
+                {
+                    Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
+                }
             }
- 
-            new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
         [Test]
         public void FlattenInterruptedIterationDisposesInnerSequences()
         {
-            var inner1 = TestingSequence.Of(4, 5);
-
-            var inner2 = new[] { true, false }
+            using (var inner1 = TestingSequence.Of(4, 5))
+            using (var inner2 = new[] { true, false }
                                .Select<bool, bool>(x => throw new InvalidOperationException())
-                               .AsTestingSequence();
-            
-            var inner3 = TestingSequence.Of<object>(6, inner2, 7);
-
-            var source = new object[]
+                               .AsTestingSequence())
+            using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
             {
-                inner1,
-                inner3,
-            };
+                var source = new object[]
+                {
+                    inner1,
+                    inner3,
+                };
 
-            using (var test = source.AsTestingSequence())
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                    test.Flatten().Consume());
+                using (var test = source.AsTestingSequence())
+                {
+                    Assert.Throws<InvalidOperationException>(() =>
+                        test.Flatten().Consume());
+                }
             }
- 
-            new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
     }
 }
