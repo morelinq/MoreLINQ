@@ -197,7 +197,20 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => true);
 
-            result.AssertSequenceEqual(1, 2, 'b', 'a', 'r', 3, 4, 5, 6);
+            var expectations = new object[]
+            {
+                1,
+                2,
+                'b',
+                'a',
+                'r',
+                3,
+                4,
+                5,
+                6
+            };
+
+            Assert.That(result, Is.EquivalentTo(expectations));
         }
 
         [Test]
