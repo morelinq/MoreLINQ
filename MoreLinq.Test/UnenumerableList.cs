@@ -10,12 +10,31 @@ namespace MoreLinq.Test
     /// method of <see cref="IEnumerable"/> - either because they should be using the indexer or because they are
     /// expected to be lazily evaluated.
     /// </summary>
-
-    sealed class UnenumerableList<T> : IList<T>
+    public sealed class UnenumerableList<T> : UnenumerableListBase<T>, IList<T>
     {
+    }
+
+#if IREADONLY
+    /// <summary>
+    /// This class implement <see cref="IReadOnlyList{T}"/> but specifically prohibits enumeration using GetEnumerator().
+    /// It is provided to assist in testing extension methods that MUST NOT call the GetEnumerator()
+    /// method of <see cref="IEnumerable"/> - either because they should be using the indexer or because they are
+    /// expected to be lazily evaluated.
+    /// </summary>
+    public sealed class UnenumerableReadOnlyList<T> : UnenumerableListBase<T>, IReadOnlyList<T>
+    {
+    }
+#endif
+
+    public abstract class UnenumerableListBase<T> : IEnumerable
+    {
+        internal UnenumerableListBase()
+        {
+        }
+
         readonly List<T> _list = new List<T>();
 
-        // intentionally implemented to thow exception - ensures iteration is not used in Slice
+        // intentionally implemented to throw exception - ensures iteration is not used in Slice
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public IEnumerator<T> GetEnumerator() => throw new NotImplementedException();
         // all other IList<T> members are forwarded back to the underlying private list

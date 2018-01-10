@@ -61,12 +61,16 @@
     <DefineConstants>$(DefineConstants);MORELINQ;NO_VALUE_TUPLES</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'netstandard2.0' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40'">
     <DefineConstants>$(DefineConstants);MORELINQ;FUNC16</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);MORELINQ;FUNC16;IREADONLY</DefineConstants>
+  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;FUNC16;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM</DefineConstants>
+    <DefineConstants>$(DefineConstants);MORELINQ;FUNC16;IREADONLY;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
