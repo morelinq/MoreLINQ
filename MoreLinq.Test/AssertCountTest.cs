@@ -101,5 +101,19 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<object>().AssertCount(0);
         }
+
+        [Test]
+        public void AssertCountUsesCollectionCount()
+        {
+            new UnenumerableList<int> { 1, 2 }.AssertCount(2).ToString();
+        }
+
+#if IREADONLY
+        [Test]
+        public void AssertCountUsesReadOnlyCollectionCount()
+        {
+            new UnenumerableReadOnlyList<int> { 1, 2 }.AssertCount(2).ToString();
+        }
+#endif
     }
 }
