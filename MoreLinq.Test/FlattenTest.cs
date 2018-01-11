@@ -221,11 +221,11 @@ namespace MoreLinq.Test
 
             var expectations = new object[]
             {
-                4,
+                4, 
                 5,
-                6,
-                true,
-                false,
+                6, 
+                true, 
+                false, 
                 7,
             };
 
@@ -233,7 +233,7 @@ namespace MoreLinq.Test
             {
                 Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
             }
-
+ 
             new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
@@ -245,7 +245,7 @@ namespace MoreLinq.Test
             var inner2 = new[] { true, false }
                                .Select<bool, bool>(x => throw new InvalidOperationException())
                                .AsTestingSequence();
-
+            
             var inner3 = TestingSequence.Of<object>(6, inner2, 7);
 
             var source = new object[]
@@ -259,94 +259,8 @@ namespace MoreLinq.Test
                 Assert.Throws<InvalidOperationException>(() =>
                     test.Flatten().Consume());
             }
-
+ 
             new object[] { inner1, inner2, inner3 }.Cast<IDisposable>().ForEach(seq => seq.Dispose());
-        }
-
-        [Test]
-        public void FlattenSelector()
-        {
-            var source = new[]
-            {
-                new Series
-                {
-                    Name = "series1",
-                    Attributes = new[]
-                    {
-                        new Attribute { Values = new[] { 1, 2 } },
-                        new Attribute { Values = new[] { 3, 4 } },
-                    }
-                },
-                new Series
-                {
-                    Name = "series2",
-                    Attributes = new[]
-                    {
-                        new Attribute { Values = new[] { 5, 6 } },
-                    }
-                }
-            };
-
-            var result = source.Flatten(obj =>
-            {
-                switch (obj)
-                {
-                    case Series s:
-                        return new object[] { s.Name, s.Attributes };
-                    case Attribute a:
-                        return a.Values;
-                    default:
-                        return obj;
-                }
-            });
-
-            result.AssertSequenceEqual("series1", 1, 2, 3, 4, "series2", 5, 6);
-        }
-
-        [Test]
-        public void FlattenSelectorFilteringOnlyIntegers()
-        {
-            var source = new object[]
-            {
-                true,
-                false,
-                1,
-                "bar",
-                new object[]
-                {
-                    2,
-                    new[]
-                    {
-                        3,
-                    },
-                },
-                'c',
-                4,
-            };
-
-            var result = source.Flatten(obj =>
-            {
-                switch (obj)
-                {
-                    case int i:
-                        return i;
-                    default:
-                        return new object[] { };
-                }
-            });
-
-            result.AssertSequenceEqual(1, 2, 3, 4);
-        }
-
-        class Series
-        {
-            public string Name;
-            public Attribute[] Attributes;
-        }
-
-        class Attribute
-        {
-            public int[] Values;
         }
     }
 }
