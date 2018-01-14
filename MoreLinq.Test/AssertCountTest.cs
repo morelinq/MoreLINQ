@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -99,20 +100,20 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountIsLazy()
         {
-            new BreakingSequence<object>().AssertCount(0);
+            new UnenumerableList<int> { }.AssertCount(1);
         }
 
         [Test]
         public void AssertCountUsesCollectionCount()
         {
-            new UnenumerableList<int> { 1, 2 }.AssertCount(2).ToString();
+            var first = ((IList<int>)new UnenumerableList<int> { 1, 2 }.AssertCount(2))[0];
         }
 
 #if IREADONLY
         [Test]
         public void AssertCountUsesReadOnlyCollectionCount()
         {
-            new UnenumerableReadOnlyList<int> { 1, 2 }.AssertCount(2).ToString();
+            var first = ((IReadOnlyList<int>)new UnenumerableReadOnlyList<int> { 1, 2 }.AssertCount(2))[0];
         }
 #endif
     }
