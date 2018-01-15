@@ -234,11 +234,11 @@ namespace MoreLinq.Test
 
                 var expectations = new object[]
                 {
-                    4, 
+                    4,
                     5,
-                    6, 
-                    true, 
-                    false, 
+                    6,
+                    true,
+                    false,
                     7,
                 };
 
