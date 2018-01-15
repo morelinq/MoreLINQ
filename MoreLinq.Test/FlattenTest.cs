@@ -253,9 +253,10 @@ namespace MoreLinq.Test
         public void FlattenInterruptedIterationDisposesInnerSequences()
         {
             using (var inner1 = TestingSequence.Of(4, 5))
-            using (var inner2 = new[] { true, false }
-                               .Select<bool, bool>(x => throw new InvalidOperationException())
-                               .AsTestingSequence())
+            using (var inner2 = MoreEnumerable.From(() => true,
+                                                    () => false,
+                                                    () => throw new InvalidOperationException())
+                                              .AsTestingSequence())
             using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
             {
                 var source = new object[]
