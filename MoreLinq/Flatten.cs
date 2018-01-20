@@ -100,9 +100,9 @@ namespace MoreLinq
                 }
                 finally
                 {
-                    stack.Prepend(e)
-                         .OfType<IDisposable>()
-                         .ForEach(x => x.Dispose());
+                    (e as IDisposable)?.Dispose();
+                    foreach (var se in stack)
+                        (se as IDisposable)?.Dispose();
                 }
             };
         }
