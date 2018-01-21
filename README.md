@@ -143,6 +143,12 @@ with the previous non-null reference or value seen in that sequence.
 
 This method has 3 overloads.
 
+### Flatten
+
+Flattens a sequence containing arbitrarily-nested sequences.
+
+This method has 2 overloads.
+
 ### Fold
 
 Returns the result of applying a function to a sequence with 1 to 16 elements.
