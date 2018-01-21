@@ -9,9 +9,11 @@ namespace MoreLinq.Test
             return _();
 
             IEnumerable<TResult> _() {
-                var e1 = first.GetEnumerator();
-				var e2 = second.GetEnumerator();                
-				yield break;
+                using (var e1 = first.GetEnumerator())
+                using (var e2 = second.GetEnumerator())
+                {
+                    yield break;
+                }
 			}
         }
 
@@ -20,6 +22,22 @@ namespace MoreLinq.Test
             var first = new BreakingSequence<object>();
             var second = new BreakingSequence<object>();
             Assert.DoesNotThrow(() => TDDOrderedMerge(first, second));
+        }
+
+        [Test]
+        public void ShouldDisposeEnumerators() {
+            var firstDisposed = false;
+            var first = new int[] { }.AsVerifiable();
+            first.WhenDisposed(_ => firstDisposed = true);
+
+            var secondDisposed = false;
+            var second = new int[] { }.AsVerifiable();
+            second.WhenDisposed(_ => secondDisposed = true);
+
+            TDDOrderedMerge(first, second).ToArray();
+
+            Assert.IsTrue(firstDisposed, "First was not disposed");
+            Assert.IsTrue(secondDisposed, "Second was not disposed");
         }
     }
 }
