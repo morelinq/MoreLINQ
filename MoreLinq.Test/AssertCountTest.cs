@@ -100,7 +100,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountIsLazy()
         {
-            new UnenumerableList<int> { }.AssertCount(1);
+            new BreakingSequence<object>().AssertCount(0);
         }
 
         [Test]
