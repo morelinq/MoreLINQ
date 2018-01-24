@@ -24,8 +24,6 @@ namespace MoreLinq
     // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
     static partial class MoreEnumerable
     {
-        #if !NO_VALUE_TUPLES
-
         /// <summary>
         /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
         /// </summary>
@@ -80,8 +78,6 @@ namespace MoreLinq
         {
             return FullGroupJoin(first, second, firstKeySelector, secondKeySelector, ValueTuple.Create, comparer);
         }
-
-        #endif
 
         /// <summary>
         /// Performs a full group-join between two sequences.
