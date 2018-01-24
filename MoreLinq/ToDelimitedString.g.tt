@@ -72,39 +72,12 @@ namespace MoreLinq
             }
         #>
         /// <summary>
-        /// Creates a delimited string from a sequence of values. The
-        /// delimiter used depends on the current culture of the executing thread.
-        /// </summary>
-        /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
-        /// simple ToString() conversion.</param>
-        /// <returns>
-        /// A string that consists of the elements in <paramref name="source"/>
-        /// delimited by <see cref="TextInfo.ListSeparator"/>. If the source
-        /// sequence is empty, the method returns an empty string.
-        /// </returns>
-        /// <remarks>
-        /// This operator uses immediate execution and effectively buffers the sequence.
-        /// </remarks>
-<#= attribute #>
-        [Obsolete]
-        public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source)
-        {
-            return ToDelimitedString(source, null);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, <#= type.Name #>, StringBuilder> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
-        }
-
-        /// <summary>
         /// Creates a delimited string from a sequence of values and
         /// a given delimiter.
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
@@ -117,7 +90,13 @@ namespace MoreLinq
         public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+            if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
             return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
+        }
+
+        static partial class StringBuilderAppenders
+        {
+            public static readonly Func<StringBuilder, <#= type.Name #>, StringBuilder> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
         }
 
 <#      } #>
