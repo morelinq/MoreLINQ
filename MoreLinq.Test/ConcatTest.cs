@@ -15,10 +15,11 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ConcatTest
     {
@@ -43,13 +44,6 @@ namespace MoreLinq.Test
             var head = "first";
             var whole = MoreEnumerable.Concat(head, tail);
             whole.AssertSequenceEqual("first");
-        }
-
-        [Test]
-        public void ConcatWithNullTailSequence()
-        {
-            Assert.ThrowsArgumentNullException("tail",() =>
-                MoreEnumerable.Concat("head", null));
         }
 
         [Test]
@@ -88,13 +82,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ConcatWithNullHeadSequence()
-        {
-            Assert.ThrowsArgumentNullException("head",() =>
-                MoreEnumerable.Concat(null, "tail"));
-        }
-
-        [Test]
         public void ConcatWithNullTail()
         {
             var head = new[] { "first", "second" };
@@ -109,5 +96,36 @@ namespace MoreLinq.Test
             new BreakingSequence<string>().Concat("tail");
         }
         #endregion
+
+        [TestCaseSource(nameof(ContactManySource))]
+        public void ConcatMany(int[] head, int[] tail)
+        {
+            tail.Aggregate(head.AsEnumerable(), (xs, x) => xs.Concat(x))
+                .AssertSequenceEqual(head.Concat(tail));
+        }
+
+        public static IEnumerable<object> ContactManySource =>
+            from x in Enumerable.Range(0, 11)
+            from y in Enumerable.Range(1, 20 - x)
+            select new
+            {
+                Head = Enumerable.Range(1, x).ToArray(),
+                Tail = Enumerable.Range(x + 1, y).ToArray(),
+            }
+            into e
+            select new TestCaseData(e.Head,
+                                    e.Tail).SetName("Head = [" + string.Join(", ", e.Head) + "], " +
+                                                    "Tail = [" + string.Join(", ", e.Tail) + "]");
+
+        [Test]
+        public void ConcatWithSharedSource()
+        {
+            var first  = new [] { 1 }.Concat(2);
+            var second = first.Concat(3).Concat(4);
+            var third  = first.Concat(4).Concat(8);
+
+            second.AssertSequenceEqual(1, 2, 3, 4);
+            third.AssertSequenceEqual(1, 2, 4, 8);
+        }
     }
 }

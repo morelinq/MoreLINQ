@@ -15,12 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
-    using System.Linq;
+    using System;
+    using NUnit.Framework;
 
     [TestFixture]
     public class ScanTest
@@ -42,7 +40,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanIsLazy()
         {
-            new BreakingSequence<object>().Scan<object>(delegate { throw new NotImplementedException(); });
+            new BreakingSequence<object>().Scan(delegate { throw new NotImplementedException(); });
         }
 
         [Test]

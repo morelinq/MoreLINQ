@@ -250,17 +250,13 @@ namespace MoreLinq
 
                 if (top.Count == count)
                 {
-                    if (keys != null)
-                        keys.RemoveAt(top.Count - 1);
-
+                    keys?.RemoveAt(top.Count - 1);
                     top.RemoveAt(top.Count - 1);
                 }
 
                 // TODO Stable sorting
 
-                if (keys != null)
-                    keys.Insert(i, key);
-
+                keys?.Insert(i, key);
                 top.Insert(i, item);
             }
 

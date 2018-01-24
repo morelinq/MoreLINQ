@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the behavior of the RandomSubset() operator
     /// </summary>
@@ -22,34 +21,12 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking RandomSubsets on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRandomSubsetNullSequence()
-        {
-            const IEnumerable<int> nullSequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                nullSequence.RandomSubset(10));
-        }
-
-        /// <summary>
-        /// Verify that invoking RandomSubsets on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRandomSubsetNullSequence2()
-        {
-            const IEnumerable<int> nullSequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                nullSequence.RandomSubset(10, new Random()));
-        }
-
-        /// <summary>
         /// Verify that involving RandomSubsets with a subset size less than 0 results in an exception.
         /// </summary>
         [Test]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
                 Enumerable.Range(1, 10).RandomSubset(-5));
         }
 
@@ -59,7 +36,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
                 Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
         }
 
@@ -119,9 +96,9 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
             {
-                sequence.RandomSubset(subsetSize).Count();
+                sequence.RandomSubset(subsetSize).Consume();
             });
         }
 
@@ -136,9 +113,9 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
             {
-                sequence.RandomSubset(subsetSize, new Random(1234)).Count();
+                sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
             });
         }
 
@@ -222,21 +199,21 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(subsetSize);
 
             // force complete enumeration of random subsets
-            resultA.Count();
-            resultB.Count();
+            resultA.Consume();
+            resultB.Consume();
 
             // verify the original sequence is untouched
             Assert.IsTrue(sequence.SequenceEqual(sequenceClone));
         }
 
-        private static double RelativeStandardDeviation(IEnumerable<double> values)
+        static double RelativeStandardDeviation(IEnumerable<double> values)
         {
             var average = values.Average();
             var standardDeviation = StandardDeviationInternal(values, average);
             return (standardDeviation * 100.0) / average;
         }
 
-        private static double StandardDeviationInternal(IEnumerable<double> values, double average)
+        static double StandardDeviationInternal(IEnumerable<double> values, double average)
         {
             return Math.Sqrt(values.Select(value => Math.Pow(value - average, 2.0)).Average());
         }

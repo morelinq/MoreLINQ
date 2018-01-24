@@ -15,38 +15,30 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class AtMostTest
     {
         [Test]
-        public void AtMostWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AtMost<int>(null, 1));
-        }
-
-        [Test]
         public void AtMostWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",
+            AssertThrowsArgument.OutOfRangeException("count",
                 () => new[] { 1 }.AtMost(-1));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(0));
+            Assert.IsTrue(Enumerable.Empty<int>().AtMost(0));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().AtMost(1));
+            Assert.IsTrue(Enumerable.Empty<int>().AtMost(1));
         }
 
         [Test]

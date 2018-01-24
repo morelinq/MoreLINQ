@@ -17,26 +17,19 @@
 
 #pragma warning disable 612 // 'ToDelimitedString' is obsolete
 
-using System.Globalization;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
 
 namespace MoreLinq.Test
 {
+    using System.Globalization;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ToDelimitedStringTest
     {
         [Test]
-        public void ToDelimitedStringWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",() =>
-                MoreEnumerable.ToDelimitedString<int>(null, ","));
-        }
-
-        [Test]
         public void ToDelimitedStringWithEmptySequence()
         {
-            Assert.That(LinqEnumerable.Empty<int>().ToDelimitedString(), Is.Empty);
+            Assert.That(Enumerable.Empty<int>().ToDelimitedString(), Is.Empty);
         }
 
         [Test]

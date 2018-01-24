@@ -59,17 +59,16 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return TagFirsLastImpl(source, resultSelector);
-        }
 
-        static IEnumerable<TResult> TagFirsLastImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
-        {
-            var edge = new[] { new KeyValuePair<bool, TSource>(false, default(TSource)) };
-            return edge.Concat(source.Select(e => new KeyValuePair<bool, TSource>(true, e)))
-                       .Concat(edge)
-                       .Pairwise((a, b) => new { Prev = a, Curr = b })
-                       .Pairwise((a, b) => new { a.Prev, a.Curr, Next = b.Curr })
-                       .Select(e => resultSelector(e.Curr.Value, !e.Prev.Key, !e.Next.Key));
+            return _(); IEnumerable<TResult> _()
+            {
+                var edge = new[] { new KeyValuePair<bool, TSource>(false, default(TSource)) };
+                return edge.Concat(source.Select(e => new KeyValuePair<bool, TSource>(true, e)))
+                           .Concat(edge)
+                           .Pairwise((a, b) => new { Prev = a, Curr = b })
+                           .Pairwise((a, b) => new { a.Prev, a.Curr, Next = b.Curr })
+                           .Select(e => resultSelector(e.Curr.Value, !e.Prev.Key, !e.Next.Key));
+            }
         }
     }
 }

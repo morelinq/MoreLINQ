@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+
     static class EqualityComparer
     {
         /// <summary>

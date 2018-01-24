@@ -23,7 +23,8 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Excludes <paramref name="count"/> elements from a sequence starting at a given index
+        /// Excludes a contiguous number of elements from a sequence starting
+        /// at a given index.
         /// </summary>
         /// <typeparam name="T">The type of the elements of the sequence</typeparam>
         /// <param name="sequence">The sequence to exclude elements from</param>
@@ -37,24 +38,25 @@ namespace MoreLinq
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            return ExcludeImpl(sequence, startIndex, count);
-        }
+            if (count == 0)
+                return sequence;
 
-        private static IEnumerable<T> ExcludeImpl<T>(IEnumerable<T> sequence, int startIndex, int count)
-        {
-            var index = -1;
-            var endIndex = startIndex + count;
-            using (var iter = sequence.GetEnumerator())
+            return _(); IEnumerable<T> _()
             {
-                // yield the first part of the sequence
-                while (iter.MoveNext() && ++index < startIndex)
-                    yield return iter.Current;
-                // skip the next part (up to count items)
-                while (++index < endIndex && iter.MoveNext())
-                    continue;
-                // yield the remainder of the sequence
-                while (iter.MoveNext())
-                    yield return iter.Current;
+                var index = -1;
+                var endIndex = startIndex + count;
+                using (var iter = sequence.GetEnumerator())
+                {
+                    // yield the first part of the sequence
+                    while (iter.MoveNext() && ++index < startIndex)
+                        yield return iter.Current;
+                    // skip the next part (up to count items)
+                    while (++index < endIndex && iter.MoveNext())
+                        continue;
+                    // yield the remainder of the sequence
+                    while (iter.MoveNext())
+                        yield return iter.Current;
+                }
             }
         }
     }

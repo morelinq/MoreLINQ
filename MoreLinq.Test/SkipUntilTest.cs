@@ -15,28 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class SkipUntilTest
     {
-        [Test]
-        public void SkipUntilNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
-        }
-
-        [Test]
-        public void SkipUntilNullPredicate()
-        {
-            Assert.ThrowsArgumentNullException("source",() =>
-                MoreEnumerable.SkipUntil<string>(null, x => x.Length == 1));
-        }
-
         [Test]
         public void SkipUntilPredicateNeverFalse()
         {

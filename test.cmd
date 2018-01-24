@@ -7,8 +7,10 @@ goto :EOF
 :main
 setlocal
 call build ^
-  && call :test netcore10 Debug ^
-  && call :test netcore10 Release ^
+  && call :test netcoreapp1.0 Debug ^
+  && call :test netcoreapp1.0 Release ^
+  && call :test netcoreapp2.0 Debug ^
+  && call :test netcoreapp2.0 Release ^
   && call :test net451 Debug ^
   && call :test net451 Release
 goto :EOF
@@ -16,9 +18,9 @@ goto :EOF
 :test
 setlocal
 echo Testing %1 (%2)...
-if %1==netcore10 (
-    dotnet exec MoreLinq.Test\bin\%2\netcoreapp1.0\MoreLinq.Test.dll
-) else (
+if %1==net451 (
     MoreLinq.Test\bin\%2\net451\MoreLinq.Test.exe
+) else (
+    dotnet exec MoreLinq.Test\bin\%2\%1\MoreLinq.Test.dll
 )
 goto :EOF

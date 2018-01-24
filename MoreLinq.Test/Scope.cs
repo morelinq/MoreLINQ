@@ -15,22 +15,22 @@
 // limitations under the License.
 #endregion
 
-using System;
-
 namespace MoreLinq.Test
 {
-    internal abstract class Scope<T> : IDisposable
+    using System;
+
+    abstract class Scope<T> : IDisposable
     {
-        private readonly T old;
+        readonly T _old;
 
         protected Scope(T current)
         {
-            old = current;
+            _old = current;
         }
 
         public virtual void Dispose()
         {
-            Restore(old);
+            Restore(_old);
         }
 
         protected abstract void Restore(T old);

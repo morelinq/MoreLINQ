@@ -15,40 +15,31 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Linq;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class CountBetweenTest
     {
         [Test]
-        public void CountBetweenWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.CountBetween<int>(null, 1, 2));
-        }
-
-        [Test]
         public void CountBetweenWithNegativeMin()
         {
-            Assert.ThrowsArgumentOutOfRangeException("min", () =>
+            AssertThrowsArgument.OutOfRangeException("min", () =>
                 new[] { 1 }.CountBetween(-1, 0));
         }
 
         [Test]
         public void CountBetweenWithNegativeMax()
         {
-            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+            AssertThrowsArgument.OutOfRangeException("max", () =>
                new[] { 1 }.CountBetween(0, -1));
         }
 
         [Test]
         public void CountBetweenWithMaxLesserThanMin()
         {
-            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+            AssertThrowsArgument.OutOfRangeException("max", () =>
                 new[] { 1 }.CountBetween(1, 0));
         }
 

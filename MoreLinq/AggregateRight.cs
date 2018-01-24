@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -120,7 +120,7 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        private static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {

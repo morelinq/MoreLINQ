@@ -70,27 +70,39 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
-            comparer = comparer ?? Comparer<TKey>.Default;
 
+            comparer = comparer ?? Comparer<TKey>.Default;
+            return ExtremumBy(source, selector, (x, y) => comparer.Compare(x, y));
+        }
+
+        // > In mathematical analysis, the maxima and minima (the respective
+        // > plurals of maximum and minimum) of a function, known collectively
+        // > as extrema (the plural of extremum), ...
+        // >
+        // > - https://en.wikipedia.org/wiki/Maxima_and_minima
+
+        static TSource ExtremumBy<TSource, TKey>(IEnumerable<TSource> source,
+            Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
+        {
             using (var sourceIterator = source.GetEnumerator())
             {
                 if (!sourceIterator.MoveNext())
-                {
                     throw new InvalidOperationException("Sequence contains no elements");
-                }
-                var max = sourceIterator.Current;
-                var maxKey = selector(max);
+
+                var extemum = sourceIterator.Current;
+                var key = selector(extemum);
                 while (sourceIterator.MoveNext())
                 {
                     var candidate = sourceIterator.Current;
                     var candidateProjected = selector(candidate);
-                    if (comparer.Compare(candidateProjected, maxKey) > 0)
+                    if (comparer(candidateProjected, key) > 0)
                     {
-                        max = candidate;
-                        maxKey = candidateProjected;
+                        extemum = candidate;
+                        key = candidateProjected;
                     }
                 }
-                return max;
+
+                return extemum;
             }
         }
     }

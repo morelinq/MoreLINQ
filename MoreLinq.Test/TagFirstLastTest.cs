@@ -15,27 +15,13 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class TagFirstLastTest
     {
-        [Test]
-        public void TagFirstLastNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.TagFirstLast<object, object>(null, delegate { return null; }));
-        }
-
-        [Test]
-        public void TagFirstLastNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector", () =>
-                new object[0].TagFirstLast<object, object>(null));
-        }
-
         [Test]
         public void TagFirstLastIsLazy()
         {

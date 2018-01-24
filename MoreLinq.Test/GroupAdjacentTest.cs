@@ -15,30 +15,15 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GroupAdjacentTest
     {
-        [Test]
-        public void GroupAdjacentNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.GroupAdjacent<object, object>(null, delegate { return 0; }));
-        }
-
-        [Test]
-        public void GroupAdjacentNullKeySelector()
-        {
-            Assert.ThrowsArgumentNullException("keySelector", () =>
-                new object[0].GroupAdjacent<object, object>(null));
-        }
-
         [Test]
         public void GroupAdjacentIsLazy()
         {
@@ -217,7 +202,7 @@ namespace MoreLinq.Test
             }
         }
 
-        static void AssertGrouping<TKey, TElement>(SequenceReader<IGrouping<TKey, TElement>> reader, 
+        static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader, 
             TKey key, params TElement[] elements)
         {
             var grouping = reader.Read();

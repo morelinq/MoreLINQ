@@ -15,41 +15,25 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Linq;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 #pragma warning disable 618 // TODO SingleOrFallback is obsolete
 
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SingleOrFallbackTest
     {
         [Test]
-        public void SingleOrFallbackWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.SingleOrFallback(null, BreakingFunc.Of<int>()));
-        }
-
-        [Test]
-        public void SingleOrFallbackWithNullFallback()
-        {
-            Assert.ThrowsArgumentNullException("fallback",() =>
-                new[] { 1 }.SingleOrFallback(null));
-        }
-
-        [Test]
         public void SingleOrFallbackWithEmptySequence()
         {
-            Assert.AreEqual(5, LinqEnumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
+            Assert.AreEqual(5, Enumerable.Empty<int>().Select(x => x).SingleOrFallback(() => 5));
         }
         [Test]
         public void SingleOrFallbackWithEmptySequenceIListOptimized()
         {
-            Assert.AreEqual(5, LinqEnumerable.Empty<int>().SingleOrFallback(() => 5));
+            Assert.AreEqual(5, Enumerable.Empty<int>().SingleOrFallback(() => 5));
         }
 
         [Test]

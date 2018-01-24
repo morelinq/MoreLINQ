@@ -78,24 +78,19 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            return ExceptByImpl(first, second, keySelector, keyComparer);
-        }
 
-        private static IEnumerable<TSource> ExceptByImpl<TSource, TKey>(this IEnumerable<TSource> first,
-            IEnumerable<TSource> second,
-            Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> keyComparer)
-        {
-            var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
-            foreach (var element in first)
+            return _(); IEnumerable<TSource>_()
             {
-                var key = keySelector(element);
-                if (keys.Contains(key))
+                // TODO Use ToHashSet
+                var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
+                foreach (var element in first)
                 {
-                    continue;
+                    var key = keySelector(element);
+                    if (keys.Contains(key))
+                        continue;
+                    yield return element;
+                    keys.Add(key);
                 }
-                yield return element;
-                keys.Add(key);
             }
         }
     }

@@ -83,61 +83,58 @@ namespace MoreLinq
                     : (a, b) => comparer.Compare(b, a) > 0;
 
             // return the sorted merge result
-            return SortedMergeImpl(precedenceFunc, new[] { source }.Concat(otherSequences));
-        }
+            return Impl(new[] { source }.Concat(otherSequences));
 
-        /// <summary>
-        /// Private implementation method that performs a merge of multiple, ordered sequences using
-        /// a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
-        /// </summary>
-        /// <remarks>
-        /// The algorithm employed in this implementation is not necessarily the most optimal way to merge
-        /// two sequences. A swap-compare version would probably be somewhat more efficient - but at the
-        /// expense of considerably more complexity. One possible optimization would be to detect that only
-        /// a single sequence remains (all other being consumed) and break out of the main while-loop and
-        /// simply yield the items that are part of the final sequence.
-        /// 
-        /// The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
-        /// </remarks>
+            // Private implementation method that performs a merge of multiple, ordered sequences using
+            // a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
+            //
+            // The algorithm employed in this implementation is not necessarily the most optimal way to merge
+            // two sequences. A swap-compare version would probably be somewhat more efficient - but at the
+            // expense of considerably more complexity. One possible optimization would be to detect that only
+            // a single sequence remains (all other being consumed) and break out of the main while-loop and
+            // simply yield the items that are part of the final sequence.
+            //
+            // The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
         
-        private static IEnumerable<T> SortedMergeImpl<T>(Func<T, T, bool> precedenceFunc, IEnumerable<IEnumerable<T>> otherSequences)
-        {
-            using (var disposables = new DisposableGroup<T>(otherSequences.Select(e => e.GetEnumerator()).Acquire()))
+            IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences)
             {
-                var iterators = disposables.Iterators;
-
-                // prime all of the iterators by advancing them to their first element (if any)
-                // NOTE: We start with the last index to simplify the removal of an iterator if
-                //       it happens to be terminal (no items) before we start merging
-                for (var i = iterators.Count - 1; i >= 0; i--)
+                using (var disposables = new DisposableGroup<TSource>(sequences.Select(e => e.GetEnumerator()).Acquire()))
                 {
-                    if (!iterators[i].MoveNext())
-                        disposables.Exclude(i);
-                }
+                    var iterators = disposables.Iterators;
 
-                // while all iterators have not yet been consumed...
-                while (iterators.Count > 0)
-                {
-                    var nextIndex = 0;
-                    var nextValue = disposables[0].Current;
-
-                    // find the next least element to return
-                    for (var i = 1; i < iterators.Count; i++)
+                    // prime all of the iterators by advancing them to their first element (if any)
+                    // NOTE: We start with the last index to simplify the removal of an iterator if
+                    //       it happens to be terminal (no items) before we start merging
+                    for (var i = iterators.Count - 1; i >= 0; i--)
                     {
-                        var anotherElement = disposables[i].Current;
-                        // determine which element follows based on ordering function
-                        if (precedenceFunc(nextValue, anotherElement))
-                        {
-                            nextIndex = i;
-                            nextValue = anotherElement;
-                        }
+                        if (!iterators[i].MoveNext())
+                            disposables.Exclude(i);
                     }
 
-                    yield return nextValue; // next value in precedence order
+                    // while all iterators have not yet been consumed...
+                    while (iterators.Count > 0)
+                    {
+                        var nextIndex = 0;
+                        var nextValue = disposables[0].Current;
 
-                    // advance iterator that yielded element, excluding it when consumed
-                    if (!iterators[nextIndex].MoveNext())
-                        disposables.Exclude(nextIndex);
+                        // find the next least element to return
+                        for (var i = 1; i < iterators.Count; i++)
+                        {
+                            var anotherElement = disposables[i].Current;
+                            // determine which element follows based on ordering function
+                            if (precedenceFunc(nextValue, anotherElement))
+                            {
+                                nextIndex = i;
+                                nextValue = anotherElement;
+                            }
+                        }
+
+                        yield return nextValue; // next value in precedence order
+
+                        // advance iterator that yielded element, excluding it when consumed
+                        if (!iterators[nextIndex].MoveNext())
+                            disposables.Exclude(nextIndex);
+                    }
                 }
             }
         }
@@ -146,17 +143,14 @@ namespace MoreLinq
         /// Class used to assist in ensuring that groups of disposable iterators
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
-        
-        private sealed class DisposableGroup<T> : IDisposable
+        sealed class DisposableGroup<T> : IDisposable
         {
-            public DisposableGroup(IEnumerable<IEnumerator<T>> iterators)
-            {
+            public DisposableGroup(IEnumerable<IEnumerator<T>> iterators) =>
                 Iterators = new List<IEnumerator<T>>(iterators);
-            }
 
-            public List<IEnumerator<T>> Iterators { get; private set; }
+            public List<IEnumerator<T>> Iterators { get; }
 
-            public IEnumerator<T> this[int index] { get { return Iterators[index]; } }
+            public IEnumerator<T> this[int index] => Iterators[index];
 
             public void Exclude(int index)
             {
@@ -164,10 +158,8 @@ namespace MoreLinq
                 Iterators.RemoveAt(index);
             }
 
-            public void Dispose()
-            {
+            public void Dispose() =>
                 Iterators.ForEach(iter => iter.Dispose());
-            }
         }
     }
 }

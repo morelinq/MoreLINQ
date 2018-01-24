@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
@@ -15,20 +15,13 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Linq;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class SkipLastTest
     {
-        [Test]
-        public void SkipLastWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.SkipLast<int>(null, 1));
-        }
-
         [TestCase( 0)]
         [TestCase(-1)]
         public void SkipLastWithCountLesserThanOne(int skip)

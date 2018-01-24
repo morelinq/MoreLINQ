@@ -39,18 +39,17 @@ namespace MoreLinq
             // Would just use Enumerable.Range(0, int.MaxValue).Select(generator) but that doesn't
             // include int.MaxValue. Picky, I know...
             if (generator == null) throw new ArgumentNullException(nameof(generator));
-            return GenerateByIndexImpl(generator);
-        }
 
-        private static IEnumerable<TResult> GenerateByIndexImpl<TResult>(Func<int, TResult> generator)
-        {
-            // Looping over 0...int.MaxValue inclusive is a pain. Simplest is to go exclusive,
-            // then go again for int.MaxValue.
-            for (var i = 0; i < int.MaxValue; i++)
+            return _(); IEnumerable<TResult> _()
             {
-                yield return generator(i);
+                // Looping over 0...int.MaxValue inclusive is a pain. Simplest is to go exclusive,
+                // then go again for int.MaxValue.
+
+                for (var i = 0; i < int.MaxValue; i++)
+                    yield return generator(i);
+
+                yield return generator(int.MaxValue);
             }
-            yield return generator(int.MaxValue);
         }
     }
 }

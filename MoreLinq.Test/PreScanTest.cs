@@ -15,27 +15,13 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class PreScanTest
     {
-        [Test]
-        public void PreScanNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.PreScan(null, SampleData.Plus, 0));
-        }
-
-        [Test]
-        public void PreScanNullOperation()
-        {
-            Assert.ThrowsArgumentNullException("transformation",() =>
-                SampleData.Values.PreScan(null, 0));
-        }
-
         [Test]
         public void PreScanSum()
         {

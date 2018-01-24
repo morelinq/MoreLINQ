@@ -29,6 +29,7 @@ namespace MoreLinq.NoConflict
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Collections;
 
     /// <summary><c>Acquire</c> extension.</summary>
 
@@ -205,9 +206,7 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         
-        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
-            int count)
-            => MoreEnumerable.AssertCount(source,count);
+        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)             => MoreEnumerable.AssertCount(source,count);
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -228,8 +227,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
         
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
-            int count, Func<int, int, Exception> errorSelector)
-            => MoreEnumerable.AssertCount(source,count,errorSelector);
+            int count, Func<int, int, Exception> errorSelector)             => MoreEnumerable.AssertCount(source,count,errorSelector);
 
     }
 
@@ -708,6 +706,29 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Evaluate</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class EvaluateExtension
+    {
+        /// <summary>
+        /// Returns a sequence containing the values resulting from invoking (in order) each function in the source sequence of functions.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses deferred execution and streams the results.
+        /// If the resulting sequence is enumerated multiple times, the functions will be
+        /// evaluated multiple times too.
+        /// </remarks>
+        /// <typeparam name="T">The type of the object returned by the functions.</typeparam>
+        /// <param name="functions">The functions to evaluate.</param>
+        /// <returns>A sequence with results from invoking <paramref name="functions"/>.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
+
+        public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions)
+            => MoreEnumerable.Evaluate(functions);
+
+    }
+
     /// <summary><c>ExceptBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -772,7 +793,8 @@ namespace MoreLinq.NoConflict
     public static partial class ExcludeExtension
     {
         /// <summary>
-        /// Excludes <paramref name="count"/> elements from a sequence starting at a given index
+        /// Excludes a contiguous number of elements from a sequence starting
+        /// at a given index.
         /// </summary>
         /// <typeparam name="T">The type of the elements of the sequence</typeparam>
         /// <param name="sequence">The sequence to exclude elements from</param>
@@ -1059,6 +1081,48 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Flatten</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class FlattenExtension
+    {
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and all nested sequences (except strings).
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+
+        public static IEnumerable<object> Flatten(this IEnumerable source)             => MoreEnumerable.Flatten(source);
+
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences. An
+        /// additional parameter specifies a predicate function used to
+        /// determine whether a nested <see cref="IEnumerable"/> should be
+        /// flattened or not.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <param name="predicate">
+        /// A function that receives each element that implements
+        /// <see cref="IEnumerable"/> and indicates if its elements should be
+        /// recursively flattened into the resulting sequence.
+        /// </param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and all nested sequences for which the predicate function
+        /// returned <c>true</c>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+            => MoreEnumerable.Flatten(source,predicate);
+
+    }
+
     /// <summary><c>Fold</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -1190,7 +1254,58 @@ namespace MoreLinq.NoConflict
         /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-        /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
+        /// <typeparam name="TKey">The type of the key to use to join</typeparam>
+        /// <param name="first">First sequence</param>
+        /// <param name="second">Second sequence</param>
+        /// <param name="firstKeySelector">The mapping from first sequence to key</param>
+        /// <param name="secondKeySelector">The mapping from second sequence to key</param>
+        /// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
+        /// </returns>
+        public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector)
+            => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector);
+
+        /// <summary>
+        /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses deferred execution and streams the results.
+        /// The results are yielded in the order of the elements found in the first sequence
+        /// followed by those found only in the second. In addition, the callback responsible
+        /// for projecting the results is supplied with sequences which preserve their source order.
+        /// </remarks>
+        /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
+        /// <typeparam name="TKey">The type of the key to use to join</typeparam>
+        /// <param name="first">First sequence</param>
+        /// <param name="second">Second sequence</param>
+        /// <param name="firstKeySelector">The mapping from first sequence to key</param>
+        /// <param name="secondKeySelector">The mapping from second sequence to key</param>
+        /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
+        /// If null, the default equality comparer for <c>TKey</c> is used.</param>
+        /// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
+        /// </returns>
+        public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector,comparer);
+
+        /// <summary>
+        /// Performs a full group-join between two sequences.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses deferred execution and streams the results.
+        /// The results are yielded in the order of the elements found in the first sequence
+        /// followed by those found only in the second. In addition, the callback responsible
+        /// for projecting the results is supplied with sequences which preserve their source order.
+        /// </remarks>
+        /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
         /// <param name="first">First sequence</param>
@@ -1208,7 +1323,7 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector,resultSelector);
 
         /// <summary>
-        /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
+        /// Performs a full group-join between two sequences.
         /// </summary>
         /// <remarks>
         /// This operator uses deferred execution and streams the results.
@@ -1217,7 +1332,7 @@ namespace MoreLinq.NoConflict
         /// for projecting the results is supplied with sequences which preserve their source order.
         /// </remarks>
         /// <typeparam name="TFirst">The type of the elements in the first input sequence</typeparam>
-        /// <typeparam name="TSecond">The type of the elements in the first input sequence</typeparam>
+        /// <typeparam name="TSecond">The type of the elements in the second input sequence</typeparam>
         /// <typeparam name="TKey">The type of the key to use to join</typeparam>
         /// <typeparam name="TResult">The type of the elements of the resulting sequence</typeparam>
         /// <param name="first">First sequence</param>
@@ -1236,6 +1351,196 @@ namespace MoreLinq.NoConflict
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
             => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector,resultSelector,comparer);
+
+    }
+
+    /// <summary><c>FullJoin</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class FullJoinExtension
+    {
+        /// <summary>
+        /// Performs a full outer join on two homogeneous sequences.
+        /// Additional arguments specify key selection functions and result
+        /// projection functions.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements in the source sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector function.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence to join fully.</param>
+        /// <param name="second">
+        /// The second sequence to join fully.</param>
+        /// <param name="keySelector">
+        /// Function that projects the key given an element of one of the
+        /// sequences to join.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <returns>A sequence containing results projected from a full
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TResult> firstSelector,
+            Func<TSource, TResult> secondSelector,
+            Func<TSource, TSource, TResult> bothSelector)
+            => MoreEnumerable.FullJoin(first,second,keySelector,firstSelector,secondSelector,bothSelector);
+
+        /// <summary>
+        /// Performs a full outer join on two homogeneous sequences.
+        /// Additional arguments specify key selection functions, result
+        /// projection functions and a key comparer.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements in the source sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector function.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence to join fully.</param>
+        /// <param name="second">
+        /// The second sequence to join fully.</param>
+        /// <param name="keySelector">
+        /// Function that projects the key given an element of one of the
+        /// sequences to join.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> instance used to compare
+        /// keys for equality.</param>
+        /// <returns>A sequence containing results projected from a full
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> FullJoin<TSource, TKey, TResult>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TResult> firstSelector,
+            Func<TSource, TResult> secondSelector,
+            Func<TSource, TSource, TResult> bothSelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.FullJoin(first,second,keySelector,firstSelector,secondSelector,bothSelector,comparer);
+
+        /// <summary>
+        /// Performs a full outer join on two heterogeneous sequences.
+        /// Additional arguments specify key selection functions and result
+        /// projection functions.
+        /// </summary>
+        /// <typeparam name="TFirst">
+        /// The type of elements in the first sequence.</typeparam>
+        /// <typeparam name="TSecond">
+        /// The type of elements in the second sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector functions.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence to join fully.</param>
+        /// <param name="second">
+        /// The second sequence to join fully.</param>
+        /// <param name="firstKeySelector">
+        /// Function that projects the key given an element from <paramref name="first"/>.</param>
+        /// <param name="secondKeySelector">
+        /// Function that projects the key given an element from <paramref name="second"/>.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <returns>A sequence containing results projected from a full
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> FullJoin<TFirst, TSecond, TKey, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            Func<TFirst, TResult> firstSelector,
+            Func<TSecond, TResult> secondSelector,
+            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.FullJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,secondSelector,bothSelector);
+
+        /// <summary>
+        /// Performs a full outer join on two heterogeneous sequences.
+        /// Additional arguments specify key selection functions, result
+        /// projection functions and a key comparer.
+        /// </summary>
+        /// <typeparam name="TFirst">
+        /// The type of elements in the first sequence.</typeparam>
+        /// <typeparam name="TSecond">
+        /// The type of elements in the second sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector functions.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence to join fully.</param>
+        /// <param name="second">
+        /// The second sequence to join fully.</param>
+        /// <param name="firstKeySelector">
+        /// Function that projects the key given an element from <paramref name="first"/>.</param>
+        /// <param name="secondKeySelector">
+        /// Function that projects the key given an element from <paramref name="second"/>.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> instance used to compare
+        /// keys for equality.</param>
+        /// <returns>A sequence containing results projected from a full
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> FullJoin<TFirst, TSecond, TKey, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            Func<TFirst, TResult> firstSelector,
+            Func<TSecond, TResult> secondSelector,
+            Func<TFirst, TSecond, TResult> bothSelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.FullJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,secondSelector,bothSelector,comparer);
 
     }
 
@@ -1479,6 +1784,43 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Insert</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class InsertExtension
+    {
+        /// <summary>
+        /// Inserts the elements of a sequence into another sequence at a
+        /// specified index.
+        /// </summary>
+        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
+        /// <param name="first">The source sequence.</param>
+        /// <param name="second">The sequence that will be inserted.</param>
+        /// <param name="index">
+        /// The zero-based index at which to insert elements from
+        /// <paramref name="second"/>.</param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="first"/>
+        /// plus the elements of <paramref name="second"/> inserted at
+        /// the given index.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="index"/> is negative.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown lazily if <paramref name="index"/> is greater than the
+        /// length of <paramref name="first"/>. The validation occurs when
+        /// yielding the next element after having iterated
+        /// <paramref name="first"/> entirely.
+        /// </exception>
+
+        public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
+            => MoreEnumerable.Insert(first,second,index);
+
+    }
+
     /// <summary><c>Interleave</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -1592,6 +1934,176 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>LeftJoin</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class LeftJoinExtension
+    {
+        /// <summary>
+        /// Performs a left outer join on two homogeneous sequences.
+        /// Additional arguments specify key selection functions and result
+        /// projection functions.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements in the source sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector function.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="keySelector">
+        /// Function that projects the key given an element of one of the
+        /// sequences to join.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <returns>A sequence containing results projected from a left
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> LeftJoin<TSource, TKey, TResult>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TResult> firstSelector,
+            Func<TSource, TSource, TResult> bothSelector)
+            => MoreEnumerable.LeftJoin(first,second,keySelector,firstSelector,bothSelector);
+
+        /// <summary>
+        /// Performs a left outer join on two homogeneous sequences.
+        /// Additional arguments specify key selection functions, result
+        /// projection functions and a key comparer.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements in the source sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector function.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="keySelector">
+        /// Function that projects the key given an element of one of the
+        /// sequences to join.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> instance used to compare
+        /// keys for equality.</param>
+        /// <returns>A sequence containing results projected from a left
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> LeftJoin<TSource, TKey, TResult>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TResult> firstSelector,
+            Func<TSource, TSource, TResult> bothSelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.LeftJoin(first,second,keySelector,firstSelector,bothSelector,comparer);
+
+        /// <summary>
+        /// Performs a left outer join on two heterogeneous sequences.
+        /// Additional arguments specify key selection functions and result
+        /// projection functions.
+        /// </summary>
+        /// <typeparam name="TFirst">
+        /// The type of elements in the first sequence.</typeparam>
+        /// <typeparam name="TSecond">
+        /// The type of elements in the second sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector functions.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="firstKeySelector">
+        /// Function that projects the key given an element from <paramref name="first"/>.</param>
+        /// <param name="secondKeySelector">
+        /// Function that projects the key given an element from <paramref name="second"/>.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <returns>A sequence containing results projected from a left
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> LeftJoin<TFirst, TSecond, TKey, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            Func<TFirst, TResult> firstSelector,
+            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.LeftJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,bothSelector);
+
+        /// <summary>
+        /// Performs a left outer join on two heterogeneous sequences.
+        /// Additional arguments specify key selection functions, result
+        /// projection functions and a key comparer.
+        /// </summary>
+        /// <typeparam name="TFirst">
+        /// The type of elements in the first sequence.</typeparam>
+        /// <typeparam name="TSecond">
+        /// The type of elements in the second sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector functions.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="firstKeySelector">
+        /// Function that projects the key given an element from <paramref name="first"/>.</param>
+        /// <param name="secondKeySelector">
+        /// Function that projects the key given an element from <paramref name="second"/>.</param>
+        /// <param name="firstSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="first"/> where there is no corresponding element
+        /// in <paramref name="second"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> instance used to compare
+        /// keys for equality.</param>
+        /// <returns>A sequence containing results projected from a left
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> LeftJoin<TFirst, TSecond, TKey, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            Func<TFirst, TResult> firstSelector,
+            Func<TFirst, TSecond, TResult> bothSelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.LeftJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,bothSelector,comparer);
+
+    }
+
     /// <summary><c>MaxBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -1696,6 +2208,41 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Move</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class MoveExtension
+    {
+        /// <summary>
+        /// Returns a sequence with a range of elements in the source sequence
+        /// moved to a new offset.
+        /// </summary>
+        /// <typeparam name="T">Type of the source sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="fromIndex">
+        /// The zero-based index identifying the first element in the range of
+        /// elements to move.</param>
+        /// <param name="count">The count of items to move.</param>
+        /// <param name="toIndex">
+        /// The index where the specified range will be moved.</param>
+        /// <returns>
+        /// A sequence with the specified range moved to the new position.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// var result = Enumerable.Range(0, 6).Move(3, 2, 0);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
+        /// </example>
+
+        public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
+            => MoreEnumerable.Move(source,fromIndex,count,toIndex);
+
+    }
+
     /// <summary><c>NestedLoops</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -1708,7 +2255,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Produces a sequence from an action based on the dynamic generation of N nested loops
-        /// who iteration counts are defined by <paramref name="loopCounts"/>.
+        /// whose iteration counts are defined by a sequence of loop counts.
         /// </summary>
         /// <param name="action">Action delegate for which to produce a nested loop sequence</param>
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
@@ -2118,6 +2665,92 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
             => MoreEnumerable.Pad(source,width,paddingSelector);
+
+    }
+
+    /// <summary><c>PadStart</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class PadStartExtension
+    {
+        /// <summary>
+        /// Pads a sequence with default values in the beginning if it is narrower (shorter 
+        /// in length) than a given width.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to pad.</param>
+        /// <param name="width">The width/length below which to pad.</param>
+        /// <returns>
+        /// Returns a sequence that is at least as wide/long as the width/length
+        /// specified by the <paramref name="width"/> parameter.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// int[] numbers = { 123, 456, 789 };
+        /// var result = numbers.PadLeft(5);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
+        /// </example>
+
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
+            => MoreEnumerable.PadStart(source,width);
+
+        /// <summary>
+        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter 
+        /// in length) than a given width.
+        /// An additional parameter specifies the value to use for padding.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to pad.</param>
+        /// <param name="width">The width/length below which to pad.</param>
+        /// <param name="padding">The value to use for padding.</param>
+        /// <returns>
+        /// Returns a sequence that is at least as wide/long as the width/length
+        /// specified by the <paramref name="width"/> parameter.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// int[] numbers = { 123, 456, 789 };
+        /// var result = numbers.PadLeft(5, -1);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
+        /// </example>
+
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
+            => MoreEnumerable.PadStart(source,width,padding);
+
+        /// <summary>
+        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter 
+        /// in length) than a given width.
+        /// An additional parameter specifies the function to calculate padding.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The sequence to pad.</param>
+        /// <param name="width">The width/length below which to pad.</param>
+        /// <param name="paddingSelector">Function to calculate padding.</param>
+        /// <returns>
+        /// Returns a sequence that is at least as wide/long as the width/length
+        /// specified by the <paramref name="width"/> parameter.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// int[] numbers = { 123, 456, 789 };
+        /// var result = numbers.PadLeft(6, i => -i);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
+        /// </example>
+
+        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+            => MoreEnumerable.PadStart(source,width,paddingSelector);
 
     }
 
@@ -2572,6 +3205,28 @@ namespace MoreLinq.NoConflict
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,key3,comparer,resultSelector);
+        /// <summary>
+        /// Partitions or splits a sequence in two using a predicate.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">The predicate function.</param>
+        /// <typeparam name="T">Type of source elements.</typeparam>
+        /// <returns>
+        /// A tuple of elements staisfying the predicate and those that do not,
+        /// respectively.
+        /// </returns>
+        /// <example>
+        /// <code>
+        /// var (evens, odds) =
+        ///     Enumerable.Range(0, 10).Partition(x => x % 2 == 0);
+        /// </code>
+        /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
+        /// and then 8. The <c>odds</c> variable, when iterated over, will yield
+        /// 1, 3, 5, 7 and then 9.
+        /// </example>
+
+        public static (IEnumerable<T> True, IEnumerable<T> False)
+            Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)             => MoreEnumerable.            Partition(source,predicate);
 
     }
 
@@ -2816,6 +3471,176 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>RightJoin</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class RightJoinExtension
+    {
+        /// <summary>
+        /// Performs a right outer join on two homogeneous sequences.
+        /// Additional arguments specify key selection functions and result
+        /// projection functions.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements in the source sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector function.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="keySelector">
+        /// Function that projects the key given an element of one of the
+        /// sequences to join.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <returns>A sequence containing results projected from a right
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TResult> secondSelector,
+            Func<TSource, TSource, TResult> bothSelector)
+            => MoreEnumerable.RightJoin(first,second,keySelector,secondSelector,bothSelector);
+
+        /// <summary>
+        /// Performs a right outer join on two homogeneous sequences.
+        /// Additional arguments specify key selection functions, result
+        /// projection functions and a key comparer.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements in the source sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector function.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="keySelector">
+        /// Function that projects the key given an element of one of the
+        /// sequences to join.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> instance used to compare
+        /// keys for equality.</param>
+        /// <returns>A sequence containing results projected from a right
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> RightJoin<TSource, TKey, TResult>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TResult> secondSelector,
+            Func<TSource, TSource, TResult> bothSelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.RightJoin(first,second,keySelector,secondSelector,bothSelector,comparer);
+
+        /// <summary>
+        /// Performs a right outer join on two heterogeneous sequences.
+        /// Additional arguments specify key selection functions and result
+        /// projection functions.
+        /// </summary>
+        /// <typeparam name="TFirst">
+        /// The type of elements in the first sequence.</typeparam>
+        /// <typeparam name="TSecond">
+        /// The type of elements in the second sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector functions.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="firstKeySelector">
+        /// Function that projects the key given an element from <paramref name="first"/>.</param>
+        /// <param name="secondKeySelector">
+        /// Function that projects the key given an element from <paramref name="second"/>.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <returns>A sequence containing results projected from a right
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> RightJoin<TFirst, TSecond, TKey, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            Func<TSecond, TResult> secondSelector,
+            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.RightJoin(first,second,firstKeySelector,secondKeySelector,secondSelector,bothSelector);
+
+        /// <summary>
+        /// Performs a right outer join on two heterogeneous sequences.
+        /// Additional arguments specify key selection functions, result
+        /// projection functions and a key comparer.
+        /// </summary>
+        /// <typeparam name="TFirst">
+        /// The type of elements in the first sequence.</typeparam>
+        /// <typeparam name="TSecond">
+        /// The type of elements in the second sequence.</typeparam>
+        /// <typeparam name="TKey">
+        /// The type of the key returned by the key selector functions.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the result elements.</typeparam>
+        /// <param name="first">
+        /// The first sequence of the join operation.</param>
+        /// <param name="second">
+        /// The second sequence of the join operation.</param>
+        /// <param name="firstKeySelector">
+        /// Function that projects the key given an element from <paramref name="first"/>.</param>
+        /// <param name="secondKeySelector">
+        /// Function that projects the key given an element from <paramref name="second"/>.</param>
+        /// <param name="secondSelector">
+        /// Function that projects the result given just an element from
+        /// <paramref name="second"/> where there is no corresponding element
+        /// in <paramref name="first"/>.</param>
+        /// <param name="bothSelector">
+        /// Function that projects the result given an element from
+        /// <paramref name="first"/> and an element from <paramref name="second"/>
+        /// that match on a common key.</param>
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> instance used to compare
+        /// keys for equality.</param>
+        /// <returns>A sequence containing results projected from a right
+        /// outer join of the two input sequences.</returns>
+
+        public static IEnumerable<TResult> RightJoin<TFirst, TSecond, TKey, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TKey> firstKeySelector,
+            Func<TSecond, TKey> secondKeySelector,
+            Func<TSecond, TResult> secondSelector,
+            Func<TFirst, TSecond, TResult> bothSelector,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.RightJoin(first,second,firstKeySelector,secondKeySelector,secondSelector,bothSelector,comparer);
+
+    }
+
     /// <summary><c>RunLengthEncode</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -2879,7 +3704,6 @@ namespace MoreLinq.NoConflict
         /// <param name="source">Source sequence</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        /// <exception cref="System.InvalidOperationException">If <paramref name="source"/> is empty.</exception>
 
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
@@ -2909,6 +3733,65 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
             => MoreEnumerable.Scan(source,seed,transformation);
+
+    }
+
+    /// <summary><c>ScanRight</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class ScanRightExtension
+    {
+        /// <summary>
+        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// This operator is the right-associative version of the 
+        /// <see cref="MoreEnumerable.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+        /// </summary>
+        /// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="func">
+        /// A right-associative accumulator function to be invoked on each element.
+        /// Its first argument is the current value in the sequence; second argument is the previous accumulator value.
+        /// </param>
+        /// <returns>The scanned sequence.</returns>
+        /// <example>
+        /// <code>
+        /// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// </code>
+        /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
+        /// </remarks>
+
+        public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
+            => MoreEnumerable.ScanRight(source,func);
+
+        /// <summary>
+        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// The specified seed value is used as the initial accumulator value.
+        /// This operator is the right-associative version of the 
+        /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="seed">The initial accumulator value.</param>
+        /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
+        /// <returns>The scanned sequence.</returns>
+        /// <example>
+        /// <code>
+        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
+        /// </code>
+        /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
+        /// </remarks>
+
+        public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
+            => MoreEnumerable.ScanRight(source,seed,func);
 
     }
 
@@ -2975,7 +3858,7 @@ namespace MoreLinq.NoConflict
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> containing the source sequence elements except for the bypassed ones at the end.
         /// </returns>
-		
+
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
             => MoreEnumerable.SkipLast(source,count);
 
@@ -3027,7 +3910,7 @@ namespace MoreLinq.NoConflict
     public static partial class SliceExtension
     {
         /// <summary>
-        /// Extracts <paramref name="count"/> elements from a sequence at a particular zero-based starting index
+        /// Extracts a contiguous count of elements from a sequence at a particular zero-based starting index
         /// </summary>
         /// <remarks>
         /// If the starting position or count specified result in slice extending past the end of the sequence,
@@ -3041,7 +3924,7 @@ namespace MoreLinq.NoConflict
         /// <param name="startIndex">The zero-based index at which to begin slicing</param>
         /// <param name="count">The number of items to slice out of the index</param>
         /// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
-        
+
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
             => MoreEnumerable.Slice(sequence,startIndex,count);
 
@@ -3374,8 +4257,9 @@ namespace MoreLinq.NoConflict
     public static partial class SubsetsExtension
     {
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets
-        /// of any size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of
+        /// the subsets of any size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>power set</em> of a set.
         /// </summary>
         /// <remarks>
         /// This operator produces all of the subsets of a given sequence. Subsets are returned
@@ -3394,8 +4278,10 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.Subsets(sequence);
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of the
-        /// specified size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all
+        /// subsets of a given size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>combinations</em> or
+        /// <em>k-subsets</em> of a set.
         /// </summary>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <param name="subsetSize">The size of the subsets to produce</param>
@@ -3555,6 +4441,193 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
             => MoreEnumerable.TakeUntil(source,predicate);
+
+    }
+
+    /// <summary><c>ToArrayByIndex</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class ToArrayByIndexExtension
+    {
+        /// <summary>
+        /// Creates an array from an <see cref="IEnumerable{T}"/> where a
+        /// function is used to determine the index at which an element will
+        /// be placed in the array.
+        /// </summary>
+        /// <param name="source">The source sequence for the array.</param>
+        /// <param name="indexSelector">
+        /// A function that maps an element to its index.</param>
+        /// <typeparam name="T">
+        /// The type of the element in <paramref name="source"/>.</typeparam>
+        /// <returns>
+        /// An array that contains the elements from the input sequence. The
+        /// size of the array will be as large as the highest index returned
+        /// by the <paramref name="indexSelector"/> plus 1.
+        /// </returns>
+        /// <remarks>
+        /// This method forces immediate query evaluation. It should not be
+        /// used on infinite sequences. If more than one element maps to the
+        /// same index then the latter element overwrites the former in the
+        /// resulting array.
+        /// </remarks>
+
+        public static T[] ToArrayByIndex<T>(this IEnumerable<T> source,
+            Func<T, int> indexSelector)
+            => MoreEnumerable.ToArrayByIndex(source,indexSelector);
+
+        /// <summary>
+        /// Creates an array from an <see cref="IEnumerable{T}"/> where a
+        /// function is used to determine the index at which an element will
+        /// be placed in the array. The elements are projected into the array
+        /// via an additional function.
+        /// </summary>
+        /// <param name="source">The source sequence for the array.</param>
+        /// <param name="indexSelector">
+        /// A function that maps an element to its index.</param>
+        /// <param name="resultSelector">
+        /// A function to project a source element into an element of the
+        /// resulting array.</param>
+        /// <typeparam name="T">
+        /// The type of the element in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the element in the resulting array.</typeparam>
+        /// <returns>
+        /// An array that contains the projected elements from the input
+        /// sequence. The size of the array will be as large as the highest
+        /// index returned by the <paramref name="indexSelector"/> plus 1.
+        /// </returns>
+        /// <remarks>
+        /// This method forces immediate query evaluation. It should not be
+        /// used on infinite sequences. If more than one element maps to the
+        /// same index then the latter element overwrites the former in the
+        /// resulting array.
+        /// </remarks>
+
+        public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
+            Func<T, int> indexSelector, Func<T, TResult> resultSelector)
+            => MoreEnumerable.ToArrayByIndex(source,indexSelector,resultSelector);
+
+        /// <summary>
+        /// Creates an array from an <see cref="IEnumerable{T}"/> where a
+        /// function is used to determine the index at which an element will
+        /// be placed in the array. The elements are projected into the array
+        /// via an additional function.
+        /// </summary>
+        /// <param name="source">The source sequence for the array.</param>
+        /// <param name="indexSelector">
+        /// A function that maps an element to its index.</param>
+        /// <param name="resultSelector">
+        /// A function to project a source element into an element of the
+        /// resulting array.</param>
+        /// <typeparam name="T">
+        /// The type of the element in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the element in the resulting array.</typeparam>
+        /// <returns>
+        /// An array that contains the projected elements from the input
+        /// sequence. The size of the array will be as large as the highest
+        /// index returned by the <paramref name="indexSelector"/> plus 1.
+        /// </returns>
+        /// <remarks>
+        /// This method forces immediate query evaluation. It should not be
+        /// used on infinite sequences. If more than one element maps to the
+        /// same index then the latter element overwrites the former in the
+        /// resulting array.
+        /// </remarks>
+
+        public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
+            Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
+            => MoreEnumerable.ToArrayByIndex(source,indexSelector,resultSelector);
+
+        /// <summary>
+        /// Creates an array of user-specified length from an
+        /// <see cref="IEnumerable{T}"/> where a function is used to determine
+        /// the index at which an element will be placed in the array.
+        /// </summary>
+        /// <param name="source">The source sequence for the array.</param>
+        /// <param name="length">The (non-negative) length of the resulting array.</param>
+        /// <param name="indexSelector">
+        /// A function that maps an element to its index.</param>
+        /// <typeparam name="T">
+        /// The type of the element in <paramref name="source"/>.</typeparam>
+        /// <returns>
+        /// An array of size <paramref name="length"/> that contains the
+        /// elements from the input sequence.
+        /// </returns>
+        /// <remarks>
+        /// This method forces immediate query evaluation. It should not be
+        /// used on infinite sequences. If more than one element maps to the
+        /// same index then the latter element overwrites the former in the
+        /// resulting array.
+        /// </remarks>
+
+        public static T[] ToArrayByIndex<T>(this IEnumerable<T> source, int length,
+            Func<T, int> indexSelector)
+            => MoreEnumerable.ToArrayByIndex(source,length,indexSelector);
+
+        /// <summary>
+        /// Creates an array of user-specified length from an
+        /// <see cref="IEnumerable{T}"/> where a function is used to determine
+        /// the index at which an element will be placed in the array. The
+        /// elements are projected into the array via an additional function.
+        /// </summary>
+        /// <param name="source">The source sequence for the array.</param>
+        /// <param name="length">The (non-negative) length of the resulting array.</param>
+        /// <param name="indexSelector">
+        /// A function that maps an element to its index.</param>
+        /// <param name="resultSelector">
+        /// A function to project a source element into an element of the
+        /// resulting array.</param>
+        /// <typeparam name="T">
+        /// The type of the element in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the element in the resulting array.</typeparam>
+        /// <returns>
+        /// An array of size <paramref name="length"/> that contains the
+        /// projected elements from the input sequence.
+        /// </returns>
+        /// <remarks>
+        /// This method forces immediate query evaluation. It should not be
+        /// used on infinite sequences. If more than one element maps to the
+        /// same index then the latter element overwrites the former in the
+        /// resulting array.
+        /// </remarks>
+
+        public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
+            Func<T, int> indexSelector, Func<T, TResult> resultSelector)
+            => MoreEnumerable.ToArrayByIndex(source,length,indexSelector,resultSelector);
+
+        /// <summary>
+        /// Creates an array of user-specified length from an
+        /// <see cref="IEnumerable{T}"/> where a function is used to determine
+        /// the index at which an element will be placed in the array. The
+        /// elements are projected into the array via an additional function.
+        /// </summary>
+        /// <param name="source">The source sequence for the array.</param>
+        /// <param name="length">The (non-negative) length of the resulting array.</param>
+        /// <param name="indexSelector">
+        /// A function that maps an element to its index.</param>
+        /// <param name="resultSelector">
+        /// A function to project a source element into an element of the
+        /// resulting array.</param>
+        /// <typeparam name="T">
+        /// The type of the element in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the element in the resulting array.</typeparam>
+        /// <returns>
+        /// An array of size <paramref name="length"/> that contains the
+        /// projected elements from the input sequence.
+        /// </returns>
+        /// <remarks>
+        /// This method forces immediate query evaluation. It should not be
+        /// used on infinite sequences. If more than one element maps to the
+        /// same index then the latter element overwrites the former in the
+        /// resulting array.
+        /// </remarks>
+
+        public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
+            Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
+            => MoreEnumerable.ToArrayByIndex(source,length,indexSelector,resultSelector);
 
     }
 
@@ -3901,7 +4974,41 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
-            IEqualityComparer<TKey> comparer)             => MoreEnumerable.ToDictionary(source,comparer);
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.ToDictionary(source,comparer);
+
+        /// <summary>
+        /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
+        /// tuples of 2 where the first item is the key and the second the
+        /// value.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of couples (tuple of 2).</param>
+        /// <returns>
+        /// A <see cref="Dictionary{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)             => MoreEnumerable.ToDictionary(source);
+
+        /// <summary>
+        /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
+        /// tuples of 2 where the first item is the key and the second the
+        /// value. An additional parameter specifies a comparer for keys.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of couples (tuple of 2).</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <returns>
+        /// A <see cref="Dictionary{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.ToDictionary(source,comparer);
 
     }
 
@@ -3949,21 +5056,21 @@ namespace MoreLinq.NoConflict
     public static partial class ToLookupExtension
     {
         /// <summary>
-        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// Creates a <see cref="ILookup{TKey,TValue}" /> from a sequence of
         /// <see cref="KeyValuePair{TKey,TValue}" /> elements.
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <typeparam name="TValue">The type of the value.</typeparam>
         /// <param name="source">The source sequence of key-value pairs.</param>
         /// <returns>
-        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// A <see cref="ILookup{TKey,TValue}"/> containing the values
         /// mapped to their keys.
         /// </returns>
 
         public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)             => MoreEnumerable.ToLookup(source);
 
         /// <summary>
-        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// Creates a <see cref="ILookup{TKey,TValue}" /> from a sequence of
         /// <see cref="KeyValuePair{TKey,TValue}" /> elements. An additional
         /// parameter specifies a comparer for keys.
         /// </summary>
@@ -3972,12 +5079,46 @@ namespace MoreLinq.NoConflict
         /// <param name="source">The source sequence of key-value pairs.</param>
         /// <param name="comparer">The comparer for keys.</param>
         /// <returns>
-        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// A <see cref="ILookup{TKey,TValue}"/> containing the values
         /// mapped to their keys.
         /// </returns>
 
         public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
-            IEqualityComparer<TKey> comparer)             => MoreEnumerable.ToLookup(source,comparer);
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.ToLookup(source,comparer);
+
+        /// <summary>
+        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// tuples of 2 where the first item is the key and the second the
+        /// value.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of tuples of 2.</param>
+        /// <returns>
+        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)             => MoreEnumerable.ToLookup(source);
+
+        /// <summary>
+        /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
+        /// tuples of 2 where the first item is the key and the second the
+        /// value. An additional parameter specifies a comparer for keys.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source sequence of tuples of 2.</param>
+        /// <param name="comparer">The comparer for keys.</param>
+        /// <returns>
+        /// A <see cref="Lookup{TKey, TValue}"/> containing the values
+        /// mapped to their keys.
+        /// </returns>
+
+        public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.ToLookup(source,comparer);
 
     }
 

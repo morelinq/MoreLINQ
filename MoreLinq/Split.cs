@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     static partial class MoreEnumerable
@@ -182,18 +181,8 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return SplitImpl(source, separator, comparer ?? EqualityComparer<TSource>.Default, count, resultSelector);
-        }
 
-        private static IEnumerable<TResult> SplitImpl<TSource, TResult>(IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer, int count,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(comparer != null);
-            Debug.Assert(count >= 0);
-            Debug.Assert(resultSelector != null);
-
+            comparer = comparer ?? EqualityComparer<TSource>.Default;
             return Split(source, item => comparer.Equals(item, separator), count, resultSelector);
         }
 
@@ -277,45 +266,37 @@ namespace MoreLinq
             if (separatorFunc == null) throw new ArgumentNullException(nameof(separatorFunc));
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return SplitImpl(source, separatorFunc, count, resultSelector);
-        }
 
-        private static IEnumerable<TResult> SplitImpl<TSource, TResult>(IEnumerable<TSource> source,
-            Func<TSource, bool> separatorFunc, int count,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(separatorFunc != null);
-            Debug.Assert(count >= 0);
-            Debug.Assert(resultSelector != null);
-
-            if (count == 0) // No splits?
+            return _(); IEnumerable<TResult> _()
             {
-                yield return resultSelector(source);
-            }
-            else
-            {
-                List<TSource> items = null;
-
-                foreach (var item in source)
+                if (count == 0) // No splits?
                 {
-                    if (count > 0 && separatorFunc(item))
-                    {
-                        yield return resultSelector(items ?? Enumerable.Empty<TSource>());
-                        count--;
-                        items = null;
-                    }
-                    else
-                    {
-                        if (items == null)
-                            items = new List<TSource>();
-
-                        items.Add(item);
-                    }
+                    yield return resultSelector(source);
                 }
+                else
+                {
+                    List<TSource> items = null;
 
-                if (items != null && items.Count > 0)
-                    yield return resultSelector(items);
+                    foreach (var item in source)
+                    {
+                        if (count > 0 && separatorFunc(item))
+                        {
+                            yield return resultSelector(items ?? Enumerable.Empty<TSource>());
+                            count--;
+                            items = null;
+                        }
+                        else
+                        {
+                            if (items == null)
+                                items = new List<TSource>();
+
+                            items.Add(item);
+                        }
+                    }
+
+                    if (items != null && items.Count > 0)
+                        yield return resultSelector(items);
+                }
             }
         }
     }

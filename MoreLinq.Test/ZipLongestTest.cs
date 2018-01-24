@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-using Tuple = System.ValueTuple;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+    using Tuple = System.ValueTuple;
+
     [TestFixture]
     public class ZipLongestTest
     {
@@ -66,27 +66,6 @@ namespace MoreLinq.Test
             var zipped = new[] { 1, 2, 3 }.ZipLongest(new[] { 4, 5 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 0));
-        }
-
-        [Test]
-        public void ZipWithNullFirstSequence()
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                MoreEnumerable.ZipLongest(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
-        }
-
-        [Test]
-        public void ZipWithNullSecondSequence()
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                new[] { 1, 2, 3 }.ZipLongest(null, BreakingFunc.Of<int, int, int>()));
-        }
-
-        [Test]
-        public void ZipWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector", () =>
-                new[] { 1, 2, 3 }.ZipLongest<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 
         [Test]

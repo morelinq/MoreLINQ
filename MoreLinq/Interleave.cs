@@ -70,82 +70,81 @@ namespace MoreLinq
         /// <param name="imbalanceStrategy">Defines the behavior of the operator when sequences are of unequal length</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
-        
-        private static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, ImbalancedInterleaveStrategy imbalanceStrategy, params IEnumerable<T>[] otherSequences)
+        static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, ImbalancedInterleaveStrategy imbalanceStrategy, params IEnumerable<T>[] otherSequences)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
             if (otherSequences.Any(s => s == null))
                 throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
-            return InterleaveImpl(new[] { sequence }.Concat(otherSequences), imbalanceStrategy);
-        }
-
-        private static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences, ImbalancedInterleaveStrategy imbalanceStrategy)
-        {
-            // produce an iterator collection for all IEnumerable<T> instancess passed to us
-            var iterators = sequences.Select(e => e.GetEnumerator()).Acquire();
-            List<IEnumerator<T>> iteratorList = null;
-
-            try
+            return _(); IEnumerable<T> _()
             {
-                iteratorList = new List<IEnumerator<T>>(iterators);
-                iterators = null;
-                var shouldContinue = true;
-                var consumedIterators = 0;
-                var iterCount = iteratorList.Count;
+                var sequences = new[] { sequence }.Concat(otherSequences);
 
-                while (shouldContinue)
+                // produce an iterator collection for all IEnumerable<T> instancess passed to us
+                var iterators = sequences.Select(e => e.GetEnumerator()).Acquire();
+                List<IEnumerator<T>> iteratorList = null;
+
+                try
                 {
-                    // advance every iterator and verify a value exists to be yielded
-                    for (var index = 0; index < iterCount; index++)
+                    iteratorList = new List<IEnumerator<T>>(iterators);
+                    iterators = null;
+                    var shouldContinue = true;
+                    var consumedIterators = 0;
+                    var iterCount = iteratorList.Count;
+
+                    while (shouldContinue)
                     {
-                        if (!iteratorList[index].MoveNext())
-                        {
-                            // check if all iterators have been consumed and we can terminate
-                            // or if the imbalance strategy informs us that we MUST terminate
-                            if (++consumedIterators == iterCount || imbalanceStrategy == ImbalancedInterleaveStrategy.Stop)
-                            {
-                                shouldContinue = false;
-                                break;
-                            }
-
-                            iteratorList[index].Dispose(); // dispose the iterator sice we no longer need it
-
-                            // otherwise, apply the imbalance strategy
-                            switch (imbalanceStrategy)
-                            {
-                                case ImbalancedInterleaveStrategy.Pad:
-                                    var newIter = iteratorList[index] = Generate(default(T), x => default(T)).GetEnumerator();
-                                    newIter.MoveNext();
-                                    break;
-
-                                case ImbalancedInterleaveStrategy.Skip:
-                                    iteratorList.RemoveAt(index); // no longer visit this particular iterator
-                                    --iterCount; // reduce the expected number of iterators to visit
-                                    --index; // decrement iterator index to compensate for index shifting
-                                    --consumedIterators; // decrement consumer iterator count to stay in balance
-                                    break;
-                            }
-
-                        }
-                    }
-
-                    if (shouldContinue) // only if all iterators could be advanced
-                    {
-                        // yield the values of each iterator's current position
+                        // advance every iterator and verify a value exists to be yielded
                         for (var index = 0; index < iterCount; index++)
                         {
-                            yield return iteratorList[index].Current;
+                            if (!iteratorList[index].MoveNext())
+                            {
+                                // check if all iterators have been consumed and we can terminate
+                                // or if the imbalance strategy informs us that we MUST terminate
+                                if (++consumedIterators == iterCount || imbalanceStrategy == ImbalancedInterleaveStrategy.Stop)
+                                {
+                                    shouldContinue = false;
+                                    break;
+                                }
+
+                                iteratorList[index].Dispose(); // dispose the iterator sice we no longer need it
+
+                                // otherwise, apply the imbalance strategy
+                                switch (imbalanceStrategy)
+                                {
+                                    case ImbalancedInterleaveStrategy.Pad:
+                                        var newIter = iteratorList[index] = Generate(default(T), x => default(T)).GetEnumerator();
+                                        newIter.MoveNext();
+                                        break;
+
+                                    case ImbalancedInterleaveStrategy.Skip:
+                                        iteratorList.RemoveAt(index); // no longer visit this particular iterator
+                                        --iterCount; // reduce the expected number of iterators to visit
+                                        --index; // decrement iterator index to compensate for index shifting
+                                        --consumedIterators; // decrement consumer iterator count to stay in balance
+                                        break;
+                                }
+
+                            }
+                        }
+
+                        if (shouldContinue) // only if all iterators could be advanced
+                        {
+                            // yield the values of each iterator's current position
+                            for (var index = 0; index < iterCount; index++)
+                            {
+                                yield return iteratorList[index].Current;
+                            }
                         }
                     }
                 }
-            }
-            finally
-            {
-                Debug.Assert(iteratorList != null || iterators != null);
-                foreach (var iter in (iteratorList ?? (IList<IEnumerator<T>>) iterators))
-                    iter.Dispose();
+                finally
+                {
+                    Debug.Assert(iteratorList != null || iterators != null);
+                    foreach (var iter in (iteratorList ?? (IList<IEnumerator<T>>) iterators))
+                        iter.Dispose();
+                }
             }
         }
 

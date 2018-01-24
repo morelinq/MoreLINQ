@@ -15,44 +15,36 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class AtLeastTest
     {
         [Test]
-        public void AtLeastWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.AtLeast<int>(null, 1));
-        }
-
-        [Test]
         public void AtLeastWithNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                 new[] { 1 }.AtLeast(-1));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
-            Assert.IsTrue(LinqEnumerable.Empty<int>().AtLeast(0));
+            Assert.IsTrue(Enumerable.Empty<int>().AtLeast(0));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastOneElement()
         {
-            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(1));
+            Assert.IsFalse(Enumerable.Empty<int>().AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElements()
         {
-            Assert.IsFalse(LinqEnumerable.Empty<int>().AtLeast(2));
+            Assert.IsFalse(Enumerable.Empty<int>().AtLeast(2));
         }
 
         [Test]
@@ -113,19 +105,19 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElementsForCollections()
         {
-            Assert.IsTrue(new int[] { 1 }.AtLeast(0));
+            Assert.IsTrue(new[] { 1 }.AtLeast(0));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElementForCollections()
         {
-            Assert.IsTrue(new int[] { 1 }.AtLeast(1));
+            Assert.IsTrue(new[] { 1 }.AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElementsForCollections()
         {
-            Assert.IsFalse(new int[] { 1 }.AtLeast(2));
+            Assert.IsFalse(new[] { 1 }.AtLeast(2));
         }
 
         [Test]

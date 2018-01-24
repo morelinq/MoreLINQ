@@ -50,31 +50,28 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        /// <exception cref="System.InvalidOperationException">If <paramref name="source"/> is empty.</exception>
 
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return ScanImpl(source, transformation);
-        }
-
-        private static IEnumerable<T> ScanImpl<T>(IEnumerable<T> source, Func<T, T, T> f)
-        {
-            using (var i = source.GetEnumerator())
+            return _(); IEnumerable<TSource> _()
             {
-                if (!i.MoveNext())
-                    yield break;
-
-                var aggregator = i.Current;
-
-                while (i.MoveNext())
+                using (var i = source.GetEnumerator())
                 {
+                    if (!i.MoveNext())
+                        yield break;
+
+                    var aggregator = i.Current;
+
+                    while (i.MoveNext())
+                    {
+                        yield return aggregator;
+                        aggregator = transformation(aggregator, i.Current);
+                    }
                     yield return aggregator;
-                    aggregator = f(aggregator, i.Current);
                 }
-                yield return aggregator;
             }
         }
 
@@ -104,21 +101,20 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return ScanImpl(source, seed, transformation);
-        }
 
-        private static IEnumerable<TState> ScanImpl<T, TState>(IEnumerable<T> source, TState seed, Func<TState, T, TState> f)
-        {
-            using (var i = source.GetEnumerator())
+            return _(); IEnumerable<TState> _()
             {
-                var aggregator = seed;
-
-                while (i.MoveNext())
+                using (var i = source.GetEnumerator())
                 {
+                    var aggregator = seed;
+
+                    while (i.MoveNext())
+                    {
+                        yield return aggregator;
+                        aggregator = transformation(aggregator, i.Current);
+                    }
                     yield return aggregator;
-                    aggregator = f(aggregator, i.Current);
                 }
-                yield return aggregator;
             }
         }
     }

@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,15 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TraceTest
     {
@@ -62,20 +62,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TraceSequenceWithNullFormatter()
-        {
-            Assert.ThrowsArgumentNullException("formatter", () =>
-                new object[0].Trace((Func<object, string>)null));
-        }
-
-        [Test]
         public void TraceSequenceWithFormatter()
         {
             var trace = Lines(CaptureTrace(delegate
             {
                 var formatter = CultureInfo.InvariantCulture;
-                new int?[] { 1234, null, 5678 }.Trace(n => n.HasValue 
-                                                           ? n.Value.ToString("N0", formatter) 
+                new int?[] { 1234, null, 5678 }.Trace(n => n.HasValue
+                                                           ? n.Value.ToString("N0", formatter)
                                                            : "#NULL")
                                                .Consume();
             }));
@@ -83,14 +76,12 @@ namespace MoreLinq.Test
             trace.AssertSequenceEqual("1,234", "#NULL", "5,678");
         }
 
-        private static IEnumerable<string> Lines(string str)
-        {
-            return Lines(string.IsNullOrEmpty(str)
-                         ? TextReader.Null
-                         : new StringReader(str));
-        }
+        static IEnumerable<string> Lines(string str) =>
+            Lines(string.IsNullOrEmpty(str)
+            ? TextReader.Null
+            : new StringReader(str));
 
-        private static IEnumerable<string> Lines(TextReader reader)
+        static IEnumerable<string> Lines(TextReader reader)
         {
             Debug.Assert(reader != null);
             string line;
@@ -98,7 +89,7 @@ namespace MoreLinq.Test
                 yield return line;
         }
 
-        private static string CaptureTrace(Action action)
+        static string CaptureTrace(Action action)
         {
             var writer = new StringWriter();
             var listener = new TextWriterTraceListener(writer);

@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace MoreLinq.Test
 {
-    internal static class SequenceReader
+    using System;
+    using System.Collections.Generic;
+
+    static class SequenceReader
     {
         public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
         {
@@ -35,10 +35,9 @@ namespace MoreLinq.Test
     /// "read" operation.
     /// </summary>
     /// <typeparam name="T">Type of elements to read.</typeparam>
-
-    internal class SequenceReader<T> : IDisposable
+    class SequenceReader<T> : IDisposable
     {
-        private IEnumerator<T> enumerator;
+        IEnumerator<T> _enumerator;
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -55,13 +54,10 @@ namespace MoreLinq.Test
         /// </summary>
         /// <param name="enumerator">Source enumerator.</param>
 
-        public SequenceReader(IEnumerator<T> enumerator)
-        {
-            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            this.enumerator = enumerator;
-        }
+        public SequenceReader(IEnumerator<T> enumerator) =>
+            _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
-        private static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
+        static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.GetEnumerator();
@@ -83,7 +79,7 @@ namespace MoreLinq.Test
 
             value = default(T);
 
-            var e = enumerator;
+            var e = _enumerator;
             if (!e.MoveNext())
                 return false;
 
@@ -95,20 +91,14 @@ namespace MoreLinq.Test
         /// Tires to read the next value otherwise return the default.
         /// </summary>
 
-        public T TryRead()
-        {
-            return TryRead(default(T));
-        }
+        public T TryRead() => TryRead(default(T));
 
         /// <summary>
         /// Tires to read the next value otherwise return a given default.
         /// </summary>
 
-        public T TryRead(T defaultValue)
-        {
-            T result;
-            return TryRead(out result) ? result : defaultValue;
-        }
+        public T TryRead(T defaultValue) =>
+            TryRead(out var result) ? result : defaultValue;
 
         /// <summary>
         /// Reads a value otherwise throws <see cref="InvalidOperationException"/>
@@ -118,14 +108,8 @@ namespace MoreLinq.Test
         /// Returns the read value;
         /// </returns>
 
-        public T Read()
-        {
-            T result;
-            if (!TryRead(out result))
-                throw new InvalidOperationException();
-
-            return result;
-        }
+        public T Read() =>
+            TryRead(out var result) ? result : throw new InvalidOperationException();
 
         /// <summary>
         /// Reads the end. If the end has not been reached then it
@@ -136,7 +120,7 @@ namespace MoreLinq.Test
         {
             EnsureNotDisposed();
 
-            if (enumerator.MoveNext())
+            if (_enumerator.MoveNext())
                 throw new InvalidOperationException();
         }
 
@@ -147,7 +131,7 @@ namespace MoreLinq.Test
 
         protected void EnsureNotDisposed()
         {
-            if (enumerator == null)
+            if (_enumerator == null)
                 throw new ObjectDisposedException(GetType().FullName);
         }
 
@@ -158,9 +142,9 @@ namespace MoreLinq.Test
 
         public virtual void Dispose()
         {
-            var e = this.enumerator;
+            var e = _enumerator;
             if (e == null) return;
-            this.enumerator = null;
+            _enumerator = null;
             e.Dispose();
         }
     }

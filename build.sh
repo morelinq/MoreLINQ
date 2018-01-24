@@ -18,8 +18,8 @@ codegen() {
     dotnet run -p MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- "$@" > "$dest"
     printf "Done.\n"
 }
-codegen MoreLinq/NoConflict.g.cs -x "[/\\\\](ToDataTable|Fold16\.g|(.+)\.Tuple)\.cs$" -u System.Linq MoreLinq
-codegen MoreLinq/NoConflict.Fold+Tuple.g.cs -i "[/\\\\](Fold16\.g|To.+\.Tuple)\.cs$" -u System.Linq --no-class-lead MoreLinq
+codegen MoreLinq/NoConflict.g.cs -x "[/\\\\](ToDataTable|Fold16\.g)\.cs$" -u System.Linq -u System.Collections MoreLinq
+codegen MoreLinq/NoConflict.Fold.g.cs -i "[/\\\\]Fold16\.g\.cs$" -u System.Linq --no-class-lead MoreLinq
 codegen MoreLinq/NoConflict.ToDataTable.g.cs -i "[/\\\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq
 for c in Debug Release; do
     ./msbuild.sh /v:m /p:Configuration=$c

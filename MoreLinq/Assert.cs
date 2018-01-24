@@ -65,18 +65,15 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return AssertImpl(source, predicate, errorSelector ?? delegate { return null; });
-        }
-
-        private static IEnumerable<TSource> AssertImpl<TSource>(IEnumerable<TSource> source, 
-            Func<TSource, bool> predicate, Func<TSource, Exception> errorSelector)
-        {
-            foreach (var element in source)
+            return _(); IEnumerable<TSource> _()
             {
-                var success = predicate(element);
-                if (!success)
-                    throw errorSelector(element) ?? new InvalidOperationException("Sequence contains an invalid item.");
-                yield return element;
+                foreach (var element in source)
+                {
+                    var success = predicate(element);
+                    if (!success)
+                        throw errorSelector?.Invoke(element) ?? new InvalidOperationException("Sequence contains an invalid item.");
+                    yield return element;
+                }
             }
         }
     }

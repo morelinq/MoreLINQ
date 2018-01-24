@@ -15,41 +15,26 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class BatchTest
     {
         [Test]
-        public void BatchNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.Batch<object>(null, 1));
-        }
-
-        [Test]
         public void BatchZeroSize()
         {
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 new object[0].Batch(0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 new object[0].Batch(-1));
-        }
-
-        [Test]
-        public void BatchWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector",() =>
-                new object[0].Batch<object, object>(1, null));
         }
 
         [Test]

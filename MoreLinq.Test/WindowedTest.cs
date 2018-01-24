@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Windowed operator
     /// </summary>
@@ -20,17 +18,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking Windowed on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestWindowedNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Windowed(10));
-        }
-
-        /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
@@ -38,7 +25,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 sequence.Windowed(-5));
         }
 

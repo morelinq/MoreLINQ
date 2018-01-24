@@ -25,8 +25,9 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {      
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets
-        /// of any size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of
+        /// the subsets of any size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>power set</em> of a set.
         /// </summary>
         /// <remarks>
         /// This operator produces all of the subsets of a given sequence. Subsets are returned
@@ -43,14 +44,38 @@ namespace MoreLinq
         
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
-            if (sequence == null)
-                throw new ArgumentNullException(nameof(sequence));
-            return SubsetsImpl(sequence);
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+
+            return _(); IEnumerable<IList<T>> _()
+            {
+                var sequenceAsList = sequence.ToList();
+                var sequenceLength = sequenceAsList.Count;
+
+                // the first subset is the empty set
+                yield return new List<T>();
+
+                // all other subsets are computed using the subset generator
+                // this check also resolves the case of permuting empty sets
+                if (sequenceLength > 0)
+                {
+                    for (var i = 1; i < sequenceLength; i++)
+                    {
+                        // each intermediate subset is a lexographically ordered K-subset
+                        var subsetGenerator = new SubsetGenerator<T>(sequenceAsList, i);
+                        foreach (var subset in subsetGenerator)
+                            yield return subset;
+                    }
+
+                    yield return sequenceAsList; // the last subet is the original set itself
+                }
+            }
         }
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of the
-        /// specified size that are part of the original sequence.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all
+        /// subsets of a given size that are part of the original sequence. In
+        /// mathematics, it is equivalent to the <em>combinations</em> or
+        /// <em>k-subsets</em> of a set.
         /// </summary>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <param name="subsetSize">The size of the subsets to produce</param>
@@ -87,61 +112,29 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Underlying implementation for Subsets() overload.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <returns>Sequence of lists representing all subsets of a sequence</returns>
-        
-        private static IEnumerable<IList<T>> SubsetsImpl<T>(IEnumerable<T> sequence)
-        {
-            var sequenceAsList = sequence.ToList();
-            var sequenceLength = sequenceAsList.Count;
-
-            // the first subset is the empty set
-            yield return new List<T>();
-
-            // all other subsets are computed using the subset generator
-            // this check also resolves the case of permuting empty sets
-            if (sequenceLength > 0)
-            {
-                for (var i = 1; i < sequenceLength; i++)
-                {
-                    // each intermediate subset is a lexographically ordered K-subset
-                    var subsetGenerator = new SubsetGenerator<T>(sequenceAsList, i);
-                    foreach (var subset in subsetGenerator)
-                        yield return subset;
-                }
-
-                yield return sequenceAsList; // the last subet is the original set itself
-            }
-        }
-
-        /// <summary>
         /// This class is responsible for producing the lexographically ordered k-subsets
         /// </summary>
-        
-        private sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
+        sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
         {
             /// <summary>
             /// SubsetEnumerator uses a snapshot of the original sequence, and an
             /// iterative, reductive swap algorithm to produce all subsets of a
             /// predetermined size less than or equal to the original set size.
             /// </summary>
-
-            private class SubsetEnumerator : IEnumerator<IList<T>>
+            class SubsetEnumerator : IEnumerator<IList<T>>
             {
-                private readonly IList<T> _set;   // the original set of elements
-                private readonly T[] _subset;     // the current subset to return
-                private readonly int[] _indices;  // indices into the original set
+                readonly IList<T> _set;   // the original set of elements
+                readonly T[] _subset;     // the current subset to return
+                readonly int[] _indices;  // indices into the original set
 
                 // TODO: It would be desirable to give these index members clearer names
-                private bool _continue;  // termination indicator, set when all subsets have been produced
-                private int _m;            // previous swap index (upper index)
-                private int _m2;           // current swap index (lower index)
-                private int _k;            // size of the subset being produced
-                private int _n;            // size of the original set (sequence)
-                private int _z;            // count of items excluded from the subet
+                bool _continue;  // termination indicator, set when all subsets have been produced
+
+                int _m;            // previous swap index (upper index)
+                int _m2;           // current swap index (lower index)
+                int _k;            // size of the subset being produced
+                int _n;            // size of the original set (sequence)
+                int _z;            // count of items excluded from the subet
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -167,15 +160,9 @@ namespace MoreLinq
                     _continue = _subset.Length > 0;
                 }
 
-                public IList<T> Current
-                {
-                    get { return (IList<T>)_subset.Clone(); }
-                }
+                public IList<T> Current => (IList<T>)_subset.Clone();
 
-                object IEnumerator.Current
-                {
-                    get { return Current; }
-                }
+                object IEnumerator.Current => Current;
 
                 public bool MoveNext()
                 {
@@ -208,15 +195,15 @@ namespace MoreLinq
 
                 void IDisposable.Dispose() { }
 
-                private void ExtractSubset()
+                void ExtractSubset()
                 {
                     for (var i = 0; i < _k; i++)
                         _subset[i] = _set[_indices[i] - 1];
                 }
             }
 
-            private readonly IEnumerable<T> _sequence;
-            private readonly int _subsetSize;
+            readonly IEnumerable<T> _sequence;
+            readonly int _subsetSize;
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {

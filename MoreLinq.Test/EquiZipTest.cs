@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-using Tuple = System.ValueTuple;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+    using Tuple = System.ValueTuple;
+
     [TestFixture]
     public class EquiZipTest
     {
@@ -31,14 +31,8 @@ namespace MoreLinq.Test
             using (var shorter = TestingSequence.Of(1, 2))
             {
                 // Yes, this will throw... but then we should still have disposed both sequences
-                try
-                {
-                    longer.EquiZip(shorter, (x, y) => x + y).Consume();
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected
-                }
+                Assert.Throws<InvalidOperationException>(() =>
+                    longer.EquiZip(shorter, (x, y) => x + y).Consume());
             }
         }
 
@@ -49,14 +43,8 @@ namespace MoreLinq.Test
             using (var shorter = TestingSequence.Of(1, 2))
             {
                 // Yes, this will throw... but then we should still have disposed both sequences
-                try
-                {
-                    shorter.EquiZip(longer, (x, y) => x + y).Consume();
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected
-                }
+                Assert.Throws<InvalidOperationException>(() =>
+                    shorter.EquiZip(longer, (x, y) => x + y).Consume());
             }
         }
 
@@ -84,27 +72,6 @@ namespace MoreLinq.Test
             Assert.That(zipped, Is.Not.Null);
             Assert.Throws<InvalidOperationException>(() =>
                 zipped.Consume());
-        }
-
-        [Test]
-        public void ZipWithNullFirstSequence()
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                MoreEnumerable.EquiZip(null, new[] { 4, 5, 6 }, BreakingFunc.Of<int, int, int>()));
-        }
-
-        [Test]
-        public void ZipWithNullSecondSequence()
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                new[] { 1, 2, 3 }.EquiZip(null, BreakingFunc.Of<int, int, int>()));
-        }
-
-        [Test]
-        public void ZipWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector", () =>
-                new[] { 1, 2, 3 }.EquiZip<int, int, int>(new[] { 4, 5, 6 }, null));
         }
 
         [Test]

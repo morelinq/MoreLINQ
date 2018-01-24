@@ -15,35 +15,17 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class FallbackIfEmptyTest
     {
         [Test]
-        public void FallbackIfEmptyWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4));
-            Assert.ThrowsArgumentNullException("source", () => MoreEnumerable.FallbackIfEmpty(null, 1, 2, 3, 4, 5));
-        }
-
-        [Test]
-        public void FallbackIfEmptyWithNullFallbackParams()
-        {
-           Assert.ThrowsArgumentNullException("fallback", () => new[] { 1 }.FallbackIfEmpty(null));
-        }
-
-        [Test]
         public void FallbackIfEmptyWithEmptySequence()
         {
-            var source = LinqEnumerable.Empty<int>().Select(x => x);
+            var source = Enumerable.Empty<int>().Select(x => x);
             // ReSharper disable PossibleMultipleEnumeration
             source.FallbackIfEmpty(12).AssertSequenceEqual(12);
             source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
@@ -55,9 +37,31 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible()
+        {
+            var source = new[] { 1 };
+            // ReSharper disable PossibleMultipleEnumeration
+            Assert.AreSame(source.FallbackIfEmpty(12), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source);
+            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source);
+            // ReSharper restore PossibleMultipleEnumeration
+        }
+
+        [Test]
+        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible()
+        {
+            var source = new int[0];
+            var fallback = new[] { 1 };
+            Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
+            Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
+        }
+
         public void FallbackIfEmptyWithEmptySequenceCollectionOptimized()
         {
-            var source = LinqEnumerable.Empty<int>();
+            var source = Enumerable.Empty<int>();
             // ReSharper disable PossibleMultipleEnumeration
             source.FallbackIfEmpty(12).AssertSequenceEqual(12);
             source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
