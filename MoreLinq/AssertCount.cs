@@ -86,16 +86,16 @@ namespace MoreLinq
             // Optimization for collections
             if (source is ICollection<TSource> collection)
             {
-                if (collection.Count != count)
-                    throw errorSelector(collection.Count.CompareTo(count), count);
-                return source;
+                return collection.Count == count
+                     ? collection
+                     : From<TSource>(() => throw errorSelector(collection.Count.CompareTo(count), count));
             };
 #if IREADONLY
             if (source is IReadOnlyCollection<TSource> readOnlyCollection)
             {
-                if (readOnlyCollection.Count != count)
-                    throw errorSelector(readOnlyCollection.Count.CompareTo(count), count);
-                return source;
+                return readOnlyCollection.Count == count
+                     ? readOnlyCollection
+                     : From<TSource>(() => throw errorSelector(readOnlyCollection.Count.CompareTo(count), count));
             };
 #endif
 
