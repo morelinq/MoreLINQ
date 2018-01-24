@@ -7,12 +7,21 @@ namespace MoreLinq.Test
     class OrderedMergeTest {
         public static IEnumerable<TResult> TDDOrderedMerge<TResult>(IEnumerable<TResult> first, IEnumerable<TResult> second) {
             return _();
-
             IEnumerable<TResult> _() {
                 using (var e1 = first.GetEnumerator())
                 using (var e2 = second.GetEnumerator())
                 {
-                    yield break;
+                    var gotFirst = e1.MoveNext();
+                    var gotSecond = e2.MoveNext();
+
+                    while (gotFirst || gotSecond)
+                    {
+                        if (!gotFirst && gotSecond)
+                        {
+                            yield return e2.Current;
+                            gotSecond = e2.MoveNext();
+                        }
+                    }
                 }
 			}
         }
@@ -38,6 +47,12 @@ namespace MoreLinq.Test
 
             Assert.IsTrue(firstDisposed, "First was not disposed");
             Assert.IsTrue(secondDisposed, "Second was not disposed");
+        }
+
+        [Test]
+        public void IfThereAreNoMoreElementsToReturnFromTheFirstCollectionThenReturnTheRemainingSecondCollection()
+        {
+            Assert.That(TDDOrderedMerge(new int[] { }, new[] { 1, 2, 3 }), Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
     }
 }
