@@ -20,6 +20,10 @@ namespace MoreLinq.Test
                         {
                             yield return e2.Current;
                             gotSecond = e2.MoveNext();
+                        } else if (gotFirst && !gotSecond)
+                        {
+                            yield return e1.Current;
+                            gotFirst = e1.MoveNext();
                         }
                     }
                 }
@@ -53,6 +57,12 @@ namespace MoreLinq.Test
         public void IfThereAreNoMoreElementsToReturnFromTheFirstCollectionThenReturnTheRemainingSecondCollection()
         {
             Assert.That(TDDOrderedMerge(new int[] { }, new[] { 1, 2, 3 }), Is.EquivalentTo(new[] { 1, 2, 3 }));
+        }
+
+        [Test]
+        public void IfThereAreNoMoreElementsToReturnFromTheSecondCollectionThenReturnTheRemainingFirstCollection()
+        {
+            Assert.That(TDDOrderedMerge(new [] { 1, 2, 3 }, new int[] { }), Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
     }
 }
