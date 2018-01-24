@@ -28,8 +28,6 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,10 +37,6 @@
     <None Update="Fold.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Fold.g.cs</LastGenOutput>
-    </None>
-    <None Update="Properties\AssemblyInfo.g.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AssemblyInfo.g.cs</LastGenOutput>
     </None>
     <None Update="ToDelimitedString.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -89,16 +83,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
-    <Compile Update="Properties\AssemblyInfo.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AssemblyInfo.g.tt</DependentUpon>
-    </Compile>
     <Compile Update="ToDelimitedString.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
