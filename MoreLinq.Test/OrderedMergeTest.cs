@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -29,6 +30,10 @@ namespace MoreLinq.Test
                             }
                             else if (comparison > 0) {
                                 yield return element2;
+                                gotSecond = e2.MoveNext();
+                            } else {
+                                yield return element1;
+                                gotFirst = e1.MoveNext();
                                 gotSecond = e2.MoveNext();
                             }
                         } else if (gotSecond)
@@ -83,6 +88,26 @@ namespace MoreLinq.Test
         [Test]
         public void TwoSequencesWithNoCollistionsShouldMergeUsingTheDefaultComparer() {
             Assert.That(TDDOrderedMerge(new[] { 1, 3, 5 }, new [] { 2, 4, 6 }), Is.EquivalentTo(new[] { 1, 2, 3, 4, 5, 6 }));
+        }
+
+        [Test]
+        public void IfThereIsACollisionThenChooseTheElementFromTheFirstCollection() {
+            var firstElement = new Version(3, 0);
+            var secondElement = new Version(3, 0);
+
+            var first = new[] {new Version(1, 0), firstElement, new Version(5, 0)};
+            var second = new[] { new Version(2, 0), secondElement, new Version(4, 0) };
+
+            var merged = TDDOrderedMerge(first, second);
+
+            var expected = new[] {
+                new Version(1, 0),
+                new Version(2, 0),
+                firstElement,
+                new Version(4, 0),
+                new Version(5, 0)
+            };
+            Assert.That(merged, Is.EquivalentTo(expected));
         }
     }
 }
