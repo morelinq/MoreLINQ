@@ -45,7 +45,7 @@ namespace MoreLinq
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
-            return QuantityIterator(source, count, n => n >= count);
+            return QuantityIterator(source, count, count, int.MaxValue);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace MoreLinq
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
-            return QuantityIterator(source, count + 1, n => n <= count);
+            return QuantityIterator(source, count + 1, 0, count);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace MoreLinq
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
 
-            return QuantityIterator(source, count + 1, n => n == count);
+            return QuantityIterator(source, count + 1, count, count);
         }
 
         /// <summary>
@@ -125,33 +125,32 @@ namespace MoreLinq
             if (min < 0) throw new ArgumentOutOfRangeException(nameof(min), "Minimum count cannot be negative.");
             if (max < min) throw new ArgumentOutOfRangeException(nameof(max), "Maximum count must be greater than or equal to the minimum count.");
 
-            return QuantityIterator(source, max + 1, n => min <= n && n <= max);
+            return QuantityIterator(source, max + 1, min, max);
         }
 
-
-        static bool QuantityIterator<T>(IEnumerable<T> source, int limit, Func<int, bool> predicate)
+        static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (source is ICollection<T> col)
-            {
-                return predicate(col.Count);
-            }
-
             var count = 0;
 
-            using (var e = source.GetEnumerator())
+            if (source is ICollection<T> col)
             {
-                while (e.MoveNext())
+                count = col.Count;
+            }
+            else
+            {
+                using (var e = source.GetEnumerator())
                 {
-                    if (++count == limit)
+                    while (e.MoveNext())
                     {
-                        break;
+                        if (++count == limit)
+                            break;
                     }
                 }
             }
 
-            return predicate(count);
+            return count >= min && count <= max;
         }
     }
 }
