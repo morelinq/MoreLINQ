@@ -126,16 +126,9 @@ namespace MoreLinq.Test
             Assert.AreEqual(e.Message, message);
         }
 
-        sealed class BreakingCollection<T> : BreakingCollectionBase<T>, ICollection<T>
+        sealed class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
         {
-            public BreakingCollection(int count) : base(count)
-            {
-            }
-        }
-
-        abstract class BreakingCollectionBase<T> : BreakingSequence<T>
-        {
-            public BreakingCollectionBase(int count) => Count = count;
+            public BreakingCollection(int count) => Count = count;
 
             public int Count { get; }
 
@@ -155,11 +148,10 @@ namespace MoreLinq.Test
             new BreakingReadOnlyCollection<object>(5).AssertCount(0);
         }
 
-        sealed class BreakingReadOnlyCollection<T> : BreakingCollectionBase<T>, IReadOnlyCollection<T>
+        sealed class BreakingReadOnlyCollection<T> : BreakingSequence<T>, IReadOnlyCollection<T>
         {
-            public BreakingReadOnlyCollection(int count) : base(count)
-            {
-            }
+            public BreakingReadOnlyCollection(int count) => Count = count;
+            public int Count { get; }
         }
 
 #endif

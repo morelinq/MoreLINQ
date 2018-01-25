@@ -74,48 +74,43 @@ namespace MoreLinq
             return new SequenceException(string.Format(message, count.ToString("N0")));
         }
 
-        #endif
+#endif
 
-        static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source, 
+        static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
-            // Optimization for collections
-            if (source is ICollection<TSource> collection)
+            switch (source)
             {
-                return collection.Count == count
-                     ? collection
-                     : From<TSource>(() => throw errorSelector(collection.Count.CompareTo(count), count));
-            };
+                case ICollection<TSource> collection:
+                    return AssertKnownCount(collection.Count);
 #if IREADONLY
-            if (source is IReadOnlyCollection<TSource> readOnlyCollection)
-            {
-                return readOnlyCollection.Count == count
-                     ? readOnlyCollection
-                     : From<TSource>(() => throw errorSelector(readOnlyCollection.Count.CompareTo(count), count));
-            };
+                case IReadOnlyCollection<TSource> readOnlyCollection:
+                    return AssertKnownCount(readOnlyCollection.Count);
 #endif
-
-            return _(); IEnumerable<TSource> _()
-            {
-                var iterations = 0;
-                foreach (var element in source)
-                {
-                    iterations++;
-                    if (iterations > count)
+                default:
+                    return _(); IEnumerable<TSource> _()
                     {
-                        throw errorSelector(1, count);
+                        var iterations = 0;
+                        foreach (var element in source)
+                        {
+                            iterations++;
+                            if (iterations > count)
+                                throw errorSelector(1, count);
+                            yield return element;
+                        }
+                        if (iterations != count)
+                            throw errorSelector(-1, count);
                     }
-                    yield return element;
-                }
-                if (iterations != count)
-                {
-                    throw errorSelector(-1, count);
-                }
             }
+
+            IEnumerable<TSource> AssertKnownCount(int actualCount) =>
+                actualCount == count
+                ? source
+                : From<TSource>(() => throw errorSelector(actualCount.CompareTo(count), count));
         }
     }
 }
