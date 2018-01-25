@@ -66,12 +66,6 @@
     <DefineConstants>$(DefineConstants);MORELINQ;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Compile Remove="*.Tuple.cs" />
-    <Compile Remove="*.Fold+Tuple.g.cs" />
-    <Compile Remove="Fold16.g.cs" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
     <Compile Remove="ToDataTable.cs" />
     <Compile Remove="NoConflict.ToDataTable.g.cs" />
