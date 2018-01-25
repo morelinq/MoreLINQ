@@ -1,4 +1,0 @@
-<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ output extension=".cs" #>
-<#@ assembly name="System.Core" #>
-<#@ include file="Fold.t4" #><# Generate(5, 16); #>

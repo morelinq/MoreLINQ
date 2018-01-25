@@ -34,13 +34,6 @@
     <None Update="..\COPYING.txt;..\lic\corefx\LICENSE">
       <Pack>true</Pack>
     </None>
-    <None Update="Fold.t4">
-      <Generator></Generator>
-    </None>
-    <None Update="Fold16.g.tt">
-      <LastGenOutput>Fold16.g.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
     <None Update="Fold.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Fold.g.cs</LastGenOutput>
