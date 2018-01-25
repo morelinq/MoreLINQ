@@ -240,15 +240,15 @@ This method has 4 overloads.
 
 ### MaxBy
 
-Returns the maximal element of the given sequence, based on the given
-projection.
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
 
 This method has 2 overloads.
 
 ### MinBy
 
-Returns the minimal element of the given sequence, based on the given
-projection.
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
 
 This method has 2 overloads.
 

@@ -23,14 +23,12 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns the maximal element of the given sequence, based on
+        /// Returns the maximal elements of the given sequence, based on
         /// the given projection.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the maximal projected value, the first
-        /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type. This operator uses immediate execution, but
-        /// only buffers a single result (the current maximal element).
+        /// This overload uses the default comparer  for the projected type.
+        /// This operator uses immediate execution.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -40,20 +38,18 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IList<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
             return source.MaxBy(selector, null);
         }
 
         /// <summary>
-        /// Returns the maximal element of the given sequence, based on
+        /// Returns the maximal elements of the given sequence, based on
         /// the given projection and the specified comparer for projected values. 
         /// </summary>
         /// <remarks>
-        /// If more than one element has the maximal projected value, the first
-        /// one encountered will be returned. This operator uses immediate execution, but
-        /// only buffers a single result (the current maximal element).
+        /// This operator uses immediate execution.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -65,14 +61,14 @@ namespace MoreLinq
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
         
-        public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IList<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             comparer = comparer ?? Comparer<TKey>.Default;
-            return ExtremumBy(source, selector, (x, y) => comparer.Compare(x, y));
+            return ExtremaBy(source, selector, (x, y) => comparer.Compare(x, y));
         }
 
         // > In mathematical analysis, the maxima and minima (the respective
@@ -81,28 +77,34 @@ namespace MoreLinq
         // >
         // > - https://en.wikipedia.org/wiki/Maxima_and_minima
 
-        static TSource ExtremumBy<TSource, TKey>(IEnumerable<TSource> source,
+        static IList<TSource> ExtremaBy<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
         {
-            using (var sourceIterator = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
-                if (!sourceIterator.MoveNext())
-                    throw new InvalidOperationException("Sequence contains no elements");
+                if (!e.MoveNext())
+                    return new List<TSource>();
 
-                var extremum = sourceIterator.Current;
-                var key = selector(extremum);
-                while (sourceIterator.MoveNext())
+                var extrema = new List<TSource> { e.Current };
+                var extremaKey = selector(e.Current);
+
+                while (e.MoveNext())
                 {
-                    var candidate = sourceIterator.Current;
-                    var candidateProjected = selector(candidate);
-                    if (comparer(candidateProjected, key) > 0)
+                    var item = e.Current;
+                    var key = selector(item);
+                    var comparison = comparer(key, extremaKey);
+                    if (comparison > 0)
                     {
-                        extremum = candidate;
-                        key = candidateProjected;
+                        extrema = new List<TSource> { item };
+                        extremaKey = key;
+                    }
+                    else if (comparison == 0)
+                    {
+                        extrema.Add(item);
                     }
                 }
 
-                return extremum;
+                return extrema;
             }
         }
     }
