@@ -139,5 +139,21 @@ namespace MoreLinq.Test
             public bool Remove(T item)   => throw new NotImplementedException();
             public bool IsReadOnly       => throw new NotImplementedException();
         }
+
+#if IREADONLY
+
+        [Test]
+        public void AssertCountWithReadOnlyCollectionIsLazy()
+        {
+            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+        }
+
+        sealed class BreakingReadOnlyCollection<T> : BreakingSequence<T>, IReadOnlyCollection<T>
+        {
+            public BreakingReadOnlyCollection(int count) => Count = count;
+            public int Count { get; }
+        }
+
+#endif
     }
 }

@@ -15,7 +15,7 @@ namespace MoreLinq.Test
     {
         readonly List<T> _list = new List<T>();
 
-        // intentionally implemented to thow exception - ensures iteration is not used in Slice
+        // intentionally implemented to throw exception - ensures iteration is not used in Slice
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public IEnumerator<T> GetEnumerator() => throw new NotImplementedException();
         // all other IList<T> members are forwarded back to the underlying private list
