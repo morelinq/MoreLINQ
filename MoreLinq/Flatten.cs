@@ -104,7 +104,7 @@ namespace MoreLinq
                     foreach (var se in stack)
                         (se as IDisposable)?.Dispose();
                 }
-            };
+            }
         }
     }
 }
