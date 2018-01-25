@@ -32,17 +32,14 @@ namespace MoreLinq
 
             // If it's a field access, boxing was used, we need the field
             if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
-            {
                 body = ((UnaryExpression)body).Operand;
-            }
 
-            // Check if the MemberExpression is valid and is a "first level" member access e.g. not a.b.c 
-            if (!(body is MemberExpression memberExpression) || memberExpression.Expression.NodeType != ExpressionType.Parameter)
-            {
-                throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
-            }
-
-            return memberExpression.Member;
+            // Check if the member expression is valid and is a "first level"
+            // member access e.g. not a.b.c
+            return body is MemberExpression memberExpression
+                   && memberExpression.Expression.NodeType == ExpressionType.Parameter
+                 ? memberExpression.Member
+                 : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
         }
 
         static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
