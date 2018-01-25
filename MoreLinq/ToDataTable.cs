@@ -31,13 +31,13 @@ namespace MoreLinq
             var body = lambda.Body;
 
             // If it's a field access, boxing was used, we need the field
-            if ((body.NodeType == ExpressionType.Convert) || (body.NodeType == ExpressionType.ConvertChecked))
+            if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
             {
                 body = ((UnaryExpression)body).Operand;
             }
 
             // Check if the MemberExpression is valid and is a "first level" member access e.g. not a.b.c 
-            if ((!(body is MemberExpression memberExpression)) || (memberExpression.Expression.NodeType != ExpressionType.Parameter))
+            if (!(body is MemberExpression memberExpression) || memberExpression.Expression.NodeType != ExpressionType.Parameter)
             {
                 throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
@@ -55,7 +55,7 @@ namespace MoreLinq
             {
                 return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
-                             || (m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0)
+                             || m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0
                        select m;
             }
 
