@@ -74,7 +74,7 @@ namespace MoreLinq
             return new SequenceException(string.Format(message, count.ToString("N0")));
         }
 
-#endif
+        #endif
 
         static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)
