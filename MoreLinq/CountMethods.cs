@@ -133,8 +133,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var col = source as ICollection<T>;
-            if (col != null)
+            if (source is ICollection<T> col)
             {
                 return predicate(col.Count);
             }
