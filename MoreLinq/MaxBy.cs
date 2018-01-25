@@ -89,20 +89,20 @@ namespace MoreLinq
                 if (!sourceIterator.MoveNext())
                     throw new InvalidOperationException("Sequence contains no elements");
 
-                var extemum = sourceIterator.Current;
-                var key = selector(extemum);
+                var extremum = sourceIterator.Current;
+                var key = selector(extremum);
                 while (sourceIterator.MoveNext())
                 {
                     var candidate = sourceIterator.Current;
                     var candidateProjected = selector(candidate);
                     if (comparer(candidateProjected, key) > 0)
                     {
-                        extemum = candidate;
+                        extremum = candidate;
                         key = candidateProjected;
                     }
                 }
 
-                return extemum;
+                return extremum;
             }
         }
     }
