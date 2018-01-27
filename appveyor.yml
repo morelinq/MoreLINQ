@@ -18,7 +18,19 @@ build_script:
 
     $id = $id.Substring(0, 13)
 
-    .\pack.cmd ci-$id
+    cmd /c call pack.cmd ci-$id
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Building/Packing failed with an exit code of $LASTEXITCODE."
+    }
+
+    $diff = git diff --exit-code 2>&1
+
+    $diff | % { if ($_ -is [string]) { $_ } else { [string]$_ } } | echo
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "New code was generated during build that's not been committed."
+    }
 test_script:
 - cmd: test.cmd
 artifacts:
