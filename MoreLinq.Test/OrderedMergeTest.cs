@@ -6,10 +6,9 @@ namespace MoreLinq.Test
 {
     [TestFixture]
     class OrderedMergeTest {
-        public static IEnumerable<TResult> TDDOrderedMerge<TResult>(IEnumerable<TResult> first, IEnumerable<TResult> second) {
+        public static IEnumerable<TResult> TDDOrderedMerge<TResult>(IEnumerable<TResult> first, IEnumerable<TResult> second, Func<TResult, TResult, TResult> bothSelector) {
             var comparer = Comparer<TResult>.Default;
-            return _();
-            IEnumerable<TResult> _() {
+            return _(); IEnumerable<TResult> _() {
                 using (var e1 = first.GetEnumerator())
                 using (var e2 = second.GetEnumerator())
                 {
@@ -32,7 +31,7 @@ namespace MoreLinq.Test
                                 yield return element2;
                                 gotSecond = e2.MoveNext();
                             } else {
-                                yield return element1;
+                                yield return bothSelector(element1, element2);
                                 gotFirst = e1.MoveNext();
                                 gotSecond = e2.MoveNext();
                             }
@@ -40,8 +39,7 @@ namespace MoreLinq.Test
                         {
                             yield return e2.Current;
                             gotSecond = e2.MoveNext();
-                        } else if (gotFirst)
-                        {
+                        } else {
                             yield return e1.Current;
                             gotFirst = e1.MoveNext();
                         }
@@ -50,11 +48,15 @@ namespace MoreLinq.Test
 			}
         }
 
+        static Func<TResult, TResult, TResult> ChooseFirst<TResult>() => (first, _) => first;
+        static Func<TResult, TResult, TResult> ChooseSecond<TResult>() => (_, second) => second;
+        
+
         [Test]
         public void ShouldBeLazy() {
             var first = new BreakingSequence<object>();
             var second = new BreakingSequence<object>();
-            Assert.DoesNotThrow(() => TDDOrderedMerge(first, second));
+            Assert.DoesNotThrow(() => TDDOrderedMerge(first, second, ChooseFirst<object>()));
         }
 
         [Test]
@@ -67,47 +69,52 @@ namespace MoreLinq.Test
             var second = new int[] { }.AsVerifiable();
             second.WhenDisposed(_ => secondDisposed = true);
 
-            TDDOrderedMerge(first, second).ToArray();
+            TDDOrderedMerge(first, second, ChooseFirst<int>()).ToArray();
 
             Assert.IsTrue(firstDisposed, "First was not disposed");
             Assert.IsTrue(secondDisposed, "Second was not disposed");
         }
 
         [Test]
-        public void IfThereAreNoMoreElementsToReturnFromTheFirstCollectionThenReturnTheRemainingSecondCollection()
-        {
-            Assert.That(TDDOrderedMerge(new int[] { }, new[] { 1, 2, 3 }), Is.EquivalentTo(new[] { 1, 2, 3 }));
+        public void IfThereAreNoMoreElementsToReturnFromTheFirstCollectionThenReturnTheRemainingSecondCollection() {
+            var first = new int[] { };
+            var second = new[] { 1, 2, 3 };
+
+            var merged = TDDOrderedMerge(first, second, ChooseFirst<int>());
+
+            Assert.That(merged, Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
-        public void IfThereAreNoMoreElementsToReturnFromTheSecondCollectionThenReturnTheRemainingFirstCollection()
-        {
-            Assert.That(TDDOrderedMerge(new [] { 1, 2, 3 }, new int[] { }), Is.EquivalentTo(new[] { 1, 2, 3 }));
+        public void IfThereAreNoMoreElementsToReturnFromTheSecondCollectionThenReturnTheRemainingFirstCollection() {
+            var first = new [] { 1, 2, 3 };
+            var second = new int[] { };
+
+            var merged = TDDOrderedMerge(first, second, ChooseFirst<int>());
+
+            Assert.That(merged, Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
         public void TwoSequencesWithNoCollistionsShouldMergeUsingTheDefaultComparer() {
-            Assert.That(TDDOrderedMerge(new[] { 1, 3, 5 }, new [] { 2, 4, 6 }), Is.EquivalentTo(new[] { 1, 2, 3, 4, 5, 6 }));
+            var first = new[] { 1, 3, 5 };
+            var second = new [] { 2, 4, 6 };
+
+            var merged = TDDOrderedMerge(first, second, ChooseFirst<int>());
+
+            Assert.That(merged, Is.EquivalentTo(new[] { 1, 2, 3, 4, 5, 6 }));
         }
 
         [Test]
-        public void IfThereIsACollisionThenChooseTheElementFromTheFirstCollection() {
+        public void WhenThereIsACollisionShouldUseBothSelectorToChooseFromFirstOfSecondCollection() {
             var firstElement = new Version(3, 0);
             var secondElement = new Version(3, 0);
 
-            var first = new[] {new Version(1, 0), firstElement, new Version(5, 0)};
-            var second = new[] { new Version(2, 0), secondElement, new Version(4, 0) };
+            var first = new[] { firstElement };
+            var second = new[] { secondElement };
 
-            var merged = TDDOrderedMerge(first, second);
-
-            var expected = new[] {
-                new Version(1, 0),
-                new Version(2, 0),
-                firstElement,
-                new Version(4, 0),
-                new Version(5, 0)
-            };
-            Assert.That(merged, Is.EquivalentTo(expected));
+            Assert.That(TDDOrderedMerge(first, second, ChooseFirst<Version>()).First(), Is.SameAs(firstElement), "Should have returned First");
+            Assert.That(TDDOrderedMerge(first, second, ChooseSecond<Version>()).First(), Is.SameAs(secondElement), "Should have returned Second");
         }
     }
 }
