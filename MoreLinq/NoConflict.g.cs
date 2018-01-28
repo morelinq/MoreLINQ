@@ -3221,6 +3221,29 @@ namespace MoreLinq.NoConflict
     public static partial class PartitionExtension
     {
         /// <summary>
+        /// Partitions or splits a sequence in two using a predicate.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">The predicate function.</param>
+        /// <typeparam name="T">Type of source elements.</typeparam>
+        /// <returns>
+        /// A tuple of elements staisfying the predicate and those that do not,
+        /// respectively.
+        /// </returns>
+        /// <example>
+        /// <code>
+        /// var (evens, odds) =
+        ///     Enumerable.Range(0, 10).Partition(x => x % 2 == 0);
+        /// </code>
+        /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
+        /// and then 8. The <c>odds</c> variable, when iterated over, will yield
+        /// 1, 3, 5, 7 and then 9.
+        /// </example>
+
+        public static (IEnumerable<T> True, IEnumerable<T> False)
+            Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)             => MoreEnumerable.            Partition(source,predicate);
+
+        /// <summary>
         /// Partitions or splits a sequence in two using a predicate and then
         /// projects a result from the two.
         /// </summary>
@@ -3445,28 +3468,6 @@ namespace MoreLinq.NoConflict
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,key3,comparer,resultSelector);
-        /// <summary>
-        /// Partitions or splits a sequence in two using a predicate.
-        /// </summary>
-        /// <param name="source">The source sequence.</param>
-        /// <param name="predicate">The predicate function.</param>
-        /// <typeparam name="T">Type of source elements.</typeparam>
-        /// <returns>
-        /// A tuple of elements staisfying the predicate and those that do not,
-        /// respectively.
-        /// </returns>
-        /// <example>
-        /// <code>
-        /// var (evens, odds) =
-        ///     Enumerable.Range(0, 10).Partition(x => x % 2 == 0);
-        /// </code>
-        /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
-        /// and then 8. The <c>odds</c> variable, when iterated over, will yield
-        /// 1, 3, 5, 7 and then 9.
-        /// </example>
-
-        public static (IEnumerable<T> True, IEnumerable<T> False)
-            Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)             => MoreEnumerable.            Partition(source,predicate);
 
     }
 
