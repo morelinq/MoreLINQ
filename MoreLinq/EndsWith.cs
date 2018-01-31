@@ -71,8 +71,28 @@ namespace MoreLinq
 
             comparer = comparer ?? EqualityComparer<T>.Default;
 
-            var secondCollection = second as ICollection<T> ?? second.ToList();
-            using (var firstIter = first.TakeLast(secondCollection.Count).GetEnumerator())
+            var secondCollection = second;
+            int secondCount;
+
+            if (second is ICollection<T> collection)
+            {
+                secondCount = collection.Count;
+            }
+#if IREADONLY
+
+            else if (second is IReadOnlyCollection<T> readOnlyCollection)
+            {
+                secondCount = readOnlyCollection.Count;
+            }
+#endif
+            else
+            {
+                var secondList = second.ToList();
+                secondCollection = secondList;
+                secondCount = secondList.Count;
+            }
+
+            using (var firstIter = first.TakeLast(secondCount).GetEnumerator())
             {
                 return secondCollection.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
             }

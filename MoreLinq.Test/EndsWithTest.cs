@@ -91,5 +91,15 @@ namespace MoreLinq.Test
             Assert.False(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
             Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
+
+#if IREADONLY
+        [TestCase(new[] { 1, 2, 3 }, new[] { 2, 3 }, ExpectedResult = true)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, ExpectedResult = true)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, ExpectedResult = false)]
+        public bool EndsWithWithReadOnlyIntegers(IReadOnlyList<int> first, IReadOnlyList<int> second)
+        {
+            return new ReadOnlyDecoratedList<int>(first).EndsWith(new ReadOnlyDecoratedList<int>(second));
+        }
+#endif
     }
 }
