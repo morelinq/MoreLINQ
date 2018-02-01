@@ -37,7 +37,6 @@
 
   <ItemGroup>
       <Compile Include="*Test.cs" />
-      <None Remove="ReadOnlyDecoratedList.cs" />
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingFunc.cs" />
@@ -49,7 +48,6 @@
       <Compile Include="EqualityComparer.cs" />
       <Compile Include="KeyValuePair.cs" />
       <Compile Include="Program.cs" />
-      <Compile Include="ReadOnlyDecoratedList.cs" />
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
