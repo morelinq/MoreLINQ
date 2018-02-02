@@ -46,6 +46,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -74,6 +77,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -102,6 +108,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -130,6 +139,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -158,6 +170,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -186,6 +201,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -214,6 +232,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -242,6 +263,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -270,6 +294,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -298,6 +325,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -326,6 +356,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -354,6 +387,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -382,6 +418,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -410,6 +449,9 @@ namespace MoreLinq
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
