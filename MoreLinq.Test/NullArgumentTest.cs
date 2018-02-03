@@ -122,7 +122,6 @@ namespace MoreLinq.Test
                 #if NET451 || NETCOREAPP2_0
                 nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 #endif
-                nameof(MoreEnumerable.ToDelimitedString) + ".delimiter",
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 
