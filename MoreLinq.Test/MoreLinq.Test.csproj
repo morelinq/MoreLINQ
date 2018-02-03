@@ -59,6 +59,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
     <Compile Remove="TraceTest.cs" />
+    <Compile Remove="ToDataReaderTest.cs" />
     <Compile Remove="ToDataTableTest.cs" />
   </ItemGroup>
 

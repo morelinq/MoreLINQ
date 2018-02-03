@@ -64,6 +64,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+    <Compile Remove="ToDataReader.cs" />
     <Compile Remove="ToDataTable.cs" />
   </ItemGroup>
 
