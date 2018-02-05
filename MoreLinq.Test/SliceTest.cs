@@ -125,5 +125,23 @@ namespace MoreLinq.Test
             Assert.AreEqual(sliceCount, result.Count());
             Assert.IsTrue(result.SequenceEqual(Enumerable.Range(5, sliceCount)));
         }
+
+#if IREADONLY
+        /// <summary>
+        /// Verify that slice is optimized for <see cref="IReadOnlyList{T}"/> implementations and does not
+        /// unnecessarily traverse items outside of the slice region.
+        /// </summary>
+        [Test]
+        public void TestSliceReadOnlyListOptimization()
+        {
+            const int sliceStart = 4;
+            const int sliceCount = 3;
+            var sequence = new UnenumerableReadOnlyList<int>(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+            var result = sequence.Slice(sliceStart, sliceCount);
+
+            Assert.AreEqual(sliceCount, result.Count());
+            Assert.IsTrue(result.SequenceEqual(Enumerable.Range(5, sliceCount)));
+        }
+#endif
     }
 }
