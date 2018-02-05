@@ -24,7 +24,6 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {
-        #region Nested Classes
         /// <summary>
         /// The private implementation class that produces permutations of a sequence.
         /// </summary>
@@ -67,17 +66,13 @@ namespace MoreLinq
             //                               for( int j = 0; j < 8; j++ )
             //                                   DoSomething();
 
-            #region Private Fields
-
             readonly IList<T> _valueSet;
             readonly int[] _permutation;
             readonly IEnumerable<Action> _generator;
 
             IEnumerator<Action> _generatorIterator;
             bool _hasMoreResults;
-            #endregion
 
-            #region Constructors
             public PermutationEnumerator(IEnumerable<T> valueSet)
             {
                 _valueSet = valueSet.ToArray();
@@ -88,9 +83,7 @@ namespace MoreLinq
                 _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
                 Reset();
             }
-            #endregion
 
-            #region IEnumerator Members
             public void Reset()
             {
                 _generatorIterator?.Dispose();
@@ -125,9 +118,7 @@ namespace MoreLinq
             }
 
             void IDisposable.Dispose() { }
-            #endregion
 
-            #region Private Methods
             /// <summary>
             /// Transposes elements in the cached permutation array to produce the next permutation
             /// </summary>
@@ -184,9 +175,7 @@ namespace MoreLinq
                     permutedSet[i] = _valueSet[_permutation[i]];
                 return permutedSet;
             }
-            #endregion
         }
-        #endregion
 
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.

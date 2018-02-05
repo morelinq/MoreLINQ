@@ -70,28 +70,9 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
-            comparer = comparer ?? Comparer<TKey>.Default;
 
-            using (var sourceIterator = source.GetEnumerator())
-            {
-                if (!sourceIterator.MoveNext())
-                {
-                    throw new InvalidOperationException("Sequence contains no elements");
-                }
-                var min = sourceIterator.Current;
-                var minKey = selector(min);
-                while (sourceIterator.MoveNext())
-                {
-                    var candidate = sourceIterator.Current;
-                    var candidateProjected = selector(candidate);
-                    if (comparer.Compare(candidateProjected, minKey) < 0)
-                    {
-                        min = candidate;
-                        minKey = candidateProjected;
-                    }
-                }
-                return min;
-            }
+            comparer = comparer ?? Comparer<TKey>.Default;
+            return ExtremumBy(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
         }
     }
 }
