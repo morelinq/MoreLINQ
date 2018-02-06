@@ -46,13 +46,13 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
             return
-                sequence is IList<T> list ? SliceKnownCount(list.Count, i => list[i])
+                sequence is IList<T> list ? SliceList(list.Count, i => list[i])
 #if IREADONLY
-                : sequence is IReadOnlyList<T> readOnlyList ? SliceKnownCount(readOnlyList.Count, i => readOnlyList[i])
+                : sequence is IReadOnlyList<T> readOnlyList ? SliceList(readOnlyList.Count, i => readOnlyList[i])
 #endif
                 : sequence.Skip(startIndex).Take(count);
 
-            IEnumerable<T> SliceKnownCount(int listCount, Func<int,T> indexer)
+            IEnumerable<T> SliceList(int listCount, Func<int,T> indexer)
             {
                 var countdown = count;
                 var index = startIndex;
