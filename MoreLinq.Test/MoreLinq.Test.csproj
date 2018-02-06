@@ -18,10 +18,6 @@
     <LangVersion>7</LangVersion>
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);IREADONLY</DefineConstants>
-  </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />

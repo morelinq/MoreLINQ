@@ -140,8 +140,6 @@ namespace MoreLinq.Test
             public bool IsReadOnly       => throw new NotImplementedException();
         }
 
-#if IREADONLY
-
         [Test]
         public void AssertCountWithReadOnlyCollectionIsLazy()
         {
@@ -153,7 +151,5 @@ namespace MoreLinq.Test
             public BreakingReadOnlyCollection(int count) => Count = count;
             public int Count { get; }
         }
-
-#endif
     }
 }
