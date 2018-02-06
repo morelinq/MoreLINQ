@@ -11,6 +11,6 @@ if [[ -z `which mono 2>/dev/null` ]]; then
     echo>&2 NOTE! Mono does not appear to be installed so unit tests
     echo>&2 against the Mono runtime will be skipped.
 else
-    mono MoreLinq.Test/bin/Debug/net451/MoreLinq.Test.exe 
-    mono MoreLinq.Test/bin/Release/net451/MoreLinq.Test.exe 
+    mono MoreLinq.Test/bin/Debug/net46/MoreLinq.Test.exe 
+    mono MoreLinq.Test/bin/Release/net46/MoreLinq.Test.exe 
 fi

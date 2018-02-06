@@ -34,7 +34,7 @@ namespace MoreLinq.Test
 
         static void Install(CultureInfo value)
         {
-#if NET451
+#if NET46
             System.Threading.Thread.CurrentThread.CurrentCulture = value;
 #else
             CultureInfo.CurrentCulture = value;
