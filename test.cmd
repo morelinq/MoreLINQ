@@ -11,15 +11,15 @@ call build ^
   && call :test netcoreapp1.0 Release ^
   && call :test netcoreapp2.0 Debug ^
   && call :test netcoreapp2.0 Release ^
-  && call :test net46 Debug ^
-  && call :test net46 Release
+  && call :test net451 Debug ^
+  && call :test net451 Release
 goto :EOF
 
 :test
 setlocal
 echo Testing %1 (%2)...
-if %1==net46 (
-    MoreLinq.Test\bin\%2\net46\MoreLinq.Test.exe
+if %1==net451 (
+    MoreLinq.Test\bin\%2\net451\MoreLinq.Test.exe
 ) else (
     dotnet exec MoreLinq.Test\bin\%2\%1\MoreLinq.Test.dll
 )
