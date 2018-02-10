@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Jonas Nyrup. All rights reserved.
 // 
@@ -15,36 +15,35 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class CompareCountTest
     {
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(0, LinqEnumerable.Empty<int>().CompareCount(LinqEnumerable.Empty<int>()));
+            Assert.AreEqual(0, Enumerable.Empty<int>().CompareCount(Enumerable.Empty<int>()));
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(0, LinqEnumerable.Range(1, 0).CompareCount(LinqEnumerable.Empty<int>()));
+            Assert.AreEqual(0, Enumerable.Range(1, 0).CompareCount(Enumerable.Empty<int>()));
         }
 
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(0, LinqEnumerable.Empty<int>().CompareCount(LinqEnumerable.Range(1, 0)));
+            Assert.AreEqual(0, Enumerable.Empty<int>().CompareCount(Enumerable.Range(1, 0)));
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(0, LinqEnumerable.Range(1, 0).CompareCount(LinqEnumerable.Range(1, 0)));
+            Assert.AreEqual(0, Enumerable.Range(1, 0).CompareCount(Enumerable.Range(1, 0)));
         }
 
         [Test]
@@ -56,67 +55,67 @@ namespace MoreLinq.Test
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountSingleElementSequence()
         {
-            Assert.AreEqual(0, new[] { 1 }.CompareCount(LinqEnumerable.Range(1, 1)));
+            Assert.AreEqual(0, new[] { 1 }.CompareCount(Enumerable.Range(1, 1)));
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountSingleElementCollection()
         {
-            Assert.AreEqual(0, LinqEnumerable.Range(1, 1).CompareCount(new[] { 1 }));
+            Assert.AreEqual(0, Enumerable.Range(1, 1).CompareCount(new[] { 1 }));
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountSingleElementSequence()
         {
-            Assert.AreEqual(0, LinqEnumerable.Range(1, 1).CompareCount(LinqEnumerable.Range(1, 1)));
+            Assert.AreEqual(0, Enumerable.Range(1, 1).CompareCount(Enumerable.Range(1, 1)));
         }
 
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountCollectionWithOneElement()
         {
-            Assert.AreEqual(-1, LinqEnumerable.Empty<int>().CompareCount(new[] { 1 }));
+            Assert.AreEqual(-1, Enumerable.Empty<int>().CompareCount(new[] { 1 }));
         }
 
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountSequenceWithOneElement()
         {
-            Assert.AreEqual(-1, LinqEnumerable.Empty<int>().CompareCount(LinqEnumerable.Range(1, 1)));
+            Assert.AreEqual(-1, Enumerable.Empty<int>().CompareCount(Enumerable.Range(1, 1)));
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountCollectionWithOneElement()
         {
-            Assert.AreEqual(-1, LinqEnumerable.Range(1, 0).CompareCount(new[] { 1 }));
+            Assert.AreEqual(-1, Enumerable.Range(1, 0).CompareCount(new[] { 1 }));
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountSequenceWithOneElement()
         {
-            Assert.AreEqual(-1, LinqEnumerable.Range(1, 0).CompareCount(LinqEnumerable.Range(1, 1)));
+            Assert.AreEqual(-1, Enumerable.Range(1, 0).CompareCount(Enumerable.Range(1, 1)));
         }
 
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(1, new[] { 1 }.CompareCount(LinqEnumerable.Empty<int>()));
+            Assert.AreEqual(1, new[] { 1 }.CompareCount(Enumerable.Empty<int>()));
         }
 
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(1, new[] { 1 }.CompareCount(LinqEnumerable.Range(1, 0)));
+            Assert.AreEqual(1, new[] { 1 }.CompareCount(Enumerable.Range(1, 0)));
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(1, LinqEnumerable.Range(1, 1).CompareCount(LinqEnumerable.Empty<int>()));
+            Assert.AreEqual(1, Enumerable.Range(1, 1).CompareCount(Enumerable.Empty<int>()));
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(1, LinqEnumerable.Range(1, 1).CompareCount(LinqEnumerable.Range(1, 0)));
+            Assert.AreEqual(1, Enumerable.Range(1, 1).CompareCount(Enumerable.Range(1, 0)));
         }
     }
 }
