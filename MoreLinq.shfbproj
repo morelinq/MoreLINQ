@@ -20,8 +20,8 @@
     <Language>en-US</Language>
     <ProjectSummary>MoreLINQ fills in a few gaps left by LINQ to Objects.</ProjectSummary>
     <DocumentationSources>
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net40\MoreLinq.dll" />
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net40\MoreLinq.xml" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net451\MoreLinq.dll" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net451\MoreLinq.xml" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
