@@ -178,39 +178,33 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            var firstCol = first as ICollection<T1>;
-            var secondCol = second as ICollection<T2>;
-
-            if (firstCol != null)
+            if (first is ICollection<T1> firstCol)
             {
-                if (secondCol != null)
+                return firstCol.Count.CompareTo(second is ICollection<T2> secondCol
+                                                ? secondCol.Count
+                                                : PartialCount(second, firstCol.Count + 1));
+            }
+            else
+            {
+                if (second is ICollection<T2> secondCol)
+                    return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
+
+                bool firstHasNext;
+                bool secondHasNext;
+
+                using (var e1 = first.GetEnumerator())
+                using (var e2 = second.GetEnumerator())
                 {
-                    return firstCol.Count.CompareTo(secondCol.Count);
+                    do
+                    {
+                        firstHasNext = e1.MoveNext();
+                        secondHasNext = e2.MoveNext();
+                    }
+                    while (firstHasNext && secondHasNext);
                 }
 
-                return firstCol.Count.CompareTo(PartialCount(second, firstCol.Count + 1));
+                return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
             }
-
-            if (secondCol != null)
-            {
-                return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
-            }
-
-            bool firstHasNext;
-            bool secondHasNext;
-
-            using (var e1 = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
-            {
-                do
-                {
-                    firstHasNext = e1.MoveNext();
-                    secondHasNext = e2.MoveNext();
-                }
-                while (firstHasNext && secondHasNext);
-            }
-
-            return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
 
             int PartialCount<T>(IEnumerable<T> source, int limit)
             {
