@@ -128,6 +128,31 @@ namespace MoreLinq
             return QuantityIterator(source, max + 1, min, max);
         }
 
+        static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            var count = 0;
+
+            if (source is ICollection<T> col)
+            {
+                count = col.Count;
+            }
+            else
+            {
+                using (var e = source.GetEnumerator())
+                {
+                    while (e.MoveNext())
+                    {
+                        if (++count == limit)
+                            break;
+                    }
+                }
+            }
+
+            return count >= min && count <= max;
+        }
+
         /// <summary>
         /// Compares two sequences and returns an integer that indicates whether the first sequence 
         /// has fewer, the same or more elements than the second sequence.
@@ -163,12 +188,12 @@ namespace MoreLinq
                     return firstCol.Count.CompareTo(secondCol.Count);
                 }
 
-                return firstCol.Count.CompareTo(QuantityIterator(second, firstCol.Count + 1));
+                return firstCol.Count.CompareTo(PartialCount(second, firstCol.Count + 1));
             }
 
             if (secondCol != null)
             {
-                return QuantityIterator(first, secondCol.Count + 1).CompareTo(secondCol.Count);
+                return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
             }
 
             bool firstHasNext;
@@ -186,20 +211,11 @@ namespace MoreLinq
             }
 
             return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
-        }
 
-        static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            var count = 0;
-
-            if (source is ICollection<T> col)
+            int PartialCount<T>(IEnumerable<T> source, int limit)
             {
-                count = col.Count;
-            }
-            else
-            {
+                var count = 0;
+
                 using (var e = source.GetEnumerator())
                 {
                     while (e.MoveNext())
@@ -208,27 +224,9 @@ namespace MoreLinq
                             break;
                     }
                 }
+
+                return count;
             }
-
-            return count >= min && count <= max;
-        }
-
-        static int QuantityIterator<T>(IEnumerable<T> source, int limit)
-        {
-            var count = 0;
-
-            using (var e = source.GetEnumerator())
-            {
-                while (e.MoveNext())
-                {
-                    if (++count == limit)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return count;
         }
     }
 }
