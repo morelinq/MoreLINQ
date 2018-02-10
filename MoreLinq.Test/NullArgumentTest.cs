@@ -122,7 +122,6 @@ namespace MoreLinq.Test
                 #if NET451 || NETCOREAPP2_0
                 nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 #endif
-                nameof(MoreEnumerable.ToDelimitedString) + ".delimiter",
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 
@@ -142,7 +141,11 @@ namespace MoreLinq.Test
             if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
 
-            return CreateGenericInterfaceInstance(type.GetTypeInfo());
+            var typeInfo = type.GetTypeInfo();
+
+            return typeInfo.IsGenericType
+                    ? CreateGenericInterfaceInstance(typeInfo)
+                    : EmptyEnumerable.Instance;
         }
 
         static bool HasDefaultConstructor(Type type) =>
@@ -164,6 +167,23 @@ namespace MoreLinq.Test
             var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
             var instantiation = definition.MakeGenericType(type.GetGenericArguments());
             return Activator.CreateInstance(instantiation);
+        }
+
+        static class EmptyEnumerable
+        {
+            public static readonly IEnumerable Instance = new Enumerable();
+
+            sealed class Enumerable : IEnumerable
+            {
+                public IEnumerator GetEnumerator() => new Enumerator();
+
+                sealed class Enumerator : IEnumerator
+                {
+                    public bool MoveNext() => false;
+                    object IEnumerator.Current => throw new InvalidOperationException();
+                    public void Reset() { }
+                }
+            }
         }
 
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local

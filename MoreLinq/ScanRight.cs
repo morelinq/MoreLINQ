@@ -53,8 +53,8 @@ namespace MoreLinq
 
             return ScanRightImpl(source, func,
                                  list => list.Count > 0
-                                       ? new ScanRightSeedCount<TSource>(list.Last(), list.Count - 1)
-                                       : (ScanRightSeedCount<TSource>?) null);
+                                       ? (list.Last(), list.Count - 1)
+                                       : ((TSource, int)?) null);
         }
 
         /// <summary>
@@ -85,22 +85,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return ScanRightImpl(source, func, list => new ScanRightSeedCount<TAccumulate>(seed, list.Count));
+            return ScanRightImpl(source, func, list => (seed, list.Count));
         }
 
-        struct ScanRightSeedCount<T> // TODO Use a tuple when we can drop .NET 3.5 target
-        {
-            public readonly T    Seed;
-            public readonly int  Count;
-
-            public ScanRightSeedCount(T seed, int count)
-            {
-                Seed   = seed;
-                Count  = count;
-            }
-        }
-
-        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IList<TSource>, ScanRightSeedCount<TResult>?> seeder)
+        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IList<TSource>, (TResult Seed, int Count)?> seeder)
         {
             var list = (source as IList<TSource>) ?? source.ToList();
 

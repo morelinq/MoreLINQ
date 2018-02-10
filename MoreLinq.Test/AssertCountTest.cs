@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -100,6 +101,55 @@ namespace MoreLinq.Test
         public void AssertCountIsLazy()
         {
             new BreakingSequence<object>().AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountWithCollectionIsLazy()
+        {
+            new BreakingCollection<object>(5).AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountWithMatchingCollectionCount()
+        {
+            var xs = new[] { 123, 456, 789 };
+            Assert.AreSame(xs, xs.AssertCount(3));
+        }
+
+        [TestCase(3, 2, "Sequence contains too many elements when exactly 2 were expected.")]
+        [TestCase(3, 4, "Sequence contains too few elements when exactly 4 were expected.")]
+        public void AssertCountWithMismatchingCollectionCount(int sourceCount, int count, string message)
+        {
+            var xs = new int[sourceCount];
+            var enumerator = xs.AssertCount(count).GetEnumerator();
+            var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
+            Assert.AreEqual(e.Message, message);
+        }
+
+        sealed class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
+        {
+            public BreakingCollection(int count) => Count = count;
+
+            public int Count { get; }
+
+            public void Add(T item)      => throw new NotImplementedException();
+            public void Clear()          => throw new NotImplementedException();
+            public bool Contains(T item) => throw new NotImplementedException();
+            public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
+            public bool Remove(T item)   => throw new NotImplementedException();
+            public bool IsReadOnly       => throw new NotImplementedException();
+        }
+
+        [Test]
+        public void AssertCountWithReadOnlyCollectionIsLazy()
+        {
+            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+        }
+
+        sealed class BreakingReadOnlyCollection<T> : BreakingSequence<T>, IReadOnlyCollection<T>
+        {
+            public BreakingReadOnlyCollection(int count) => Count = count;
+            public int Count { get; }
         }
     }
 }

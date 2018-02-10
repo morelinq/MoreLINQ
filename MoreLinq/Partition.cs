@@ -24,8 +24,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        #if !NO_VALUE_TUPLES
-
         /// <summary>
         /// Partitions or splits a sequence in two using a predicate.
         /// </summary>
@@ -49,8 +47,6 @@ namespace MoreLinq
         public static (IEnumerable<T> True, IEnumerable<T> False)
             Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate) =>
             source.Partition(predicate, ValueTuple.Create);
-
-        #endif
 
         /// <summary>
         /// Partitions or splits a sequence in two using a predicate and then

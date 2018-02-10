@@ -148,6 +148,12 @@ with the previous non-null reference or value seen in that sequence.
 
 This method has 3 overloads.
 
+### Flatten
+
+Flattens a sequence containing arbitrarily-nested sequences.
+
+This method has 2 overloads.
+
 ### Fold
 
 Returns the result of applying a function to a sequence with 1 to 16 elements.
@@ -196,13 +202,8 @@ This method has 4 overloads.
 
 ### ~~Incremental~~
 
-Use `Pairwise` instead, which is identical to `Incremental`. `Incremental`
-will be removed in a future version.
-
-Computes an incremental value between every adjacent element in a sequence:
-{N,N+1}, {N+1,N+2}, .
-
-This method has 2 overloads.
+`Incremental` was redundant with `Pairwise` and so deprecated since version
+[2.1][v2.1]. It was eventually removed in version [3.0][v3.0].
 
 ### Index
 
@@ -210,6 +211,10 @@ Returns a sequence of where the key is the zero-based index of the value in
 the source sequence.
 
 This method has 2 overloads.
+
+### Insert
+
+Inserts the elements of a sequence into another sequence at a specified index.
 
 ### Interleave
 
@@ -573,3 +578,5 @@ This method has 3 overloads.
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
+[v2.1]: https://github.com/morelinq/MoreLINQ/releases/tag/v2.1.0
+[v3.0]: https://github.com/morelinq/MoreLINQ/releases/tag/v3.0.0

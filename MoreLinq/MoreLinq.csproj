@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <Title>MoreLINQ</Title>
-    <Description>This project enhances LINQ to Objects with the following methods: Acquire, AggregateRight, Assert, AssertCount, AtLeast, AtMost, Batch, Cartesian, CountBetween, CompareCount, CountBy, Concat, Consume, DistinctBy, EndsWith, EquiZip, Exactly, ExceptBy, Exclude, FallbackIfEmpty, FillBackward, FillForward, Fold, ForEach, From, FullGroupJoin, FullJoin, Generate, GenerateByIndex, GroupAdjacent, Incremental, Index, Interleave, Lag, Lead, LeftJoin, MaxBy, MinBy, Move, NestedLoops, OrderBy, OrderedMerge, Pad, PadStart, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RightJoin, RunLengthEncode, Scan, ScanRight, Segment, Sequence, SingleOrFallback, SkipLast, SkipUntil, Slice, SortedMerge, Split, StartsWith, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToArrayByIndex, ToDataTable, ToDelimitedString, ToDictionary, ToHashSet, ToLookup, Trace, TraverseBreadthFirst, TraverseDepthFirst, Unfold, Windowed, ZipLongest, ZipShortest</Description>
+    <Description>This project enhances LINQ to Objects with the following methods: Acquire, AggregateRight, Assert, AssertCount, AtLeast, AtMost, Batch, Cartesian, CountBetween, CompareCount, CountBy, Concat, Consume, DistinctBy, EndsWith, EquiZip, Exactly, ExceptBy, Exclude, FallbackIfEmpty, FillBackward, FillForward, Flatten, Fold, ForEach, From, FullGroupJoin, FullJoin, Generate, GenerateByIndex, GroupAdjacent, Index, Insert, Interleave, Lag, Lead, LeftJoin, MaxBy, MinBy, Move, NestedLoops, OrderBy, OrderedMerge, Pad, PadStart, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RightJoin, RunLengthEncode, Scan, ScanRight, Segment, Sequence, SingleOrFallback, SkipLast, SkipUntil, Slice, SortedMerge, Split, StartsWith, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToArrayByIndex, ToDataTable, ToDelimitedString, ToDictionary, ToHashSet, ToLookup, Trace, TraverseBreadthFirst, TraverseDepthFirst, Unfold, Windowed, ZipLongest, ZipShortest</Description>
     <Copyright>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin. Portions &#169; 2015 Felipe Sateler, &#8220;sholland&#8221;. Portions &#169; 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh). Portions &#169; 2017 Jonas Nyrup (jnyrup). Portions &#169; Microsoft. All rights reserved.</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>2.8.0</VersionPrefix>
+    <VersionPrefix>3.0.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
-    <TargetFrameworks>net40;net35;netstandard1.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
     <LangVersion>7</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
@@ -20,7 +20,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
-    <PackageReleaseNotes>Adds new operators: FullJoin, LeftJoin, Move and RightJoin. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds new operators: Flatten. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -28,8 +28,6 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,40 +38,32 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Fold.g.cs</LastGenOutput>
     </None>
-    <None Update="Properties\AssemblyInfo.g.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AssemblyInfo.g.cs</LastGenOutput>
-    </None>
     <None Update="ToDelimitedString.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net40' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;NO_VALUE_TUPLES</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;FUNC16</DefineConstants>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net451' ">
+    <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;FUNC16;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM</DefineConstants>
+    <DefineConstants>$(DefineConstants);MORELINQ;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
     <Compile Remove="ToDataTable.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net40'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net451'">
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>
     </PackageReference>
@@ -89,16 +79,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Fold.g.tt</DependentUpon>
     </Compile>
-    <Compile Update="Properties\AssemblyInfo.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AssemblyInfo.g.tt</DependentUpon>
-    </Compile>
     <Compile Update="ToDelimitedString.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

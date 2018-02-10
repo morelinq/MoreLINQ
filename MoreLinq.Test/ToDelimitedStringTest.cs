@@ -15,52 +15,18 @@
 // limitations under the License.
 #endregion
 
-#pragma warning disable 612 // 'ToDelimitedString' is obsolete
-
-
 namespace MoreLinq.Test
 {
-    using System.Globalization;
     using NUnit.Framework;
 
     [TestFixture]
     public class ToDelimitedStringTest
     {
         [Test]
-        public void ToDelimitedStringWithEmptySequence()
-        {
-            Assert.That(Enumerable.Empty<int>().ToDelimitedString(), Is.Empty);
-        }
-
-        [Test]
         public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
         {
             var result = new[] { 1, 2, 3 }.ToDelimitedString("-");
             Assert.That(result, Is.EqualTo("1-2-3"));
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndDefaultDelimiter()
-        {
-            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
-            {
-                var xs = new[] { 1, 2, 3 };
-                var result = xs.ToDelimitedString();
-                var separator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-                Assert.That(result, Is.EqualTo(string.Join(separator, xs)));
-            }
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndNullDelimiter()
-        {
-            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
-            {
-                var xs = new[] { 1, 2, 3 };
-                var result = xs.ToDelimitedString(null);
-                var separator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-                Assert.That(result, Is.EqualTo(string.Join(separator, xs)));
-            }
         }
 
         [Test]
