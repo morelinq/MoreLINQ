@@ -213,7 +213,7 @@ namespace MoreLinq
             return count >= min && count <= max;
         }
 
-        private static int QuantityIterator<T>(IEnumerable<T> source, int limit)
+        static int QuantityIterator<T>(IEnumerable<T> source, int limit)
         {
             var count = 0;
 
