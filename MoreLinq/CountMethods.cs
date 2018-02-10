@@ -157,8 +157,8 @@ namespace MoreLinq
         /// Compares two sequences and returns an integer that indicates whether the first sequence 
         /// has fewer, the same or more elements than the second sequence.
         /// </summary>
-        /// <typeparam name="T1">Element type of the first sequence</typeparam>
-        /// <typeparam name="T2">Element type of the second sequence</typeparam>
+        /// <typeparam name="TFirst">Element type of the first sequence</typeparam>
+        /// <typeparam name="TSecond">Element type of the second sequence</typeparam>
         /// <param name="first">The first sequence</param>
         /// <param name="second">The second sequence</param>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
@@ -173,20 +173,20 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain <c>1</c>.
         /// </example>
-        public static int CompareCount<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+        public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            if (first is ICollection<T1> firstCol)
+            if (first is ICollection<TFirst> firstCol)
             {
-                return firstCol.Count.CompareTo(second is ICollection<T2> secondCol
+                return firstCol.Count.CompareTo(second is ICollection<TSecond> secondCol
                                                 ? secondCol.Count
                                                 : PartialCount(second, firstCol.Count + 1));
             }
             else
             {
-                if (second is ICollection<T2> secondCol)
+                if (second is ICollection<TSecond> secondCol)
                     return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
 
                 bool firstHasNext;
