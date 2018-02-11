@@ -25,97 +25,257 @@ namespace MoreLinq.Test
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(0, Enumerable.Empty<int>().CompareCount(Enumerable.Empty<int>()));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { });
+
+            Assert.AreEqual(0, firstCollection.CompareCount(secondCollection));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(0, Enumerable.Range(1, 0).CompareCount(Enumerable.Empty<int>()));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { });
+
+            Assert.AreEqual(0, firstSequence.CompareCount(secondCollection));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(0, Enumerable.Empty<int>().CompareCount(Enumerable.Range(1, 0)));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { });
+
+            Assert.AreEqual(0, firstCollection.CompareCount(secondSequence));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(0, Enumerable.Range(1, 0).CompareCount(Enumerable.Range(1, 0)));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { });
+
+            Assert.AreEqual(0, firstSequence.CompareCount(secondSequence));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountSingleElementCollection()
         {
-            Assert.AreEqual(0, new[] { 1 }.CompareCount(new[] { 1 }));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { 1 });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { 1 });
+
+            Assert.AreEqual(0, firstCollection.CompareCount(secondCollection));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountSingleElementSequence()
         {
-            Assert.AreEqual(0, new[] { 1 }.CompareCount(Enumerable.Range(1, 1)));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { 1 });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+
+            Assert.AreEqual(0, firstCollection.CompareCount(secondSequence));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(2, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountSingleElementCollection()
         {
-            Assert.AreEqual(0, Enumerable.Range(1, 1).CompareCount(new[] { 1 }));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { 1 });
+
+            Assert.AreEqual(0, firstSequence.CompareCount(secondCollection));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(2, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountSingleElementSequence()
         {
-            Assert.AreEqual(0, Enumerable.Range(1, 1).CompareCount(Enumerable.Range(1, 1)));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+
+            Assert.AreEqual(0, firstSequence.CompareCount(secondSequence));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(2, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(2, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountCollectionWithOneElement()
         {
-            Assert.AreEqual(-1, Enumerable.Empty<int>().CompareCount(new[] { 1 }));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { 1 });
+
+            Assert.AreEqual(-1, firstCollection.CompareCount(secondCollection));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithEmptyCollectionHasCompareCountSequenceWithOneElement()
         {
-            Assert.AreEqual(-1, Enumerable.Empty<int>().CompareCount(Enumerable.Range(1, 1)));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+
+            Assert.AreEqual(-1, firstCollection.CompareCount(secondSequence));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountCollectionWithOneElement()
         {
-            Assert.AreEqual(-1, Enumerable.Range(1, 0).CompareCount(new[] { 1 }));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { 1 });
+
+            Assert.AreEqual(-1, firstSequence.CompareCount(secondCollection));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithEmptySequenceHasCompareCountSequenceWithOneElement()
         {
-            Assert.AreEqual(-1, Enumerable.Range(1, 0).CompareCount(Enumerable.Range(1, 1)));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+
+            Assert.AreEqual(-1, firstSequence.CompareCount(secondSequence));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(1, new[] { 1 }.CompareCount(Enumerable.Empty<int>()));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { 1 });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { });
+
+            Assert.AreEqual(1, firstCollection.CompareCount(secondCollection));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithSingleElementCollectionHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(1, new[] { 1 }.CompareCount(Enumerable.Range(1, 0)));
+            var firstCollection = new TrackingTestCollection<int>(new int[] { 1 });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { });
+
+            Assert.AreEqual(1, firstCollection.CompareCount(secondSequence));
+
+            Assert.AreEqual(0, firstCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, firstCollection.Enumerator.MoveNextCount);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountEmptyCollection()
         {
-            Assert.AreEqual(1, Enumerable.Range(1, 1).CompareCount(Enumerable.Empty<int>()));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+            var secondCollection = new TrackingTestCollection<int>(new int[] { });
+
+            Assert.AreEqual(1, firstSequence.CompareCount(secondCollection));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(0, secondCollection.Enumerator.LoopCount);
+            Assert.AreEqual(0, secondCollection.Enumerator.MoveNextCount);
         }
 
         [Test]
         public void CompareCountWithSingleElementSequenceHasCompareCountEmptySequence()
         {
-            Assert.AreEqual(1, Enumerable.Range(1, 1).CompareCount(Enumerable.Range(1, 0)));
+            var firstSequence = new TrackingTestEnumerable<int>(new int[] { 1 });
+            var secondSequence = new TrackingTestEnumerable<int>(new int[] { });
+
+            Assert.AreEqual(1, firstSequence.CompareCount(secondSequence));
+
+            Assert.AreEqual(1, firstSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, firstSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(firstSequence.Enumerator.Disposed);
+
+            Assert.AreEqual(1, secondSequence.Enumerator.LoopCount);
+            Assert.AreEqual(1, secondSequence.Enumerator.MoveNextCount);
+            Assert.IsTrue(secondSequence.Enumerator.Disposed);
         }
     }
 }

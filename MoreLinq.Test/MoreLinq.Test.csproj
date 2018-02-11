@@ -49,6 +49,7 @@
       <Compile Include="SequenceReader.cs" />
       <Compile Include="TestingSequence.cs" />
       <Compile Include="TestExtensions.cs" />
+      <Compile Include="TrackingSequence.cs" />
       <Compile Include="UnenumerableList.cs" />
       <Compile Include="VerifiableEnumerator.cs" />
   </ItemGroup>
