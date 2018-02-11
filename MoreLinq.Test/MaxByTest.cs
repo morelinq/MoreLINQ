@@ -23,6 +23,12 @@ namespace MoreLinq.Test
     public class MaxByTest
     {
         [Test]
+        public void MaxByIsLazy()
+        {
+            new BreakingSequence<int>().MaxBy(x => x);
+        }
+
+        [Test]
         public void MaxByReturnsMaxima()
         {
             Assert.AreEqual(new[] { "hello", "world" },

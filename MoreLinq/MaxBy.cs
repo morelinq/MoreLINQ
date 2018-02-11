@@ -18,7 +18,9 @@
 namespace MoreLinq
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     static partial class MoreEnumerable
     {
@@ -28,7 +30,8 @@ namespace MoreLinq
         /// </summary>
         /// <remarks>
         /// This overload uses the default comparer  for the projected type.
-        /// This operator uses immediate execution.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -38,7 +41,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IList<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
             return source.MaxBy(selector, null);
@@ -46,10 +49,11 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the maximal elements of the given sequence, based on
-        /// the given projection and the specified comparer for projected values. 
+        /// the given projection and the specified comparer for projected values.
         /// </summary>
         /// <remarks>
-        /// This operator uses immediate execution.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -57,11 +61,11 @@ namespace MoreLinq
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <param name="comparer">Comparer to use to compare projected values</param>
         /// <returns>The maximal element, according to the projection.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/> 
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
-        
-        public static IList<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+
+        public static IEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -77,35 +81,74 @@ namespace MoreLinq
         // >
         // > - https://en.wikipedia.org/wiki/Maxima_and_minima
 
-        static IList<TSource> ExtremaBy<TSource, TKey>(IEnumerable<TSource> source,
+        static IEnumerable<TSource> ExtremaBy<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
         {
-            using (var e = source.GetEnumerator())
+            return new LazyList<TSource>(new Lazy<List<TSource>>(() =>
             {
-                if (!e.MoveNext())
-                    return new List<TSource>();
-
-                var extrema = new List<TSource> { e.Current };
-                var extremaKey = selector(e.Current);
-
-                while (e.MoveNext())
+                using (var e = source.GetEnumerator())
                 {
-                    var item = e.Current;
-                    var key = selector(item);
-                    var comparison = comparer(key, extremaKey);
-                    if (comparison > 0)
-                    {
-                        extrema = new List<TSource> { item };
-                        extremaKey = key;
-                    }
-                    else if (comparison == 0)
-                    {
-                        extrema.Add(item);
-                    }
-                }
+                    if (!e.MoveNext())
+                        return new List<TSource>();
 
-                return extrema;
+                    var extrema = new List<TSource> { e.Current };
+                    var extremaKey = selector(e.Current);
+
+                    while (e.MoveNext())
+                    {
+                        var item = e.Current;
+                        var key = selector(item);
+                        var comparison = comparer(key, extremaKey);
+                        if (comparison > 0)
+                        {
+                            extrema = new List<TSource> { item };
+                            extremaKey = key;
+                        }
+                        else if (comparison == 0)
+                        {
+                            extrema.Add(item);
+                        }
+                    }
+
+                    return extrema;
+                }
+            }));
+        }
+
+        sealed class LazyList<T> : IList<T> // TODO IReadOnlyList<T>
+        {
+            readonly Lazy<List<T>> _lazyList;
+
+            public LazyList(Lazy<List<T>> lazyList) =>
+                _lazyList = lazyList ?? throw new ArgumentNullException(nameof(lazyList));
+
+            List<T> List => _lazyList.Value;
+
+            public int Count => List.Count;
+            public bool IsReadOnly => true;
+
+            public T this[int index]
+            {
+                get => List[index];
+                set => throw ReadOnlyError();
             }
+
+            public int IndexOf(T item) => List.IndexOf(item);
+            public bool Contains(T item) => List.Contains(item);
+            public void CopyTo(T[] array, int arrayIndex) => List.CopyTo(array, arrayIndex);
+
+            IEnumerator<T> IEnumerable<T>.GetEnumerator() => List.GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() =>
+                ((IEnumerable) List).GetEnumerator();
+
+            public void Add(T item) => throw ReadOnlyError();
+            public void Clear() => throw ReadOnlyError();
+            public bool Remove(T item) => throw ReadOnlyError();
+            public void Insert(int index, T item) => throw ReadOnlyError();
+            public void RemoveAt(int index) => throw ReadOnlyError();
+
+            static Exception ReadOnlyError() => new NotSupportedException("List is read-only.");
         }
     }
 }

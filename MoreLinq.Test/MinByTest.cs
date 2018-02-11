@@ -23,6 +23,12 @@ namespace MoreLinq.Test
     public class MinByTest
     {
         [Test]
+        public void MinByIsLazy()
+        {
+            new BreakingSequence<int>().MinBy(x => x);
+        }
+
+        [Test]
         public void MinByReturnsMinima()
         {
             Assert.AreEqual(new[] { "ax", "aa", "ab", "ay", "az" },
