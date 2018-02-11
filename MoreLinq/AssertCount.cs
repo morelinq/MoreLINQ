@@ -87,10 +87,8 @@ namespace MoreLinq
             {
                 case ICollection<TSource> collection:
                     return AssertKnownCount(collection.Count);
-#if IREADONLY
                 case IReadOnlyCollection<TSource> readOnlyCollection:
                     return AssertKnownCount(readOnlyCollection.Count);
-#endif
                 default:
                     return _(); IEnumerable<TSource> _()
                     {
