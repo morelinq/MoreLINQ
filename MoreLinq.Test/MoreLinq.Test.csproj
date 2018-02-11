@@ -50,6 +50,7 @@
       <Compile Include="TestingSequence.cs" />
       <Compile Include="TestExtensions.cs" />
       <Compile Include="UnenumerableList.cs" />
+      <Compile Include="UnenumerableReadOnlyList.cs" />
       <Compile Include="VerifiableEnumerator.cs" />
   </ItemGroup>
 
