@@ -50,13 +50,10 @@
       <Compile Include="TestingSequence.cs" />
       <Compile Include="TestExtensions.cs" />
       <Compile Include="UnenumerableList.cs" />
+	  <Compile Include="UnenumerableReadOnlyList.cs" />
       <Compile Include="VerifiableEnumerator.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0' Or '$(TargetFramework)' == 'netcoreapp2.0'">
-	  <Compile Include="UnenumerableReadOnlyList.cs" />
-  </ItemGroup>
-  
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
     <Compile Remove="TraceTest.cs" />
     <Compile Remove="ToDataTableTest.cs" />

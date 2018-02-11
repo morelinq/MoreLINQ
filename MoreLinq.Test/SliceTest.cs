@@ -115,31 +115,20 @@ namespace MoreLinq.Test
         /// Verify that slice is optimized for <see cref="IList{T}"/> and <see cref="IReadOnlyList{T}"/> implementations and does not
         /// unnecessarily traverse items outside of the slice region.
         /// </summary>
-        [Test]
-        [TestCaseSource(nameof(TestSliceOptimizationCases))]
-        public void TestSliceOptimization(IEnumerable<int> sequence)
+        [TestCase(false)]
+        [TestCase(true)]
+        public void TestSliceOptimization(bool readOnly)
         {
             const int sliceStart = 4;
             const int sliceCount = 3;
+            var sequence = readOnly
+                         ? new UnenumerableReadOnlyList<int>(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })
+                         : (IEnumerable<int>)new UnenumerableList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
             var result = sequence.Slice(sliceStart, sliceCount);
 
             Assert.AreEqual(sliceCount, result.Count());
             CollectionAssert.AreEqual(Enumerable.Range(5, sliceCount), result);
-        }
-
-        private static IEnumerable<TestCaseData> TestSliceOptimizationCases()
-        {
-            yield return new TestCaseData(new UnenumerableList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })
-            {
-                TestName = "TestSliceListOptimization"
-            };
-
-#if IREADONLY
-            yield return new TestCaseData(new UnenumerableReadOnlyList<int>(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }))
-            {
-                TestName = "TestSliceReadOnlyListOptimization"
-            };
-#endif
         }
     }
 }

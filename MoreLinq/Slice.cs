@@ -47,9 +47,7 @@ namespace MoreLinq
 
             return
                 sequence is IList<T> list ? SliceList(list.Count, i => list[i])
-#if IREADONLY
                 : sequence is IReadOnlyList<T> readOnlyList ? SliceList(readOnlyList.Count, i => readOnlyList[i])
-#endif
                 : sequence.Skip(startIndex).Take(count);
 
             IEnumerable<T> SliceList(int listCount, Func<int,T> indexer)
