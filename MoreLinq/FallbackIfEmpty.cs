@@ -163,14 +163,12 @@ namespace MoreLinq
         {
             if (source is ICollection<T> collection)
             {
-                if (collection.Count == 0)
-                {
-                    return Fallback();
-                }
-                else
-                {
-                    return collection;
-                }
+                return collection.Count == 0 ? Fallback() : collection;
+            }
+
+            if (source is IReadOnlyCollection<T> readOnlyCollection)
+            {
+                return readOnlyCollection.Count == 0 ? Fallback() : readOnlyCollection;
             }
 
             return _();
