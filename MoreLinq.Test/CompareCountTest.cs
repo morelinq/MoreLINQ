@@ -22,10 +22,10 @@ namespace MoreLinq.Test
     [TestFixture]
     public class CompareCountTest
     {
-        [TestCase(0, 0, 0)]
+        [TestCase(0, 0,  0)]
         [TestCase(0, 1, -1)]
-        [TestCase(1, 0, 1)]
-        [TestCase(1, 1, 0)]
+        [TestCase(1, 0,  1)]
+        [TestCase(1, 1,  0)]
         public void CompareCountWithCollectionAndCollection(int collectionCount1, int collectionCount2, int expectedCompareCount)
         {
             var firstCollection = new BreakingCollection<int>(collectionCount1);
@@ -34,10 +34,10 @@ namespace MoreLinq.Test
             Assert.AreEqual(expectedCompareCount, firstCollection.CompareCount(secondCollection));
         }
 
-        [TestCase(0, 0, 0, 1)]
+        [TestCase(0, 0,  0, 1)]
         [TestCase(0, 1, -1, 1)]
-        [TestCase(1, 0, 1, 1)]
-        [TestCase(1, 1, 0, 2)]
+        [TestCase(1, 0,  1, 1)]
+        [TestCase(1, 1,  0, 2)]
         public void CompareCountWithCollectionAndSequence(int collectionCount, int sequenceCount, int expectedCompareCount, int expectedMoveNextCount)
         {
             var collection = new BreakingCollection<int>(collectionCount);
@@ -49,10 +49,10 @@ namespace MoreLinq.Test
             }
         }
 
-        [TestCase(0, 0, 0, 1)]
+        [TestCase(0, 0,  0, 1)]
         [TestCase(0, 1, -1, 1)]
-        [TestCase(1, 0, 1, 1)]
-        [TestCase(1, 1, 0, 2)]
+        [TestCase(1, 0,  1, 1)]
+        [TestCase(1, 1,  0, 2)]
         public void CompareCountWithSequenceAndCollection(int sequenceCount, int collectionCount, int expectedCompareCount, int expectedMoveNextCount)
         {
             var collection = new BreakingCollection<int>(collectionCount);
@@ -64,10 +64,10 @@ namespace MoreLinq.Test
             }
         }
 
-        [TestCase(0, 0, 0, 1)]
+        [TestCase(0, 0,  0, 1)]
         [TestCase(0, 1, -1, 1)]
-        [TestCase(1, 0, 1, 1)]
-        [TestCase(1, 1, 0, 2)]
+        [TestCase(1, 0,  1, 1)]
+        [TestCase(1, 1,  0, 2)]
         public void CompareCountWithSequenceAndSequence(int sequenceCount1, int sequenceCount2, int expectedCompareCount, int expectedMoveNextCount)
         {
             using (var seq1 = Enumerable.Range(0, sequenceCount1).AsTestingSequence())
