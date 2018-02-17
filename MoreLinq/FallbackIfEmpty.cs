@@ -50,7 +50,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -71,7 +71,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -94,7 +94,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -119,7 +119,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence from an array of values.
+        /// returns an alternate sequence from an array of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -139,7 +139,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
