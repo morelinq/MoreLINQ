@@ -41,7 +41,7 @@ namespace MoreLinq.Test
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
         bool? _disposed;
-        int _moveNextCounter;
+        int _moveNextCallCount;
         IEnumerable<T> _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence)
@@ -49,7 +49,7 @@ namespace MoreLinq.Test
             _sequence = sequence;
         }
 
-        public int MoveNextCounter => _moveNextCounter;
+        public int MoveNextCallCount => _moveNextCallCount;
 
         void IDisposable.Dispose()
         {
@@ -73,7 +73,7 @@ namespace MoreLinq.Test
             var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
-            enumerator.OnMoveNext += delegate { _moveNextCounter++; };
+            enumerator.OnMoveNext += delegate { _moveNextCallCount++; };
             _sequence = null;
             return enumerator;
         }
