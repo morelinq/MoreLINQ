@@ -73,7 +73,7 @@ namespace MoreLinq.Test
             var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
-            enumerator.OnMoveNext += delegate { _moveNextCallCount++; };
+            enumerator.MoveNextCalled += delegate { _moveNextCallCount++; };
             _sequence = null;
             return enumerator;
         }
@@ -85,7 +85,7 @@ namespace MoreLinq.Test
             readonly IEnumerator<T> _sequence;
 
             public event EventHandler Disposed;
-            public event EventHandler OnMoveNext;
+            public event EventHandler MoveNextCalled;
 
             public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
             {
@@ -98,7 +98,7 @@ namespace MoreLinq.Test
 
             public bool MoveNext()
             {
-                OnMoveNext?.Invoke(this, EventArgs.Empty);
+                MoveNextCalled?.Invoke(this, EventArgs.Empty);
                 return _sequence.MoveNext();
             }
 
