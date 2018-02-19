@@ -62,6 +62,11 @@ Returns the Cartesian product of two sequences by combining each element of
 the first set with each in the second and applying the user=define projection
 to the pair
 
+### CompareCount
+
+Compares two sequences and returns an integer that indicates whether the
+first sequence has fewer, the same or more elements than the second sequence.
+
 ### Concat
 
 Returns a sequence consisting of the head element and the given tail elements.
