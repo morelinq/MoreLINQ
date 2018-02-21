@@ -83,10 +83,11 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
-            return source.TryGetCollectionCount() is int collectionCount
+            return
+                source.TryGetCollectionCount() is int collectionCount
                 ? collectionCount == count
-                    ? source
-                    : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))
+                  ? source
+                  : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))
                 : _(); IEnumerable<TSource> _()
                 {
                     var iterations = 0;
