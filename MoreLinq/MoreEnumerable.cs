@@ -37,8 +37,8 @@ namespace MoreLinq
         static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
         {
             return source is ICollection<T> collection ? collection.Count
-                : source is IReadOnlyCollection<T> readOnlyCollection ? readOnlyCollection.Count
-                : (int?)null;
+                 : source is IReadOnlyCollection<T> readOnlyCollection ? readOnlyCollection.Count
+                 : (int?)null;
         }
     }
 }
