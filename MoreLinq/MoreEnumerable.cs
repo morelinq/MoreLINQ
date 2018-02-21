@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -27,5 +28,13 @@ namespace MoreLinq
     
     public static partial class MoreEnumerable
     {
+        static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return source is ICollection<T> collection ? collection.Count
+                 : source is IReadOnlyCollection<T> readOnlyCollection ? readOnlyCollection.Count
+                 : (int?)null;
+        }
     }
 }

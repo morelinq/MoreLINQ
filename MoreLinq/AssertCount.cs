@@ -83,32 +83,24 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
-            switch (source)
-            {
-                case ICollection<TSource> collection:
-                    return AssertKnownCount(collection.Count);
-                case IReadOnlyCollection<TSource> readOnlyCollection:
-                    return AssertKnownCount(readOnlyCollection.Count);
-                default:
-                    return _(); IEnumerable<TSource> _()
+            return
+                source.TryGetCollectionCount() is int collectionCount
+                ? collectionCount == count
+                  ? source
+                  : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))
+                : _(); IEnumerable<TSource> _()
+                {
+                    var iterations = 0;
+                    foreach (var element in source)
                     {
-                        var iterations = 0;
-                        foreach (var element in source)
-                        {
-                            iterations++;
-                            if (iterations > count)
-                                throw errorSelector(1, count);
-                            yield return element;
-                        }
-                        if (iterations != count)
-                            throw errorSelector(-1, count);
+                        iterations++;
+                        if (iterations > count)
+                            throw errorSelector(1, count);
+                        yield return element;
                     }
-            }
-
-            IEnumerable<TSource> AssertKnownCount(int actualCount) =>
-                actualCount == count
-                ? source
-                : From<TSource>(() => throw errorSelector(actualCount.CompareTo(count), count));
+                    if (iterations != count)
+                        throw errorSelector(-1, count);
+                }
         }
     }
 }
