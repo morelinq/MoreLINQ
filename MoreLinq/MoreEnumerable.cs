@@ -15,10 +15,9 @@
 // limitations under the License.
 #endregion
 
-using System;
-
 namespace MoreLinq
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
