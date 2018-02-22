@@ -64,13 +64,13 @@ namespace MoreLinq
                         yield break;
 
                     var aggregator = i.Current;
+                    yield return aggregator;
 
                     while (i.MoveNext())
                     {
-                        yield return aggregator;
                         aggregator = transformation(aggregator, i.Current);
+                        yield return aggregator;
                     }
-                    yield return aggregator;
                 }
             }
         }
@@ -107,13 +107,13 @@ namespace MoreLinq
                 using (var i = source.GetEnumerator())
                 {
                     var aggregator = seed;
+                    yield return aggregator;
 
                     while (i.MoveNext())
                     {
-                        yield return aggregator;
                         aggregator = transformation(aggregator, i.Current);
+                        yield return aggregator;
                     }
-                    yield return aggregator;
                 }
             }
         }
