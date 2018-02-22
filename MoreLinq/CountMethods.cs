@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -100,7 +100,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Determines whether or not the number of elements in the sequence is between 
+        /// Determines whether or not the number of elements in the sequence is between
         /// an inclusive range of minimum and maximum integers.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
@@ -154,7 +154,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Compares two sequences and returns an integer that indicates whether the first sequence 
+        /// Compares two sequences and returns an integer that indicates whether the first sequence
         /// has fewer, the same or more elements than the second sequence.
         /// </summary>
         /// <typeparam name="TFirst">Element type of the first sequence</typeparam>
@@ -163,7 +163,7 @@ namespace MoreLinq
         /// <param name="second">The second sequence</param>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
         /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
-        /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements 
+        /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements
         /// or <c>1</c> if the first sequence has the most elements.</returns>
         /// <example>
         /// <code>

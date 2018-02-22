@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         public IEnumerator<T> GetEnumerator() => throw new NotImplementedException();
         // all other IReadOnlyList<T> members are forwarded back to the underlying private list
         public int Count => _list.Count;
-   
+
         public T this[int index] => _list[index];
     }
 }
