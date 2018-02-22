@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
             var gold = new[] {1, 3, 6};
-            Assert.Throws<InvalidOperationException>(() => sequence.Consume());
+            Assert.Throws<InvalidOperationException>(sequence.Consume);
             sequence.Take(3).AssertSequenceEqual(gold);
         }
 
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus);
             var gold = new[] { 0, 1, 3, 6 };
-            Assert.Throws<InvalidOperationException>(() => sequence.Consume());
+            Assert.Throws<InvalidOperationException>(sequence.Consume);
             sequence.Take(4).AssertSequenceEqual(gold);
         }
 
