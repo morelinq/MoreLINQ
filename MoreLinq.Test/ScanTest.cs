@@ -46,10 +46,10 @@ namespace MoreLinq.Test
         [Test]
         public void ScanDoesNotIterateExtra()
         {
+            var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
             var gold = new[] {1, 3, 6};
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus).Consume());
-            Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus).Take(3).AssertSequenceEqual(gold);
+            Assert.Throws<InvalidOperationException>(() => sequence.Consume());
+            sequence.Take(3).AssertSequenceEqual(gold);
         }
 
         [Test]
@@ -63,8 +63,6 @@ namespace MoreLinq.Test
         {
             var result = Enumerable.Range(1, 10).Scan(0, SampleData.Plus);
             var gold = new[] { 0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 };
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus).Consume());
             result.AssertSequenceEqual(gold);
         }
 
@@ -77,10 +75,10 @@ namespace MoreLinq.Test
         [Test]
         public void SeededScanDoesNotIterateExtra()
         {
+            var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus);
             var gold = new[] { 0, 1, 3, 6 };
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus).Consume());
-            Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus).Take(4).AssertSequenceEqual(gold);
+            Assert.Throws<InvalidOperationException>(() => sequence.Consume());
+            sequence.Take(4).AssertSequenceEqual(gold);
         }
 
     }
