@@ -33,9 +33,9 @@ before_install:
 
 install:
   - dotnet restore
+  - npm install -g eclint
 
 before_script:
-  - npm install -g eclint
   - git rm .editorconfig
   - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
   - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
