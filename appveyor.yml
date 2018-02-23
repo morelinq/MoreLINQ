@@ -6,6 +6,12 @@ skip_commits:
     - '*.txt'
     - '.editorconfig'
     - lic/*
+install:
+- npm install -g eclint
+- git rm .editorconfig
+- eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
+- eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+- git reset --hard
 build_script:
 - ps: >-
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir MoreLinq.Test\*Test.cs)

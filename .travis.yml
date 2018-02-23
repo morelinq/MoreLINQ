@@ -34,6 +34,13 @@ before_install:
 install:
   - dotnet restore
 
+before_script:
+  - npm install -g eclint
+  - git rm .editorconfig
+  - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
+  - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+  - git reset --hard
+
 script:
   - |
     if grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' $(ls MoreLinq.Test/*Test.cs); then
