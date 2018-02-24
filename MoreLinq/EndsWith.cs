@@ -72,10 +72,8 @@ namespace MoreLinq
             comparer = comparer ?? EqualityComparer<T>.Default;
 
             List<T> secondList;
-            return second is ICollection<T> collection ? Impl(second, collection.Count)
-#if IREADONLY
-                 : second is IReadOnlyCollection<T> readOnlyCollection ? Impl(second, readOnlyCollection.Count)
-#endif
+            return second.TryGetCollectionCount() is int collectionCount
+                 ? Impl(second, collectionCount)
                  : Impl(secondList = second.ToList(), secondList.Count);
 
             bool Impl(IEnumerable<T> snd, int count)

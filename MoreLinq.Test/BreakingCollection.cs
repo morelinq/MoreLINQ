@@ -15,26 +15,22 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq
+namespace MoreLinq.Test
 {
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Provides a set of static methods for querying objects that 
-    /// implement <see cref="IEnumerable{T}" />. The actual methods
-    /// are implemented in files reflecting the method name.
-    /// </summary>
-    
-    public static partial class MoreEnumerable
+    sealed class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
     {
-        static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+        public BreakingCollection(int count) => Count = count;
 
-            return source is ICollection<T> collection ? collection.Count
-                 : source is IReadOnlyCollection<T> readOnlyCollection ? readOnlyCollection.Count
-                 : (int?)null;
-        }
+        public int Count { get; }
+
+        public void Add(T item)      => throw new NotImplementedException();
+        public void Clear()          => throw new NotImplementedException();
+        public bool Contains(T item) => throw new NotImplementedException();
+        public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
+        public bool Remove(T item)   => throw new NotImplementedException();
+        public bool IsReadOnly       => throw new NotImplementedException();
     }
 }

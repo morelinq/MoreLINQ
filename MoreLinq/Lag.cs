@@ -27,7 +27,7 @@ namespace MoreLinq
         /// </summary>
         /// <remarks>
         /// This operator evaluates in a deferred and streaming manner.<br/>
-        /// For elements prior to the lag offset, <c>default(T) is used as the lagged value.</c><br/>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
         /// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>

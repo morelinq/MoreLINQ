@@ -44,6 +44,15 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void ScanDoesNotIterateExtra()
+        {
+            var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
+            var gold = new[] {1, 3, 6};
+            Assert.Throws<InvalidOperationException>(sequence.Consume);
+            sequence.Take(3).AssertSequenceEqual(gold);
+        }
+
+        [Test]
         public void SeededScanEmpty()
         {
             Assert.AreEqual(-1, new int[0].Scan(-1, SampleData.Plus).Single());
@@ -62,5 +71,15 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<object>().Scan<object, object>(null, delegate { throw new NotImplementedException(); });
         }
+
+        [Test]
+        public void SeededScanDoesNotIterateExtra()
+        {
+            var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus);
+            var gold = new[] { 0, 1, 3, 6 };
+            Assert.Throws<InvalidOperationException>(sequence.Consume);
+            sequence.Take(4).AssertSequenceEqual(gold);
+        }
+
     }
 }

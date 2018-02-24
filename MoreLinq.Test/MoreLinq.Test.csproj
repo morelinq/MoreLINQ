@@ -18,10 +18,6 @@
     <LangVersion>7</LangVersion>
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0' Or '$(TargetFramework)' == 'netcoreapp2.0'">
-    <DefineConstants>$(DefineConstants);IREADONLY</DefineConstants>
-  </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
@@ -39,6 +35,7 @@
       <Compile Include="*Test.cs" />
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
+      <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
@@ -54,6 +51,7 @@
       <Compile Include="TestingSequence.cs" />
       <Compile Include="TestExtensions.cs" />
       <Compile Include="UnenumerableList.cs" />
+      <Compile Include="UnenumerableReadOnlyList.cs" />
       <Compile Include="VerifiableEnumerator.cs" />
   </ItemGroup>
 
