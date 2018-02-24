@@ -65,11 +65,10 @@ namespace MoreLinq
 
         public static IEnumerable<int> Sequence(int start, int stop, int step)
         {
-            var initial = start;
             long current = start;
 
-            while (step >= 0 ? stop >= current && initial <= current
-                             : stop <= current && initial >= current)
+            while (step >= 0 ? stop >= current 
+                             : stop <= current)
             {
                 yield return (int)current;
                 current = current + step;
