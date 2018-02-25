@@ -67,7 +67,7 @@ namespace MoreLinq
         {
             long current = start;
 
-            while (step >= 0 ? stop >= current 
+            while (step >= 0 ? stop >= current
                              : stop <= current)
             {
                 yield return (int)current;
