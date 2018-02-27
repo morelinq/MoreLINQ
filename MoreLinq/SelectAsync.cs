@@ -155,6 +155,7 @@ namespace MoreLinq
         /// with a given concurrency. An additional parameter specifies the
         /// <see cref="TaskScheduler"/> to use to await for tasks to complete.
         /// </summary>
+        /// <remarks>
         /// This method uses deferred execution semantics. The results are
         /// yielded as each asynchronous projection completes and therefore not
         /// guaranteed to be based on the source sequence order. If order is
@@ -163,7 +164,6 @@ namespace MoreLinq
         /// This method starts a new task on the given scheduler where the
         /// asynchronous projections are started and awaited.
         ///
-        /// <remarks>
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
         /// </remarks>
