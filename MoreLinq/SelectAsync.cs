@@ -32,6 +32,12 @@ namespace MoreLinq
         /// <summary>
         /// Asynchronously projects each element of a sequence to its new form.
         /// </summary>
+        /// <remarks>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous projection completes and therefore not
+        /// guaranteed to be based on the source sequence order. If order is
+        /// important, sort the results.
+        /// </remarks>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source, Func<T, Task<TResult>> selector)
@@ -45,6 +51,12 @@ namespace MoreLinq
         /// as an additional argument that can be used to abort any
         /// asynchronous operations in flight.
         /// </summary>
+        /// <remarks>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous projection completes and therefore not
+        /// guaranteed to be based on the source sequence order. If order is
+        /// important, sort the results.
+        /// </remarks>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> selector)
@@ -57,6 +69,11 @@ namespace MoreLinq
         /// with a given concurrency.
         /// </summary>
         /// <remarks>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous projection completes and therefore not
+        /// guaranteed to be based on the source sequence order. If order is
+        /// important, sort the results.
+        ///
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
         /// </remarks>
@@ -76,6 +93,11 @@ namespace MoreLinq
         /// be used to abort any asynchronous operations in flight.
         /// </summary>
         /// <remarks>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous projection completes and therefore not
+        /// guaranteed to be based on the source sequence order. If order is
+        /// important, sort the results.
+        ///
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
         /// </remarks>
@@ -94,6 +116,11 @@ namespace MoreLinq
         /// <see cref="TaskScheduler"/> to use to await for tasks to complete.
         /// </summary>
         /// <remarks>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous projection completes and therefore not
+        /// guaranteed to be based on the source sequence order. If order is
+        /// important, sort the results.
+        ///
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
         /// </remarks>
@@ -113,6 +140,11 @@ namespace MoreLinq
         /// with a given concurrency. An additional parameter specifies the
         /// <see cref="TaskScheduler"/> to use to await for tasks to complete.
         /// </summary>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous projection completes and therefore not
+        /// guaranteed to be based on the source sequence order. If order is
+        /// important, sort the results.
+        ///
         /// <remarks>
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
