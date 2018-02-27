@@ -15,37 +15,30 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AcquireTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AcquireNullSequence()
-        {
-            MoreEnumerable.Acquire<IDisposable>(null);
-        }
-
         [Test]
         public void AcquireAll()
         {
             Disposable a = null;
             Disposable b = null;
             Disposable c = null;
-           
-            var allocators = Futures(() => a = new Disposable(), 
+
+            var allocators = Futures(() => a = new Disposable(),
                                      () => b = new Disposable(),
                                      () => c = new Disposable());
 
             var disposables = allocators.Acquire();
-            
+
             Assert.That(disposables.Length, Is.EqualTo(3));
-            
+
             foreach (var disposable in disposables.ZipShortest(new[] { a, b, c }, (act, exp) => new { Actual = act, Expected = exp }))
             {
                 Assert.That(disposable.Actual, Is.SameAs(disposable.Expected));
@@ -59,25 +52,19 @@ namespace MoreLinq.Test
             Disposable a = null;
             Disposable b = null;
             Disposable c = null;
-            
-            var allocators = Futures(() => a = new Disposable(), 
+
+            var allocators = Futures(() => a = new Disposable(),
                                      () => b = new Disposable(),
-                                     () => { throw new ApplicationException(); },
+                                     () => throw new ApplicationException(),
                                      () => c = new Disposable());
-            
-            try
-            {
-                allocators.Acquire();
-                Assert.Fail();
-            }
-            catch (ApplicationException)
-            {
-                Assert.That(a, Is.Not.Null);
-                Assert.That(a.Disposed, Is.True);
-                Assert.That(b, Is.Not.Null);
-                Assert.That(b.Disposed, Is.True);
-                Assert.That(c, Is.Null);
-            }
+
+            Assert.Throws<ApplicationException>(() => allocators.Acquire());
+
+            Assert.That(a, Is.Not.Null);
+            Assert.That(a.Disposed, Is.True);
+            Assert.That(b, Is.Not.Null);
+            Assert.That(b.Disposed, Is.True);
+            Assert.That(c, Is.Null);
         }
 
         static IEnumerable<T> Futures<T>(params Func<T>[] allocators)
@@ -89,8 +76,10 @@ namespace MoreLinq.Test
 
         class Disposable : IDisposable
         {
-            public bool Disposed { get; private set; }    
+            public bool Disposed { get; private set; }
             public void Dispose() { Disposed = true; }
         }
+
+        class ApplicationException : Exception {}
     }
 }

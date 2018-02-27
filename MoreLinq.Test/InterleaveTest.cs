@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Interleave operator
     /// </summary>
@@ -21,41 +19,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking Interleave on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestInterleaveNullSequenceArgument()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Interleave(new int[] { });
-        }
-
-        /// <summary>
-        /// Verify that invoking Interleave with a <c>null</c> otherSequences parameter results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestInterleaveNullOtherSequencesArgument()
-        {
-            const int count = 10;
-            var sequence = Enumerable.Range(1, count);
-            sequence.Interleave(null);
-        }
-
-        /// <summary>
-        /// Verify that invoking Interleave with a <c>null</c> element in the otherSequences collection results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestInterleaveNullEntryInOtherSequences()
-        {
-            const int count = 10;
-            var sequence = Enumerable.Range(1, count);
-            sequence.Interleave(Enumerable.Range(1, count), null);
-        }
-
-        /// <summary>
         /// Verify that interleaving disposes those enumerators that it managed 
         /// to open successfully
         /// </summary>
@@ -64,15 +27,8 @@ namespace MoreLinq.Test
         {
             using (var sequenceA = TestingSequence.Of<int>())
             {
-                try
-                {
-                    sequenceA.Interleave(new BreakingSequence<int>()).ToArray();
-                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected and thrown by BreakingSequence
-                }
+                Assert.Throws<InvalidOperationException>(() => // Expected and thrown by BreakingSequence
+                    sequenceA.Interleave(new BreakingSequence<int>()).Consume());
             }
         }
 
@@ -167,9 +123,6 @@ namespace MoreLinq.Test
             var disposedSequenceC = false;
             var disposedSequenceD = false;
 
-            Action ResetIndicators = () => { disposedSequenceA = disposedSequenceB = disposedSequenceC = disposedSequenceD = false; };
-            Action AssertIndicators = () => Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
-
             var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
             var sequenceB = Enumerable.Range(1, count - 1).AsVerifiable().WhenDisposed(s => disposedSequenceB = true);
             var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
@@ -177,9 +130,8 @@ namespace MoreLinq.Test
 
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
 
-            result.Count();
-            AssertIndicators();
-            ResetIndicators();
+            result.Consume();
+            Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
         }
     }
 }

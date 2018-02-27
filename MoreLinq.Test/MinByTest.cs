@@ -15,29 +15,14 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     [TestFixture]
     public class MinByTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MinByNullSequence()
-        {
-            ((IEnumerable<string>)null).MinBy(x => x.Length);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MinByNullSelector()
-        {
-            SampleData.Strings.MinBy<string, int>(null);
-        }
-
         [Test]
         public void MinByNullComparer()
         {
@@ -45,10 +30,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MinByEmptySequence()
         {
-            new string[0].MinBy(x => x.Length);
+            Assert.Throws<InvalidOperationException>(() =>
+                new string[0].MinBy(x => x.Length));
         }
 
         [Test]

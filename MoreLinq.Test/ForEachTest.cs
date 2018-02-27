@@ -15,49 +15,20 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ForEachTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ForEachNullSequence()
-        {
-            MoreEnumerable.ForEach<int>(null, x => { throw new InvalidOperationException(); });
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ForEachNullAction()
-        {
-            new[] { 1, 2, 3 }.ForEach((Action<int>)null);
-        }
-
         [Test]
         public void ForEachWithSequence()
         {
             var results = new List<int>();
             new[] { 1, 2, 3 }.ForEach(results.Add);
             results.AssertSequenceEqual(1, 2, 3);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ForEachIndexedNullSequence()
-        {
-            MoreEnumerable.ForEach<int>(null, ( x, i ) => { throw new InvalidOperationException(); });
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ForEachIndexedNullAction()
-        {
-            new[] { 1, 2, 3 }.ForEach((Action<int, int>)null);
         }
 
         [Test]

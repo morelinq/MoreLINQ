@@ -38,20 +38,20 @@ namespace MoreLinq
         /// </remarks>
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
-            if (childrenSelector == null) throw new ArgumentNullException("childrenSelector");
-            return TraverseBreadthFirstImpl(root, childrenSelector);
-        }
+            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
 
-        private static IEnumerable<T> TraverseBreadthFirstImpl<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
-        {
-            var queue = new Queue<T>();
-            queue.Enqueue(root);
+            return _(); IEnumerable<T> _()
+            {
+                var queue = new Queue<T>();
+                queue.Enqueue(root);
 
-            while (queue.Count != 0) {
-                var current = queue.Dequeue();
-                yield return current;
-                foreach (var child in childrenSelector(current))
-                    queue.Enqueue(child);
+                while (queue.Count != 0)
+                {
+                    var current = queue.Dequeue();
+                    yield return current;
+                    foreach (var child in childrenSelector(current))
+                        queue.Enqueue(child);
+                }
             }
         }
 
@@ -70,22 +70,22 @@ namespace MoreLinq
         /// </remarks>
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
-            if (childrenSelector == null) throw new ArgumentNullException("childrenSelector");
-            return TraverseDepthFirstImpl(root, childrenSelector);
-        }
+            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
 
-        private static IEnumerable<T> TraverseDepthFirstImpl<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
-        {
-            var stack = new Stack<T>();
-            stack.Push(root);
+            return _(); IEnumerable<T> _()
+            {
+                var stack = new Stack<T>();
+                stack.Push(root);
 
-            while (stack.Count != 0) {
-                var current = stack.Pop();
-                yield return current;
-                // because a stack pops the elements out in LIFO order, we need to push them in reverse
-                // if we want to traverse the returned list in the same order as was returned to us
-                foreach (var child in childrenSelector(current).Reverse())
-                    stack.Push(child);
+                while (stack.Count != 0)
+                {
+                    var current = stack.Pop();
+                    yield return current;
+                    // because a stack pops the elements out in LIFO order, we need to push them in reverse
+                    // if we want to traverse the returned list in the same order as was returned to us
+                    foreach (var child in childrenSelector(current).Reverse())
+                        stack.Push(child);
+                }
             }
         }
     }

@@ -1,183 +1,214 @@
-using System;
-using System.Linq;
-using NUnit.Framework;
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
 
 namespace MoreLinq.Test
 {
-    /// <summary>
-    /// Verify the behavior of the Partition family of operators
-    /// </summary>
+    using System;
+    using NUnit.Framework;
+    using Tuple = System.ValueTuple;
+
     [TestFixture]
-    public class PartitionTests
+    public class PartitionTest
     {
-        /// <summary>
-        /// Verify that partitioning a sequence into a single partition works
-        /// </summary>
         [Test]
-        public void TestIdentityPartition()
+        public void Partition()
         {
-            const int count = 100;
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(new[] { count });
+            var (evens, odds) =
+                Enumerable.Range(0, 10)
+                          .Partition(x => x % 2 == 0);
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
         }
 
-        /// <summary>
-        /// Verify that requesting a single partition shorter than the sequence results
-        /// in just that sub sequence. This must be equivalent to Take()
-        /// </summary>
         [Test]
-        public void TestSinglePartitionShorterThanSequence()
+        public void PartitionWithEmptySequence()
         {
-            const int count = 100;
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(new[] { count / 2 });
+            var (evens, odds) =
+                Enumerable.Empty<int>()
+                          .Partition(x => x % 2 == 0);
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence.Take(count / 2)));
+            Assert.That(evens, Is.Empty);
+            Assert.That(odds,  Is.Empty);
         }
 
-        /// <summary>
-        /// Verify that requesting a single partition longer than the sequence results
-        /// in a valid partition that is as long as the source sequence can yield.
-        /// </summary>
         [Test]
-        public void TestSinglePartitionLongerThanSequence()
+        public void PartitionWithResultSelector()
         {
-            const int count = 100;
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(new[] { count * 2 });
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            var (evens, odds) =
+                Enumerable.Range(0, 10)
+                          .Partition(x => x % 2 == 0, Tuple.Create);
+
+            Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
         }
 
-        /// <summary>
-        /// Verify that requesting multiple partitions whose combined lengths are shorter
-        /// than the original sequence, results in the appropriate subset of the sequence.
-        /// This must be equivalent to repeated calls to Take().
-        /// </summary>
         [Test]
-        public void TestMultiplePartitionsShorterThanSequence()
+        public void PartitionBooleanGrouping()
         {
-            const int count = 100;
-            var parSizes = new[] { 10, 20, 30, 40 };
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(parSizes);
+            var (evens, odds) =
+                Enumerable.Range(0, 10)
+                          .GroupBy(x => x % 2 == 0)
+                          .Partition((t, f) => Tuple.Create(t, f));
 
-            var index = 0;
-            foreach (var resultSequence in result)
+            Assert.That(evens, Is.EquivalentTo(new[] { 0, 2, 4, 6, 8 }));
+            Assert.That(odds,  Is.EquivalentTo(new[] { 1, 3, 5, 7, 9 }));
+        }
+
+        [Test]
+        public void PartitionNullableBooleanGrouping()
+        {
+            var xs = new int?[] { 1, 2, 3, null, 5, 6, 7, null, 9, 10 };
+
+            var (lt5, gte5, nils) =
+                xs.GroupBy(x => x != null ? x < 5 : (bool?) null)
+                  .Partition((t, f, n) => Tuple.Create(t, f, n));
+
+            Assert.That(lt5,  Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(gte5, Is.EquivalentTo(new[] { 5, 6, 7, 9, 10 }));
+            Assert.That(nils, Is.EquivalentTo(new int?[] { null, null }));
+        }
+
+        [Test]
+        public void PartitionBooleanGroupingWithSingleKey()
+        {
+            var (m3, etc) =
+                Enumerable.Range(0, 10)
+                          .GroupBy(x => x % 3)
+                          .Partition(0, Tuple.Create);
+
+            Assert.That(m3, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
+
+            using (var r = etc.Read())
             {
-                Assert.AreEqual(parSizes[index], resultSequence.Count());
-                Assert.IsTrue(resultSequence.SequenceEqual(sequence.Skip(parSizes.Take(index).Sum())
-                                                                   .Take(parSizes[index])));
-                ++index;
+                var r1 = r.Read();
+                Assert.That(r1.Key, Is.EqualTo(1));
+                Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
+
+                var r2 = r.Read();
+                Assert.That(r2.Key, Is.EqualTo(2));
+                Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
+
+                r.ReadEnd();
             }
         }
 
-        /// <summary>
-        /// Verify that requesting multiple partitions whose combined length is longer
-        /// than the source sequence, results in fewer partitions whose contents is
-        /// a complete partition of the original sequence.
-        /// </summary>
         [Test]
-        public void TestMultiplePartitionsLongerThanSequence()
+        public void PartitionBooleanGroupingWitTwoKeys()
         {
-            const int count = 40;
-            var parSizes = new[] { 10, 20, 30, 40 };
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(parSizes);
+            var (ms, r1, etc) =
+                Enumerable.Range(0, 10)
+                          .GroupBy(x => x % 3)
+                          .Partition(0, 1, Tuple.Create);
 
-            // compute the number of expected partitions...
-            var index = 0;
-            var expectedPartitions = 0;
-            var remainingCount = count;
-            var lastPartitionSize = 0;
-            while (remainingCount > 0)
+            Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
+            Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
+
+            using (var r = etc.Read())
             {
-                ++expectedPartitions;
-                remainingCount -= parSizes[index++];
-                lastPartitionSize = remainingCount > 0 ? remainingCount : lastPartitionSize;
+                var r2 = r.Read();
+                Assert.That(r2.Key, Is.EqualTo(2));
+                Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
+                r.ReadEnd();
             }
-
-            // verify that the right number of partitions was produced
-            Assert.AreEqual(expectedPartitions, result.Count());
-            // verify the last partition contains the correct items
-            Assert.IsTrue(sequence.Skip(count - lastPartitionSize).SequenceEqual(result.Last()));
         }
 
-        /// <summary>
-        /// Verify that iterating the contents of each partition is a stable, idempotent operation
-        /// that does not consume additional memory.
-        /// </summary>
         [Test]
-        public void TestPartitioningIsIdempotent()
+        public void PartitionBooleanGroupingWitThreeKeys()
         {
-            var sequence = Enumerable.Range(1, 100);
+            var (ms, r1, r2, etc) =
+                Enumerable.Range(0, 10)
+                    .GroupBy(x => x % 3)
+                    .Partition(0, 1, 2, Tuple.Create);
 
-            var result = sequence.Partition(Enumerable.Repeat(10, 10));
-            var index = 0;
-            foreach (var partition in result)
+            Assert.That(ms, Is.EquivalentTo(new[] { 0, 3, 6, 9 }));
+            Assert.That(r1, Is.EquivalentTo(new[] { 1, 4, 7 }));
+            Assert.That(r2, Is.EquivalentTo(new[] { 2, 5, 8 }));
+            Assert.That(etc, Is.Empty);
+        }
+
+        [Test]
+        public void PartitionBooleanGroupingWithSingleKeyWithComparer()
+        {
+            var words =
+                new[] { "foo", "bar", "FOO", "Bar" };
+
+            var (foo, etc) =
+                words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+                    .Partition("foo", StringComparer.OrdinalIgnoreCase, Tuple.Create);
+
+            Assert.That(foo, Is.EquivalentTo(new[] { "foo", "FOO" }));
+
+            using (var r = etc.Read())
             {
-                for (var i = 0; i < 5; i++)
-                    Assert.IsTrue(partition.SequenceEqual(sequence.Skip(index * 10).Take(10)));
-                ++index;
+                var bar = r.Read();
+                Assert.That(bar, Is.EquivalentTo(new[] { "bar", "Bar" }));
+                r.ReadEnd();
             }
-
         }
 
-        /// <summary>
-        /// Verify that accessing a negative sized partition results in an exception
-        /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void TestPartitionNegativeValues()
+        public void PartitionBooleanGroupingWithTwoKeysWithComparer()
         {
-            var sequence = Enumerable.Range(1, 100);
-            var result = sequence.Partition(new[] { 10, -10 });
+            var words =
+                new[] { "foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX" };
 
-            result.Skip(1).Count(); // force second partition to be evaluated
+            var (foos, bar, etc) =
+                words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+                     .Partition("foo", "bar", StringComparer.OrdinalIgnoreCase, Tuple.Create);
+
+            Assert.That(foos, Is.EquivalentTo(new[] { "foo", "FOO" }));
+            Assert.That(bar, Is.EquivalentTo(new[] { "bar", "Bar" }));
+
+            using (var r = etc.Read())
+            {
+                var baz = r.Read();
+                Assert.That(baz.Key, Is.EqualTo("baz"));
+                Assert.That(baz, Is.EquivalentTo(new[] { "baz", "bAz" }));
+
+                var qux = r.Read();
+                Assert.That(qux.Key, Is.EqualTo("QUx"));
+                Assert.That(qux, Is.EquivalentTo(new[] { "QUx", "QuX" }));
+
+                r.ReadEnd();
+            }
         }
 
-        /// <summary>
-        /// Verify that generating partitions is a lazy operation. We ensure this be asking for a
-        /// partition that would result in an exception if yielded.
-        /// </summary>
         [Test]
-        public void TestPartitionEvaluationIsLazy()
+        public void PartitionBooleanGroupingWithThreeKeysWithComparer()
         {
-            const int count = 10;
-            var sequence = Enumerable.Range(1, count).Concat(new BreakingSequence<int>());
+            var words =
+                new[] { "foo", "bar", "FOO", "Bar", "baz", "QUx", "bAz", "QuX" };
 
-            var result = sequence.Partition(new[] { count, count });
-            Assert.IsTrue(result.First().Count() == count);
-            // We specifically don't iterate to the next partition, to ensure it is not evaluated
-        }
+            var (foos, bar, baz, etc) =
+                words.GroupBy(s => s, StringComparer.OrdinalIgnoreCase)
+                    .Partition("foo", "bar", "baz", StringComparer.OrdinalIgnoreCase, Tuple.Create);
 
-        /// <summary>
-        /// Verify that partitioning all elements of a sequence and then recombining
-        /// them results in the original sequence. Ensures that the partition operation
-        /// is reflexive over the original sequence domain.
-        /// and 
-        /// </summary>
-        [Test]
-        public void TestPartitionCompleteness()
-        {
-            const int count = 100;
-            var sequence = Enumerable.Range(1, count);
-            var result = sequence.Partition(new[] { count / 2, count / 2 });
-            Assert.IsTrue(result.SelectMany(x => x).SequenceEqual(sequence));
-        }
+            Assert.That(foos, Is.EquivalentTo(new[] { "foo", "FOO" }));
+            Assert.That(bar, Is.EquivalentTo(new[] { "bar", "Bar" }));
+            Assert.That(baz, Is.EquivalentTo(new[] { "baz", "bAz" }));
 
-        /// <summary>
-        /// Verify that the version of partition that also performs projection correctly
-        /// operates on the partitioned sequences.
-        /// </summary>
-        [Test]
-        public void TestPartitionWithProjection()
-        {
-            var sequence = Enumerable.Repeat(1, 100);
-            var result = sequence.Partition(Enumerable.Repeat(10, 10)).Select(seq => seq.Sum());
-
-            Assert.IsTrue(result.All(x => x == 10));
+            using (var r = etc.Read())
+            {
+                var qux = r.Read();
+                Assert.That(qux.Key, Is.EqualTo("QUx"));
+                Assert.That(qux, Is.EquivalentTo(new[] { "QUx", "QuX" }));
+                r.ReadEnd();
+            }
         }
     }
 }

@@ -48,39 +48,38 @@ namespace MoreLinq
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
 
-            return RunLengthEncodeImpl(sequence, comparer ?? EqualityComparer<T>.Default);
-        }
-        
-        private static IEnumerable<KeyValuePair<T, int>> RunLengthEncodeImpl<T>(IEnumerable<T> sequence, IEqualityComparer<T> comparer)
-        {
-            // This implementation could also have been written using a foreach loop, 
-            // but it proved to be easier to deal with edge certain cases that occur
-            // (such as empty sequences) using an explicit iterator and a while loop.
-
-            using (var iter = sequence.GetEnumerator())
+            comparer = comparer ?? EqualityComparer<T>.Default;
+            return _(); IEnumerable<KeyValuePair<T, int>> _()
             {
-                if (iter.MoveNext())
+                // This implementation could also have been written using a foreach loop, 
+                // but it proved to be easier to deal with edge certain cases that occur
+                // (such as empty sequences) using an explicit iterator and a while loop.
+
+                using (var iter = sequence.GetEnumerator())
                 {
-                    var prevItem = iter.Current;
-                    var runCount = 1;
-
-                    while (iter.MoveNext())
+                    if (iter.MoveNext())
                     {
-                        if (comparer.Equals(prevItem, iter.Current))
-                        {
-                            ++runCount;
-                        }
-                        else
-                        {
-                            yield return new KeyValuePair<T, int>(prevItem, runCount);
-                            prevItem = iter.Current;
-                            runCount = 1;
-                        }
-                    }
+                        var prevItem = iter.Current;
+                        var runCount = 1;
 
-                    yield return new KeyValuePair<T, int>(prevItem, runCount);
+                        while (iter.MoveNext())
+                        {
+                            if (comparer.Equals(prevItem, iter.Current))
+                            {
+                                ++runCount;
+                            }
+                            else
+                            {
+                                yield return new KeyValuePair<T, int>(prevItem, runCount);
+                                prevItem = iter.Current;
+                                runCount = 1;
+                            }
+                        }
+
+                        yield return new KeyValuePair<T, int>(prevItem, runCount);
+                    }
                 }
             }
         }

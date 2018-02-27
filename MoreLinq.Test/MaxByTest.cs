@@ -15,29 +15,14 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     [TestFixture]
     public class MaxByTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MaxByNullSequence()
-        {
-            ((IEnumerable<string>)null).MaxBy(x => x.Length);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MaxByNullSelector()
-        {
-            SampleData.Strings.MaxBy<string, int>(null);
-        }
-
         [Test]
         public void MaxByNullComparer()
         {
@@ -45,10 +30,10 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void MaxByEmptySequence()
         {
-            new string[0].MaxBy(x => x.Length);
+            Assert.Throws<InvalidOperationException>(() =>
+                new string[0].MaxBy(x => x.Length));
         }
 
         [Test]

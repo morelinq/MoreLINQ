@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the behavior of the Permutations() operator.
     /// </summary>
@@ -38,7 +36,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that there are two permutations of a set of two items 
+        /// Verify that there are two permutations of a set of two items
         /// and confirm that the permutations are correct.
         /// </summary>
         [Test]
@@ -74,8 +72,8 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparerFunc<IList<int>>.As((x, y) => x.SequenceEqual(y)))));
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
+            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
         /// <summary>
@@ -117,8 +115,8 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparerFunc<IList<int>>.As((x, y) => x.SequenceEqual(y)))));
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
+            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
         /// <summary>
@@ -134,7 +132,7 @@ namespace MoreLinq.Test
             //       permuted sets, and verify they are equal to the expected number (count!).
 
             // NOTE: Generating all permutations for sets larger than about 10 items is computationally
-            //       expensive and generally impractical - especially since each additional step adds 
+            //       expensive and generally impractical - especially since each additional step adds
             //       less and less to our confidence in the underlying implementation.
             //       We will assume that if the algorithm scales to sets of up to 10 items, it will work
             //       with any size set.
@@ -156,18 +154,6 @@ namespace MoreLinq.Test
         public void TestPermutationsIsLazy()
         {
             new BreakingSequence<int>().Permutations();
-        }
-
-
-        /// <summary>
-        /// Verify that invoking Permutations() on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestPermutationNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Permutations();
         }
 
         /// <summary>

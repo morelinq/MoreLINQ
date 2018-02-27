@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Lag operator
     /// </summary>
@@ -22,34 +19,23 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that lag throws an exception if invoked on a <c>null</c> sequence
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestLagNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Lag(10, (val, lagVal) => val);
-        }
-
-        /// <summary>
         /// Verify that lagging by a negative offset results in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestLagNegativeOffsetException()
         {
-            Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val);
+            AssertThrowsArgument.OutOfRangeException("offset",() =>
+                Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
         }
 
         /// <summary>
         /// Verify that attempting to lag by a zero offset will result in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestLagZeroOffset()
         {
-            Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal);
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
+                Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
         }
 
         /// <summary>

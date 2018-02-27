@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Cartesian operator
     /// </summary>
@@ -18,39 +15,6 @@ namespace MoreLinq.Test
         public void TestCartesianIsLazy()
         {
             new BreakingSequence<int>().Cartesian(new BreakingSequence<int>(), (a, b) => new { A = a, B = b });
-        }
-
-        /// <summary>
-        /// Verify applying Cartesian to a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCartesianSequenceANullException()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Cartesian(Enumerable.Repeat(1, 10), (a, b) => a + b);
-        }
-
-        /// <summary>
-        /// Verify passing a <c>null</c> second sequence to Cartesian results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCartesianSequenceBNullException()
-        {
-            var sequence = Enumerable.Repeat(1,10);
-            sequence.Cartesian<int,int,int>(null, (a, b) => a + b);
-        }
-
-        /// <summary>
-        /// Verify that passing a <c>null</c> projection function to Cartesian results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestCartesianResultSelectorNullException()
-        {
-            var sequence = Enumerable.Repeat(1, 10);
-            sequence.Cartesian(sequence, (Func<int, int, int>) null);
         }
 
         /// <summary>

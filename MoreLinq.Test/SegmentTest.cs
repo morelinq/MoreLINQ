@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Segment operator
     /// </summary>
@@ -20,47 +18,6 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().Segment(curr => false);
             new BreakingSequence<int>().Segment((curr,i) => false);
             new BreakingSequence<int>().Segment((curr,prev,i) => false);
-        }
-
-        /// <summary>
-        /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSegmentNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Segment(curr => false);
-        }
-
-        /// <summary>
-        /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSegmentNullSequenceException2()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Segment((curr,index) => false);
-        }
-
-        /// <summary>
-        /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSegmentNullSequenceException3()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Segment((curr,prev,index) => false);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSegmentIdentifierNullException()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Segment((Func<int,bool>)null);
         }
 
         /// <summary>

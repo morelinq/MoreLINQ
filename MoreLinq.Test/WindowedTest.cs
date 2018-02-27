@@ -1,57 +1,45 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
-    /// Verify the behavior of the SlidingWindow operator
+    /// Verify the behavior of the Windowed operator
     /// </summary>
     [TestFixture]
     public class WindowedTests
     {
         /// <summary>
-        /// Verify that SlidingWindow behaves in a lazy manner
+        /// Verify that Windowed behaves in a lazy manner
         /// </summary>
         [Test]
-        public void TestSlidingWindowIsLazy()
+        public void TestWindowedIsLazy()
         {
             new BreakingSequence<int>().Windowed(1);
-        }
-
-        /// <summary>
-        /// Verify that invoking SlidingWindow on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSlidingWindowNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.Windowed(10);
         }
 
         /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestSlidingWindowNegativeWindowSizeException()
+        public void TestWindowedNegativeWindowSizeException()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            sequence.Windowed(-5);
+
+            AssertThrowsArgument.OutOfRangeException("size",() =>
+                sequence.Windowed(-5));
         }
 
         /// <summary>
-        /// Verify that a sliding window of an any size over an empty sequence is a single empty sequence
+        /// Verify that a sliding window of an any size over an empty sequence
+        /// is an empty sequence
         /// </summary>
         [Test]
-        public void TestSlidingWindowEmptySequence()
+        public void TestWindowedEmptySequence()
         {
             var sequence = Enumerable.Empty<int>();
             var result = sequence.Windowed(5);
 
-            Assert.IsTrue( result.Single().SequenceEqual(sequence) );
+            Assert.IsEmpty(result);
         }
 
         /// <summary>
@@ -59,7 +47,7 @@ namespace MoreLinq.Test
         /// degenerates to the original sequence.
         /// </summary>
         [Test]
-        public void TestSlidingWindowOfSingleElement()
+        public void TestWindowedOfSingleElement()
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
@@ -75,10 +63,10 @@ namespace MoreLinq.Test
 
         /// <summary>
         /// Verify that asking for a window large than the source sequence results
-        /// in a single sequence whose content is the same as the source sequence.
+        /// in a empty sequence.
         /// </summary>
         [Test]
-        public void TestSlidingWindowLargerThanSequence()
+        public void TestWindowedLargerThanSequence()
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
@@ -86,7 +74,7 @@ namespace MoreLinq.Test
 
             // there should only be one window whose contents is the same
             // as the source sequence
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.IsEmpty(result);
         }
 
         /// <summary>
@@ -94,7 +82,7 @@ namespace MoreLinq.Test
         /// in N sequences, where N = (source.Count() - windowSize) + 1.
         /// </summary>
         [Test]
-        public void TestSlidingWindowSmallerThanSequence()
+        public void TestWindowedSmallerThanSequence()
         {
             const int count = 100;
             const int windowSize = count / 3;

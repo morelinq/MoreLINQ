@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the RunLengthEncode() operator
     /// </summary>
@@ -19,28 +18,6 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<int>().RunLengthEncode();
             new BreakingSequence<int>().RunLengthEncode(EqualityComparer<int>.Default);
-        }
-
-        /// <summary>
-        /// Verify that invoking RunLengthEncode on an empty sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestRunLengthEncodeNullSequence()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.RunLengthEncode();
-        }
-
-        /// <summary>
-        /// Verify that invoking RunLengthEncode on an empty sequence results in an exception
-        /// </summary>
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TestRunLengthEncodeNullSequence2()
-        {
-            const IEnumerable<int> sequence = null;
-            sequence.RunLengthEncode(EqualityComparer<int>.Default);
         }
 
         /// <summary>

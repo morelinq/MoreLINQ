@@ -15,26 +15,18 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class PadTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void PadNullSource()
-        {
-            MoreEnumerable.Pad<object>(null, 0);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void PadNegativeWidth()
         {
-            new object[0].Pad(-1);
+            AssertThrowsArgument.Exception("width",() =>
+                new object[0].Pad(-1));
         }
 
         [Test]
@@ -53,28 +45,28 @@ namespace MoreLinq.Test
         public void PadWideSourceSequence()
         {
             var result = new[] { 123, 456, 789 }.Pad(2);
-            result.AssertSequenceEqual(new[] { 123, 456, 789 });
+            result.AssertSequenceEqual(123, 456, 789);
         }
 
         [Test]
         public void PadEqualSourceSequence()
         {
             var result = new[] { 123, 456, 789 }.Pad(3);
-            result.AssertSequenceEqual(new[] { 123, 456, 789 });
+            result.AssertSequenceEqual(123, 456, 789);
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithDefaultPadding()
         {
             var result = new[] { 123, 456, 789 }.Pad(5);
-            result.AssertSequenceEqual(new[] { 123, 456, 789, 0, 0 });
+            result.AssertSequenceEqual(123, 456, 789, 0, 0);
         }
 
         [Test]
         public void PadNarrowSourceSequenceWithNonDefaultPadding()
         {
             var result = new[] { 123, 456, 789 }.Pad(5, -1);
-            result.AssertSequenceEqual(new[] { 123, 456, 789, -1, -1 });
+            result.AssertSequenceEqual(123, 456, 789, -1, -1);
         }
 
         [Test]

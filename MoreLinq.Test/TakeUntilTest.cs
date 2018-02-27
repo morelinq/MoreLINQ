@@ -15,29 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class TakeUntilTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TakeUntilNullSource()
-        {
-            MoreEnumerable.TakeUntil<string>(null, x => x.Length == 1);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void TakeUntilNullPredicate()
-        {
-            MoreEnumerable.TakeUntil<string>(null, x => x.Length == 1);
-        }
-
         [Test]
         public void TakeUntilPredicateNeverFalse()
         {

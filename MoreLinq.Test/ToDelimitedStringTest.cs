@@ -15,54 +15,18 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Globalization;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class ToDelimitedStringTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ToDelimitedStringWithNullSequence()
-        {
-            MoreEnumerable.ToDelimitedString<int>(null, ",");
-        }
-
-        [Test]
-        public void ToDelimitedStringWithEmptySequence()
-        {
-            Assert.That(LinqEnumerable.Empty<int>().ToDelimitedString(), Is.Empty);
-        }
-
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceAndDelimiter()
         {
             var result = new[] { 1, 2, 3 }.ToDelimitedString("-");
             Assert.That(result, Is.EqualTo("1-2-3"));
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndDefaultDelimiter()
-        {
-            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
-            {
-                var result = new[] {1, 2, 3}.ToDelimitedString();
-                Assert.That(result, Is.EqualTo("1;2;3"));
-            }
-        }
-
-        [Test]
-        public void ToDelimitedStringWithNonEmptySequenceAndNullDelimiter()
-        {
-            using (new CurrentThreadCultureScope(new CultureInfo("fr-FR")))
-            {
-                var result = new[] { 1, 2, 3 }.ToDelimitedString(null);
-                Assert.That(result, Is.EqualTo("1;2;3"));
-            }
         }
 
         [Test]
@@ -75,7 +39,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDelimitedStringWithNonEmptySequenceContainingNullsAtStart()
         {
-            // See: http://code.google.com/p/morelinq/issues/detail?id=43
+            // See: https://github.com/morelinq/MoreLINQ/issues/43
             var result = new object[] { null, null, "foo" }.ToDelimitedString(",");
             Assert.That(result, Is.EqualTo(",,foo"));
         }

@@ -19,8 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -33,7 +31,6 @@ namespace MoreLinq
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content). 
-        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
@@ -52,54 +49,48 @@ namespace MoreLinq
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content).
-        /// It is also identical to <see cref="Partition{TSource}(System.Collections.Generic.IEnumerable{TSource},int)"/>.
         /// </remarks>
         
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (size <= 0) throw new ArgumentOutOfRangeException("size");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
-            return BatchImpl(source, size, resultSelector);
-        }
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-        private static IEnumerable<TResult> BatchImpl<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(size > 0);
-            Debug.Assert(resultSelector != null);
-
-            TSource[] bucket = null;
-            var count = 0;
-
-            foreach (var item in source)
+            return _(); IEnumerable<TResult> _()
             {
-                if (bucket == null)
+                TSource[] bucket = null;
+                var count = 0;
+
+                foreach (var item in source)
                 {
-                    bucket = new TSource[size];
+                    if (bucket == null)
+                    {
+                        bucket = new TSource[size];
+                    }
+
+                    bucket[count++] = item;
+
+                    // The bucket is fully buffered before it's yielded
+                    if (count != size)
+                    {
+                        continue;
+                    }
+
+                    // Select is necessary so bucket contents are streamed too
+                    yield return resultSelector(bucket);
+                
+                    bucket = null;
+                    count = 0;
                 }
 
-                bucket[count++] = item;
-
-                // The bucket is fully buffered before it's yielded
-                if (count != size)
+                // Return the last bucket with all remaining elements
+                if (bucket != null && count > 0)
                 {
-                    continue;
+                    Array.Resize(ref bucket, count);
+                    yield return resultSelector(bucket);
                 }
-
-                // Select is necessary so bucket contents are streamed too
-                yield return resultSelector(bucket.Select(x => x));
-               
-                bucket = null;
-                count = 0;
-            }
-
-            // Return the last bucket with all remaining elements
-            if (bucket != null && count > 0)
-            {
-                yield return resultSelector(bucket.Take(count));
             }
         }
     }

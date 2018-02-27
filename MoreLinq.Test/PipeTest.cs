@@ -15,31 +15,15 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using System.Text;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PipeTest
     {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void PipeNullSequence()
-        {
-            MoreEnumerable.Pipe<int>(null, x => { throw new InvalidOperationException(); });
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void PipeNullAction()
-        {
-            new[] { 1, 2, 3 }.Pipe(null);
-        }
-
         [Test]
         public void PipeWithSequence()
         {

@@ -15,27 +15,18 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class ConsumeTest
     {
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ConsumeWithNullSource()
-        {
-            MoreEnumerable.Consume<int>(null);
-        }
-
-        [Test]
         public void ConsumeReallyConsumes()
         {
             var counter = 0;
-            var sequence = LinqEnumerable.Range(0, 10).Pipe(x => counter++);
+            var sequence = Enumerable.Range(0, 10).Pipe(x => counter++);
             sequence.Consume();
             Assert.AreEqual(10, counter);
         }

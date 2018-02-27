@@ -74,31 +74,30 @@ namespace MoreLinq
         
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return RankByImpl(source, keySelector, comparer ?? Comparer<TKey>.Default);
-        }
-        
-        private static IEnumerable<int> RankByImpl<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
-        {
-            source = source.ToArray(); // avoid enumerating source twice
+            comparer = comparer ?? Comparer<TKey>.Default;
+            return _(); IEnumerable<int> _()
+            {
+                source = source.ToArray(); // avoid enumerating source twice
 
-            var rankDictionary = source.Distinct()
-                                       .OrderByDescending(keySelector, comparer)
-                                       .Index(1)
-                                       .ToDictionary(item => item.Value, 
-                                                     item => item.Key);
+                var rankDictionary = source.Distinct()
+                                           .OrderByDescending(keySelector, comparer)
+                                           .Index(1)
+                                           .ToDictionary(item => item.Value,
+                                                         item => item.Key);
 
-            // The following loop should not be be converted to a query to
-            // keep this RankBy lazy.
+                // The following loop should not be be converted to a query to
+                // keep this RankBy lazy.
 
-            // ReSharper disable LoopCanBeConvertedToQuery
-            
-            foreach (var item in source)
-                yield return rankDictionary[item];
+                // ReSharper disable LoopCanBeConvertedToQuery
 
-            // ReSharper restore LoopCanBeConvertedToQuery
+                foreach (var item in source)
+                    yield return rankDictionary[item];
+
+                // ReSharper restore LoopCanBeConvertedToQuery
+            }
         }
     }
 }

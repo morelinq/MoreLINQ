@@ -27,7 +27,7 @@ namespace MoreLinq
 
     partial class MoreEnumerable
     {
-<#      const int max = 4;
+<#      const int max = 16;
         var overloads =
             from i in Enumerable.Range(1, max)
             let istr = i.ToString(CultureInfo.InvariantCulture)
@@ -37,9 +37,7 @@ namespace MoreLinq
                 Count         = i,
                 CountElements = istr + " " + (i == 1 ? "element" : "elements"),
                 CountArg      = istr,
-                FolderArgs    = string.Join(", ", Enumerable.Repeat("null", i - 1)
-                                                            .Concat(new[] { "folder" })
-                                                            .Concat(Enumerable.Repeat("null", max - i))),
+                FolderArgs    = "folder" + istr + ": folder",
 
             };
 
@@ -57,6 +55,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly <#= e.CountElements #></exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
         {

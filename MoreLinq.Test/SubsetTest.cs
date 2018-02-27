@@ -1,9 +1,8 @@
-using System;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests of the Subset() family of extension methods.
     /// </summary>
@@ -24,25 +23,29 @@ namespace MoreLinq.Test
         /// Verify that negative subset sizes result in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestNegativeSubsetSize()
         {
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
-            sequence.Subsets(-5);
+
+            AssertThrowsArgument.OutOfRangeException("subsetSize",() =>
+                sequence.Subsets(-5));
         }
 
         /// <summary>
         /// Verify that requesting subsets larger than the original sequence length result in an exception.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestSubsetLargerThanSequence()
         {
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Subsets(count + 5);
-            result.Count(); // this particular exception is deferred until sequence evaluation
+
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
+            {
+                result.Consume(); // this particular exception is deferred until sequence evaluation
+            });
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace MoreLinq.Test
             var prevSubset = Enumerable.Empty<int>();
             foreach (var subset in result)
             {
-                Assert.GreaterOrEqual(subset.Count(), prevSubset.Count());
+                Assert.GreaterOrEqual(subset.Count, prevSubset.Count());
                 prevSubset = subset;
             }
         }

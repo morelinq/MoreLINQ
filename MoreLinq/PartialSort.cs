@@ -84,7 +84,7 @@ namespace MoreLinq
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, IComparer<T> comparer)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException(nameof(source));
             return PartialSortByImpl<T, T>(source, count, null, null, comparer);
         }
 
@@ -184,8 +184,8 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             return PartialSortByImpl(source, count, keySelector, comparer, null);
         }
 
@@ -250,17 +250,13 @@ namespace MoreLinq
 
                 if (top.Count == count)
                 {
-                    if (keys != null)
-                        keys.RemoveAt(top.Count - 1);
-
+                    keys?.RemoveAt(top.Count - 1);
                     top.RemoveAt(top.Count - 1);
                 }
 
                 // TODO Stable sorting
 
-                if (keys != null)
-                    keys.Insert(i, key);
-
+                keys?.Insert(i, key);
                 top.Insert(i, item);
             }
 

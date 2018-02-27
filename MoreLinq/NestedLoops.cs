@@ -30,7 +30,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Produces a sequence from an action based on the dynamic generation of N nested loops
-        /// who iteration counts are defined by <paramref name="loopCounts"/>.
+        /// whose iteration counts are defined by a sequence of loop counts.
         /// </summary>
         /// <param name="action">Action delegate for which to produce a nested loop sequence</param>
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
@@ -38,8 +38,8 @@ namespace MoreLinq
        
         public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
         {
-            if (action == null) throw new ArgumentNullException("action");
-            if (loopCounts == null) throw new ArgumentNullException("loopCounts");
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
 
             using (var iter = loopCounts.GetEnumerator())
             {
@@ -51,15 +51,11 @@ namespace MoreLinq
                     loop = loop.Repeat(loopCount.Value);
                 return loop;
             }
-        }
 
-        private static int? NextLoopCount(IEnumerator<int> iter)
-        {
-            if (!iter.MoveNext())
-                return null;
-            if (iter.Current < 0)
-                throw new ArgumentException("All loop counts must be greater than or equal to zero.", "loopCounts");
-            return iter.Current;
+            int? NextLoopCount(IEnumerator<int> iter)
+                => !iter.MoveNext() ? (int?) null
+                 : iter.Current >= 0 ? iter.Current
+                 : throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
         }
     }
 }

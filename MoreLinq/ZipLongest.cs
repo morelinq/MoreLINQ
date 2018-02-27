@@ -55,38 +55,30 @@ namespace MoreLinq
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException("first");
-            if (second == null) throw new ArgumentNullException("second");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipLongestImpl(first, second, resultSelector);
-        }
-
-        static IEnumerable<TResult> ZipLongestImpl<TFirst, TSecond, TResult>(
-            IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
-        {
-            using (var e1 = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
+            return _(); IEnumerable<TResult> _()
             {
-                while (e1.MoveNext())
+                using (var e1 = first.GetEnumerator())
+                using (var e2 = second.GetEnumerator())
                 {
-                    if (e2.MoveNext())
+                    while (e1.MoveNext())
                     {
-                        yield return resultSelector(e1.Current, e2.Current);
+                        if (e2.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current, e2.Current);
+                        }
+                        else
+                        {
+                            do { yield return resultSelector(e1.Current, default(TSecond)); }
+                            while (e1.MoveNext());
+                            yield break;
+                        }
                     }
-                    else
-                    {
-                        do { yield return resultSelector(e1.Current, default(TSecond)); }
-                        while (e1.MoveNext());
-                        yield break;
-                    }
-                }
-                if (e2.MoveNext())
-                {
-                    do { yield return resultSelector(default(TFirst), e2.Current); }
-                    while (e2.MoveNext());
+                    while (e2.MoveNext())
+                        yield return resultSelector(default(TFirst), e2.Current);
                 }
             }
         }

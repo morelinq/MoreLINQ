@@ -15,12 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class GenerateTest
     {
@@ -49,23 +47,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GenerateWithNullGenerator()
-        {
-            MoreEnumerable.Generate(0, null);
-        }
-
-        [Test]
         public void GenerateByIndexIsLazy()
         {
             MoreEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GenerateByIndexWithNullGenerator()
-        {
-            MoreEnumerable.GenerateByIndex<int>(null);
         }
 
         [Test]

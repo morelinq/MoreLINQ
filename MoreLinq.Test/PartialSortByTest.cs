@@ -18,20 +18,11 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
     public class PartialSortByTests
     {
-        [Test]
-        public void PartialSortByWithNullSequence()
-        {
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e)).ParamName);
-            Assert.AreEqual("source", Assert.Throws<ArgumentNullException>(() => MoreEnumerable.PartialSortBy<object, object>(null, 0, e => e, Comparer<object>.Default)).ParamName);
-        }
-
         [Test]
         public void PartialSortBy()
         {

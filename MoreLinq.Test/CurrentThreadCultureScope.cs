@@ -15,15 +15,14 @@
 // limitations under the License.
 #endregion
 
-using System.Globalization;
-using System.Threading;
-
 namespace MoreLinq.Test
 {
-    internal sealed class CurrentThreadCultureScope : Scope<CultureInfo>
+    using System.Globalization;
+
+    sealed class CurrentThreadCultureScope : Scope<CultureInfo>
     {
         public CurrentThreadCultureScope(CultureInfo @new) : 
-            base(Thread.CurrentThread.CurrentCulture)
+            base(CultureInfo.CurrentCulture)
         {
             Install(@new);
         }
@@ -33,9 +32,13 @@ namespace MoreLinq.Test
             Install(old);
         }
 
-        private static void Install(CultureInfo value)
+        static void Install(CultureInfo value)
         {
-            Thread.CurrentThread.CurrentCulture = value;
+#if NET451
+            System.Threading.Thread.CurrentThread.CurrentCulture = value;
+#else
+            CultureInfo.CurrentCulture = value;
+#endif
         }
     }
 }

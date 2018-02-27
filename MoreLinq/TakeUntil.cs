@@ -54,19 +54,16 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
-            return TakeUntilImpl(source, predicate);
-        }
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-        private static IEnumerable<TSource> TakeUntilImpl<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-        {
-            foreach (var item in source)
+            return _(); IEnumerable<TSource> _()
             {
-                yield return item;
-                if (predicate(item))
+                foreach (var item in source)
                 {
-                    yield break;
+                    yield return item;
+                    if (predicate(item))
+                        yield break;
                 }
             }
         }
