@@ -37,6 +37,9 @@ namespace MoreLinq
         /// yielded as each asynchronous projection completes and therefore not
         /// guaranteed to be based on the source sequence order. If order is
         /// important, sort the results.
+        ///
+        /// This method starts a new task on the default scheduler where the
+        /// asynchronous projections are started and awaited.
         /// </remarks>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
@@ -56,6 +59,9 @@ namespace MoreLinq
         /// yielded as each asynchronous projection completes and therefore not
         /// guaranteed to be based on the source sequence order. If order is
         /// important, sort the results.
+        ///
+        /// This method starts a new task on the default scheduler where the
+        /// asynchronous projections are started and awaited.
         /// </remarks>
 
         public static IEnumerable<TResult> SelectAsync<T, TResult>(
@@ -73,6 +79,9 @@ namespace MoreLinq
         /// yielded as each asynchronous projection completes and therefore not
         /// guaranteed to be based on the source sequence order. If order is
         /// important, sort the results.
+        ///
+        /// This method starts a new task on the default scheduler where the
+        /// asynchronous projections are started and awaited.
         ///
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
@@ -98,6 +107,9 @@ namespace MoreLinq
         /// guaranteed to be based on the source sequence order. If order is
         /// important, sort the results.
         ///
+        /// This method starts a new task on the default scheduler where the
+        /// asynchronous projections are started and awaited.
+        ///
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
         /// </remarks>
@@ -120,6 +132,9 @@ namespace MoreLinq
         /// yielded as each asynchronous projection completes and therefore not
         /// guaranteed to be based on the source sequence order. If order is
         /// important, sort the results.
+        ///
+        /// This method starts a new task on the given scheduler where the
+        /// asynchronous projections are started and awaited.
         ///
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.
@@ -144,6 +159,9 @@ namespace MoreLinq
         /// yielded as each asynchronous projection completes and therefore not
         /// guaranteed to be based on the source sequence order. If order is
         /// important, sort the results.
+        ///
+        /// This method starts a new task on the given scheduler where the
+        /// asynchronous projections are started and awaited.
         ///
         /// <remarks>
         /// The <paramref name="selector"/> function should be designed to be
