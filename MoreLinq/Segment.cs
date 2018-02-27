@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +32,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
@@ -68,7 +68,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

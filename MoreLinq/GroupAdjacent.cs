@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2012 Atif Aziz. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,27 +27,27 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
+        /// Groups the adjacent elements of a sequence according to a
         /// specified key selector function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements in the same order as found in the 
+        /// and the adjacent elements in the same order as found in the
         /// source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
@@ -56,30 +56,30 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function and compares the keys by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function and compares the keys by using a
         /// specified comparer.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
-        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to 
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to
         /// compare keys.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements in the same order as found in the 
+        /// and the adjacent elements in the same order as found in the
         /// source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -92,32 +92,32 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function and projects the elements for 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function and projects the elements for
         /// each group by using a specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TElement">The type of the elements in the
         /// resulting groupings.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
-        /// <param name="elementSelector">A function to map each source 
+        /// <param name="elementSelector">A function to map each source
         /// element to an element in the resulting grouping.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements (of type <typeparamref name="TElement"/>) 
+        /// and the adjacent elements (of type <typeparamref name="TElement"/>)
         /// in the same order as found in the source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -127,35 +127,35 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function. The keys are compared by using 
-        /// a comparer and each group's elements are projected by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function. The keys are compared by using
+        /// a comparer and each group's elements are projected by using a
         /// specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TElement">The type of the elements in the
         /// resulting groupings.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
-        /// <param name="elementSelector">A function to map each source 
+        /// <param name="elementSelector">A function to map each source
         /// element to an element in the resulting grouping.</param>
-        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to 
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to
         /// compare keys.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements (of type <typeparamref name="TElement"/>) 
+        /// and the adjacent elements (of type <typeparamref name="TElement"/>)
         /// in the same order as found in the source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -171,19 +171,19 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function. The keys are compared by using 
-        /// a comparer and each group's elements are projected by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function. The keys are compared by using
+        /// a comparer and each group's elements are projected by using a
         /// specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TResult">The type of the elements in the
         /// resulting sequence.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
         /// <param name="resultSelector">A function to map each key and
         /// associated source elements to a result object.</param>
@@ -191,9 +191,9 @@ namespace MoreLinq
         /// <typeparamref name="TResult" /> where each element represents
         /// a projection over a group and its key.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
 
@@ -214,31 +214,31 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function. The keys are compared by using 
-        /// a comparer and each group's elements are projected by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function. The keys are compared by using
+        /// a comparer and each group's elements are projected by using a
         /// specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TResult">The type of the elements in the
         /// resulting sequence.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
         /// <param name="resultSelector">A function to map each key and
         /// associated source elements to a result object.</param>
-        /// <param name="comparer">An <see cref="IEqualityComparer{TKey}"/> to 
+        /// <param name="comparer">An <see cref="IEqualityComparer{TKey}"/> to
         /// compare keys.</param>
         /// <returns>A collection of elements of type
         /// <typeparamref name="TResult" /> where each element represents
         /// a projection over a group and its key.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
 
@@ -251,7 +251,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            
+
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
             return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,

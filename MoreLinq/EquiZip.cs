@@ -62,11 +62,11 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the three input sequences are of different lengths then 
+        /// If the three input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -105,11 +105,11 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the three input sequences are of different lengths then 
+        /// If the three input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -139,7 +139,7 @@ namespace MoreLinq
         /// </returns>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, 
+             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
