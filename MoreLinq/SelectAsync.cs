@@ -124,6 +124,8 @@ namespace MoreLinq
             TaskScheduler scheduler,
             Func<T, CancellationToken, Task<TResult>> selector)
         {
+            if (source == null) throw new ArgumentNullException("source");
+            if (selector == null) throw new ArgumentNullException("selector");
             return SelectAsyncImpl(source, maxConcurrency, scheduler, selector);
         }
 
