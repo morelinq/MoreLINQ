@@ -104,7 +104,7 @@ namespace MoreLinq
             TaskScheduler scheduler,
             Func<T, Task<TResult>> selector)
         {
-            if (selector == null) throw new ArgumentNullException("selector");
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
             return source.SelectAsync(maxConcurrency, scheduler, (e, _) => selector(e));
         }
 
@@ -124,8 +124,8 @@ namespace MoreLinq
             TaskScheduler scheduler,
             Func<T, CancellationToken, Task<TResult>> selector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (selector == null) throw new ArgumentNullException("selector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
             return SelectAsyncImpl(source, maxConcurrency, scheduler, selector);
         }
 
@@ -135,9 +135,9 @@ namespace MoreLinq
             TaskScheduler scheduler,
             Func<T, CancellationToken, Task<TResult>> selector)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (maxConcurrency <= 0) throw new ArgumentOutOfRangeException("maxConcurrency");
-            if (selector == null) throw new ArgumentNullException("selector");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (maxConcurrency <= 0) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             var queue = new BlockingCollection<object>();
             var cancellationTokenSource = new CancellationTokenSource();
