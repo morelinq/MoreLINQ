@@ -60,7 +60,7 @@ namespace MoreLinq.Test
 
             Assert.AreEqual( expectedCount, result.Count() );
         }
-        
+
         /// <summary>
         /// Verify that each combination is produced in the Cartesian product
         /// </summary>

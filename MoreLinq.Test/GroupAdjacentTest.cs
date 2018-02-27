@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,7 +52,7 @@ namespace MoreLinq.Test
 
             var source = new[] { one, two, three, four, five, six, seven, eight, nine, ten };
             var groupings = source.GroupAdjacent(s => s.Length);
-            
+
             using (var reader = groupings.Read())
             {
                 AssertGrouping(reader, 3, one, two);
@@ -85,14 +85,14 @@ namespace MoreLinq.Test
         {
             var source = new[]
             {
-                new { Month = 1, Value = 123 },                 
-                new { Month = 1, Value = 456 },                 
-                new { Month = 1, Value = 789 },                 
-                new { Month = 2, Value = 987 },                 
-                new { Month = 2, Value = 654 },                 
-                new { Month = 2, Value = 321 },                 
-                new { Month = 3, Value = 789 },                 
-                new { Month = 3, Value = 456 },                 
+                new { Month = 1, Value = 123 },
+                new { Month = 1, Value = 456 },
+                new { Month = 1, Value = 789 },
+                new { Month = 2, Value = 987 },
+                new { Month = 2, Value = 654 },
+                new { Month = 2, Value = 321 },
+                new { Month = 3, Value = 789 },
+                new { Month = 3, Value = 456 },
                 new { Month = 3, Value = 123 },
                 new { Month = 1, Value = 123 },
                 new { Month = 1, Value = 456 },
@@ -116,14 +116,14 @@ namespace MoreLinq.Test
         {
             var source = new[]
             {
-                new { Month = "jan", Value = 123 },                 
-                new { Month = "Jan", Value = 456 },                 
-                new { Month = "JAN", Value = 789 },                 
-                new { Month = "feb", Value = 987 },                 
-                new { Month = "Feb", Value = 654 },                 
-                new { Month = "FEB", Value = 321 },                 
-                new { Month = "mar", Value = 789 },                 
-                new { Month = "Mar", Value = 456 },                 
+                new { Month = "jan", Value = 123 },
+                new { Month = "Jan", Value = 456 },
+                new { Month = "JAN", Value = 789 },
+                new { Month = "feb", Value = 987 },
+                new { Month = "Feb", Value = 654 },
+                new { Month = "FEB", Value = 321 },
+                new { Month = "mar", Value = 789 },
+                new { Month = "Mar", Value = 456 },
                 new { Month = "MAR", Value = 123 },
                 new { Month = "jan", Value = 123 },
                 new { Month = "Jan", Value = 456 },
@@ -202,7 +202,7 @@ namespace MoreLinq.Test
             }
         }
 
-        static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader, 
+        static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader,
             TKey key, params TElement[] elements)
         {
             var grouping = reader.Read();
