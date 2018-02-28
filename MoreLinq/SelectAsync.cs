@@ -20,177 +20,214 @@
 namespace MoreLinq
 {
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Represents options for an asynchronous projection operation.
+    /// </summary>
+
+    public sealed class SelectAsyncOptions
+    {
+        /// <summary>
+        /// The default options an asynchronous projection operation.
+        /// </summary>
+
+        public static readonly SelectAsyncOptions Default =
+            new SelectAsyncOptions(null /* = unbounded concurrency */,
+                                   TaskScheduler.Default,
+                                   preserveOrder: false);
+
+        /// <summary>
+        /// Gets a positive (non-zero) integer that specifies the maximum
+        /// projections to run concurrenctly or <c>null</c> to mean unlimited
+        /// concurrency.
+        /// </summary>
+
+        public int? MaxConcurrency { get; }
+
+        /// <summary>
+        /// Get the scheduler to be used for any workhorse task.
+        /// </summary>
+
+        public TaskScheduler Scheduler { get; }
+
+        /// <summary>
+        /// Get a Boolean that determines whether results should be ordered
+        /// the same as the projection source.
+        /// </summary>
+
+        public bool PreserveOrder { get; }
+
+        SelectAsyncOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
+        {
+            MaxConcurrency = maxConcurrency == null || maxConcurrency > 0
+                           ? maxConcurrency
+                           : throw new ArgumentOutOfRangeException(
+                                 nameof(maxConcurrency), maxConcurrency,
+                                 "Maximum concurrency must be 1 or greater.");
+            Scheduler      = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+            PreserveOrder  = preserveOrder;
+        }
+
+        /// <summary>
+        /// Returns new options with the given concurrency limit.
+        /// </summary>
+
+        public SelectAsyncOptions WithMaxConcurrency(int? value) =>
+            value == MaxConcurrency ? this : new SelectAsyncOptions(value, Scheduler, PreserveOrder);
+
+        /// <summary>
+        /// Returns new options with the given scheduler.
+        /// </summary>
+
+        public SelectAsyncOptions WithScheduler(TaskScheduler value) =>
+            value == Scheduler ? this : new SelectAsyncOptions(MaxConcurrency, value, PreserveOrder);
+
+        /// <summary>
+        /// Returns new options with the given Boolean indicating whether or
+        /// not the projections should be returned in the order of the
+        /// projection source.
+        /// </summary>
+
+        public SelectAsyncOptions WithPreserveOrder(bool value) =>
+            value == PreserveOrder ? this : new SelectAsyncOptions(MaxConcurrency, Scheduler, value);
+    }
+
+    /// <summary>
+    /// An <see cref="IEnumerable{T}"/> representing an asynchronous projection.
+    /// </summary>
+    /// <inheritdoc />
+
+    public interface ISelectAsyncEnumerable<out T> : IEnumerable<T>
+    {
+        /// <summary>
+        /// The options to apply to this asynchronous projection operation.
+        /// </summary>
+
+        SelectAsyncOptions Options { get; }
+
+        /// <summary>
+        /// Returns a new asynchronous projection operation that will use the
+        /// given options.
+        /// </summary>
+
+        ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options);
+    }
+
     static partial class MoreEnumerable
     {
+        /// <summary>
+        /// Returns a new asynchronous projection operation with the given
+        /// concurrency limit.
+        /// </summary>
+
+        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value) =>
+            source.WithOptions(source.Options.WithMaxConcurrency(value));
+
+        /// <summary>
+        /// Returns a new asynchronous projection operation with the given
+        /// scheduler.
+        /// </summary>
+
+        public static ISelectAsyncEnumerable<T> Scheduler<T>(this ISelectAsyncEnumerable<T> source, TaskScheduler value) =>
+            source.WithOptions(source.Options.WithScheduler(value));
+
+        /// <summary>
+        /// Returns a new asynchronous projection operation for which the
+        /// results will be returned in the order of the source sequence.
+        /// </summary>
+        /// <remarks>
+        /// Internally, the projections will be done concurrently but the
+        /// results will be yielded in order.
+        /// </remarks>
+
+        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source) =>
+            PreserveOrder(source, true);
+
+        /// <summary>
+        /// Returns a new asynchronous projection operation with the given
+        /// Boolean indicating whether or not the projections should be
+        /// returned in the order of the projection source.
+        /// </summary>
+
+        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value) =>
+            source.WithOptions(source.Options.WithPreserveOrder(value));
+
         /// <summary>
         /// Asynchronously projects each element of a sequence to its new form.
         /// </summary>
         /// <remarks>
         /// <para>
         /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and therefore not
-        /// guaranteed to be based on the source sequence order. If order is
-        /// important, sort the results.</para>
+        /// yielded as each asynchronous projection completes and, by default,
+        /// not guaranteed to be based on the source sequence order. If order
+        /// is important, compose further with
+        /// <see cref="PreserveOrder{T}(ISelectAsyncEnumerable{T})"/>.</para>
         /// <para>
-        /// This method starts a new task on the default scheduler where the
-        /// asynchronous projections are started and awaited.</para>
+        /// This method starts a new task where the asynchronous projections
+        /// are started and awaited.</para>
+        /// <para>
+        /// The <paramref name="selector"/> function should be designed to be
+        /// thread-agnostic.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> SelectAsync<T, TResult>(
+        public static ISelectAsyncEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source, Func<T, Task<TResult>> selector)
         {
-            return source.SelectAsync(int.MaxValue, null, selector);
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+            return source.SelectAsync((e, _) => selector(e));
         }
 
         /// <summary>
         /// Asynchronously projects each element of a sequence to its new form.
         /// The projection function receives a <see cref="CancellationToken"/>
-        /// as an additional argument that can be used to abort any
-        /// asynchronous operations in flight.
+        /// as an additional argument that can be used to abort any asynchronous
+        /// operations in flight.
         /// </summary>
         /// <remarks>
         /// <para>
         /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and therefore not
-        /// guaranteed to be based on the source sequence order. If order is
-        /// important, sort the results.</para>
+        /// yielded as each asynchronous projection completes and, by default,
+        /// not guaranteed to be based on the source sequence order. If order
+        /// is important, compose further using
+        /// <see cref="PreserveOrder{T}(MoreLinq.ISelectAsyncEnumerable{T})"/>
+        /// and a Boolean value of <c>true</c>.</para>
         /// <para>
-        /// This method starts a new task on the default scheduler where the
-        /// asynchronous projections are started and awaited.</para>
+        /// This method starts a new task where the asynchronous projections
+        /// are started and awaited.</para>
+        /// <para>
+        /// The <paramref name="selector"/> function should be designed to be
+        /// thread-agnostic.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> SelectAsync<T, TResult>(
+        public static ISelectAsyncEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> selector)
         {
-            return source.SelectAsync(int.MaxValue, null, selector);
-        }
-
-        /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form
-        /// with a given concurrency.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and therefore not
-        /// guaranteed to be based on the source sequence order. If order is
-        /// important, sort the results.</para>
-        /// <para>
-        /// This method starts a new task on the default scheduler where the
-        /// asynchronous projections are started and awaited.</para>
-        /// <para>
-        /// The <paramref name="selector"/> function should be designed to be
-        /// thread-agnostic.</para>
-        /// </remarks>
-
-        public static IEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> source,
-            int maxConcurrency,
-            Func<T, Task<TResult>> selector)
-        {
-            return source.SelectAsync(maxConcurrency, null, selector);
-        }
-
-        /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form
-        /// with a given concurrency. The projection function receives a
-        /// <see cref="CancellationToken"/> as an additional argument that can
-        /// be used to abort any asynchronous operations in flight.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and therefore not
-        /// guaranteed to be based on the source sequence order. If order is
-        /// important, sort the results.</para>
-        /// <para>
-        /// This method starts a new task on the default scheduler where the
-        /// asynchronous projections are started and awaited.</para>
-        /// <para>
-        /// The <paramref name="selector"/> function should be designed to be
-        /// thread-agnostic.</para>
-        /// </remarks>
-
-        public static IEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> source,
-            int maxConcurrency,
-            Func<T, CancellationToken, Task<TResult>> selector)
-        {
-            return source.SelectAsync(maxConcurrency, null, selector);
-        }
-
-        /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form
-        /// with a given concurrency. An additional parameter specifies the
-        /// <see cref="TaskScheduler"/> to use to await for tasks to complete.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and therefore not
-        /// guaranteed to be based on the source sequence order. If order is
-        /// important, sort the results.</para>
-        /// <para>
-        /// This method starts a new task on the given scheduler where the
-        /// asynchronous projections are started and awaited.</para>
-        /// <para>
-        /// The <paramref name="selector"/> function should be designed to be
-        /// thread-agnostic.</para>
-        /// </remarks>
-
-        public static IEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> source,
-            int maxConcurrency,
-            TaskScheduler scheduler,
-            Func<T, Task<TResult>> selector)
-        {
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-            return source.SelectAsync(maxConcurrency, scheduler, (e, _) => selector(e));
-        }
-
-        /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form
-        /// with a given concurrency. An additional parameter specifies the
-        /// <see cref="TaskScheduler"/> to use to await for tasks to complete.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and therefore not
-        /// guaranteed to be based on the source sequence order. If order is
-        /// important, sort the results.</para>
-        /// <para>
-        /// This method starts a new task on the given scheduler where the
-        /// asynchronous projections are started and awaited.</para>
-        /// <para>
-        /// The <paramref name="selector"/> function should be designed to be
-        /// thread-agnostic.</para>
-        /// </remarks>
-
-        public static IEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> source,
-            int maxConcurrency,
-            TaskScheduler scheduler,
-            Func<T, CancellationToken, Task<TResult>> selector)
-        {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (maxConcurrency <= 0) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            return _(); IEnumerable<TResult> _()
+            return SelectAsyncEnumerable.Create(
+                options => _(options.MaxConcurrency ?? int.MaxValue,
+                             options.Scheduler ?? TaskScheduler.Default,
+                             options.PreserveOrder));
+
+            IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
                 var queue = new BlockingCollection<object>();
                 var cancellationTokenSource = new CancellationTokenSource();
                 var completed = false;
 
-                var item = source.GetEnumerator();
+                async Task<KeyValuePair<int, TResult>> Select(KeyValuePair<int, T> input, CancellationToken cancellationToken) =>
+                    new KeyValuePair<int, TResult>(input.Key, await selector(input.Value, cancellationToken).ConfigureAwait(false));
+
+                var item = source.Index().GetEnumerator();
                 IDisposable disposable = item; // disables AccessToDisposedClosure warnings
                 try
                 {
@@ -200,11 +237,11 @@ namespace MoreLinq
                             var cancellationTaskSource = new TaskCompletionSource<bool>();
                             cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
 
-                            var tasks = new List<Task<TResult>>();
+                            var tasks = new List<Task<KeyValuePair<int, TResult>>>();
 
                             var more = false;
                             for (var i = 0; i < maxConcurrency && (more = item.MoveNext()); i++)
-                                tasks.Add(selector(item.Current, cancellationToken));
+                                tasks.Add(Select(item.Current, cancellationToken));
 
                             if (!more)
                                 item.Dispose();
@@ -242,11 +279,11 @@ namespace MoreLinq
                                         return;
                                     }
 
-                                    tasks.Remove((Task<TResult>)task);
+                                    tasks.Remove((Task<KeyValuePair<int, TResult>>)task);
                                     queue.Add(task);
 
                                     if (more && (more = item.MoveNext()))
-                                        tasks.Add(selector(item.Current, cancellationToken));
+                                        tasks.Add(Select(item.Current, cancellationToken));
                                 }
                                 queue.Add(null);
                             }
@@ -259,14 +296,66 @@ namespace MoreLinq
                         },
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
-                        scheduler ?? TaskScheduler.Default);
+                        scheduler);
+
+                    var nextKey = 0;
+                    var holds = ordered ? new List<KeyValuePair<int, TResult>>() : null;
 
                     foreach (var e in queue.GetConsumingEnumerable())
                     {
                         (e as ExceptionDispatchInfo)?.Throw();
                         if (e == null)
                             break;
-                        yield return ((Task<TResult>) e).Result;
+
+                        var r = ((Task<KeyValuePair<int, TResult>>) e).Result;
+
+                        if (holds == null || r.Key == nextKey)
+                        {
+                            // If order does not need to be preserved or the key
+                            // is the next that should be yielded then yield
+                            // the result.
+
+                            yield return r.Value;
+
+                            if (holds != null) // preserve order?
+                            {
+                                // Release withheld results consecutive in key
+                                // order to the one just yielded...
+
+                                var releaseCount = 0;
+
+                                for (nextKey++;
+                                     holds.Count > 0 && holds[0] is KeyValuePair<int, TResult> n
+                                                     && n.Key == nextKey;
+                                     nextKey++)
+                                {
+                                    releaseCount++;
+                                    yield return n.Value;
+                                }
+
+                                holds.RemoveRange(0, releaseCount);
+                            }
+                        }
+                        else
+                        {
+                            // Received a result out of order when order must be
+                            // preserved, so withhold the result by finding out
+                            // where it belongs in the order of results withheld
+                            // so far and insert it in the list.
+
+                            var i = holds.BinarySearch(r, KeyValueComparer<int, TResult>.Default);
+                            Debug.Assert(i < 0);
+                            holds.Insert(~i, r);
+                        }
+                    }
+
+                    if (holds?.Count > 0) // yield any withheld, which should be in order...
+                    {
+                        foreach (var hold in holds)
+                        {
+                            Debug.Assert(nextKey++ == hold.Key); //...assert so!
+                            yield return hold.Value;
+                        }
                     }
 
                     completed = true;
@@ -284,6 +373,49 @@ namespace MoreLinq
                     disposable.Dispose();
                 }
             }
+        }
+
+        static class SelectAsyncEnumerable
+        {
+            public static ISelectAsyncEnumerable<T>
+                Create<T>(
+                    Func<SelectAsyncOptions, IEnumerable<T>> impl,
+                    SelectAsyncOptions options = null) =>
+                new SelectAsyncEnumerable<T>(impl, options);
+
+        }
+
+        sealed class SelectAsyncEnumerable<T> : ISelectAsyncEnumerable<T>
+        {
+            readonly Func<SelectAsyncOptions, IEnumerable<T>> _impl;
+
+            public SelectAsyncEnumerable(Func<SelectAsyncOptions, IEnumerable<T>> impl,
+                SelectAsyncOptions options = null)
+            {
+                _impl = impl;
+                Options = options ?? SelectAsyncOptions.Default;
+            }
+
+            public SelectAsyncOptions Options { get; }
+
+            public ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options) =>
+                Options == options ? this : new SelectAsyncEnumerable<T>(_impl, options);
+
+            public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+
+        sealed class DelegatingComparer<T> : IComparer<T>
+        {
+            readonly Func<T, T, int> _comparer;
+            public DelegatingComparer(Func<T, T, int> comparer) => _comparer = comparer;
+            public int Compare(T x, T y) => _comparer(x, y);
+        }
+
+        static class KeyValueComparer<TKey, TValue>
+        {
+            public static readonly IComparer<KeyValuePair<TKey, TValue>> Default =
+                new DelegatingComparer<KeyValuePair<TKey, TValue>>((x, y) => Comparer<TKey>.Default.Compare(x.Key, y.Key));
         }
     }
 }
