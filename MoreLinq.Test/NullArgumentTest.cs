@@ -123,9 +123,6 @@ namespace MoreLinq.Test
                 #if NET451 || NETCOREAPP2_0
                 nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 #endif
-                #if NET451 || NETCOREAPP2_0
-                nameof(MoreEnumerable.SelectAsync) + ".scheduler",
-                #endif
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 
