@@ -19,6 +19,10 @@
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    <DefineConstants>$(DefineConstants);NO_ASYNC</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
   </ItemGroup>

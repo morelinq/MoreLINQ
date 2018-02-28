@@ -128,16 +128,23 @@ namespace MoreLinq
         /// concurrency limit.
         /// </summary>
 
-        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(value));
+        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(value));
+        }
 
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
         /// scheduler.
         /// </summary>
 
-        public static ISelectAsyncEnumerable<T> Scheduler<T>(this ISelectAsyncEnumerable<T> source, TaskScheduler value) =>
-            source.WithOptions(source.Options.WithScheduler(value));
+        public static ISelectAsyncEnumerable<T> Scheduler<T>(this ISelectAsyncEnumerable<T> source, TaskScheduler value)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            return source.WithOptions(source.Options.WithScheduler(value));
+        }
 
         /// <summary>
         /// Returns a new asynchronous projection operation for which the
@@ -148,8 +155,11 @@ namespace MoreLinq
         /// results will be yielded in order.
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source) =>
-            PreserveOrder(source, true);
+        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return PreserveOrder(source, true);
+        }
 
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
@@ -157,8 +167,11 @@ namespace MoreLinq
         /// returned in the order of the projection source.
         /// </summary>
 
-        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value) =>
-            source.WithOptions(source.Options.WithPreserveOrder(value));
+        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithPreserveOrder(value));
+        }
 
         /// <summary>
         /// Asynchronously projects each element of a sequence to its new form.
@@ -398,8 +411,11 @@ namespace MoreLinq
 
             public SelectAsyncOptions Options { get; }
 
-            public ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options) =>
-                Options == options ? this : new SelectAsyncEnumerable<T>(_impl, options);
+            public ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options)
+            {
+                if (options == null) throw new ArgumentNullException(nameof(options));
+                return Options == options ? this : new SelectAsyncEnumerable<T>(_impl, options);
+            }
 
             public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

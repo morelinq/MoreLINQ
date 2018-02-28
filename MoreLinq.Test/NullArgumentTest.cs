@@ -215,6 +215,17 @@ namespace MoreLinq.Test
                 }
             }
 
+            #if !NO_ASYNC
+
+            public class SelectAsyncEnumerable<T> : Enumerable<T>,
+                                                    ISelectAsyncEnumerable<T>
+            {
+                public SelectAsyncOptions Options => SelectAsyncOptions.Default;
+                public ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options) => this;
+            }
+
+            #endif
+
             public class Comparer<T> : IComparer<T>
             {
                 public int Compare(T x, T y) => -1;
