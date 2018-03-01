@@ -311,80 +311,30 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var queue = new BlockingCollection<object>();
+                var notices = new BlockingCollection<object>();
                 var cancellationTokenSource = new CancellationTokenSource();
+                var cancellationToken = cancellationTokenSource.Token;
                 var completed = false;
 
-                async Task<KeyValuePair<int, TResult>> Select(KeyValuePair<int, T> input, CancellationToken cancellationToken) =>
-                    new KeyValuePair<int, TResult>(input.Key, await selector(input.Value, cancellationToken).ConfigureAwait(false));
+                var enumerator =
+                    source.Index()
+                          .Select(e => (Key: e.Key, Value: selector(e.Value, cancellationToken)))
+                          .GetEnumerator();
 
-                var item = source.Index().GetEnumerator();
-                IDisposable disposable = item; // disables AccessToDisposedClosure warnings
+                IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
+
+                object endNotice = null;
+
                 try
                 {
-                    Task.Factory.StartNew(async () =>
-                        {
-                            var cancellationToken = cancellationTokenSource.Token;
-                            var cancellationTaskSource = new TaskCompletionSource<bool>();
-                            cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
-
-                            var tasks = new List<Task<KeyValuePair<int, TResult>>>();
-
-                            var more = false;
-                            for (var i = 0; i < maxConcurrency && (more = item.MoveNext()); i++)
-                                tasks.Add(Select(item.Current, cancellationToken));
-
-                            if (!more)
-                                item.Dispose();
-
-                            try
-                            {
-                                while (tasks.Count > 0)
-                                {
-                                    // Task.WaitAny is synchronous and blocking
-                                    // but allows the waiting to be cancelled
-                                    // via a CancellationToken. Task.WhenAny can
-                                    // be awaited so it is better since the
-                                    // thread won't be blocked and can return to
-                                    // the pool. However, it doesn't support
-                                    // cancellation so instead a task is built
-                                    // on top of the CancellationToken that
-                                    // completes when the CancellationToken
-                                    // trips.
-
-                                    var task = await Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task));
-
-                                    if (task == cancellationTaskSource.Task)
-                                    {
-                                        // Cancellation during the wait means
-                                        // the enumeration has been stopped by
-                                        // the user so the results of the
-                                        // remaining tasks are no longer needed.
-                                        // Those tasks should cancel as a result
-                                        // of sharing the same cancellation
-                                        // token and provided that they passed
-                                        // it on to any downstream asynchronous
-                                        // operations. Either way, this loop
-                                        // is done so exit hard here.
-
-                                        return;
-                                    }
-
-                                    tasks.Remove((Task<KeyValuePair<int, TResult>>)task);
-                                    queue.Add(task);
-
-                                    if (more && (more = item.MoveNext()))
-                                        tasks.Add(Select(item.Current, cancellationToken));
-                                }
-                                queue.Add(null);
-                            }
-                            catch (Exception e)
-                            {
-                                cancellationTokenSource.Cancel();
-                                queue.Add(ExceptionDispatchInfo.Capture(e));
-                            }
-                            queue.CompleteAdding();
-                        },
+                    Task.Factory.StartNew(
+                        () => CollectToAsync(enumerator,
+                                             e => e.Value,
+                                             notices,
+                                             (e, r) => new KeyValuePair<int, TResult>(e.Key, r), // boxing :-(
+                                             ExceptionDispatchInfo.Capture,
+                                             endNotice,
+                                             maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
                         scheduler);
@@ -392,15 +342,15 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<KeyValuePair<int, TResult>>() : null;
 
-                    foreach (var e in queue.GetConsumingEnumerable())
+                    foreach (var notice in notices.GetConsumingEnumerable())
                     {
-                        if (e is ExceptionDispatchInfo edi)
+                        if (notice is ExceptionDispatchInfo edi)
                             edi.Throw();
 
-                        if (e == null)
+                        if (notice == endNotice)
                             break;
 
-                        var r = ((Task<KeyValuePair<int, TResult>>) e).Result;
+                        var r = ((Task<KeyValuePair<int, TResult>>) notice).Result;
 
                         if (holds == null || r.Key == nextKey)
                         {
@@ -466,6 +416,78 @@ namespace MoreLinq.Experimental
                     disposable.Dispose();
                 }
             }
+        }
+
+        static async Task<TResult> Select<T, TResult>(this Task<T> task, Func<T, TResult> selector) =>
+            selector(await task);
+
+        static async Task CollectToAsync<T, TResult, TNotice>(
+            this IEnumerator<T> e,
+            Func<T, Task<TResult>> taskSelector,
+            BlockingCollection<TNotice> collection,
+            Func<T, TResult, TNotice> resultNoticeSelector,
+            Func<Exception, TNotice> errorNoticeSelector,
+            TNotice endNotice,
+            int maxConcurrency,
+            CancellationTokenSource cancellationTokenSource)
+        {
+            var cancellationToken = cancellationTokenSource.Token;
+            var cancellationTaskSource = new TaskCompletionSource<bool>();
+            cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
+
+            var tasks = new List<Task<(T, TResult)>>();
+
+            var more = false;
+            for (var i = 0; i < maxConcurrency && (more = e.MoveNext()); i++)
+                tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
+
+            if (!more)
+                e.Dispose();
+
+            try
+            {
+                while (tasks.Count > 0)
+                {
+                    // Task.WaitAny is synchronous and blocking but allows the
+                    // waiting to be cancelled via a CancellationToken.
+                    // Task.WhenAny can be awaited so it is better since the
+                    // thread won't be blocked and can return to the pool.
+                    // However, it doesn't support cancellation so instead a
+                    // task is built on top of the CancellationToken that
+                    // completes when the CancellationToken trips.
+
+                    var task = await Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task));
+
+                    if (task == cancellationTaskSource.Task)
+                    {
+                        // Cancellation during the wait means the enumeration
+                        // has been stopped by the user so the results of the
+                        // remaining tasks are no longer needed. Those tasks
+                        // should cancel as a result of sharing the same
+                        // cancellation token and provided that they passed it
+                        // on to any downstream asynchronous operations. Either
+                        // way, this loop is done so exit hard here.
+
+                        return;
+                    }
+
+                    var rt = (Task<(T Input, TResult Result)>) task;
+                    tasks.Remove(rt);
+                    collection.Add(resultNoticeSelector(rt.Result.Input, rt.Result.Result));
+
+                    if (more && (more = e.MoveNext()))
+                        tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
+                }
+
+                collection.Add(endNotice);
+            }
+            catch (Exception ex)
+            {
+                cancellationTokenSource.Cancel();
+                collection.Add(errorNoticeSelector(ex));
+            }
+
+            collection.CompleteAdding();
         }
 
         static class SelectAsyncEnumerable
