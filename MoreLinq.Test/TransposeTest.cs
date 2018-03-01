@@ -1,6 +1,6 @@
 ﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
+// Copyright (c) 2018 Leandro F. Vieira (leandromoh). All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,7 @@ namespace MoreLinq.Test
 
             Assert.That(matrix.First().First(), Is.EqualTo(traspose.First().First()));
 
-            Assert.Throws<InvalidOperationException>(() =>
-                traspose.First().ElementAt(1));
+            Assert.AreEqual(30, traspose.First().ElementAt(1));
         }
 
         [Test]
@@ -74,16 +73,6 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithDifferentsLengthEnumerables()
         {
-            var matrix = new[]
-            {
-                new int[] { 10, 11 },
-                new int[] { 20 },
-                new int[] { },
-                new int[] { 30, 31, 32 }
-            };
-
-            var innerTestSequences = matrix.Select(x => x.AsTestingSequence()).ToList();
-            
             var expectations = new[]
             {
                 new int[] { 10, 20, 30 },
@@ -91,12 +80,14 @@ namespace MoreLinq.Test
                 new int[] { 32 }
             };
 
-            using (var test = innerTestSequences.AsTestingSequence())
+            using (var seq1 = TestingSequence.Of(10, 11))
+            using (var seq2 = TestingSequence.Of(20))
+            using (var seq3 = TestingSequence.Of<int>())
+            using (var seq4 = TestingSequence.Of( 30, 31, 32 ))
+            using (var matrix = TestingSequence.Of( seq1, seq2, seq3, seq4 ))
             {
-                AssertMatrix(test.Transpose(), expectations);
+                AssertMatrix(matrix.Transpose(), expectations);
             }
-
-            innerTestSequences.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
         [Test]
@@ -117,13 +108,14 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeWithAllSequencesInfinite()
+        public void TransposeWithAllInnerSequencesInfinite()
         {
             var matrix = MoreEnumerable.Generate(1, x => x + 1)
                                        .Where(x => isPrime(x))
+                                       .Take(3)
                                        .Select(x => MoreEnumerable.Generate(x, n => n * x));
 
-            var result = matrix.Transpose().Take(5).Select(x => x.Take(3));
+            var result = matrix.Transpose().Take(5);
 
             var expectations = new[]
             {
@@ -141,10 +133,11 @@ namespace MoreLinq.Test
         {
             var matrix = MoreEnumerable.Generate(1, x => x + 1)
                                        .Where(x => isPrime(x))
+                                       .Take(3)
                                        .Select(x => x == 3 ? MoreEnumerable.Generate(x, n => n * x)
                                                            : MoreEnumerable.Generate(x, n => n * x).Take(3));
 
-            var result = matrix.Transpose().Take(5).Select(x => x.Take(3));
+            var result = matrix.Transpose().Take(5);
 
             var expectations = new[]
             {
@@ -169,29 +162,30 @@ namespace MoreLinq.Test
                 new int[] { 30, 31, 32 }
             };
 
-            var transpose = matrix.Transpose().Take(2).ToList();
+            var transpose = matrix.Transpose().ToList();
 
             transpose[1].AssertSequenceEqual(11, 31);
             transpose[0].AssertSequenceEqual(10, 20, 30);
+            transpose[2].AssertSequenceEqual(32);
         }
 
-        [Test]
-        public void TransposeSequencesAreLazies()
-        {
-            var matrix = new[]
-            {
-                new int[] { 10, 11, 12 },
-                new int[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
-            };
+        // [Test]
+        // public void TransposeSequencesAreLazies()
+        // {
+        //     var matrix = new[]
+        //     {
+        //         new int[] { 10, 11, 12 },
+        //         new int[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
+        //     };
 
-            var first = matrix.First();
-            var count = first.Count();
+        //     var first = matrix.First();
+        //     var count = first.Count();
 
-            matrix.Transpose().Take(count).ForEach((seq, i) => 
-            {
-                Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
-            });
-        }
+        //     matrix.Transpose().Take(count).ForEach((seq, i) => 
+        //     {
+        //         Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
+        //     });
+        // }
 
         public static bool isPrime(int number)
         {
@@ -208,18 +202,17 @@ namespace MoreLinq.Test
             return true;        
         }
 
-        public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> result, IEnumerable<IEnumerable<T>> expectations)
+        public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> result, IEnumerable<IEnumerable<T>> expectation)
         {
             // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
-            expectations.ZipLongest(result, (a, b) => 
-            {
-                var x = a ?? new T[0];
-                var y = b ?? new T[0];
 
-                x.AssertSequenceEqual(y);
+            var resultList = result.ToList();
+            var expectationList = expectation.ToList();
 
-                return (string) null;
-            }).Consume();
+            Assert.AreEqual(expectationList.Count, resultList.Count);
+
+            expectationList.Zip(resultList, ValueTuple.Create)
+                           .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));
         }
     }
 }
