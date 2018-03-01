@@ -128,22 +128,16 @@ namespace MoreLinq.Experimental
         /// evaluation.
         /// </summary>
 
-        public static IEnumerable<T> AsSequential<T>(this ISelectAsyncEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.MaxConcurrency(1);
-        }
+        public static IEnumerable<T> AsSequential<T>(this ISelectAsyncEnumerable<T> source) =>
+            source.MaxConcurrency(1);
 
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
         /// concurrency limit.
         /// </summary>
 
-        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.WithOptions(source.Options.WithMaxConcurrency(value));
-        }
+        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value) =>
+            source.WithOptions(source.Options.WithMaxConcurrency(value));
 
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
@@ -166,11 +160,8 @@ namespace MoreLinq.Experimental
         /// results will be yielded in order.
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<T> AsOrdered<T>(this ISelectAsyncEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return PreserveOrder(source, true);
-        }
+        public static ISelectAsyncEnumerable<T> AsOrdered<T>(this ISelectAsyncEnumerable<T> source) =>
+            PreserveOrder(source, true);
 
         /// <summary>
         /// Returns a new asynchronous projection operation for which the
@@ -178,11 +169,8 @@ namespace MoreLinq.Experimental
         /// sequence.
         /// </summary>
 
-        public static ISelectAsyncEnumerable<T> AsUnordered<T>(this ISelectAsyncEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return PreserveOrder(source, false);
-        }
+        public static ISelectAsyncEnumerable<T> AsUnordered<T>(this ISelectAsyncEnumerable<T> source) =>
+            PreserveOrder(source, false);
 
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
@@ -190,11 +178,8 @@ namespace MoreLinq.Experimental
         /// returned in the order of the projection source.
         /// </summary>
 
-        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.WithOptions(source.Options.WithPreserveOrder(value));
-        }
+        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value) =>
+            source.WithOptions(source.Options.WithPreserveOrder(value));
 
         /// <summary>
         /// Asynchronously projects each element of a sequence to its new form.
