@@ -155,7 +155,7 @@ namespace MoreLinq.Experimental
         /// results will be yielded in order.
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source)
+        public static ISelectAsyncEnumerable<T> AsOrdered<T>(this ISelectAsyncEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return PreserveOrder(source, true);
@@ -182,7 +182,7 @@ namespace MoreLinq.Experimental
         /// yielded as each asynchronous projection completes and, by default,
         /// not guaranteed to be based on the source sequence order. If order
         /// is important, compose further with
-        /// <see cref="PreserveOrder{T}(ISelectAsyncEnumerable{T})"/>.</para>
+        /// <see cref="AsOrdered{T}"/>.</para>
         /// <para>
         /// This method starts a new task where the asynchronous projections
         /// are started and awaited.</para>
@@ -210,7 +210,7 @@ namespace MoreLinq.Experimental
         /// yielded as each asynchronous projection completes and, by default,
         /// not guaranteed to be based on the source sequence order. If order
         /// is important, compose further using
-        /// <see cref="PreserveOrder{T}(ISelectAsyncEnumerable{T})"/>
+        /// <see cref="AsOrdered{T}"/>
         /// and a Boolean value of <c>true</c>.</para>
         /// <para>
         /// This method starts a new task where the asynchronous projections
