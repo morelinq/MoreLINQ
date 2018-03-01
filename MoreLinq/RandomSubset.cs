@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,7 @@ namespace MoreLinq
         /// <param name="sequence">The sequence from which to return random elements</param>
         /// <param name="subsetSize">The size of the random subset to return</param>
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
-        
+
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             return RandomSubset(sequence, subsetSize, new Random());
@@ -44,7 +44,7 @@ namespace MoreLinq
         /// <param name="subsetSize">The size of the random subset to return</param>
         /// <param name="rand">A random generator used as part of the selection algorithm</param>
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
-        
+
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
         {
             if (rand == null) throw new ArgumentNullException(nameof(rand));
