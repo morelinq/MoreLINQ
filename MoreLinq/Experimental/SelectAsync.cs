@@ -345,7 +345,7 @@ namespace MoreLinq.Experimental
                                     // but allows the waiting to be cancelled
                                     // via a CancellationToken. Task.WhenAny can
                                     // be awaited so it is better since the
-                                    // tread won't be blocked and can return to
+                                    // thread won't be blocked and can return to
                                     // the pool. However, it doesn't support
                                     // cancellation so instead a task is built
                                     // on top of the CancellationToken that
