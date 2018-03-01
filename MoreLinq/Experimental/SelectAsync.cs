@@ -79,6 +79,10 @@ namespace MoreLinq.Experimental
         /// <summary>
         /// Returns new options with the given concurrency limit.
         /// </summary>
+        /// <param name="value">
+        /// The maximum concurrent asynchronous operation to keep in flight.
+        /// Use <c>null</c> to mean unbounded concurrency.</param>
+        /// <returns>Options with the new setting.</returns>
 
         public SelectAsyncOptions WithMaxConcurrency(int? value) =>
             value == MaxConcurrency ? this : new SelectAsyncOptions(value, Scheduler, PreserveOrder);
@@ -86,6 +90,9 @@ namespace MoreLinq.Experimental
         /// <summary>
         /// Returns new options with the given scheduler.
         /// </summary>
+        /// <param name="value">
+        /// The scheduler to use to for the workhorse task.</param>
+        /// <returns>Options with the new setting.</returns>
 
         public SelectAsyncOptions WithScheduler(TaskScheduler value) =>
             value == Scheduler ? this : new SelectAsyncOptions(MaxConcurrency, value, PreserveOrder);
@@ -95,6 +102,11 @@ namespace MoreLinq.Experimental
         /// not the projections should be returned in the order of the
         /// projection source.
         /// </summary>
+        /// <param name="value">
+        /// A Boolean where <c>true</c> means results are in source order and
+        /// <c>false</c> means that results can be delivered in order of
+        /// efficiency.</param>
+        /// <returns>Options with the new setting.</returns>
 
         public SelectAsyncOptions WithPreserveOrder(bool value) =>
             value == PreserveOrder ? this : new SelectAsyncOptions(MaxConcurrency, Scheduler, value);
@@ -104,6 +116,7 @@ namespace MoreLinq.Experimental
     /// An <see cref="IEnumerable{T}"/> representing an asynchronous projection.
     /// </summary>
     /// <inheritdoc />
+    /// <typeparam name="T">The type of the source elements.</typeparam>
 
     public interface ISelectAsyncEnumerable<out T> : IEnumerable<T>
     {
@@ -117,6 +130,10 @@ namespace MoreLinq.Experimental
         /// Returns a new asynchronous projection operation that will use the
         /// given options.
         /// </summary>
+        /// <param name="options">The new options to use.</param>
+        /// <returns>
+        /// Returns a new sequence that projects asynchronously using the
+        /// supplied options.</returns>
 
         ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options);
     }
@@ -127,6 +144,9 @@ namespace MoreLinq.Experimental
         /// Converts an asynchronous projection operation to use sequential
         /// evaluation.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>The converted sequence.</returns>
 
         public static IEnumerable<T> AsSequential<T>(this ISelectAsyncEnumerable<T> source) =>
             source.MaxConcurrency(1);
@@ -135,6 +155,12 @@ namespace MoreLinq.Experimental
         /// Returns a new asynchronous projection operation with the given
         /// concurrency limit.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="value"></param>
+        /// <returns>
+        /// A sequence that projects results asynchronously using the given
+        /// concurrency limit.</returns>
 
         public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value) =>
             source.WithOptions(source.Options.WithMaxConcurrency(value));
@@ -143,6 +169,12 @@ namespace MoreLinq.Experimental
         /// Returns a new asynchronous projection operation with the given
         /// scheduler.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="value">The scheduler to use.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously using the given
+        /// scheduler.</returns>
 
         public static ISelectAsyncEnumerable<T> Scheduler<T>(this ISelectAsyncEnumerable<T> source, TaskScheduler value)
         {
@@ -155,6 +187,11 @@ namespace MoreLinq.Experimental
         /// Returns a new asynchronous projection operation for which the
         /// results will be returned in the order of the source sequence.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously but returns
+        /// results in the order of the source sequence.</returns>
         /// <remarks>
         /// Internally, the projections will be done concurrently but the
         /// results will be yielded in order.
@@ -168,6 +205,12 @@ namespace MoreLinq.Experimental
         /// results are no longer guaranteed to be in the order of the source
         /// sequence.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously but without any
+        /// guarantee of returning results in the order of the source
+        /// sequence.</returns>
 
         public static ISelectAsyncEnumerable<T> AsUnordered<T>(this ISelectAsyncEnumerable<T> source) =>
             PreserveOrder(source, false);
@@ -177,6 +220,16 @@ namespace MoreLinq.Experimental
         /// Boolean indicating whether or not the projections should be
         /// returned in the order of the projection source.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="value">
+        /// A Boolean where <c>true</c> means results are in source order and
+        /// <c>false</c> means that results can be delivered in order of
+        /// efficiency.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously and returns the
+        /// results order or unordered based on
+        /// <paramref name="value"/>.</returns>
 
         public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value) =>
             source.WithOptions(source.Options.WithPreserveOrder(value));
@@ -184,6 +237,13 @@ namespace MoreLinq.Experimental
         /// <summary>
         /// Asynchronously projects each element of a sequence to its new form.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <typeparam name="TResult">The type of the result elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously.
+        /// </returns>
         /// <remarks>
         /// <para>
         /// This method uses deferred execution semantics. The results are
@@ -212,6 +272,16 @@ namespace MoreLinq.Experimental
         /// as an additional argument that can be used to abort any asynchronous
         /// operations in flight.
         /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <typeparam name="TResult">The type of the result elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="selector">A transform function to apply to each
+        /// element, the second parameter of which is a
+        /// <see cref="CancellationToken"/> that can be used to abort
+        /// asynchronous operations.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously.
+        /// </returns>
         /// <remarks>
         /// <para>
         /// This method uses deferred execution semantics. The results are
