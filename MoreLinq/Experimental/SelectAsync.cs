@@ -162,6 +162,18 @@ namespace MoreLinq.Experimental
         }
 
         /// <summary>
+        /// Returns a new asynchronous projection operation for which the
+        /// results are no longer guaranteed to be in the order of the source
+        /// sequence.
+        /// </summary>
+
+        public static ISelectAsyncEnumerable<T> AsUnordered<T>(this ISelectAsyncEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return PreserveOrder(source, false);
+        }
+
+        /// <summary>
         /// Returns a new asynchronous projection operation with the given
         /// Boolean indicating whether or not the projections should be
         /// returned in the order of the projection source.
