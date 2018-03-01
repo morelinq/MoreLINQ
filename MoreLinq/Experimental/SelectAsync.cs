@@ -394,7 +394,9 @@ namespace MoreLinq.Experimental
 
                     foreach (var e in queue.GetConsumingEnumerable())
                     {
-                        (e as ExceptionDispatchInfo)?.Throw();
+                        if (e is ExceptionDispatchInfo edi)
+                            edi.Throw();
+
                         if (e == null)
                             break;
 
