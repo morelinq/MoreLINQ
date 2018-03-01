@@ -501,17 +501,10 @@ namespace MoreLinq.Experimental
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        sealed class DelegatingComparer<T> : IComparer<T>
-        {
-            readonly Func<T, T, int> _comparer;
-            public DelegatingComparer(Func<T, T, int> comparer) => _comparer = comparer;
-            public int Compare(T x, T y) => _comparer(x, y);
-        }
-
         static class KeyValueComparer<TKey, TValue>
         {
             public static readonly IComparer<KeyValuePair<TKey, TValue>> Default =
-                new DelegatingComparer<KeyValuePair<TKey, TValue>>((x, y) => Comparer<TKey>.Default.Compare(x.Key, y.Key));
+                Comparer<KeyValuePair<TKey, TValue>>.Create((x, y) => Comparer<TKey>.Default.Compare(x.Key, y.Key));
         }
     }
 }
