@@ -1,13 +1,13 @@
 ﻿#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2018 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -181,7 +181,7 @@ namespace MoreLinq.Test
         //     var first = matrix.First();
         //     var count = first.Count();
 
-        //     matrix.Transpose().Take(count).ForEach((seq, i) => 
+        //     matrix.Transpose().Take(count).ForEach((seq, i) =>
         //     {
         //         Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
         //     });
@@ -199,7 +199,7 @@ namespace MoreLinq.Test
                 if (number % i == 0)  return false;
             }
 
-            return true;        
+            return true;
         }
 
         public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> result, IEnumerable<IEnumerable<T>> expectation)
