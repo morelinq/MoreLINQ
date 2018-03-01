@@ -124,6 +124,17 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
+        /// Converts an asynchronous projection operation to use sequential
+        /// evaluation.
+        /// </summary>
+
+        public static IEnumerable<T> AsSequential<T>(this ISelectAsyncEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            return source.MaxConcurrency(1);
+        }
+
+        /// <summary>
         /// Returns a new asynchronous projection operation with the given
         /// concurrency limit.
         /// </summary>
