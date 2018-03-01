@@ -169,6 +169,24 @@ namespace MoreLinq.Test
             transpose[2].AssertSequenceEqual(32);
         }
 
+        [Test]
+        public void TransposeInnerSequencesAreConsumedLazies()
+        {
+            var matrix = new[]
+            {
+                MoreEnumerable.From(() => 10, () => 11),
+                MoreEnumerable.From(() => 20, () => 22),
+                MoreEnumerable.From(() => 30, () => throw new InvalidOperationException(), () => 31),
+            };
+
+            var result = matrix.Transpose();
+
+            result.ElementAt(0).AssertSequenceEqual(10, 20, 30);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                result.ElementAt(1));
+        }
+
         // [Test]
         // public void TransposeSequencesAreLazies()
         // {
