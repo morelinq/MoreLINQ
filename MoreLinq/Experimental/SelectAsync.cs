@@ -17,7 +17,7 @@
 
 #if !NO_ASYNC
 
-namespace MoreLinq
+namespace MoreLinq.Experimental
 {
     using System;
     using System.Collections;
@@ -121,7 +121,7 @@ namespace MoreLinq
         ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options);
     }
 
-    static partial class MoreEnumerable
+    static partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
@@ -210,7 +210,7 @@ namespace MoreLinq
         /// yielded as each asynchronous projection completes and, by default,
         /// not guaranteed to be based on the source sequence order. If order
         /// is important, compose further using
-        /// <see cref="PreserveOrder{T}(MoreLinq.ISelectAsyncEnumerable{T})"/>
+        /// <see cref="PreserveOrder{T}(ISelectAsyncEnumerable{T})"/>
         /// and a Boolean value of <c>true</c>.</para>
         /// <para>
         /// This method starts a new task where the asynchronous projections
