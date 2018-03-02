@@ -39,7 +39,13 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
-        /// var result = [[10, 11], [20], [], [30, 31, 32]].Transpose();
+        /// var matrix = new[]
+        /// {
+        ///     new int[] { 10, 11 },
+        ///     new int[] { 20 },
+        ///     new int[] { 30, 31, 32 }
+        /// };
+        /// var result = matrix.Transpose();
         /// </code>
         /// The <c>result</c> variable will contain [[10, 20, 30], [11, 31], [32]].
         /// </example>
