@@ -178,7 +178,7 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 1, key, default(TKey), default(TKey), comparer,
+            return PartitionImpl(source, 1, key, default, default, comparer,
                                  (a, b, c, rest) => resultSelector(a, rest));
         }
 
@@ -236,7 +236,7 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 2, key1, key2, default(TKey), comparer,
+            return PartitionImpl(source, 2, key1, key2, default, comparer,
                                  (a, b, c, rest) => resultSelector(a, b, rest));
         }
 

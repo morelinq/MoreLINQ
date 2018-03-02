@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +41,7 @@ namespace MoreLinq
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        
+
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector)
@@ -69,7 +69,7 @@ namespace MoreLinq
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        
+
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,

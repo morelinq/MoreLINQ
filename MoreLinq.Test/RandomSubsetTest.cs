@@ -126,7 +126,7 @@ namespace MoreLinq.Test
         /// It's actually a complicated matter to ensure that a random process does not exhibit
         /// any kind of bias. In this test, we want to make sure that the probability of any
         /// particular subset being returned is roughly the same as any other. Here's how.
-        /// 
+        ///
         /// This test selects a random subset of length N from an ascending sequence 1..N.
         /// It then adds up the values of the random result into an accumulator array. After many
         /// iterations, we would hope that each index of the accumulator array approach the same
@@ -138,7 +138,7 @@ namespace MoreLinq.Test
         ///
         /// For math geeks who read this:
         ///   A decreasing RSD demonstrates that the random subsets form a cumulative distribution
-        ///   approaching unity (1.0). Which, given that the original sequence was monotonic, implies 
+        ///   approaching unity (1.0). Which, given that the original sequence was monotonic, implies
         ///   there cannot be a selection bias in the returned subsets - quod erat demonstrandum (QED).
         /// </remarks>
         [Test]
