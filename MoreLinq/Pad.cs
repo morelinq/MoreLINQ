@@ -111,7 +111,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadImpl(source, width, default(TSource), paddingSelector);
+            return PadImpl(source, width, default, paddingSelector);
         }
 
         static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
