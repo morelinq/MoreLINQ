@@ -45,13 +45,6 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithEqualsLengthEnumerables()
         {
-            var matrix = new[]
-            {
-                new [] { 10, 11, 12, 13 },
-                new [] { 20, 21, 22, 23 },
-                new [] { 30, 31, 32, 33 },
-            };
-
             var expectations = new[]
             {
                 new [] { 10, 20, 30 },
@@ -60,14 +53,13 @@ namespace MoreLinq.Test
                 new [] { 13, 23, 33 },
             };
 
-            var innerTestSequences = matrix.Select(x => x.AsTestingSequence()).ToList();
-
-            using (var test = innerTestSequences.AsTestingSequence())
+            using (var seq1 = TestingSequence.Of(10, 11, 12, 13))
+            using (var seq2 = TestingSequence.Of(20, 21, 22, 23))
+            using (var seq3 = TestingSequence.Of(30, 31, 32, 33))
+            using (var matrix = TestingSequence.Of(seq1, seq2, seq3))
             {
-                AssertMatrix(test.Transpose(), expectations);
+                AssertMatrix(matrix.Transpose(), expectations);
             }
-
-            innerTestSequences.Cast<IDisposable>().ForEach(seq => seq.Dispose());
         }
 
         [Test]
@@ -83,8 +75,8 @@ namespace MoreLinq.Test
             using (var seq1 = TestingSequence.Of(10, 11))
             using (var seq2 = TestingSequence.Of(20))
             using (var seq3 = TestingSequence.Of<int>())
-            using (var seq4 = TestingSequence.Of( 30, 31, 32 ))
-            using (var matrix = TestingSequence.Of( seq1, seq2, seq3, seq4 ))
+            using (var seq4 = TestingSequence.Of(30, 31, 32))
+            using (var matrix = TestingSequence.Of(seq1, seq2, seq3, seq4))
             {
                 AssertMatrix(matrix.Transpose(), expectations);
             }
