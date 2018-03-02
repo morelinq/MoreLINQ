@@ -304,10 +304,11 @@ namespace MoreLinq.Experimental
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            return SelectAsyncEnumerable.Create(
-                options => _(options.MaxConcurrency ?? int.MaxValue,
-                             options.Scheduler ?? TaskScheduler.Default,
-                             options.PreserveOrder));
+            return
+                SelectAsyncEnumerable.Create(
+                    options => _(options.MaxConcurrency ?? int.MaxValue,
+                                 options.Scheduler ?? TaskScheduler.Default,
+                                 options.PreserveOrder));
 
             IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
