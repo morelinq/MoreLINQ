@@ -311,7 +311,7 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var notices = new BlockingCollection<object>();
+                var notices = new BlockingCollection<(Notice, KeyValuePair<int, TResult>, ExceptionDispatchInfo)>();
                 var cancellationTokenSource = new CancellationTokenSource();
                 var cancellationToken = cancellationTokenSource.Token;
                 var completed = false;
@@ -323,17 +323,15 @@ namespace MoreLinq.Experimental
 
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
 
-                object endNotice = null;
-
                 try
                 {
                     Task.Factory.StartNew(
                         () => CollectToAsync(enumerator,
                                              e => e.Value,
                                              notices,
-                                             (e, r) => new KeyValuePair<int, TResult>(e.Key, r), // boxing :-(
-                                             ExceptionDispatchInfo.Capture,
-                                             endNotice,
+                                             (e, r) => (Notice.Result, new KeyValuePair<int, TResult>(e.Key, r), default(ExceptionDispatchInfo)),
+                                             ex => (Notice.Error, default(KeyValuePair<int, TResult>), ExceptionDispatchInfo.Capture(ex)),
+                                             (Notice.End, default(KeyValuePair<int, TResult>), default(ExceptionDispatchInfo)),
                                              maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
@@ -342,23 +340,23 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<KeyValuePair<int, TResult>>() : null;
 
-                    foreach (var notice in notices.GetConsumingEnumerable())
+                    foreach (var (kind, result, error) in notices.GetConsumingEnumerable())
                     {
-                        if (notice is ExceptionDispatchInfo edi)
-                            edi.Throw();
+                        if (kind == Notice.Error)
+                            error.Throw();
 
-                        if (notice == endNotice)
+                        if (kind == Notice.End)
                             break;
 
-                        var r = ((Task<KeyValuePair<int, TResult>>) notice).Result;
+                        Debug.Assert(kind == Notice.Result);
 
-                        if (holds == null || r.Key == nextKey)
+                        if (holds == null || result.Key == nextKey)
                         {
                             // If order does not need to be preserved or the key
                             // is the next that should be yielded then yield
                             // the result.
 
-                            yield return r.Value;
+                            yield return result.Value;
 
                             if (holds != null) // preserve order?
                             {
@@ -386,9 +384,9 @@ namespace MoreLinq.Experimental
                             // where it belongs in the order of results withheld
                             // so far and insert it in the list.
 
-                            var i = holds.BinarySearch(r, KeyValueComparer<int, TResult>.Default);
+                            var i = holds.BinarySearch(result, KeyValueComparer<int, TResult>.Default);
                             Debug.Assert(i < 0);
-                            holds.Insert(~i, r);
+                            holds.Insert(~i, result);
                         }
                     }
 
@@ -417,6 +415,8 @@ namespace MoreLinq.Experimental
                 }
             }
         }
+
+        enum Notice { Result, Error, End }
 
         static async Task<TResult> Select<T, TResult>(this Task<T> task, Func<T, TResult> selector) =>
             selector(await task);
