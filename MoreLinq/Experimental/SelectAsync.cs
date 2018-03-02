@@ -326,13 +326,15 @@ namespace MoreLinq.Experimental
                 try
                 {
                     Task.Factory.StartNew(
-                        () => CollectToAsync(enumerator,
-                                             e => e.Value,
-                                             notices,
-                                             (e, r) => (Notice.Result, new KeyValuePair<int, TResult>(e.Key, r), default),
-                                             ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
-                                             (Notice.End, default, default),
-                                             maxConcurrency, cancellationTokenSource),
+                        () =>
+                            CollectToAsync(
+                                enumerator,
+                                e => e.Value,
+                                notices,
+                                (e, r) => (Notice.Result, new KeyValuePair<int, TResult>(e.Key, r), default),
+                                ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
+                                (Notice.End, default, default),
+                                maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
                         scheduler);
