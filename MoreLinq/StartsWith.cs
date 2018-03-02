@@ -36,9 +36,9 @@ namespace MoreLinq
         /// equivalent to <paramref name="second" />.
         /// </returns>
         /// <remarks>
-        /// This is the <see cref="IEnumerable{T}" /> equivalent of 
+        /// This is the <see cref="IEnumerable{T}" /> equivalent of
         /// <see cref="string.StartsWith(string)" /> and it calls
-        /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using 
+        /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using
         /// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
         /// the same index.
         /// </remarks>
@@ -61,7 +61,7 @@ namespace MoreLinq
         /// equivalent to <paramref name="second" />.
         /// </returns>
         /// <remarks>
-        /// This is the <see cref="IEnumerable{T}" /> equivalent of 
+        /// This is the <see cref="IEnumerable{T}" /> equivalent of
         /// <see cref="string.StartsWith(string)" /> and
         /// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
         /// of elements at the same index.

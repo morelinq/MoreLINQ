@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -100,7 +100,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Determines whether or not the number of elements in the sequence is between 
+        /// Determines whether or not the number of elements in the sequence is between
         /// an inclusive range of minimum and maximum integers.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
@@ -151,6 +151,76 @@ namespace MoreLinq
             }
 
             return count >= min && count <= max;
+        }
+
+        /// <summary>
+        /// Compares two sequences and returns an integer that indicates whether the first sequence
+        /// has fewer, the same or more elements than the second sequence.
+        /// </summary>
+        /// <typeparam name="TFirst">Element type of the first sequence</typeparam>
+        /// <typeparam name="TSecond">Element type of the second sequence</typeparam>
+        /// <param name="first">The first sequence</param>
+        /// <param name="second">The second sequence</param>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
+        /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements
+        /// or <c>1</c> if the first sequence has the most elements.</returns>
+        /// <example>
+        /// <code>
+        /// var first = { 123, 456 };
+        /// var second = { 789 };
+        /// var result = first.CompareCount(second);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>1</c>.
+        /// </example>
+        public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+
+            if (first is ICollection<TFirst> firstCol)
+            {
+                return firstCol.Count.CompareTo(second is ICollection<TSecond> secondCol
+                                                ? secondCol.Count
+                                                : PartialCount(second, firstCol.Count + 1));
+            }
+            else
+            {
+                if (second is ICollection<TSecond> secondCol)
+                    return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
+
+                bool firstHasNext;
+                bool secondHasNext;
+
+                using (var e1 = first.GetEnumerator())
+                using (var e2 = second.GetEnumerator())
+                {
+                    do
+                    {
+                        firstHasNext = e1.MoveNext();
+                        secondHasNext = e2.MoveNext();
+                    }
+                    while (firstHasNext && secondHasNext);
+                }
+
+                return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
+            }
+
+            int PartialCount<T>(IEnumerable<T> source, int limit)
+            {
+                var count = 0;
+
+                using (var e = source.GetEnumerator())
+                {
+                    while (e.MoveNext())
+                    {
+                        if (++count == limit)
+                            break;
+                    }
+                }
+
+                return count;
+            }
         }
     }
 }

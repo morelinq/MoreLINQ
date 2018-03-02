@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2013 Atif Aziz. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,12 +33,12 @@ namespace MoreLinq
         /// Returns the original sequence.
         /// </returns>
         /// <exception cref="InvalidOperationException">The input sequence
-        /// contains an element that does not meet the condition being 
+        /// contains an element that does not meet the condition being
         /// asserted.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        
+
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             return Assert(source, predicate, null);
@@ -58,8 +58,8 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        
-        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, 
+
+        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source,
             Func<TSource, bool> predicate, Func<TSource, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

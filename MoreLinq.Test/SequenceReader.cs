@@ -77,7 +77,7 @@ namespace MoreLinq.Test
         {
             EnsureNotDisposed();
 
-            value = default(T);
+            value = default;
 
             var e = _enumerator;
             if (!e.MoveNext())
@@ -91,7 +91,7 @@ namespace MoreLinq.Test
         /// Tires to read the next value otherwise return the default.
         /// </summary>
 
-        public T TryRead() => TryRead(default(T));
+        public T TryRead() => TryRead(default);
 
         /// <summary>
         /// Tires to read the next value otherwise return a given default.
