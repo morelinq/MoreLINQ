@@ -82,7 +82,7 @@ namespace MoreLinq
                 finally
                 {
                     foreach (var e in list)
-                        (e as IDisposable)?.Dispose();
+                        e.Dispose();
                 }
             }
         }
