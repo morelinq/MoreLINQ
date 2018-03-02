@@ -311,7 +311,7 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var notices = new BlockingCollection<(Notice, KeyValuePair<int, TResult>, ExceptionDispatchInfo)>();
+                var notices = new BlockingCollection<(Notice, (int, TResult), ExceptionDispatchInfo)>();
                 var cancellationTokenSource = new CancellationTokenSource();
                 var cancellationToken = cancellationTokenSource.Token;
                 var completed = false;
@@ -331,7 +331,7 @@ namespace MoreLinq.Experimental
                                 enumerator,
                                 e => e.Value,
                                 notices,
-                                (e, r) => (Notice.Result, new KeyValuePair<int, TResult>(e.Key, r), default),
+                                (e, r) => (Notice.Result, (e.Key, r), default),
                                 ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
                                 (Notice.End, default, default),
                                 maxConcurrency, cancellationTokenSource),
@@ -340,7 +340,7 @@ namespace MoreLinq.Experimental
                         scheduler);
 
                     var nextKey = 0;
-                    var holds = ordered ? new List<KeyValuePair<int, TResult>>() : null;
+                    var holds = ordered ? new List<(int, TResult)>() : null;
 
                     foreach (var (kind, result, error) in notices.GetConsumingEnumerable())
                     {
@@ -352,13 +352,14 @@ namespace MoreLinq.Experimental
 
                         Debug.Assert(kind == Notice.Result);
 
-                        if (holds == null || result.Key == nextKey)
+                        var (key, value) = result;
+                        if (holds == null || key == nextKey)
                         {
                             // If order does not need to be preserved or the key
                             // is the next that should be yielded then yield
                             // the result.
 
-                            yield return result.Value;
+                            yield return value;
 
                             if (holds != null) // preserve order?
                             {
@@ -367,13 +368,14 @@ namespace MoreLinq.Experimental
 
                                 var releaseCount = 0;
 
-                                for (nextKey++;
-                                     holds.Count > 0 && holds[0] is KeyValuePair<int, TResult> n
-                                                     && n.Key == nextKey;
-                                     nextKey++)
+                                for (nextKey++; holds.Count > 0; nextKey++)
                                 {
-                                    releaseCount++;
-                                    yield return n.Value;
+                                    var (candidateKey, candidate) = holds[0];
+                                    if (candidateKey == nextKey)
+                                    {
+                                        releaseCount++;
+                                        yield return candidate;
+                                    }
                                 }
 
                                 holds.RemoveRange(0, releaseCount);
@@ -386,7 +388,7 @@ namespace MoreLinq.Experimental
                             // where it belongs in the order of results withheld
                             // so far and insert it in the list.
 
-                            var i = holds.BinarySearch(result, KeyValueComparer<int, TResult>.Default);
+                            var i = holds.BinarySearch(result, TupleComparer<int, TResult>.Key1);
                             Debug.Assert(i < 0);
                             holds.Insert(~i, result);
                         }
@@ -394,10 +396,10 @@ namespace MoreLinq.Experimental
 
                     if (holds?.Count > 0) // yield any withheld, which should be in order...
                     {
-                        foreach (var hold in holds)
+                        foreach (var (key, value) in holds)
                         {
-                            Debug.Assert(nextKey++ == hold.Key); //...assert so!
-                            yield return hold.Value;
+                            Debug.Assert(nextKey++ == key); //...assert so!
+                            yield return value;
                         }
                     }
 
@@ -526,10 +528,13 @@ namespace MoreLinq.Experimental
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        static class KeyValueComparer<TKey, TValue>
+        static class TupleComparer<T1, T2>
         {
-            public static readonly IComparer<KeyValuePair<TKey, TValue>> Default =
-                Comparer<KeyValuePair<TKey, TValue>>.Create((x, y) => Comparer<TKey>.Default.Compare(x.Key, y.Key));
+            public static readonly IComparer<(T1, T2)> Key1 =
+                Comparer<(T1, T2)>.Create((x, y) => Comparer<T1>.Default.Compare(x.Item1, y.Item1));
+
+            public static readonly IComparer<(T1, T2)> Key2 =
+                Comparer<(T1, T2)>.Create((x, y) => Comparer<T2>.Default.Compare(x.Item2, y.Item2));
         }
     }
 }
