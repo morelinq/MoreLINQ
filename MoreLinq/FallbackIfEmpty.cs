@@ -162,8 +162,8 @@ namespace MoreLinq
             IEnumerable<T> fallback)
         {
             return source.TryGetCollectionCount() is int collectionCount
-                ? collectionCount == 0 ? Fallback() : source
-                : _();
+                 ? collectionCount == 0 ? Fallback() : source
+                 : _();
 
             IEnumerable<T> _()
             {

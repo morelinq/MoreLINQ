@@ -42,8 +42,8 @@ namespace MoreLinq.Test
         public void FallbackIfEmptyPreservesSourceCollectionIfPossible(bool readOnly)
         {
             var source = readOnly
-                            ? new UnenumerableReadOnlyList<int>(new[] { 1 })
-                            : (IEnumerable<int>)new UnenumerableList<int> { 1 };
+                       ? new UnenumerableReadOnlyList<int>(new[] { 1 })
+                       : (IEnumerable<int>)new UnenumerableList<int> { 1 };
             // ReSharper disable PossibleMultipleEnumeration
             Assert.AreSame(source.FallbackIfEmpty(12), source);
             Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
@@ -59,8 +59,8 @@ namespace MoreLinq.Test
         public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(bool readOnly)
         {
             var source = readOnly
-                            ? new UnenumerableReadOnlyList<int>(new int[0])
-                            : (IEnumerable<int>)new UnenumerableList<int>();
+                       ? new UnenumerableReadOnlyList<int>(new int[0])
+                       : (IEnumerable<int>)new UnenumerableList<int>();
             var fallback = new[] { 1 };
             Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
             Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
