@@ -161,17 +161,9 @@ namespace MoreLinq
             int? count, T fallback1, T fallback2, T fallback3, T fallback4,
             IEnumerable<T> fallback)
         {
-            if (source is ICollection<T> collection)
-            {
-                return collection.Count == 0 ? Fallback() : collection;
-            }
-
-            if (source is IReadOnlyCollection<T> readOnlyCollection)
-            {
-                return readOnlyCollection.Count == 0 ? Fallback() : readOnlyCollection;
-            }
-
-            return _();
+            return source.TryGetCollectionCount() is int collectionCount
+                ? collectionCount == 0 ? Fallback() : source
+                : _();
 
             IEnumerable<T> _()
             {
