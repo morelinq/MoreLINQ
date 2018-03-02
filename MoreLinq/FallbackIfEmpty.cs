@@ -45,7 +45,7 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 1, fallback, default(T), default(T), default(T), null);
+            return FallbackIfEmptyImpl(source, 1, fallback, default, default, default, null);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default(T), default(T), null);
+            return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default, default, null);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default(T), null);
+            return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default, null);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
-            return FallbackIfEmptyImpl(source, null, default(T), default(T), default(T), default(T), fallback);
+            return FallbackIfEmptyImpl(source, null, default, default, default, default, fallback);
         }
 
         static IEnumerable<T> FallbackIfEmptyImpl<T>(IEnumerable<T> source,

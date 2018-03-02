@@ -72,13 +72,13 @@ namespace MoreLinq
                         }
                         else
                         {
-                            do { yield return resultSelector(e1.Current, default(TSecond)); }
+                            do { yield return resultSelector(e1.Current, default); }
                             while (e1.MoveNext());
                             yield break;
                         }
                     }
                     while (e2.MoveNext())
-                        yield return resultSelector(default(TFirst), e2.Current);
+                        yield return resultSelector(default, e2.Current);
                 }
             }
         }

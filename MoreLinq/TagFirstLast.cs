@@ -62,7 +62,7 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var edge = new[] { new KeyValuePair<bool, TSource>(false, default(TSource)) };
+                var edge = new[] { new KeyValuePair<bool, TSource>(false, default) };
                 return edge.Concat(source.Select(e => new KeyValuePair<bool, TSource>(true, e)))
                            .Concat(edge)
                            .Pairwise((a, b) => new { Prev = a, Curr = b })
