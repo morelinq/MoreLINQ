@@ -49,27 +49,27 @@ namespace MoreLinq
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {
-                var list = source.Select(x => x?.GetEnumerator()).ToList();
+                var enumerators = source.Select(e => e?.GetEnumerator()).ToList();
 
                 try
                 {
                     while (true)
                     {
                         var row = new List<T>();
-                        for (var i = 0; i < list.Count; i++)
+                        for (var i = 0; i < enumerators.Count; i++)
                         {
-                            if (list[i] == null)
+                            if (enumerators[i] == null)
                             {
                                 continue;
                             }
-                            else if (list[i].MoveNext())
+                            else if (enumerators[i].MoveNext())
                             {
-                                row.Add(list[i].Current);
+                                row.Add(enumerators[i].Current);
                             }
                             else
                             {
-                                list[i].Dispose();
-                                list[i] = null;
+                                enumerators[i].Dispose();
+                                enumerators[i] = null;
                             }
                         }
 
@@ -81,7 +81,7 @@ namespace MoreLinq
                 }
                 finally
                 {
-                    foreach (var e in list)
+                    foreach (var e in enumerators)
                         e.Dispose();
                 }
             }
