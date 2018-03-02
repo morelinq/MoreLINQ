@@ -456,9 +456,11 @@ namespace MoreLinq.Experimental
                     // task is built on top of the CancellationToken that
                     // completes when the CancellationToken trips.
 
-                    var task = await Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task));
+                    var completedTask = await
+                        Task.WhenAny(tasks.Cast<Task>()
+                                          .Concat(cancellationTaskSource.Task));
 
-                    if (task == cancellationTaskSource.Task)
+                    if (completedTask == cancellationTaskSource.Task)
                     {
                         // Cancellation during the wait means the enumeration
                         // has been stopped by the user so the results of the
@@ -471,9 +473,9 @@ namespace MoreLinq.Experimental
                         return;
                     }
 
-                    var rt = (Task<(T Input, TResult Result)>) task;
-                    tasks.Remove(rt);
-                    collection.Add(resultNoticeSelector(rt.Result.Input, rt.Result.Result));
+                    var task = (Task<(T Input, TResult Result)>) completedTask;
+                    tasks.Remove(task);
+                    collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
 
                     if (more && (more = e.MoveNext()))
                         tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
