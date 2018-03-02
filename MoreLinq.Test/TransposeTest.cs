@@ -32,14 +32,15 @@ namespace MoreLinq.Test
                 new int[] { 10, 11 },
                 null,
                 new int[] { },
+                null,
                 new int[] { 30, 31, 32 }
             };
 
-            var traspose = matrix.Transpose();
+            var traspose = matrix.Transpose().ToList();
 
-            Assert.That(matrix.First().First(), Is.EqualTo(traspose.First().First()));
-
-            Assert.AreEqual(30, traspose.First().ElementAt(1));
+            traspose[0].AssertSequenceEqual(10, 30);
+            traspose[1].AssertSequenceEqual(11, 31);
+            traspose[2].AssertSequenceEqual(32);
         }
 
         [Test]
