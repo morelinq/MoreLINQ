@@ -499,7 +499,6 @@ namespace MoreLinq.Experimental
                     Func<SelectAsyncOptions, IEnumerable<T>> impl,
                     SelectAsyncOptions options = null) =>
                 new SelectAsyncEnumerable<T>(impl, options);
-
         }
 
         sealed class SelectAsyncEnumerable<T> : ISelectAsyncEnumerable<T>
