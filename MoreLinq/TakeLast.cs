@@ -50,8 +50,8 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return
-                source is ICollection<TSource> col
-                ? col.Slice(Math.Max(0, col.Count - count), int.MaxValue)
+                source.TryGetCollectionCount() is int collectionCount
+                ? source.Slice(Math.Max(0, collectionCount - count), int.MaxValue)
                 : _(); IEnumerable<TSource> _()
                 {
                     if (count <= 0)
