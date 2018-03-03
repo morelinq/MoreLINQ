@@ -59,8 +59,8 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _().TakeWhile(x => x.Any()).Select(resultSelector); 
-            
+            return _().TakeWhile(x => x.Any()).Select(resultSelector);
+
             IEnumerable<IEnumerable<TSource>> _()
             {
                 List<TSource> previousBatch = null;
@@ -113,7 +113,7 @@ namespace MoreLinq
                         {
                             if (!disposed)
                             {
-                                e.Dispose(); 
+                                e.Dispose();
                                 disposed = true;
                             }
                         }
