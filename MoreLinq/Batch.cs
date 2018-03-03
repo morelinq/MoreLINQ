@@ -74,7 +74,7 @@ namespace MoreLinq
                 {
                     while (!disposed)
                     {
-                        currentBatch = new List<TSource>();
+                        currentBatch = new List<TSource>(size);
                         yield return GetBatch(group, currentBatch);
                         previousBatch = currentBatch;
                         group++;
