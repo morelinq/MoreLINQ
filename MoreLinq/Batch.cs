@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -58,38 +59,64 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _().TakeWhile(x => x.Any()).Select(resultSelector); 
+            
+            IEnumerable<IEnumerable<TSource>> _()
             {
-                TSource[] bucket = null;
-                var count = 0;
+                var values = new List<TSource>();
+                var group = 1;
+                var disposed = false;
+                var e = source.GetEnumerator();
 
-                foreach (var item in source)
+                try
                 {
-                    if (bucket == null)
+                    while (!disposed)
                     {
-                        bucket = new TSource[size];
+                        yield return GetBatch();
+                        group++;
                     }
-
-                    bucket[count++] = item;
-
-                    // The bucket is fully buffered before it's yielded
-                    if (count != size)
-                    {
-                        continue;
-                    }
-
-                    // Select is necessary so bucket contents are streamed too
-                    yield return resultSelector(bucket);
-
-                    bucket = null;
-                    count = 0;
+                }
+                finally
+                {
+                    if (!disposed)
+                        e.Dispose();
                 }
 
-                // Return the last bucket with all remaining elements
-                if (bucket != null && count > 0)
+                IEnumerable<TSource> GetBatch()
                 {
-                    Array.Resize(ref bucket, count);
-                    yield return resultSelector(bucket);
+                    var min = (group - 1) * size + 1;
+                    var max = group * size;
+                    var hasValue = false;
+
+                    while (values.Count < min && e.MoveNext())
+                    {
+                        values.Add(e.Current);
+                    }
+
+                    for (var i = min; i <= max; i++)
+                    {
+                        if (i <= values.Count)
+                        {
+                            hasValue = true;
+                        }
+                        else if (hasValue = (!disposed && e.MoveNext()))
+                        {
+                            values.Add(e.Current);
+                        }
+                        else
+                        {
+                            if (!disposed)
+                            {
+                                e.Dispose(); 
+                                disposed = true;
+                            }
+                        }
+
+                        if (hasValue)
+                            yield return values[i - 1];
+                        else
+                            yield break;
+                    }
                 }
             }
         }
