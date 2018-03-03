@@ -93,7 +93,6 @@ namespace MoreLinq
 
                     while (index < min && e.MoveNext())
                     {
-                        if (previousBatch == null) previousBatch = pcurrentBatch;
                         previousBatch.Add(e.Current);
                         index++;
                     }
