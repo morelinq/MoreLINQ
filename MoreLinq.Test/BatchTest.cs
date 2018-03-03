@@ -41,13 +41,21 @@ namespace MoreLinq.Test
         public void BatchEvenlyDivisibleSequence()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(3);
+            IEnumerable<IEnumerable<int>> batch2;
+
             using (var reader = result.Read())
             {
                 reader.Read().AssertSequenceEqual(1, 2, 3);
-                reader.Read().AssertSequenceEqual(4, 5, 6);
+
+                batch2 = reader.Read();
+
+                batch2.AssertSequenceEqual(4, 5, 6);
                 reader.Read().AssertSequenceEqual(7, 8, 9);
+
                 reader.ReadEnd();
             }
+
+            batch2.AssertSequenceEqual(4, 5, 6);
         }
 
         [Test]
