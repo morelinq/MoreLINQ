@@ -103,5 +103,34 @@ namespace MoreLinq.Test
                 reader.Read().Take(1).AssertSequenceEqual(9);
             }
         }
+
+        [Test]
+        public void BatchesCanBePartialIterated()
+        {
+            var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }.Batch(3);
+            IEnumerable<int> batch1, batch2, batch3, batch4;
+
+            using (var reader = result.Read())
+            {
+                batch1 = reader.Read();
+                batch1.AssertSequenceEqual(1, 2, 3);
+
+                batch2 = reader.Read();
+                batch2.Take(1).AssertSequenceEqual(4);
+
+                batch3 = reader.Read();
+                batch3.Take(2).AssertSequenceEqual(7, 8);
+
+                batch4 = reader.Read();
+                batch4.Take(3).AssertSequenceEqual(10, 11);
+
+                reader.ReadEnd();
+            }
+
+            batch1.AssertSequenceEqual( 1, 2, 3);
+            batch2.AssertSequenceEqual( 4, 5, 6);
+            batch3.AssertSequenceEqual( 7, 8, 9);
+            batch4.AssertSequenceEqual(10, 11);
+        }
     }
 }
