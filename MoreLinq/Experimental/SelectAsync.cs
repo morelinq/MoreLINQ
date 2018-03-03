@@ -253,7 +253,9 @@ namespace MoreLinq.Experimental
         /// <see cref="AsOrdered{T}"/>.</para>
         /// <para>
         /// This method starts a new task where the asynchronous projections
-        /// are started and awaited.</para>
+        /// are started and awaited. If the resulting sequence is partially
+        /// consumed then there's a good chance that some projection work will
+        /// be wasted, those that are in flight.</para>
         /// <para>
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.</para>
@@ -291,7 +293,11 @@ namespace MoreLinq.Experimental
         /// <see cref="AsOrdered{T}"/>.</para>
         /// <para>
         /// This method starts a new task where the asynchronous projections
-        /// are started and awaited.</para>
+        /// are started and awaited. If the resulting sequence is partially
+        /// consumed then there's a good chance that some projection work will
+        /// be wasted and a cooperative effort is done that depends on the
+        /// projection function (via a <see cref="CancellationToken"/> as its
+        /// second argument) to cancel those in flight.</para>
         /// <para>
         /// The <paramref name="selector"/> function should be designed to be
         /// thread-agnostic.</para>
