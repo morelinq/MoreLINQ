@@ -63,16 +63,20 @@ namespace MoreLinq
             
             IEnumerable<IEnumerable<TSource>> _()
             {
-                var values = new List<TSource>();
+                List<TSource> previousBatch = null;
+                List<TSource> currentBatch = null;
                 var group = 1;
                 var disposed = false;
                 var e = source.GetEnumerator();
+                var index = 0;
 
                 try
                 {
                     while (!disposed)
                     {
-                        yield return GetBatch();
+                        currentBatch = new List<TSource>();
+                        yield return GetBatch(group, currentBatch);
+                        previousBatch = currentBatch;
                         group++;
                     }
                 }
@@ -82,26 +86,28 @@ namespace MoreLinq
                         e.Dispose();
                 }
 
-                IEnumerable<TSource> GetBatch()
+                IEnumerable<TSource> GetBatch(int pgroup, List<TSource> pcurrentBatch)
                 {
-                    var min = (group - 1) * size + 1;
-                    var max = group * size;
+                    var min = (pgroup - 1) * size;
                     var hasValue = false;
 
-                    while (values.Count < min && e.MoveNext())
+                    while (index < min && e.MoveNext())
                     {
-                        values.Add(e.Current);
+                        if (previousBatch == null) previousBatch = pcurrentBatch;
+                        previousBatch.Add(e.Current);
+                        index++;
                     }
 
-                    for (var i = min; i <= max; i++)
+                    for (var i = 0; i < size; i++)
                     {
-                        if (i <= values.Count)
+                        if (i < pcurrentBatch.Count)
                         {
                             hasValue = true;
                         }
                         else if (hasValue = (!disposed && e.MoveNext()))
                         {
-                            values.Add(e.Current);
+                            index++;
+                            pcurrentBatch.Add(e.Current);
                         }
                         else
                         {
@@ -113,7 +119,7 @@ namespace MoreLinq
                         }
 
                         if (hasValue)
-                            yield return values[i - 1];
+                            yield return pcurrentBatch[i];
                         else
                             yield break;
                     }
