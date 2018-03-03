@@ -287,9 +287,8 @@ namespace MoreLinq.Experimental
         /// This method uses deferred execution semantics. The results are
         /// yielded as each asynchronous projection completes and, by default,
         /// not guaranteed to be based on the source sequence order. If order
-        /// is important, compose further using
-        /// <see cref="AsOrdered{T}"/>
-        /// and a Boolean value of <c>true</c>.</para>
+        /// is important, compose further with
+        /// <see cref="AsOrdered{T}"/>.</para>
         /// <para>
         /// This method starts a new task where the asynchronous projections
         /// are started and awaited.</para>
