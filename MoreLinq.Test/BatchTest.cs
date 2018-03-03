@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class BatchTest
@@ -94,6 +95,21 @@ namespace MoreLinq.Test
         public void BatchIsLazy()
         {
             new BreakingSequence<object>().Batch(1);
+        }
+
+        [Test]
+        public void BatchHasLazyEnumerables()
+        {
+            var seq1 = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var seq2 = MoreEnumerable.From<int>(() => throw new InvalidOperationException());
+            var result = seq1.Concat(seq2).Batch(4);
+
+            using (var reader = result.Read())
+            {
+                reader.Read().AssertSequenceEqual(1, 2, 3, 4);
+                reader.Read().AssertSequenceEqual(5, 6, 7, 8);
+                reader.Read().Take(1).AssertSequenceEqual(9);
+            }
         }
     }
 }
