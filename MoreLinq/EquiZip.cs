@@ -170,8 +170,8 @@ namespace MoreLinq
                                              && ((e4 == null || e4.MoveNext())))
                     {
                         yield return resultSelector(e1.Current, e2.Current,
-                                                    e3 != null ? e3.Current : default(T3),
-                                                    e4 != null ? e4.Current : default(T4));
+                                                    e3 != null ? e3.Current : default,
+                                                    e4 != null ? e4.Current : default);
                     }
                     else
                     {
