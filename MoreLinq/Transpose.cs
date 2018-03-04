@@ -88,7 +88,7 @@ namespace MoreLinq
                 finally
                 {
                     foreach (var e in enumerators)
-                        e.Dispose();
+                        e?.Dispose();
                 }
             }
         }
