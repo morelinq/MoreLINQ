@@ -55,9 +55,8 @@ namespace MoreLinq
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {
-                var enumerators = source.Where(e => e != null)
-                                        .Select(e => e.GetEnumerator())
-                                        .ToList();
+                var enumerators = source.Select(e => e.GetEnumerator()).Acquire();
+
                 try
                 {
                     while (true)
