@@ -18,6 +18,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace MoreLinq.Test
 {
@@ -30,17 +31,13 @@ namespace MoreLinq.Test
             var matrix = new int[][]
             {
                 new int[] { 10, 11 },
-                null,
                 new int[] { },
-                null,
-                new int[] { 30, 31, 32 }
+                new int[] { 30, 31, 32 },
+                null
             };
 
-            var traspose = matrix.Transpose().ToList();
-
-            traspose[0].AssertSequenceEqual(10, 30);
-            traspose[1].AssertSequenceEqual(11, 31);
-            traspose[2].AssertSequenceEqual(32);
+            Assert.Throws<NullReferenceException>(() =>
+                matrix.Transpose().FirstOrDefault());
         }
 
         [Test]
