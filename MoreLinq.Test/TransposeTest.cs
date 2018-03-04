@@ -18,7 +18,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 namespace MoreLinq.Test
 {
