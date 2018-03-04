@@ -62,17 +62,20 @@ namespace MoreLinq
                     while (true)
                     {
                         var row = new List<T>();
-                        for (var i = 0; i < enumerators.Count; i++)
+                        for (var i = 0; i < enumerators.Length; i++)
                         {
-                            if (enumerators[i].MoveNext())
+                            if (enumerators[i] == null)
+                            {
+                                continue;
+                            }
+                            else if (enumerators[i].MoveNext())
                             {
                                 row.Add(enumerators[i].Current);
                             }
                             else
                             {
                                 enumerators[i].Dispose();
-                                enumerators.RemoveAt(i);
-                                i--;
+                                enumerators[i] = null;
                             }
                         }
 
