@@ -63,8 +63,8 @@ namespace MoreLinq
 
             IEnumerable<IEnumerable<TSource>> _()
             {
-                List<TSource> previousBatch = null;
-                List<TSource> currentBatch = null;
+                List<TSource> previousBucket = null;
+                List<TSource> currentBucket = null;
                 var group = 1;
                 var disposed = false;
                 var e = source.GetEnumerator();
@@ -74,9 +74,9 @@ namespace MoreLinq
                 {
                     while (!disposed)
                     {
-                        currentBatch = new List<TSource>(size);
-                        yield return GetBatch(group, currentBatch);
-                        previousBatch = currentBatch;
+                        currentBucket = new List<TSource>(size);
+                        yield return GetBucket(group, currentBucket);
+                        previousBucket = currentBucket;
                         group++;
                     }
                 }
@@ -86,27 +86,27 @@ namespace MoreLinq
                         e.Dispose();
                 }
 
-                IEnumerable<TSource> GetBatch(int pgroup, List<TSource> pcurrentBatch)
+                IEnumerable<TSource> GetBucket(int pgroup, List<TSource> pcurrentBucket)
                 {
                     var min = (pgroup - 1) * size;
                     var hasValue = false;
 
                     while (index < min && e.MoveNext())
                     {
-                        previousBatch.Add(e.Current);
+                        previousBucket.Add(e.Current);
                         index++;
                     }
 
                     for (var i = 0; i < size; i++)
                     {
-                        if (i < pcurrentBatch.Count)
+                        if (i < pcurrentBucket.Count)
                         {
                             hasValue = true;
                         }
                         else if (hasValue = (!disposed && e.MoveNext()))
                         {
                             index++;
-                            pcurrentBatch.Add(e.Current);
+                            pcurrentBucket.Add(e.Current);
                         }
                         else
                         {
@@ -118,7 +118,7 @@ namespace MoreLinq
                         }
 
                         if (hasValue)
-                            yield return pcurrentBatch[i];
+                            yield return pcurrentBucket[i];
                         else
                             yield break;
                     }
