@@ -324,7 +324,7 @@ namespace MoreLinq.Experimental
 
                 var enumerator =
                     source.Index()
-                          .Select(e => (e.Key, Value: selector(e.Value, cancellationToken)))
+                          .Select(e => (e.Key, Task: selector(e.Value, cancellationToken)))
                           .GetEnumerator();
 
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
@@ -335,7 +335,7 @@ namespace MoreLinq.Experimental
                         () =>
                             CollectToAsync(
                                 enumerator,
-                                e => e.Value,
+                                e => e.Task,
                                 notices,
                                 (e, r) => (Notice.Result, (e.Key, r), default),
                                 ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
