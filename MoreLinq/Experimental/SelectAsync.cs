@@ -454,65 +454,73 @@ namespace MoreLinq.Experimental
             int maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
-            var cancellationToken = cancellationTokenSource.Token;
-            var cancellationTaskSource = new TaskCompletionSource<bool>();
-            cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
-
-            var tasks = new List<Task<(T, TResult)>>();
-
-            var more = false;
-            for (var i = 0; i < maxConcurrency && (more = e.MoveNext()); i++)
-                tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
-
-            if (!more)
-                e.Dispose();
-
-            try
+            using (e)
             {
-                while (tasks.Count > 0)
+                var cancellationToken = cancellationTokenSource.Token;
+                var cancellationTaskSource = new TaskCompletionSource<bool>();
+                cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
+
+                var tasks = new List<Task<(T, TResult)>>();
+
+                var more = false;
+                for (var i = 0; i < maxConcurrency && (more = e.MoveNext()); i++)
+                    tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
+
+                if (!more)
+                    e.Dispose();
+
+                try
                 {
-                    // Task.WaitAny is synchronous and blocking but allows the
-                    // waiting to be cancelled via a CancellationToken.
-                    // Task.WhenAny can be awaited so it is better since the
-                    // thread won't be blocked and can return to the pool.
-                    // However, it doesn't support cancellation so instead a
-                    // task is built on top of the CancellationToken that
-                    // completes when the CancellationToken trips.
-
-                    var completedTask = await
-                        Task.WhenAny(tasks.Cast<Task>()
-                                          .Concat(cancellationTaskSource.Task));
-
-                    if (completedTask == cancellationTaskSource.Task)
+                    while (tasks.Count > 0)
                     {
-                        // Cancellation during the wait means the enumeration
-                        // has been stopped by the user so the results of the
-                        // remaining tasks are no longer needed. Those tasks
-                        // should cancel as a result of sharing the same
-                        // cancellation token and provided that they passed it
-                        // on to any downstream asynchronous operations. Either
-                        // way, this loop is done so exit hard here.
+                        // Task.WaitAny is synchronous and blocking but allows the
+                        // waiting to be cancelled via a CancellationToken.
+                        // Task.WhenAny can be awaited so it is better since the
+                        // thread won't be blocked and can return to the pool.
+                        // However, it doesn't support cancellation so instead a
+                        // task is built on top of the CancellationToken that
+                        // completes when the CancellationToken trips.
 
-                        return;
+                        var completedTask = await
+                            Task.WhenAny(tasks.Cast<Task>()
+                                              .Concat(cancellationTaskSource.Task));
+
+                        if (completedTask == cancellationTaskSource.Task)
+                        {
+                            // Cancellation during the wait means the enumeration
+                            // has been stopped by the user so the results of the
+                            // remaining tasks are no longer needed. Those tasks
+                            // should cancel as a result of sharing the same
+                            // cancellation token and provided that they passed it
+                            // on to any downstream asynchronous operations. Either
+                            // way, this loop is done so exit hard here.
+
+                            return;
+                        }
+
+                        var task = (Task<(T Input, TResult Result)>) completedTask;
+                        tasks.Remove(task);
+                        collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
+
+                        if (more)
+                        {
+                            if (more = e.MoveNext())
+                                tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
+                            else
+                                e.Dispose();
+                        }
                     }
 
-                    var task = (Task<(T Input, TResult Result)>) completedTask;
-                    tasks.Remove(task);
-                    collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
-
-                    if (more && (more = e.MoveNext()))
-                        tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
+                    collection.Add(endNotice);
+                }
+                catch (Exception ex)
+                {
+                    cancellationTokenSource.Cancel();
+                    collection.Add(errorNoticeSelector(ex));
                 }
 
-                collection.Add(endNotice);
+                collection.CompleteAdding();
             }
-            catch (Exception ex)
-            {
-                cancellationTokenSource.Cancel();
-                collection.Add(errorNoticeSelector(ex));
-            }
-
-            collection.CompleteAdding();
         }
 
         static class SelectAsyncEnumerable
