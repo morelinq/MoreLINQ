@@ -18,6 +18,9 @@ namespace MoreLinq.NoConflictGenerator
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -35,6 +38,7 @@ namespace MoreLinq.NoConflictGenerator
 
             string includePattern = null;
             string excludePattern = null;
+            var debug = false;
             var usings = new List<string>();
             var noClassLead = false;
 
@@ -62,6 +66,10 @@ namespace MoreLinq.NoConflictGenerator
                         case "--no-class-lead":
                             noClassLead = true;
                             break;
+                        case "-d":
+                        case "--debug":
+                            debug = true;
+                            break;
                         case "":
                             continue;
                         default:
@@ -83,9 +91,25 @@ namespace MoreLinq.NoConflictGenerator
 
             var thisAssemblyName = typeof(Program).GetTypeInfo().Assembly.GetName();
 
+            //
+            // Type abbreviations are used to abbreviate all generic type
+            // parameters into a letter from the alphabet. So for example, a
+            // method with generic type parameters `TSource` and `TResult` will
+            // become `a` and `b`. This is used later for sorting and stabilizes
+            // the sort irrespective of how the type parameters are named or
+            // renamed in the source.
+            //
+
+            var abbreviatedTypeNodes = Enumerable
+                .Range(0, 26)
+                .Select(a => (char) ('a' + a))
+                .Select(ch => new SimpleTypeNode(ch.ToString()))
+                .ToArray();
+
             var q =
                 from fp in Directory.EnumerateFiles(dir, "*.cs")
                 where !excludePredicate(fp) && includePredicate(fp)
+                orderby fp
                 select new
                 {
                     SourcePath = fp,
@@ -101,11 +125,78 @@ namespace MoreLinq.NoConflictGenerator
                         from md in cd.DescendantNodes().OfType<MethodDeclarationSyntax>()
                         let mn = (string) md.Identifier.Value
                         where md.ParameterList.Parameters.Count > 0
-                        && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
-                        && md.Modifiers.Any(m => (string)m.Value == "public")
-                        && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
-                        select md
+                           && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
+                           && md.Modifiers.Any(m => (string)m.Value == "public")
+                           && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
+                        let typeParameterAbbreviationByName =
+                            md.TypeParameterList
+                             ?.Parameters
+                              .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
+                              .ToDictionary(e => e.Original, e => e.Alias)
+                        select new
+                        {
+                            Syntax = md,
+                            Name = md.Identifier.ToString(),
+                            TypeParameterCount = md.TypeParameterList?.Parameters.Count ?? 0,
+                            TypeParameterAbbreviationByName = typeParameterAbbreviationByName,
+                            ParameterCount = md.ParameterList.Parameters.Count,
+                            Parameters =
+                                from p in md.ParameterList.Parameters
+                                select CreateTypeNode(p.Type,
+                                                      n => typeParameterAbbreviationByName != null
+                                                        && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
+                            Source =
+                                MethodDeclaration(md.ReturnType, md.Identifier)
+                                    .WithTypeParameterList(md.TypeParameterList)
+                                    .WithParameterList(md.ParameterList)
+                                    .NormalizeWhitespace()
+                                    .ToString(),
+                        }
+                }
+                into s
+                from e in s.Methods.Select((m, i) => (SourceOrder: i + 1, Method: m))
+                orderby
+                    e.Method.Name,
+                    e.Method.TypeParameterCount,
+                    e.Method.ParameterCount,
+                    new TupleTypeNode(ImmutableList.CreateRange(e.Method.Parameters))
+                select new
+                {
+                    e.Method,
+                    e.SourceOrder,
                 };
+
+            q = q.ToArray();
+
+            if (debug)
+            {
+                foreach (var m in
+                    from e in q
+                    let m = e.Method
+                    select new
+                    {
+                        SourceOrder = e.SourceOrder.ToString("000", CultureInfo.InvariantCulture),
+                        m.Name,
+                        TypeParameters =
+                            m.TypeParameterCount == 0
+                            ? string.Empty
+                            : "<" + string.Join(", ", from a in m.TypeParameterAbbreviationByName
+                                                      select a.Value) + ">",
+                        Parameters =
+                            "(" + string.Join(", ", m.Parameters) + ")",
+                        Abbreviations =
+                            m.TypeParameterCount == 0
+                            ? string.Empty
+                            : " where " + string.Join(", ", from a in m.TypeParameterAbbreviationByName
+                                                            select a.Value + " = " + a.Key),
+                    }
+                    into e
+                    select e.SourceOrder + ": "
+                         + e.Name + e.TypeParameters + e.Parameters + e.Abbreviations)
+                {
+                    Console.Error.WriteLine(m);
+                }
+            }
 
             var indent = new string('\x20', 4);
             var indent2 = indent + indent;
@@ -123,8 +214,8 @@ namespace MoreLinq.NoConflictGenerator
                 select indent + $"using {ns};";
 
             var classes =
-                from f in q
-                from md in f.Methods
+                from md in q
+                select md.Method.Syntax into md
                 group md by (string) md.Identifier.Value into g
                 select new
                 {
@@ -201,6 +292,29 @@ namespace MoreLinq.NoConflict
                                       .Replace("\n", Environment.NewLine));
         }
 
+        public static TypeNode CreateTypeNode(TypeSyntax root,
+                                              Func<string, TypeNode> abbreviator = null)
+        {
+            return Walk(root ?? throw new ArgumentNullException(nameof(root)));
+
+            TypeNode Walk(TypeSyntax ts) =>
+                ts is GenericNameSyntax gns
+                ? new GenericTypeNode(gns.Identifier.ToString(),
+                                        ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk)))
+                : ts is IdentifierNameSyntax ins
+                ? abbreviator?.Invoke(ins.Identifier.ValueText) ?? new SimpleTypeNode(ins.ToString())
+                : ts is PredefinedTypeSyntax pts
+                ? new SimpleTypeNode(pts.ToString())
+                : ts is ArrayTypeSyntax ats
+                ? new ArrayTypeNode(Walk(ats.ElementType),
+                                    ImmutableList.CreateRange(from rs in ats.RankSpecifiers select rs.Rank))
+                : ts is NullableTypeSyntax nts
+                ? new NullableTypeNode(Walk(nts.ElementType))
+                : ts is TupleTypeSyntax tts
+                ? (TypeNode) new TupleTypeNode(ImmutableList.CreateRange(from te in tts.Elements select Walk(te.Type)))
+                : throw new NotSupportedException("Unhandled type: " + ts);
+        }
+
         static T Read<T>(IEnumerator<T> e, Func<Exception> errorFactory = null)
         {
             if (!e.MoveNext())
@@ -221,5 +335,132 @@ namespace MoreLinq.NoConflict
                 return 0xbad;
             }
         }
+    }
+
+    //
+    // Logical type nodes designed to be structurally sortable based on:
+    //
+    // - Type parameter count
+    // - Name
+    // - Array rank, if an array
+    // - Each type parameter (recursively)
+    //
+
+    abstract class TypeNode : IComparable<TypeNode>
+    {
+        protected TypeNode(string name) => Name = name;
+
+        public string Name { get; }
+        public abstract ImmutableList<TypeNode> Parameters { get; }
+
+        public virtual int CompareTo(TypeNode other)
+            => ReferenceEquals(this, other) ? 0
+             : other == null ? 1
+             : Parameters.Count.CompareTo(other.Parameters.Count) is int lc && lc != 0 ? lc
+             : string.Compare(Name, other.Name, StringComparison.Ordinal) is int nc && nc != 0 ? nc
+             : CompareParameters(other);
+
+        protected virtual int CompareParameters(TypeNode other) =>
+            Compare(Parameters, other.Parameters);
+
+        protected static int Compare(IEnumerable<TypeNode> a, IEnumerable<TypeNode> b)
+            => a.Zip(b, (us, them) => (Us: us, Them: them))
+                .Select(e => e.Us.CompareTo(e.Them))
+                .FirstOrDefault(e => e != 0);
+    }
+
+    sealed class SimpleTypeNode : TypeNode
+    {
+        public SimpleTypeNode(string name) : base(name) {}
+        public override string ToString() => Name;
+        public override ImmutableList<TypeNode> Parameters => ImmutableList<TypeNode>.Empty;
+    }
+
+    abstract class ParameterizedTypeNode : TypeNode
+    {
+        protected ParameterizedTypeNode(string name, TypeNode parameter) :
+            this(name, ImmutableList.Create(parameter)) {}
+
+        protected ParameterizedTypeNode(string name, ImmutableList<TypeNode> parameters)
+            : base(name) => Parameters = parameters;
+
+        public override ImmutableList<TypeNode> Parameters { get; }
+    }
+
+    sealed class GenericTypeNode : ParameterizedTypeNode
+    {
+        public GenericTypeNode(string name, ImmutableList<TypeNode> parameters)
+            : base(name, parameters) {}
+
+        public override string ToString() =>
+            Name + "<" + string.Join(", ", Parameters) + ">";
+    }
+
+    sealed class NullableTypeNode : ParameterizedTypeNode
+    {
+        public NullableTypeNode(TypeNode underlying) : base("?", underlying) {}
+        public override string ToString() => Parameters.Single() + "?";
+    }
+
+    sealed class TupleTypeNode : ParameterizedTypeNode
+    {
+        public TupleTypeNode(ImmutableList<TypeNode> parameters)
+            : base("()", parameters) {}
+
+        public override string ToString() =>
+            "(" + string.Join(", ", Parameters) + ")";
+    }
+
+    sealed class ArrayTypeNode : ParameterizedTypeNode
+    {
+        public ArrayTypeNode(TypeNode element, IEnumerable<int> ranks)
+            : base("[]", element) => Ranks = ImmutableList.CreateRange(ranks);
+
+        public ImmutableList<int> Ranks { get; }
+
+        public override string ToString() =>
+            Parameters.Single() + string.Concat(from r in Ranks
+                                                select "[" + string.Concat(Enumerable.Repeat(",", r - 1)) + "]");
+
+        protected override int CompareParameters(TypeNode other)
+        {
+            if (other is ArrayTypeNode a)
+            {
+                if (Ranks.Count.CompareTo(a.Ranks.Count) is int rlc && rlc != 0)
+                    return rlc;
+                if (Ranks.Zip(a.Ranks, (us, them) => (Us: us, Them: them))
+                         .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is int rc && rc != 0)
+                    return rc;
+            }
+
+            return base.CompareParameters(other);
+        }
+    }
+
+    sealed class NamedNode : IComparable<NamedNode>
+    {
+        public string Name { get; }
+        public IReadOnlyCollection<NamedNode> ChildNodes { get; }
+
+        public NamedNode(string name, params NamedNode[] nodes) :
+            this(name, new ReadOnlyCollection<NamedNode>(nodes)) {}
+
+        public NamedNode(string name, IEnumerable<NamedNode> nodes) :
+            this(name, new ReadOnlyCollection<NamedNode>(nodes.ToArray())) {}
+
+        public NamedNode(string name, IReadOnlyCollection<NamedNode> nodes)
+        {
+            Name = name;
+            ChildNodes = nodes ?? Array.Empty<NamedNode>();
+        }
+
+        public int CompareTo(NamedNode other)
+            => ReferenceEquals(this, other) ? 0
+             : other == null ? 1
+             : ChildNodes.Count.CompareTo(other.ChildNodes.Count) is int lc && lc != 0 ? lc
+             : string.Compare(Name, other.Name, StringComparison.Ordinal) is int nc && nc != 0 ? nc
+             : ChildNodes.Zip(other.ChildNodes, (us, them) => (Us: us, Them: them))
+                         .Select(e => e.Us.CompareTo(e.Them))
+                         .FirstOrDefault(e => e != 0);
     }
 }
