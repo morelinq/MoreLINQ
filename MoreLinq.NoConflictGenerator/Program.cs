@@ -106,7 +106,7 @@ namespace MoreLinq.NoConflictGenerator
                 .Select(ch => new SimpleTypeNode(ch.ToString()))
                 .ToArray();
 
-            var q =
+            var qq =
                 from fp in Directory.EnumerateFiles(dir, "*.cs")
                 where !excludePredicate(fp) && includePredicate(fp)
                 orderby fp
@@ -152,19 +152,21 @@ namespace MoreLinq.NoConflictGenerator
                                     .NormalizeWhitespace()
                                     .ToString(),
                         }
-                }
-                into s
-                from e in s.Methods.Select((m, i) => (SourceOrder: i + 1, Method: m))
-                orderby
-                    e.Method.Name,
-                    e.Method.TypeParameterCount,
-                    e.Method.ParameterCount,
-                    new TupleTypeNode(ImmutableList.CreateRange(e.Method.Parameters))
-                select new
-                {
-                    e.Method,
-                    e.SourceOrder,
                 };
+
+        var q =
+            from e in qq.SelectMany(e => e.Methods)
+                        .Select((m, i) => (SourceOrder: i + 1, Method: m))
+            orderby
+                e.Method.Name,
+                e.Method.TypeParameterCount,
+                e.Method.ParameterCount,
+                new TupleTypeNode(ImmutableList.CreateRange(e.Method.Parameters))
+            select new
+            {
+                e.Method,
+                e.SourceOrder,
+            };
 
             q = q.ToArray();
 
