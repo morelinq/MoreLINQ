@@ -1,19 +1,20 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		build.cmd = build.cmd
-		buildw.cmd = buildw.cmd
+		build.sh = build.sh
 		COPYING.txt = COPYING.txt
 		msbuild.cmd = msbuild.cmd
+		msbuild.sh = msbuild.sh
 		pack.cmd = pack.cmd
-		packw.cmd = packw.cmd
+		pack.sh = pack.sh
 		README.md = README.md
 		test.cmd = test.cmd
-		testw.cmd = testw.cmd
+		test.sh = test.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corefx", "corefx", "{F73528F4-B669-4AFF-84C9-D62B77CA3848}"
@@ -21,9 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corefx", "corefx", "{F73528
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +43,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A8EBCB0-B3EB-4D85-AD02-D349122C1D8E}
 	EndGlobalSection
 EndGlobal

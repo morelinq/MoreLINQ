@@ -39,7 +39,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that lead can accept and propagate a default value passed to it.  
+        /// Verify that lead can accept and propagate a default value passed to it.
         /// </summary>
         [Test]
         public void TestLeadExplicitDefaultValue()

@@ -18,21 +18,19 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
 
-    abstract class Scope<T> : IDisposable
+    sealed class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
     {
-        readonly T _old;
+        public BreakingCollection(int count) => Count = count;
 
-        protected Scope(T current)
-        {
-            _old = current;
-        }
+        public int Count { get; }
 
-        public virtual void Dispose()
-        {
-            Restore(_old);
-        }
-
-        protected abstract void Restore(T old);
+        public void Add(T item)      => throw new NotImplementedException();
+        public void Clear()          => throw new NotImplementedException();
+        public bool Contains(T item) => throw new NotImplementedException();
+        public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
+        public bool Remove(T item)   => throw new NotImplementedException();
+        public bool IsReadOnly       => throw new NotImplementedException();
     }
 }

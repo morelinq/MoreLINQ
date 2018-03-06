@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,10 +42,10 @@ namespace MoreLinq
             //       Second, the algorithm has been modified to use dynamically generated nested loop
             //       state machines, rather than an integral computation of the factorial function
             //       to determine when to terminate. The original algorithm required a priori knowledge
-            //       of the number of iterations necessary to produce all permutations. This is a 
+            //       of the number of iterations necessary to produce all permutations. This is a
             //       necessary step to avoid overflowing the range of the permutation arrays used.
-            //       The number of permutation iterations is defined as the factorial of the original 
-            //       set size minus 1. 
+            //       The number of permutation iterations is defined as the factorial of the original
+            //       set size minus 1.
             //
             //       However, there's a fly in the ointment. The factorial function grows VERY rapidly.
             //       13! overflows the range of a Int32; while 28! overflows the range of decimal.
@@ -53,20 +53,18 @@ namespace MoreLinq
             //       of N is equivalent to the evaluation of N-1 nested loops. Unfortunatley, you can't
             //       just code up a variable number of nested loops ... this is where .NET generators
             //       with their elegant 'yield return' syntax come to the rescue.
-            //       
+            //
             //       The methods of the Loop extension class (For and NestedLoops) provide the implementation
             //       of dynamic nested loops using generators and sequence composition. In a nutshell,
             //       the two Repeat() functions are the constructor of loops and nested loops, respectively.
             //       The NestedLoops() function produces a composition of loops where the loop counter
             //       for each nesting level is defined in a separate sequence passed in the call.
             //
-            //       For example:        NestedLoops( () => DoSomething(), new[] { 6, 8 } )          
+            //       For example:        NestedLoops( () => DoSomething(), new[] { 6, 8 } )
             //
             //       is equivalent to:   for( int i = 0; i < 6; i++ )
             //                               for( int j = 0; j < 8; j++ )
             //                                   DoSomething();
-
-            #region Private Fields
 
             readonly IList<T> _valueSet;
             readonly int[] _permutation;
@@ -74,9 +72,7 @@ namespace MoreLinq
 
             IEnumerator<Action> _generatorIterator;
             bool _hasMoreResults;
-            #endregion
 
-            #region Constructors
             public PermutationEnumerator(IEnumerable<T> valueSet)
             {
                 _valueSet = valueSet.ToArray();
@@ -87,9 +83,7 @@ namespace MoreLinq
                 _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
                 Reset();
             }
-            #endregion
 
-            #region IEnumerator Members
             public void Reset()
             {
                 _generatorIterator?.Dispose();
@@ -124,9 +118,7 @@ namespace MoreLinq
             }
 
             void IDisposable.Dispose() { }
-            #endregion
 
-            #region Private Methods
             /// <summary>
             /// Transposes elements in the cached permutation array to produce the next permutation
             /// </summary>
@@ -183,7 +175,6 @@ namespace MoreLinq
                     permutedSet[i] = _valueSet[_permutation[i]];
                 return permutedSet;
             }
-            #endregion
         }
 
         /// <summary>
@@ -200,7 +191,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="sequence">The original sequence to permute</param>
         /// <returns>A sequence of lists representing permutations of the original sequence</returns>
-        
+
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));

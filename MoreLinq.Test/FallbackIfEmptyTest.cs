@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -36,10 +37,13 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [Test]
-        public void FallbackIfEmptyPreservesSourceCollectionIfPossible()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(bool readOnly)
         {
-            var source = new[] { 1 };
+            var source = readOnly
+                       ? new UnenumerableReadOnlyList<int>(new[] { 1 })
+                       : (IEnumerable<int>)new UnenumerableList<int> { 1 };
             // ReSharper disable PossibleMultipleEnumeration
             Assert.AreSame(source.FallbackIfEmpty(12), source);
             Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
@@ -50,26 +54,16 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [Test]
-        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(bool readOnly)
         {
-            var source = new int[0];
+            var source = readOnly
+                       ? new UnenumerableReadOnlyList<int>(new int[0])
+                       : (IEnumerable<int>)new UnenumerableList<int>();
             var fallback = new[] { 1 };
             Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
             Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
-        }
-
-        public void FallbackIfEmptyWithEmptySequenceCollectionOptimized()
-        {
-            var source = Enumerable.Empty<int>();
-            // ReSharper disable PossibleMultipleEnumeration
-            source.FallbackIfEmpty(12).AssertSequenceEqual(12);
-            source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
-            source.FallbackIfEmpty(12, 23, 34).AssertSequenceEqual(12, 23, 34);
-            source.FallbackIfEmpty(12, 23, 34, 45).AssertSequenceEqual(12, 23, 34, 45);
-            source.FallbackIfEmpty(12, 23, 34, 45, 56).AssertSequenceEqual(12, 23, 34, 45, 56);
-            source.FallbackIfEmpty(12, 23, 34, 45, 56, 67).AssertSequenceEqual(12, 23, 34, 45, 56, 67);
-            // ReSharper restore PossibleMultipleEnumeration
         }
     }
 }
