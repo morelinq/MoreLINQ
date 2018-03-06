@@ -407,7 +407,7 @@ namespace MoreLinq.Experimental
                             // where it belongs in the order of results withheld
                             // so far and insert it in the list.
 
-                            var i = holds.BinarySearch(result, TupleComparer<int, TResult>.Key1);
+                            var i = holds.BinarySearch(result, TupleComparer<int, TResult>.Item1);
                             Debug.Assert(i < 0);
                             holds.Insert(~i, result);
                         }
@@ -557,10 +557,10 @@ namespace MoreLinq.Experimental
 
         static class TupleComparer<T1, T2>
         {
-            public static readonly IComparer<(T1, T2)> Key1 =
+            public static readonly IComparer<(T1, T2)> Item1 =
                 Comparer<(T1, T2)>.Create((x, y) => Comparer<T1>.Default.Compare(x.Item1, y.Item1));
 
-            public static readonly IComparer<(T1, T2)> Key2 =
+            public static readonly IComparer<(T1, T2)> Item2 =
                 Comparer<(T1, T2)>.Create((x, y) => Comparer<T2>.Default.Compare(x.Item2, y.Item2));
         }
     }
