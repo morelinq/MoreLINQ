@@ -46,12 +46,12 @@ namespace MoreLinq.NoConflict
         /// A <see cref="DataTable"/> representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-        
+
         public static DataTable ToDataTable<T>(this IEnumerable<T> source)
             => MoreEnumerable.ToDataTable(source);
 
         /// <summary>
-        /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> 
+        /// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
         /// object with a set of lambda expressions specifying which members (property
         /// or field) of each element in the sequence will supply the column values.
         /// </summary>
@@ -62,10 +62,9 @@ namespace MoreLinq.NoConflict
         /// A <see cref="DataTable"/> representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-       
+
         public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
             => MoreEnumerable.ToDataTable(source,expressions);
-
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
         /// </summary>
@@ -77,13 +76,13 @@ namespace MoreLinq.NoConflict
         /// A <see cref="DataTable"/> or subclass representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-        
+
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
             => MoreEnumerable.ToDataTable(source,table);
 
         /// <summary>
-        /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> 
+        /// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
         /// object with a set of lambda expressions specifying which members (property
         /// or field) of each element in the sequence will supply the column values.
         /// </summary>
@@ -96,7 +95,7 @@ namespace MoreLinq.NoConflict
         /// A <see cref="DataTable"/> or subclass representing the source.
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
-        
+
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
             where TTable : DataTable
             => MoreEnumerable.ToDataTable(source,table,expressions);

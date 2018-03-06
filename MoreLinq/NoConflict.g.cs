@@ -37,21 +37,21 @@ namespace MoreLinq.NoConflict
     public static partial class AcquireExtension
     {
         /// <summary>
-        /// Ensures that a source sequence of <see cref="IDisposable"/> 
-        /// objects are all acquired successfully. If the acquisition of any 
-        /// one <see cref="IDisposable"/> fails then those successfully 
+        /// Ensures that a source sequence of <see cref="IDisposable"/>
+        /// objects are all acquired successfully. If the acquisition of any
+        /// one <see cref="IDisposable"/> fails then those successfully
         /// acquired till that point are disposed.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">Source sequence of <see cref="IDisposable"/> objects.</param>
         /// <returns>
         /// Returns an array of all the acquired <see cref="IDisposable"/>
-        /// object and in source order.
+        /// objects in source order.
         /// </returns>
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
-        
+
         public static TSource[] Acquire<TSource>(this IEnumerable<TSource> source)
             where TSource : IDisposable
             => MoreEnumerable.Acquire(source);
@@ -65,7 +65,7 @@ namespace MoreLinq.NoConflict
     {
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="Enumerable.Aggregate{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -87,7 +87,7 @@ namespace MoreLinq.NoConflict
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
         /// The specified seed value is used as the initial accumulator value.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="Enumerable.Aggregate{TSource, TAccumulate}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -111,9 +111,9 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
-        /// The specified seed value is used as the initial accumulator value, 
+        /// The specified seed value is used as the initial accumulator value,
         /// and the specified function is used to select the result value.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="Enumerable.Aggregate{TSource, TAccumulate, TResult}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate}, Func{TAccumulate, TResult})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -155,12 +155,12 @@ namespace MoreLinq.NoConflict
         /// Returns the original sequence.
         /// </returns>
         /// <exception cref="InvalidOperationException">The input sequence
-        /// contains an element that does not meet the condition being 
+        /// contains an element that does not meet the condition being
         /// asserted.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        
+
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
             => MoreEnumerable.Assert(source,predicate);
 
@@ -178,8 +178,8 @@ namespace MoreLinq.NoConflict
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        
-        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, 
+
+        public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source,
             Func<TSource, bool> predicate, Func<TSource, Exception> errorSelector)
             => MoreEnumerable.Assert(source,predicate,errorSelector);
 
@@ -205,7 +205,7 @@ namespace MoreLinq.NoConflict
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        
+
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)             => MoreEnumerable.AssertCount(source,count);
 
         /// <summary>
@@ -225,8 +225,8 @@ namespace MoreLinq.NoConflict
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        
-        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, 
+
+        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)             => MoreEnumerable.AssertCount(source,count,errorSelector);
 
     }
@@ -303,7 +303,7 @@ namespace MoreLinq.NoConflict
         /// <param name="size">Size of buckets.</param>
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results (buckets and bucket content). 
+        /// This operator uses deferred execution and streams its results (buckets and bucket content).
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
@@ -321,7 +321,7 @@ namespace MoreLinq.NoConflict
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content).
         /// </remarks>
-        
+
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
             => MoreEnumerable.Batch(source,size,resultSelector);
@@ -344,9 +344,40 @@ namespace MoreLinq.NoConflict
         /// <param name="second">The second sequence of elements</param>
         /// <param name="resultSelector">A projection function that combines elements from both sequences</param>
         /// <returns>A sequence representing the Cartesian product of the two source sequences</returns>
-        
+
         public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first,second,resultSelector);
+
+    }
+
+    /// <summary><c>CompareCount</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class CompareCountExtension
+    {
+
+        /// <summary>
+        /// Compares two sequences and returns an integer that indicates whether the first sequence
+        /// has fewer, the same or more elements than the second sequence.
+        /// </summary>
+        /// <typeparam name="TFirst">Element type of the first sequence</typeparam>
+        /// <typeparam name="TSecond">Element type of the second sequence</typeparam>
+        /// <param name="first">The first sequence</param>
+        /// <param name="second">The second sequence</param>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is null</exception>
+        /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements
+        /// or <c>1</c> if the first sequence has the most elements.</returns>
+        /// <example>
+        /// <code>
+        /// var first = { 123, 456 };
+        /// var second = { 789 };
+        /// var result = first.CompareCount(second);
+        /// </code>
+        /// The <c>result</c> variable will contain <c>1</c>.
+        /// </example>
+        public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
+            => MoreEnumerable.CompareCount(first,second);
 
     }
 
@@ -363,7 +394,7 @@ namespace MoreLinq.NoConflict
         /// <param name="tail">All elements of the tail. Must not be null.</param>
         /// <returns>A sequence consisting of the head elements and the given tail elements.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-        
+
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
             => MoreEnumerable.Concat(head,tail);
 
@@ -375,7 +406,7 @@ namespace MoreLinq.NoConflict
         /// <param name="tail">Tail element of the new sequence.</param>
         /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-        
+
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
             => MoreEnumerable.Concat(head,tail);
 
@@ -392,7 +423,7 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <typeparam name="T">Element type of the sequence</typeparam>
         /// <param name="source">Source to consume</param>
-        
+
         public static void Consume<T>(this IEnumerable<T> source)
             => MoreEnumerable.Consume(source);
 
@@ -405,7 +436,7 @@ namespace MoreLinq.NoConflict
     {
 
         /// <summary>
-        /// Determines whether or not the number of elements in the sequence is between 
+        /// Determines whether or not the number of elements in the sequence is between
         /// an inclusive range of minimum and maximum integers.
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
@@ -436,7 +467,7 @@ namespace MoreLinq.NoConflict
     public static partial class CountByExtension
     {
         /// <summary>
-        /// Applies a key-generating function to each element of a sequence and returns a sequence of 
+        /// Applies a key-generating function to each element of a sequence and returns a sequence of
         /// unique keys and their number of occurrences in the original sequence.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
@@ -448,7 +479,7 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.CountBy(source,keySelector);
 
         /// <summary>
-        /// Applies a key-generating function to each element of a sequence and returns a sequence of 
+        /// Applies a key-generating function to each element of a sequence and returns a sequence of
         /// unique keys and their number of occurrences in the original sequence.
         /// An additional argument specifies a comparer to use for testing equivalence of keys.
         /// </summary>
@@ -601,11 +632,11 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.EquiZip(first,second,resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the three input sequences are of different lengths then 
+        /// If the three input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -637,11 +668,11 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.EquiZip(first,second,third,resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the three input sequences are of different lengths then 
+        /// If the three input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -671,7 +702,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, 
+             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
             => MoreEnumerable.EquiZip(first,second,third,fourth,resultSelector);
 
@@ -752,7 +783,7 @@ namespace MoreLinq.NoConflict
         /// <param name="keySelector">The mapping from source element to key.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        
+
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector)
@@ -778,7 +809,7 @@ namespace MoreLinq.NoConflict
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
-        
+
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
@@ -801,7 +832,7 @@ namespace MoreLinq.NoConflict
         /// <param name="startIndex">The zero-based index at which to begin excluding elements</param>
         /// <param name="count">The number of elements to exclude</param>
         /// <returns>A sequence that excludes the specified portion of elements</returns>
-        
+
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
             => MoreEnumerable.Exclude(sequence,startIndex,count);
 
@@ -837,7 +868,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -853,7 +884,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence from an array of values.
+        /// returns an alternate sequence from an array of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -869,7 +900,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -887,7 +918,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -907,7 +938,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -1790,57 +1821,57 @@ namespace MoreLinq.NoConflict
     public static partial class GroupAdjacentExtension
     {
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
+        /// Groups the adjacent elements of a sequence according to a
         /// specified key selector function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements in the same order as found in the 
+        /// and the adjacent elements in the same order as found in the
         /// source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
             => MoreEnumerable.GroupAdjacent(source,keySelector);
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function and compares the keys by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function and compares the keys by using a
         /// specified comparer.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
-        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to 
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to
         /// compare keys.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements in the same order as found in the 
+        /// and the adjacent elements in the same order as found in the
         /// source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -1848,32 +1879,32 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.GroupAdjacent(source,keySelector,comparer);
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function and projects the elements for 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function and projects the elements for
         /// each group by using a specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TElement">The type of the elements in the
         /// resulting groupings.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
-        /// <param name="elementSelector">A function to map each source 
+        /// <param name="elementSelector">A function to map each source
         /// element to an element in the resulting grouping.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements (of type <typeparamref name="TElement"/>) 
+        /// and the adjacent elements (of type <typeparamref name="TElement"/>)
         /// in the same order as found in the source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -1881,19 +1912,19 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.GroupAdjacent(source,keySelector,elementSelector);
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function. The keys are compared by using 
-        /// a comparer and each group's elements are projected by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function. The keys are compared by using
+        /// a comparer and each group's elements are projected by using a
         /// specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TResult">The type of the elements in the
         /// resulting sequence.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
         /// <param name="resultSelector">A function to map each key and
         /// associated source elements to a result object.</param>
@@ -1901,9 +1932,9 @@ namespace MoreLinq.NoConflict
         /// <typeparamref name="TResult" /> where each element represents
         /// a projection over a group and its key.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
 
@@ -1914,35 +1945,35 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.GroupAdjacent(source,keySelector,resultSelector);
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function. The keys are compared by using 
-        /// a comparer and each group's elements are projected by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function. The keys are compared by using
+        /// a comparer and each group's elements are projected by using a
         /// specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TElement">The type of the elements in the
         /// resulting groupings.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
-        /// <param name="elementSelector">A function to map each source 
+        /// <param name="elementSelector">A function to map each source
         /// element to an element in the resulting grouping.</param>
-        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to 
+        /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to
         /// compare keys.</param>
         /// <returns>A sequence of groupings where each grouping
         /// (<see cref="IGrouping{TKey,TElement}"/>) contains the key
-        /// and the adjacent elements (of type <typeparamref name="TElement"/>) 
+        /// and the adjacent elements (of type <typeparamref name="TElement"/>)
         /// in the same order as found in the source sequence.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
-        
+
         public static IEnumerable<IGrouping<TKey, TElement>> GroupAdjacent<TSource, TKey, TElement>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -1951,31 +1982,31 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.GroupAdjacent(source,keySelector,elementSelector,comparer);
 
         /// <summary>
-        /// Groups the adjacent elements of a sequence according to a 
-        /// specified key selector function. The keys are compared by using 
-        /// a comparer and each group's elements are projected by using a 
+        /// Groups the adjacent elements of a sequence according to a
+        /// specified key selector function. The keys are compared by using
+        /// a comparer and each group's elements are projected by using a
         /// specified function.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of 
+        /// <typeparam name="TSource">The type of the elements of
         /// <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TKey">The type of the key returned by 
+        /// <typeparam name="TKey">The type of the key returned by
         /// <paramref name="keySelector"/>.</typeparam>
         /// <typeparam name="TResult">The type of the elements in the
         /// resulting sequence.</typeparam>
         /// <param name="source">A sequence whose elements to group.</param>
-        /// <param name="keySelector">A function to extract the key for each 
+        /// <param name="keySelector">A function to extract the key for each
         /// element.</param>
         /// <param name="resultSelector">A function to map each key and
         /// associated source elements to a result object.</param>
-        /// <param name="comparer">An <see cref="IEqualityComparer{TKey}"/> to 
+        /// <param name="comparer">An <see cref="IEqualityComparer{TKey}"/> to
         /// compare keys.</param>
         /// <returns>A collection of elements of type
         /// <typeparamref name="TResult" /> where each element represents
         /// a projection over a group and its key.</returns>
         /// <remarks>
-        /// This method is implemented by using deferred execution and 
-        /// streams the groupings. The grouping elements, however, are 
-        /// buffered. Each grouping is therefore yielded as soon as it 
+        /// This method is implemented by using deferred execution and
+        /// streams the groupings. The grouping elements, however, are
+        /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
 
@@ -1994,21 +2025,21 @@ namespace MoreLinq.NoConflict
     public static partial class IndexExtension
     {
         /// <summary>
-        /// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/> 
-        /// where the key is the zero-based index of the value in the source 
+        /// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/>
+        /// where the key is the zero-based index of the value in the source
         /// sequence.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
-        /// <remarks>This operator uses deferred execution and streams its 
+        /// <remarks>This operator uses deferred execution and streams its
         /// results.</remarks>
-        
+
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source)
             => MoreEnumerable.Index(source);
 
         /// <summary>
-        /// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/> 
+        /// Returns a sequence of <see cref="KeyValuePair{TKey,TValue}"/>
         /// where the key is the index of the value in the source sequence.
         /// An additional parameter specifies the starting index.
         /// </summary>
@@ -2016,9 +2047,9 @@ namespace MoreLinq.NoConflict
         /// <param name="source">The source sequence.</param>
         /// <param name="startIndex"></param>
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
-        /// <remarks>This operator uses deferred execution and streams its 
+        /// <remarks>This operator uses deferred execution and streams its
         /// results.</remarks>
-        
+
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
             => MoreEnumerable.Index(source,startIndex);
 
@@ -2085,7 +2116,7 @@ namespace MoreLinq.NoConflict
         /// <param name="sequence">The first sequence in the interleave group</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
-        
+
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
             => MoreEnumerable.Interleave(sequence,otherSequences);
 
@@ -2101,7 +2132,7 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <remarks>
         /// This operator evaluates in a deferred and streaming manner.<br/>
-        /// For elements prior to the lag offset, <c>default(T) is used as the lagged value.</c><br/>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
         /// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>
@@ -2109,7 +2140,7 @@ namespace MoreLinq.NoConflict
         /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
         /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
-        
+
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
             => MoreEnumerable.Lag(source,offset,resultSelector);
 
@@ -2126,7 +2157,7 @@ namespace MoreLinq.NoConflict
         /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
         /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
-        
+
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
             => MoreEnumerable.Lag(source,offset,defaultLagValue,resultSelector);
 
@@ -2151,7 +2182,7 @@ namespace MoreLinq.NoConflict
         /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
-        
+
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
             => MoreEnumerable.Lead(source,offset,resultSelector);
 
@@ -2168,7 +2199,7 @@ namespace MoreLinq.NoConflict
         /// <param name="defaultLeadValue">A default value supplied for the leading element when none is available</param>
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
-        
+
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
             => MoreEnumerable.Lead(source,offset,defaultLeadValue,resultSelector);
 
@@ -2373,7 +2404,7 @@ namespace MoreLinq.NoConflict
 
         /// <summary>
         /// Returns the maximal element of the given sequence, based on
-        /// the given projection and the specified comparer for projected values. 
+        /// the given projection and the specified comparer for projected values.
         /// </summary>
         /// <remarks>
         /// If more than one element has the maximal projected value, the first
@@ -2386,10 +2417,10 @@ namespace MoreLinq.NoConflict
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <param name="comparer">Comparer to use to compare projected values</param>
         /// <returns>The maximal element, according to the projection.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/> 
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
-        
+
         public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
             => MoreEnumerable.MaxBy(source,selector,comparer);
@@ -2418,7 +2449,7 @@ namespace MoreLinq.NoConflict
         /// <returns>The minimal element, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
-        
+
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MinBy(source,selector);
@@ -2438,7 +2469,7 @@ namespace MoreLinq.NoConflict
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <param name="comparer">Comparer to use to compare projected values</param>
         /// <returns>The minimal element, according to the projection.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/> 
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
@@ -2500,7 +2531,7 @@ namespace MoreLinq.NoConflict
         /// <param name="action">Action delegate for which to produce a nested loop sequence</param>
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
         /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
-       
+
         public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
             => MoreEnumerable.NestedLoops(action,loopCounts);
 
@@ -2520,7 +2551,7 @@ namespace MoreLinq.NoConflict
         /// <param name="keySelector">A key selector function</param>
         /// <param name="direction">A direction in which to order the elements (ascending, descending)</param>
         /// <returns>An ordered copy of the source sequence</returns>
-        
+
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
             => MoreEnumerable.OrderBy(source,keySelector,direction);
 
@@ -2534,7 +2565,7 @@ namespace MoreLinq.NoConflict
         /// <param name="direction">A direction in which to order the elements (ascending, descending)</param>
         /// <param name="comparer">A comparer used to define the semantics of element comparison</param>
         /// <returns>An ordered copy of the source sequence</returns>
-        
+
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
             => MoreEnumerable.OrderBy(source,keySelector,comparer,direction);
 
@@ -2792,7 +2823,7 @@ namespace MoreLinq.NoConflict
     public static partial class PadExtension
     {
         /// <summary>
-        /// Pads a sequence with default values if it is narrower (shorter 
+        /// Pads a sequence with default values if it is narrower (shorter
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -2810,7 +2841,7 @@ namespace MoreLinq.NoConflict
         /// int[] numbers = { 123, 456, 789 };
         /// IEnumerable&lt;int&gt; result = numbers.Pad(5);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
+        /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
 
@@ -2818,7 +2849,7 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.Pad(source,width);
 
         /// <summary>
-        /// Pads a sequence with a given filler value if it is narrower (shorter 
+        /// Pads a sequence with a given filler value if it is narrower (shorter
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -2837,7 +2868,7 @@ namespace MoreLinq.NoConflict
         /// int[] numbers = { 123, 456, 789 };
         /// IEnumerable&lt;int&gt; result = numbers.Pad(5, -1);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
+        /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, and 789 followed by two occurrences of -1, in turn.
         /// </example>
 
@@ -2845,7 +2876,7 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.Pad(source,width,padding);
 
         /// <summary>
-        /// Pads a sequence with a dynamic filler value if it is narrower (shorter 
+        /// Pads a sequence with a dynamic filler value if it is narrower (shorter
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -2864,7 +2895,7 @@ namespace MoreLinq.NoConflict
         /// int[] numbers = { 0, 1, 2 };
         /// IEnumerable&lt;int&gt; result = numbers.Pad(5, i => -i);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
+        /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2, -3 and -4, in turn.
         /// </example>
 
@@ -2879,7 +2910,7 @@ namespace MoreLinq.NoConflict
     public static partial class PadStartExtension
     {
         /// <summary>
-        /// Pads a sequence with default values in the beginning if it is narrower (shorter 
+        /// Pads a sequence with default values in the beginning if it is narrower (shorter
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -2904,7 +2935,7 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.PadStart(source,width);
 
         /// <summary>
-        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter 
+        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter
         /// in length) than a given width.
         /// An additional parameter specifies the value to use for padding.
         /// </summary>
@@ -2931,7 +2962,7 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.PadStart(source,width,padding);
 
         /// <summary>
-        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter 
+        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter
         /// in length) than a given width.
         /// An additional parameter specifies the function to calculate padding.
         /// </summary>
@@ -2965,15 +2996,15 @@ namespace MoreLinq.NoConflict
     public static partial class PairwiseExtension
     {
         /// <summary>
-        /// Returns a sequence resulting from applying a function to each 
-        /// element in the source sequence and its 
-        /// predecessor, with the exception of the first element which is 
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence and its
+        /// predecessor, with the exception of the first element which is
         /// only returned as the predecessor of the second element.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">The type of the element of the returned sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="resultSelector">A transform function to apply to 
+        /// <param name="resultSelector">A transform function to apply to
         /// each pair of sequence.</param>
         /// <returns>
         /// Returns the resulting sequence.
@@ -2986,7 +3017,7 @@ namespace MoreLinq.NoConflict
         /// int[] numbers = { 123, 456, 789 };
         /// IEnumerable&lt;int&gt; result = numbers.Pairwise((a, b) => a + b);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
+        /// The <c>result</c> variable, when iterated over, will yield
         /// 579 and 1245, in turn.
         /// </example>
 
@@ -3456,7 +3487,7 @@ namespace MoreLinq.NoConflict
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="sequence">The original sequence to permute</param>
         /// <returns>A sequence of lists representing permutations of the original sequence</returns>
-        
+
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
             => MoreEnumerable.Permutations(sequence);
 
@@ -3509,7 +3540,7 @@ namespace MoreLinq.NoConflict
         /// int[] numbers = { 1, 2, 3 };
         /// IEnumerable&lt;int&gt; result = numbers.Prepend(0);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
+        /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2 and 3, in turn.
 
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
@@ -3570,7 +3601,7 @@ namespace MoreLinq.NoConflict
         /// <param name="sequence">The sequence from which to return random elements</param>
         /// <param name="subsetSize">The size of the random subset to return</param>
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
-        
+
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize)
             => MoreEnumerable.RandomSubset(sequence,subsetSize);
 
@@ -3582,7 +3613,7 @@ namespace MoreLinq.NoConflict
         /// <param name="subsetSize">The size of the random subset to return</param>
         /// <param name="rand">A random generator used as part of the selection algorithm</param>
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
-        
+
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
             => MoreEnumerable.RandomSubset(sequence,subsetSize,rand);
 
@@ -3599,7 +3630,7 @@ namespace MoreLinq.NoConflict
         /// <typeparam name="TSource">Type of item in the sequence</typeparam>
         /// <param name="source">The sequence whose items will be ranked</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
-        
+
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source)
             => MoreEnumerable.Rank(source);
 
@@ -3610,7 +3641,7 @@ namespace MoreLinq.NoConflict
         /// <param name="source">The sequence of items to rank</param>
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
-        
+
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
             => MoreEnumerable.Rank(source,comparer);
 
@@ -3630,7 +3661,7 @@ namespace MoreLinq.NoConflict
         /// <param name="source">The sequence of items to rank</param>
         /// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
-        
+
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
             => MoreEnumerable.RankBy(source,keySelector);
 
@@ -3643,7 +3674,7 @@ namespace MoreLinq.NoConflict
         /// <param name="keySelector">A key selector function which returns the value by which to rank items in the sequence</param>
         /// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
-        
+
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
             => MoreEnumerable.RankBy(source,keySelector,comparer);
 
@@ -3859,7 +3890,7 @@ namespace MoreLinq.NoConflict
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <param name="sequence">The sequence to run length encode</param>
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where the key is the element and the value is the occurrence count</returns>
-        
+
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence)
             => MoreEnumerable.RunLengthEncode(sequence);
 
@@ -3872,7 +3903,7 @@ namespace MoreLinq.NoConflict
         /// <param name="sequence">The sequence to run length encode</param>
         /// <param name="comparer">The comparer used to identify equivalent items</param>
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where they key is the element and the value is the occurrence count</returns>
-        
+
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
             => MoreEnumerable.RunLengthEncode(sequence,comparer);
 
@@ -3916,8 +3947,8 @@ namespace MoreLinq.NoConflict
             => MoreEnumerable.Scan(source,transformation);
 
         /// <summary>
-        /// Like <see cref="Enumerable.Aggregate{TSource}"/> except returns 
-        /// the sequence of intermediate results as well as the final one. 
+        /// Like <see cref="Enumerable.Aggregate{TSource}"/> except returns
+        /// the sequence of intermediate results as well as the final one.
         /// An additional parameter specifies a seed.
         /// </summary>
         /// <remarks>
@@ -3935,7 +3966,7 @@ namespace MoreLinq.NoConflict
         /// <param name="seed">Initial state to seed</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        
+
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
             => MoreEnumerable.Scan(source,seed,transformation);
@@ -3949,7 +3980,7 @@ namespace MoreLinq.NoConflict
     {
         /// <summary>
         /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
@@ -3976,7 +4007,7 @@ namespace MoreLinq.NoConflict
         /// <summary>
         /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
         /// The specified seed value is used as the initial accumulator value.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -4016,7 +4047,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
             => MoreEnumerable.Segment(source,newSegmentPredicate);
 
@@ -4030,7 +4061,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
             => MoreEnumerable.Segment(source,newSegmentPredicate);
 
@@ -4044,7 +4075,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
             => MoreEnumerable.Segment(source,newSegmentPredicate);
 
@@ -4149,7 +4180,7 @@ namespace MoreLinq.NoConflict
         /// Using SortedMerge on sequences that are not ordered or are not in the same order produces
         /// undefined results.<br/>
         /// <c>SortedMerge</c> uses performs the merge in a deferred, streaming manner. <br/>
-        /// 
+        ///
         /// Here is an example of a merge, as well as the produced result:
         /// <code>
         ///   var s1 = new[] { 3, 7, 11 };
@@ -4166,7 +4197,7 @@ namespace MoreLinq.NoConflict
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-        
+
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
             => MoreEnumerable.SortedMerge(source,direction,otherSequences);
 
@@ -4180,7 +4211,7 @@ namespace MoreLinq.NoConflict
         /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
-        
+
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSequences)
             => MoreEnumerable.SortedMerge(source,direction,comparer,otherSequences);
 
@@ -4424,9 +4455,9 @@ namespace MoreLinq.NoConflict
         /// equivalent to <paramref name="second" />.
         /// </returns>
         /// <remarks>
-        /// This is the <see cref="IEnumerable{T}" /> equivalent of 
+        /// This is the <see cref="IEnumerable{T}" /> equivalent of
         /// <see cref="string.StartsWith(string)" /> and it calls
-        /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using 
+        /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> using
         /// <see cref="EqualityComparer{T}.Default"/> on pairs of elements at
         /// the same index.
         /// </remarks>
@@ -4447,7 +4478,7 @@ namespace MoreLinq.NoConflict
         /// equivalent to <paramref name="second" />.
         /// </returns>
         /// <remarks>
-        /// This is the <see cref="IEnumerable{T}" /> equivalent of 
+        /// This is the <see cref="IEnumerable{T}" /> equivalent of
         /// <see cref="string.StartsWith(string)" /> and
         /// it calls <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs
         /// of elements at the same index.
@@ -4471,15 +4502,15 @@ namespace MoreLinq.NoConflict
         /// This operator produces all of the subsets of a given sequence. Subsets are returned
         /// in increasing cardinality, starting with the empty set and terminating with the
         /// entire original sequence.<br/>
-        /// Subsets are produced in a deferred, streaming manner; however, each subset is returned 
+        /// Subsets are produced in a deferred, streaming manner; however, each subset is returned
         /// as a materialized list.<br/>
-        /// There are 2^N subsets of a given sequence, where N => sequence.Count(). 
+        /// There are 2^N subsets of a given sequence, where N => sequence.Count().
         /// </remarks>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
-        
+
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
             => MoreEnumerable.Subsets(sequence);
 
@@ -4499,7 +4530,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
         /// </exception>
-        
+
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
             => MoreEnumerable.Subsets(sequence,subsetSize);
 
@@ -4511,15 +4542,15 @@ namespace MoreLinq.NoConflict
     public static partial class TagFirstLastExtension
     {
         /// <summary>
-        /// Returns a sequence resulting from applying a function to each 
-        /// element in the source sequence with additional parameters 
-        /// indicating whether the element is the first and/or last of the 
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence with additional parameters
+        /// indicating whether the element is the first and/or last of the
         /// sequence.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">The type of the element of the returned sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="resultSelector">A function that determines how to 
+        /// <param name="resultSelector">A function that determines how to
         /// project the each element along with its first or last tag.</param>
         /// <returns>
         /// Returns the resulting sequence.
@@ -4530,18 +4561,18 @@ namespace MoreLinq.NoConflict
         /// <example>
         /// <code>
         /// var numbers = new[] { 123, 456, 789 };
-        /// var result = numbers.TagFirstLast((num, fst, lst) => new 
-        ///              { 
+        /// var result = numbers.TagFirstLast((num, fst, lst) => new
+        ///              {
         ///                  Number = num,
         ///                  IsFirst = fst, IsLast = lst
         ///              });
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
-        /// <c>{ Number = 123, IsFirst = True, IsLast = False }</c>, 
-        /// <c>{ Number = 456, IsFirst = False, IsLast = False }</c> and 
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// <c>{ Number = 123, IsFirst = True, IsLast = False }</c>,
+        /// <c>{ Number = 456, IsFirst = False, IsLast = False }</c> and
         /// <c>{ Number = 789, IsFirst = False, IsLast = True }</c> in turn.
         /// </example>
-        
+
         public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
             => MoreEnumerable.TagFirstLast(source,resultSelector);
 
@@ -4583,14 +4614,14 @@ namespace MoreLinq.NoConflict
     public static partial class TakeLastExtension
     {
         /// <summary>
-        /// Returns a specified number of contiguous elements from the end of 
+        /// Returns a specified number of contiguous elements from the end of
         /// a sequence.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to return the last element of.</param>
         /// <param name="count">The number of elements to return.</param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}"/> that contains the specified number of 
+        /// An <see cref="IEnumerable{T}"/> that contains the specified number of
         /// elements from the end of the input sequence.
         /// </returns>
         /// <remarks>
@@ -4601,7 +4632,7 @@ namespace MoreLinq.NoConflict
         /// int[] numbers = { 12, 34, 56, 78 };
         /// IEnumerable&lt;int&gt; result = numbers.TakeLast(2);
         /// </code>
-        /// The <c>result</c> variable, when iterated over, will yield 
+        /// The <c>result</c> variable, when iterated over, will yield
         /// 56 and 78 in turn.
         /// </example>
 
@@ -4665,7 +4696,7 @@ namespace MoreLinq.NoConflict
         /// <param name="keySelector">A key selector function</param>
         /// <param name="direction">A direction in which to order the elements (ascending, descending)</param>
         /// <returns>An ordered copy of the source sequence</returns>
-        
+
         public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
             => MoreEnumerable.ThenBy(source,keySelector,direction);
 
@@ -4679,7 +4710,7 @@ namespace MoreLinq.NoConflict
         /// <param name="direction">A direction in which to order the elements (ascending, descending)</param>
         /// <param name="comparer">A comparer used to define the semantics of element comparison</param>
         /// <returns>An ordered copy of the source sequence</returns>
-        
+
         public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
             => MoreEnumerable.ThenBy(source,keySelector,comparer,direction);
 
@@ -4877,20 +4908,21 @@ namespace MoreLinq.NoConflict
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
     public static partial class ToDelimitedStringExtension
     {
-
         /// <summary>
         /// Creates a delimited string from a sequence of values and
         /// a given delimiter.
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -4904,13 +4936,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -4924,13 +4958,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -4944,13 +4980,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -4964,13 +5002,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -4984,13 +5024,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5004,13 +5046,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5024,13 +5068,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5044,13 +5090,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5064,13 +5112,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5084,13 +5134,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5104,13 +5156,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5124,13 +5178,15 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5144,20 +5200,21 @@ namespace MoreLinq.NoConflict
         /// </summary>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
             => MoreEnumerable.ToDelimitedString(source,delimiter);
-
         /// <summary>
         /// Creates a delimited string from a sequence of values and
         /// a given delimiter.
@@ -5165,13 +5222,15 @@ namespace MoreLinq.NoConflict
         /// <typeparam name="TSource">Type of element in the source sequence</typeparam>
         /// <param name="source">The sequence of items to delimit. Each is converted to a string using the
         /// simple ToString() conversion.</param>
-        /// <param name="delimiter">The delimiter to inject between elements. May be null, in which case
-        /// the executing thread's current culture's list separator is used.</param>
+        /// <param name="delimiter">The delimiter to inject between elements.</param>
         /// <returns>
         /// A string that consists of the elements in <paramref name="source"/>
         /// delimited by <paramref name="delimiter"/>. If the source sequence
         /// is empty, the method returns an empty string.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="delimiter"/> is <c>null</c>.
+        /// </exception>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
@@ -5377,7 +5436,7 @@ namespace MoreLinq.NoConflict
         /// Return the source sequence unmodified.
         /// </returns>
         /// <remarks>
-        /// This a pass-through operator that uses deferred execution and 
+        /// This a pass-through operator that uses deferred execution and
         /// streams the results.
         /// </remarks>
 
@@ -5398,7 +5457,7 @@ namespace MoreLinq.NoConflict
         /// Return the source sequence unmodified.
         /// </returns>
         /// <remarks>
-        /// This a pass-through operator that uses deferred execution and 
+        /// This a pass-through operator that uses deferred execution and
         /// streams the results.
         /// </remarks>
 
@@ -5416,7 +5475,7 @@ namespace MoreLinq.NoConflict
         /// Return the source sequence unmodified.
         /// </returns>
         /// <remarks>
-        /// This a pass-through operator that uses deferred execution and 
+        /// This a pass-through operator that uses deferred execution and
         /// streams the results.
         /// </remarks>
 
@@ -5441,7 +5500,7 @@ namespace MoreLinq.NoConflict
         /// <param name="source">The sequence to evaluate a sliding window over</param>
         /// <param name="size">The size (number of elements) in each window</param>
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
-        
+
         public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
             => MoreEnumerable.Windowed(source,size);
 
@@ -5495,11 +5554,11 @@ namespace MoreLinq.NoConflict
     {
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the two input sequences are of different lengths, the result sequence 
+        /// If the two input sequences are of different lengths, the result sequence
         /// is terminated as soon as the shortest input sequence is exhausted.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -5518,16 +5577,16 @@ namespace MoreLinq.NoConflict
         /// <param name="second">Second sequence</param>
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences</returns>
-        
+
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first,second,resultSelector);
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the input sequences are of different lengths, the result sequence 
+        /// If the input sequences are of different lengths, the result sequence
         /// is terminated as soon as the shortest input sequence is exhausted.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -5538,7 +5597,7 @@ namespace MoreLinq.NoConflict
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
         /// </code>
-        /// The <c>zipped</c> variable, when iterated over, will yield 
+        /// The <c>zipped</c> variable, when iterated over, will yield
         /// "98A", "100B", "102C", in turn.
         /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
@@ -5550,17 +5609,17 @@ namespace MoreLinq.NoConflict
         /// <param name="third">Third sequence</param>
         /// <param name="resultSelector">Function to apply to each triplet of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
-        
+
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first,second,third,resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element 
+        /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the input sequences are of different lengths, the result sequence 
+        /// If the input sequences are of different lengths, the result sequence
         /// is terminated as soon as the shortest input sequence is exhausted.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -5572,7 +5631,7 @@ namespace MoreLinq.NoConflict
         /// var flags   = new[] { true, false };
         /// var zipped  = numbers.ZipShortest(letters, chars, flags (n, l, c, f) => n + l + c + f);
         /// </code>
-        /// The <c>zipped</c> variable, when iterated over, will yield 
+        /// The <c>zipped</c> variable, when iterated over, will yield
         /// "1AaTrue", "2BbFalse" in turn.
         /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
@@ -5586,7 +5645,7 @@ namespace MoreLinq.NoConflict
         /// <param name="fourth">Fourth sequence</param>
         /// <param name="resultSelector">Function to apply to each quadruplet of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
-        
+
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, Func<T1, T2, T3, T4, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first,second,third,fourth,resultSelector);
