@@ -248,37 +248,34 @@ namespace MoreLinq.Experimental
             source.WithOptions(source.Options.WithPreserveOrder(value));
 
         /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form.
+        /// Creates a sequence that streams the result of each task in the
+        /// source sequence as it completes.
         /// </summary>
-        /// <typeparam name="T">The type of the source elements.</typeparam>
-        /// <typeparam name="TResult">The type of the result elements.</typeparam>
-        /// <param name="source">The source sequence.</param>
-        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <typeparam name="T">
+        /// The type of each task's result as well as the type of the elements
+        /// of the resulting sequence.</typeparam>
+        /// <param name="source">The source sequence of tasks.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously.
+        /// A sequence that streams the result of each task in
+        /// <paramref name="source"/> as it completes.
         /// </returns>
         /// <remarks>
         /// <para>
         /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and, by default,
+        /// yielded as each asynchronous task completes and, by default,
         /// not guaranteed to be based on the source sequence order. If order
         /// is important, compose further with
         /// <see cref="AsOrdered{T}"/>.</para>
         /// <para>
-        /// This method starts a new task where the asynchronous projections
-        /// are started and awaited. If the resulting sequence is partially
-        /// consumed then there's a good chance that some projection work will
-        /// be wasted, those that are in flight.</para>
-        /// <para>
-        /// The <paramref name="selector"/> function should be designed to be
-        /// thread-agnostic.</para>
+        /// This method starts a new task where the tasks are awaited. If the
+        /// resulting sequence is partially consumed then there's a good chance
+        /// that some tasks will be wasted, those that are in flight.</para>
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> source, Func<T, Task<TResult>> selector)
+        public static ISelectAsyncEnumerable<T> Await<T>(
+            this IEnumerable<Task<T>> source)
         {
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-            return source.SelectAsync((e, _) => selector(e));
+            return source.SelectAsync((e, _) => e);
         }
 
         /// <summary>
