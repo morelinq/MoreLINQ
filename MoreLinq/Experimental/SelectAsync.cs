@@ -162,8 +162,21 @@ namespace MoreLinq.Experimental
         /// A sequence that projects results asynchronously using the given
         /// concurrency limit.</returns>
 
-        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int? value) =>
+        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int value) =>
             source.WithOptions(source.Options.WithMaxConcurrency(value));
+
+        /// <summary>
+        /// Returns a new asynchronous projection operation with no defined
+        /// limitation on concurrency.
+        /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// A sequence that projects results asynchronously using no defined
+        /// limitation on concurrency.</returns>
+
+        public static ISelectAsyncEnumerable<T> UnboundedConcurrency<T>(this ISelectAsyncEnumerable<T> source) =>
+            source.WithOptions(source.Options.WithMaxConcurrency(null));
 
         /// <summary>
         /// Returns a new asynchronous projection operation with the given
