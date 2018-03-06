@@ -442,7 +442,7 @@ namespace MoreLinq.Experimental
         enum Notice { Result, Error, End }
 
         static async Task<TResult> Select<T, TResult>(this Task<T> task, Func<T, TResult> selector) =>
-            selector(await task);
+            selector(await task.ConfigureAwait(continueOnCapturedContext: false));
 
         static async Task CollectToAsync<T, TResult, TNotice>(
             this IEnumerator<T> e,
@@ -482,8 +482,8 @@ namespace MoreLinq.Experimental
                         // completes when the CancellationToken trips.
 
                         var completedTask = await
-                            Task.WhenAny(tasks.Cast<Task>()
-                                              .Concat(cancellationTaskSource.Task));
+                            Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task))
+                                .ConfigureAwait(continueOnCapturedContext: false);
 
                         if (completedTask == cancellationTaskSource.Task)
                         {
