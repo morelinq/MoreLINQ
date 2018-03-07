@@ -30,24 +30,25 @@ namespace MoreLinq.Experimental
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents options for an asynchronous projection operation.
+    /// Represents options for a query whose results evaluate asynchronously.
     /// </summary>
 
-    public sealed class SelectAsyncOptions
+    public sealed class AwaitQueryOptions
     {
         /// <summary>
-        /// The default options an asynchronous projection operation.
+        /// The default options used for a query whose results evaluate
+        /// asynchronously.
         /// </summary>
 
-        public static readonly SelectAsyncOptions Default =
-            new SelectAsyncOptions(null /* = unbounded concurrency */,
-                                   TaskScheduler.Default,
-                                   preserveOrder: false);
+        public static readonly AwaitQueryOptions Default =
+            new AwaitQueryOptions(null /* = unbounded concurrency */,
+                                  TaskScheduler.Default,
+                                  preserveOrder: false);
 
         /// <summary>
         /// Gets a positive (non-zero) integer that specifies the maximum
-        /// projections to run concurrenctly or <c>null</c> to mean unlimited
-        /// concurrency.
+        /// number of asynchronous operations to have in-flight concurrently
+        /// or <c>null</c> to mean unlimited concurrency.
         /// </summary>
 
         public int? MaxConcurrency { get; }
@@ -60,12 +61,12 @@ namespace MoreLinq.Experimental
 
         /// <summary>
         /// Get a Boolean that determines whether results should be ordered
-        /// the same as the projection source.
+        /// the same as the source.
         /// </summary>
 
         public bool PreserveOrder { get; }
 
-        SelectAsyncOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
+        AwaitQueryOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
         {
             MaxConcurrency = maxConcurrency == null || maxConcurrency > 0
                            ? maxConcurrency
@@ -84,8 +85,8 @@ namespace MoreLinq.Experimental
         /// Use <c>null</c> to mean unbounded concurrency.</param>
         /// <returns>Options with the new setting.</returns>
 
-        public SelectAsyncOptions WithMaxConcurrency(int? value) =>
-            value == MaxConcurrency ? this : new SelectAsyncOptions(value, Scheduler, PreserveOrder);
+        public AwaitQueryOptions WithMaxConcurrency(int? value) =>
+            value == MaxConcurrency ? this : new AwaitQueryOptions(value, Scheduler, PreserveOrder);
 
         /// <summary>
         /// Returns new options with the given scheduler.
@@ -94,13 +95,12 @@ namespace MoreLinq.Experimental
         /// The scheduler to use to for the workhorse task.</param>
         /// <returns>Options with the new setting.</returns>
 
-        public SelectAsyncOptions WithScheduler(TaskScheduler value) =>
-            value == Scheduler ? this : new SelectAsyncOptions(MaxConcurrency, value, PreserveOrder);
+        public AwaitQueryOptions WithScheduler(TaskScheduler value) =>
+            value == Scheduler ? this : new AwaitQueryOptions(MaxConcurrency, value, PreserveOrder);
 
         /// <summary>
         /// Returns new options with the given Boolean indicating whether or
-        /// not the projections should be returned in the order of the
-        /// projection source.
+        /// not the results should be returned in the order of the source.
         /// </summary>
         /// <param name="value">
         /// A Boolean where <c>true</c> means results are in source order and
@@ -108,88 +108,88 @@ namespace MoreLinq.Experimental
         /// efficiency.</param>
         /// <returns>Options with the new setting.</returns>
 
-        public SelectAsyncOptions WithPreserveOrder(bool value) =>
-            value == PreserveOrder ? this : new SelectAsyncOptions(MaxConcurrency, Scheduler, value);
+        public AwaitQueryOptions WithPreserveOrder(bool value) =>
+            value == PreserveOrder ? this : new AwaitQueryOptions(MaxConcurrency, Scheduler, value);
     }
 
     /// <summary>
-    /// An <see cref="IEnumerable{T}"/> representing an asynchronous projection.
+    /// Represents a sequence whose elements or results evaluate asynchronously.
     /// </summary>
     /// <inheritdoc />
     /// <typeparam name="T">The type of the source elements.</typeparam>
 
-    public interface ISelectAsyncEnumerable<out T> : IEnumerable<T>
+    public interface IAwaitQuery<out T> : IEnumerable<T>
     {
         /// <summary>
-        /// The options to apply to this asynchronous projection operation.
+        /// The options that determine how the sequence evaluation behaves when
+        /// it is iterated.
         /// </summary>
 
-        SelectAsyncOptions Options { get; }
+        AwaitQueryOptions Options { get; }
 
         /// <summary>
-        /// Returns a new asynchronous projection operation that will use the
-        /// given options.
+        /// Returns a new query that will use the given options.
         /// </summary>
         /// <param name="options">The new options to use.</param>
         /// <returns>
-        /// Returns a new sequence that projects asynchronously using the
-        /// supplied options.</returns>
+        /// Returns a new query using the supplied options.
+        /// </returns>
 
-        ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options);
+        IAwaitQuery<T> WithOptions(AwaitQueryOptions options);
     }
 
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Converts an asynchronous projection operation to use sequential
-        /// evaluation.
+        /// Converts a query whose results evaluate asynchronously to use
+        /// sequential instead of concurrentl evaluation.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>The converted sequence.</returns>
 
-        public static IEnumerable<T> AsSequential<T>(this ISelectAsyncEnumerable<T> source) =>
+        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source) =>
             source.MaxConcurrency(1);
 
         /// <summary>
-        /// Returns a new asynchronous projection operation with the given
+        /// Returns a query whose results evaluate asynchronously to use a
         /// concurrency limit.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="value"></param>
         /// <returns>
-        /// A sequence that projects results asynchronously using the given
+        /// A query whose results evaluate asynchronously using the given
         /// concurrency limit.</returns>
 
-        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int value) =>
+        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value) =>
             source.WithOptions(source.Options.WithMaxConcurrency(value));
 
         /// <summary>
-        /// Returns a new asynchronous projection operation with no defined
-        /// limitation on concurrency.
+        /// Returns a query whose results evaluate asynchronously and
+        /// concurrently with no defined limitation on concurrency.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously using no defined
+        /// A query whose results evaluate asynchronously using no defined
         /// limitation on concurrency.</returns>
 
-        public static ISelectAsyncEnumerable<T> UnboundedConcurrency<T>(this ISelectAsyncEnumerable<T> source) =>
+        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source) =>
             source.WithOptions(source.Options.WithMaxConcurrency(null));
 
         /// <summary>
-        /// Returns a new asynchronous projection operation with the given
-        /// scheduler.
+        /// Returns a query whose results evaluate asynchronously and uses the
+        /// given scheduler for the workhorse task.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="value">The scheduler to use.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously using the given
-        /// scheduler.</returns>
+        /// A query whose results evaluate asynchronously and uses the
+        /// given scheduler for the workhorse task.</returns>
 
-        public static ISelectAsyncEnumerable<T> Scheduler<T>(this ISelectAsyncEnumerable<T> source, TaskScheduler value)
+        public static IAwaitQuery<T> Scheduler<T>(this IAwaitQuery<T> source, TaskScheduler value)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (value == null) throw new ArgumentNullException(nameof(value));
@@ -197,41 +197,39 @@ namespace MoreLinq.Experimental
         }
 
         /// <summary>
-        /// Returns a new asynchronous projection operation for which the
-        /// results will be returned in the order of the source sequence.
+        /// Returns a query whose results evaluate asynchronously but which
+        /// are returned in the order of the source.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously but returns
-        /// results in the order of the source sequence.</returns>
+        /// A query whose results evaluate asynchronously but which
+        /// are returned in the order of the source.</returns>
         /// <remarks>
-        /// Internally, the projections will be done concurrently but the
-        /// results will be yielded in order.
+        /// Internally, the asynchronous operations will be done concurrently
+        /// but the results will be yielded in order.
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<T> AsOrdered<T>(this ISelectAsyncEnumerable<T> source) =>
+        public static IAwaitQuery<T> AsOrdered<T>(this IAwaitQuery<T> source) =>
             PreserveOrder(source, true);
 
         /// <summary>
-        /// Returns a new asynchronous projection operation for which the
-        /// results are no longer guaranteed to be in the order of the source
-        /// sequence.
+        /// Returns a query whose results evaluate asynchronously but which
+        /// are returned without guarantee of the source order.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously but without any
-        /// guarantee of returning results in the order of the source
-        /// sequence.</returns>
+        /// A query whose results evaluate asynchronously but which
+        /// are returned without guarantee of the source order.</returns>
 
-        public static ISelectAsyncEnumerable<T> AsUnordered<T>(this ISelectAsyncEnumerable<T> source) =>
+        public static IAwaitQuery<T> AsUnordered<T>(this IAwaitQuery<T> source) =>
             PreserveOrder(source, false);
 
         /// <summary>
-        /// Returns a new asynchronous projection operation with the given
-        /// Boolean indicating whether or not the projections should be
-        /// returned in the order of the projection source.
+        /// Returns a query whose results evaluate asynchronously and a Boolean
+        /// argument indicating whether the source order of the results is
+        /// preserved.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -240,24 +238,24 @@ namespace MoreLinq.Experimental
         /// <c>false</c> means that results can be delivered in order of
         /// efficiency.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously and returns the
-        /// results order or unordered based on
-        /// <paramref name="value"/>.</returns>
+        /// A query whose results evaluate asynchronously and returns the
+        /// results ordered or unordered based on <paramref name="value"/>.
+        /// </returns>
 
-        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value) =>
+        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value) =>
             source.WithOptions(source.Options.WithPreserveOrder(value));
 
         /// <summary>
-        /// Creates a sequence that streams the result of each task in the
-        /// source sequence as it completes.
+        /// Creates a sequence query that streams the result of each task in
+        /// the source sequence as it completes asynchronously.
         /// </summary>
         /// <typeparam name="T">
         /// The type of each task's result as well as the type of the elements
         /// of the resulting sequence.</typeparam>
         /// <param name="source">The source sequence of tasks.</param>
         /// <returns>
-        /// A sequence that streams the result of each task in
-        /// <paramref name="source"/> as it completes.
+        /// A sequence query that streams the result of each task in
+        /// <paramref name="source"/> as it completes asynchronously.
         /// </returns>
         /// <remarks>
         /// <para>
@@ -272,52 +270,55 @@ namespace MoreLinq.Experimental
         /// that some tasks will be wasted, those that are in flight.</para>
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<T> Await<T>(
+        public static IAwaitQuery<T> Await<T>(
             this IEnumerable<Task<T>> source)
         {
-            return source.SelectAsync((e, _) => e);
+            return source.Await((e, _) => e);
         }
 
         /// <summary>
-        /// Asynchronously projects each element of a sequence to its new form.
-        /// The projection function receives a <see cref="CancellationToken"/>
-        /// as an additional argument that can be used to abort any asynchronous
-        /// operations in flight.
+        /// Creates a sequence query that streams the result of each task in
+        /// the source sequence as it completes asynchronously. A
+        /// <see cref="CancellationToken"/> is passed for each asynchronous
+        /// evaluation to abort any asynchronous operations in flight if the
+        /// sequence is not full iterated.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <typeparam name="TResult">The type of the result elements.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="selector">A transform function to apply to each
-        /// element, the second parameter of which is a
+        /// <param name="evaluator">A function to begin the asynchronous
+        /// evaluation of each element, the second parameter of which is a
         /// <see cref="CancellationToken"/> that can be used to abort
         /// asynchronous operations.</param>
         /// <returns>
-        /// A sequence that projects results asynchronously.
+        /// A sequence query that stream its results as they are
+        /// evaluated asynchronously.
         /// </returns>
         /// <remarks>
         /// <para>
         /// This method uses deferred execution semantics. The results are
-        /// yielded as each asynchronous projection completes and, by default,
+        /// yielded as each asynchronous evaluation completes and, by default,
         /// not guaranteed to be based on the source sequence order. If order
         /// is important, compose further with
         /// <see cref="AsOrdered{T}"/>.</para>
         /// <para>
-        /// This method starts a new task where the asynchronous projections
-        /// are started and awaited. If the resulting sequence is partially
+        /// This method starts a new task where the asynchronous evaluations
+        /// take place and awaited. If the resulting sequence is partially
         /// consumed then there's a good chance that some projection work will
         /// be wasted and a cooperative effort is done that depends on the
-        /// projection function (via a <see cref="CancellationToken"/> as its
-        /// second argument) to cancel those in flight.</para>
+        /// <paramref name="evaluator"/> function (via a
+        /// <see cref="CancellationToken"/> as its second argument) to cancel
+        /// those in flight.</para>
         /// <para>
-        /// The <paramref name="selector"/> function should be designed to be
+        /// The <paramref name="evaluator"/> function should be designed to be
         /// thread-agnostic.</para>
         /// </remarks>
 
-        public static ISelectAsyncEnumerable<TResult> SelectAsync<T, TResult>(
-            this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> selector)
+        public static IAwaitQuery<TResult> Await<T, TResult>(
+            this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> evaluator)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
+            if (evaluator == null) throw new ArgumentNullException(nameof(evaluator));
 
             return
                 SelectAsyncEnumerable.Create(
@@ -334,7 +335,7 @@ namespace MoreLinq.Experimental
 
                 var enumerator =
                     source.Index()
-                          .Select(e => (e.Key, Task: selector(e.Value, cancellationToken)))
+                          .Select(e => (e.Key, Task: evaluator(e.Value, cancellationToken)))
                           .GetEnumerator();
 
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
@@ -522,30 +523,30 @@ namespace MoreLinq.Experimental
 
         static class SelectAsyncEnumerable
         {
-            public static ISelectAsyncEnumerable<T>
+            public static IAwaitQuery<T>
                 Create<T>(
-                    Func<SelectAsyncOptions, IEnumerable<T>> impl,
-                    SelectAsyncOptions options = null) =>
-                new SelectAsyncEnumerable<T>(impl, options);
+                    Func<AwaitQueryOptions, IEnumerable<T>> impl,
+                    AwaitQueryOptions options = null) =>
+                new AwaitQuery<T>(impl, options);
         }
 
-        sealed class SelectAsyncEnumerable<T> : ISelectAsyncEnumerable<T>
+        sealed class AwaitQuery<T> : IAwaitQuery<T>
         {
-            readonly Func<SelectAsyncOptions, IEnumerable<T>> _impl;
+            readonly Func<AwaitQueryOptions, IEnumerable<T>> _impl;
 
-            public SelectAsyncEnumerable(Func<SelectAsyncOptions, IEnumerable<T>> impl,
-                SelectAsyncOptions options = null)
+            public AwaitQuery(Func<AwaitQueryOptions, IEnumerable<T>> impl,
+                AwaitQueryOptions options = null)
             {
                 _impl = impl;
-                Options = options ?? SelectAsyncOptions.Default;
+                Options = options ?? AwaitQueryOptions.Default;
             }
 
-            public SelectAsyncOptions Options { get; }
+            public AwaitQueryOptions Options { get; }
 
-            public ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options)
+            public IAwaitQuery<T> WithOptions(AwaitQueryOptions options)
             {
                 if (options == null) throw new ArgumentNullException(nameof(options));
-                return Options == options ? this : new SelectAsyncEnumerable<T>(_impl, options);
+                return Options == options ? this : new AwaitQuery<T>(_impl, options);
             }
 
             public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();

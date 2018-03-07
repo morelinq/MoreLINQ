@@ -217,11 +217,11 @@ namespace MoreLinq.Test
 
             #if !NO_ASYNC
 
-            public class SelectAsyncEnumerable<T> : Enumerable<T>,
-                                                    Experimental.ISelectAsyncEnumerable<T>
+            public class AwaitQuery<T> : Enumerable<T>,
+                                         Experimental.IAwaitQuery<T>
             {
-                public Experimental.SelectAsyncOptions Options => Experimental.SelectAsyncOptions.Default;
-                public Experimental.ISelectAsyncEnumerable<T> WithOptions(Experimental.SelectAsyncOptions options) => this;
+                public Experimental.AwaitQueryOptions Options => Experimental.AwaitQueryOptions.Default;
+                public Experimental.IAwaitQuery<T> WithOptions(Experimental.AwaitQueryOptions options) => this;
             }
 
             #endif
