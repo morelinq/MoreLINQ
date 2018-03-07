@@ -103,7 +103,7 @@ namespace MoreLinq.NoConflictGenerator
             var abbreviatedTypeNodes = Enumerable
                 .Range(0, 26)
                 .Select(a => (char) ('a' + a))
-                .Select(ch => new SimpleTypeNode(ch.ToString()))
+                .Select(ch => new SimpleTypeKey(ch.ToString()))
                 .ToArray();
 
             var qq =
@@ -137,11 +137,11 @@ namespace MoreLinq.NoConflictGenerator
                         TypeParameterCount = md.TypeParameterList?.Parameters.Count ?? 0,
                         TypeParameterAbbreviationByName = typeParameterAbbreviationByName,
                         ParameterCount = md.ParameterList.Parameters.Count,
-                        Parameters =
+                        SortableParameterTypes =
                             from p in md.ParameterList.Parameters
-                            select CreateTypeNode(p.Type,
-                                                  n => typeParameterAbbreviationByName != null
-                                                    && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
+                            select CreateTypeKey(p.Type,
+                                                 n => typeParameterAbbreviationByName != null
+                                                   && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
                     }
                 select m;
 
@@ -151,7 +151,7 @@ namespace MoreLinq.NoConflictGenerator
                 e.Method.Name,
                 e.Method.TypeParameterCount,
                 e.Method.ParameterCount,
-                new TupleTypeNode(ImmutableList.CreateRange(e.Method.Parameters))
+                new TupleTypeKey(ImmutableList.CreateRange(e.Method.SortableParameterTypes))
             select new
             {
                 e.Method,
@@ -177,7 +177,7 @@ namespace MoreLinq.NoConflictGenerator
                             : "<" + string.Join(", ", from a in m.TypeParameterAbbreviationByName
                                                       select a.Value) + ">",
                         Parameters =
-                            "(" + string.Join(", ", m.Parameters) + ")",
+                            "(" + string.Join(", ", m.SortableParameterTypes) + ")",
 
                         Abbreviations =
                             m.TypeParameterCount == 0
@@ -281,26 +281,26 @@ namespace MoreLinq.NoConflict
                                       .Replace("\n", Environment.NewLine));
         }
 
-        public static TypeNode CreateTypeNode(TypeSyntax root,
-                                              Func<string, TypeNode> abbreviator = null)
+        public static TypeKey CreateTypeKey(TypeSyntax root,
+                                              Func<string, TypeKey> abbreviator = null)
         {
             return Walk(root ?? throw new ArgumentNullException(nameof(root)));
 
-            TypeNode Walk(TypeSyntax ts) =>
+            TypeKey Walk(TypeSyntax ts) =>
                 ts is GenericNameSyntax gns
-                ? new GenericTypeNode(gns.Identifier.ToString(),
+                ? new GenericTypeKey(gns.Identifier.ToString(),
                                         ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk)))
                 : ts is IdentifierNameSyntax ins
-                ? abbreviator?.Invoke(ins.Identifier.ValueText) ?? new SimpleTypeNode(ins.ToString())
+                ? abbreviator?.Invoke(ins.Identifier.ValueText) ?? new SimpleTypeKey(ins.ToString())
                 : ts is PredefinedTypeSyntax pts
-                ? new SimpleTypeNode(pts.ToString())
+                ? new SimpleTypeKey(pts.ToString())
                 : ts is ArrayTypeSyntax ats
-                ? new ArrayTypeNode(Walk(ats.ElementType),
+                ? new ArrayTypeKey(Walk(ats.ElementType),
                                     ImmutableList.CreateRange(from rs in ats.RankSpecifiers select rs.Rank))
                 : ts is NullableTypeSyntax nts
-                ? new NullableTypeNode(Walk(nts.ElementType))
+                ? new NullableTypeKey(Walk(nts.ElementType))
                 : ts is TupleTypeSyntax tts
-                ? (TypeNode) new TupleTypeNode(ImmutableList.CreateRange(from te in tts.Elements select Walk(te.Type)))
+                ? (TypeKey) new TupleTypeKey(ImmutableList.CreateRange(from te in tts.Elements select Walk(te.Type)))
                 : throw new NotSupportedException("Unhandled type: " + ts);
         }
 
@@ -335,74 +335,74 @@ namespace MoreLinq.NoConflict
     // - Each type parameter (recursively)
     //
 
-    abstract class TypeNode : IComparable<TypeNode>
+    abstract class TypeKey : IComparable<TypeKey>
     {
-        protected TypeNode(string name) => Name = name;
+        protected TypeKey(string name) => Name = name;
 
         public string Name { get; }
-        public abstract ImmutableList<TypeNode> Parameters { get; }
+        public abstract ImmutableList<TypeKey> Parameters { get; }
 
-        public virtual int CompareTo(TypeNode other)
+        public virtual int CompareTo(TypeKey other)
             => ReferenceEquals(this, other) ? 0
              : other == null ? 1
              : Parameters.Count.CompareTo(other.Parameters.Count) is int lc && lc != 0 ? lc
              : string.Compare(Name, other.Name, StringComparison.Ordinal) is int nc && nc != 0 ? nc
              : CompareParameters(other);
 
-        protected virtual int CompareParameters(TypeNode other) =>
+        protected virtual int CompareParameters(TypeKey other) =>
             Compare(Parameters, other.Parameters);
 
-        protected static int Compare(IEnumerable<TypeNode> a, IEnumerable<TypeNode> b)
+        protected static int Compare(IEnumerable<TypeKey> a, IEnumerable<TypeKey> b)
             => a.Zip(b, (us, them) => (Us: us, Them: them))
                 .Select(e => e.Us.CompareTo(e.Them))
                 .FirstOrDefault(e => e != 0);
     }
 
-    sealed class SimpleTypeNode : TypeNode
+    sealed class SimpleTypeKey : TypeKey
     {
-        public SimpleTypeNode(string name) : base(name) {}
+        public SimpleTypeKey(string name) : base(name) {}
         public override string ToString() => Name;
-        public override ImmutableList<TypeNode> Parameters => ImmutableList<TypeNode>.Empty;
+        public override ImmutableList<TypeKey> Parameters => ImmutableList<TypeKey>.Empty;
     }
 
-    abstract class ParameterizedTypeNode : TypeNode
+    abstract class ParameterizedTypeKey : TypeKey
     {
-        protected ParameterizedTypeNode(string name, TypeNode parameter) :
+        protected ParameterizedTypeKey(string name, TypeKey parameter) :
             this(name, ImmutableList.Create(parameter)) {}
 
-        protected ParameterizedTypeNode(string name, ImmutableList<TypeNode> parameters)
+        protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters)
             : base(name) => Parameters = parameters;
 
-        public override ImmutableList<TypeNode> Parameters { get; }
+        public override ImmutableList<TypeKey> Parameters { get; }
     }
 
-    sealed class GenericTypeNode : ParameterizedTypeNode
+    sealed class GenericTypeKey : ParameterizedTypeKey
     {
-        public GenericTypeNode(string name, ImmutableList<TypeNode> parameters)
+        public GenericTypeKey(string name, ImmutableList<TypeKey> parameters)
             : base(name, parameters) {}
 
         public override string ToString() =>
             Name + "<" + string.Join(", ", Parameters) + ">";
     }
 
-    sealed class NullableTypeNode : ParameterizedTypeNode
+    sealed class NullableTypeKey : ParameterizedTypeKey
     {
-        public NullableTypeNode(TypeNode underlying) : base("?", underlying) {}
+        public NullableTypeKey(TypeKey underlying) : base("?", underlying) {}
         public override string ToString() => Parameters.Single() + "?";
     }
 
-    sealed class TupleTypeNode : ParameterizedTypeNode
+    sealed class TupleTypeKey : ParameterizedTypeKey
     {
-        public TupleTypeNode(ImmutableList<TypeNode> parameters)
+        public TupleTypeKey(ImmutableList<TypeKey> parameters)
             : base("()", parameters) {}
 
         public override string ToString() =>
             "(" + string.Join(", ", Parameters) + ")";
     }
 
-    sealed class ArrayTypeNode : ParameterizedTypeNode
+    sealed class ArrayTypeKey : ParameterizedTypeKey
     {
-        public ArrayTypeNode(TypeNode element, IEnumerable<int> ranks)
+        public ArrayTypeKey(TypeKey element, IEnumerable<int> ranks)
             : base("[]", element) => Ranks = ImmutableList.CreateRange(ranks);
 
         public ImmutableList<int> Ranks { get; }
@@ -411,9 +411,9 @@ namespace MoreLinq.NoConflict
             Parameters.Single() + string.Concat(from r in Ranks
                                                 select "[" + string.Concat(Enumerable.Repeat(",", r - 1)) + "]");
 
-        protected override int CompareParameters(TypeNode other)
+        protected override int CompareParameters(TypeKey other)
         {
-            if (other is ArrayTypeNode a)
+            if (other is ArrayTypeKey a)
             {
                 if (Ranks.Count.CompareTo(a.Ranks.Count) is int rlc && rlc != 0)
                     return rlc;
