@@ -122,14 +122,14 @@ namespace MoreLinq.NoConflictGenerator
                     from md in cd.DescendantNodes().OfType<MethodDeclarationSyntax>()
                     let mn = (string) md.Identifier.Value
                     where md.ParameterList.Parameters.Count > 0
-                        && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
-                        && md.Modifiers.Any(m => (string)m.Value == "public")
-                        && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
+                       && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
+                       && md.Modifiers.Any(m => (string)m.Value == "public")
+                       && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
                     let typeParameterAbbreviationByName =
                         md.TypeParameterList
-                            ?.Parameters
-                            .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
-                            .ToDictionary(e => e.Original, e => e.Alias)
+                         ?.Parameters
+                          .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
+                          .ToDictionary(e => e.Original, e => e.Alias)
                     select new
                     {
                         Syntax = md,
@@ -140,7 +140,7 @@ namespace MoreLinq.NoConflictGenerator
                         Parameters =
                             from p in md.ParameterList.Parameters
                             select CreateTypeNode(p.Type,
-                                                    n => typeParameterAbbreviationByName != null
+                                                  n => typeParameterAbbreviationByName != null
                                                     && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
                     }
                 select m;
@@ -167,8 +167,10 @@ namespace MoreLinq.NoConflictGenerator
                     let m = e.Method
                     select new
                     {
-                        SourceOrder = e.SourceOrder.ToString("000", CultureInfo.InvariantCulture),
                         m.Name,
+
+                        SourceOrder = e.SourceOrder.ToString("000", CultureInfo.InvariantCulture),
+
                         TypeParameters =
                             m.TypeParameterCount == 0
                             ? string.Empty
@@ -176,6 +178,7 @@ namespace MoreLinq.NoConflictGenerator
                                                       select a.Value) + ">",
                         Parameters =
                             "(" + string.Join(", ", m.Parameters) + ")",
+
                         Abbreviations =
                             m.TypeParameterCount == 0
                             ? string.Empty
