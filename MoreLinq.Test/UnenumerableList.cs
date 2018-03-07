@@ -11,7 +11,7 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class UnenumerableList<T> : IList<T>
+    sealed class UnenumerableList<T> : BreakingSequence<T>, IList<T>
     {
         public UnenumerableList()
         {
@@ -25,10 +25,7 @@ namespace MoreLinq.Test
 
         readonly List<T> _list;
 
-        // intentionally implemented to throw exception - ensures iteration is not used in Slice
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public IEnumerator<T> GetEnumerator() => throw new NotImplementedException();
-        // all other IList<T> members are forwarded back to the underlying private list
+        // all non-enumerating IList<T> members are forwarded back to the underlying private list
         public void Add(T item) => _list.Add(item);
         public void Clear() => _list.Clear();
         public bool Contains(T item) => _list.Contains(item);
