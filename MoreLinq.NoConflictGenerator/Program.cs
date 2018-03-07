@@ -145,12 +145,6 @@ namespace MoreLinq.NoConflictGenerator
                                 select CreateTypeNode(p.Type,
                                                       n => typeParameterAbbreviationByName != null
                                                         && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
-                            Source =
-                                MethodDeclaration(md.ReturnType, md.Identifier)
-                                    .WithTypeParameterList(md.TypeParameterList)
-                                    .WithParameterList(md.ParameterList)
-                                    .NormalizeWhitespace()
-                                    .ToString(),
                         }
                 };
 
