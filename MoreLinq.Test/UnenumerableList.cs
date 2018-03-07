@@ -13,7 +13,17 @@ namespace MoreLinq.Test
 
     sealed class UnenumerableList<T> : IList<T>
     {
-        readonly List<T> _list = new List<T>();
+        public UnenumerableList()
+        {
+            _list = new List<T>();
+        }
+
+        public UnenumerableList(IEnumerable<T> sourceList)
+        {
+             _list = sourceList.ToList();
+        }
+
+        readonly List<T> _list;
 
         // intentionally implemented to throw exception - ensures iteration is not used in Slice
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

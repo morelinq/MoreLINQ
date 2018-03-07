@@ -15,9 +15,9 @@ namespace MoreLinq.Test
     {
         readonly IReadOnlyList<T> _list;
 
-        public UnenumerableReadOnlyList(IReadOnlyList<T> list)
+        public UnenumerableReadOnlyList(IEnumerable<T> enumerable)
         {
-            _list = list;
+            _list = enumerable.ToList();
         }
 
         // intentionally implemented to throw exception - ensures iteration is not used in Slice
