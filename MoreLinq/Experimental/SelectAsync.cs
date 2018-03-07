@@ -33,16 +33,16 @@ namespace MoreLinq.Experimental
     /// Represents options for an asynchronous projection operation.
     /// </summary>
 
-    public sealed class AwaitQueryOptions
+    public sealed class SelectAsyncOptions
     {
         /// <summary>
         /// The default options an asynchronous projection operation.
         /// </summary>
 
-        public static readonly AwaitQueryOptions Default =
-            new AwaitQueryOptions(null /* = unbounded concurrency */,
-                                  TaskScheduler.Default,
-                                  preserveOrder: false);
+        public static readonly SelectAsyncOptions Default =
+            new SelectAsyncOptions(null /* = unbounded concurrency */,
+                                   TaskScheduler.Default,
+                                   preserveOrder: false);
 
         /// <summary>
         /// Gets a positive (non-zero) integer that specifies the maximum
@@ -65,7 +65,7 @@ namespace MoreLinq.Experimental
 
         public bool PreserveOrder { get; }
 
-        AwaitQueryOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
+        SelectAsyncOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
         {
             MaxConcurrency = maxConcurrency == null || maxConcurrency > 0
                            ? maxConcurrency
@@ -84,8 +84,8 @@ namespace MoreLinq.Experimental
         /// Use <c>null</c> to mean unbounded concurrency.</param>
         /// <returns>Options with the new setting.</returns>
 
-        public AwaitQueryOptions WithMaxConcurrency(int? value) =>
-            value == MaxConcurrency ? this : new AwaitQueryOptions(value, Scheduler, PreserveOrder);
+        public SelectAsyncOptions WithMaxConcurrency(int? value) =>
+            value == MaxConcurrency ? this : new SelectAsyncOptions(value, Scheduler, PreserveOrder);
 
         /// <summary>
         /// Returns new options with the given scheduler.
@@ -94,8 +94,8 @@ namespace MoreLinq.Experimental
         /// The scheduler to use to for the workhorse task.</param>
         /// <returns>Options with the new setting.</returns>
 
-        public AwaitQueryOptions WithScheduler(TaskScheduler value) =>
-            value == Scheduler ? this : new AwaitQueryOptions(MaxConcurrency, value, PreserveOrder);
+        public SelectAsyncOptions WithScheduler(TaskScheduler value) =>
+            value == Scheduler ? this : new SelectAsyncOptions(MaxConcurrency, value, PreserveOrder);
 
         /// <summary>
         /// Returns new options with the given Boolean indicating whether or
@@ -108,8 +108,8 @@ namespace MoreLinq.Experimental
         /// efficiency.</param>
         /// <returns>Options with the new setting.</returns>
 
-        public AwaitQueryOptions WithPreserveOrder(bool value) =>
-            value == PreserveOrder ? this : new AwaitQueryOptions(MaxConcurrency, Scheduler, value);
+        public SelectAsyncOptions WithPreserveOrder(bool value) =>
+            value == PreserveOrder ? this : new SelectAsyncOptions(MaxConcurrency, Scheduler, value);
     }
 
     /// <summary>
@@ -118,13 +118,13 @@ namespace MoreLinq.Experimental
     /// <inheritdoc />
     /// <typeparam name="T">The type of the source elements.</typeparam>
 
-    public interface IAwaitQuery<out T> : IEnumerable<T>
+    public interface ISelectAsyncEnumerable<out T> : IEnumerable<T>
     {
         /// <summary>
         /// The options to apply to this asynchronous projection operation.
         /// </summary>
 
-        AwaitQueryOptions Options { get; }
+        SelectAsyncOptions Options { get; }
 
         /// <summary>
         /// Returns a new asynchronous projection operation that will use the
@@ -135,7 +135,7 @@ namespace MoreLinq.Experimental
         /// Returns a new sequence that projects asynchronously using the
         /// supplied options.</returns>
 
-        IAwaitQuery<T> WithOptions(AwaitQueryOptions options);
+        ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options);
     }
 
     static partial class ExperimentalEnumerable
@@ -148,7 +148,7 @@ namespace MoreLinq.Experimental
         /// <param name="source">The source sequence.</param>
         /// <returns>The converted sequence.</returns>
 
-        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source) =>
+        public static IEnumerable<T> AsSequential<T>(this ISelectAsyncEnumerable<T> source) =>
             source.MaxConcurrency(1);
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace MoreLinq.Experimental
         /// A sequence that projects results asynchronously using the given
         /// concurrency limit.</returns>
 
-        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value) =>
+        public static ISelectAsyncEnumerable<T> MaxConcurrency<T>(this ISelectAsyncEnumerable<T> source, int value) =>
             source.WithOptions(source.Options.WithMaxConcurrency(value));
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace MoreLinq.Experimental
         /// A sequence that projects results asynchronously using no defined
         /// limitation on concurrency.</returns>
 
-        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source) =>
+        public static ISelectAsyncEnumerable<T> UnboundedConcurrency<T>(this ISelectAsyncEnumerable<T> source) =>
             source.WithOptions(source.Options.WithMaxConcurrency(null));
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace MoreLinq.Experimental
         /// A sequence that projects results asynchronously using the given
         /// scheduler.</returns>
 
-        public static IAwaitQuery<T> Scheduler<T>(this IAwaitQuery<T> source, TaskScheduler value)
+        public static ISelectAsyncEnumerable<T> Scheduler<T>(this ISelectAsyncEnumerable<T> source, TaskScheduler value)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (value == null) throw new ArgumentNullException(nameof(value));
@@ -210,7 +210,7 @@ namespace MoreLinq.Experimental
         /// results will be yielded in order.
         /// </remarks>
 
-        public static IAwaitQuery<T> AsOrdered<T>(this IAwaitQuery<T> source) =>
+        public static ISelectAsyncEnumerable<T> AsOrdered<T>(this ISelectAsyncEnumerable<T> source) =>
             PreserveOrder(source, true);
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace MoreLinq.Experimental
         /// guarantee of returning results in the order of the source
         /// sequence.</returns>
 
-        public static IAwaitQuery<T> AsUnordered<T>(this IAwaitQuery<T> source) =>
+        public static ISelectAsyncEnumerable<T> AsUnordered<T>(this ISelectAsyncEnumerable<T> source) =>
             PreserveOrder(source, false);
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace MoreLinq.Experimental
         /// results order or unordered based on
         /// <paramref name="value"/>.</returns>
 
-        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value) =>
+        public static ISelectAsyncEnumerable<T> PreserveOrder<T>(this ISelectAsyncEnumerable<T> source, bool value) =>
             source.WithOptions(source.Options.WithPreserveOrder(value));
 
         /// <summary>
@@ -272,10 +272,10 @@ namespace MoreLinq.Experimental
         /// that some tasks will be wasted, those that are in flight.</para>
         /// </remarks>
 
-        public static IAwaitQuery<T> Await<T>(
+        public static ISelectAsyncEnumerable<T> Await<T>(
             this IEnumerable<Task<T>> source)
         {
-            return source.Await((e, _) => e);
+            return source.SelectAsync((e, _) => e);
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace MoreLinq.Experimental
         /// thread-agnostic.</para>
         /// </remarks>
 
-        public static IAwaitQuery<TResult> Await<T, TResult>(
+        public static ISelectAsyncEnumerable<TResult> SelectAsync<T, TResult>(
             this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> selector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -522,30 +522,30 @@ namespace MoreLinq.Experimental
 
         static class SelectAsyncEnumerable
         {
-            public static IAwaitQuery<T>
+            public static ISelectAsyncEnumerable<T>
                 Create<T>(
-                    Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                    AwaitQueryOptions options = null) =>
-                new AwaitQuery<T>(impl, options);
+                    Func<SelectAsyncOptions, IEnumerable<T>> impl,
+                    SelectAsyncOptions options = null) =>
+                new SelectAsyncEnumerable<T>(impl, options);
         }
 
-        sealed class AwaitQuery<T> : IAwaitQuery<T>
+        sealed class SelectAsyncEnumerable<T> : ISelectAsyncEnumerable<T>
         {
-            readonly Func<AwaitQueryOptions, IEnumerable<T>> _impl;
+            readonly Func<SelectAsyncOptions, IEnumerable<T>> _impl;
 
-            public AwaitQuery(Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                AwaitQueryOptions options = null)
+            public SelectAsyncEnumerable(Func<SelectAsyncOptions, IEnumerable<T>> impl,
+                SelectAsyncOptions options = null)
             {
                 _impl = impl;
-                Options = options ?? AwaitQueryOptions.Default;
+                Options = options ?? SelectAsyncOptions.Default;
             }
 
-            public AwaitQueryOptions Options { get; }
+            public SelectAsyncOptions Options { get; }
 
-            public IAwaitQuery<T> WithOptions(AwaitQueryOptions options)
+            public ISelectAsyncEnumerable<T> WithOptions(SelectAsyncOptions options)
             {
                 if (options == null) throw new ArgumentNullException(nameof(options));
-                return Options == options ? this : new AwaitQuery<T>(_impl, options);
+                return Options == options ? this : new SelectAsyncEnumerable<T>(_impl, options);
             }
 
             public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
