@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastOptimizedForCollections()
         {
-            var sequence = new UnenumerableList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var sequence = new BreakingList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
             sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
         }

@@ -11,14 +11,14 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class UnenumerableList<T> : BreakingSequence<T>, IList<T>
+    sealed class BreakingList<T> : BreakingSequence<T>, IList<T>
     {
-        public UnenumerableList()
+        public BreakingList()
         {
             _list = new List<T>();
         }
 
-        public UnenumerableList(IEnumerable<T> sourceList)
+        public BreakingList(IEnumerable<T> sourceList)
         {
              _list = sourceList.ToList();
         }

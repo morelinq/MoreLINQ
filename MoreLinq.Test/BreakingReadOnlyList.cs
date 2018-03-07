@@ -11,11 +11,11 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class UnenumerableReadOnlyList<T> : BreakingSequence<T>, IReadOnlyList<T>
+    sealed class BreakingReadOnlyList<T> : BreakingSequence<T>, IReadOnlyList<T>
     {
         readonly IReadOnlyList<T> _list;
 
-        public UnenumerableReadOnlyList(IEnumerable<T> enumerable)
+        public BreakingReadOnlyList(IEnumerable<T> enumerable)
         {
             _list = enumerable.ToList();
         }

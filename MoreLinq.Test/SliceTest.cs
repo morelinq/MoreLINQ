@@ -121,7 +121,7 @@ namespace MoreLinq.Test
         {
             const int sliceStart = 4;
             const int sliceCount = 3;
-            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToUnenumerableList(readOnly);
+            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToBreakingList(readOnly);
 
             var result = sequence.Slice(sliceStart, sliceCount);
 
