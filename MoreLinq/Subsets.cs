@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ namespace MoreLinq
     using System.Linq;
 
     public static partial class MoreEnumerable
-    {      
+    {
         /// <summary>
         /// Returns a sequence of <see cref="IList{T}"/> representing all of
         /// the subsets of any size that are part of the original sequence. In
@@ -33,15 +33,15 @@ namespace MoreLinq
         /// This operator produces all of the subsets of a given sequence. Subsets are returned
         /// in increasing cardinality, starting with the empty set and terminating with the
         /// entire original sequence.<br/>
-        /// Subsets are produced in a deferred, streaming manner; however, each subset is returned 
+        /// Subsets are produced in a deferred, streaming manner; however, each subset is returned
         /// as a materialized list.<br/>
-        /// There are 2^N subsets of a given sequence, where N => sequence.Count(). 
+        /// There are 2^N subsets of a given sequence, where N => sequence.Count().
         /// </remarks>
         /// <param name="sequence">Sequence for which to produce subsets</param>
         /// <typeparam name="T">The type of the elements in the sequence</typeparam>
         /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
-        
+
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -87,7 +87,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
         /// </exception>
-        
+
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             if (sequence == null)
@@ -141,7 +141,7 @@ namespace MoreLinq
                     // precondition: subsetSize <= set.Count
                     if (subsetSize > set.Count)
                         throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
-                    
+
                     // initialize set arrays...
                     _set = set;
                     _subset = new T[subsetSize];

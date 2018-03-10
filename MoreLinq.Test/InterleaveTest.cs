@@ -19,7 +19,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that interleaving disposes those enumerators that it managed 
+        /// Verify that interleaving disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
         [Test]

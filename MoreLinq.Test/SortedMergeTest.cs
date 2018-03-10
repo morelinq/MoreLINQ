@@ -23,7 +23,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that SortedMerge disposes those enumerators that it managed 
+        /// Verify that SortedMerge disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
         [Test]

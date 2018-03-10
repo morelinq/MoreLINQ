@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ namespace MoreLinq
         /// Using SortedMerge on sequences that are not ordered or are not in the same order produces
         /// undefined results.<br/>
         /// <c>SortedMerge</c> uses performs the merge in a deferred, streaming manner. <br/>
-        /// 
+        ///
         /// Here is an example of a merge, as well as the produced result:
         /// <code>
         ///   var s1 = new[] { 3, 7, 11 };
@@ -48,7 +48,7 @@ namespace MoreLinq
         /// <param name="direction">The ordering that all sequences must already exhibit</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
-        
+
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
         {
             return SortedMerge(source, direction, null, otherSequences);
@@ -64,7 +64,7 @@ namespace MoreLinq
         /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
         /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
-        
+
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSequences)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -95,7 +95,7 @@ namespace MoreLinq
             // simply yield the items that are part of the final sequence.
             //
             // The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
-        
+
             IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences)
             {
                 using (var disposables = new DisposableGroup<TSource>(sequences.Select(e => e.GetEnumerator()).Acquire()))

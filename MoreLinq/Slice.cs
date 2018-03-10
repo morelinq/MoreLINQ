@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,16 +45,17 @@ namespace MoreLinq
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            // optimization for anything implementing IList<T>
-            return !(sequence is IList<T> list)
-                 ? sequence.Skip(startIndex).Take(count)
-                 : _(count); IEnumerable<T> _(int countdown)
-                 {
-                     var listCount = list.Count;
-                     var index = startIndex;
-                     while (index < listCount && countdown-- > 0)
-                         yield return list[index++];
-                 }
+            return sequence is IList<T> list ? SliceList(list.Count, i => list[i])
+                 : sequence is IReadOnlyList<T> readOnlyList ? SliceList(readOnlyList.Count, i => readOnlyList[i])
+                 : sequence.Skip(startIndex).Take(count);
+
+            IEnumerable<T> SliceList(int listCount, Func<int, T> indexer)
+            {
+                var countdown = count;
+                var index = startIndex;
+                while (index < listCount && countdown-- > 0)
+                    yield return indexer(index++);
+            }
         }
     }
 }
