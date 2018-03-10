@@ -222,30 +222,22 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenFullIteratedDisposesInnerSequences()
         {
+            var expectations = new object[]
+            {
+                4,
+                5,
+                6,
+                true,
+                false,
+                7,
+            };
+
             using (var inner1 = TestingSequence.Of(4, 5))
             using (var inner2 = TestingSequence.Of(true, false))
             using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
+            using (var source = TestingSequence.Of<object>(inner1, inner3))
             {
-                var source = new object[]
-                {
-                    inner1,
-                    inner3,
-                };
-
-                var expectations = new object[]
-                {
-                    4,
-                    5,
-                    6,
-                    true,
-                    false,
-                    7,
-                };
-
-                using (var test = source.AsTestingSequence())
-                {
-                    Assert.That(test.Flatten(), Is.EquivalentTo(expectations));
-                }
+                Assert.That(source.Flatten(), Is.EquivalentTo(expectations));
             }
         }
 
@@ -258,18 +250,10 @@ namespace MoreLinq.Test
                                                     () => throw new InvalidOperationException())
                                               .AsTestingSequence())
             using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
+            using (var source = TestingSequence.Of<object>(inner1, inner3))
             {
-                var source = new object[]
-                {
-                    inner1,
-                    inner3,
-                };
-
-                using (var test = source.AsTestingSequence())
-                {
-                    Assert.Throws<InvalidOperationException>(() =>
-                        test.Flatten().Consume());
-                }
+                Assert.Throws<InvalidOperationException>(() =>
+                    source.Flatten().Consume());
             }
         }
     }
