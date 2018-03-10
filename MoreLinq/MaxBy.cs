@@ -84,7 +84,10 @@ namespace MoreLinq
         static IEnumerable<TSource> ExtremaBy<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
         {
-            return new LazyList<TSource>(new Lazy<List<TSource>>(() =>
+            foreach (var item in Extrema())
+                yield return item;
+
+            IEnumerable<TSource> Extrema()
             {
                 using (var e = source.GetEnumerator())
                 {
@@ -112,43 +115,7 @@ namespace MoreLinq
 
                     return extrema;
                 }
-            }));
-        }
-
-        sealed class LazyList<T> : IList<T> // TODO IReadOnlyList<T>
-        {
-            readonly Lazy<List<T>> _lazyList;
-
-            public LazyList(Lazy<List<T>> lazyList) =>
-                _lazyList = lazyList ?? throw new ArgumentNullException(nameof(lazyList));
-
-            List<T> List => _lazyList.Value;
-
-            public int Count => List.Count;
-            public bool IsReadOnly => true;
-
-            public T this[int index]
-            {
-                get => List[index];
-                set => throw ReadOnlyError();
             }
-
-            public int IndexOf(T item) => List.IndexOf(item);
-            public bool Contains(T item) => List.Contains(item);
-            public void CopyTo(T[] array, int arrayIndex) => List.CopyTo(array, arrayIndex);
-
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() => List.GetEnumerator();
-
-            IEnumerator IEnumerable.GetEnumerator() =>
-                ((IEnumerable) List).GetEnumerator();
-
-            public void Add(T item) => throw ReadOnlyError();
-            public void Clear() => throw ReadOnlyError();
-            public bool Remove(T item) => throw ReadOnlyError();
-            public void Insert(int index, T item) => throw ReadOnlyError();
-            public void RemoveAt(int index) => throw ReadOnlyError();
-
-            static Exception ReadOnlyError() => new NotSupportedException("List is read-only.");
         }
     }
 }
