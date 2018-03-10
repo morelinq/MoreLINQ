@@ -256,5 +256,39 @@ namespace MoreLinq.Test
                     source.Flatten().Consume());
             }
         }
+
+        [Test]
+        public void FlattenEvaluatesInnerSequencesLazily()
+        {
+            var source = new object[]
+            {
+                1, 2, 3, 4, 5,
+                new object[]
+                {
+                    6, 7,
+                    new object[]
+                    {
+                        8, 9,
+                        MoreEnumerable.From
+                        (
+                            () => 10,
+                            () => throw new InvalidOperationException(),
+                            () => 12
+                        ),
+                        13, 14, 15,
+                    },
+                    16, 17,
+                },
+                18, 19, 20,
+            };
+
+            var result = source.Flatten().Cast<int>();
+            var expectations = Enumerable.Range(1, 10);
+
+            Assert.That(result.Take(10), Is.EquivalentTo(expectations));
+
+            Assert.Throws<InvalidOperationException>(() =>
+                source.Flatten().ElementAt(11));
+        }
     }
 }
