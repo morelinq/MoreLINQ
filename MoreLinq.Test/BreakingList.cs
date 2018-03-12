@@ -4,6 +4,17 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
 
+    static class BreakingListExtensions
+    {
+        internal static IEnumerable<T> ToBreakingList<T>(this IEnumerable<T> enumerable, bool readOnly)
+        {
+            return readOnly
+                ? (IEnumerable<T>)new BreakingReadOnlyList<T>(enumerable)
+                : new BreakingList<T>(enumerable);
+        }
+
+    }
+
     /// <summary>
     /// This class implement <see cref="IList{T}"/> but specifically prohibits enumeration using GetEnumerator().
     /// It is provided to assist in testing extension methods that MUST NOT call the GetEnumerator()

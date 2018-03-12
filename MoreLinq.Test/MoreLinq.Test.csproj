@@ -38,7 +38,6 @@
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingList.cs" />
-      <Compile Include="BreakingListExtensions.cs" />
       <Compile Include="BreakingReadOnlyList.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
