@@ -23,14 +23,13 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns the minimal element of the given sequence, based on
+        /// Returns the minimal elements of the given sequence, based on
         /// the given projection.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type. This operator uses immediate execution, but
-        /// only buffers a single result (the current minimal element).
+        /// This overload uses the default comparer for the projected type.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -40,20 +39,19 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
             return source.MinBy(selector, null);
         }
 
         /// <summary>
-        /// Returns the minimal element of the given sequence, based on
+        /// Returns the minimal elements of the given sequence, based on
         /// the given projection and the specified comparer for projected values.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This operator uses immediate execution, but
-        /// only buffers a single result (the current minimal element).
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -65,14 +63,14 @@ namespace MoreLinq
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             comparer = comparer ?? Comparer<TKey>.Default;
-            return ExtremumBy(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
+            return ExtremaBy(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
         }
     }
 }

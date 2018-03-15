@@ -17,41 +17,47 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
     public class MaxByTest
     {
         [Test]
+        public void MaxByIsLazy()
+        {
+            new BreakingSequence<int>().MaxBy(x => x);
+        }
+
+        [Test]
+        public void MaxByReturnsMaxima()
+        {
+            Assert.AreEqual(new[] { "hello", "world" },
+                            SampleData.Strings.MaxBy(x => x.Length));
+        }
+
+        [Test]
         public void MaxByNullComparer()
         {
-            Assert.AreEqual("hello", SampleData.Strings.MaxBy(x => x.Length, null));
+            Assert.AreEqual(SampleData.Strings.MaxBy(x => x.Length),
+                            SampleData.Strings.MaxBy(x => x.Length, null));
         }
 
         [Test]
         public void MaxByEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new string[0].MaxBy(x => x.Length));
+            Assert.IsEmpty(new string[0].MaxBy(x => x.Length));
         }
 
         [Test]
         public void MaxByWithNaturalComparer()
         {
-            Assert.AreEqual("az", SampleData.Strings.MaxBy(x => x[1]));
+            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MaxBy(x => x[1]));
         }
 
         [Test]
         public void MaxByWithComparer()
         {
-            Assert.AreEqual("aa", SampleData.Strings.MaxBy(x => x[1], SampleData.ReverseCharComparer));
-        }
-
-        [Test]
-        public void MaxByReturnsFirstOfEquals()
-        {
-            Assert.AreEqual("hello", SampleData.Strings.MaxBy(x => x.Length));
+            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], SampleData.ReverseCharComparer));
         }
     }
 }

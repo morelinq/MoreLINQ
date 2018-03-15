@@ -32,7 +32,7 @@ namespace MoreLinq
         /// <param name="source">Source sequence of <see cref="IDisposable"/> objects.</param>
         /// <returns>
         /// Returns an array of all the acquired <see cref="IDisposable"/>
-        /// object and in source order.
+        /// objects in source order.
         /// </returns>
         /// <remarks>
         /// This operator executes immediately.

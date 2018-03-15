@@ -39,7 +39,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
         {
-            return Lead(source, offset, default(TSource), resultSelector);
+            return Lead(source, offset, default, resultSelector);
         }
 
         /// <summary>

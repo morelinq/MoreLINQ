@@ -38,7 +38,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
         {
-            return Lag(source, offset, default(TSource), resultSelector);
+            return Lag(source, offset, default, resultSelector);
         }
 
         /// <summary>

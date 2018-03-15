@@ -114,7 +114,7 @@ namespace MoreLinq
                                 switch (imbalanceStrategy)
                                 {
                                     case ImbalancedInterleaveStrategy.Pad:
-                                        var newIter = iteratorList[index] = Generate(default(T), x => default(T)).GetEnumerator();
+                                        var newIter = iteratorList[index] = Generate(default(T), x => default).GetEnumerator();
                                         newIter.MoveNext();
                                         break;
 
