@@ -177,23 +177,23 @@ namespace MoreLinq.Test
                 result.ElementAt(1));
         }
 
-        // [Test]
-        // public void TransposeSequencesAreLazies()
-        // {
-        //     var matrix = new[]
-        //     {
-        //         new int[] { 10, 11, 12 },
-        //         new int[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
-        //     };
+        [Ignore("Test about 100% laziness, the current approach do not support it")]
+        public void TransposeSequencesAreLazies()
+        {
+            var matrix = new[]
+            {
+                new int[] { 10, 11, 12 },
+                new int[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
+            };
 
-        //     var first = matrix.First();
-        //     var count = first.Count();
+            var first = matrix.First();
+            var count = first.Count();
 
-        //     matrix.Transpose().Take(count).ForEach((seq, i) =>
-        //     {
-        //         Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
-        //     });
-        // }
+            matrix.Transpose().Take(count).ForEach((seq, i) =>
+            {
+                Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
+            });
+        }
 
         public static bool isPrime(int number)
         {
