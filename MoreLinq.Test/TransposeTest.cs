@@ -118,13 +118,14 @@ namespace MoreLinq.Test
             AssertMatrix(result, expectations);
         }
 
+        [Test]
         public void TransposeWithSomeSequencesInfinite()
         {
             var matrix = MoreEnumerable.Generate(1, x => x + 1)
                                        .Where(x => isPrime(x))
                                        .Take(3)
-                                       .Select(x => x == 3 ? MoreEnumerable.Generate(x, n => n * x)
-                                                           : MoreEnumerable.Generate(x, n => n * x).Take(3));
+                                       .Select((x, i) => i == 1 ? MoreEnumerable.Generate(x, n => n * x).Take(2)
+                                                                : MoreEnumerable.Generate(x, n => n * x));
 
             var result = matrix.Transpose().Take(5);
 
@@ -132,7 +133,7 @@ namespace MoreLinq.Test
             {
                 new[] { 2,    3,    5 },
                 new[] { 4,    9,   25 },
-                new[] { 8,   27,  125 },
+                new[] { 8,        125 },
                 new[] { 16,       625 },
                 new[] { 32,      3125 }
             };
