@@ -100,7 +100,7 @@ namespace MoreLinq.Test
         public void TransposeWithAllInnerSequencesInfinite()
         {
             var matrix = MoreEnumerable.Generate(1, x => x + 1)
-                                       .Where(x => isPrime(x))
+                                       .Where(x => IsPrime(x))
                                        .Take(3)
                                        .Select(x => MoreEnumerable.Generate(x, n => n * x));
 
@@ -122,7 +122,7 @@ namespace MoreLinq.Test
         public void TransposeWithSomeSequencesInfinite()
         {
             var matrix = MoreEnumerable.Generate(1, x => x + 1)
-                                       .Where(x => isPrime(x))
+                                       .Where(x => IsPrime(x))
                                        .Take(3)
                                        .Select((x, i) => i == 1 ? MoreEnumerable.Generate(x, n => n * x).Take(2)
                                                                 : MoreEnumerable.Generate(x, n => n * x));
@@ -195,7 +195,7 @@ namespace MoreLinq.Test
             });
         }
 
-        public static bool isPrime(int number)
+        static bool IsPrime(int number)
         {
             if (number == 1) return false;
             if (number == 2) return true;
