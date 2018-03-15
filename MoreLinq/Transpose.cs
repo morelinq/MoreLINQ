@@ -61,7 +61,8 @@ namespace MoreLinq
                 {
                     while (true)
                     {
-                        var row = new List<T>();
+                        var row = new T[enumerators.Length];
+                        var count = 0;
                         for (var i = 0; i < enumerators.Length; i++)
                         {
                             if (enumerators[i] == null)
@@ -70,7 +71,7 @@ namespace MoreLinq
                             }
                             else if (enumerators[i].MoveNext())
                             {
-                                row.Add(enumerators[i].Current);
+                                row[count++] = enumerators[i].Current;
                             }
                             else
                             {
@@ -79,10 +80,11 @@ namespace MoreLinq
                             }
                         }
 
-                        if (row.Any())
-                            yield return row;
-                        else
+                        if (count == 0)
                             yield break;
+
+                        Array.Resize(ref row, count);
+                        yield return row;
                     }
                 }
                 finally
