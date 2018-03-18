@@ -79,8 +79,8 @@ namespace MoreLinq.Test
         public void MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
         {
             using (var s1 = TestingSequence.Of(1, 2))
-            using (var s2 = MoreEnumerable.From(() => 4, 
-                                                () => 5, 
+            using (var s2 = MoreEnumerable.From(() => 4,
+                                                () => 5,
                                                 () => throw new InvalidOperationException())
                                           .AsTestingSequence())
             {
@@ -93,9 +93,9 @@ namespace MoreLinq.Test
         [Test]
         public void ZipShortestNotIterateUnnecessaryElements()
         {
-            using (var s1 = MoreEnumerable.From(() => 4, 
-                                                () => 5, 
-                                                () => 6, 
+            using (var s1 = MoreEnumerable.From(() => 4,
+                                                () => 5,
+                                                () => 6,
                                                 () => throw new ArgumentException())
                                           .AsTestingSequence())
             using (var s2 = TestingSequence.Of(1, 2))
