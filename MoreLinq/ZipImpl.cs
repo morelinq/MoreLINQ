@@ -24,11 +24,11 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1, 
+            IEnumerable<T1> s1,
             IEnumerable<T2> s2,
-            IEnumerable<T3> s3, 
+            IEnumerable<T3> s3,
             IEnumerable<T4> s4,
-            Func<T1, T2, T3, T4, TResult> resultSelector, 
+            Func<T1, T2, T3, T4, TResult> resultSelector,
             int limit,
             Action<IEnumerator[]> validation = null
             )
@@ -37,7 +37,7 @@ namespace MoreLinq
             var t2 = (e: s2?.GetEnumerator(), disposed: false);
             var t3 = (e: s3?.GetEnumerator(), disposed: false);
             var t4 = (e: s4?.GetEnumerator(), disposed: false);
-            var disposed = 0; 
+            var disposed = 0;
 
             try
             {

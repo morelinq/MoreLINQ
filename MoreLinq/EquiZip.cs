@@ -159,9 +159,9 @@ namespace MoreLinq
             IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            var limit = new object[] { s1, s2, s3, s4 }.TakeWhile(s => s != null).Count() - 1; 
+            var limit = new object[] { s1, s2, s3, s4 }.TakeWhile(s => s != null).Count() - 1;
 
-            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators => 
+            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
             {
                 int shortest = enumerators.Index().First(x => x.Value == null).Key;
 
