@@ -71,7 +71,7 @@ namespace MoreLinq
             {
                 if (t.Item1 == null || disposed > limit)
                 {
-                    return default(T);
+                    return default;
                 }
                 else if (!t.Item2 && t.Item1.MoveNext())
                 {
@@ -86,7 +86,7 @@ namespace MoreLinq
                         t.Item2 = true;
                         disposed++;
                     }
-                    return default(T);
+                    return default;
                 }
             }
         }
