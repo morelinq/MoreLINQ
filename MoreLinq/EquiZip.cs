@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -152,38 +153,28 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
+            IEnumerable<T1> s1,
+            IEnumerable<T2> s2,
+            IEnumerable<T3> s3,
+            IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            using (var e1 = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
-            using (var e3 = third?.GetEnumerator())
-            using (var e4 = fourth?.GetEnumerator())
+            var limit = new object[] { s1, s2, s3, s4 }.TakeWhile(s => s != null).Count() - 1; 
+
+            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators => 
             {
-                while (e1.MoveNext())
-                {
-                    bool m2, m3 = false;
-                    if ((m2 = e2.MoveNext()) && (m3 = (e3 == null || e3.MoveNext()))
-                                             && ((e4 == null || e4.MoveNext())))
-                    {
-                        yield return resultSelector(e1.Current, e2.Current,
-                                                    e3 != null ? e3.Current : default,
-                                                    e4 != null ? e4.Current : default);
-                    }
-                    else
-                    {
-                        var message = string.Format("{0} sequence too short.", !m2 ? "Second" : !m3 ? "Third" : "Fourth");
-                        throw new InvalidOperationException(message);
-                    }
-                }
-                if (e2.MoveNext() || (e3 != null && e3.MoveNext())
-                                  || (e4 != null && e4.MoveNext()))
-                {
-                    throw new InvalidOperationException("First sequence too short.");
-                }
+                int shortest = enumerators.Index().First(x => x.Value == null).Key;
+
+                throw new InvalidOperationException(GetOrdinal(shortest + 1) + " sequence too short.");
+            });
+
+            string GetOrdinal(int i)
+            {
+                if (i == 1) return "First";
+                if (i == 2) return "Second";
+                if (i == 3) return "Third";
+                if (i == 4) return "Fourth";
+                return i + "th";
             }
         }
     }

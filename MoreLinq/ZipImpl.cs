@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections;
 
     static partial class MoreEnumerable
     {
@@ -27,7 +28,10 @@ namespace MoreLinq
             IEnumerable<T2> s2,
             IEnumerable<T3> s3, 
             IEnumerable<T4> s4,
-            Func<T1, T2, T3, T4, TResult> resultSelector, int limit)
+            Func<T1, T2, T3, T4, TResult> resultSelector, 
+            int limit,
+            Action<IEnumerator[]> validation = null
+            )
         {
             var t1 = (e: s1?.GetEnumerator(), disposed: false);
             var t2 = (e: s2?.GetEnumerator(), disposed: false);
@@ -39,13 +43,18 @@ namespace MoreLinq
             {
                 while (true)
                 {
-                    var v1 = GetValue(t1);
-                    var v2 = GetValue(t2);
-                    var v3 = GetValue(t3);
-                    var v4 = GetValue(t4);
+                    var v1 = GetValue(ref t1);
+                    var v2 = GetValue(ref t2);
+                    var v3 = GetValue(ref t3);
+                    var v4 = GetValue(ref t4);
 
                     if (disposed <= limit)
+                    {
+                        if (validation != null && disposed != 0)
+                            validation(new IEnumerator[]{ t1.e, t2.e, t3.e, t4.e });
+
                         yield return resultSelector(v1, v2, v3, v4);
+                    }
                     else
                         yield break;
                 }
@@ -58,7 +67,7 @@ namespace MoreLinq
                 t4.e?.Dispose();
             }
 
-            T GetValue<T>((IEnumerator<T>, bool) t)
+            T GetValue<T>(ref (IEnumerator<T>, bool) t)
             {
                 if (t.Item1 == null || disposed > limit)
                 {
