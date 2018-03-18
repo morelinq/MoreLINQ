@@ -33,25 +33,25 @@ namespace MoreLinq
             Action<IEnumerator[]> validation = null
             )
         {
-            var t1 = (e: s1?.GetEnumerator(), disposed: false);
-            var t2 = (e: s2?.GetEnumerator(), disposed: false);
-            var t3 = (e: s3?.GetEnumerator(), disposed: false);
-            var t4 = (e: s4?.GetEnumerator(), disposed: false);
+            var e1 = s1?.GetEnumerator();
+            var e2 = s2?.GetEnumerator();
+            var e3 = s3?.GetEnumerator();
+            var e4 = s4?.GetEnumerator();
             var disposed = 0;
 
             try
             {
                 while (true)
                 {
-                    var v1 = GetValue(ref t1);
-                    var v2 = GetValue(ref t2);
-                    var v3 = GetValue(ref t3);
-                    var v4 = GetValue(ref t4);
+                    var v1 = GetValue(ref e1);
+                    var v2 = GetValue(ref e2);
+                    var v3 = GetValue(ref e3);
+                    var v4 = GetValue(ref e4);
 
                     if (disposed <= limit)
                     {
                         if (validation != null && disposed != 0)
-                            validation(new IEnumerator[]{ t1.e, t2.e, t3.e, t4.e });
+                            validation(new IEnumerator[]{ e1, e2, e3, e4 });
 
                         yield return resultSelector(v1, v2, v3, v4);
                     }
@@ -61,31 +61,27 @@ namespace MoreLinq
             }
             finally
             {
-                t1.e?.Dispose();
-                t2.e?.Dispose();
-                t3.e?.Dispose();
-                t4.e?.Dispose();
+                e1?.Dispose();
+                e2?.Dispose();
+                e3?.Dispose();
+                e4?.Dispose();
             }
 
-            T GetValue<T>(ref (IEnumerator<T>, bool) t)
+            T GetValue<T>(ref IEnumerator<T> e)
             {
-                if (t.Item1 == null || disposed > limit)
+                if (e == null || disposed > limit)
                 {
                     return default;
                 }
-                else if (!t.Item2 && t.Item1.MoveNext())
+                else if (e.MoveNext())
                 {
-                    return t.Item1.Current;
+                    return e.Current;
                 }
                 else
                 {
-                    if (!t.Item2)
-                    {
-                        t.Item1.Dispose();
-                        t.Item1 = null;
-                        t.Item2 = true;
-                        disposed++;
-                    }
+                    e.Dispose();
+                    e = null;
+                    disposed++;
                     return default;
                 }
             }
