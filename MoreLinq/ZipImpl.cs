@@ -30,7 +30,7 @@ namespace MoreLinq
             IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector,
             int limit,
-            Action<IEnumerator[]> validation = null
+            Action<IEnumerator[]> error = null
             )
         {
             var e1 = s1?.GetEnumerator();
@@ -38,23 +38,20 @@ namespace MoreLinq
             var e3 = s3?.GetEnumerator();
             var e4 = s4?.GetEnumerator();
             var disposed = 0;
+            var call = 0;
 
             try
             {
                 while (true)
                 {
+                    call = 0;
                     var v1 = GetValue(ref e1);
                     var v2 = GetValue(ref e2);
                     var v3 = GetValue(ref e3);
                     var v4 = GetValue(ref e4);
 
                     if (disposed <= limit)
-                    {
-                        if (validation != null && disposed != 0)
-                            validation(new IEnumerator[]{ e1, e2, e3, e4 });
-
                         yield return resultSelector(v1, v2, v3, v4);
-                    }
                     else
                         yield break;
                 }
@@ -69,20 +66,29 @@ namespace MoreLinq
 
             T GetValue<T>(ref IEnumerator<T> e)
             {
+                call++;
                 if (e == null || disposed > limit)
                 {
                     return default;
                 }
                 else if (e.MoveNext())
                 {
-                    return e.Current;
+                    return ValidateEquiZip(e.Current);
                 }
                 else
                 {
                     e.Dispose();
                     e = null;
                     disposed++;
-                    return default;
+                    return ValidateEquiZip(default);
+                }
+
+                T ValidateEquiZip(T value)
+                {
+                    if (error != null && disposed > 0 && disposed < call)
+                        error(new IEnumerator[]{ e1, e2, e3, e4 });
+
+                    return value;
                 }
             }
         }
