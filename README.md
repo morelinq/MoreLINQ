@@ -414,15 +414,6 @@ Generates a sequence of integral numbers within the (inclusive) specified range.
 
 This method has 2 overloads.
 
-### ~~SingleOrFallback~~
-
-Consider using `FallbackIfEmpty` instead. `SingleOrFallback` may be removed in
-a future version. For more information, see issue [#122][#122].
-
-Returns the single element in the given sequence, or the result of executing a
-fallback delegate if the sequence is empty. This method throws an exception if
-there is more than one element in the sequence
-
 ### SkipLast
 
 Bypasses a specified number of elements at the end of the sequence.
