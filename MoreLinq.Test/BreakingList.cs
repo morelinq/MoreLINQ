@@ -5,13 +5,10 @@ namespace MoreLinq.Test
 
     static class BreakingListExtensions
     {
-        internal static IEnumerable<T> ToBreakingList<T>(this IEnumerable<T> enumerable, bool readOnly)
-        {
-            return readOnly
-                ? (IEnumerable<T>)new BreakingReadOnlyList<T>(enumerable)
-                : new BreakingList<T>(enumerable);
-        }
-
+        internal static IEnumerable<T> ToBreakingList<T>(this IEnumerable<T> enumerable, bool readOnly) =>
+            readOnly
+            ? (IEnumerable<T>)new BreakingReadOnlyList<T>(enumerable)
+            : new BreakingList<T>(enumerable);
     }
 
     /// <summary>
@@ -23,15 +20,8 @@ namespace MoreLinq.Test
 
     sealed class BreakingList<T> : BreakingSequence<T>, IList<T>
     {
-        public BreakingList()
-        {
-            _list = new List<T>();
-        }
-
-        public BreakingList(IEnumerable<T> sourceList)
-        {
-             _list = sourceList.ToList();
-        }
+        public BreakingList() => _list = new List<T>();
+        public BreakingList(IEnumerable<T> sourceList) => _list = sourceList.ToList();
 
         readonly List<T> _list;
 
