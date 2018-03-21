@@ -14,7 +14,7 @@ namespace MoreLinq.Test
     {
         readonly IReadOnlyList<T> _list;
 
-        public BreakingReadOnlyList(IEnumerable<T> enumerable) => _list = enumerable.ToList();
+        public BreakingReadOnlyList(IReadOnlyList<T> list) => _list = list;
         public int Count => _list.Count;
         public T this[int index] => _list[index];
     }

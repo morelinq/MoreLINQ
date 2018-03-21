@@ -7,8 +7,8 @@ namespace MoreLinq.Test
     {
         internal static IEnumerable<T> ToBreakingList<T>(this IEnumerable<T> enumerable, bool readOnly) =>
             readOnly
-            ? (IEnumerable<T>)new BreakingReadOnlyList<T>(enumerable)
-            : new BreakingList<T>(enumerable);
+            ? (IEnumerable<T>)new BreakingReadOnlyList<T>(enumerable.ToList())
+            : new BreakingList<T>(enumerable.ToList());
     }
 
     /// <summary>
@@ -22,8 +22,8 @@ namespace MoreLinq.Test
     {
         readonly List<T> _list;
 
-        public BreakingList() => _list = new List<T>();
-        public BreakingList(IEnumerable<T> sourceList) => _list = sourceList.ToList();
+        public BreakingList() : this(new List<T>()) {}
+        public BreakingList(List<T> list) => _list = list;
 
         public void Add(T item) => _list.Add(item);
         public void Clear() => _list.Clear();
