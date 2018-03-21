@@ -3,7 +3,7 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
 
-    static class BreakingListExtensions
+    partial class TestExtensions
     {
         internal static IEnumerable<T> ToBreakingList<T>(this IEnumerable<T> enumerable, bool readOnly) =>
             readOnly
