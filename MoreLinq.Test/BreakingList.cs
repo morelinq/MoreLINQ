@@ -25,7 +25,6 @@ namespace MoreLinq.Test
 
         readonly List<T> _list;
 
-        // all non-enumerating IList<T> members are forwarded back to the underlying private list
         public void Add(T item) => _list.Add(item);
         public void Clear() => _list.Clear();
         public bool Contains(T item) => _list.Contains(item);

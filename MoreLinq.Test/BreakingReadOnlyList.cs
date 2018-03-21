@@ -15,7 +15,6 @@ namespace MoreLinq.Test
         readonly IReadOnlyList<T> _list;
 
         public BreakingReadOnlyList(IEnumerable<T> enumerable) => _list = enumerable.ToList();
-        // all non-enumerating IReadOnlyList<T> members are forwarded back to the underlying private list
         public int Count => _list.Count;
         public T this[int index] => _list[index];
     }
