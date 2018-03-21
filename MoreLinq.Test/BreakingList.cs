@@ -1,8 +1,15 @@
 namespace MoreLinq.Test
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
+
+    partial class TestExtensions
+    {
+        internal static IEnumerable<T> ToBreakingList<T>(this IEnumerable<T> enumerable, bool readOnly) =>
+            readOnly
+            ? (IEnumerable<T>)new BreakingReadOnlyList<T>(enumerable.ToList())
+            : new BreakingList<T>(enumerable.ToList());
+    }
 
     /// <summary>
     /// This class implement <see cref="IList{T}"/> but specifically prohibits enumeration using GetEnumerator().
@@ -11,14 +18,13 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class UnenumerableList<T> : IList<T>
+    sealed class BreakingList<T> : BreakingSequence<T>, IList<T>
     {
-        readonly List<T> _list = new List<T>();
+        readonly List<T> _list;
 
-        // intentionally implemented to throw exception - ensures iteration is not used in Slice
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public IEnumerator<T> GetEnumerator() => throw new NotImplementedException();
-        // all other IList<T> members are forwarded back to the underlying private list
+        public BreakingList() : this(new List<T>()) {}
+        public BreakingList(List<T> list) => _list = list;
+
         public void Add(T item) => _list.Add(item);
         public void Clear() => _list.Clear();
         public bool Contains(T item) => _list.Contains(item);

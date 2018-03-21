@@ -21,7 +21,7 @@ namespace MoreLinq.Test
     using NUnit.Framework;
     using NUnit.Framework.Constraints;
 
-    static class TestExtensions
+    static partial class TestExtensions
     {
         /// <summary>
         /// Just to make our testing easier so we can chain the assertion call.

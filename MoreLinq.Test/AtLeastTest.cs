@@ -141,7 +141,7 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastShouldBeNotEnumerateSequenceForImplementersOfICollection()
         {
-            var sequence = new UnenumerableList<int>();
+            var sequence = new BreakingList<int>();
             sequence.AtLeast(3);
         }
     }
