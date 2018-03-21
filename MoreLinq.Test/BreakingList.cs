@@ -20,10 +20,10 @@ namespace MoreLinq.Test
 
     sealed class BreakingList<T> : BreakingSequence<T>, IList<T>
     {
+        readonly List<T> _list;
+
         public BreakingList() => _list = new List<T>();
         public BreakingList(IEnumerable<T> sourceList) => _list = sourceList.ToList();
-
-        readonly List<T> _list;
 
         public void Add(T item) => _list.Add(item);
         public void Clear() => _list.Clear();
