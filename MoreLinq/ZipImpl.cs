@@ -37,7 +37,7 @@ namespace MoreLinq
             var e2 = s2?.GetEnumerator();
             var e3 = s3?.GetEnumerator();
             var e4 = s4?.GetEnumerator();
-            var disposed = 0;
+            var disposals = 0;
             int calls;
 
             try
@@ -50,7 +50,7 @@ namespace MoreLinq
                     var v3 = GetValue(ref e3);
                     var v4 = GetValue(ref e4);
 
-                    if (disposed <= limit)
+                    if (disposals <= limit)
                         yield return resultSelector(v1, v2, v3, v4);
                     else
                         yield break;
@@ -67,7 +67,7 @@ namespace MoreLinq
             T GetValue<T>(ref IEnumerator<T> e)
             {
                 calls++;
-                if (e == null || disposed > limit)
+                if (e == null || disposals > limit)
                 {
                     return default;
                 }
@@ -79,13 +79,13 @@ namespace MoreLinq
                 {
                     e.Dispose();
                     e = null;
-                    disposed++;
+                    disposals++;
                     return ValidateEquiZip(default);
                 }
 
                 T ValidateEquiZip(T value)
                 {
-                    if (errorSelector != null && disposed > 0 && disposed < call)
+                    if (errorSelector != null && disposals > 0 && disposals < calls)
                         throw errorSelector(new IEnumerator[]{ e1, e2, e3, e4 });
 
                     return value;
