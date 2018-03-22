@@ -19,4 +19,6 @@ export MSBuildExtensionsPath=$SDK_DIR
 export CscToolExe=$SDK_DIR/Roslyn/bincore/RunCsc
 export MSBuildSDKsPath=$SDK_DIR/Sdks
 
+[[ -x "$CscToolExe" ]] || chmod +x "$CscToolExe"
+
 msbuild "$@"
