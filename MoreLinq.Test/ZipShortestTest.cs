@@ -105,5 +105,15 @@ namespace MoreLinq.Test
                 zipped.AssertSequenceEqual((4, 1), (5, 2));
             }
         }
+
+        [Test]
+        public void ZipShortestDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
+        }
     }
 }

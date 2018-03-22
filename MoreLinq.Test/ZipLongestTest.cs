@@ -89,5 +89,15 @@ namespace MoreLinq.Test
                     ((IDisposable)shorter).Dispose();
             }
         }
+
+        [Test]
+        public void ZipLongestDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
+        }
     }
 }

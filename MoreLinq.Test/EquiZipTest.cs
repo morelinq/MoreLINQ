@@ -95,5 +95,15 @@ namespace MoreLinq.Test
                     s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume());
             }
         }
+
+        [Test]
+        public void ZipDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
+        }
     }
 }
