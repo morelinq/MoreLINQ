@@ -9,13 +9,14 @@ which msbuild 2>/dev/null || {
     exit 1
 }
 
-for d in local/share share; do
-    SDK_DIR=/usr/$d/dotnet/sdk/2.0.0
-    if [ -d $SDK_DIR ]; then break; fi
-done
+SDK_DIR=$(dotnet --info | grep -E "^ *[Bb]ase [Pp]ath:" | sed -E "s/^.+: *//")
+if [[ -z $SDK_DIR ]]; then
+    echo>&2 Unable to determine .NET Core SDK path
+    exit 1
+fi
 
 export MSBuildExtensionsPath=$SDK_DIR
-export CscToolExe=$SDK_DIR/Roslyn/RunCsc.sh
+export CscToolExe=$SDK_DIR/Roslyn/bincore/RunCsc
 export MSBuildSDKsPath=$SDK_DIR/Sdks
 
 msbuild "$@"
