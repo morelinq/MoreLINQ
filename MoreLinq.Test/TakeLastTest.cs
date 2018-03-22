@@ -67,9 +67,7 @@ namespace MoreLinq.Test
         [TestCase(false)]
         public void TakeLastOptimizedForCollections(bool readOnly)
         {
-            var sequence = readOnly
-                         ? new UnenumerableReadOnlyList<int>(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })
-                         : (IEnumerable<int>)new UnenumerableList<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToBreakingList(readOnly);
 
             sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
         }

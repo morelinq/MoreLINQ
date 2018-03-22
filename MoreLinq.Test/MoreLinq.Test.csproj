@@ -37,6 +37,8 @@
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
+      <Compile Include="BreakingList.cs" />
+      <Compile Include="BreakingReadOnlyList.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
       <Compile Include="Comparer.cs" />
@@ -50,8 +52,6 @@
       <Compile Include="SequenceReader.cs" />
       <Compile Include="TestingSequence.cs" />
       <Compile Include="TestExtensions.cs" />
-      <Compile Include="UnenumerableList.cs" />
-      <Compile Include="UnenumerableReadOnlyList.cs" />
       <Compile Include="VerifiableEnumerator.cs" />
   </ItemGroup>
 
@@ -78,6 +78,10 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
 </Project>
