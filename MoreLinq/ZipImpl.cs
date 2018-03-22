@@ -38,13 +38,13 @@ namespace MoreLinq
             var e3 = s3?.GetEnumerator();
             var e4 = s4?.GetEnumerator();
             var disposed = 0;
-            var call = 0;
+            int calls;
 
             try
             {
                 while (true)
                 {
-                    call = 0;
+                    calls = 0;
                     var v1 = GetValue(ref e1);
                     var v2 = GetValue(ref e2);
                     var v3 = GetValue(ref e3);
@@ -66,7 +66,7 @@ namespace MoreLinq
 
             T GetValue<T>(ref IEnumerator<T> e)
             {
-                call++;
+                calls++;
                 if (e == null || disposed > limit)
                 {
                     return default;
