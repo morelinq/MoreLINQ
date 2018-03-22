@@ -20,17 +20,22 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
 
-    sealed class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
+    class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
     {
-        public BreakingCollection(int count) => Count = count;
+        protected readonly List<T> List;
 
-        public int Count { get; }
+        public BreakingCollection() : this(new List<T>()) {}
+        public BreakingCollection(List<T> list) => List = list;
+        public BreakingCollection(int count) :
+            this(Enumerable.Repeat(default(T), count).ToList()) {}
 
-        public void Add(T item)      => throw new NotImplementedException();
-        public void Clear()          => throw new NotImplementedException();
-        public bool Contains(T item) => throw new NotImplementedException();
-        public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
-        public bool Remove(T item)   => throw new NotImplementedException();
-        public bool IsReadOnly       => throw new NotImplementedException();
+        public int Count => List.Count;
+
+        public void Add(T item) => throw new NotImplementedException();
+        public void Clear() => throw new NotImplementedException();
+        public bool Contains(T item) => List.Contains(item);
+        public void CopyTo(T[] array, int arrayIndex) => List.CopyTo(array, arrayIndex);
+        public bool Remove(T item) => throw new NotImplementedException();
+        public bool IsReadOnly => true;
     }
 }
