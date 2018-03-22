@@ -30,7 +30,7 @@ namespace MoreLinq
             IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector,
             int limit,
-            Action<IEnumerator[]> error = null
+            Func<IEnumerator[], Exception> errorSelector = null
             )
         {
             var e1 = s1?.GetEnumerator();
@@ -85,8 +85,8 @@ namespace MoreLinq
 
                 T ValidateEquiZip(T value)
                 {
-                    if (error != null && disposed > 0 && disposed < call)
-                        error(new IEnumerator[]{ e1, e2, e3, e4 });
+                    if (errorSelector != null && disposed > 0 && disposed < call)
+                        throw errorSelector(new IEnumerator[]{ e1, e2, e3, e4 });
 
                     return value;
                 }

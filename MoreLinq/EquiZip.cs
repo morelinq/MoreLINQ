@@ -165,7 +165,7 @@ namespace MoreLinq
             {
                 int shortest = enumerators.Index().First(x => x.Value == null).Key;
 
-                throw new InvalidOperationException(GetOrdinal(shortest + 1) + " sequence too short.");
+                return new InvalidOperationException(GetOrdinal(shortest + 1) + " sequence too short.");
             });
 
             string GetOrdinal(int i)
