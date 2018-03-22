@@ -1,5 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\netfx.props" />
+
   <PropertyGroup>
     <Title>MoreLINQ</Title>
     <Description>This project enhances LINQ to Objects with the following methods: Acquire, AggregateRight, Assert, AssertCount, AtLeast, AtMost, Batch, Cartesian, CountBetween, CompareCount, CountBy, Concat, Consume, DistinctBy, EndsWith, EquiZip, Exactly, ExceptBy, Exclude, FallbackIfEmpty, FillBackward, FillForward, Flatten, Fold, ForEach, From, FullGroupJoin, FullJoin, Generate, GenerateByIndex, GroupAdjacent, Index, Insert, Interleave, Lag, Lead, LeftJoin, MaxBy, MinBy, Move, NestedLoops, OrderBy, OrderedMerge, Pad, PadStart, Pairwise, PartialSort, PartialSortBy, Partition, Permutations, Pipe, Prepend, PreScan, Random, RandomDouble, RandomSubset, Rank, RankBy, Repeat, RightJoin, RunLengthEncode, Scan, ScanRight, Segment, Sequence, SkipLast, SkipUntil, Slice, SortedMerge, Split, StartsWith, Subsets, TagFirstLast, TakeEvery, TakeLast, TakeUntil, ThenBy, ToArrayByIndex, ToDataTable, ToDelimitedString, ToDictionary, ToHashSet, ToLookup, Trace, TraverseBreadthFirst, TraverseDepthFirst, Unfold, Windowed, ZipLongest, ZipShortest</Description>
