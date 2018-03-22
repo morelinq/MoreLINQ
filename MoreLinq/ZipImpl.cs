@@ -33,15 +33,20 @@ namespace MoreLinq
             Func<IEnumerator[], Exception> errorSelector = null
             )
         {
-            var e1 = s1?.GetEnumerator();
-            var e2 = s2?.GetEnumerator();
-            var e3 = s3?.GetEnumerator();
-            var e4 = s4?.GetEnumerator();
+            IEnumerator<T1> e1 = null;
+            IEnumerator<T2> e2 = null;
+            IEnumerator<T3> e3 = null;
+            IEnumerator<T4> e4 = null;
             var disposals = 0;
             int calls;
 
             try
             {
+                e1 = s1 .GetEnumerator();
+                e2 = s2 .GetEnumerator();
+                e3 = s3?.GetEnumerator();
+                e4 = s4?.GetEnumerator();
+
                 while (true)
                 {
                     calls = 0;
