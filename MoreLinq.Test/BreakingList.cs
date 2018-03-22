@@ -1,5 +1,6 @@
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -23,14 +24,14 @@ namespace MoreLinq.Test
         public BreakingList() : this(new List<T>()) {}
         public BreakingList(List<T> list) : base(list) { }
 
-        public int IndexOf(T item) => _list.IndexOf(item);
-        public void Insert(int index, T item) => _list.Insert(index, item);
-        public void RemoveAt(int index) => _list.RemoveAt(index);
+        public int IndexOf(T item) => List.IndexOf(item);
+        public void Insert(int index, T item) => throw new NotImplementedException();
+        public void RemoveAt(int index) => throw new NotImplementedException();
 
         public T this[int index]
         {
-            get => _list[index];
-            set => _list[index] = value;
+            get => List[index];
+            set => throw new NotImplementedException();
         }
     }
 }
