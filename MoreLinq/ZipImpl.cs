@@ -71,25 +71,24 @@ namespace MoreLinq
                 {
                     return default;
                 }
-                else if (e.MoveNext())
+
+                T value;
+                if (e.MoveNext())
                 {
-                    return ValidateEquiZip(e.Current);
+                    value = e.Current;
                 }
                 else
                 {
                     e.Dispose();
                     e = null;
                     disposals++;
-                    return ValidateEquiZip(default);
+                    value = default;
                 }
 
-                T ValidateEquiZip(T value)
-                {
-                    if (errorSelector != null && disposals > 0 && disposals < calls)
-                        throw errorSelector(new IEnumerator[]{ e1, e2, e3, e4 });
+                if (errorSelector != null && disposals > 0 && disposals < calls)
+                    throw errorSelector(new IEnumerator[]{ e1, e2, e3, e4 });
 
-                    return value;
-                }
+                return value;
             }
         }
     }
