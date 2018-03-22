@@ -112,7 +112,7 @@ namespace MoreLinq.Test
             using (var s1 = TestingSequence.Of(1, 2))
             {
                 Assert.Throws<InvalidOperationException>(() =>
-                    s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+                    s1.ZipShortest(new BreakingSequence<int>(), Tuple.Create).Consume());
             }
         }
     }
