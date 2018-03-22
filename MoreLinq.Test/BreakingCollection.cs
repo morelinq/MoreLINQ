@@ -24,10 +24,10 @@ namespace MoreLinq.Test
     {
         protected readonly List<T> List;
 
-        public BreakingCollection() : this(new List<T>()) { }
+        public BreakingCollection() : this(new List<T>()) {}
         public BreakingCollection(List<T> list) => List = list;
-        public BreakingCollection(int count)
-            : this(Enumerable.Repeat(default(T), count).ToList()){ }
+        public BreakingCollection(int count) :
+            this(Enumerable.Repeat(default(T), count).ToList()) {}
 
         public int Count => List.Count;
 
