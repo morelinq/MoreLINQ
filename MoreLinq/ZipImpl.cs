@@ -40,13 +40,11 @@ namespace MoreLinq
             var disposals = 0;
             int calls;
 
-            try
+            using (e1 = s1 .GetEnumerator())
+            using (e2 = s2 .GetEnumerator())
+            using (e3 = s3?.GetEnumerator())
+            using (e4 = s4?.GetEnumerator())
             {
-                e1 = s1 .GetEnumerator();
-                e2 = s2 .GetEnumerator();
-                e3 = s3?.GetEnumerator();
-                e4 = s4?.GetEnumerator();
-
                 while (true)
                 {
                     calls = 0;
@@ -60,13 +58,6 @@ namespace MoreLinq
                     else
                         yield break;
                 }
-            }
-            finally
-            {
-                e1?.Dispose();
-                e2?.Dispose();
-                e3?.Dispose();
-                e4?.Dispose();
             }
 
             T GetValue<T>(ref IEnumerator<T> e)
