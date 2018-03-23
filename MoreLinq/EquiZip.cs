@@ -163,19 +163,30 @@ namespace MoreLinq
 
             return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
             {
-                int shortest = enumerators.Index().First(x => x.Value == null).Key;
+                var indexShortest = enumerators.Index().First(x => x.Value == null).Key;
 
-                return new InvalidOperationException(GetOrdinal(shortest + 1) + " sequence too short.");
+                return new InvalidOperationException(OrdinalNumbers[indexShortest] + " sequence too short.");
             });
-
-            string GetOrdinal(int i)
-            {
-                if (i == 1) return "First";
-                if (i == 2) return "Second";
-                if (i == 3) return "Third";
-                if (i == 4) return "Fourth";
-                return i + "th";
-            }
         }
+
+        static readonly string[] OrdinalNumbers =
+        {
+            "First",
+            "Second",
+            "Third",
+            "Fourth",
+            // "Fifth",
+            // "Sixth",
+            // "Seventh",
+            // "Eighth",
+            // "Ninth",
+            // "Tenth",
+            // "Eleventh",
+            // "Twelfth",
+            // "Thirteenth",
+            // "Fourteenth",
+            // "Fifteenth",
+            // "Sixteenth",
+        };
     }
 }
