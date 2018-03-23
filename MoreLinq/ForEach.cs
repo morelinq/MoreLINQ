@@ -34,8 +34,20 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
 
+            var exceptions = new Lazy<ICollection<Exception>>(() => new List<Exception>());
+
             foreach (var element in source)
-                action(element);
+                try
+                {
+                    action(element);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Value.Add(ex);
+                }
+
+            if (exceptions.Value.Count > 0)
+                throw new AggregateException(exceptions.Value);
         }
 
         /// <summary>
@@ -53,8 +65,20 @@ namespace MoreLinq
             if (action == null) throw new ArgumentNullException(nameof(action));
 
             var index = 0;
+            var exceptions = new Lazy<ICollection<Exception>>(() => new List<Exception>());
+
             foreach (var element in source)
-                action(element, index++);
+                try
+                {
+                    action(element, index++);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Value.Add(ex);
+                }
+
+            if (exceptions.Value.Count > 0)
+                throw new AggregateException(exceptions.Value);
         }
     }
 }
