@@ -32,10 +32,10 @@ namespace MoreLinq
             int limit,
             Func<IEnumerator[], Exception> errorSelector = null)
         {
-            IEnumerator<T1> e1 = null;
-            IEnumerator<T2> e2 = null;
-            IEnumerator<T3> e3 = null;
-            IEnumerator<T4> e4 = null;
+            IEnumerator<T1> e1;
+            IEnumerator<T2> e2;
+            IEnumerator<T3> e3;
+            IEnumerator<T4> e4;
             var disposals = 0;
             int calls;
 
