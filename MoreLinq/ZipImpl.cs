@@ -23,6 +23,8 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
+        delegate TResult Folder<in T, out TResult>(params T[] args);
+
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
             IEnumerable<T1> s1,
             IEnumerable<T2> s2,
@@ -30,7 +32,7 @@ namespace MoreLinq
             IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector,
             int limit,
-            Func<IEnumerator[], Exception> errorSelector = null)
+            Folder<IEnumerator, Exception> errorSelector = null)
         {
             IEnumerator<T1> e1;
             IEnumerator<T2> e2;
@@ -79,7 +81,7 @@ namespace MoreLinq
                 }
 
                 if (errorSelector != null && disposals > 0 && disposals < calls)
-                    throw errorSelector(new IEnumerator[] { e1, e2, e3, e4 });
+                    throw errorSelector(e1, e2, e3, e4);
 
                 return value;
             }
