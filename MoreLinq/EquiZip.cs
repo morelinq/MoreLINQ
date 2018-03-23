@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System.Diagnostics;
+
 namespace MoreLinq
 {
     using System;
@@ -159,7 +161,13 @@ namespace MoreLinq
             IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            var limit = new object[] { s1, s2, s3, s4 }.TakeWhile(s => s != null).Count() - 1;
+            Debug.Assert(s1 != null);
+            Debug.Assert(s2 != null);
+
+            const int zero = 0, one = 1;
+
+            var limit = 1 + (s3 != null ? one : zero)
+                          + (s4 != null ? one : zero);
 
             return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
             {
