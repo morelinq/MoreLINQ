@@ -38,6 +38,7 @@ namespace MoreLinq
             IEnumerator<T3> e3 = null;
             IEnumerator<T4> e4 = null;
             var disposals = 0;
+            int calls;
 
             using (e1 = s1 .GetEnumerator())
             using (e2 = s2 .GetEnumerator())
@@ -46,7 +47,7 @@ namespace MoreLinq
             {
                 while (true)
                 {
-                    var calls = 0;
+                    calls = 0;
                     var v1 = GetValue(ref e1);
                     var v2 = GetValue(ref e2);
                     var v3 = GetValue(ref e3);
