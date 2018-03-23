@@ -171,8 +171,8 @@ namespace MoreLinq
 
             return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
             {
-                var indexShortest = enumerators.Index().First(x => x.Value == null).Key;
-                return new InvalidOperationException(OrdinalNumbers[indexShortest] + " sequence too short.");
+                var i = enumerators.Index().First(x => x.Value == null).Key;
+                return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
             });
         }
 

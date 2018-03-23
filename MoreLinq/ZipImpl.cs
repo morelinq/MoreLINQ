@@ -38,7 +38,7 @@ namespace MoreLinq
             IEnumerator<T2> e2;
             IEnumerator<T3> e3;
             IEnumerator<T4> e4;
-            var disposals = 0;
+            var terminations = 0;
 
             using (e1 = s1 .GetEnumerator())
             using (e2 = s2 .GetEnumerator())
@@ -47,25 +47,23 @@ namespace MoreLinq
             {
                 while (true)
                 {
-                    var calls = 0;
-                    var v1 = GetValue(ref e1, ++calls);
-                    var v2 = GetValue(ref e2, ++calls);
-                    var v3 = GetValue(ref e3, ++calls);
-                    var v4 = GetValue(ref e4, ++calls);
+                    var n = 0;
+                    var v1 = Read(ref e1, ++n);
+                    var v2 = Read(ref e2, ++n);
+                    var v3 = Read(ref e3, ++n);
+                    var v4 = Read(ref e4, ++n);
 
-                    if (disposals <= limit)
+                    if (terminations <= limit)
                         yield return resultSelector(v1, v2, v3, v4);
                     else
                         yield break;
                 }
             }
 
-            T GetValue<T>(ref IEnumerator<T> e, int calls)
+            T Read<T>(ref IEnumerator<T> e, int n)
             {
-                if (e == null || disposals > limit)
-                {
+                if (e == null || terminations > limit)
                     return default;
-                }
 
                 T value;
                 if (e.MoveNext())
@@ -76,11 +74,11 @@ namespace MoreLinq
                 {
                     e.Dispose();
                     e = null;
-                    disposals++;
+                    terminations++;
                     value = default;
                 }
 
-                if (errorSelector != null && disposals > 0 && disposals < calls)
+                if (errorSelector != null && terminations > 0 && terminations < n)
                     throw errorSelector(e1, e2, e3, e4);
 
                 return value;
