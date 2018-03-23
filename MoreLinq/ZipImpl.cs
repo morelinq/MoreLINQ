@@ -82,7 +82,7 @@ namespace MoreLinq
                 }
 
                 if (errorSelector != null && disposals > 0 && disposals < calls)
-                    throw errorSelector(new IEnumerator[]{ e1, e2, e3, e4 });
+                    throw errorSelector(new IEnumerator[] { e1, e2, e3, e4 });
 
                 return value;
             }
