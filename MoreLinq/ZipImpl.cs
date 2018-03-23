@@ -30,8 +30,7 @@ namespace MoreLinq
             IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector,
             int limit,
-            Func<IEnumerator[], Exception> errorSelector = null
-            )
+            Func<IEnumerator[], Exception> errorSelector = null)
         {
             IEnumerator<T1> e1 = null;
             IEnumerator<T2> e2 = null;
