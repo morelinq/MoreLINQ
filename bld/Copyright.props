@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <Copyright>
+        &#169; 2008 Jonathan Skeet.
+        Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph.
+        Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin.
+        Portions &#169; 2015 Felipe Sateler, &#8220;sholland&#8221;.
+        Portions &#169; 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh).
+        Portions &#169; 2017 Jonas Nyrup (jnyrup).
+        Portions &#169; Microsoft. All rights reserved.
+    </Copyright>
+  </PropertyGroup>
+</Project>
