@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\netfx.props" />
+  <Import Project="..\bld\DotNetSdkMono.props" />
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
