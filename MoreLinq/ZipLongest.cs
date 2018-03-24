@@ -53,13 +53,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
              IEnumerable<TSecond> second,
-             Func<TFirst, TSecond, TResult> resultSelector)
-        {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b), 1);
-        }
+             Func<TFirst, TSecond, TResult> resultSelector) =>
+             ZipImpl(first, second, resultSelector, 1);
     }
 }

@@ -52,15 +52,8 @@ namespace MoreLinq
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> resultSelector)
-        {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (third == null) throw new ArgumentNullException(nameof(third));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-            return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
-        }
+            IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> resultSelector)  =>
+             ZipImpl(first, second, third, resultSelector, 0);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -95,16 +88,8 @@ namespace MoreLinq
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, Func<T1, T2, T3, T4, TResult> resultSelector)
-        {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (third == null) throw new ArgumentNullException(nameof(third));
-            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-            return ZipImpl(first, second, third, fourth, resultSelector);
-        }
+            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, Func<T1, T2, T3, T4, TResult> resultSelector) =>
+             ZipImpl(first, second, third, fourth, resultSelector, 0);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -132,21 +117,7 @@ namespace MoreLinq
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences</returns>
 
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
-        {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
-        }
-
-        static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1, IEnumerable<T2> s2,
-            IEnumerable<T3> s3, IEnumerable<T4> s4,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
-        {
-            return ZipImpl(s1, s2, s3, s4, resultSelector, 0);
-        }
+            IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector) =>
+             ZipImpl(first, second, resultSelector, 0);
     }
 }

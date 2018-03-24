@@ -25,7 +25,58 @@ namespace MoreLinq
     {
         delegate TResult Folder<in T, out TResult>(params T[] args);
 
+        static IEnumerable<TResult> ZipImpl<T1, T2, TResult>(
+            IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            Func<T1, T2, TResult> resultSelector,
+            int limit,
+            Folder<IEnumerator, Exception> errorSelector = null)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _ZipImpl<T1, T2, object, object, TResult>
+                (first, second, null, null, (a1, a2, a3, a4) => resultSelector(a1, a2), limit, errorSelector);
+        }
+
+        static IEnumerable<TResult> ZipImpl<T1, T2, T3, TResult>(
+            IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            Func<T1, T2, T3, TResult> resultSelector,
+            int limit,
+            Folder<IEnumerator, Exception> errorSelector = null)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _ZipImpl<T1, T2, T3, object, TResult>
+                (first, second, third, null, (a1, a2, a3, a4) => resultSelector(a1, a2, a3), limit, errorSelector);
+        }
+
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
+            IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            Func<T1, T2, T3, T4, TResult> resultSelector,
+            int limit,
+            Folder<IEnumerator, Exception> errorSelector = null)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _ZipImpl<T1, T2, T3, T4, TResult>
+                (first, second, third, fourth, (a1, a2, a3, a4) => resultSelector(a1, a2, a3, a4), limit, errorSelector);
+        }
+
+        static IEnumerable<TResult> _ZipImpl<T1, T2, T3, T4, TResult>(
             IEnumerable<T1> s1,
             IEnumerable<T2> s2,
             IEnumerable<T3> s3,
