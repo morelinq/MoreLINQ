@@ -117,12 +117,12 @@ namespace MoreLinq
             int width, T padding, Func<int, T> paddingSelector)
         {
             return
-                source is ICollection<T> collection
-                ? collection.Count >= width
-                  ? collection
-                  : Enumerable.Range(0, width - collection.Count)
+                source.TryGetCollectionCount() is int collectionCount
+                ? collectionCount >= width
+                  ? source
+                  : Enumerable.Range(0, width - collectionCount)
                               .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
-                              .Concat(collection)
+                              .Concat(source)
                 : _(); IEnumerable<T> _()
                 {
                     var array = new T[width];
