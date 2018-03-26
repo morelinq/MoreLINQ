@@ -41,9 +41,17 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return from item1 in first
-                   from item2 in second // TODO buffer to avoid multiple enumerations
-                   select resultSelector(item1, item2);
+            return _(); IEnumerable<TResult> _()
+            {
+                using (var e = second.GetEnumerator())
+                {
+                    var cache = Memoize(e);
+
+                    foreach (var item1 in first)
+                        foreach (var item2 in cache)
+                            yield return resultSelector(item1, item2);
+                }
+            }
         }
     }
 }
