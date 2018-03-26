@@ -37,24 +37,49 @@ namespace MoreLinq
                  : (int?)null;
         }
 
+        /// <summary>
+        /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
+        /// cache of the enumeration on first iteration
+        /// </summary>
+        /// <remarks>
+        /// This operator is not thread-safe, since it is for internal use only.
+        /// </remarks>
         static IEnumerable<T> Memoize<T>(IEnumerator<T> e)
         {
             if (e == null) throw new ArgumentNullException(nameof(e));
 
             var disposed = false;
-            var list = new List<T>();
+            var hasValue = false;
+            var cache = new List<T>();
+            var index = 0;
 
-            return list.Concat(Enumerable().Pipe(x => list.Add(x)));
-
-            IEnumerable<T> Enumerable()
+            return _(); IEnumerable<T> _()
             {
-                if (disposed) yield break;
+                while (true)
+                {
+                    if (index < cache.Count)
+                    {
+                        hasValue = true;
+                    }
 
-                while (e.MoveNext())
-                    yield return e.Current;
+                    else if ((hasValue = !disposed && e.MoveNext()))
+                    {
+                        cache.Add(e.Current);
+                    }
 
-                e.Dispose();
-                disposed = true;
+                    else if (!disposed)
+                    {
+                        disposed = true;
+                        e.Dispose();
+                    }
+
+                    if (hasValue)
+                        yield return cache[index];
+                    else
+                        yield break;
+
+                    index++;
+                }
             }
         }
     }
