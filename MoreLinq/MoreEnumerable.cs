@@ -18,6 +18,7 @@
 namespace MoreLinq
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     /// <summary>
@@ -34,6 +35,27 @@ namespace MoreLinq
             return source is ICollection<T> collection ? collection.Count
                  : source is IReadOnlyCollection<T> readOnlyCollection ? readOnlyCollection.Count
                  : (int?)null;
+        }
+
+        static IEnumerable<T> Memoize<T>(IEnumerator<T> e)
+        {
+            if (e == null) throw new ArgumentNullException(nameof(e));
+
+            var disposed = false;
+            var list = new List<T>();
+
+            return list.Concat(Enumerable().Pipe(x => list.Add(x)));
+
+            IEnumerable<T> Enumerable()
+            {
+                if (disposed) yield break;
+
+                while (e.MoveNext())
+                    yield return e.Current;
+
+                e.Dispose();
+                disposed = true;
+            }
         }
     }
 }
