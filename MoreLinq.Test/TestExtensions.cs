@@ -62,11 +62,9 @@ namespace MoreLinq.Test
         {
             // Test that the operator is optimized for collections
 
-            var collection = new BreakingCollection<T>(input.ToList());
-            var sequence = input.Select(x => x);
-
-            action(collection);
-            action(sequence);
+            action(input);
+            action(input.ToBreakingCollection(true));
+            action(input.ToBreakingCollection(false));
         }
     }
 }
