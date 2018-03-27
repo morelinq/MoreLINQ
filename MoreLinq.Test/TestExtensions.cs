@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using NUnit.Framework;
     using NUnit.Framework.Constraints;
+    using System;
 
     static partial class TestExtensions
     {
@@ -55,6 +56,17 @@ namespace MoreLinq.Test
         {
             foreach (var split in str.Split(separators))
                 yield return split;
+        }
+
+        internal static void AssertOptimizedForCollections<T>(this IEnumerable<T> input, Action<IEnumerable<T>> action)
+        {
+            // Test that the operator is optimized for collections
+
+            var collection = new BreakingCollection<T>(input.ToList());
+            var sequence = input.Select(x => x);
+
+            action(collection);
+            action(sequence);
         }
     }
 }

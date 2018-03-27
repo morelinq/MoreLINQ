@@ -18,6 +18,8 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
+    using System;
 
     [TestFixture]
     public class AtLeastTest
@@ -32,117 +34,64 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().AtLeast(0));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtLeast(0)));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastOneElement()
         {
-            Assert.IsFalse(Enumerable.Empty<int>().AtLeast(1));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.AtLeast(1)));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElements()
         {
-            Assert.IsFalse(Enumerable.Empty<int>().AtLeast(2));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.AtLeast(2)));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElements()
         {
-            Assert.IsTrue(new[] { 1 }.AtLeast(0));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtLeast(0)));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElement()
         {
-            Assert.IsTrue(new[] { 1 }.AtLeast(1));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtLeast(1)));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElements()
         {
-            Assert.IsFalse(new[] { 1 }.AtLeast(2));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.AtLeast(2)));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastZeroElements()
         {
-            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(0));
+            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtLeast(0)));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastOneElement()
         {
-            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(1));
+            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtLeast(1)));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastManyElements()
         {
-            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(2));
-        }
-
-        //ICollection<T> Optimization Tests
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastZeroElementsForCollections()
-        {
-            Assert.IsTrue(new int[] { }.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastOneElementForCollections()
-        {
-            Assert.IsFalse(new int[] { }.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastManyElementsForCollections()
-        {
-            Assert.IsFalse(new int[] { }.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastZeroElementsForCollections()
-        {
-            Assert.IsTrue(new[] { 1 }.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastOneElementForCollections()
-        {
-            Assert.IsTrue(new[] { 1 }.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastManyElementsForCollections()
-        {
-            Assert.IsFalse(new[] { 1 }.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastZeroElementsForCollections()
-        {
-            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastOneElementForCollections()
-        {
-            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastManyElementsForCollections()
-        {
-            Assert.IsTrue(new[] { 1, 2, 3 }.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastShouldBeNotEnumerateSequenceForImplementersOfICollection()
-        {
-            var sequence = new BreakingList<int>();
-            sequence.AtLeast(3);
+            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtLeast(2)));
         }
     }
 }

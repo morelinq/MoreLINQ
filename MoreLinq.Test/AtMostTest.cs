@@ -32,37 +32,43 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().AtMost(0));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtMost(0)));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().AtMost(1));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtMost(1)));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostZeroElements()
         {
-            Assert.IsFalse(new[] { 1 }.AtMost(0));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.AtMost(0)));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostOneElement()
         {
-            Assert.IsTrue(new[] { 1 }.AtMost(1));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtMost(1)));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostManyElements()
         {
-            Assert.IsTrue(new[] { 1 }.AtMost(2));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.AtMost(2)));
         }
 
         [Test]
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
-            Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(1));
+            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.AtMost(1)));
         }
     }
 }

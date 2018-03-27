@@ -32,25 +32,29 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().Exactly(0));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.Exactly(0)));
         }
 
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyOneElement()
         {
-            Assert.IsFalse(Enumerable.Empty<int>().Exactly(1));
+            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.Exactly(1)));
         }
 
         [Test]
         public void ExactlyWithSingleElementHasExactlyOneElements()
         {
-            Assert.IsTrue(new[] { 1 }.Exactly(1));
+            new[] { 1 }.AssertOptimizedForCollections(xs =>
+                Assert.IsTrue(xs.Exactly(1)));
         }
 
         [Test]
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
-            Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(1));
+            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
+                Assert.IsFalse(xs.Exactly(1)));
         }
     }
 }
