@@ -134,9 +134,9 @@ namespace MoreLinq
 
             var count = 0;
 
-            if (source is ICollection<T> col)
+            if (source.TryGetCollectionCount() is int collectionCount)
             {
-                count = col.Count;
+                count = collectionCount;
             }
             else
             {
@@ -178,16 +178,16 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            if (first is ICollection<TFirst> firstCol)
+            if (first.TryGetCollectionCount() is int firstCount)
             {
-                return firstCol.Count.CompareTo(second is ICollection<TSecond> secondCol
-                                                ? secondCol.Count
-                                                : PartialCount(second, firstCol.Count + 1));
+                return firstCount.CompareTo(second.TryGetCollectionCount() is int secondCount
+                                                ? secondCount
+                                                : PartialCount(second, firstCount + 1));
             }
             else
             {
-                if (second is ICollection<TSecond> secondCol)
-                    return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
+                if (second.TryGetCollectionCount() is int secondCount)
+                    return PartialCount(first, secondCount + 1).CompareTo(secondCount);
 
                 bool firstHasNext;
                 bool secondHasNext;
