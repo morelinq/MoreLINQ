@@ -423,31 +423,4 @@ namespace MoreLinq.NoConflict
             return base.CompareParameters(other);
         }
     }
-
-    sealed class NamedNode : IComparable<NamedNode>
-    {
-        public string Name { get; }
-        public IReadOnlyCollection<NamedNode> ChildNodes { get; }
-
-        public NamedNode(string name, params NamedNode[] nodes) :
-            this(name, new ReadOnlyCollection<NamedNode>(nodes)) {}
-
-        public NamedNode(string name, IEnumerable<NamedNode> nodes) :
-            this(name, new ReadOnlyCollection<NamedNode>(nodes.ToArray())) {}
-
-        public NamedNode(string name, IReadOnlyCollection<NamedNode> nodes)
-        {
-            Name = name;
-            ChildNodes = nodes ?? Array.Empty<NamedNode>();
-        }
-
-        public int CompareTo(NamedNode other)
-            => ReferenceEquals(this, other) ? 0
-             : other == null ? 1
-             : ChildNodes.Count.CompareTo(other.ChildNodes.Count) is int lc && lc != 0 ? lc
-             : string.Compare(Name, other.Name, StringComparison.Ordinal) is int nc && nc != 0 ? nc
-             : ChildNodes.Zip(other.ChildNodes, (us, them) => (Us: us, Them: them))
-                         .Select(e => e.Us.CompareTo(e.Them))
-                         .FirstOrDefault(e => e != 0);
-    }
 }
