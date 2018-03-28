@@ -58,7 +58,7 @@ namespace MoreLinq.NoConflict
         /// <remarks>This operator uses immediate execution.</remarks>
 
         public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
-            => MoreEnumerable.ToDataTable(source,expressions);
+            => MoreEnumerable.ToDataTable(source, expressions);
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
         /// </summary>
@@ -73,7 +73,7 @@ namespace MoreLinq.NoConflict
 
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
-            => MoreEnumerable.ToDataTable(source,table);
+            => MoreEnumerable.ToDataTable(source, table);
 
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
@@ -92,7 +92,7 @@ namespace MoreLinq.NoConflict
 
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
             where TTable : DataTable
-            => MoreEnumerable.ToDataTable(source,table,expressions);
+            => MoreEnumerable.ToDataTable(source, table, expressions);
 
     }
 }

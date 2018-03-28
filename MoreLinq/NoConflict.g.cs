@@ -76,7 +76,7 @@ namespace MoreLinq.NoConflict
         /// This operator executes immediately.
         /// </remarks>
         public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
-            => MoreEnumerable.AggregateRight(source,func);
+            => MoreEnumerable.AggregateRight(source, func);
 
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
@@ -101,7 +101,7 @@ namespace MoreLinq.NoConflict
         /// This operator executes immediately.
         /// </remarks>
         public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
-            => MoreEnumerable.AggregateRight(source,seed,func);
+            => MoreEnumerable.AggregateRight(source, seed, func);
 
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
@@ -129,7 +129,7 @@ namespace MoreLinq.NoConflict
         /// This operator executes immediately.
         /// </remarks>
         public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
-            => MoreEnumerable.AggregateRight(source,seed,func,resultSelector);
+            => MoreEnumerable.AggregateRight(source, seed, func, resultSelector);
 
     }
 
@@ -156,7 +156,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-            => MoreEnumerable.Assert(source,predicate);
+            => MoreEnumerable.Assert(source, predicate);
 
         /// <summary>
         /// Asserts that all elements of a sequence meet a given condition
@@ -175,7 +175,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> Assert<TSource>(this IEnumerable<TSource> source,
             Func<TSource, bool> predicate, Func<TSource, Exception> errorSelector)
-            => MoreEnumerable.Assert(source,predicate,errorSelector);
+            => MoreEnumerable.Assert(source, predicate, errorSelector);
 
     }
 
@@ -200,7 +200,7 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)             => MoreEnumerable.AssertCount(source,count);
+        public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count)             => MoreEnumerable.AssertCount(source, count);
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -221,7 +221,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
-            int count, Func<int, int, Exception> errorSelector)             => MoreEnumerable.AssertCount(source,count,errorSelector);
+            int count, Func<int, int, Exception> errorSelector)             => MoreEnumerable.AssertCount(source, count, errorSelector);
 
     }
 
@@ -250,7 +250,7 @@ namespace MoreLinq.NoConflict
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
-            => MoreEnumerable.AtLeast(source,count);
+            => MoreEnumerable.AtLeast(source, count);
 
     }
 
@@ -280,7 +280,7 @@ namespace MoreLinq.NoConflict
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
-            => MoreEnumerable.AtMost(source,count);
+            => MoreEnumerable.AtMost(source, count);
 
     }
 
@@ -301,7 +301,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
-            => MoreEnumerable.Batch(source,size);
+            => MoreEnumerable.Batch(source, size);
 
         /// <summary>
         /// Batches the source sequence into sized buckets and applies a projection to each bucket.
@@ -318,7 +318,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Batch(source,size,resultSelector);
+            => MoreEnumerable.Batch(source, size, resultSelector);
 
     }
 
@@ -340,7 +340,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence representing the Cartesian product of the two source sequences</returns>
 
         public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.Cartesian(first,second,resultSelector);
+            => MoreEnumerable.Cartesian(first, second, resultSelector);
 
     }
 
@@ -371,7 +371,7 @@ namespace MoreLinq.NoConflict
         /// The <c>result</c> variable will contain <c>1</c>.
         /// </example>
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
-            => MoreEnumerable.CompareCount(first,second);
+            => MoreEnumerable.CompareCount(first, second);
 
     }
 
@@ -390,7 +390,7 @@ namespace MoreLinq.NoConflict
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
-            => MoreEnumerable.Concat(head,tail);
+            => MoreEnumerable.Concat(head, tail);
 
         /// <summary>
         /// Returns a sequence consisting of the head elements and the given tail element.
@@ -402,7 +402,7 @@ namespace MoreLinq.NoConflict
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
-            => MoreEnumerable.Concat(head,tail);
+            => MoreEnumerable.Concat(head, tail);
 
     }
 
@@ -451,7 +451,7 @@ namespace MoreLinq.NoConflict
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
-            => MoreEnumerable.CountBetween(source,min,max);
+            => MoreEnumerable.CountBetween(source, min, max);
 
     }
 
@@ -470,7 +470,7 @@ namespace MoreLinq.NoConflict
         /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-            => MoreEnumerable.CountBy(source,keySelector);
+            => MoreEnumerable.CountBy(source, keySelector);
 
         /// <summary>
         /// Applies a key-generating function to each element of a sequence and returns a sequence of
@@ -485,7 +485,7 @@ namespace MoreLinq.NoConflict
         /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.CountBy(source,keySelector,comparer);
+            => MoreEnumerable.CountBy(source, keySelector, comparer);
 
     }
 
@@ -512,7 +512,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
-            => MoreEnumerable.DistinctBy(source,keySelector);
+            => MoreEnumerable.DistinctBy(source, keySelector);
 
         /// <summary>
         /// Returns all distinct elements of the given source, where "distinctness"
@@ -534,7 +534,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.DistinctBy(source,keySelector,comparer);
+            => MoreEnumerable.DistinctBy(source, keySelector, comparer);
 
     }
 
@@ -562,7 +562,7 @@ namespace MoreLinq.NoConflict
         /// the same index.
         /// </remarks>
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
-            => MoreEnumerable.EndsWith(first,second);
+            => MoreEnumerable.EndsWith(first, second);
 
         /// <summary>
         /// Determines whether the end of the first sequence is equivalent to
@@ -583,7 +583,7 @@ namespace MoreLinq.NoConflict
         /// elements at the same index.
         /// </remarks>
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
-            => MoreEnumerable.EndsWith(first,second,comparer);
+            => MoreEnumerable.EndsWith(first, second, comparer);
 
     }
 
@@ -623,7 +623,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(first,second,resultSelector);
+            => MoreEnumerable.EquiZip(first, second, resultSelector);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -659,7 +659,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(this IEnumerable<T1> first,
              IEnumerable<T2> second, IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(first,second,third,resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, resultSelector);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -698,7 +698,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
              IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(first,second,third,fourth,resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, fourth, resultSelector);
 
     }
 
@@ -750,7 +750,7 @@ namespace MoreLinq.NoConflict
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
-            => MoreEnumerable.Exactly(source,count);
+            => MoreEnumerable.Exactly(source, count);
 
     }
 
@@ -781,7 +781,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector)
-            => MoreEnumerable.ExceptBy(first,second,keySelector);
+            => MoreEnumerable.ExceptBy(first, second, keySelector);
 
         /// <summary>
         /// Returns the set of elements in the first sequence which aren't
@@ -808,7 +808,7 @@ namespace MoreLinq.NoConflict
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.ExceptBy(first,second,keySelector,keyComparer);
+            => MoreEnumerable.ExceptBy(first, second, keySelector, keyComparer);
 
     }
 
@@ -828,7 +828,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence that excludes the specified portion of elements</returns>
 
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
-            => MoreEnumerable.Exclude(sequence,startIndex,count);
+            => MoreEnumerable.Exclude(sequence, startIndex, count);
 
     }
 
@@ -858,7 +858,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback)
-            => MoreEnumerable.FallbackIfEmpty(source,fallback);
+            => MoreEnumerable.FallbackIfEmpty(source, fallback);
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
@@ -874,7 +874,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, IEnumerable<T> fallback)
-            => MoreEnumerable.FallbackIfEmpty(source,fallback);
+            => MoreEnumerable.FallbackIfEmpty(source, fallback);
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
@@ -890,7 +890,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, params T[] fallback)
-            => MoreEnumerable.FallbackIfEmpty(source,fallback);
+            => MoreEnumerable.FallbackIfEmpty(source, fallback);
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
@@ -908,7 +908,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2)
-            => MoreEnumerable.FallbackIfEmpty(source,fallback1,fallback2);
+            => MoreEnumerable.FallbackIfEmpty(source, fallback1, fallback2);
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
@@ -928,7 +928,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3)
-            => MoreEnumerable.FallbackIfEmpty(source,fallback1,fallback2,fallback3);
+            => MoreEnumerable.FallbackIfEmpty(source, fallback1, fallback2, fallback3);
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
@@ -950,7 +950,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3, T fallback4)
-            => MoreEnumerable.FallbackIfEmpty(source,fallback1,fallback2,fallback3,fallback4);
+            => MoreEnumerable.FallbackIfEmpty(source, fallback1, fallback2, fallback3, fallback4);
 
     }
 
@@ -999,7 +999,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<T> FillBackward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
-            => MoreEnumerable.FillBackward(source,predicate);
+            => MoreEnumerable.FillBackward(source, predicate);
 
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
@@ -1026,7 +1026,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<T> FillBackward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
-            => MoreEnumerable.FillBackward(source,predicate,fillSelector);
+            => MoreEnumerable.FillBackward(source, predicate, fillSelector);
 
     }
 
@@ -1075,7 +1075,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
-            => MoreEnumerable.FillForward(source,predicate);
+            => MoreEnumerable.FillForward(source, predicate);
 
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
@@ -1102,7 +1102,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
-            => MoreEnumerable.FillForward(source,predicate,fillSelector);
+            => MoreEnumerable.FillForward(source, predicate, fillSelector);
 
     }
 
@@ -1144,7 +1144,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
 
         public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
-            => MoreEnumerable.Flatten(source,predicate);
+            => MoreEnumerable.Flatten(source, predicate);
 
     }
 
@@ -1171,7 +1171,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 1 element</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1191,7 +1191,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 2 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1211,7 +1211,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 3 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1231,7 +1231,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 4 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1251,7 +1251,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 5 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1271,7 +1271,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 6 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1291,7 +1291,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 7 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1311,7 +1311,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 8 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1331,7 +1331,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 9 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1351,7 +1351,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 10 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1371,7 +1371,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 11 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1391,7 +1391,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 12 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1411,7 +1411,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 13 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1431,7 +1431,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 14 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1451,7 +1451,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 15 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
@@ -1471,7 +1471,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 16 elements</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
-            => MoreEnumerable.Fold(source,folder);
+            => MoreEnumerable.Fold(source, folder);
 
     }
 
@@ -1488,7 +1488,7 @@ namespace MoreLinq.NoConflict
         /// <param name="action">The action to execute on each element</param>
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
-            => MoreEnumerable.ForEach(source,action);
+            => MoreEnumerable.ForEach(source, action);
 
         /// <summary>
         /// Immediately executes the given action on each element in the source sequence.
@@ -1500,7 +1500,7 @@ namespace MoreLinq.NoConflict
         /// of the action represents the index of the source element.</param>
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
-            => MoreEnumerable.ForEach(source,action);
+            => MoreEnumerable.ForEach(source, action);
 
     }
 
@@ -1531,7 +1531,7 @@ namespace MoreLinq.NoConflict
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector)
-            => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector);
+            => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector);
 
         /// <summary>
         /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
@@ -1558,7 +1558,7 @@ namespace MoreLinq.NoConflict
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector,comparer);
+            => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, comparer);
 
         /// <summary>
         /// Performs a full group-join between two sequences.
@@ -1585,7 +1585,7 @@ namespace MoreLinq.NoConflict
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector)
-            => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector,resultSelector);
+            => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, resultSelector);
 
         /// <summary>
         /// Performs a full group-join between two sequences.
@@ -1615,7 +1615,7 @@ namespace MoreLinq.NoConflict
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.FullGroupJoin(first,second,firstKeySelector,secondKeySelector,resultSelector,comparer);
+            => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer);
 
     }
 
@@ -1664,7 +1664,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TResult> firstSelector,
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector)
-            => MoreEnumerable.FullJoin(first,second,keySelector,firstSelector,secondSelector,bothSelector);
+            => MoreEnumerable.FullJoin(first, second, keySelector, firstSelector, secondSelector, bothSelector);
 
         /// <summary>
         /// Performs a full outer join on two homogeneous sequences.
@@ -1710,7 +1710,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.FullJoin(first,second,keySelector,firstSelector,secondSelector,bothSelector,comparer);
+            => MoreEnumerable.FullJoin(first, second, keySelector, firstSelector, secondSelector, bothSelector, comparer);
 
         /// <summary>
         /// Performs a full outer join on two heterogeneous sequences.
@@ -1755,7 +1755,7 @@ namespace MoreLinq.NoConflict
             Func<TSecond, TKey> secondKeySelector,
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
-            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.FullJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,secondSelector,bothSelector);
+            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.FullJoin(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector);
 
         /// <summary>
         /// Performs a full outer join on two heterogeneous sequences.
@@ -1805,7 +1805,7 @@ namespace MoreLinq.NoConflict
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.FullJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,secondSelector,bothSelector,comparer);
+            => MoreEnumerable.FullJoin(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector, comparer);
 
     }
 
@@ -1839,7 +1839,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
-            => MoreEnumerable.GroupAdjacent(source,keySelector);
+            => MoreEnumerable.GroupAdjacent(source, keySelector);
 
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
@@ -1870,7 +1870,7 @@ namespace MoreLinq.NoConflict
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.GroupAdjacent(source,keySelector,comparer);
+            => MoreEnumerable.GroupAdjacent(source, keySelector, comparer);
 
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
@@ -1903,7 +1903,7 @@ namespace MoreLinq.NoConflict
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector)
-            => MoreEnumerable.GroupAdjacent(source,keySelector,elementSelector);
+            => MoreEnumerable.GroupAdjacent(source, keySelector, elementSelector);
 
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
@@ -1936,7 +1936,7 @@ namespace MoreLinq.NoConflict
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.GroupAdjacent(source,keySelector,resultSelector);
+            => MoreEnumerable.GroupAdjacent(source, keySelector, resultSelector);
 
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
@@ -1973,7 +1973,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.GroupAdjacent(source,keySelector,elementSelector,comparer);
+            => MoreEnumerable.GroupAdjacent(source, keySelector, elementSelector, comparer);
 
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
@@ -2009,7 +2009,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TKey> keySelector,
             Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.GroupAdjacent(source,keySelector,resultSelector,comparer);
+            => MoreEnumerable.GroupAdjacent(source, keySelector, resultSelector, comparer);
 
     }
 
@@ -2045,7 +2045,7 @@ namespace MoreLinq.NoConflict
         /// results.</remarks>
 
         public static IEnumerable<KeyValuePair<int, TSource>> Index<TSource>(this IEnumerable<TSource> source, int startIndex)
-            => MoreEnumerable.Index(source,startIndex);
+            => MoreEnumerable.Index(source, startIndex);
 
     }
 
@@ -2082,7 +2082,7 @@ namespace MoreLinq.NoConflict
         /// </exception>
 
         public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
-            => MoreEnumerable.Insert(first,second,index);
+            => MoreEnumerable.Insert(first, second, index);
 
     }
 
@@ -2112,7 +2112,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
 
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
-            => MoreEnumerable.Interleave(sequence,otherSequences);
+            => MoreEnumerable.Interleave(sequence, otherSequences);
 
     }
 
@@ -2136,7 +2136,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.Lag(source,offset,resultSelector);
+            => MoreEnumerable.Lag(source, offset, resultSelector);
 
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
@@ -2153,7 +2153,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.Lag(source,offset,defaultLagValue,resultSelector);
+            => MoreEnumerable.Lag(source, offset, defaultLagValue, resultSelector);
 
     }
 
@@ -2178,7 +2178,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.Lead(source,offset,resultSelector);
+            => MoreEnumerable.Lead(source, offset, resultSelector);
 
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
@@ -2195,7 +2195,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.Lead(source,offset,defaultLeadValue,resultSelector);
+            => MoreEnumerable.Lead(source, offset, defaultLeadValue, resultSelector);
 
     }
 
@@ -2239,7 +2239,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TKey> keySelector,
             Func<TSource, TResult> firstSelector,
             Func<TSource, TSource, TResult> bothSelector)
-            => MoreEnumerable.LeftJoin(first,second,keySelector,firstSelector,bothSelector);
+            => MoreEnumerable.LeftJoin(first, second, keySelector, firstSelector, bothSelector);
 
         /// <summary>
         /// Performs a left outer join on two homogeneous sequences.
@@ -2280,7 +2280,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TResult> firstSelector,
             Func<TSource, TSource, TResult> bothSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.LeftJoin(first,second,keySelector,firstSelector,bothSelector,comparer);
+            => MoreEnumerable.LeftJoin(first, second, keySelector, firstSelector, bothSelector, comparer);
 
         /// <summary>
         /// Performs a left outer join on two heterogeneous sequences.
@@ -2320,7 +2320,7 @@ namespace MoreLinq.NoConflict
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TFirst, TResult> firstSelector,
-            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.LeftJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,bothSelector);
+            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.LeftJoin(first, second, firstKeySelector, secondKeySelector, firstSelector, bothSelector);
 
         /// <summary>
         /// Performs a left outer join on two heterogeneous sequences.
@@ -2365,7 +2365,7 @@ namespace MoreLinq.NoConflict
             Func<TFirst, TResult> firstSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.LeftJoin(first,second,firstKeySelector,secondKeySelector,firstSelector,bothSelector,comparer);
+            => MoreEnumerable.LeftJoin(first, second, firstKeySelector, secondKeySelector, firstSelector, bothSelector, comparer);
 
     }
 
@@ -2394,7 +2394,7 @@ namespace MoreLinq.NoConflict
 
         public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
-            => MoreEnumerable.MaxBy(source,selector);
+            => MoreEnumerable.MaxBy(source, selector);
 
         /// <summary>
         /// Returns the maximal element of the given sequence, based on
@@ -2417,7 +2417,7 @@ namespace MoreLinq.NoConflict
 
         public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
-            => MoreEnumerable.MaxBy(source,selector,comparer);
+            => MoreEnumerable.MaxBy(source, selector, comparer);
 
     }
 
@@ -2446,7 +2446,7 @@ namespace MoreLinq.NoConflict
 
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
-            => MoreEnumerable.MinBy(source,selector);
+            => MoreEnumerable.MinBy(source, selector);
 
         /// <summary>
         /// Returns the minimal element of the given sequence, based on
@@ -2469,7 +2469,7 @@ namespace MoreLinq.NoConflict
 
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
-            => MoreEnumerable.MinBy(source,selector,comparer);
+            => MoreEnumerable.MinBy(source, selector, comparer);
 
     }
 
@@ -2504,7 +2504,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
-            => MoreEnumerable.Move(source,fromIndex,count,toIndex);
+            => MoreEnumerable.Move(source, fromIndex, count, toIndex);
 
     }
 
@@ -2527,7 +2527,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
 
         public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
-            => MoreEnumerable.NestedLoops(action,loopCounts);
+            => MoreEnumerable.NestedLoops(action, loopCounts);
 
     }
 
@@ -2547,7 +2547,7 @@ namespace MoreLinq.NoConflict
         /// <returns>An ordered copy of the source sequence</returns>
 
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
-            => MoreEnumerable.OrderBy(source,keySelector,direction);
+            => MoreEnumerable.OrderBy(source, keySelector, direction);
 
         /// <summary>
         /// Sorts the elements of a sequence in a particular direction (ascending, descending) according to a key
@@ -2561,7 +2561,7 @@ namespace MoreLinq.NoConflict
         /// <returns>An ordered copy of the source sequence</returns>
 
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
-            => MoreEnumerable.OrderBy(source,keySelector,comparer,direction);
+            => MoreEnumerable.OrderBy(source, keySelector, comparer, direction);
 
     }
 
@@ -2590,7 +2590,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<T> OrderedMerge<T>(
             this IEnumerable<T> first,
             IEnumerable<T> second)
-            => MoreEnumerable.OrderedMerge(first,second);
+            => MoreEnumerable.OrderedMerge(first, second);
 
         /// <summary>
         /// Merges two ordered sequences into one with an additional
@@ -2615,7 +2615,7 @@ namespace MoreLinq.NoConflict
             this IEnumerable<T> first,
             IEnumerable<T> second,
             IComparer<T> comparer)
-            => MoreEnumerable.OrderedMerge(first,second,comparer);
+            => MoreEnumerable.OrderedMerge(first, second, comparer);
 
         /// <summary>
         /// Merges two ordered sequences into one with an additional
@@ -2640,7 +2640,7 @@ namespace MoreLinq.NoConflict
             this IEnumerable<T> first,
             IEnumerable<T> second,
             Func<T, TKey> keySelector)
-            => MoreEnumerable.OrderedMerge(first,second,keySelector);
+            => MoreEnumerable.OrderedMerge(first, second, keySelector);
 
         /// <summary>
         /// Merges two ordered sequences into one. Additional parameters
@@ -2678,7 +2678,7 @@ namespace MoreLinq.NoConflict
             Func<T, TResult> firstSelector,
             Func<T, TResult> secondSelector,
             Func<T, T, TResult> bothSelector)
-            => MoreEnumerable.OrderedMerge(first,second,keySelector,firstSelector,secondSelector,bothSelector);
+            => MoreEnumerable.OrderedMerge(first, second, keySelector, firstSelector, secondSelector, bothSelector);
 
         /// <summary>
         /// Merges two ordered sequences into one. Additional parameters
@@ -2718,7 +2718,7 @@ namespace MoreLinq.NoConflict
             Func<T, TResult> secondSelector,
             Func<T, T, TResult> bothSelector,
             IComparer<TKey> comparer)
-            => MoreEnumerable.OrderedMerge(first,second,keySelector,firstSelector,secondSelector,bothSelector,comparer);
+            => MoreEnumerable.OrderedMerge(first, second, keySelector, firstSelector, secondSelector, bothSelector, comparer);
 
         /// <summary>
         /// Merges two heterogeneous sequences ordered by a common key type
@@ -2761,7 +2761,7 @@ namespace MoreLinq.NoConflict
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector)
-            => MoreEnumerable.OrderedMerge(first,second,firstKeySelector,secondKeySelector,firstSelector,secondSelector,bothSelector);
+            => MoreEnumerable.OrderedMerge(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector);
 
         /// <summary>
         /// Merges two heterogeneous sequences ordered by a common key type
@@ -2807,7 +2807,7 @@ namespace MoreLinq.NoConflict
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
             IComparer<TKey> comparer)
-            => MoreEnumerable.OrderedMerge(first,second,firstKeySelector,secondKeySelector,firstSelector,secondSelector,bothSelector,comparer);
+            => MoreEnumerable.OrderedMerge(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector, comparer);
 
     }
 
@@ -2840,7 +2840,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
-            => MoreEnumerable.Pad(source,width);
+            => MoreEnumerable.Pad(source, width);
 
         /// <summary>
         /// Pads a sequence with a given filler value if it is narrower (shorter
@@ -2867,7 +2867,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
-            => MoreEnumerable.Pad(source,width,padding);
+            => MoreEnumerable.Pad(source, width, padding);
 
         /// <summary>
         /// Pads a sequence with a dynamic filler value if it is narrower (shorter
@@ -2894,7 +2894,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
-            => MoreEnumerable.Pad(source,width,paddingSelector);
+            => MoreEnumerable.Pad(source, width, paddingSelector);
 
     }
 
@@ -2926,7 +2926,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
-            => MoreEnumerable.PadStart(source,width);
+            => MoreEnumerable.PadStart(source, width);
 
         /// <summary>
         /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter
@@ -2953,7 +2953,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
-            => MoreEnumerable.PadStart(source,width,padding);
+            => MoreEnumerable.PadStart(source, width, padding);
 
         /// <summary>
         /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter
@@ -2980,7 +2980,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
-            => MoreEnumerable.PadStart(source,width,paddingSelector);
+            => MoreEnumerable.PadStart(source, width, paddingSelector);
 
     }
 
@@ -3016,7 +3016,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.Pairwise(source,resultSelector);
+            => MoreEnumerable.Pairwise(source, resultSelector);
 
     }
 
@@ -3040,7 +3040,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source, int count)
-            => MoreEnumerable.PartialSort(source,count);
+            => MoreEnumerable.PartialSort(source, count);
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
@@ -3060,7 +3060,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, OrderByDirection direction)
-            => MoreEnumerable.PartialSort(source,count,direction);
+            => MoreEnumerable.PartialSort(source, count, direction);
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
@@ -3080,7 +3080,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, IComparer<T> comparer)
-            => MoreEnumerable.PartialSort(source,count,comparer);
+            => MoreEnumerable.PartialSort(source, count, comparer);
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
@@ -3102,7 +3102,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, IComparer<T> comparer, OrderByDirection direction)
-            => MoreEnumerable.PartialSort(source,count,comparer,direction);
+            => MoreEnumerable.PartialSort(source, count, comparer, direction);
 
     }
 
@@ -3130,7 +3130,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector)
-            => MoreEnumerable.PartialSortBy(source,count,keySelector);
+            => MoreEnumerable.PartialSortBy(source, count, keySelector);
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
@@ -3152,7 +3152,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector, OrderByDirection direction)
-            => MoreEnumerable.PartialSortBy(source,count,keySelector,direction);
+            => MoreEnumerable.PartialSortBy(source, count, keySelector, direction);
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
@@ -3175,7 +3175,7 @@ namespace MoreLinq.NoConflict
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer)
-            => MoreEnumerable.PartialSortBy(source,count,keySelector,comparer);
+            => MoreEnumerable.PartialSortBy(source, count, keySelector, comparer);
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
@@ -3201,7 +3201,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer,
             OrderByDirection direction)
-            => MoreEnumerable.PartialSortBy(source,count,keySelector,comparer,direction);
+            => MoreEnumerable.PartialSortBy(source, count, keySelector, comparer, direction);
 
     }
 
@@ -3231,7 +3231,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static (IEnumerable<T> True, IEnumerable<T> False)
-            Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)             => MoreEnumerable.            Partition(source,predicate);
+            Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate)             => MoreEnumerable.            Partition(source, predicate);
 
         /// <summary>
         /// Partitions a grouping by Boolean keys into a projection of true
@@ -3250,7 +3250,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
-            => MoreEnumerable.Partition(source,resultSelector);
+            => MoreEnumerable.Partition(source, resultSelector);
 
         /// <summary>
         /// Partitions a grouping by nullable Boolean keys into a projection of
@@ -3270,7 +3270,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
-            => MoreEnumerable.Partition(source,resultSelector);
+            => MoreEnumerable.Partition(source, resultSelector);
 
         /// <summary>
         /// Partitions or splits a sequence in two using a predicate and then
@@ -3301,7 +3301,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<T, TResult>(this IEnumerable<T> source,
             Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
-            => MoreEnumerable.Partition(source,predicate,resultSelector);
+            => MoreEnumerable.Partition(source, predicate, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from group elements
@@ -3324,7 +3324,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key,
-            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key,resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source, key, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from elements of
@@ -3349,7 +3349,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source, key1, key2, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from group elements
@@ -3375,7 +3375,7 @@ namespace MoreLinq.NoConflict
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
-            => MoreEnumerable.Partition(source,key,comparer,resultSelector);
+            => MoreEnumerable.Partition(source, key, comparer, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from elements groups
@@ -3401,7 +3401,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,key3,resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source, key1, key2, key3, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from elements of
@@ -3429,7 +3429,7 @@ namespace MoreLinq.NoConflict
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
-            => MoreEnumerable.Partition(source,key1,key2,comparer,resultSelector);
+            => MoreEnumerable.Partition(source, key1, key2, comparer, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from elements groups
@@ -3457,7 +3457,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
-            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source,key1,key2,key3,comparer,resultSelector);
+            Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)             => MoreEnumerable.Partition(source, key1, key2, key3, comparer, resultSelector);
 
     }
 
@@ -3509,7 +3509,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<T> Pipe<T>(this IEnumerable<T> source, Action<T> action)
-            => MoreEnumerable.Pipe(source,action);
+            => MoreEnumerable.Pipe(source, action);
 
     }
 
@@ -3538,7 +3538,7 @@ namespace MoreLinq.NoConflict
         /// 0, 1, 2 and 3, in turn.
 
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
-            => MoreEnumerable.Prepend(source,value);
+            => MoreEnumerable.Prepend(source, value);
 
     }
 
@@ -3579,7 +3579,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation, TSource identity)
-            => MoreEnumerable.PreScan(source,transformation,identity);
+            => MoreEnumerable.PreScan(source, transformation, identity);
 
     }
 
@@ -3597,7 +3597,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize)
-            => MoreEnumerable.RandomSubset(sequence,subsetSize);
+            => MoreEnumerable.RandomSubset(sequence, subsetSize);
 
         /// <summary>
         /// Returns a sequence of a specified size of random elements from the original sequence
@@ -3609,7 +3609,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A random sequence of elements in random order from the original sequence</returns>
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
-            => MoreEnumerable.RandomSubset(sequence,subsetSize,rand);
+            => MoreEnumerable.RandomSubset(sequence, subsetSize, rand);
 
     }
 
@@ -3637,7 +3637,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
-            => MoreEnumerable.Rank(source,comparer);
+            => MoreEnumerable.Rank(source, comparer);
 
     }
 
@@ -3657,7 +3657,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-            => MoreEnumerable.RankBy(source,keySelector);
+            => MoreEnumerable.RankBy(source, keySelector);
 
         /// <summary>
         /// Ranks each item in a sequence using a specified key and a caller-supplied comparer
@@ -3670,7 +3670,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
-            => MoreEnumerable.RankBy(source,keySelector,comparer);
+            => MoreEnumerable.RankBy(source, keySelector, comparer);
 
     }
 
@@ -3698,7 +3698,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence produced from the repetition of the original source sequence</returns>
 
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence, int count)
-            => MoreEnumerable.Repeat(sequence,count);
+            => MoreEnumerable.Repeat(sequence, count);
 
     }
 
@@ -3742,7 +3742,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TKey> keySelector,
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector)
-            => MoreEnumerable.RightJoin(first,second,keySelector,secondSelector,bothSelector);
+            => MoreEnumerable.RightJoin(first, second, keySelector, secondSelector, bothSelector);
 
         /// <summary>
         /// Performs a right outer join on two homogeneous sequences.
@@ -3783,7 +3783,7 @@ namespace MoreLinq.NoConflict
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.RightJoin(first,second,keySelector,secondSelector,bothSelector,comparer);
+            => MoreEnumerable.RightJoin(first, second, keySelector, secondSelector, bothSelector, comparer);
 
         /// <summary>
         /// Performs a right outer join on two heterogeneous sequences.
@@ -3823,7 +3823,7 @@ namespace MoreLinq.NoConflict
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TSecond, TResult> secondSelector,
-            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.RightJoin(first,second,firstKeySelector,secondKeySelector,secondSelector,bothSelector);
+            Func<TFirst, TSecond, TResult> bothSelector)             => MoreEnumerable.RightJoin(first, second, firstKeySelector, secondKeySelector, secondSelector, bothSelector);
 
         /// <summary>
         /// Performs a right outer join on two heterogeneous sequences.
@@ -3868,7 +3868,7 @@ namespace MoreLinq.NoConflict
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.RightJoin(first,second,firstKeySelector,secondKeySelector,secondSelector,bothSelector,comparer);
+            => MoreEnumerable.RightJoin(first, second, firstKeySelector, secondKeySelector, secondSelector, bothSelector, comparer);
 
     }
 
@@ -3899,7 +3899,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where they key is the element and the value is the occurrence count</returns>
 
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
-            => MoreEnumerable.RunLengthEncode(sequence,comparer);
+            => MoreEnumerable.RunLengthEncode(sequence, comparer);
 
     }
 
@@ -3938,7 +3938,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
-            => MoreEnumerable.Scan(source,transformation);
+            => MoreEnumerable.Scan(source, transformation);
 
         /// <summary>
         /// Like <see cref="Enumerable.Aggregate{TSource}"/> except returns
@@ -3963,7 +3963,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
-            => MoreEnumerable.Scan(source,seed,transformation);
+            => MoreEnumerable.Scan(source, seed, transformation);
 
     }
 
@@ -3996,7 +3996,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
-            => MoreEnumerable.ScanRight(source,func);
+            => MoreEnumerable.ScanRight(source, func);
 
         /// <summary>
         /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
@@ -4022,7 +4022,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
-            => MoreEnumerable.ScanRight(source,seed,func);
+            => MoreEnumerable.ScanRight(source, seed, func);
 
     }
 
@@ -4043,7 +4043,7 @@ namespace MoreLinq.NoConflict
         /// </exception>
 
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
-            => MoreEnumerable.Segment(source,newSegmentPredicate);
+            => MoreEnumerable.Segment(source, newSegmentPredicate);
 
         /// <summary>
         /// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
@@ -4057,7 +4057,7 @@ namespace MoreLinq.NoConflict
         /// </exception>
 
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
-            => MoreEnumerable.Segment(source,newSegmentPredicate);
+            => MoreEnumerable.Segment(source, newSegmentPredicate);
 
         /// <summary>
         /// Divides a sequence into multiple sequences by using a segment detector based on the original sequence
@@ -4071,7 +4071,7 @@ namespace MoreLinq.NoConflict
         /// </exception>
 
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
-            => MoreEnumerable.Segment(source,newSegmentPredicate);
+            => MoreEnumerable.Segment(source, newSegmentPredicate);
 
     }
 
@@ -4091,7 +4091,7 @@ namespace MoreLinq.NoConflict
         /// </returns>
 
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
-            => MoreEnumerable.SkipLast(source,count);
+            => MoreEnumerable.SkipLast(source, count);
 
     }
 
@@ -4131,7 +4131,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="predicate"/> is null</exception>
 
         public static IEnumerable<TSource> SkipUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-            => MoreEnumerable.SkipUntil(source,predicate);
+            => MoreEnumerable.SkipUntil(source, predicate);
 
     }
 
@@ -4157,7 +4157,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
 
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
-            => MoreEnumerable.Slice(sequence,startIndex,count);
+            => MoreEnumerable.Slice(sequence, startIndex, count);
 
     }
 
@@ -4193,7 +4193,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
-            => MoreEnumerable.SortedMerge(source,direction,otherSequences);
+            => MoreEnumerable.SortedMerge(source, direction, otherSequences);
 
         /// <summary>
         /// Merges two or more sequences that are in a common order (either ascending or descending) into
@@ -4207,7 +4207,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
 
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource> comparer, params IEnumerable<TSource>[] otherSequences)
-            => MoreEnumerable.SortedMerge(source,direction,comparer,otherSequences);
+            => MoreEnumerable.SortedMerge(source, direction, comparer, otherSequences);
 
     }
 
@@ -4227,7 +4227,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             TSource separator)
-            => MoreEnumerable.Split(source,separator);
+            => MoreEnumerable.Split(source, separator);
 
         /// <summary>
         /// Splits the source sequence by separator elements identified by a
@@ -4241,7 +4241,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             Func<TSource, bool> separatorFunc)
-            => MoreEnumerable.Split(source,separatorFunc);
+            => MoreEnumerable.Split(source, separatorFunc);
 
         /// <summary>
         /// Splits the source sequence by a separator given a maximum count of splits.
@@ -4254,7 +4254,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             TSource separator, int count)
-            => MoreEnumerable.Split(source,separator,count);
+            => MoreEnumerable.Split(source, separator, count);
 
         /// <summary>
         /// Splits the source sequence by a separator and then transforms the
@@ -4269,7 +4269,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             TSource separator, IEqualityComparer<TSource> comparer)
-            => MoreEnumerable.Split(source,separator,comparer);
+            => MoreEnumerable.Split(source, separator, comparer);
 
         /// <summary>
         /// Splits the source sequence by separator elements identified by a
@@ -4284,7 +4284,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             Func<TSource, bool> separatorFunc, int count)
-            => MoreEnumerable.Split(source,separatorFunc,count);
+            => MoreEnumerable.Split(source, separatorFunc, count);
 
         /// <summary>
         /// Splits the source sequence by a separator, given a maximum count
@@ -4301,7 +4301,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             TSource separator, IEqualityComparer<TSource> comparer, int count)
-            => MoreEnumerable.Split(source,separator,comparer,count);
+            => MoreEnumerable.Split(source, separator, comparer, count);
 
         /// <summary>
         /// Splits the source sequence by a separator and then transforms
@@ -4320,7 +4320,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
             TSource separator,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Split(source,separator,resultSelector);
+            => MoreEnumerable.Split(source, separator, resultSelector);
 
         /// <summary>
         /// Splits the source sequence by separator elements identified by
@@ -4340,7 +4340,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
             Func<TSource, bool> separatorFunc,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Split(source,separatorFunc,resultSelector);
+            => MoreEnumerable.Split(source, separatorFunc, resultSelector);
 
         /// <summary>
         /// Splits the source sequence by a separator, given a maximum count
@@ -4360,7 +4360,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
             TSource separator, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Split(source,separator,count,resultSelector);
+            => MoreEnumerable.Split(source, separator, count, resultSelector);
 
         /// <summary>
         /// Splits the source sequence by a separator and then transforms the
@@ -4382,7 +4382,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
             TSource separator, IEqualityComparer<TSource> comparer,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Split(source,separator,comparer,resultSelector);
+            => MoreEnumerable.Split(source, separator, comparer, resultSelector);
 
         /// <summary>
         /// Splits the source sequence by separator elements identified by
@@ -4404,7 +4404,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
             Func<TSource, bool> separatorFunc, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Split(source,separatorFunc,count,resultSelector);
+            => MoreEnumerable.Split(source, separatorFunc, count, resultSelector);
 
         /// <summary>
         /// Splits the source sequence by a separator, given a maximum count
@@ -4427,7 +4427,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
             TSource separator, IEqualityComparer<TSource> comparer, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
-            => MoreEnumerable.Split(source,separator,comparer,count,resultSelector);
+            => MoreEnumerable.Split(source, separator, comparer, count, resultSelector);
 
     }
 
@@ -4456,7 +4456,7 @@ namespace MoreLinq.NoConflict
         /// the same index.
         /// </remarks>
         public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
-            => MoreEnumerable.StartsWith(first,second);
+            => MoreEnumerable.StartsWith(first, second);
 
         /// <summary>
         /// Determines whether the beginning of the first sequence is
@@ -4478,7 +4478,7 @@ namespace MoreLinq.NoConflict
         /// of elements at the same index.
         /// </remarks>
         public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
-            => MoreEnumerable.StartsWith(first,second,comparer);
+            => MoreEnumerable.StartsWith(first, second, comparer);
 
     }
 
@@ -4526,7 +4526,7 @@ namespace MoreLinq.NoConflict
         /// </exception>
 
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
-            => MoreEnumerable.Subsets(sequence,subsetSize);
+            => MoreEnumerable.Subsets(sequence, subsetSize);
 
     }
 
@@ -4568,7 +4568,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TResult> TagFirstLast<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, bool, bool, TResult> resultSelector)
-            => MoreEnumerable.TagFirstLast(source,resultSelector);
+            => MoreEnumerable.TagFirstLast(source, resultSelector);
 
     }
 
@@ -4598,7 +4598,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
-            => MoreEnumerable.TakeEvery(source,step);
+            => MoreEnumerable.TakeEvery(source, step);
 
     }
 
@@ -4631,7 +4631,7 @@ namespace MoreLinq.NoConflict
         /// </example>
 
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
-            => MoreEnumerable.TakeLast(source,count);
+            => MoreEnumerable.TakeLast(source, count);
 
     }
 
@@ -4671,7 +4671,7 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="predicate"/> is null</exception>
 
         public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-            => MoreEnumerable.TakeUntil(source,predicate);
+            => MoreEnumerable.TakeUntil(source, predicate);
 
     }
 
@@ -4692,7 +4692,7 @@ namespace MoreLinq.NoConflict
         /// <returns>An ordered copy of the source sequence</returns>
 
         public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, OrderByDirection direction)
-            => MoreEnumerable.ThenBy(source,keySelector,direction);
+            => MoreEnumerable.ThenBy(source, keySelector, direction);
 
         /// <summary>
         /// Performs a subsequent ordering of elements in a sequence in a particular direction (ascending, descending) according to a key
@@ -4706,7 +4706,7 @@ namespace MoreLinq.NoConflict
         /// <returns>An ordered copy of the source sequence</returns>
 
         public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey> comparer, OrderByDirection direction)
-            => MoreEnumerable.ThenBy(source,keySelector,comparer,direction);
+            => MoreEnumerable.ThenBy(source, keySelector, comparer, direction);
 
     }
 
@@ -4739,7 +4739,7 @@ namespace MoreLinq.NoConflict
 
         public static T[] ToArrayByIndex<T>(this IEnumerable<T> source,
             Func<T, int> indexSelector)
-            => MoreEnumerable.ToArrayByIndex(source,indexSelector);
+            => MoreEnumerable.ToArrayByIndex(source, indexSelector);
 
         /// <summary>
         /// Creates an array of user-specified length from an
@@ -4765,7 +4765,7 @@ namespace MoreLinq.NoConflict
 
         public static T[] ToArrayByIndex<T>(this IEnumerable<T> source, int length,
             Func<T, int> indexSelector)
-            => MoreEnumerable.ToArrayByIndex(source,length,indexSelector);
+            => MoreEnumerable.ToArrayByIndex(source, length, indexSelector);
 
         /// <summary>
         /// Creates an array from an <see cref="IEnumerable{T}"/> where a
@@ -4797,7 +4797,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
             Func<T, int> indexSelector, Func<T, TResult> resultSelector)
-            => MoreEnumerable.ToArrayByIndex(source,indexSelector,resultSelector);
+            => MoreEnumerable.ToArrayByIndex(source, indexSelector, resultSelector);
 
         /// <summary>
         /// Creates an array from an <see cref="IEnumerable{T}"/> where a
@@ -4829,7 +4829,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
-            => MoreEnumerable.ToArrayByIndex(source,indexSelector,resultSelector);
+            => MoreEnumerable.ToArrayByIndex(source, indexSelector, resultSelector);
 
         /// <summary>
         /// Creates an array of user-specified length from an
@@ -4861,7 +4861,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
             Func<T, int> indexSelector, Func<T, TResult> resultSelector)
-            => MoreEnumerable.ToArrayByIndex(source,length,indexSelector,resultSelector);
+            => MoreEnumerable.ToArrayByIndex(source, length, indexSelector, resultSelector);
 
         /// <summary>
         /// Creates an array of user-specified length from an
@@ -4893,7 +4893,7 @@ namespace MoreLinq.NoConflict
 
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
-            => MoreEnumerable.ToArrayByIndex(source,length,indexSelector,resultSelector);
+            => MoreEnumerable.ToArrayByIndex(source, length, indexSelector, resultSelector);
 
     }
 
@@ -4922,7 +4922,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<bool> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -4944,7 +4944,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<byte> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -4966,7 +4966,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<char> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -4988,7 +4988,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<decimal> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5010,7 +5010,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<double> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5032,7 +5032,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<float> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5054,7 +5054,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<int> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5076,7 +5076,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<long> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5098,7 +5098,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<sbyte> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5120,7 +5120,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<short> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5142,7 +5142,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString(this IEnumerable<string> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5164,7 +5164,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<uint> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5186,7 +5186,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ulong> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
         /// <summary>
         /// Creates a delimited string from a sequence of values and
@@ -5208,7 +5208,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
         [CLSCompliant(false)]
         public static string ToDelimitedString(this IEnumerable<ushort> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
         /// <summary>
         /// Creates a delimited string from a sequence of values and
         /// a given delimiter.
@@ -5230,7 +5230,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
-            => MoreEnumerable.ToDelimitedString(source,delimiter);
+            => MoreEnumerable.ToDelimitedString(source, delimiter);
 
     }
 
@@ -5284,7 +5284,7 @@ namespace MoreLinq.NoConflict
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.ToDictionary(source,comparer);
+            => MoreEnumerable.ToDictionary(source, comparer);
 
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -5302,7 +5302,7 @@ namespace MoreLinq.NoConflict
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.ToDictionary(source,comparer);
+            => MoreEnumerable.ToDictionary(source, comparer);
 
     }
 
@@ -5340,7 +5340,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer)
-            => MoreEnumerable.ToHashSet(source,comparer);
+            => MoreEnumerable.ToHashSet(source, comparer);
 
     }
 
@@ -5394,7 +5394,7 @@ namespace MoreLinq.NoConflict
 
         public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.ToLookup(source,comparer);
+            => MoreEnumerable.ToLookup(source, comparer);
 
         /// <summary>
         /// Creates a <see cref="ILookup{TKey,TValue}" /> from a sequence of
@@ -5412,7 +5412,7 @@ namespace MoreLinq.NoConflict
 
         public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.ToLookup(source,comparer);
+            => MoreEnumerable.ToLookup(source, comparer);
 
     }
 
@@ -5456,7 +5456,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, string format)
-            => MoreEnumerable.Trace(source,format);
+            => MoreEnumerable.Trace(source, format);
 
         /// <summary>
         /// Traces the elements of a source sequence for diagnostics using
@@ -5474,7 +5474,7 @@ namespace MoreLinq.NoConflict
         /// </remarks>
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source, Func<TSource, string> formatter)
-            => MoreEnumerable.Trace(source,formatter);
+            => MoreEnumerable.Trace(source, formatter);
 
     }
 
@@ -5496,7 +5496,7 @@ namespace MoreLinq.NoConflict
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
 
         public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
-            => MoreEnumerable.Windowed(source,size);
+            => MoreEnumerable.Windowed(source, size);
 
     }
 
@@ -5537,7 +5537,7 @@ namespace MoreLinq.NoConflict
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
              IEnumerable<TSecond> second,
              Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(first,second,resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, resultSelector);
 
     }
 
@@ -5574,7 +5574,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(first,second,resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, resultSelector);
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
@@ -5606,7 +5606,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(first,second,third,resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, resultSelector);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -5642,7 +5642,7 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(first,second,third,fourth,resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, resultSelector);
 
     }
 }

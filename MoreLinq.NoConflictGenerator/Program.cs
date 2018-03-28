@@ -229,9 +229,12 @@ namespace MoreLinq.NoConflictGenerator
                                                 SyntaxKind.SimpleMemberAccessExpression,
                                                 IdentifierName("MoreEnumerable"),
                                                 IdentifierName(md.Identifier)),
-                                            ArgumentList(SeparatedList(
-                                                from p in md.ParameterList.Parameters
-                                                select Argument(IdentifierName(p.Identifier)))))
+                                            ArgumentList(
+                                                SeparatedList(
+                                                    from p in md.ParameterList.Parameters
+                                                    select Argument(IdentifierName(p.Identifier)),
+                                                    Enumerable.Repeat(ParseToken(",").WithTrailingTrivia(Space),
+                                                                      md.ParameterList.Parameters.Count - 1))))
                                             .WithLeadingTrivia(Space))
                                         .WithLeadingTrivia(Whitespace(indent3)))
                                 .WithSemicolonToken(ParseToken(";").WithTrailingTrivia(LineFeed))
