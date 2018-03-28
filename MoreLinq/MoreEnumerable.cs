@@ -49,12 +49,13 @@ namespace MoreLinq
             if (e == null) throw new ArgumentNullException(nameof(e));
 
             var disposed = false;
-            var hasValue = false;
             var cache = new List<T>();
-            var index = 0;
 
             return _(); IEnumerable<T> _()
             {
+                var index = 0;
+                var hasValue = false;
+
                 while (true)
                 {
                     if (index < cache.Count)
@@ -76,7 +77,7 @@ namespace MoreLinq
                     if (hasValue)
                         yield return cache[index];
                     else
-                        yield break;
+                        break;
 
                     index++;
                 }
