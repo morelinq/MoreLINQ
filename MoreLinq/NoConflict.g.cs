@@ -2375,14 +2375,13 @@ namespace MoreLinq.NoConflict
     public static partial class MaxByExtension
     {
         /// <summary>
-        /// Returns the maximal element of the given sequence, based on
+        /// Returns the maximal elements of the given sequence, based on
         /// the given projection.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the maximal projected value, the first
-        /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type. This operator uses immediate execution, but
-        /// only buffers a single result (the current maximal element).
+        /// This overload uses the default comparer  for the projected type.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -2392,18 +2391,17 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MaxBy(source, selector);
 
         /// <summary>
-        /// Returns the maximal element of the given sequence, based on
+        /// Returns the maximal elements of the given sequence, based on
         /// the given projection and the specified comparer for projected values.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the maximal projected value, the first
-        /// one encountered will be returned. This operator uses immediate execution, but
-        /// only buffers a single result (the current maximal element).
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -2415,7 +2413,7 @@ namespace MoreLinq.NoConflict
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
             => MoreEnumerable.MaxBy(source, selector, comparer);
 
@@ -2427,14 +2425,13 @@ namespace MoreLinq.NoConflict
     public static partial class MinByExtension
     {
         /// <summary>
-        /// Returns the minimal element of the given sequence, based on
+        /// Returns the minimal elements of the given sequence, based on
         /// the given projection.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type. This operator uses immediate execution, but
-        /// only buffers a single result (the current minimal element).
+        /// This overload uses the default comparer for the projected type.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -2444,18 +2441,17 @@ namespace MoreLinq.NoConflict
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MinBy(source, selector);
 
         /// <summary>
-        /// Returns the minimal element of the given sequence, based on
+        /// Returns the minimal elements of the given sequence, based on
         /// the given projection and the specified comparer for projected values.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This operator uses immediate execution, but
-        /// only buffers a single result (the current minimal element).
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -2467,7 +2463,7 @@ namespace MoreLinq.NoConflict
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
             => MoreEnumerable.MinBy(source, selector, comparer);
 
