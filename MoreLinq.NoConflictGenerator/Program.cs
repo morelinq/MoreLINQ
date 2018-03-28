@@ -160,7 +160,7 @@ namespace MoreLinq.NoConflictGenerator
 
             if (debug)
             {
-                foreach (var m in
+                var ms =
                     from e in q
                     let m = e.Method
                     select new
@@ -185,10 +185,10 @@ namespace MoreLinq.NoConflictGenerator
                     }
                     into e
                     select e.SourceOrder + ": "
-                         + e.Name + e.TypeParameters + e.Parameters + e.Abbreviations)
-                {
+                         + e.Name + e.TypeParameters + e.Parameters + e.Abbreviations;
+
+                foreach (var m in ms)
                     Console.Error.WriteLine(m);
-                }
             }
 
             var indent = new string(' ', 4);
