@@ -191,7 +191,7 @@ namespace MoreLinq.NoConflictGenerator
                 }
             }
 
-            var indent = new string('\x20', 4);
+            var indent = new string(' ', 4);
             var indent2 = indent + indent;
             var indent3 = indent2 + indent;
 
