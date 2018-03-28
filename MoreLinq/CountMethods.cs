@@ -180,15 +180,14 @@ namespace MoreLinq
 
             if (first.TryGetCollectionCount() is int firstCount)
             {
-                return firstCount.CompareTo(second.TryGetCollectionCount() is int secondCount
-                                                ? secondCount
-                                                : PartialCount(second, firstCount + 1));
+                return firstCount.CompareTo(second.TryGetCollectionCount() ?? PartialCount(second, firstCount + 1));
+            }
+            else if (second.TryGetCollectionCount() is int secondCount)
+            {
+                return PartialCount(first, secondCount + 1).CompareTo(secondCount);
             }
             else
             {
-                if (second.TryGetCollectionCount() is int secondCount)
-                    return PartialCount(first, secondCount + 1).CompareTo(secondCount);
-
                 bool firstHasNext;
                 bool secondHasNext;
 
