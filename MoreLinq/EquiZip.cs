@@ -21,7 +21,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections;
     using System.Linq;
 
     static partial class MoreEnumerable
@@ -56,8 +55,14 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
              IEnumerable<TSecond> second,
-             Func<TFirst, TSecond, TResult> resultSelector) =>
-             ZipImpl(first, second, resultSelector, 1, errorSelector);
+             Func<TFirst, TSecond, TResult> resultSelector)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+        }
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -92,8 +97,15 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(this IEnumerable<T1> first,
              IEnumerable<T2> second, IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector) =>
-             ZipImpl(first, second, third, resultSelector, 2, errorSelector);
+            Func<T1, T2, T3, TResult> resultSelector)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return EquiZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
+        }
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
@@ -131,13 +143,37 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
              IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
-             Func<T1, T2, T3, T4, TResult> resultSelector) =>
-             ZipImpl(first, second, third, fourth, resultSelector, 3, errorSelector);
-
-        static Exception errorSelector(IEnumerator[] enumerators)
+            Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            var i = enumerators.Index().First(x => x.Value == null).Key;
-            return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return EquiZipImpl(first, second, third, fourth, resultSelector);
+        }
+
+        static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
+            IEnumerable<T1> s1,
+            IEnumerable<T2> s2,
+            IEnumerable<T3> s3,
+            IEnumerable<T4> s4,
+            Func<T1, T2, T3, T4, TResult> resultSelector)
+        {
+            Debug.Assert(s1 != null);
+            Debug.Assert(s2 != null);
+
+            const int zero = 0, one = 1;
+
+            var limit = 1 + (s3 != null ? one : zero)
+                          + (s4 != null ? one : zero);
+
+            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
+            {
+                var i = enumerators.Index().First(x => x.Value == null).Key;
+                return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
+            });
         }
 
         static readonly string[] OrdinalNumbers =
