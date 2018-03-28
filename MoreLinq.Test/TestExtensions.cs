@@ -62,7 +62,7 @@ namespace MoreLinq.Test
         {
             // Test that the operator is optimized for collections
 
-            action(input);
+            action(input.Select(x => x));
             action(input.ToBreakingCollection(true));
             action(input.ToBreakingCollection(false));
         }
