@@ -18,8 +18,6 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
-    using System.Collections.Generic;
-    using System;
 
     [TestFixture]
     public class AtLeastTest
