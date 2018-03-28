@@ -17,41 +17,47 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
     public class MinByTest
     {
         [Test]
+        public void MinByIsLazy()
+        {
+            new BreakingSequence<int>().MinBy(x => x);
+        }
+
+        [Test]
+        public void MinByReturnsMinima()
+        {
+            Assert.AreEqual(new[] { "ax", "aa", "ab", "ay", "az" },
+                            SampleData.Strings.MinBy(x => x.Length));
+        }
+
+        [Test]
         public void MinByNullComparer()
         {
-            Assert.AreEqual("ax", SampleData.Strings.MinBy(x => x.Length, null));
+            Assert.AreEqual(SampleData.Strings.MinBy(x => x.Length),
+                            SampleData.Strings.MinBy(x => x.Length, null));
         }
 
         [Test]
         public void MinByEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new string[0].MinBy(x => x.Length));
+            Assert.IsEmpty(new string[0].MinBy(x => x.Length));
         }
 
         [Test]
         public void MinByWithNaturalComparer()
         {
-            Assert.AreEqual("aa", SampleData.Strings.MinBy(x => x[1]));
+            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MinBy(x => x[1]));
         }
 
         [Test]
         public void MinByWithComparer()
         {
-            Assert.AreEqual("az", SampleData.Strings.MinBy(x => x[1], SampleData.ReverseCharComparer));
-        }
-
-        [Test]
-        public void MinByReturnsFirstOfEquals()
-        {
-            Assert.AreEqual("ax", SampleData.Strings.MinBy(x => x.Length));
+            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinBy(x => x[1], SampleData.ReverseCharComparer));
         }
     }
 }
