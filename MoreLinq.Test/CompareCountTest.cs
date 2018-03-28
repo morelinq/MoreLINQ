@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,14 +28,15 @@ namespace MoreLinq.Test
         [TestCase(0, 1, -1)]
         [TestCase(1, 0,  1)]
         [TestCase(1, 1,  0)]
-        public void CompareCountWithCollectionAndCollection(int collectionCount1,
-            int collectionCount2,
+        public void CompareCount(int s1Count,
+            int s2Count,
             int expectedCompareCount)
         {
-            var firstCollection = new BreakingCollection<int>(collectionCount1);
-            var secondCollection = new BreakingCollection<int>(collectionCount2);
+            var s1 = Enumerable.Range(1, s1Count);
+            var s2 = Enumerable.Range(1, s2Count);
 
-            Assert.AreEqual(expectedCompareCount, firstCollection.CompareCount(secondCollection));
+            AssertCompareCount(s1, s2, (xs, ys) =>
+                Assert.AreEqual(expectedCompareCount, xs.CompareCount(ys)));
         }
 
         [TestCase(0, 0,  0, 1)]
@@ -120,6 +123,33 @@ namespace MoreLinq.Test
             {
                 Assert.AreEqual(0, collection.CompareCount(seq));
             }
+        }
+
+        static void AssertCompareCount<T>(IEnumerable<T> s1, IEnumerable<T> s2, Action<IEnumerable<T>, IEnumerable<T>> action)
+        {
+            // Test that the operator is optimized for collections
+
+            var s1Seq = s1.Select(x => x);
+            var s2Seq = s2.Select(x => x);
+
+            var s1Col = s1.ToBreakingCollection(false);
+            var s2Col = s2.ToBreakingCollection(false);
+
+            var s1ReadOnlyCol = s1.ToBreakingCollection(true);
+            var s2ReadOnlyCol = s2.ToBreakingCollection(true);
+
+            // sequences
+            action(s1Seq, s2Seq);
+
+            // sequences and collections
+            action(s1Seq, s2Col);
+            action(s1Col, s2Seq);
+            action(s1Col, s2Col);
+
+            // sequences and readOnlyCollections
+            action(s1Seq, s2ReadOnlyCol);
+            action(s1ReadOnlyCol, s2Seq);
+            action(s1ReadOnlyCol, s2ReadOnlyCol);
         }
     }
 }
