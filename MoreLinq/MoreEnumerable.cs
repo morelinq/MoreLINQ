@@ -39,7 +39,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
-        /// cache of the enumeration on first iteration
+        /// cache of the enumeration on first iteration.
         /// </summary>
         /// <remarks>
         /// This operator is not thread-safe, since it is for internal use only.
