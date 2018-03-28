@@ -121,14 +121,14 @@ namespace MoreLinq.NoConflictGenerator
                 from md in cd.DescendantNodes().OfType<MethodDeclarationSyntax>()
                 let mn = (string) md.Identifier.Value
                 where md.ParameterList.Parameters.Count > 0
-                    && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
-                    && md.Modifiers.Any(m => (string)m.Value == "public")
-                    && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
+                   && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
+                   && md.Modifiers.Any(m => (string)m.Value == "public")
+                   && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
                 let typeParameterAbbreviationByName =
                     md.TypeParameterList
-                        ?.Parameters
-                        .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
-                        .ToDictionary(e => e.Original, e => e.Alias)
+                     ?.Parameters
+                      .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
+                      .ToDictionary(e => e.Original, e => e.Alias)
                 select new
                 {
                     Syntax = md,
@@ -139,8 +139,8 @@ namespace MoreLinq.NoConflictGenerator
                     SortableParameterTypes =
                         from p in md.ParameterList.Parameters
                         select CreateTypeKey(p.Type,
-                                                n => typeParameterAbbreviationByName != null
-                                                && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
+                                             n => typeParameterAbbreviationByName != null
+                                               && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
                 };
 
         var q =
@@ -280,21 +280,21 @@ namespace MoreLinq.NoConflict
         }
 
         public static TypeKey CreateTypeKey(TypeSyntax root,
-                                              Func<string, TypeKey> abbreviator = null)
+                                            Func<string, TypeKey> abbreviator = null)
         {
             return Walk(root ?? throw new ArgumentNullException(nameof(root)));
 
             TypeKey Walk(TypeSyntax ts) =>
                 ts is GenericNameSyntax gns
                 ? new GenericTypeKey(gns.Identifier.ToString(),
-                                        ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk)))
+                                     ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk)))
                 : ts is IdentifierNameSyntax ins
                 ? abbreviator?.Invoke(ins.Identifier.ValueText) ?? new SimpleTypeKey(ins.ToString())
                 : ts is PredefinedTypeSyntax pts
                 ? new SimpleTypeKey(pts.ToString())
                 : ts is ArrayTypeSyntax ats
                 ? new ArrayTypeKey(Walk(ats.ElementType),
-                                    ImmutableList.CreateRange(from rs in ats.RankSpecifiers select rs.Rank))
+                                   ImmutableList.CreateRange(from rs in ats.RankSpecifiers select rs.Rank))
                 : ts is NullableTypeSyntax nts
                 ? new NullableTypeKey(Walk(nts.ElementType))
                 : ts is TupleTypeSyntax tts
@@ -350,10 +350,10 @@ namespace MoreLinq.NoConflict
         protected virtual int CompareParameters(TypeKey other) =>
             Compare(Parameters, other.Parameters);
 
-        protected static int Compare(IEnumerable<TypeKey> a, IEnumerable<TypeKey> b)
-            => a.Zip(b, (us, them) => (Us: us, Them: them))
-                .Select(e => e.Us.CompareTo(e.Them))
-                .FirstOrDefault(e => e != 0);
+        protected static int Compare(IEnumerable<TypeKey> a, IEnumerable<TypeKey> b) =>
+            a.Zip(b, (us, them) => (Us: us, Them: them))
+             .Select(e => e.Us.CompareTo(e.Them))
+             .FirstOrDefault(e => e != 0);
     }
 
     sealed class SimpleTypeKey : TypeKey
@@ -368,16 +368,16 @@ namespace MoreLinq.NoConflict
         protected ParameterizedTypeKey(string name, TypeKey parameter) :
             this(name, ImmutableList.Create(parameter)) {}
 
-        protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters)
-            : base(name) => Parameters = parameters;
+        protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) :
+            base(name) => Parameters = parameters;
 
         public override ImmutableList<TypeKey> Parameters { get; }
     }
 
     sealed class GenericTypeKey : ParameterizedTypeKey
     {
-        public GenericTypeKey(string name, ImmutableList<TypeKey> parameters)
-            : base(name, parameters) {}
+        public GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :
+            base(name, parameters) {}
 
         public override string ToString() =>
             Name + "<" + string.Join(", ", Parameters) + ">";
@@ -391,8 +391,8 @@ namespace MoreLinq.NoConflict
 
     sealed class TupleTypeKey : ParameterizedTypeKey
     {
-        public TupleTypeKey(ImmutableList<TypeKey> parameters)
-            : base("()", parameters) {}
+        public TupleTypeKey(ImmutableList<TypeKey> parameters) :
+            base("()", parameters) {}
 
         public override string ToString() =>
             "(" + string.Join(", ", Parameters) + ")";
@@ -400,8 +400,8 @@ namespace MoreLinq.NoConflict
 
     sealed class ArrayTypeKey : ParameterizedTypeKey
     {
-        public ArrayTypeKey(TypeKey element, IEnumerable<int> ranks)
-            : base("[]", element) => Ranks = ImmutableList.CreateRange(ranks);
+        public ArrayTypeKey(TypeKey element, IEnumerable<int> ranks) :
+            base("[]", element) => Ranks = ImmutableList.CreateRange(ranks);
 
         public ImmutableList<int> Ranks { get; }
 
