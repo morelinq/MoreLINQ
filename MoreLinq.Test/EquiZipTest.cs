@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -79,6 +79,31 @@ namespace MoreLinq.Test
         {
             var bs = new BreakingSequence<int>();
             bs.EquiZip<int, int, int>(bs, delegate { throw new NotImplementedException(); });
+        }
+
+        [Test]
+        public void MoveNextIsNotCalledUnnecessarily()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            using (var s2 = TestingSequence.Of(1, 2, 3))
+            using (var s3 = MoreEnumerable.From(() => 1,
+                                                () => 2,
+                                                () => throw new ArgumentException())
+                                          .AsTestingSequence())
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume());
+            }
+        }
+
+        [Test]
+        public void ZipDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
         }
     }
 }

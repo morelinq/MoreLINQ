@@ -59,8 +59,6 @@ namespace MoreLinq
             return source.ToLookup(e => e.Key, e => e.Value, comparer);
         }
 
-        #if !NO_VALUE_TUPLES
-
         /// <summary>
         /// Creates a <see cref="Lookup{TKey,TValue}" /> from a sequence of
         /// tuples of 2 where the first item is the key and the second the
@@ -97,7 +95,5 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.ToLookup(e => e.Key, e => e.Value, comparer);
         }
-
-        #endif
     }
 }

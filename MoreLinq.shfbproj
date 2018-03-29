@@ -20,12 +20,12 @@
     <Language>en-US</Language>
     <ProjectSummary>MoreLINQ fills in a few gaps left by LINQ to Objects.</ProjectSummary>
     <DocumentationSources>
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net40\MoreLinq.dll" />
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net40\MoreLinq.xml" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net451\MoreLinq.dll" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net451\MoreLinq.xml" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
-    <CopyrightText>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin. Portions &#169; 2015 Felipe Sateler, &#8220;sholland&#8221;. Portions &#169; 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh). Portions &#169; Microsoft. All rights reserved.</CopyrightText>
+    <CopyrightText>&#169; 2008 Jonathan Skeet. Portions &#169; 2009 Atif Aziz, Chris Ammerman, Konrad Rudolph. Portions &#169; 2010 Johannes Rudolph, Leopold Bushkin. Portions &#169; 2015 Felipe Sateler, &#8220;sholland&#8221;. Portions &#169; 2016 Andreas Gullberg Larsen, Leandro F. Vieira (leandromoh). Portions &#169; 2017 Jonas Nyrup (jnyrup). Portions &#169; Microsoft. All rights reserved.</CopyrightText>
     <FeedbackEMailAddress>morelinq-dev%40googlegroups.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>MoreLinq Google Groups</FeedbackEMailLinkText>
     <HelpTitle>MoreLinq</HelpTitle>
@@ -47,7 +47,23 @@
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
-<NamespaceSummaryItem name="MoreLinq" isDocumented="True" xmlns="">Provides types and extension methods that extend LINQ to Objects.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="MoreLinq" isDocumented="True" xmlns="">Provides types and extension methods that extend LINQ to Objects.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="MoreLinq.Experimental" isDocumented="True" xmlns="">
+          Provides experimental types and extension methods that extend LINQ to Objects.
+
+          THE METHODS ARE EXPERIMENTAL.
+
+          THEY MAY BE UNSTABLE AND UNTESTED.
+
+          THEY MAY BE REMOVED FROM A FUTURE MAJOR OR MINOR RELEASE AND POSSIBLY
+          WITHOUT NOTICE.
+
+          USE THEM AT YOUR OWN RISK.
+
+          THE METHODS ARE PUBLISHED FOR FIELD EXPERIMENTATION TO SOLICIT
+          FEEDBACK ON THEIR UTILITY AND DESIGN/IMPLEMENTATION DEFECTS.
+      </NamespaceSummaryItem>
+    </NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

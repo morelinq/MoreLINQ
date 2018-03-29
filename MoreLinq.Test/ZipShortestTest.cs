@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -73,6 +73,47 @@ namespace MoreLinq.Test
         {
             var bs = new BreakingSequence<int>();
             bs.ZipShortest<int, int, int>(bs, delegate { throw new NotImplementedException(); });
+        }
+
+        [Test]
+        public void MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            using (var s2 = MoreEnumerable.From(() => 4,
+                                                () => 5,
+                                                () => throw new InvalidOperationException())
+                                          .AsTestingSequence())
+            {
+                var zipped = s1.ZipShortest(s2, Tuple.Create);
+                Assert.That(zipped, Is.Not.Null);
+                zipped.AssertSequenceEqual((1, 4), (2, 5));
+            }
+        }
+
+        [Test]
+        public void ZipShortestNotIterateUnnecessaryElements()
+        {
+            using (var s1 = MoreEnumerable.From(() => 4,
+                                                () => 5,
+                                                () => 6,
+                                                () => throw new ArgumentException())
+                                          .AsTestingSequence())
+            using (var s2 = TestingSequence.Of(1, 2))
+            {
+                var zipped = s1.ZipShortest(s2, Tuple.Create);
+                Assert.That(zipped, Is.Not.Null);
+                zipped.AssertSequenceEqual((4, 1), (5, 2));
+            }
+        }
+
+        [Test]
+        public void ZipShortestDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.ZipShortest(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
         }
     }
 }

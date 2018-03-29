@@ -110,8 +110,6 @@ namespace MoreLinq
             return FoldImpl(source, 4, folder4: folder);
         }
 
-        #if FUNC16
-
         /// <summary>
         /// Returns the result of applying a function to a sequence of
         /// 5 elements.
@@ -376,6 +374,5 @@ namespace MoreLinq
             return FoldImpl(source, 16, folder16: folder);
         }
 
-        #endif // FUNC16
     }
 }

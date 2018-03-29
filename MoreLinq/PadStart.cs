@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Pads a sequence with default values in the beginning if it is narrower (shorter 
+        /// Pads a sequence with default values in the beginning if it is narrower (shorter
         /// in length) than a given width.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -51,7 +51,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter 
+        /// Pads a sequence with a given filler value in the beginning if it is narrower (shorter
         /// in length) than a given width.
         /// An additional parameter specifies the value to use for padding.
         /// </summary>
@@ -82,7 +82,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter 
+        /// Pads a sequence with a dynamic filler value in the beginning if it is narrower (shorter
         /// in length) than a given width.
         /// An additional parameter specifies the function to calculate padding.
         /// </summary>
@@ -110,19 +110,19 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadLeftImpl(source, width, default(TSource), paddingSelector);
+            return PadLeftImpl(source, width, default, paddingSelector);
         }
 
         static IEnumerable<T> PadLeftImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T> paddingSelector)
         {
             return
-                source is ICollection<T> collection
-                ? collection.Count >= width
-                  ? collection
-                  : Enumerable.Range(0, width - collection.Count)
+                source.TryGetCollectionCount() is int collectionCount
+                ? collectionCount >= width
+                  ? source
+                  : Enumerable.Range(0, width - collectionCount)
                               .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
-                              .Concat(collection)
+                              .Concat(source)
                 : _(); IEnumerable<T> _()
                 {
                     var array = new T[width];

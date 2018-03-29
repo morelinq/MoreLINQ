@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2015 Felipe Sateler. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +24,6 @@ namespace MoreLinq
     // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
     static partial class MoreEnumerable
     {
-        #if !NO_VALUE_TUPLES
-
         /// <summary>
         /// Performs a Full Group Join between the <paramref name="first"/> and <paramref name="second"/> sequences.
         /// </summary>
@@ -80,8 +78,6 @@ namespace MoreLinq
         {
             return FullGroupJoin(first, second, firstKeySelector, secondKeySelector, ValueTuple.Create, comparer);
         }
-
-        #endif
 
         /// <summary>
         /// Performs a full group-join between two sequences.

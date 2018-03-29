@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -122,7 +122,6 @@ namespace MoreLinq.Test
                 #if NET451 || NETCOREAPP2_0
                 nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 #endif
-                nameof(MoreEnumerable.ToDelimitedString) + ".delimiter",
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 
@@ -142,7 +141,11 @@ namespace MoreLinq.Test
             if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
 
-            return CreateGenericInterfaceInstance(type.GetTypeInfo());
+            var typeInfo = type.GetTypeInfo();
+
+            return typeInfo.IsGenericType
+                    ? CreateGenericInterfaceInstance(typeInfo)
+                    : EmptyEnumerable.Instance;
         }
 
         static bool HasDefaultConstructor(Type type) =>
@@ -164,6 +167,23 @@ namespace MoreLinq.Test
             var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
             var instantiation = definition.MakeGenericType(type.GetGenericArguments());
             return Activator.CreateInstance(instantiation);
+        }
+
+        static class EmptyEnumerable
+        {
+            public static readonly IEnumerable Instance = new Enumerable();
+
+            sealed class Enumerable : IEnumerable
+            {
+                public IEnumerator GetEnumerator() => new Enumerator();
+
+                sealed class Enumerator : IEnumerator
+                {
+                    public bool MoveNext() => false;
+                    object IEnumerator.Current => throw new InvalidOperationException();
+                    public void Reset() { }
+                }
+            }
         }
 
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
