@@ -110,7 +110,11 @@ namespace MoreLinq.NoConflictGenerator
                 from fp in Directory.EnumerateFiles(dir, "*.cs")
                 where !excludePredicate(fp) && includePredicate(fp)
                 orderby fp
-
+                //
+                // Find all class declarations where class name is
+                // `MoreEnumerable`. Note that this is irrespective of
+                // namespace, which is out of sheer laziness.
+                //
                 from cd in
                     CSharpSyntaxTree
                         .ParseText(File.ReadAllText(fp), CSharpParseOptions.Default.WithPreprocessorSymbols("MORELINQ"))
@@ -119,20 +123,36 @@ namespace MoreLinq.NoConflictGenerator
                         .GetCompilationUnitRoot()
                         .DescendantNodes().OfType<ClassDeclarationSyntax>()
                 where (string) cd.Identifier.Value == "MoreEnumerable"
-
+                //
+                // Get all method declarations where method:
+                //
+                // - has at least one parameter
+                // - extends a type (first parameter uses the `this` modifier)
+                // - is public
+                // - isn't marked as being obsolete
+                //
                 from md in cd.DescendantNodes().OfType<MethodDeclarationSyntax>()
                 let mn = (string) md.Identifier.Value
                 where md.ParameterList.Parameters.Count > 0
                    && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
                    && md.Modifiers.Any(m => (string)m.Value == "public")
                    && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
-
+                //
+                // Build a dictionary of type abbreviations (e.g. TSource -> a,
+                // TResult -> b, etc.) for the method's type parameters. If the
+                // method is non-generic, then this will be null!
+                //
                 let typeParameterAbbreviationByName =
                     md.TypeParameterList
                      ?.Parameters
                       .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
                       .ToDictionary(e => e.Original, e => e.Alias)
-
+                //
+                // Put everything together. While we mostly care about the
+                // method declaration, the rest of the information is captured
+                // for the purpose of stabilizing the code generation order and
+                // debugging (--debug).
+                //
                 select new
                 {
                     Syntax = md,
@@ -188,6 +208,14 @@ namespace MoreLinq.NoConflictGenerator
                                                             select a.Value + " = " + a.Key),
                     }
                     into e
+                    //
+                    // Example of what this is designed to produce:
+                    //
+                    // 083: Lag<a, b>(IEnumerable<a>, int, Func<a, a, b>) where a = TSource, b = TResult
+                    // 084: Lag<a, b>(IEnumerable<a>, int, a, Func<a, a, b>) where a = TSource, b = TResult
+                    // 085: Lead<a, b>(IEnumerable<a>, int, Func<a, a, b>) where a = TSource, b = TResult
+                    // 086: Lead<a, b>(IEnumerable<a>, int, a, Func<a, a, b>) where a = TSource, b = TResult
+                    //
                     select e.SourceOrder + ": "
                          + e.Name + e.TypeParameters + e.Parameters + e.Abbreviations;
 
