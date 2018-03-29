@@ -78,6 +78,7 @@
         - Slice
         - SortedMerge
         - Split
+        - SplitAt
         - StartsWith
         - Subsets
         - TagFirstLast
