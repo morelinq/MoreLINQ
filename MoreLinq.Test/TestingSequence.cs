@@ -44,17 +44,13 @@ namespace MoreLinq.Test
         int _moveNextCallCount;
         IEnumerable<T> _sequence;
 
-        internal TestingSequence(IEnumerable<T> sequence)
-        {
+        internal TestingSequence(IEnumerable<T> sequence) =>
             _sequence = sequence;
-        }
 
         public int MoveNextCallCount => _moveNextCallCount;
 
-        void IDisposable.Dispose()
-        {
+        void IDisposable.Dispose() =>
             AssertDisposed();
-        }
 
         /// <summary>
         /// Checks that the iterator was disposed, and then resets.
@@ -87,10 +83,7 @@ namespace MoreLinq.Test
             public event EventHandler Disposed;
             public event EventHandler MoveNextCalled;
 
-            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
-            {
-                _sequence = sequence;
-            }
+            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) => _sequence = sequence;
 
             public T Current => _sequence.Current;
             object IEnumerator.Current => Current;
