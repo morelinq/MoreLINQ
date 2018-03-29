@@ -41,13 +41,12 @@ namespace MoreLinq.Test
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
         bool? _disposed;
-        int _moveNextCallCount;
         IEnumerable<T> _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence) =>
             _sequence = sequence;
 
-        public int MoveNextCallCount => _moveNextCallCount;
+        public int MoveNextCallCount { get; private set; }
 
         void IDisposable.Dispose() =>
             AssertDisposed();
@@ -69,21 +68,22 @@ namespace MoreLinq.Test
             var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
-            enumerator.MoveNextCalled += delegate { _moveNextCallCount++; };
+            enumerator.MoveNextCalled += delegate { MoveNextCallCount++; };
             _sequence = null;
             return enumerator;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        class DisposeTestingSequenceEnumerator : IEnumerator<T>
+        sealed class DisposeTestingSequenceEnumerator : IEnumerator<T>
         {
             readonly IEnumerator<T> _sequence;
 
             public event EventHandler Disposed;
             public event EventHandler MoveNextCalled;
 
-            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) => _sequence = sequence;
+            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) =>
+                _sequence = sequence;
 
             public T Current => _sequence.Current;
             object IEnumerator.Current => Current;
