@@ -107,9 +107,11 @@ namespace MoreLinq.NoConflictGenerator
                 .ToArray();
 
             var qq =
+
                 from fp in Directory.EnumerateFiles(dir, "*.cs")
                 where !excludePredicate(fp) && includePredicate(fp)
                 orderby fp
+
                 from cd in
                     CSharpSyntaxTree
                         .ParseText(File.ReadAllText(fp), CSharpParseOptions.Default.WithPreprocessorSymbols("MORELINQ"))
@@ -118,17 +120,20 @@ namespace MoreLinq.NoConflictGenerator
                         .GetCompilationUnitRoot()
                         .DescendantNodes().OfType<ClassDeclarationSyntax>()
                 where (string) cd.Identifier.Value == "MoreEnumerable"
+
                 from md in cd.DescendantNodes().OfType<MethodDeclarationSyntax>()
                 let mn = (string) md.Identifier.Value
                 where md.ParameterList.Parameters.Count > 0
                    && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
                    && md.Modifiers.Any(m => (string)m.Value == "public")
                    && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
+
                 let typeParameterAbbreviationByName =
                     md.TypeParameterList
                      ?.Parameters
                       .Select((e, i) => (Original: e.Identifier.ValueText, Alias: abbreviatedTypeNodes[i]))
                       .ToDictionary(e => e.Original, e => e.Alias)
+
                 select new
                 {
                     Syntax = md,
