@@ -105,8 +105,10 @@ namespace MoreLinq.NoConflictGenerator
                 .Select(ch => new SimpleTypeKey(ch.ToString()))
                 .ToArray();
 
-            var qq =
+        var q =
 
+            from ms in new[]
+            {
                 from fp in Directory.EnumerateFiles(dir, "*.cs")
                 where !excludePredicate(fp) && includePredicate(fp)
                 orderby fp
@@ -165,10 +167,9 @@ namespace MoreLinq.NoConflictGenerator
                         select CreateTypeKey(p.Type,
                                              n => typeParameterAbbreviationByName != null
                                                && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
-                };
-
-        var q =
-            from e in qq.Select((m, i) => (SourceOrder: i + 1, Method: m))
+                }
+            }
+            from e in ms.Select((m, i) => (SourceOrder: i + 1, Method: m))
             orderby
                 e.Method.Name,
                 e.Method.TypeParameterCount,
