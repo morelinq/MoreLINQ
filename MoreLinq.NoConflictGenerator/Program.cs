@@ -186,6 +186,14 @@ namespace MoreLinq.NoConflictGenerator
             if (debug)
             {
                 var ms =
+                    //
+                    // Example of what this is designed to produce:
+                    //
+                    // 083: Lag<a, b>(IEnumerable<a>, int, Func<a, a, b>) where a = TSource, b = TResult
+                    // 084: Lag<a, b>(IEnumerable<a>, int, a, Func<a, a, b>) where a = TSource, b = TResult
+                    // 085: Lead<a, b>(IEnumerable<a>, int, Func<a, a, b>) where a = TSource, b = TResult
+                    // 086: Lead<a, b>(IEnumerable<a>, int, a, Func<a, a, b>) where a = TSource, b = TResult
+                    //
                     from e in q
                     let m = e.Method
                     select new
@@ -209,14 +217,6 @@ namespace MoreLinq.NoConflictGenerator
                                                             select a.Value + " = " + a.Key),
                     }
                     into e
-                    //
-                    // Example of what this is designed to produce:
-                    //
-                    // 083: Lag<a, b>(IEnumerable<a>, int, Func<a, a, b>) where a = TSource, b = TResult
-                    // 084: Lag<a, b>(IEnumerable<a>, int, a, Func<a, a, b>) where a = TSource, b = TResult
-                    // 085: Lead<a, b>(IEnumerable<a>, int, Func<a, a, b>) where a = TSource, b = TResult
-                    // 086: Lead<a, b>(IEnumerable<a>, int, a, Func<a, a, b>) where a = TSource, b = TResult
-                    //
                     select e.SourceOrder + ": "
                          + e.Name + e.TypeParameters + e.Parameters + e.Abbreviations;
 
