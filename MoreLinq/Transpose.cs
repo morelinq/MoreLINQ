@@ -24,7 +24,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Transpose the rows of a sequence into columns.
+        /// Transposes the rows of a sequence into columns.
         /// </summary>
         /// <typeparam name="T">Type of the source sequence</typeparam>
         /// <param name="source">Source sequence</param>
