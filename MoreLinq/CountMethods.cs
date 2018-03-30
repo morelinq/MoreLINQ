@@ -132,23 +132,9 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var count = 0;
-
-            if (source is ICollection<T> col)
-            {
-                count = col.Count;
-            }
-            else
-            {
-                using (var e = source.GetEnumerator())
-                {
-                    while (e.MoveNext())
-                    {
-                        if (++count == limit)
-                            break;
-                    }
-                }
-            }
+            var count = source is ICollection<T> col
+                         ? col.Count
+                         : PartialCount(source, limit);
 
             return count >= min && count <= max;
         }
@@ -205,22 +191,22 @@ namespace MoreLinq
 
                 return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
             }
+        }
 
-            int PartialCount<T>(IEnumerable<T> source, int limit)
+        static int PartialCount<T>(IEnumerable<T> source, int limit)
+        {
+            var count = 0;
+
+            using (var e = source.GetEnumerator())
             {
-                var count = 0;
-
-                using (var e = source.GetEnumerator())
+                while (e.MoveNext())
                 {
-                    while (e.MoveNext())
-                    {
-                        if (++count == limit)
-                            break;
-                    }
+                    if (++count == limit)
+                        break;
                 }
-
-                return count;
             }
+
+            return count;
         }
     }
 }
