@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -143,6 +144,15 @@ namespace MoreLinq.Test
         {
             var sequence = new BreakingList<int>();
             sequence.AtLeast(3);
+        }
+
+        [Test]
+        public void AtLeastNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => throw new InvalidOperationException());
+            Assert.IsTrue(source.AtLeast(2));
         }
     }
 }

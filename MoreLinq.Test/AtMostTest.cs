@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -63,6 +64,16 @@ namespace MoreLinq.Test
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
             Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(1));
+        }
+
+        [Test]
+        public void AtMostNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => 3,
+                                             () => throw new InvalidOperationException());
+            Assert.IsFalse(source.AtMost(2));
         }
     }
 }

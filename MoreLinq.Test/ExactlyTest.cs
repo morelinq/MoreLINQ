@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -51,6 +52,16 @@ namespace MoreLinq.Test
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
             Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(1));
+        }
+
+        [Test]
+        public void ExactlyNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => 3,
+                                             () => throw new InvalidOperationException());
+            Assert.IsFalse(source.Exactly(2));
         }
     }
 }
