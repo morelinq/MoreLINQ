@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -90,6 +91,15 @@ namespace MoreLinq.Test
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
                 Assert.IsTrue(xs.AtLeast(2));
+        }
+
+        [Test]
+        public void AtLeastDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => throw new InvalidOperationException());
+            Assert.IsTrue(source.AtLeast(2));
         }
     }
 }
