@@ -31,9 +31,9 @@ namespace MoreLinq.Test
             Disposable b = null;
             Disposable c = null;
 
-            var allocators = Futures(() => a = new Disposable(),
-                                     () => b = new Disposable(),
-                                     () => c = new Disposable());
+            var allocators = MoreEnumerable.From(() => a = new Disposable(),
+                                                 () => b = new Disposable(),
+                                                 () => c = new Disposable());
 
             var disposables = allocators.Acquire();
 
@@ -53,10 +53,10 @@ namespace MoreLinq.Test
             Disposable b = null;
             Disposable c = null;
 
-            var allocators = Futures(() => a = new Disposable(),
-                                     () => b = new Disposable(),
-                                     () => throw new ApplicationException(),
-                                     () => c = new Disposable());
+            var allocators = MoreEnumerable.From(() => a = new Disposable(),
+                                                 () => b = new Disposable(),
+                                                 () => throw new ApplicationException(),
+                                                 () => c = new Disposable());
 
             Assert.Throws<ApplicationException>(() => allocators.Acquire());
 
@@ -65,13 +65,6 @@ namespace MoreLinq.Test
             Assert.That(b, Is.Not.Null);
             Assert.That(b.Disposed, Is.True);
             Assert.That(c, Is.Null);
-        }
-
-        static IEnumerable<T> Futures<T>(params Func<T>[] allocators)
-            where T : IDisposable
-        {
-            foreach (var allocator in allocators)
-                yield return allocator();
         }
 
         class Disposable : IDisposable
