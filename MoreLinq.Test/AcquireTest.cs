@@ -55,10 +55,10 @@ namespace MoreLinq.Test
 
             var allocators = MoreEnumerable.From(() => a = new Disposable(),
                                                  () => b = new Disposable(),
-                                                 () => throw new ApplicationException(),
+                                                 () => throw new InvalidOperationException(),
                                                  () => c = new Disposable());
 
-            Assert.Throws<ApplicationException>(() => allocators.Acquire());
+            Assert.Throws<InvalidOperationException>(() => allocators.Acquire());
 
             Assert.That(a, Is.Not.Null);
             Assert.That(a.Disposed, Is.True);
@@ -72,7 +72,5 @@ namespace MoreLinq.Test
             public bool Disposed { get; private set; }
             public void Dispose() { Disposed = true; }
         }
-
-        class ApplicationException : Exception {}
     }
 }
