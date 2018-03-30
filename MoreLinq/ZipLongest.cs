@@ -59,28 +59,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
-            {
-                using (var e1 = first.GetEnumerator())
-                using (var e2 = second.GetEnumerator())
-                {
-                    while (e1.MoveNext())
-                    {
-                        if (e2.MoveNext())
-                        {
-                            yield return resultSelector(e1.Current, e2.Current);
-                        }
-                        else
-                        {
-                            do { yield return resultSelector(e1.Current, default); }
-                            while (e1.MoveNext());
-                            yield break;
-                        }
-                    }
-                    while (e2.MoveNext())
-                        yield return resultSelector(default, e2.Current);
-                }
-            }
+            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b), 1);
         }
     }
 }

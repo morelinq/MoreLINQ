@@ -74,5 +74,30 @@ namespace MoreLinq.Test
             var bs = new BreakingSequence<int>();
             bs.ZipLongest<int, int, int>(bs, delegate { throw new NotImplementedException(); });
         }
+
+        [Test]
+        public void ZipLongestDisposeSequencesEagerly()
+        {
+            var shorter = TestingSequence.Of(1, 2, 3);
+            var longer = MoreEnumerable.Generate(1, x => x + 1);
+            var zipped = shorter.ZipLongest(longer, Tuple.Create);
+
+            var count = 0;
+            foreach(var _ in zipped.Take(10))
+            {
+                if (++count == 4)
+                    ((IDisposable)shorter).Dispose();
+            }
+        }
+
+        [Test]
+        public void ZipLongestDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
+        }
     }
 }
