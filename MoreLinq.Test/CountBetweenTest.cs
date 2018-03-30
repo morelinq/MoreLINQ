@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -57,6 +58,17 @@ namespace MoreLinq.Test
         public void CountBetweenRangeTests(int start, int count, int min, int max, bool expecting)
         {
             Assert.That(Enumerable.Range(start, count).CountBetween(min, max), Is.EqualTo(expecting));
+        }
+
+        [Test]
+        public void CountBetweenDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => 3,
+                                             () => 4,
+                                             () => throw new InvalidOperationException());
+            Assert.False(source.CountBetween(2, 3));
         }
     }
 }
