@@ -55,7 +55,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ExactlyNotIterateUnnecessaryElements()
+        public void ExactlyDoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,

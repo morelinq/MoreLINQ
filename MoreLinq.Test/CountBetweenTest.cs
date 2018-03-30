@@ -61,14 +61,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void CountBetweenNotIterateUnnecessaryElements()
+        public void CountBetweenDoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => 3,
                                              () => 4,
                                              () => throw new InvalidOperationException());
-
             Assert.False(source.CountBetween(2, 3));
         }
     }

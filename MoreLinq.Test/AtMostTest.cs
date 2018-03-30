@@ -67,7 +67,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void AtMostNotIterateUnnecessaryElements()
+        public void AtMostDoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,

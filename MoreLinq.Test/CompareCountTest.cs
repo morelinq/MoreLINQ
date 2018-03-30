@@ -124,7 +124,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void CompareCountNotIterateUnnecessaryElements()
+        public void CompareCountDoesNotIterateUnnecessaryElements()
         {
             var seq1 = MoreEnumerable.From(() => 1,
                                            () => 2,
