@@ -58,13 +58,11 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static void AssertOptimizedForCollections<T>(this IEnumerable<T> input, Action<IEnumerable<T>> action)
+        internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
         {
-            // Test that the operator is optimized for collections
-
-            action(input.Select(x => x));
-            action(input.ToBreakingCollection(true));
-            action(input.ToBreakingCollection(false));
+            yield return input.Select(x => x);
+            yield return input.ToBreakingCollection(true);
+            yield return input.ToBreakingCollection(false);
         }
     }
 }

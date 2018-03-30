@@ -46,8 +46,8 @@ namespace MoreLinq.Test
         [Test]
         public void CountBetweenWithMaxEqualsMin()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.CountBetween(1, 1)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.CountBetween(1, 1));
         }
 
         [TestCase(1, 1, 2, 4, false)]
@@ -57,9 +57,8 @@ namespace MoreLinq.Test
         [TestCase(1, 5, 2, 4, false)]
         public void CountBetweenRangeTests(int start, int count, int min, int max, bool expecting)
         {
-            Enumerable.Range(start, count)
-                      .AssertOptimizedForCollections(xs =>
-                            Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting)));
+            foreach (var xs in Enumerable.Range(start, count).ArrangeCollectionTestCases())
+                Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting));
         }
     }
 }

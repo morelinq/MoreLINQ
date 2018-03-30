@@ -32,64 +32,64 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
-            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtLeast(0)));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtLeast(0));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastOneElement()
         {
-            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
-                Assert.IsFalse(xs.AtLeast(1)));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElements()
         {
-            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
-                Assert.IsFalse(xs.AtLeast(2)));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtLeast(2));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastZeroElements()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtLeast(0)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtLeast(0));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElement()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtLeast(1)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastManyElements()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsFalse(xs.AtLeast(2)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtLeast(2));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastZeroElements()
         {
-            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtLeast(0)));
+            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtLeast(0));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastOneElement()
         {
-            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtLeast(1)));
+            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtLeast(1));
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastManyElements()
         {
-            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtLeast(2)));
+            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtLeast(2));
         }
     }
 }

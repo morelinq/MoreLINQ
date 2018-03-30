@@ -32,43 +32,43 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
-            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtMost(0)));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(0));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
-            Enumerable.Empty<int>().AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtMost(1)));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(1));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostZeroElements()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsFalse(xs.AtMost(0)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtMost(0));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostOneElement()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtMost(1)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(1));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostManyElements()
         {
-            new[] { 1 }.AssertOptimizedForCollections(xs =>
-                Assert.IsTrue(xs.AtMost(2)));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(2));
         }
 
         [Test]
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
-            new[] { 1, 2, 3 }.AssertOptimizedForCollections(xs =>
-                Assert.IsFalse(xs.AtMost(1)));
+            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtMost(1));
         }
     }
 }

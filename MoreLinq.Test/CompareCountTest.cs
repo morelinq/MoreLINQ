@@ -35,8 +35,8 @@ namespace MoreLinq.Test
             var s1 = Enumerable.Range(1, s1Count);
             var s2 = Enumerable.Range(1, s2Count);
 
-            AssertCompareCount(s1, s2, (xs, ys) =>
-                Assert.AreEqual(expectedCompareCount, xs.CompareCount(ys)));
+            foreach (var (xs, ys) in ArrangeCollectionTestCases(s1, s2))
+                Assert.AreEqual(expectedCompareCount, xs.CompareCount(ys));
         }
 
         [TestCase(0, 0,  0, 1)]
@@ -125,7 +125,22 @@ namespace MoreLinq.Test
             }
         }
 
-        static void AssertCompareCount<T>(IEnumerable<T> s1, IEnumerable<T> s2, Action<IEnumerable<T>, IEnumerable<T>> action)
+        [Test]
+        public void CompareCountNotIterateUnnecessaryElements()
+        {
+            var seq1 = MoreEnumerable.From(() => 1,
+                                           () => 2,
+                                           () => 3,
+                                           () => 4,
+                                           () => throw new InvalidOperationException());
+
+            var seq2 = Enumerable.Range(1, 3);
+
+            Assert.AreEqual( 1, seq1.CompareCount(seq2));
+            Assert.AreEqual(-1, seq2.CompareCount(seq1));
+        }
+
+        static IEnumerable<(IEnumerable<T>, IEnumerable<T>)> ArrangeCollectionTestCases<T>(IEnumerable<T> s1, IEnumerable<T> s2)
         {
             // Test that the operator is optimized for collections
 
@@ -139,17 +154,17 @@ namespace MoreLinq.Test
             var s2ReadOnlyCol = s2.ToBreakingCollection(true);
 
             // sequences
-            action(s1Seq, s2Seq);
+            yield return (s1Seq, s2Seq);
 
             // sequences and collections
-            action(s1Seq, s2Col);
-            action(s1Col, s2Seq);
-            action(s1Col, s2Col);
+            yield return (s1Seq, s2Col);
+            yield return (s1Col, s2Seq);
+            yield return (s1Col, s2Col);
 
             // sequences and readOnlyCollections
-            action(s1Seq, s2ReadOnlyCol);
-            action(s1ReadOnlyCol, s2Seq);
-            action(s1ReadOnlyCol, s2ReadOnlyCol);
+            yield return (s1Seq, s2ReadOnlyCol);
+            yield return (s1ReadOnlyCol, s2Seq);
+            yield return (s1ReadOnlyCol, s2ReadOnlyCol);
         }
     }
 }
