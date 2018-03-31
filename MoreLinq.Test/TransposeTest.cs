@@ -25,6 +25,12 @@ namespace MoreLinq.Test
     public class TransposeTest
     {
         [Test]
+        public void TransposeIsLazy()
+        {
+            new BreakingSequence<BreakingSequence<int>>().Transpose();
+        }
+
+        [Test]
         public void TransposeWithNullInnerSequence()
         {
             var matrix = new int[][]
