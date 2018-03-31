@@ -46,7 +46,6 @@ namespace MoreLinq
                 using (var e = second.GetEnumerator())
                 {
                     var cache = Memoize(e);
-
                     foreach (var item1 in first)
                         foreach (var item2 in cache)
                             yield return resultSelector(item1, item2);
