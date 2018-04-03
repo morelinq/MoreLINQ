@@ -24,15 +24,16 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Transposes the rows of a sequence into columns.
+        /// Transposes a sequence of rows into a sequence of columns.
         /// </summary>
-        /// <typeparam name="T">Type of the source sequence</typeparam>
-        /// <param name="source">Source sequence</param>
+        /// <typeparam name="T">Type of source sequence elements.</typeparam>
+        /// <param name="source">Source sequence to transpose.</param>
         /// <returns>
-        /// Return a sequence with the columns in the source swapped into rows.
+        /// Returns a sequence of columns in the source swapped into rows.
         /// </returns>
         /// <remarks>
-        /// If some of the rows are shorter than the following rows, their elements are skipped.
+        /// If a rows is shorter than a follow it then the shorter row's
+        /// elements are skipped in the corresponding column sequences.
         /// This operator uses deferred execution and streams its results.
         /// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
         /// The inner sequences are consumed lazily, according as the resulting sequences are streaming.
@@ -49,6 +50,7 @@ namespace MoreLinq
         /// </code>
         /// The <c>result</c> variable will contain [[10, 20, 30], [11, 31], [32]].
         /// </example>
+
         public static IEnumerable<IEnumerable<T>> Transpose<T>(this IEnumerable<IEnumerable<T>> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
