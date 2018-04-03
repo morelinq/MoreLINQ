@@ -208,7 +208,7 @@ namespace MoreLinq.Test
 
             var boundary = (int)Math.Floor(Math.Sqrt(number));
 
-            for (int i = 2; i <= boundary; ++i)
+            for (var i = 2; i <= boundary; ++i)
             {
                 if (number % i == 0)  return false;
             }
