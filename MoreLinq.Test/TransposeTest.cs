@@ -33,11 +33,11 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithNullInnerSequence()
         {
-            var matrix = new int[][]
+            var matrix = new[]
             {
-                new int[] { 10, 11 },
-                new int[] { },
-                new int[] { 30, 31, 32 },
+                new [] { 10, 11 },
+                new int[0],
+                new [] { 30, 31, 32 },
                 null
             };
 
@@ -70,9 +70,9 @@ namespace MoreLinq.Test
         {
             var expectations = new[]
             {
-                new int[] { 10, 20, 30 },
-                new int[] { 11, 31 },
-                new int[] { 32 }
+                new[] { 10, 20, 30 },
+                new[] { 11, 31 },
+                new[] { 32 }
             };
 
             using (var seq1 = TestingSequence.Of(10, 11))
@@ -90,10 +90,10 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new int[] { 10, 11 },
-                new int[] { 20 },
-                new int[] { },
-                new int[] { 30, 31, 32 }
+                new[] { 10, 11 },
+                new[] { 20 },
+                new int[0],
+                new[] { 30, 31, 32 }
             };
 
             var traspose = matrix.Transpose();
@@ -152,10 +152,10 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new int[] { 10, 11 },
-                new int[] { 20 },
-                new int[] { },
-                new int[] { 30, 31, 32 }
+                new[] { 10, 11 },
+                new[] { 20 },
+                new int[0],
+                new[] { 30, 31, 32 }
             };
 
             var transpose = matrix.Transpose().ToList();
@@ -188,8 +188,8 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new int[] { 10, 11, 12 },
-                new int[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
+                new[] { 10, 11, 12 },
+                new[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
             };
 
             var first = matrix.First();

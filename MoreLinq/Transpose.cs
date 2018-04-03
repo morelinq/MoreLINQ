@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2018 Leandro F. Vieira (leandromoh). All rights reserved.
 //
@@ -41,9 +41,9 @@ namespace MoreLinq
         /// <code>
         /// var matrix = new[]
         /// {
-        ///     new int[] { 10, 11 },
-        ///     new int[] { 20 },
-        ///     new int[] { 30, 31, 32 }
+        ///     new[] { 10, 11 },
+        ///     new[] { 20 },
+        ///     new[] { 30, 31, 32 }
         /// };
         /// var result = matrix.Transpose();
         /// </code>
