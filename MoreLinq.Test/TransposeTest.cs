@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2018 Leandro F. Vieira (leandromoh). All rights reserved.
 //
@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Collections.Generic;
-using System;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+    using System.Collections.Generic;
+    using System;
+
     [TestFixture]
     public class TransposeTest
     {
