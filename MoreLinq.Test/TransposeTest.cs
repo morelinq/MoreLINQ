@@ -217,7 +217,7 @@ namespace MoreLinq.Test
             return true;
         }
 
-        public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
+        static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
         {
             // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
 
