@@ -88,7 +88,7 @@ namespace MoreLinq.Test
             using (var s2 = TestingSequence.Of(1, 2, 3))
             using (var s3 = MoreEnumerable.From(() => 1,
                                                 () => 2,
-                                                () => throw new ArgumentException())
+                                                () => throw new TestException())
                                           .AsTestingSequence())
             {
                 Assert.Throws<InvalidOperationException>(() =>

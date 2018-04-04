@@ -77,8 +77,7 @@ namespace MoreLinq
 
                         reloop:
 
-                        bool next;
-                        while (next = e.MoveNext())
+                        while (e.MoveNext())
                         {
                             if (e.Current is IEnumerable inner && predicate(inner))
                             {
@@ -92,10 +91,7 @@ namespace MoreLinq
                             }
                         }
 
-                        if (!next)
-                        {
-                            (e as IDisposable)?.Dispose();
-                        }
+                        (e as IDisposable)?.Dispose();
                     }
                 }
                 finally
