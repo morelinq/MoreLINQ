@@ -181,24 +181,6 @@ namespace MoreLinq.Test
                 result.ElementAt(1));
         }
 
-        [Ignore("Test about 100% laziness, the current approach do not support it")]
-        public void TransposeSequencesAreLazies()
-        {
-            var matrix = new[]
-            {
-                new[] { 10, 11, 12 },
-                new[] { 30, 31, 32 }.Select<int, int>(x => throw new TestException())
-            };
-
-            var first = matrix.First();
-            var count = first.Count();
-
-            matrix.Transpose().Take(count).ForEach((seq, i) =>
-            {
-                Assert.That(seq.First(), Is.EqualTo(first.ElementAt(i)));
-            });
-        }
-
         [Test]
         public void TransposeWithErroneousRowDisposesRowIterators()
         {
