@@ -72,7 +72,7 @@ namespace MoreLinq.Test
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => 3,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.IsFalse(source.AtMost(2));
         }
     }

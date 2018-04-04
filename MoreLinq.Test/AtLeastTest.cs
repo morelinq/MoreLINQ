@@ -151,7 +151,7 @@ namespace MoreLinq.Test
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.IsTrue(source.AtLeast(2));
         }
     }
