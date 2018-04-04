@@ -172,14 +172,14 @@ namespace MoreLinq.Test
             {
                 MoreEnumerable.From(() => 10, () => 11),
                 MoreEnumerable.From(() => 20, () => 22),
-                MoreEnumerable.From(() => 30, () => throw new InvalidOperationException(), () => 31),
+                MoreEnumerable.From(() => 30, () => throw new TestException(), () => 31),
             };
 
             var result = matrix.Transpose();
 
             result.ElementAt(0).AssertSequenceEqual(10, 20, 30);
 
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<TestException>(() =>
                 result.ElementAt(1));
         }
 
@@ -189,7 +189,7 @@ namespace MoreLinq.Test
             var matrix = new[]
             {
                 new[] { 10, 11, 12 },
-                new[] { 30, 31, 32 }.Select<int, int>(x => throw new Exception())
+                new[] { 30, 31, 32 }.Select<int, int>(x => throw new TestException())
             };
 
             var first = matrix.First();
