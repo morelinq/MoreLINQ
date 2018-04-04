@@ -35,8 +35,9 @@ namespace MoreLinq
         /// If a rows is shorter than a follow it then the shorter row's
         /// elements are skipped in the corresponding column sequences.
         /// This operator uses deferred execution and streams its results.
-        /// Source sequence is consumed greedily when an iteration of the resulting sequence begins.
-        /// The inner sequences are consumed lazily, according as the resulting sequences are streaming.
+        /// Source sequence is consumed greedily when an iteration begins.
+        /// The inner sequences representing rows are consumed lazily and
+        /// resulting sequences of columns are streamed.
         /// </remarks>
         /// <example>
         /// <code>
