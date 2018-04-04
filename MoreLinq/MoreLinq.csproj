@@ -92,6 +92,7 @@
         - ToHashSet
         - ToLookup
         - Trace
+        - Transpose
         - TraverseBreadthFirst
         - TraverseDepthFirst
         - Unfold
