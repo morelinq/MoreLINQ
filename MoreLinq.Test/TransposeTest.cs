@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeWithEqualsLengthEnumerables()
+        public void TransposeWithSequencesOfSameLength()
         {
             var expectations = new[]
             {
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeWithDifferentsLengthEnumerables()
+        public void TransposeWithSequencesOfDifferentLengths()
         {
             var expectations = new[]
             {
@@ -86,7 +86,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeAssertPositions()
+        public void TransposeMaintainsCornerElements()
         {
             var matrix = new[]
             {
@@ -148,7 +148,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeOrderSequencesAreIteratedIsIrrelevant()
+        public void TransposeColumnTraversalOrderIsIrrelevant()
         {
             var matrix = new[]
             {
@@ -166,7 +166,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TransposeInnerSequencesAreConsumedLazies()
+        public void TransposeInnerSequencesAreConsumedLazily()
         {
             var matrix = new[]
             {
