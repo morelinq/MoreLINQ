@@ -69,10 +69,9 @@ namespace MoreLinq
                         for (var i = 0; i < enumerators.Length; i++)
                         {
                             if (enumerators[i] == null)
-                            {
                                 continue;
-                            }
-                            else if (enumerators[i].MoveNext())
+
+                            if (enumerators[i].MoveNext())
                             {
                                 column[count++] = enumerators[i].Current;
                             }
