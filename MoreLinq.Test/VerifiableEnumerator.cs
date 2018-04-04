@@ -58,33 +58,24 @@ namespace MoreLinq.Test
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenDisposed(Action<IEnumerable<T>> action)
-            {
-                _onDisposeAction = action ?? DefaultAction;
-                return this;
-            }
+            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenDisposed(Action<IEnumerable<T>> action) =>
+                When(ref _onDisposeAction, action);
 
-            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenEnumerated(Action<IEnumerable<T>> action)
-            {
-                _onEnumerateAction = action ?? DefaultAction;
-                return this;
-            }
+            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenEnumerated(Action<IEnumerable<T>> action) =>
+                When(ref _onEnumerateAction, action);
 
-            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenMoveNext(Action<IEnumerable<T>> action)
-            {
-                _onMoveNextAction = action ?? DefaultAction;
-                return this;
-            }
+            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenMoveNext(Action<IEnumerable<T>> action) =>
+                When(ref _onMoveNextAction, action);
 
-            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenReset(Action<IEnumerable<T>> action)
-            {
-                _onResetAction = action ?? DefaultAction;
-                return this;
-            }
+            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenReset(Action<IEnumerable<T>> action) =>
+                When(ref _onResetAction, action);
 
-            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenCurrent(Action<IEnumerable<T>> action)
+            IVerifiableEnumerable<T> IVerifiableEnumerable<T>.WhenCurrent(Action<IEnumerable<T>> action) =>
+                When(ref _onCurrentAction, action);
+
+            IVerifiableEnumerable<T> When(ref Action<IEnumerable<T>> field, Action<IEnumerable<T>> value)
             {
-                _onCurrentAction = action ?? DefaultAction;
+                field = value ?? DefaultAction;
                 return this;
             }
 
