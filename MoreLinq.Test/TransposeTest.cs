@@ -210,7 +210,8 @@ namespace MoreLinq.Test
 
             for (var i = 2; i <= boundary; ++i)
             {
-                if (number % i == 0)  return false;
+                if (number % i == 0)
+                    return false;
             }
 
             return true;
