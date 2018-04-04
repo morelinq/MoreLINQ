@@ -200,6 +200,21 @@ namespace MoreLinq.Test
             });
         }
 
+        [Test]
+        public void TransposeInterruptedIterationDisposesInnerSequences()
+        {
+            using (var inner1 = TestingSequence.Of(10, 11))
+            using (var inner2 = MoreEnumerable.From(() => 20,
+                                                    () => throw new TestException())
+                                              .AsTestingSequence())
+            using (var inner3 = TestingSequence.Of(30, 32))
+            using (var matrix = TestingSequence.Of(inner1, inner2, inner3))
+            {
+                Assert.Throws<TestException>(() =>
+                    matrix.Transpose().Consume());
+            }
+        }
+
         static bool IsPrime(int number)
         {
             if (number == 1) return false;
