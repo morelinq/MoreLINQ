@@ -17,8 +17,8 @@
 
 namespace MoreLinq.Test
 {
-    using NUnit.Framework;
     using System.Collections.Generic;
+    using NUnit.Framework;
 
     [TestFixture]
     public class FlattenTest
