@@ -118,20 +118,15 @@ namespace MoreLinq.Test
         public void TestInterleaveDisposesAllIterators()
         {
             const int count = 10;
-            var disposedSequenceA = false;
-            var disposedSequenceB = false;
-            var disposedSequenceC = false;
-            var disposedSequenceD = false;
 
-            var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
-            var sequenceB = Enumerable.Range(1, count - 1).AsVerifiable().WhenDisposed(s => disposedSequenceB = true);
-            var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
-            var sequenceD = Enumerable.Range(1, 0).AsVerifiable().WhenDisposed(s => disposedSequenceD = true);
-
-            var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
-
-            result.Consume();
-            Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
+            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
+            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
+            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
+            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
+            {
+                sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
+                         .Consume();
+            }
         }
     }
 }
