@@ -61,7 +61,7 @@ namespace MoreLinq.Test
             using (var seq3 = TestingSequence.Of(30, 31, 32, 33))
             using (var matrix = TestingSequence.Of(seq1, seq2, seq3))
             {
-                AssertMatrix(matrix.Transpose(), expectations);
+                AssertMatrix(expectations, matrix.Transpose());
             }
         }
 
@@ -81,7 +81,7 @@ namespace MoreLinq.Test
             using (var seq4 = TestingSequence.Of(30, 31, 32))
             using (var matrix = TestingSequence.Of(seq1, seq2, seq3, seq4))
             {
-                AssertMatrix(matrix.Transpose(), expectations);
+                AssertMatrix(expectations, matrix.Transpose());
             }
         }
 
@@ -121,7 +121,7 @@ namespace MoreLinq.Test
                 new[] { 32, 243, 3125 }
             };
 
-            AssertMatrix(result, expectations);
+            AssertMatrix(expectations, result);
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace MoreLinq.Test
                 new[] { 32,      3125 }
             };
 
-            AssertMatrix(result, expectations);
+            AssertMatrix(expectations, result);
         }
 
         [Test]
@@ -217,7 +217,7 @@ namespace MoreLinq.Test
             return true;
         }
 
-        public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> result, IEnumerable<IEnumerable<T>> expectation)
+        public static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
         {
             // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
 
