@@ -33,16 +33,15 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithNullInnerSequence()
         {
-            var matrix = new[]
+            using (var seq1 = TestingSequence.Of(10, 11))
+            using (var seq2 = TestingSequence.Of<int>())
+            using (var seq3 = TestingSequence.Of(30, 31, 32))
+            using (var seq4 = (TestingSequence<int>) null)
+            using (var matrix = TestingSequence.Of(seq1, seq2, seq3, seq4))
             {
-                new [] { 10, 11 },
-                new int[0],
-                new [] { 30, 31, 32 },
-                null
-            };
-
-            Assert.Throws<NullReferenceException>(() =>
-                matrix.Transpose().FirstOrDefault());
+                Assert.Throws<NullReferenceException>(() =>
+                    matrix.Transpose().FirstOrDefault());
+            }
         }
 
         [Test]
