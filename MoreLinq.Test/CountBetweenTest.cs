@@ -67,7 +67,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => 4,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.False(source.CountBetween(2, 3));
         }
     }
