@@ -65,7 +65,7 @@ namespace MoreLinq.Test
         public IEnumerator<T> GetEnumerator()
         {
             Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
+            var enumerator = new DisposeNotificationEnumerator<T>(_sequence.GetEnumerator());
             _disposed = false;
             enumerator.Disposed += delegate { _disposed = true; };
             enumerator.MoveNextCalled += delegate { MoveNextCallCount++; };
@@ -75,31 +75,32 @@ namespace MoreLinq.Test
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        sealed class DisposeTestingSequenceEnumerator : IEnumerator<T>
+    }
+
+    sealed class DisposeNotificationEnumerator<T> : IEnumerator<T>
+    {
+        readonly IEnumerator<T> _sequence;
+
+        public event EventHandler Disposed;
+        public event EventHandler MoveNextCalled;
+
+        public DisposeNotificationEnumerator(IEnumerator<T> sequence) =>
+            _sequence = sequence;
+
+        public T Current => _sequence.Current;
+        object IEnumerator.Current => Current;
+        public void Reset() => _sequence.Reset();
+
+        public bool MoveNext()
         {
-            readonly IEnumerator<T> _sequence;
+            MoveNextCalled?.Invoke(this, EventArgs.Empty);
+            return _sequence.MoveNext();
+        }
 
-            public event EventHandler Disposed;
-            public event EventHandler MoveNextCalled;
-
-            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) =>
-                _sequence = sequence;
-
-            public T Current => _sequence.Current;
-            object IEnumerator.Current => Current;
-            public void Reset() => _sequence.Reset();
-
-            public bool MoveNext()
-            {
-                MoveNextCalled?.Invoke(this, EventArgs.Empty);
-                return _sequence.MoveNext();
-            }
-
-            public void Dispose()
-            {
-                _sequence.Dispose();
-                Disposed?.Invoke(this, EventArgs.Empty);
-            }
+        public void Dispose()
+        {
+            _sequence.Dispose();
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
     }
 }
