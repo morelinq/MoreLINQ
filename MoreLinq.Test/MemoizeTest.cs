@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -250,8 +251,7 @@ namespace MoreLinq.Test
                 throw error;
             }
 
-            var disposed = false;
-            var xs = TestSequence().AsVerifiable().WhenDisposed(_ => disposed = true);
+            var xs = new DisposalTrackingSequence<int>(TestSequence());
             var memoized = xs.Memoize();
             using ((IDisposable) memoized)
             using (var r1 = memoized.Read())
@@ -261,7 +261,7 @@ namespace MoreLinq.Test
                 var e1 = Assert.Throws<Exception>(() => r1.Read());
                 Assert.That(e1, Is.SameAs(error));
 
-                Assert.That(disposed, Is.True);
+                Assert.That(xs.IsDisposed, Is.True);
 
                 var e2 = Assert.Throws<Exception>(() => r2.Read());
                 Assert.That(e2, Is.SameAs(error));
@@ -283,8 +283,7 @@ namespace MoreLinq.Test
                 yield return 42;
             }
 
-            var disposed = false;
-            var xs = TestSequence().AsVerifiable().WhenDisposed(_ => disposed = true);
+            var xs = new DisposalTrackingSequence<int>(TestSequence());
             var memoized = xs.Memoize();
             using ((IDisposable) memoized)
             using (var r1 = memoized.Read())
@@ -293,7 +292,7 @@ namespace MoreLinq.Test
                 var e1 = Assert.Throws<Exception>(() => r1.Read());
                 Assert.That(e1, Is.SameAs(error));
 
-                Assert.That(disposed, Is.True);
+                Assert.That(xs.IsDisposed, Is.True);
 
                 var e2 = Assert.Throws<Exception>(() => r2.Read());
                 Assert.That(e2, Is.SameAs(error));
@@ -324,6 +323,51 @@ namespace MoreLinq.Test
 
             ((IDisposable) memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));
+        }
+
+        // TODO Consolidate with MoreLinq.Test.TestingSequence<T>?
+
+        sealed class DisposalTrackingSequence<T> : IEnumerable<T>, IDisposable
+        {
+            readonly IEnumerable<T> _sequence;
+
+            internal DisposalTrackingSequence(IEnumerable<T> sequence) =>
+                _sequence = sequence;
+
+            public bool? IsDisposed { get; private set; }
+
+            void IDisposable.Dispose() => IsDisposed = null;
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
+                IsDisposed = false;
+                enumerator.Disposed += delegate { IsDisposed = true; };
+                return enumerator;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+            sealed class DisposeTestingSequenceEnumerator : IEnumerator<T>
+            {
+                readonly IEnumerator<T> _sequence;
+
+                public event EventHandler Disposed;
+
+                public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) =>
+                    _sequence = sequence;
+
+                public T Current => _sequence.Current;
+                object IEnumerator.Current => Current;
+                public void Reset() => _sequence.Reset();
+                public bool MoveNext() => _sequence.MoveNext();
+
+                public void Dispose()
+                {
+                    _sequence.Dispose();
+                    Disposed?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
     }
 }
