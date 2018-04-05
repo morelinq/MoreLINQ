@@ -74,5 +74,46 @@ namespace MoreLinq.Test
             var bs = new BreakingSequence<int>();
             bs.ZipShortest<int, int, int>(bs, delegate { throw new NotImplementedException(); });
         }
+
+        [Test]
+        public void MoveNextIsNotCalledUnnecessarilyWhenFirstIsShorter()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            using (var s2 = MoreEnumerable.From(() => 4,
+                                                () => 5,
+                                                () => throw new TestException())
+                                          .AsTestingSequence())
+            {
+                var zipped = s1.ZipShortest(s2, Tuple.Create);
+                Assert.That(zipped, Is.Not.Null);
+                zipped.AssertSequenceEqual((1, 4), (2, 5));
+            }
+        }
+
+        [Test]
+        public void ZipShortestNotIterateUnnecessaryElements()
+        {
+            using (var s1 = MoreEnumerable.From(() => 4,
+                                                () => 5,
+                                                () => 6,
+                                                () => throw new TestException())
+                                          .AsTestingSequence())
+            using (var s2 = TestingSequence.Of(1, 2))
+            {
+                var zipped = s1.ZipShortest(s2, Tuple.Create);
+                Assert.That(zipped, Is.Not.Null);
+                zipped.AssertSequenceEqual((4, 1), (5, 2));
+            }
+        }
+
+        [Test]
+        public void ZipShortestDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.ZipShortest(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
+        }
     }
 }

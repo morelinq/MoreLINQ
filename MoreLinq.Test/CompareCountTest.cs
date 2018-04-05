@@ -121,5 +121,20 @@ namespace MoreLinq.Test
                 Assert.AreEqual(0, collection.CompareCount(seq));
             }
         }
+
+        [Test]
+        public void CompareCountDoesNotIterateUnnecessaryElements()
+        {
+            var seq1 = MoreEnumerable.From(() => 1,
+                                           () => 2,
+                                           () => 3,
+                                           () => 4,
+                                           () => throw new TestException());
+
+            var seq2 = Enumerable.Range(1, 3);
+
+            Assert.AreEqual( 1, seq1.CompareCount(seq2));
+            Assert.AreEqual(-1, seq2.CompareCount(seq1));
+        }
     }
 }

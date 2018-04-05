@@ -36,10 +36,11 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [Test]
-        public void FallbackIfEmptyPreservesSourceCollectionIfPossible()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(bool readOnly)
         {
-            var source = new[] { 1 };
+            var source = new[] { 1 }.ToBreakingList(readOnly);
             // ReSharper disable PossibleMultipleEnumeration
             Assert.AreSame(source.FallbackIfEmpty(12), source);
             Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
@@ -50,26 +51,14 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [Test]
-        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(bool readOnly)
         {
-            var source = new int[0];
+            var source = new int[0].ToBreakingList(readOnly);
             var fallback = new[] { 1 };
             Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
             Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
-        }
-
-        public void FallbackIfEmptyWithEmptySequenceCollectionOptimized()
-        {
-            var source = Enumerable.Empty<int>();
-            // ReSharper disable PossibleMultipleEnumeration
-            source.FallbackIfEmpty(12).AssertSequenceEqual(12);
-            source.FallbackIfEmpty(12, 23).AssertSequenceEqual(12, 23);
-            source.FallbackIfEmpty(12, 23, 34).AssertSequenceEqual(12, 23, 34);
-            source.FallbackIfEmpty(12, 23, 34, 45).AssertSequenceEqual(12, 23, 34, 45);
-            source.FallbackIfEmpty(12, 23, 34, 45, 56).AssertSequenceEqual(12, 23, 34, 45, 56);
-            source.FallbackIfEmpty(12, 23, 34, 45, 56, 67).AssertSequenceEqual(12, 23, 34, 45, 56, 67);
-            // ReSharper restore PossibleMultipleEnumeration
         }
     }
 }

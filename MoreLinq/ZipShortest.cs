@@ -146,22 +146,7 @@ namespace MoreLinq
             IEnumerable<T3> s3, IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            using (var e1 = s1.GetEnumerator())
-            using (var e2 = s2.GetEnumerator())
-            using (var e3 = s3?.GetEnumerator())
-            using (var e4 = s4?.GetEnumerator())
-            {
-                while (e1.MoveNext())
-                {
-                    if (e2.MoveNext() && (e3 == null || e3.MoveNext())
-                                      && (e4 == null || e4.MoveNext()))
-                    {
-                        yield return resultSelector(e1.Current, e2.Current,
-                            e3 != null ? e3.Current : default,
-                            e4 != null ? e4.Current : default);
-                    }
-                }
-            }
+            return ZipImpl(s1, s2, s3, s4, resultSelector, 0);
         }
     }
 }

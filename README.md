@@ -245,15 +245,15 @@ This method has 4 overloads.
 
 ### MaxBy
 
-Returns the maximal element of the given sequence, based on the given
-projection.
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
 
 This method has 2 overloads.
 
 ### MinBy
 
-Returns the minimal element of the given sequence, based on the given
-projection.
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
 
 This method has 2 overloads.
 
@@ -414,15 +414,6 @@ Generates a sequence of integral numbers within the (inclusive) specified range.
 
 This method has 2 overloads.
 
-### ~~SingleOrFallback~~
-
-Consider using `FallbackIfEmpty` instead. `SingleOrFallback` may be removed in
-a future version. For more information, see issue [#122][#122].
-
-Returns the single element in the given sequence, or the result of executing a
-fallback delegate if the sequence is empty. This method throws an exception if
-there is more than one element in the sequence
-
 ### SkipLast
 
 Bypasses a specified number of elements at the end of the sequence.
@@ -531,6 +522,10 @@ Creates a [lookup][lookup] from a sequence of [key-value pair][kvp] elements
 or tuples of 2.
 
 This method has 4 overloads.
+
+### Transpose
+
+Transposes the rows of a sequence into columns.
 
 ### TraverseBreadthFirst
 

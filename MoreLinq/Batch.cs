@@ -78,7 +78,6 @@ namespace MoreLinq
                         continue;
                     }
 
-                    // Select is necessary so bucket contents are streamed too
                     yield return resultSelector(bucket);
 
                     bucket = null;
