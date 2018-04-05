@@ -142,7 +142,7 @@ namespace MoreLinq.Experimental
     {
         /// <summary>
         /// Converts a query whose results evaluate asynchronously to use
-        /// sequential instead of concurrentl evaluation.
+        /// sequential instead of concurrent evaluation.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <param name="source">The source sequence.</param>
