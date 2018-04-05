@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,39 +15,37 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+    using System.Collections.Generic;
+    using System;
+
     [TestFixture]
     public class TakeLastTest
     {
         [Test]
-        public void TakeLastNullSource()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.TakeLast<object>(null, 0));
-        }
-
-        [Test]
         public void TakeLast()
         {
-            var result = new[]{ 12, 34, 56, 78, 910, 1112 }.TakeLast(3);
-            result.AssertSequenceEqual(78, 910, 1112);
+            AssertTakeLast(new[] { 12, 34, 56, 78, 910, 1112 },
+                           3,
+                           result => result.AssertSequenceEqual(78, 910, 1112));
         }
 
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(5);
-            result.AssertSequenceEqual(12, 34, 56);
+            AssertTakeLast(new[] { 12, 34, 56 },
+                           5,
+                           result => result.AssertSequenceEqual(12, 34, 56));
         }
 
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            var result = new[] { 12, 34, 56 }.TakeLast(-2);
-            Assert.IsFalse(result.GetEnumerator().MoveNext());
+            AssertTakeLast(new[] { 12, 34, 56 },
+                           -2,
+                           result => Assert.IsFalse(result.GetEnumerator().MoveNext()));
         }
 
         [Test]
@@ -63,6 +61,24 @@ namespace MoreLinq.Test
             {
                 seq.TakeLast(1).Consume();
             }
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void TakeLastOptimizedForCollections(bool readOnly)
+        {
+            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToBreakingList(readOnly);
+
+            sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
+        }
+
+        static void AssertTakeLast<T>(ICollection<T> input, int count, Action<IEnumerable<T>> action)
+        {
+            // Test that the behaviour does not change whether a collection
+            // or a sequence is used as the source.
+
+            action(input.TakeLast(count));
+            action(input.Select(x => x).TakeLast(count));
         }
     }
 }

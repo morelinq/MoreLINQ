@@ -15,14 +15,14 @@
 // limitations under the License.
 #endregion
 
-using System;
-
 namespace MoreLinq.Test
 {
+    using System;
+
     /// <summary>
     /// Functions which throw NotImplementedException if they're ever called.
     /// </summary>
-    internal static class BreakingFunc
+    static class BreakingFunc
     {
         internal static Func<TResult> Of<TResult>() =>
             () => throw new NotImplementedException();

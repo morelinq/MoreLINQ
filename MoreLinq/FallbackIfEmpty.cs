@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -46,12 +45,12 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 1, fallback, default(T), default(T), default(T), null);
+            return FallbackIfEmptyImpl(source, 1, fallback, default, default, default, null);
         }
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -67,12 +66,12 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default(T), default(T), null);
+            return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default, default, null);
         }
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -90,12 +89,12 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default(T), null);
+            return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default, null);
         }
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -120,7 +119,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence from an array of values.
+        /// returns an alternate sequence from an array of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -140,7 +139,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the elements of a sequence, but if it is empty then
-        /// returns an altenate sequence of values.
+        /// returns an alternate sequence of values.
         /// </summary>
         /// <typeparam name="T">The type of the elements in the sequences.</typeparam>
         /// <param name="source">The source sequence.</param>
@@ -155,51 +154,48 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
-            return FallbackIfEmptyImpl(source, 0, default(T), default(T), default(T), default(T), fallback);
+            return FallbackIfEmptyImpl(source, null, default, default, default, default, fallback);
         }
 
         static IEnumerable<T> FallbackIfEmptyImpl<T>(IEnumerable<T> source,
             int? count, T fallback1, T fallback2, T fallback3, T fallback4,
             IEnumerable<T> fallback)
         {
-            var collection = source as ICollection<T>;
-            if (collection != null && collection.Count == 0)
-            {
-                //
-                // Replace the empty collection with an empty sequence and
-                // carry on. LINQ's Enumerable.Empty is implemented
-                // intelligently to return the same enumerator instance and so
-                // does not incur an allocation. However, the same cannot be
-                // said for a collection like an empty array or list. This
-                // permits the rest of the logic while keeping the call to
-                // source.GetEnumerator() cheap.
-                //
+            return source.TryGetCollectionCount() is int collectionCount
+                 ? collectionCount == 0 ? Fallback() : source
+                 : _();
 
-                source = Enumerable.Empty<T>();
+            IEnumerable<T> _()
+            {
+                using (var e = source.GetEnumerator())
+                {
+                    if (e.MoveNext())
+                    {
+                        do { yield return e.Current; }
+                        while (e.MoveNext());
+                        yield break;
+                    }
+                }
+
+                foreach (var item in Fallback())
+                    yield return item;
             }
 
-            using (var e = source.GetEnumerator())
+            IEnumerable<T> Fallback()
             {
-                if (e.MoveNext())
+                switch (count)
                 {
-                    do { yield return e.Current; }
-                    while (e.MoveNext());
+                    case null: return fallback;
+                    case int n when n >= 1 && n <= 4: return FallbackOnArgs();
+                    default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
                 }
-                else
+
+                IEnumerable<T> FallbackOnArgs()
                 {
-                    e.Dispose(); // eager disposal
-                    if (count > 0 && count <= 4)
-                    {
-                        yield return fallback1;
-                        if (count > 1) yield return fallback2;
-                        if (count > 2) yield return fallback3;
-                        if (count > 3) yield return fallback4;
-                    }
-                    else
-                    {
-                        foreach (var item in fallback)
-                            yield return item;
-                    }
+                    yield return fallback1;
+                    if (count > 1) yield return fallback2;
+                    if (count > 2) yield return fallback3;
+                    if (count > 3) yield return fallback4;
                 }
             }
         }

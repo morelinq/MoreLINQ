@@ -1,7 +1,7 @@
 
 namespace MoreLinq.Test
 {
-    internal static class Combinatorics
+    static class Combinatorics
     {
         public static double Factorial(int n)
         {
@@ -11,9 +11,7 @@ namespace MoreLinq.Test
             return fac;
         }
 
-        public static double Binomial(int n, int k)
-        {
-            return Factorial(n) / (Factorial(n - k) * Factorial(k));
-        }
+        public static double Binomial(int n, int k) =>
+            Factorial(n) / (Factorial(n - k) * Factorial(k));
     }
 }

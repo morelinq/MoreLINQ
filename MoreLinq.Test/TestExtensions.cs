@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
-    internal static class TestExtensions
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using NUnit.Framework.Constraints;
+
+    static partial class TestExtensions
     {
         /// <summary>
         /// Just to make our testing easier so we can chain the assertion call.
@@ -38,29 +38,23 @@ namespace MoreLinq.Test
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
             Assert.That(actual, Is.EquivalentTo(expected));
 
-        internal static string InsertBetween(this string delimiter, IEnumerable<string> items)
+        internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
         {
-            var builder = new StringBuilder();
-            foreach (var item in items)
+            var i = 0;
+            foreach (var item in actual)
             {
-                if (builder.Length != 0)
-                {
-                    builder.Append(delimiter);
-                }
-                builder.Append(item);
+                Assert.That(i, Is.LessThan(expectations.Length), "Actual sequence has more items than expected.");
+                var expectation = expectations[i];
+                Assert.That(item, expectation, "Unexpected element in sequence at index " + i);
+                i++;
             }
-            return builder.ToString();
+            Assert.That(i, Is.EqualTo(expectations.Length), "Actual sequence has fewer items than expected.");
         }
 
         internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
         {
             foreach (var split in str.Split(separators))
                 yield return split;
-        }
-
-        internal static void Add<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, TKey key, TValue value)
-        {
-            list.Add(new KeyValuePair<TKey, TValue>(key, value));
         }
     }
 }

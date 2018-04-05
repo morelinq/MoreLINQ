@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Lead operator.
     /// </summary>
@@ -21,23 +19,12 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Lead throws an exception if invoked on a <c>null</c> sequence.
-        /// </summary>
-        [Test]
-        public void TestLeadNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Lead(5, (val, leadVal) => val));
-        }
-
-        /// <summary>
         /// Verify that attempting to lead by a negative offset will result in an exception.
         /// </summary>
         [Test]
         public void TestLeadNegativeOffset()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
                 Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
         }
 
@@ -47,12 +34,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadZeroOffset()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
                 Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
         }
 
         /// <summary>
-        /// Verify that lead can accept and propagate a default value passed to it.  
+        /// Verify that lead can accept and propagate a default value passed to it.
         /// </summary>
         [Test]
         public void TestLeadExplicitDefaultValue()

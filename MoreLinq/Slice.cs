@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Extracts <paramref name="count"/> elements from a sequence at a particular zero-based starting index
+        /// Extracts a contiguous count of elements from a sequence at a particular zero-based starting index
         /// </summary>
         /// <remarks>
         /// If the starting position or count specified result in slice extending past the end of the sequence,
@@ -38,31 +38,24 @@ namespace MoreLinq
         /// <param name="startIndex">The zero-based index at which to begin slicing</param>
         /// <param name="count">The number of items to slice out of the index</param>
         /// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
-        
+
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            // optimization for anything implementing IList<T>
-            var asList = sequence as IList<T>;
-            return asList != null
-                ? SliceImpl(asList, startIndex, count)
-                : SliceImpl(sequence, startIndex, count);
-        }
+            return sequence is IList<T> list ? SliceList(list.Count, i => list[i])
+                 : sequence is IReadOnlyList<T> readOnlyList ? SliceList(readOnlyList.Count, i => readOnlyList[i])
+                 : sequence.Skip(startIndex).Take(count);
 
-        private static IEnumerable<T> SliceImpl<T>(IEnumerable<T> sequence, int startIndex, int count)
-        {
-            return sequence.Skip(startIndex).Take(count);
-        }
-
-        private static IEnumerable<T> SliceImpl<T>(IList<T> list, int startIndex, int count)
-        {
-            var listCount = list.Count;
-            var index = startIndex;
-            while (index < listCount && count-- > 0)
-                yield return list[index++];
+            IEnumerable<T> SliceList(int listCount, Func<int, T> indexer)
+            {
+                var countdown = count;
+                var index = startIndex;
+                while (index < listCount && countdown-- > 0)
+                    yield return indexer(index++);
+            }
         }
     }
 }

@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,14 +23,13 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns the minimal element of the given sequence, based on
+        /// Returns the minimal elements of the given sequence, based on
         /// the given projection.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This overload uses the default comparer
-        /// for the projected type. This operator uses immediate execution, but
-        /// only buffers a single result (the current minimal element).
+        /// This overload uses the default comparer for the projected type.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -39,21 +38,20 @@ namespace MoreLinq
         /// <returns>The minimal element, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
-        
-        public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+
+        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
             return source.MinBy(selector, null);
         }
 
         /// <summary>
-        /// Returns the minimal element of the given sequence, based on
+        /// Returns the minimal elements of the given sequence, based on
         /// the given projection and the specified comparer for projected values.
         /// </summary>
         /// <remarks>
-        /// If more than one element has the minimal projected value, the first
-        /// one encountered will be returned. This operator uses immediate execution, but
-        /// only buffers a single result (the current minimal element).
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
         /// </remarks>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <typeparam name="TKey">Type of the projected element</typeparam>
@@ -61,37 +59,18 @@ namespace MoreLinq
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <param name="comparer">Comparer to use to compare projected values</param>
         /// <returns>The minimal element, according to the projection.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/> 
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
-            comparer = comparer ?? Comparer<TKey>.Default;
 
-            using (var sourceIterator = source.GetEnumerator())
-            {
-                if (!sourceIterator.MoveNext())
-                {
-                    throw new InvalidOperationException("Sequence contains no elements");
-                }
-                var min = sourceIterator.Current;
-                var minKey = selector(min);
-                while (sourceIterator.MoveNext())
-                {
-                    var candidate = sourceIterator.Current;
-                    var candidateProjected = selector(candidate);
-                    if (comparer.Compare(candidateProjected, minKey) < 0)
-                    {
-                        min = candidate;
-                        minKey = candidateProjected;
-                    }
-                }
-                return min;
-            }
+            comparer = comparer ?? Comparer<TKey>.Default;
+            return ExtremaBy(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
         }
     }
 }

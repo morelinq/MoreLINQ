@@ -15,13 +15,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Linq;
-using NUnit.Framework;
-using Tuple = System.ValueTuple;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+    using Tuple = System.ValueTuple;
+
     [TestFixture]
     public class PartitionTest
     {

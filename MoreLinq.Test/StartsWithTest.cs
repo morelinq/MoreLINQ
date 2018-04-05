@@ -15,30 +15,15 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using NUnit.Framework;
+
     [TestFixture]
     public class StartsWithTest
     {
-        [TestCase(null, null)]
-        [TestCase(null, new[] {1})]
-        public void StartsWithThrowsIfFirstIsNull(IEnumerable<int> first, IEnumerable<int> second)
-        {
-            Assert.ThrowsArgumentNullException("first", () =>
-                first.StartsWith(second));
-        }
-
-        [TestCase(new[] {1}, null)]
-        public void StartsWithThrowsIfSecondAIsNull(IEnumerable<int> first, IEnumerable<int> second)
-        {
-            Assert.ThrowsArgumentNullException("second", () =>
-                first.StartsWith(second));
-        }
-
         [TestCase(new[] {1, 2, 3}, new[] {1, 2}, ExpectedResult = true)]
         [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
         [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3, 4}, ExpectedResult = false)]

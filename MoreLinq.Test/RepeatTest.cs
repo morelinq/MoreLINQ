@@ -1,8 +1,7 @@
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the Repeat() extension method.
     /// </summary>
@@ -43,18 +42,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count", () =>
+            AssertThrowsArgument.OutOfRangeException("count", () =>
                  Enumerable.Range(1, 10).Repeat(-3));
-        }
-
-        /// <summary>
-        /// Verify applying Repeat to a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRepeatSequenceANullException()
-        {
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                MoreEnumerable.Repeat<object>(null, 42));
         }
 
         /// <summary>
@@ -88,17 +77,6 @@ namespace MoreLinq.Test
                 expectedResult = expectedResult.Concat(sequence);
 
             Assert.That(expectedResult, Is.EquivalentTo(result.Take(takeCount)));
-        }
-
-        /// <summary>
-        /// Verify applying Repeat without passing count to a 
-        /// <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestRepeatForeverSequenceANullException()
-        {
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                MoreEnumerable.Repeat<object>(null));
         }
 
         /// <summary>

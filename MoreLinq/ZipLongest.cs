@@ -59,36 +59,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipLongestImpl(first, second, resultSelector);
-        }
-
-        static IEnumerable<TResult> ZipLongestImpl<TFirst, TSecond, TResult>(
-            IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
-        {
-            using (var e1 = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
-            {
-                while (e1.MoveNext())
-                {
-                    if (e2.MoveNext())
-                    {
-                        yield return resultSelector(e1.Current, e2.Current);
-                    }
-                    else
-                    {
-                        do { yield return resultSelector(e1.Current, default(TSecond)); }
-                        while (e1.MoveNext());
-                        yield break;
-                    }
-                }
-                if (e2.MoveNext())
-                {
-                    do { yield return resultSelector(default(TFirst), e2.Current); }
-                    while (e2.MoveNext());
-                }
-            }
+            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b), 1);
         }
     }
 }

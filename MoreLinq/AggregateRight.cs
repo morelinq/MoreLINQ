@@ -1,13 +1,13 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ namespace MoreLinq
     {
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="Enumerable.Aggregate{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
         /// The specified seed value is used as the initial accumulator value.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="Enumerable.Aggregate{TSource, TAccumulate}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -88,9 +88,9 @@ namespace MoreLinq
 
         /// <summary>
         /// Applies a right-associative accumulator function over a sequence.
-        /// The specified seed value is used as the initial accumulator value, 
+        /// The specified seed value is used as the initial accumulator value,
         /// and the specified function is used to select the result value.
-        /// This operator is the right-associative version of the 
+        /// This operator is the right-associative version of the
         /// <see cref="Enumerable.Aggregate{TSource, TAccumulate, TResult}(IEnumerable{TSource}, TAccumulate, Func{TAccumulate, TSource, TAccumulate}, Func{TAccumulate, TResult})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
@@ -120,7 +120,7 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        private static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {

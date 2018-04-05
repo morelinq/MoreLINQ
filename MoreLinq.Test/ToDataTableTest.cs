@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,35 +15,30 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq.Expressions;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ToDataTableTest
     {
-        private class TestObject
+        class TestObject
         {
             public int KeyField;
-            public Nullable<Guid> ANullableGuidField;
+            public Guid? ANullableGuidField;
 
-            public string AString { get; set; }
-            public Nullable<decimal> ANullableDecimal { get; set; }
+            public string AString { get; }
+            public decimal? ANullableDecimal { get; }
 
             public object this[int index]
             {
-                get
-                {
-                    return new object();
-                }
-                set
-                { }
+                get => new object();
+                set { }
             }
 
 
@@ -58,35 +53,14 @@ namespace MoreLinq.Test
         }
 
 
-        private IList<TestObject> m_TestObjects;
+        readonly IReadOnlyCollection<TestObject> _testObjects;
 
 
         public ToDataTableTest()
         {
-            m_TestObjects = new List<TestObject>();
-            for (var i = 0; i < 3; i++)
-            {
-                m_TestObjects.Add(new TestObject(i));
-            }
-        }
-
-
-        [Test]
-        public void ToDataTableNullSequence()
-        {
-            IEnumerable<TestObject> source = null;
-
-            Assert.ThrowsArgumentNullException("source",() =>
-                source.ToDataTable());
-        }
-
-        [Test]
-        public void ToDataTableNullTable()
-        {
-            DataTable dt = null;
-
-            Assert.ThrowsArgumentNullException("table",() =>
-                m_TestObjects.ToDataTable(dt));
+            _testObjects = Enumerable.Range(0, 3)
+                                     .Select(i => new TestObject(i))
+                                     .ToArray();
         }
 
         [Test]
@@ -94,8 +68,8 @@ namespace MoreLinq.Test
         {
             Expression<Func<TestObject, object>> expression = null;
 
-            Assert.ThrowsArgumentException("expressions",() =>
-                m_TestObjects.ToDataTable<TestObject>(expression));
+            AssertThrowsArgument.Exception("expressions",() =>
+                _testObjects.ToDataTable<TestObject>(expression));
         }
 
         [Test]
@@ -104,8 +78,8 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("Test");
 
-            Assert.ThrowsArgumentException("table",() =>
-                m_TestObjects.ToDataTable(dt));
+            AssertThrowsArgument.Exception("table",() =>
+                _testObjects.ToDataTable(dt));
         }
 
         [Test]
@@ -114,36 +88,36 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
-            Assert.ThrowsArgumentException("table",() =>
-                m_TestObjects.ToDataTable(dt, t=>t.AString));
+            AssertThrowsArgument.Exception("table",() =>
+                _testObjects.ToDataTable(dt, t=>t.AString));
         }
 
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            Assert.ThrowsArgumentException("lambda", () =>
-                m_TestObjects.ToDataTable(t => t.ToString()));
+            AssertThrowsArgument.Exception("lambda", () =>
+                _testObjects.ToDataTable(t => t.ToString()));
         }
 
 
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            Assert.ThrowsArgumentException("lambda", () =>
-                m_TestObjects.ToDataTable(t => t.ToString().Length));
+            AssertThrowsArgument.Exception("lambda", () =>
+                _testObjects.ToDataTable(t => t.ToString().Length));
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            Assert.ThrowsArgumentException("lambda",() =>
-                m_TestObjects.ToDataTable(t => t[0]));
+            AssertThrowsArgument.Exception("lambda",() =>
+                _testObjects.ToDataTable(t => t[0]));
         }
 
         [Test]
         public void ToDataTableSchemaInDeclarationOrder()
         {
-            var dt = m_TestObjects.ToDataTable();
+            var dt = _testObjects.ToDataTable();
 
             // Assert properties first, then fields, then in declaration order
 
@@ -166,14 +140,14 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableContainsAllElements()
         {
-            var dt = m_TestObjects.ToDataTable();
-            Assert.AreEqual(m_TestObjects.Count, dt.Rows.Count);
+            var dt = _testObjects.ToDataTable();
+            Assert.AreEqual(_testObjects.Count, dt.Rows.Count);
         }
 
         [Test]
         public void ToDataTableWithExpression()
         {
-            var dt = m_TestObjects.ToDataTable(t => t.AString);
+            var dt = _testObjects.ToDataTable(t => t.AString);
 
             Assert.AreEqual("AString", dt.Columns[0].Caption);
             Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
@@ -198,7 +172,7 @@ namespace MoreLinq.Test
             vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
                 .ToDataTable(dt, e => e.Name, e => e.Value);
 
-            var rows = dt.AsEnumerable().ToArray();
+            var rows = dt.Rows.Cast<DataRow>().ToArray();
             Assert.That(rows.Length, Is.EqualTo(vars.Length));
             Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
@@ -207,9 +181,9 @@ namespace MoreLinq.Test
         struct Point
         {
             public static Point Empty = new Point();
-            public bool IsEmpty { get { return X == 0 && Y == 0; } }
-            public int X { get; set; }
-            public int Y { get; set; }
+            public bool IsEmpty => X == 0 && Y == 0;
+            public int X { get; }
+            public int Y { get; }
             public Point(int x, int y) : this() { X = x; Y = y; }
         }
 

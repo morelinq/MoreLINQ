@@ -24,8 +24,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        #if !NO_VALUE_TUPLES
-
         /// <summary>
         /// Partitions or splits a sequence in two using a predicate.
         /// </summary>
@@ -49,8 +47,6 @@ namespace MoreLinq
         public static (IEnumerable<T> True, IEnumerable<T> False)
             Partition<T>(this IEnumerable<T> source, Func<T, bool> predicate) =>
             source.Partition(predicate, ValueTuple.Create);
-
-        #endif
 
         /// <summary>
         /// Partitions or splits a sequence in two using a predicate and then
@@ -82,6 +78,7 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<T> source,
             Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
             return source.GroupBy(predicate).Partition(resultSelector);
         }
@@ -181,7 +178,7 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 1, key, default(TKey), default(TKey), comparer,
+            return PartitionImpl(source, 1, key, default, default, comparer,
                                  (a, b, c, rest) => resultSelector(a, rest));
         }
 
@@ -239,7 +236,7 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 2, key1, key2, default(TKey), comparer,
+            return PartitionImpl(source, 2, key1, key2, default, comparer,
                                  (a, b, c, rest) => resultSelector(a, b, rest));
         }
 

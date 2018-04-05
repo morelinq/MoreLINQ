@@ -1,62 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests of the various overloads of <see cref="MoreEnumerable"/>.Random()
     /// </summary>
     [TestFixture]
     public class RandomTest
     {
-        private const int RANDOM_TRIALS = 10000;
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException1()
-        {
-            Assert.ThrowsArgumentNullException("rand",() =>
-                MoreEnumerable.Random(null));
-        }
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException2()
-        {
-            const int maxValue = 10;
-            Assert.Greater(maxValue, 0);
-            Assert.ThrowsArgumentNullException("rand", () =>
-                MoreEnumerable.Random(null, maxValue));
-        }
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException3()
-        {
-            const int minValue = 10;
-            const int maxValue = 100;
-            Assert.LessOrEqual(minValue, maxValue);
-            Assert.ThrowsArgumentNullException("rand", () =>
-                MoreEnumerable.Random(null, minValue, maxValue));
-        }
-
-        /// <summary>
-        /// Verify that passing an <c>null</c> random generator results in an exception.
-        /// </summary>
-        [Test]
-        public void TestNullGeneratorException4()
-        {
-            Assert.ThrowsArgumentNullException("rand", () =>
-                MoreEnumerable.RandomDouble(null));
-        }
+        const int RandomTrials = 10000;
 
         /// <summary>
         /// Verify that passing a negative maximum value yields an exception
@@ -67,7 +21,7 @@ namespace MoreLinq.Test
             const int maxValue = -10;
             Assert.Less(maxValue, 0);
 
-            Assert.ThrowsArgumentOutOfRangeException("maxValue",() =>
+            AssertThrowsArgument.OutOfRangeException("maxValue",() =>
                 MoreEnumerable.Random(maxValue));
         }
 
@@ -83,7 +37,7 @@ namespace MoreLinq.Test
 
             Assert.Greater(minValue, maxValue);
 
-            Assert.ThrowsArgumentOutOfRangeException("minValue",() =>
+            AssertThrowsArgument.OutOfRangeException("minValue",() =>
                 MoreEnumerable.Random(minValue, maxValue));
         }
 
@@ -93,12 +47,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomDouble()
         {
-            var resultA = MoreEnumerable.RandomDouble().Take(RANDOM_TRIALS);
-            var resultB = MoreEnumerable.RandomDouble(new Random()).Take(RANDOM_TRIALS);
+            var resultA = MoreEnumerable.RandomDouble().Take(RandomTrials);
+            var resultB = MoreEnumerable.RandomDouble(new Random()).Take(RandomTrials);
 
             // NOTE: Unclear what should actually be verified here... some additional thought needed.
-            Assert.AreEqual(RANDOM_TRIALS, resultA.Count());
-            Assert.AreEqual(RANDOM_TRIALS, resultB.Count());
+            Assert.AreEqual(RandomTrials, resultA.Count());
+            Assert.AreEqual(RandomTrials, resultB.Count());
             Assert.IsTrue(resultA.All(x => x >= 0.0 && x < 1.0));
             Assert.IsTrue(resultB.All(x => x >= 0.0 && x < 1.0));
         }
@@ -110,11 +64,11 @@ namespace MoreLinq.Test
         public void TestRandomMaxConstraint()
         {
             const int max = 100;
-            var resultA = MoreEnumerable.Random(max).Take(RANDOM_TRIALS);
-            var resultB = MoreEnumerable.Random(new Random(), max).Take(RANDOM_TRIALS);
+            var resultA = MoreEnumerable.Random(max).Take(RandomTrials);
+            var resultB = MoreEnumerable.Random(new Random(), max).Take(RandomTrials);
 
-            Assert.AreEqual(RANDOM_TRIALS, resultA.Count());
-            Assert.AreEqual(RANDOM_TRIALS, resultB.Count());
+            Assert.AreEqual(RandomTrials, resultA.Count());
+            Assert.AreEqual(RandomTrials, resultB.Count());
             Assert.IsTrue(resultA.All(x => x < max));
             Assert.IsTrue(resultB.All(x => x < max));
         }
@@ -127,11 +81,11 @@ namespace MoreLinq.Test
         {
             const int min = 0;
             const int max = 100;
-            var resultA = MoreEnumerable.Random(min, max).Take(RANDOM_TRIALS);
-            var resultB = MoreEnumerable.Random(new Random(), min, max).Take(RANDOM_TRIALS);
+            var resultA = MoreEnumerable.Random(min, max).Take(RandomTrials);
+            var resultB = MoreEnumerable.Random(new Random(), min, max).Take(RandomTrials);
 
-            Assert.AreEqual(RANDOM_TRIALS, resultA.Count());
-            Assert.AreEqual(RANDOM_TRIALS, resultB.Count());
+            Assert.AreEqual(RandomTrials, resultA.Count());
+            Assert.AreEqual(RandomTrials, resultB.Count());
             Assert.IsTrue(resultA.All(x => x >= min && x < max));
             Assert.IsTrue(resultB.All(x => x >= min && x < max));
         }
@@ -149,11 +103,11 @@ namespace MoreLinq.Test
             var randB = new Random(seed);
 
             var valuesA = new List<int>();
-            for (var i = 0; i < RANDOM_TRIALS; i++)
+            for (var i = 0; i < RandomTrials; i++)
                 valuesA.Add(randA.Next());
 
             var randomSeq = MoreEnumerable.Random(randB);
-            var valuesB = randomSeq.Take(RANDOM_TRIALS);
+            var valuesB = randomSeq.Take(RandomTrials);
 
             Assert.IsTrue(valuesA.SequenceEqual(valuesB));
         }

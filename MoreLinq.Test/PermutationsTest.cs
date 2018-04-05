@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the behavior of the Permutations() operator.
     /// </summary>
@@ -73,7 +72,7 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
             Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
@@ -116,7 +115,7 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
             Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
@@ -155,18 +154,6 @@ namespace MoreLinq.Test
         public void TestPermutationsIsLazy()
         {
             new BreakingSequence<int>().Permutations();
-        }
-
-
-        /// <summary>
-        /// Verify that invoking Permutations() on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestPermutationNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                sequence.Permutations());
         }
 
         /// <summary>

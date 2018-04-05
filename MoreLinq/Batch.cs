@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2009 Atif Aziz. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     static partial class MoreEnumerable
     {
@@ -31,7 +30,7 @@ namespace MoreLinq
         /// <param name="size">Size of buckets.</param>
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results (buckets and bucket content). 
+        /// This operator uses deferred execution and streams its results (buckets and bucket content).
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
@@ -51,53 +50,46 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results (buckets and bucket content).
         /// </remarks>
-        
+
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return BatchImpl(source, size, resultSelector);
-        }
 
-        private static IEnumerable<TResult> BatchImpl<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
-        {
-            Debug.Assert(source != null);
-            Debug.Assert(size > 0);
-            Debug.Assert(resultSelector != null);
-
-            TSource[] bucket = null;
-            var count = 0;
-
-            foreach (var item in source)
+            return _(); IEnumerable<TResult> _()
             {
-                if (bucket == null)
+                TSource[] bucket = null;
+                var count = 0;
+
+                foreach (var item in source)
                 {
-                    bucket = new TSource[size];
+                    if (bucket == null)
+                    {
+                        bucket = new TSource[size];
+                    }
+
+                    bucket[count++] = item;
+
+                    // The bucket is fully buffered before it's yielded
+                    if (count != size)
+                    {
+                        continue;
+                    }
+
+                    yield return resultSelector(bucket);
+
+                    bucket = null;
+                    count = 0;
                 }
 
-                bucket[count++] = item;
-
-                // The bucket is fully buffered before it's yielded
-                if (count != size)
+                // Return the last bucket with all remaining elements
+                if (bucket != null && count > 0)
                 {
-                    continue;
+                    Array.Resize(ref bucket, count);
+                    yield return resultSelector(bucket);
                 }
-
-                // Select is necessary so bucket contents are streamed too
-                yield return resultSelector(bucket);
-               
-                bucket = null;
-                count = 0;
-            }
-
-            // Return the last bucket with all remaining elements
-            if (bucket != null && count > 0)
-            {
-                Array.Resize(ref bucket, count);
-                yield return resultSelector(bucket);
             }
         }
     }

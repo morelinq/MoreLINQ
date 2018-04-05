@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2009 Konrad Rudolph. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,37 +50,34 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        /// <exception cref="System.InvalidOperationException">If <paramref name="source"/> is empty.</exception>
-        
+
         public static IEnumerable<TSource> Scan<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return ScanImpl(source, transformation);
-        }
-
-        private static IEnumerable<T> ScanImpl<T>(IEnumerable<T> source, Func<T, T, T> f)
-        {
-            using (var i = source.GetEnumerator())
+            return _(); IEnumerable<TSource> _()
             {
-                if (!i.MoveNext())
-                    yield break;
-
-                var aggregator = i.Current;
-
-                while (i.MoveNext())
+                using (var i = source.GetEnumerator())
                 {
+                    if (!i.MoveNext())
+                        yield break;
+
+                    var aggregator = i.Current;
                     yield return aggregator;
-                    aggregator = f(aggregator, i.Current);
+
+                    while (i.MoveNext())
+                    {
+                        aggregator = transformation(aggregator, i.Current);
+                        yield return aggregator;
+                    }
                 }
-                yield return aggregator;
             }
         }
 
         /// <summary>
-        /// Like <see cref="Enumerable.Aggregate{TSource}"/> except returns 
-        /// the sequence of intermediate results as well as the final one. 
+        /// Like <see cref="Enumerable.Aggregate{TSource}"/> except returns
+        /// the sequence of intermediate results as well as the final one.
         /// An additional parameter specifies a seed.
         /// </summary>
         /// <remarks>
@@ -98,27 +95,26 @@ namespace MoreLinq
         /// <param name="seed">Initial state to seed</param>
         /// <param name="transformation">Transformation operation</param>
         /// <returns>The scanned sequence</returns>
-        
+
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return ScanImpl(source, seed, transformation);
-        }
 
-        private static IEnumerable<TState> ScanImpl<T, TState>(IEnumerable<T> source, TState seed, Func<TState, T, TState> f)
-        {
-            using (var i = source.GetEnumerator())
+            return _(); IEnumerable<TState> _()
             {
-                var aggregator = seed;
-
-                while (i.MoveNext())
+                using (var i = source.GetEnumerator())
                 {
+                    var aggregator = seed;
                     yield return aggregator;
-                    aggregator = f(aggregator, i.Current);
+
+                    while (i.MoveNext())
+                    {
+                        aggregator = transformation(aggregator, i.Current);
+                        yield return aggregator;
+                    }
                 }
-                yield return aggregator;
             }
         }
     }

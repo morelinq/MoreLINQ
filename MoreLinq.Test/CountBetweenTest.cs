@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,40 +15,31 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System.Linq;
-using LinqEnumerable = System.Linq.Enumerable;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class CountBetweenTest
     {
         [Test]
-        public void CountBetweenWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.CountBetween<int>(null, 1, 2));
-        }
-
-        [Test]
         public void CountBetweenWithNegativeMin()
         {
-            Assert.ThrowsArgumentOutOfRangeException("min", () =>
+            AssertThrowsArgument.OutOfRangeException("min", () =>
                 new[] { 1 }.CountBetween(-1, 0));
         }
 
         [Test]
         public void CountBetweenWithNegativeMax()
         {
-            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+            AssertThrowsArgument.OutOfRangeException("max", () =>
                new[] { 1 }.CountBetween(0, -1));
         }
 
         [Test]
         public void CountBetweenWithMaxLesserThanMin()
         {
-            Assert.ThrowsArgumentOutOfRangeException("max", () =>
+            AssertThrowsArgument.OutOfRangeException("max", () =>
                 new[] { 1 }.CountBetween(1, 0));
         }
 
@@ -66,6 +57,17 @@ namespace MoreLinq.Test
         public void CountBetweenRangeTests(int start, int count, int min, int max, bool expecting)
         {
             Assert.That(Enumerable.Range(start, count).CountBetween(min, max), Is.EqualTo(expecting));
+        }
+
+        [Test]
+        public void CountBetweenDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => 3,
+                                             () => 4,
+                                             () => throw new TestException());
+            Assert.False(source.CountBetween(2, 3));
         }
     }
 }

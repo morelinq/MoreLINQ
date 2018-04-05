@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Felipe Sateler. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,29 +15,14 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TraverseTest
     {
-        [Test]
-        public void TraverseBreadthFirstNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("childrenSelector", () =>
-                MoreEnumerable.TraverseBreadthFirst(new object(), null));
-        }
-
-        [Test]
-        public void TraverseDepthFirstNullGenerator()
-        {
-            Assert.ThrowsArgumentNullException("childrenSelector",() =>
-                MoreEnumerable.TraverseDepthFirst(new object(), null));
-        }
-
         [Test]
         public void TraverseDepthFirstFNullGenerator()
         {
@@ -65,10 +50,10 @@ namespace MoreLinq.Test
             res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         }
 
-        private class Tree<T>
+        class Tree<T>
         {
-            public T Value { get; private set; }
-            public IEnumerable<Tree<T>> Children { get; private set; }
+            public T Value { get; }
+            public IEnumerable<Tree<T>> Children { get; }
 
             public Tree(T value, IEnumerable<Tree<T>> children)
             {
@@ -77,10 +62,10 @@ namespace MoreLinq.Test
             }
         }
 
-        private static class Tree {
-            public static Tree<T> New<T>(T value, params Tree<T>[] children) {
-                return new Tree<T>(value, children);
-            }
+        static class Tree
+        {
+            public static Tree<T> New<T>(T value, params Tree<T>[] children) =>
+                new Tree<T>(value, children);
         }
 
         [Test]

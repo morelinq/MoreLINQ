@@ -1,13 +1,13 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +32,7 @@ namespace MoreLinq
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> containing the source sequence elements except for the bypassed ones at the end.
         /// </returns>
-		
+
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -40,28 +40,25 @@ namespace MoreLinq
             if (count < 1)
                 return source;
 
-            var col = source as ICollection<T>;
-            if (col != null)
-                return col.Take(col.Count - count);
-
-            return SkipLastImpl(source, count);
-        }
-
-        private static IEnumerable<T> SkipLastImpl<T>(IEnumerable<T> source, int count)
-        {
-            var queue = new Queue<T>(count);
-
-            foreach (var item in source)
-            {
-                if (queue.Count < count)
+            return
+                source.TryGetCollectionCount() is int collectionCount
+                ? source.Take(collectionCount - count)
+                : _(); IEnumerable<T> _()
                 {
-                    queue.Enqueue(item);
-                    continue;
-                }
+                    var queue = new Queue<T>(count);
 
-                yield return queue.Dequeue();
-                queue.Enqueue(item);
-            }
+                    foreach (var item in source)
+                    {
+                        if (queue.Count < count)
+                        {
+                            queue.Enqueue(item);
+                            continue;
+                        }
+
+                        yield return queue.Dequeue();
+                        queue.Enqueue(item);
+                    }
+                }
         }
     }
 }

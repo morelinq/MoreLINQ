@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,26 +15,23 @@
 // limitations under the License.
 #endregion
 
-using System;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AssertCountTest
     {
         [Test]
-        public void AssertCountNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.AssertCount<object>(null, 0));
-        }
-
-        [Test]
         public void AssertCountNegativeCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",() =>
-                new object[0].AssertCount(-1));
+            var source = new object[0];
+            AssertThrowsArgument.OutOfRangeException("count", () =>
+                source.AssertCount(-1));
+            AssertThrowsArgument.OutOfRangeException("count", () =>
+                source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()));
         }
 
         [Test]
@@ -61,62 +58,37 @@ namespace MoreLinq.Test
         public void AssertCountDefaultExceptionMessageVariesWithCase()
         {
             var tokens = "foo,bar,baz".GenerateSplits(',');
-            Exception e1 = null, e2 = null;
-            try
-            {
-                tokens.AssertCount(4).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (Exception e)
-            {
-                e1 = e;
-            }
-            try
-            {
-                tokens.AssertCount(2).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (Exception e)
-            {
-                e2 = e;
-            }
+            var e1 = Assert.Throws<SequenceException>(() => tokens.AssertCount(4).Consume());
+            var e2 = Assert.Throws<SequenceException>(() => tokens.AssertCount(2).Consume());
             Assert.That(e1.Message, Is.Not.EqualTo(e2.Message));
         }
 
         [Test]
         public void AssertCountLongSequenceWithErrorSelector()
         {
-            try
-            {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count)).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (TestException e)
-            {
-                Assert.That(e.Cmp, Is.GreaterThan(0));
-                Assert.That(e.Count, Is.EqualTo(2));
-            }
+            var e =
+                Assert.Throws<TestException>(() =>
+                    "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count))
+                                 .Consume());
+            Assert.That(e.Cmp, Is.GreaterThan(0));
+            Assert.That(e.Count, Is.EqualTo(2));
         }
 
         [Test]
         public void AssertCountShortSequenceWithErrorSelector()
         {
-            try
-            {
-                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count)).Consume();
-                Assert.Fail("Exception expected.");
-            }
-            catch (TestException e)
-            {
-                Assert.That(e.Cmp, Is.LessThan(0));
-                Assert.That(e.Count, Is.EqualTo(4));
-            }
+            var e =
+                Assert.Throws<TestException>(() =>
+                    "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count))
+                                 .Consume());
+            Assert.That(e.Cmp, Is.LessThan(0));
+            Assert.That(e.Count, Is.EqualTo(4));
         }
-        
-        private sealed class TestException : Exception
+
+        sealed class TestException : Exception
         {
-            public int Cmp { get; private set; }
-            public int Count { get; private set; }
+            public int Cmp { get; }
+            public int Count { get; }
 
             public TestException(int cmp, int count)
             {
@@ -129,6 +101,41 @@ namespace MoreLinq.Test
         public void AssertCountIsLazy()
         {
             new BreakingSequence<object>().AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountWithCollectionIsLazy()
+        {
+            new BreakingCollection<object>(5).AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountWithMatchingCollectionCount()
+        {
+            var xs = new[] { 123, 456, 789 };
+            Assert.AreSame(xs, xs.AssertCount(3));
+        }
+
+        [TestCase(3, 2, "Sequence contains too many elements when exactly 2 were expected.")]
+        [TestCase(3, 4, "Sequence contains too few elements when exactly 4 were expected.")]
+        public void AssertCountWithMismatchingCollectionCount(int sourceCount, int count, string message)
+        {
+            var xs = new int[sourceCount];
+            var enumerator = xs.AssertCount(count).GetEnumerator();
+            var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
+            Assert.AreEqual(e.Message, message);
+        }
+
+        [Test]
+        public void AssertCountWithReadOnlyCollectionIsLazy()
+        {
+            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+        }
+
+        sealed class BreakingReadOnlyCollection<T> : BreakingSequence<T>, IReadOnlyCollection<T>
+        {
+            public BreakingReadOnlyCollection(int count) => Count = count;
+            public int Count { get; }
         }
     }
 }

@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,30 +15,15 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-using System;
-using System.Linq;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AggregateRightTest
     {
         // Overload 1 Test
-
-        [Test]
-        public void AggregateRightWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AggregateRight<int>(null, (a, b) => a + b));
-        }
-
-        [Test]
-        public void AggregateRightWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).AggregateRight(null));
-        }
 
         [Test]
         public void AggregateRightWithEmptySequence()
@@ -69,20 +54,6 @@ namespace MoreLinq.Test
 
         // Overload 2 Test
 
-        [Test]
-        public void AggregateRightSeedWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AggregateRight<int, int>(null, 1, (a, b) => a + b));
-        }
-
-        [Test]
-        public void AggregateRightSeedWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).AggregateRight(6, null));
-        }
-
         [TestCase(5)]
         [TestCase("c")]
         [TestCase(true)]
@@ -111,27 +82,6 @@ namespace MoreLinq.Test
         }
 
         // Overload 3 Test
-
-        [Test]
-        public void AggregateRightResultorWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source",
-                () => MoreEnumerable.AggregateRight<int, int, bool>(null, 1, (a, b) => a + b, a => a % 2 == 0));
-        }
-
-        [Test]
-        public void AggregateRightResultorWithNullFunc()
-        {
-            Assert.ThrowsArgumentNullException("func",
-                () => Enumerable.Range(1, 5).AggregateRight(6, null, a => a % 2 == 0));
-        }
-
-        [Test]
-        public void AggregateRightResultorWithNullResultSelector()
-        {
-            Assert.ThrowsArgumentNullException("resultSelector",
-                () => Enumerable.Range(1, 5).AggregateRight(6, (a, b) => a + b, (Func<int, bool>)null));
-        }
 
         [TestCase(5)]
         [TestCase("c")]

@@ -1,8 +1,7 @@
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the OrderBy/ThenBy operators
     /// </summary>
