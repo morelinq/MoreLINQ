@@ -268,6 +268,14 @@ namespace MoreLinq.Experimental
         /// This method starts a new task where the tasks are awaited. If the
         /// resulting sequence is partially consumed then there's a good chance
         /// that some tasks will be wasted, those that are in flight.</para>
+        /// <para>
+        /// The tasks in <paramref name="source"/> are already assumed to be in
+        /// flight therefore changing concurrency options via
+        /// <see cref="AsSequential{T}"/>, <see cref="MaxConcurrency{T}"/> or
+        /// <see cref="UnboundedConcurrency{T}"/> will only change how many
+        /// tasks are awaited at any given moment, not how many will be
+        /// kept in flight. For the latter effect, use the other overload.
+        /// </para>
         /// </remarks>
 
         public static IAwaitQuery<T> Await<T>(
@@ -312,6 +320,15 @@ namespace MoreLinq.Experimental
         /// <para>
         /// The <paramref name="evaluator"/> function should be designed to be
         /// thread-agnostic.</para>
+        /// <para>
+        /// The task returned by <paramref name="evaluator"/> should be started
+        /// when the function is called (and not just a mere projection)
+        /// otherwise changing concurrency options via
+        /// <see cref="AsSequential{T}"/>, <see cref="MaxConcurrency{T}"/> or
+        /// <see cref="UnboundedConcurrency{T}"/> will only change how many
+        /// tasks are awaited at any given moment, not how many will be
+        /// kept in flight.
+        /// </para>
         /// </remarks>
 
         public static IAwaitQuery<TResult> Await<T, TResult>(
