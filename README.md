@@ -529,6 +529,10 @@ or tuples of 2.
 
 This method has 4 overloads.
 
+### Transpose
+
+Transposes the rows of a sequence into columns.
+
 ### TraverseBreadthFirst
 
 Traverses a tree in a breadth-first fashion, starting at a root node and using

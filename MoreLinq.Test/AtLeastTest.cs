@@ -144,5 +144,14 @@ namespace MoreLinq.Test
             var sequence = new BreakingList<int>();
             sequence.AtLeast(3);
         }
+
+        [Test]
+        public void AtLeastDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => throw new TestException());
+            Assert.IsTrue(source.AtLeast(2));
+        }
     }
 }

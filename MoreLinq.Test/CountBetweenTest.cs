@@ -58,5 +58,16 @@ namespace MoreLinq.Test
         {
             Assert.That(Enumerable.Range(start, count).CountBetween(min, max), Is.EqualTo(expecting));
         }
+
+        [Test]
+        public void CountBetweenDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => 3,
+                                             () => 4,
+                                             () => throw new TestException());
+            Assert.False(source.CountBetween(2, 3));
+        }
     }
 }
