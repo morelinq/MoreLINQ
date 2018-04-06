@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.ExceptionServices;
 
     static partial class MoreEnumerable
     {
@@ -62,7 +63,7 @@ namespace MoreLinq
         private readonly IEnumerable<T> source;
         private IEnumerator<T> sourceEnumerator;
         private int? errorIndex;
-        private Exception error;
+        private ExceptionDispatchInfo error;
 
         public MemoizedEnumerable(IEnumerable<T> sequence)
         {
@@ -80,8 +81,7 @@ namespace MoreLinq
                 {
                     if (cache == null)
                     {
-                        if (error != null)
-                            throw error;
+                        error?.Throw();
 
                         try
                         {
@@ -91,11 +91,7 @@ namespace MoreLinq
                         }
                         catch (Exception ex)
                         {
-                            // TODO preserve stack trace for throw later
-                            // This requires ExceptionDispatchInfo that is
-                            // available from .NET Framework 4.5 and onward.
-
-                            error = ex;
+                            error = ExceptionDispatchInfo.Capture(ex);
                             throw;
                         }
                     }
@@ -117,7 +113,7 @@ namespace MoreLinq
                         if (index >= cache.Count)
                         {
                             if (index == errorIndex)
-                                throw error;
+                                error.Throw();
 
                             if (sourceEnumerator == null)
                                 break;
@@ -129,11 +125,7 @@ namespace MoreLinq
                             }
                             catch (Exception ex)
                             {
-                                // TODO preserve stack trace for throw later
-                                // This requires ExceptionDispatchInfo that is
-                                // available from .NET Framework 4.5 and onward.
-
-                                this.error = ex;
+                                this.error = ExceptionDispatchInfo.Capture(ex);
                                 errorIndex = index;
                                 sourceEnumerator.Dispose();
                                 sourceEnumerator = null;
