@@ -52,7 +52,7 @@ namespace MoreLinq
                 return source;
             }
 
-            return (source as MemoizedEnumerable<T>) ?? new MemoizedEnumerable<T>(source);
+            return source as MemoizedEnumerable<T> ?? new MemoizedEnumerable<T>(source);
         }
     }
 
@@ -67,9 +67,7 @@ namespace MoreLinq
 
         public MemoizedEnumerable(IEnumerable<T> sequence)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
-
-            _source = sequence;
+            _source = sequence ?? throw new ArgumentNullException(nameof(sequence));
             _locker = new object();
         }
 
@@ -153,10 +151,7 @@ namespace MoreLinq
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public void Dispose()
         {
