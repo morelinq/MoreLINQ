@@ -28,18 +28,18 @@ namespace MoreLinq.Test
     public class MemoizeTest
     {
         [Test]
-        public void MemoizeReturningExpectedElementsWhenUsedAtInnerForeach()
+        public void MemoizeReturningExpectedElementsWhenUsedAtInnerForEach()
         {
             var array = Enumerable.Range(1, 10).ToArray();
             var buffer = Enumerable.Range(1, 10).Memoize();
 
-            var flowArray = InnerForeach(array);
-            var flowBuffer = InnerForeach(buffer);
+            var flowArray = InnerForEach(array);
+            var flowBuffer = InnerForEach(buffer);
 
             flowArray.AssertSequenceEqual(flowBuffer);
         }
 
-        public List<string> InnerForeach(IEnumerable<int> source)
+        public List<string> InnerForEach(IEnumerable<int> source)
         {
             var flow = new List<string>();
 
