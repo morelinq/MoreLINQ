@@ -100,11 +100,16 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().Memoize();
         }
 
-        [Test]
-        public void MemoizeWithInMemoryCollection()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void MemoizeWithInMemoryCollection(bool readOnly)
         {
-            var list = Enumerable.Range(1, 10).ToList();
-            Assert.That(list.Memoize(), Is.SameAs(list));
+            var collection
+                = readOnly
+                ? new BreakingReadOnlyCollection<int>(0)
+                : (IEnumerable<int>) new BreakingCollection<int>();
+
+            Assert.That(collection.Memoize(), Is.SameAs(collection));
         }
 
         [Test]

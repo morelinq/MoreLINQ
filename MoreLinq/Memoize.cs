@@ -52,8 +52,9 @@ namespace MoreLinq
             switch (source)
             {
                 case null: throw new ArgumentNullException(nameof(source));
-                case ICollection<T> _: // ...
-                case MemoizedEnumerable<T> _: return source;
+                case ICollection<T>         _: // ...
+                case IReadOnlyCollection<T> _: // ...
+                case MemoizedEnumerable<T>  _: return source;
                 default: return new MemoizedEnumerable<T>(source);
             }
         }

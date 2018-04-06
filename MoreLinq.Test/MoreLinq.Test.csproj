@@ -40,6 +40,7 @@
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
+      <Compile Include="BreakingReadOnlyCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingList.cs" />
       <Compile Include="BreakingReadOnlyList.cs" />
