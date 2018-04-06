@@ -46,6 +46,7 @@
         - Lead
         - LeftJoin
         - MaxBy
+        - Memoize
         - MinBy
         - Move
         - NestedLoops
