@@ -38,7 +38,7 @@ namespace MoreLinq.Test
 
             flowArray.AssertSequenceEqual(flowBuffer);
 
-            IEnumerable<string> InnerForEach(IEnumerable<int> source)
+            IEnumerable<object> InnerForEach(IEnumerable<int> source)
             {
                 var firstVisitAtInnerLoopDone = false;
 
@@ -50,7 +50,7 @@ namespace MoreLinq.Test
                 yield return "enter outer loop";
                 foreach (var i in source)
                 {
-                    yield return i.ToString();
+                    yield return i;
 
                     if (i == 3 || i == 7)
                     {
@@ -62,7 +62,7 @@ namespace MoreLinq.Test
                         yield return "enter inner loop";
                         foreach (var j in source)
                         {
-                            yield return j.ToString();
+                            yield return j;
 
                             if (!firstVisitAtInnerLoopDone && j == 5)
                             {
@@ -79,7 +79,7 @@ namespace MoreLinq.Test
                 //consume 1-10 (all item were already cached)
                 foreach (var k in source)
                 {
-                    yield return k.ToString();
+                    yield return k;
                 }
                 yield return "exit last loop";
             }
