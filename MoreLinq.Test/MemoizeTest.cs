@@ -28,13 +28,6 @@ namespace MoreLinq.Test
     public class MemoizeTest
     {
         [Test]
-        public void MemoizeWithNullSequence()
-        {
-            Assert.Throws<ArgumentNullException>(
-                () => MoreEnumerable.Memoize<int>(null));
-        }
-
-        [Test]
         public void MemoizeReturningExpectedElementsWhenUsedAtInnerForeach()
         {
             var array = Enumerable.Range(1, 10).ToArray();
