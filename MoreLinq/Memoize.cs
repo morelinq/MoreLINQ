@@ -56,7 +56,7 @@ namespace MoreLinq
         }
     }
 
-    class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
+    sealed class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
     {
         IList<T> _cache;
         readonly object _locker;
