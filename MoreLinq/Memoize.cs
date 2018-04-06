@@ -25,12 +25,17 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a <see cref="IEnumerable{T}"/> that lazily creates an in-memory
-        /// cache of the enumeration on first iteration, if it is not already an
-        /// in-memory source.
+        /// Creates a sequence that lazily caches the source as it is iterated
+        /// for the first time, reusing the cache thereafter for future
+        /// re-iterations. If the source is already cached or buffered then it
+        /// is returned verbatim.
         /// </summary>
+        /// <typeparam name="T">
+        /// Type of elements in <paramref name="source"/>.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <returns>Returns a sequence that corresponds to a cached version of the input sequence.</returns>
+        /// <returns>
+        /// Returns a sequence that corresponds to a cached version of the
+        /// input sequence.</returns>
         /// <remarks>
         /// The returned <see cref="IEnumerable{T}"/> will cache items from
         /// <paramref name="source"/> in a thread-safe manner. Each thread can
