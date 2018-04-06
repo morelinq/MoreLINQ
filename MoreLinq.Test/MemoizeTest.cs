@@ -38,10 +38,8 @@ namespace MoreLinq.Test
 
             flowArray.AssertSequenceEqual(flowBuffer);
 
-            List<string> InnerForEach(IEnumerable<int> source)
+            IEnumerable<string> InnerForEach(IEnumerable<int> source)
             {
-                var flow = new List<string>();
-
                 var firstVisitAtInnerLoopDone = false;
 
                 //add 1-3 to cache (so enter inner loop)
@@ -49,10 +47,10 @@ namespace MoreLinq.Test
                 //add 6-7 to cache (so enter inner loop)
                 //consume 8-10 already cached
 
-                flow.Add("enter outer loop");
+                yield return "enter outer loop";
                 foreach (var i in source)
                 {
-                    flow.Add(i.ToString());
+                    yield return i.ToString();
 
                     if (i == 3 || i == 7)
                     {
@@ -61,10 +59,10 @@ namespace MoreLinq.Test
                         //consume 1-7 already cached
                         //add 8-10 to cache (so go to outer loop)
 
-                        flow.Add("enter inner loop");
+                        yield return "enter inner loop";
                         foreach (var j in source)
                         {
-                            flow.Add(j.ToString());
+                            yield return j.ToString();
 
                             if (!firstVisitAtInnerLoopDone && j == 5)
                             {
@@ -72,20 +70,18 @@ namespace MoreLinq.Test
                                 break;
                             }
                         }
-                        flow.Add("exit inner loop");
+                        yield return "exit inner loop";
                     }
                 }
-                flow.Add("exit outer loop");
+                yield return "exit outer loop";
 
-                flow.Add("enter last loop");
+                yield return "enter last loop";
                 //consume 1-10 (all item were already cached)
                 foreach (var k in source)
                 {
-                    flow.Add(k.ToString());
+                    yield return k.ToString();
                 }
-                flow.Add("exit last loop");
-
-                return flow;
+                yield return "exit last loop";
             }
         }
 
