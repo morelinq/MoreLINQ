@@ -56,14 +56,14 @@ namespace MoreLinq
         }
     }
 
-    internal class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
+    class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
     {
-        private IList<T> cache;
-        private readonly object locker;
-        private readonly IEnumerable<T> source;
-        private IEnumerator<T> sourceEnumerator;
-        private int? errorIndex;
-        private ExceptionDispatchInfo error;
+        IList<T> cache;
+        readonly object locker;
+        readonly IEnumerable<T> source;
+        IEnumerator<T> sourceEnumerator;
+        int? errorIndex;
+        ExceptionDispatchInfo error;
 
         public MemoizedEnumerable(IEnumerable<T> sequence)
         {
@@ -125,7 +125,7 @@ namespace MoreLinq
                             }
                             catch (Exception ex)
                             {
-                                this.error = ExceptionDispatchInfo.Capture(ex);
+                                error = ExceptionDispatchInfo.Capture(ex);
                                 errorIndex = index;
                                 sourceEnumerator.Dispose();
                                 sourceEnumerator = null;
