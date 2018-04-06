@@ -45,14 +45,13 @@ namespace MoreLinq
 
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            if (source is ICollection<T>)
+            switch (source)
             {
-                return source;
+                case null: throw new ArgumentNullException(nameof(source));
+                case ICollection<T> _: // ...
+                case MemoizedEnumerable<T> _: return source;
+                default: return new MemoizedEnumerable<T>(source);
             }
-
-            return source as MemoizedEnumerable<T> ?? new MemoizedEnumerable<T>(source);
         }
     }
 
