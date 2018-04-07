@@ -40,6 +40,26 @@ namespace MoreLinq.Test
 
         }
 
+        [Test]
+        public void TestListStringWithComparer()
+        {
+            var list = new List<string>
+            {
+                "foo", "bAr", "Foo", "Bar", "bAR", "BAR", "baz", "test1", "Test1", "Test3", "test2", "fOO"
+            };
+            var dict = list.ToMultiDictionary(x => x, StringComparer.OrdinalIgnoreCase);
+
+            Assert.That(dict["bar"].Count(),
+                Is.EqualTo(dict["BAR"].Count()).And
+                .EqualTo(dict["BaR"].Count()).And
+                .EqualTo(dict["Bar"].Count()).And
+                .EqualTo(4));
+            Assert.That(dict["foo"].Count(),
+                Is.EqualTo(dict["FOO"].Count()).And
+                .EqualTo(3));
+
+        }
+
 
         class Dummy
         {

@@ -55,14 +55,13 @@ namespace MoreLinq
         /// appending element to the value IEnumerable.
         /// </summary>
         /// <typeparam name="TKey">Type of the key.</typeparam>
-        /// <typeparam name="TElement">Type of the element.</typeparam>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">An <see cref="IEnumerable{TSource}"/> to create the
         /// <see cref="Dictionary{TKey, IEnumerable}"/> MultiDictionary from.</param>
         /// <param name="keySelector">A function to extract a key from each element.</param>
         /// <param name="comparer">An <see cref="IEqualityComparer{T}"/> to compare keys.</param>
         /// <returns>The MultiDictionary.</returns>
-        public static Dictionary<TKey, IEnumerable<TSource>> ToMultiDictionary<TKey, TElement, TSource>
+        public static Dictionary<TKey, IEnumerable<TSource>> ToMultiDictionary<TKey, TSource>
             (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             return source.ToMultiDictionary(keySelector, x => x, comparer);
@@ -99,7 +98,7 @@ namespace MoreLinq
                         new KeyValuePair<TKey, IEnumerable<TElement>>(key, values.Select(singleValueSelector)),
                     comparer
                 )
-                .ToDictionary();
+                .ToDictionary(comparer);
         }
     }
 }
