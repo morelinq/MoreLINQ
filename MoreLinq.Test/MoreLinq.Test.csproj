@@ -37,6 +37,7 @@
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
       <None Remove="TestResult.xml" />
+      <None Remove="ToMultiDictionaryTest.cs" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
