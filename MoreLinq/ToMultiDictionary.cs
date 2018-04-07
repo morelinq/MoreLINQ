@@ -90,7 +90,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             if (singleValueSelector == null) throw new ArgumentNullException(nameof(singleValueSelector));
-            
+
             return source
                 .GroupBy(
                     keySelector,

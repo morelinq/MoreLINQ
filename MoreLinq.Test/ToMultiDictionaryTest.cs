@@ -37,7 +37,6 @@ namespace MoreLinq.Test
             Assert.That(dict["baz"].Count(), Is.EqualTo(1));
             Assert.That(dict["foo"].Count(), Is.EqualTo(2));
             Assert.That(dict["bar"].Count(), Is.EqualTo(3));
-
         }
 
         [Test]
@@ -57,7 +56,6 @@ namespace MoreLinq.Test
             Assert.That(dict["foo"].Count(),
                 Is.EqualTo(dict["FOO"].Count()).And
                 .EqualTo(3));
-
         }
 
 
