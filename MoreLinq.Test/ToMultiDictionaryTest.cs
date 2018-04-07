@@ -19,10 +19,57 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using MoreLinq;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class ToMultiDictionaryTest
     {
+        [Test]
+        public void TestListString()
+        {
+            var list = new List<string>
+            {
+                "foo", "bar", "foo", "bar", "bar", "baz", "test1", "test2"
+            };
+            var dict = list.ToMultiDictionary(x => x);
 
+            Assert.That(dict["baz"].Count(), Is.EqualTo(1));
+            Assert.That(dict["foo"].Count(), Is.EqualTo(2));
+            Assert.That(dict["bar"].Count(), Is.EqualTo(3));
+
+        }
+
+
+        class Dummy
+        {
+            public int Id { get; set; }
+            public string Value { get; set; }
+        }
+
+        [Test]
+        public void TestListObject()
+        {
+            var list = new List<Dummy>
+            {
+                new Dummy { Id = 1, Value = "val1" },
+                new Dummy { Id = 2, Value = "val2" },
+                new Dummy { Id = 2, Value = "val3" },
+                new Dummy { Id = 2, Value = "val4" },
+                new Dummy { Id = 3, Value = "val5" },
+                new Dummy { Id = 3, Value = "val6" },
+            };
+            var dict = list.ToMultiDictionary(x => x.Id, x => x.Value);
+
+            Assert.That(dict[1].Count(), Is.EqualTo(1));
+            Assert.That(dict[2].Count(), Is.EqualTo(3));
+            Assert.That(dict[3].Count(), Is.EqualTo(2));
+
+            Assert.That(dict[1].Contains("val1"), Is.True);
+            Assert.That(dict[2].Contains("val2"), Is.True);
+            Assert.That(dict[2].Contains("val5"), Is.False);
+            Assert.That(dict[2].Contains("val3"), Is.True);
+            Assert.That(dict[3].Contains("val6"), Is.True);
+        }
     }
 }

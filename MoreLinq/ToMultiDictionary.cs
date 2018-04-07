@@ -23,7 +23,7 @@ namespace MoreLinq
         public static Dictionary<TKey, IEnumerable<TSource>> ToMultiDictionary<TKey, TSource>
             (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            return source.ToMultiDictionary(keySelector, x => x, EqualityComparer<TKey>.Default);
+            return source.ToMultiDictionary(keySelector, x => x, null);
         }
 
         /// <summary>
