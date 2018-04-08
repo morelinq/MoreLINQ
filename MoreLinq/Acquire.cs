@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -44,17 +45,17 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             var disposables = new List<TSource>();
-            try
-            {
-                disposables.AddRange(source);
-                return disposables.ToArray();
-            }
-            catch
-            {
-                foreach (var disposable in disposables)
-                    disposable.Dispose();
-                throw;
-            }
+
+            return source.Acquire(x => x,
+                                  _ => default,
+                                  ex =>
+                                  {
+                                      foreach (var disposable in disposables)
+                                          disposable.Dispose();
+                                      return true;
+                                  })
+                         .Pipe(x => disposables.Add(x))
+                         .ToArray();
         }
 
         static IEnumerable<TResult> Acquire<TSource, TResult>(this
