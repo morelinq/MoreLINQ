@@ -192,24 +192,5 @@ namespace MoreLinq
                 return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
             }
         }
-
-        static int CountUpTo<T>(this IEnumerable<T> source, int max)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "Max cannot be negative.");
-
-            var count = 0;
-
-            using (var e = source.GetEnumerator())
-            {
-                while (e.MoveNext())
-                {
-                    if (++count == max)
-                        break;
-                }
-            }
-
-            return count;
-        }
     }
 }
