@@ -134,7 +134,7 @@ namespace MoreLinq
 
             var count = source is ICollection<T> col
                          ? col.Count
-                         : PartialCount(source, limit);
+                         : source.PartialCount(limit);
 
             return count >= min && count <= max;
         }
@@ -168,12 +168,12 @@ namespace MoreLinq
             {
                 return firstCol.Count.CompareTo(second is ICollection<TSecond> secondCol
                                                 ? secondCol.Count
-                                                : PartialCount(second, firstCol.Count + 1));
+                                                : second.PartialCount(firstCol.Count + 1));
             }
             else
             {
                 if (second is ICollection<TSecond> secondCol)
-                    return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
+                    return first.PartialCount(secondCol.Count + 1).CompareTo(secondCol.Count);
 
                 bool firstHasNext;
                 bool secondHasNext;
@@ -193,7 +193,7 @@ namespace MoreLinq
             }
         }
 
-        static int PartialCount<T>(IEnumerable<T> source, int limit)
+        static int PartialCount<T>(this IEnumerable<T> source, int limit)
         {
             var count = 0;
 
