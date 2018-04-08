@@ -56,5 +56,45 @@ namespace MoreLinq
                 throw;
             }
         }
+
+        static IEnumerable<TResult> Acquire<TSource, TResult>(this
+            IEnumerable<TSource> source,
+            Func<TSource, TResult> elementSelector,
+            Func<Exception, TResult> exceptionSelector,
+            Func<Exception, bool> errorPredicate)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
+            if (exceptionSelector == null) throw new ArgumentNullException(nameof(exceptionSelector));
+            if (errorPredicate == null) throw new ArgumentNullException(nameof(errorPredicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                using (var e = source.GetEnumerator())
+                {
+                    while (true)
+                    {
+                        Exception error = null;
+
+                        try
+                        {
+                            if (!e.MoveNext())
+                                break;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (errorPredicate(ex))
+                                throw;
+
+                            error = ex;
+                        }
+
+                        yield return error == null
+                                     ? elementSelector(e.Current)
+                                     : exceptionSelector(error);
+                    }
+                }
+            }
+        }
     }
 }
