@@ -64,5 +64,15 @@ namespace MoreLinq.Test
         {
             Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(1));
         }
+
+        [Test]
+        public void AtMostDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => 2,
+                                             () => 3,
+                                             () => throw new TestException());
+            Assert.IsFalse(source.AtMost(2));
+        }
     }
 }

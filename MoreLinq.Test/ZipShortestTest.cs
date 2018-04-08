@@ -81,7 +81,7 @@ namespace MoreLinq.Test
             using (var s1 = TestingSequence.Of(1, 2))
             using (var s2 = MoreEnumerable.From(() => 4,
                                                 () => 5,
-                                                () => throw new InvalidOperationException())
+                                                () => throw new TestException())
                                           .AsTestingSequence())
             {
                 var zipped = s1.ZipShortest(s2, Tuple.Create);
@@ -96,7 +96,7 @@ namespace MoreLinq.Test
             using (var s1 = MoreEnumerable.From(() => 4,
                                                 () => 5,
                                                 () => 6,
-                                                () => throw new ArgumentException())
+                                                () => throw new TestException())
                                           .AsTestingSequence())
             using (var s2 = TestingSequence.Of(1, 2))
             {
