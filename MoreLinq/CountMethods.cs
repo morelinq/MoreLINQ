@@ -170,11 +170,12 @@ namespace MoreLinq
                                                 ? secondCol.Count
                                                 : second.CountUpTo(firstCol.Count + 1));
             }
+            else if (second is ICollection<TSecond> secondCol)
+            {
+                return first.CountUpTo(secondCol.Count + 1).CompareTo(secondCol.Count);
+            }
             else
             {
-                if (second is ICollection<TSecond> secondCol)
-                    return first.CountUpTo(secondCol.Count + 1).CompareTo(secondCol.Count);
-
                 bool firstHasNext;
                 bool secondHasNext;
 
