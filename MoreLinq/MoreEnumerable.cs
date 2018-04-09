@@ -47,8 +47,7 @@ namespace MoreLinq
             {
                 while (count < max && e.MoveNext())
                 {
-                    if (++count == max)
-                        break;
+                    count++;
                 }
             }
 
