@@ -45,7 +45,7 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                while (e.MoveNext())
+                while (count < max && e.MoveNext())
                 {
                     if (++count == max)
                         break;
