@@ -203,7 +203,7 @@ namespace MoreLinq
                     while (firstHasNext && secondHasNext);
                 }
 
-                return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
+                return firstHasNext.CompareTo(secondHasNext);
             }
 
             int PartialCount<T>(IEnumerable<T> source, int limit)
