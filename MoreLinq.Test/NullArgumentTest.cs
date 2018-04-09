@@ -23,6 +23,7 @@ namespace MoreLinq.Test
     using System.Diagnostics;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Threading.Tasks;
     using NUnit.Framework;
     using NUnit.Framework.Interfaces;
 
@@ -136,6 +137,7 @@ namespace MoreLinq.Test
         {
             if (type == typeof (int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
             if (type == typeof (string)) return "";
+            if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
             if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
             if (type.IsArray) return Array.CreateInstance(type.GetElementType(), 0);
             if (type.GetTypeInfo().IsValueType || HasDefaultConstructor(type)) return Activator.CreateInstance(type);
@@ -212,6 +214,17 @@ namespace MoreLinq.Test
                     return this;
                 }
             }
+
+            #if !NO_ASYNC
+
+            public class AwaitQuery<T> : Enumerable<T>,
+                                         Experimental.IAwaitQuery<T>
+            {
+                public Experimental.AwaitQueryOptions Options => Experimental.AwaitQueryOptions.Default;
+                public Experimental.IAwaitQuery<T> WithOptions(Experimental.AwaitQueryOptions options) => this;
+            }
+
+            #endif
 
             public class Comparer<T> : IComparer<T>
             {
