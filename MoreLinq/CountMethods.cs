@@ -132,23 +132,9 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var count = 0;
-
-            if (source is ICollection<T> col)
-            {
-                count = col.Count;
-            }
-            else
-            {
-                using (var e = source.GetEnumerator())
-                {
-                    while (e.MoveNext())
-                    {
-                        if (++count == limit)
-                            break;
-                    }
-                }
-            }
+            var count = source is ICollection<T> col
+                         ? col.Count
+                         : source.CountUpTo(limit);
 
             return count >= min && count <= max;
         }
@@ -182,13 +168,14 @@ namespace MoreLinq
             {
                 return firstCol.Count.CompareTo(second is ICollection<TSecond> secondCol
                                                 ? secondCol.Count
-                                                : PartialCount(second, firstCol.Count + 1));
+                                                : second.CountUpTo(firstCol.Count + 1));
+            }
+            else if (second is ICollection<TSecond> secondCol)
+            {
+                return first.CountUpTo(secondCol.Count + 1).CompareTo(secondCol.Count);
             }
             else
             {
-                if (second is ICollection<TSecond> secondCol)
-                    return PartialCount(first, secondCol.Count + 1).CompareTo(secondCol.Count);
-
                 bool firstHasNext;
                 bool secondHasNext;
 
@@ -204,22 +191,6 @@ namespace MoreLinq
                 }
 
                 return firstHasNext.CompareTo(secondHasNext);
-            }
-
-            int PartialCount<T>(IEnumerable<T> source, int limit)
-            {
-                var count = 0;
-
-                using (var e = source.GetEnumerator())
-                {
-                    while (e.MoveNext())
-                    {
-                        if (++count == limit)
-                            break;
-                    }
-                }
-
-                return count;
             }
         }
     }
