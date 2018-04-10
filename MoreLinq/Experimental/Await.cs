@@ -405,11 +405,11 @@ namespace MoreLinq.Experimental
                                 for (nextKey++; holds.Count > 0; nextKey++)
                                 {
                                     var (candidateKey, candidate) = holds[0];
-                                    if (candidateKey != nextKey)
-                                        break;
-
-                                    releaseCount++;
-                                    yield return candidate;
+                                    if (candidateKey == nextKey)
+                                    {
+                                        releaseCount++;
+                                        yield return candidate;
+                                    }
                                 }
 
                                 holds.RemoveRange(0, releaseCount);
@@ -477,14 +477,12 @@ namespace MoreLinq.Experimental
 
                 var tasks = new List<Task<(T, TResult)>>();
 
-                var reader = new Reader<T>(e);
+                var more = false;
+                for (var i = 0; i < maxConcurrency && (more = e.MoveNext()); i++)
+                    tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
 
-                for (var i = 0; i < maxConcurrency; i++)
-                {
-                    if (!reader.TryRead(out var item))
-                        break;
-                    tasks.Add(taskSelector(item).Select(r => (item, r)));
-                }
+                if (!more)
+                    e.Dispose();
 
                 try
                 {
@@ -519,8 +517,13 @@ namespace MoreLinq.Experimental
                         tasks.Remove(task);
                         collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
 
-                        if (reader.TryRead(out var item))
-                            tasks.Add(taskSelector(item).Select(r => (item, r)));
+                        if (more)
+                        {
+                            if (more = e.MoveNext())
+                                tasks.Add(taskSelector(e.Current).Select(r => (e.Current, r)));
+                            else
+                                e.Dispose();
+                        }
                     }
 
                     collection.Add(endNotice);
@@ -532,30 +535,6 @@ namespace MoreLinq.Experimental
                 }
 
                 collection.CompleteAdding();
-            }
-        }
-
-        sealed class Reader<T>
-        {
-            IEnumerator<T> _enumerator;
-
-            public Reader(IEnumerator<T> enumerator) =>
-                _enumerator = enumerator;
-
-            public bool TryRead(out T item)
-            {
-                var e = _enumerator;
-
-                if (e == null || !e.MoveNext())
-                {
-                    _enumerator = null;
-                    e?.Dispose();
-                    item = default;
-                    return false;
-                }
-
-                item = e.Current;
-                return true;
             }
         }
 
