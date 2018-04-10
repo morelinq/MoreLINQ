@@ -475,17 +475,17 @@ namespace MoreLinq.Experimental
                 var cancellationTaskSource = new TaskCompletionSource<bool>();
                 cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
 
-                var tasks = new List<Task<(T, TResult)>>();
-
-                for (var i = 0; i < maxConcurrency; i++)
-                {
-                    if (!reader.TryRead(out var item))
-                        break;
-                    tasks.Add(taskSelector(item).Select(r => (item, r)));
-                }
-
                 try
                 {
+                    var tasks = new List<Task<(T, TResult)>>();
+
+                    for (var i = 0; i < maxConcurrency; i++)
+                    {
+                        if (!reader.TryRead(out var item))
+                            break;
+                        tasks.Add(taskSelector(item).Select(r => (item, r)));
+                    }
+
                     while (tasks.Count > 0)
                     {
                         // Task.WaitAny is synchronous and blocking but allows the
