@@ -469,68 +469,73 @@ namespace MoreLinq.Experimental
             int maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
-            using (var reader = new Reader<T>(e))
+            Reader<T> reader = null;
+
+            try
             {
+                reader = new Reader<T>(e);
+
                 var cancellationToken = cancellationTokenSource.Token;
                 var cancellationTaskSource = new TaskCompletionSource<bool>();
                 cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
 
-                try
-                {
-                    var tasks = new List<Task<(T, TResult)>>();
+                var tasks = new List<Task<(T, TResult)>>();
 
-                    for (var i = 0; i < maxConcurrency; i++)
+                for (var i = 0; i < maxConcurrency; i++)
+                {
+                    if (!reader.TryRead(out var item))
+                        break;
+                    tasks.Add(taskSelector(item).Select(r => (item, r)));
+                }
+
+                while (tasks.Count > 0)
+                {
+                    // Task.WaitAny is synchronous and blocking but allows the
+                    // waiting to be cancelled via a CancellationToken.
+                    // Task.WhenAny can be awaited so it is better since the
+                    // thread won't be blocked and can return to the pool.
+                    // However, it doesn't support cancellation so instead a
+                    // task is built on top of the CancellationToken that
+                    // completes when the CancellationToken trips.
+
+                    var completedTask = await
+                        Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task))
+                            .ConfigureAwait(continueOnCapturedContext: false);
+
+                    if (completedTask == cancellationTaskSource.Task)
                     {
-                        if (!reader.TryRead(out var item))
-                            break;
+                        // Cancellation during the wait means the enumeration
+                        // has been stopped by the user so the results of the
+                        // remaining tasks are no longer needed. Those tasks
+                        // should cancel as a result of sharing the same
+                        // cancellation token and provided that they passed it
+                        // on to any downstream asynchronous operations. Either
+                        // way, this loop is done so exit hard here.
+
+                        return;
+                    }
+
+                    var task = (Task<(T Input, TResult Result)>) completedTask;
+                    tasks.Remove(task);
+                    collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
+
+                    if (reader.TryRead(out var item))
                         tasks.Add(taskSelector(item).Select(r => (item, r)));
-                    }
-
-                    while (tasks.Count > 0)
-                    {
-                        // Task.WaitAny is synchronous and blocking but allows the
-                        // waiting to be cancelled via a CancellationToken.
-                        // Task.WhenAny can be awaited so it is better since the
-                        // thread won't be blocked and can return to the pool.
-                        // However, it doesn't support cancellation so instead a
-                        // task is built on top of the CancellationToken that
-                        // completes when the CancellationToken trips.
-
-                        var completedTask = await
-                            Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task))
-                                .ConfigureAwait(continueOnCapturedContext: false);
-
-                        if (completedTask == cancellationTaskSource.Task)
-                        {
-                            // Cancellation during the wait means the enumeration
-                            // has been stopped by the user so the results of the
-                            // remaining tasks are no longer needed. Those tasks
-                            // should cancel as a result of sharing the same
-                            // cancellation token and provided that they passed it
-                            // on to any downstream asynchronous operations. Either
-                            // way, this loop is done so exit hard here.
-
-                            return;
-                        }
-
-                        var task = (Task<(T Input, TResult Result)>) completedTask;
-                        tasks.Remove(task);
-                        collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
-
-                        if (reader.TryRead(out var item))
-                            tasks.Add(taskSelector(item).Select(r => (item, r)));
-                    }
-
-                    collection.Add(endNotice);
-                }
-                catch (Exception ex)
-                {
-                    cancellationTokenSource.Cancel();
-                    collection.Add(errorNoticeSelector(ex));
                 }
 
-                collection.CompleteAdding();
+                collection.Add(endNotice);
             }
+            catch (Exception ex)
+            {
+                cancellationTokenSource.Cancel();
+                collection.Add(errorNoticeSelector(ex));
+            }
+            finally
+            {
+                reader?.Dispose();
+            }
+
+            collection.CompleteAdding();
         }
 
         sealed class Reader<T> : IDisposable
