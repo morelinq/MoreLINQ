@@ -469,15 +469,13 @@ namespace MoreLinq.Experimental
             int maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
-            using (e)
+            using (var reader = new Reader<T>(e))
             {
                 var cancellationToken = cancellationTokenSource.Token;
                 var cancellationTaskSource = new TaskCompletionSource<bool>();
                 cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
 
                 var tasks = new List<Task<(T, TResult)>>();
-
-                var reader = new Reader<T>(e);
 
                 for (var i = 0; i < maxConcurrency; i++)
                 {
@@ -535,7 +533,7 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class Reader<T>
+        sealed class Reader<T> : IDisposable
         {
             IEnumerator<T> _enumerator;
 
@@ -544,18 +542,26 @@ namespace MoreLinq.Experimental
 
             public bool TryRead(out T item)
             {
-                var e = _enumerator;
-
-                if (e == null || !e.MoveNext())
+                var ended = false;
+                if (_enumerator == null || (ended = !_enumerator.MoveNext()))
                 {
-                    _enumerator = null;
-                    e?.Dispose();
+                    if (ended)
+                        Dispose();
                     item = default;
                     return false;
                 }
 
-                item = e.Current;
+                item = _enumerator.Current;
                 return true;
+            }
+
+            public void Dispose()
+            {
+                var e = _enumerator;
+                if (e == null)
+                    return;
+                _enumerator = null;
+                e.Dispose();
             }
         }
 
