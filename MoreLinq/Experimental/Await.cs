@@ -443,9 +443,9 @@ namespace MoreLinq.Experimental
                 {
                     // The cancellation token is signaled here for the case where
                     // tasks may be in flight but the user stopped the enumeration
-                    // partway (e.g. SelectAsync was combined with a Take or
-                    // TakeWhile). The in-flight tasks need to be aborted as well
-                    // as the awaiter loop.
+                    // partway (e.g. Await was combined with a Take or TakeWhile).
+                    // The in-flight tasks need to be aborted as well as the
+                    // awaiter loop.
 
                     if (!completed)
                         cancellationTokenSource.Cancel();
