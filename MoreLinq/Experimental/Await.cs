@@ -338,7 +338,7 @@ namespace MoreLinq.Experimental
             if (evaluator == null) throw new ArgumentNullException(nameof(evaluator));
 
             return
-                SelectAsyncEnumerable.Create(
+                AwaitQuery.Create(
                     options => _(options.MaxConcurrency ?? int.MaxValue,
                                  options.Scheduler ?? TaskScheduler.Default,
                                  options.PreserveOrder));
@@ -538,7 +538,7 @@ namespace MoreLinq.Experimental
             }
         }
 
-        static class SelectAsyncEnumerable
+        static class AwaitQuery
         {
             public static IAwaitQuery<T>
                 Create<T>(
