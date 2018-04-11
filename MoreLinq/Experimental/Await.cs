@@ -517,7 +517,13 @@ namespace MoreLinq.Experimental
 
                     var task = (Task<(T Input, TResult Result)>) completedTask;
                     tasks.Remove(task);
-                    collection.Add(resultNoticeSelector(task.Result.Input, task.Result.Result));
+
+                    // Await the task rather than using its result directly
+                    // to avoid having the task's exception bubble up as
+                    // AggregateException if the task failed.
+
+                    var eval = await task;
+                    collection.Add(resultNoticeSelector(eval.Input, eval.Result));
 
                     if (reader.TryRead(out var item))
                         tasks.Add(taskSelector(item).Select(r => (item, r)));
