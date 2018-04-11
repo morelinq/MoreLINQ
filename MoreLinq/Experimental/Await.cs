@@ -497,6 +497,28 @@ namespace MoreLinq.Experimental
                     // However, it doesn't support cancellation so instead a
                     // task is built on top of the CancellationToken that
                     // completes when the CancellationToken trips.
+                    //
+                    // Also, Task.WhenAny returns the task (Task) object that
+                    // completed but task objects may not be unique due to
+                    // caching, e.g.:
+                    //
+                    //     async Task<bool> Foo() => true;
+                    //     async Task<bool> Bar() => true;
+                    //     var foo = Foo();
+                    //     var bar = Bar();
+                    //     var same = foo.Equals(bar); // == true
+                    //
+                    // In this case, the task returned by Task.WhenAny will
+                    // match `foo` and `bar`:
+                    //
+                    //     var done = Task.WhenAny(foo, bar);
+                    //
+                    // Logically speaking, the uniqueness of a task does not
+                    // matter but here it does, especially when Await (the main
+                    // user of CollectAsync) needs to return results ordered.
+                    // Fortunately, we compose our own task on top of the
+                    // original that links each item with the task result and as
+                    // a consequence generate new and unique task objects.
 
                     var completedTask = await
                         Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task))
