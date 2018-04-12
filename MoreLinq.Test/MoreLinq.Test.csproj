@@ -21,6 +21,10 @@
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    <DefineConstants>$(DefineConstants);NO_ASYNC</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
   </ItemGroup>
@@ -40,9 +44,9 @@
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
-      <Compile Include="BreakingReadOnlyCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingList.cs" />
+      <Compile Include="BreakingReadOnlyCollection.cs" />
       <Compile Include="BreakingReadOnlyList.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />

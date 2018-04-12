@@ -575,6 +575,24 @@ from each of the argument sequences.
 This method has 3 overloads.
 
 
+## Experimental Operators
+
+THESE METHODS ARE EXPERIMENTAL. THEY MAY BE UNSTABLE AND UNTESTED. THEY MAY BE
+REMOVED FROM A FUTURE MAJOR OR MINOR RELEASE AND POSSIBLY WITHOUT NOTICE. USE
+THEM AT YOUR OWN RISK. THE METHODS ARE PUBLISHED FOR FIELD EXPERIMENTATION TO
+SOLICIT FEEDBACK ON THEIR UTILITY AND DESIGN/IMPLEMENTATION DEFECTS.
+
+Use of experimental methods requires importing the `MoreLinq.Experimental`
+namespace.
+
+### Await
+
+Creates a sequence query that streams the result of each task in the source
+sequence as it completes asynchronously.
+
+This method has 2 overloads.
+
+
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
