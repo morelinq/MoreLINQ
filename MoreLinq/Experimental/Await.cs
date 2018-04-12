@@ -278,11 +278,8 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IAwaitQuery<T> Await<T>(
-            this IEnumerable<Task<T>> source)
-        {
-            return source.Await((e, _) => e);
-        }
+        public static IAwaitQuery<T> Await<T>(this IEnumerable<Task<T>> source) =>
+            source.Await((e, _) => e);
 
         /// <summary>
         /// Creates a sequence query that streams the result of each task in
