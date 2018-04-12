@@ -132,9 +132,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var count = source is ICollection<T> col
-                         ? col.Count
-                         : source.CountUpTo(limit);
+            var count = source.TryGetCollectionCount() ?? source.CountUpTo(limit);
 
             return count >= min && count <= max;
         }
@@ -164,15 +162,13 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            if (first is ICollection<TFirst> firstCol)
+            if (first.TryGetCollectionCount() is int firstCount)
             {
-                return firstCol.Count.CompareTo(second is ICollection<TSecond> secondCol
-                                                ? secondCol.Count
-                                                : second.CountUpTo(firstCol.Count + 1));
+                return firstCount.CompareTo(second.TryGetCollectionCount() ?? second.CountUpTo(firstCount + 1));
             }
-            else if (second is ICollection<TSecond> secondCol)
+            else if (second.TryGetCollectionCount() is int secondCount)
             {
-                return first.CountUpTo(secondCol.Count + 1).CompareTo(secondCol.Count);
+                return first.CountUpTo(secondCount + 1).CompareTo(secondCount);
             }
             else
             {
