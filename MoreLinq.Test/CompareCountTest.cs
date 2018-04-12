@@ -137,7 +137,7 @@ namespace MoreLinq.Test
                                            () => 2,
                                            () => 3,
                                            () => 4,
-                                           () => throw new InvalidOperationException());
+                                           () => throw new TestException());
 
             var seq2 = Enumerable.Range(1, 3);
 

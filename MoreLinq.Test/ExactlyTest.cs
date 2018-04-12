@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -64,7 +63,7 @@ namespace MoreLinq.Test
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => 3,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.IsFalse(source.Exactly(2));
         }
     }

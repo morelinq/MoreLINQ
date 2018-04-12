@@ -132,23 +132,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var count = 0;
-
-            if (source.TryGetCollectionCount() is int collectionCount)
-            {
-                count = collectionCount;
-            }
-            else
-            {
-                using (var e = source.GetEnumerator())
-                {
-                    while (e.MoveNext())
-                    {
-                        if (++count == limit)
-                            break;
-                    }
-                }
-            }
+            var count = source.TryGetCollectionCount() ?? source.CountUpTo(limit);
 
             return count >= min && count <= max;
         }
@@ -180,11 +164,11 @@ namespace MoreLinq
 
             if (first.TryGetCollectionCount() is int firstCount)
             {
-                return firstCount.CompareTo(second.TryGetCollectionCount() ?? PartialCount(second, firstCount + 1));
+                return firstCount.CompareTo(second.TryGetCollectionCount() ?? second.CountUpTo(firstCount + 1));
             }
             else if (second.TryGetCollectionCount() is int secondCount)
             {
-                return PartialCount(first, secondCount + 1).CompareTo(secondCount);
+                return first.CountUpTo(secondCount + 1).CompareTo(secondCount);
             }
             else
             {
@@ -202,23 +186,7 @@ namespace MoreLinq
                     while (firstHasNext && secondHasNext);
                 }
 
-                return Convert.ToInt32(firstHasNext).CompareTo(Convert.ToInt32(secondHasNext));
-            }
-
-            int PartialCount<T>(IEnumerable<T> source, int limit)
-            {
-                var count = 0;
-
-                using (var e = source.GetEnumerator())
-                {
-                    while (e.MoveNext())
-                    {
-                        if (++count == limit)
-                            break;
-                    }
-                }
-
-                return count;
+                return firstHasNext.CompareTo(secondHasNext);
             }
         }
     }
