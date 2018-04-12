@@ -38,23 +38,15 @@ namespace MoreLinq.Test
                 select tcs.Task;
 
             using (var results = tasks.AsTestingSequence())
-            using (var e = results.Await().GetEnumerator())
+            using (var reader = results.Await().Read())
             {
                 const int a = 123, b = 456, c = 789;
 
-                tcs2.SetResult(b);
-                Assert.That(e.MoveNext(), Is.True);
-                Assert.That(e.Current, Is.EqualTo(b));
+                tcs2.SetResult(b); Assert.That(reader.Read(), Is.EqualTo(b));
+                tcs1.SetResult(a); Assert.That(reader.Read(), Is.EqualTo(a));
+                tcs3.SetResult(c); Assert.That(reader.Read(), Is.EqualTo(c));
 
-                tcs1.SetResult(a);
-                Assert.That(e.MoveNext(), Is.True);
-                Assert.That(e.Current, Is.EqualTo(a));
-
-                tcs3.SetResult(c);
-                Assert.That(e.MoveNext(), Is.True);
-                Assert.That(e.Current, Is.EqualTo(c));
-
-                Assert.That(e.MoveNext(), Is.False);
+                reader.ReadEnd();
             }
         }
 
@@ -72,19 +64,14 @@ namespace MoreLinq.Test
                 select tcs.Task;
 
             using (var results = tasks.AsTestingSequence())
-            using (var e = results.Await().GetEnumerator())
+            using (var reader = results.Await().Read())
             {
-                tcs2.SetResult(b);
-                Assert.That(e.MoveNext(), Is.True);
-                Assert.That(e.Current, Is.EqualTo(b));
-
-                tcs1.SetResult(a);
-                Assert.That(e.MoveNext(), Is.True);
-                Assert.That(e.Current, Is.EqualTo(a));
+                tcs2.SetResult(b); Assert.That(reader.Read(), Is.EqualTo(b));
+                tcs1.SetResult(a); Assert.That(reader.Read(), Is.EqualTo(a));
 
                 var te = new TestException();
                 tcs3.SetException(te);
-                var ex = Assert.Throws<TestException>(() => e.MoveNext());
+                var ex = Assert.Throws<TestException>(() => reader.Read());
                 Assert.That(ex, Is.SameAs(te));
             }
         }
@@ -139,15 +126,12 @@ namespace MoreLinq.Test
                         e.TaskCompletionSource.SetResult(e.Result);
                 }
 
-                using (var e = results.GetEnumerator())
+                using (var reader = results.Read())
                 {
                     foreach (var x in xs.SkipLast(1))
-                    {
-                        Assert.That(e.MoveNext(), Is.True);
-                        Assert.That(e.Current, Is.EqualTo(x));
-                    }
+                        Assert.That(reader.Read(), Is.EqualTo(x));
 
-                    var ex = Assert.Throws<TestException>(() => e.MoveNext());
+                    var ex = Assert.Throws<TestException>(() => reader.Read());
                     Assert.That(ex, Is.SameAs(te));
                 }
             }
