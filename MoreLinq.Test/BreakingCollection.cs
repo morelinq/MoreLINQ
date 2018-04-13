@@ -30,10 +30,10 @@ namespace MoreLinq.Test
 
     class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
     {
-        protected readonly List<T> List;
+        protected readonly IList<T> List;
 
-        public BreakingCollection() : this(new List<T>()) {}
-        public BreakingCollection(List<T> list) => List = list;
+        public BreakingCollection(params T[] values) : this ((IList<T>) values) {}
+        public BreakingCollection(IList<T> list) => List = list;
         public BreakingCollection(int count) :
             this(Enumerable.Repeat(default(T), count).ToList()) {}
 
