@@ -50,14 +50,14 @@ namespace MoreLinq.Test
                 Assert.IsTrue(xs.CountBetween(1, 1));
         }
 
-        [TestCase(1, 1, 2, 4, false)]
-        [TestCase(1, 2, 2, 4, true)]
-        [TestCase(1, 3, 2, 4, true)]
-        [TestCase(1, 4, 2, 4, true)]
-        [TestCase(1, 5, 2, 4, false)]
-        public void CountBetweenRangeTests(int start, int count, int min, int max, bool expecting)
+        [TestCase(1, 2, 4, false)]
+        [TestCase(2, 2, 4, true)]
+        [TestCase(3, 2, 4, true)]
+        [TestCase(4, 2, 4, true)]
+        [TestCase(5, 2, 4, false)]
+        public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
         {
-            foreach (var xs in Enumerable.Range(start, count).ArrangeCollectionTestCases())
+            foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionTestCases())
                 Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting));
         }
 
