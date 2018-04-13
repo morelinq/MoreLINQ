@@ -60,36 +60,33 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                TSource[] bucket = null;
                 var count = 0;
+                TSource[] bucket;
 
-                foreach (var item in source)
+                using (var e = source.GetEnumerator())
                 {
-                    if (bucket == null)
+                    while (true)
                     {
-                        bucket = new TSource[size];
+                        bucket = GetBucket(e, ref count);
+                        if (count != size) break;
+                        yield return resultSelector(bucket);
                     }
-
-                    bucket[count++] = item;
-
-                    // The bucket is fully buffered before it's yielded
-                    if (count != size)
-                    {
-                        continue;
-                    }
-
-                    yield return resultSelector(bucket);
-
-                    bucket = null;
-                    count = 0;
                 }
 
-                // Return the last bucket with all remaining elements
-                if (bucket != null && count > 0)
+                if (count != 0)
                 {
                     Array.Resize(ref bucket, count);
                     yield return resultSelector(bucket);
                 }
+            }
+
+            TSource[] GetBucket(IEnumerator<TSource> e, ref int count)
+            {
+                var bucket = new TSource[size];
+                for (count = 0; count < size && e.MoveNext();)
+                    bucket[count++] = e.Current;
+
+                return bucket;
             }
         }
     }
