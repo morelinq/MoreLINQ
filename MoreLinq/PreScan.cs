@@ -60,15 +60,22 @@ namespace MoreLinq
 
             return _(); IEnumerable<TSource> _()
             {
-                // special case, the first element is set to the identity
                 var aggregator = identity;
 
-                foreach (var i in source)
+                using (var e = source.GetEnumerator())
                 {
-                    yield return aggregator;
+                    if (e.MoveNext())
+                    {
+                        yield return aggregator;
+                        var current = e.Current;
 
-                    // aggregate the next element in the sequence
-                    aggregator = transformation(aggregator, i);
+                        while (e.MoveNext())
+                        {
+                            aggregator = transformation(aggregator, current);
+                            yield return aggregator;
+                            current = e.Current;
+                        }
+                    }
                 }
             }
         }
