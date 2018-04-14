@@ -52,7 +52,7 @@ namespace MoreLinq
         /// <param name="identity">Identity element (see remarks)</param>
         /// <returns>The scanned sequence</returns>
 
-        public static IEnumerable<TSource> PreScan<TSource>(this 
+        public static IEnumerable<TSource> PreScan<TSource>(this
 		    IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> transformation,
 			TSource identity)
