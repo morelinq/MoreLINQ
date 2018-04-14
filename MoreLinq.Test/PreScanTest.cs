@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -37,6 +39,16 @@ namespace MoreLinq.Test
             var gold = new[] { 1, 1, 2 };
             var result = seq.PreScan(SampleData.Mul, 1);
             result.AssertSequenceEqual(gold);
+        }
+
+        [Test]
+        public void PreScanFuncIsNotInvokedUnnecessarily()
+        {
+            var count = 0;
+            var sequence = Enumerable.Range(1, 3).PreScan((a, b) =>
+                (++count == 3) ? throw new TestException() : a + b, 0);
+            var gold = new[] { 0, 1, 3 };
+            sequence.AssertSequenceEqual(gold);
         }
     }
 }
