@@ -91,5 +91,14 @@ namespace MoreLinq.Test
             Assert.False(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
             Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
+
+        [Test]
+        public void StartsWithOptimizedForCollections()
+        {
+            var first = new BreakingCollection<int>(1, 2);
+            var second = new BreakingCollection<int>(1, 2, 3);
+
+            Assert.False(first.StartsWith(second));
+        }
     }
 }
