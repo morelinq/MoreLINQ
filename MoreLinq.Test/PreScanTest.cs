@@ -43,9 +43,10 @@ namespace MoreLinq.Test
         public void PreScanFuncIsNotInvokedUnnecessarily()
         {
             var count = 0;
-            var sequence = Enumerable.Range(1, 3).PreScan((a, b) =>
-                (++count == 3) ? throw new TestException() : a + b, 0);
             var gold = new[] { 0, 1, 3 };
+            var sequence = Enumerable.Range(1, 3).PreScan((a, b) =>
+                ++count == gold.Length ? throw new TestException() : a + b, 0);
+
             sequence.AssertSequenceEqual(gold);
         }
     }
