@@ -17,11 +17,38 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
     public class PreScanTest
     {
+        [Test]
+        public void PreScanIsLazy()
+        {
+            new BreakingSequence<object>().PreScan(delegate { throw new NotImplementedException(); }, 0);
+        }
+
+        [Test]
+        public void PreScanWithEmptySequence()
+        {
+            var source = Enumerable.Empty<int>();
+            var result = source.PreScan(SampleData.Plus, 0);
+
+            Assert.IsFalse(result.Any());
+        }
+
+        [Test]
+        public void PreScanWithSingleElement()
+        {
+            var source = new[] { 111 };
+            var result = source.PreScan(SampleData.Plus, 999);
+            var gold = new[] { 999 };
+
+            result.AssertSequenceEqual(gold);
+        }
+
         [Test]
         public void PreScanSum()
         {
