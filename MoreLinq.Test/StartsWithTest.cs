@@ -93,7 +93,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void StartsWithOptimizedForCollections()
+        public void StartsWithUsesCollectionsCountToAvoidUnnecessaryIteration()
         {
             var first = new BreakingCollection<int>(1, 2);
             var second = new BreakingCollection<int>(1, 2, 3);
