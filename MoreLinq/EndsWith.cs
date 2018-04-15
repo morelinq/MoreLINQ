@@ -71,8 +71,17 @@ namespace MoreLinq
 
             comparer = comparer ?? EqualityComparer<T>.Default;
 
+            var nullableSecondCount = second.TryGetCollectionCount();
+
+            if (nullableSecondCount is int secondCount &&
+                first.TryGetCollectionCount() is int firstCount &&
+                secondCount > firstCount)
+            {
+                return false;
+            }
+
             List<T> secondList;
-            return second.TryGetCollectionCount() is int collectionCount
+            return nullableSecondCount is int collectionCount
                  ? Impl(second, collectionCount)
                  : Impl(secondList = second.ToList(), secondList.Count);
 
