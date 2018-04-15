@@ -42,7 +42,7 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pairwise((a, b) => a + b);
+        /// var result = numbers.Pairwise((a, b) => a + b);
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 579 and 1245, in turn.
