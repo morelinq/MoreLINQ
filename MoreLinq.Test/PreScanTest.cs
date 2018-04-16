@@ -43,9 +43,7 @@ namespace MoreLinq.Test
         {
             var source = new[] { 111 };
             var result = source.PreScan(SampleData.Plus, 999);
-            var gold = new[] { 999 };
-
-            result.AssertSequenceEqual(gold);
+            result.AssertSequenceEqual(999);
         }
 
         [Test]
