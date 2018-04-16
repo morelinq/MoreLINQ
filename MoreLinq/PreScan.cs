@@ -52,23 +52,32 @@ namespace MoreLinq
         /// <param name="identity">Identity element (see remarks)</param>
         /// <returns>The scanned sequence</returns>
 
-        public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
-            Func<TSource, TSource, TSource> transformation, TSource identity)
+        public static IEnumerable<TSource> PreScan<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, TSource> transformation,
+            TSource identity)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
             return _(); IEnumerable<TSource> _()
             {
-                // special case, the first element is set to the identity
                 var aggregator = identity;
 
-                foreach (var i in source)
+                using (var e = source.GetEnumerator())
                 {
-                    yield return aggregator;
+                    if (e.MoveNext())
+                    {
+                        yield return aggregator;
+                        var current = e.Current;
 
-                    // aggregate the next element in the sequence
-                    aggregator = transformation(aggregator, i);
+                        while (e.MoveNext())
+                        {
+                            aggregator = transformation(aggregator, current);
+                            yield return aggregator;
+                            current = e.Current;
+                        }
+                    }
                 }
             }
         }

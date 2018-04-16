@@ -59,5 +59,16 @@ namespace MoreLinq.Test
             var result = seq.PreScan(SampleData.Mul, 1);
             result.AssertSequenceEqual(1, 1, 2);
         }
+
+        [Test]
+        public void PreScanFuncIsNotInvokedUnnecessarily()
+        {
+            var count = 0;
+            var gold = new[] { 0, 1, 3 };
+            var sequence = Enumerable.Range(1, 3).PreScan((a, b) =>
+                ++count == gold.Length ? throw new TestException() : a + b, 0);
+
+            sequence.AssertSequenceEqual(gold);
+        }
     }
 }
