@@ -92,11 +92,12 @@ namespace MoreLinq.Test
             Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
 
-        [Test]
-        public void StartsWithUsesCollectionsCountToAvoidUnnecessaryIteration()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void StartsWithUsesCollectionsCountToAvoidUnnecessaryIteration(bool readOnly)
         {
-            var first = new BreakingCollection<int>(1, 2);
-            var second = new BreakingCollection<int>(1, 2, 3);
+            var first = new[] { 1, 2 }.ToBreakingList(readOnly);
+            var second = new[] { 1, 2, 3 }.ToBreakingList(readOnly);
 
             Assert.False(first.StartsWith(second));
         }
