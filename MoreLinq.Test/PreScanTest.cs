@@ -23,6 +23,29 @@ namespace MoreLinq.Test
     public class PreScanTest
     {
         [Test]
+        public void PreScanIsLazy()
+        {
+            new BreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
+        }
+
+        [Test]
+        public void PreScanWithEmptySequence()
+        {
+            var source = Enumerable.Empty<int>();
+            var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 0);
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void PreScanWithSingleElement()
+        {
+            var source = new[] { 111 };
+            var result = source.PreScan(SampleData.Plus, 999);
+            result.AssertSequenceEqual(999);
+        }
+
+        [Test]
         public void PreScanSum()
         {
             var result = SampleData.Values.PreScan(SampleData.Plus, 0);
