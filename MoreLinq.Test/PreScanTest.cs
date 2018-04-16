@@ -34,7 +34,7 @@ namespace MoreLinq.Test
             var source = Enumerable.Empty<int>();
             var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 0);
 
-            Assert.IsFalse(result.Any());
+            Assert.That(result, Is.Empty);
         }
 
         [Test]
