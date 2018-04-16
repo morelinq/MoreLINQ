@@ -36,9 +36,10 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
         {
+            if (generator == null) throw new ArgumentNullException(nameof(generator));
+
             // Would just use Enumerable.Range(0, int.MaxValue).Select(generator) but that doesn't
             // include int.MaxValue. Picky, I know...
-            if (generator == null) throw new ArgumentNullException(nameof(generator));
 
             return _(); IEnumerable<TResult> _()
             {
