@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         public void PreScanWithSingleElement()
         {
             var source = new[] { 111 };
-            var result = source.PreScan(SampleData.Plus, 999);
+            var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 999);
             result.AssertSequenceEqual(999);
         }
 
