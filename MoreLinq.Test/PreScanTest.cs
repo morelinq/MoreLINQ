@@ -26,17 +26,15 @@ namespace MoreLinq.Test
         public void PreScanSum()
         {
             var result = SampleData.Values.PreScan(SampleData.Plus, 0);
-            var gold = new[] { 0, 1, 3, 6, 10, 15, 21, 28, 36, 45 };
-            result.AssertSequenceEqual(gold);
+            result.AssertSequenceEqual(0, 1, 3, 6, 10, 15, 21, 28, 36, 45);
         }
 
         [Test]
         public void PreScanMul()
         {
             var seq = new[] { 1, 2, 3 };
-            var gold = new[] { 1, 1, 2 };
             var result = seq.PreScan(SampleData.Mul, 1);
-            result.AssertSequenceEqual(gold);
+            result.AssertSequenceEqual(1, 1, 2);
         }
     }
 }
