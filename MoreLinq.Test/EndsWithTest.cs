@@ -96,8 +96,8 @@ namespace MoreLinq.Test
         [TestCase(false)]
         public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(bool readOnly)
         {
-            var first = new[] { 1, 2 }.ToBreakingList(readOnly);
-            var second = new[] { 1, 2, 3 }.ToBreakingList(readOnly);
+            var first = new[] { 1, 2 }.ToBreakingCollection(readOnly);
+            var second = new[] { 1, 2, 3 }.ToBreakingCollection(readOnly);
 
             Assert.False(first.EndsWith(second));
         }
