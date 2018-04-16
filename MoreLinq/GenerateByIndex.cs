@@ -25,14 +25,19 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence of values based on indexes.
         /// </summary>
+        /// <typeparam name="TResult">
+        /// The type of the value returned by <paramref name="generator"/>
+        /// and therefore the elements of the generated sequence.</typeparam>
+        /// <param name="generator">
+        /// Generation function to apply to each index.</param>
+        /// <returns>A sequence of generated results.</returns>
         /// <remarks>
-        /// The sequence is (practically) infinite
-        /// - the index ranges from 0 to <c>int.MaxValue</c> inclusive. This function defers
-        /// execution and streams the results.
+        /// <para>
+        /// The sequence is (practically) infinite where the index ranges from
+        /// zero to <see cref="int.MaxValue"/> inclusive.</para>
+        /// <para>
+        /// This function defers execution and streams the results.</para>
         /// </remarks>
-        /// <typeparam name="TResult">Type of result to generate</typeparam>
-        /// <param name="generator">Generation function to apply to each index</param>
-        /// <returns>A sequence </returns>
 
         public static IEnumerable<TResult> GenerateByIndex<TResult>(Func<int, TResult> generator)
         {
