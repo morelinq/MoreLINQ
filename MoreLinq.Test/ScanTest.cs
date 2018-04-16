@@ -40,7 +40,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanIsLazy()
         {
-            new BreakingSequence<object>().Scan(delegate { throw new NotImplementedException(); });
+            new BreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace MoreLinq.Test
         [Test]
         public void SeededScanIsLazy()
         {
-            new BreakingSequence<object>().Scan<object, object>(null, delegate { throw new NotImplementedException(); });
+            new BreakingSequence<object>().Scan(null, BreakingFunc.Of<object, object, object>());
         }
 
         [Test]
