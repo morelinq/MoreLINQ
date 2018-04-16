@@ -69,7 +69,7 @@ namespace MoreLinq.Test
         [Test]
         public void SeededScanIsLazy()
         {
-            new BreakingSequence<object>().Scan<object, object>(null, BreakingFunc.Of<object, object, object>());
+            new BreakingSequence<object>().Scan(null, BreakingFunc.Of<object, object, object>());
         }
 
         [Test]
