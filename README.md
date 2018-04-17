@@ -85,6 +85,13 @@ Returns the Cartesian product of two sequences by combining each element of
 the first set with each in the second and applying the user=define projection
 to the pair
 
+### Choose
+
+Applies a function to each element of the source sequence and returns a new
+sequence of result elements for source elements where the function returns a
+couple (2-tuple) having a `true` as its first element and result as the
+second.
+
 ### CompareCount
 
 Compares two sequences and returns an integer that indicates whether the
