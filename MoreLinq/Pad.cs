@@ -40,7 +40,7 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.Pad(5);
+        /// IEnumerable<int> result = numbers.Pad(5);
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, 789 and two zeroes, in turn.
@@ -100,7 +100,7 @@ namespace MoreLinq
         /// <example>
         /// <code>
         /// int[] numbers = { 0, 1, 2 };
-        /// var result = numbers.Pad(5, i => -i);
+        /// IEnumerable<int> result = numbers.Pad(5, i => -i);
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2, -3 and -4, in turn.
