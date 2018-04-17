@@ -35,10 +35,10 @@ namespace MoreLinq
         /// <returns><c>true</c> if the number of elements in the sequence is greater than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.AtLeast(2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
@@ -61,10 +61,10 @@ namespace MoreLinq
         /// <returns><c>true</c> if the number of elements in the sequence is lesser than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.AtMost(2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
@@ -86,10 +86,10 @@ namespace MoreLinq
         /// <returns><c>true</c> if the number of elements in the sequence is equals
         /// to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.Exactly(3);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
@@ -114,10 +114,10 @@ namespace MoreLinq
         /// <returns><c>true</c> if the number of elements in the sequence is between (inclusive)
         /// the min and max given integers or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.CountBetween(1, 2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
@@ -150,11 +150,11 @@ namespace MoreLinq
         /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements
         /// or <c>1</c> if the first sequence has the most elements.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var first = { 123, 456 };
         /// var second = { 789 };
         /// var result = first.CompareCount(second);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>1</c>.
         /// </example>
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)

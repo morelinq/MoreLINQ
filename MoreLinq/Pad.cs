@@ -38,10 +38,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
         /// IEnumerable&lt;int&gt; result = numbers.Pad(5);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
@@ -67,10 +67,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
         /// IEnumerable&lt;int&gt; result = numbers.Pad(5, -1);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, and 789 followed by two occurrences of -1, in turn.
         /// </example>
@@ -98,10 +98,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 0, 1, 2 };
         /// IEnumerable&lt;int&gt; result = numbers.Pad(5, i => -i);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2, -3 and -4, in turn.
         /// </example>

@@ -36,10 +36,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3, 4, 5 };
         /// IEnumerable&lt;int&gt; result = numbers.TakeEvery(2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield 1, 3 and 5, in turn.
         /// </example>
 
