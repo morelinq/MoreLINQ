@@ -36,10 +36,11 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
+        /// Func&lt;int, int, int&gt; plus = (a, b) =&gt; a + b;
         /// int[] values = { 1, 2, 3, 4 };
-        /// var prescan = values.PreScan((a, b) => a + b, 0);
-        /// var scan = values.Scan((a, b) => a + b);
-        /// var result = values.ZipShortest(prescan, plus);
+        /// IEnumerable&lt;int&gt; prescan = values.PreScan(plus, 0);
+        /// IEnumerable&lt;int&gt; scan = values.Scan(plus; a + b);
+        /// IEnumerable&lt;int&gt; result = values.ZipShortest(prescan, plus);
         /// </code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
@@ -84,7 +85,7 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code>
-        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) => a + b);
+        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) =&gt; a + b);
         /// </code>
         /// When iterated, <c>result</c> will yield <c>{ 0, 1, 3, 6, 10, 15 }</c>.
         /// </example>

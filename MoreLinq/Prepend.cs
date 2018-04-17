@@ -36,7 +36,7 @@ namespace MoreLinq
         /// </remarks>
         /// <code>
         /// int[] numbers = { 1, 2, 3 };
-        /// var result = numbers.Prepend(0);
+        /// IEnumerable&lt;int&gt; result = numbers.Prepend(0);
         /// </code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2 and 3, in turn.
