@@ -35,9 +35,9 @@ namespace MoreLinq
         /// This function defers element generation until needed and streams the results.
         /// </remarks>
         /// <example>
-        /// <code>
-        /// IEnumerable&lt;int&gt; result = MoreEnumerable.Generate(2, n => n * n).Take(5);
-        /// </code>
+        /// <code><![CDATA[
+        /// IEnumerable<int> result = MoreEnumerable.Generate(2, n => n * n).Take(5);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield 2, 4, 16, 256, and 65536, in turn.
         /// </example>
 

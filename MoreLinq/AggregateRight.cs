@@ -33,9 +33,9 @@ namespace MoreLinq
         /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
         /// <returns>The final accumulator value.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
         /// <remarks>
@@ -67,10 +67,10 @@ namespace MoreLinq
         /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
         /// <returns>The final accumulator value.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
         /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
         /// <remarks>
@@ -102,10 +102,10 @@ namespace MoreLinq
         /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
         /// <returns>The transformed final accumulator value.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
         /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
         /// <remarks>
