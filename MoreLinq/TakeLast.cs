@@ -39,7 +39,7 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// int[] numbers = { 12, 34, 56, 78 };
-        /// IEnumerable&lt;int&gt; result = numbers.TakeLast(2);
+        /// IEnumerable<int> result = numbers.TakeLast(2);
         /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 56 and 78 in turn.
