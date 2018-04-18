@@ -10,10 +10,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class NestedLoopTest
     {
-        static void DoNothing() { }
-
-        static readonly Action EmptyLoopBody = DoNothing;
-
         [Test]
         public void NestedLoopsIsLazy()
         {
@@ -27,7 +23,8 @@ namespace MoreLinq.Test
         public void TestNegativeLoopCountsException()
         {
             AssertThrowsArgument.Exception("loopCounts", () =>
-                EmptyLoopBody.NestedLoops(Enumerable.Range(-10, 10)).ElementAt(0));
+                BreakingAction.WithoutArguments.NestedLoops(Enumerable.Range(-10, 10))
+                                               .ElementAt(0));
         }
 
         /// <summary>
