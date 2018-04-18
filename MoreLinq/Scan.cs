@@ -83,15 +83,9 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
-<<<<<<< HEAD
-        /// <code>
-        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) => a + b);
-        /// </code>
-=======
         /// <code><![CDATA[
         /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) => a + b);
         /// ]]></code>
->>>>>>> 6de412171ae6f66081ad77b8477db64a6dddbc89
         /// When iterated, <c>result</c> will yield <c>{ 0, 1, 3, 6, 10, 15 }</c>.
         /// </example>
         /// <typeparam name="TSource">Type of elements in source sequence</typeparam>
