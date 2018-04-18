@@ -46,7 +46,7 @@ namespace MoreLinq
                 using (var e = loopCounts.GetEnumerator())
                 {
                     var count = 1;
-                    var called = 0;
+                    var yielded = 0;
 
                     while (e.MoveNext())
                     {
@@ -55,10 +55,10 @@ namespace MoreLinq
 
                         count *= e.Current;
 
-                        while (called < count)
+                        while (yielded < count)
                         {
                             yield return action;
-                            called++;
+                            yielded++;
                         }
                     }
                 }
