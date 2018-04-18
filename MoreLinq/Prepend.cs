@@ -34,10 +34,10 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3 };
         /// var result = numbers.Prepend(0);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2 and 3, in turn.
 

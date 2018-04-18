@@ -12,6 +12,29 @@ Documentation for the stable and beta releases can be found at
 [morelinq.github.io](http://morelinq.github.io/).
 
 
+## Building
+
+To build MoreLINQ from sources, you will need:
+
+- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
+- [Mono][mono] 5.0 if building on other platforms than Windows
+
+Then run either `build.cmd` if building on Windows or `build.sh` if
+building on macOS or a Linux distribution supported by .NET Core.
+
+Building the documentation is supported on Windows only and requires
+[Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
+generates the documentation in the `docs/api` directory. It can be browsed
+locally using any HTTP server of static files, like
+[http-server][http-server].
+
+
+[mono]: https://www.mono-project.com/
+[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
+[http-server]: https://www.npmjs.com/package/http-server
+
+
 ## Operators
 
 ### Acquire

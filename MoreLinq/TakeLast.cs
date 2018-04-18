@@ -37,10 +37,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 12, 34, 56, 78 };
         /// var result = numbers.TakeLast(2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 56 and 78 in turn.
         /// </example>

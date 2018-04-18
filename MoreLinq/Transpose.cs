@@ -40,7 +40,7 @@ namespace MoreLinq
         /// resulting sequences of columns are streamed.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var matrix = new[]
         /// {
         ///     new[] { 10, 11 },
@@ -48,7 +48,7 @@ namespace MoreLinq
         ///     new[] { 30, 31, 32 }
         /// };
         /// var result = matrix.Transpose();
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain [[10, 20, 30], [11, 31], [32]].
         /// </example>
 

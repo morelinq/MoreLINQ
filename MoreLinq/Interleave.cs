@@ -30,9 +30,9 @@ namespace MoreLinq
         /// <remarks>
         /// Interleave combines sequences by visiting each in turn, and returning the first element of each, followed
         /// by the second, then the third, and so on. So, for example:<br/>
-        /// <code>
+        /// <code><![CDATA[
         /// {1,1,1}.Interleave( {2,2,2}, {3,3,3} ) => { 1,2,3,1,2,3,1,2,3 }
-        /// </code>
+        /// ]]></code>
         /// This operator behaves in a deferred and streaming manner.<br/>
         /// When sequences are of unequal length, this method will skip those sequences that have been fully consumed
         /// and continue interleaving the remaining sequences.<br/>
@@ -55,9 +55,9 @@ namespace MoreLinq
         /// <remarks>
         /// Interleave combines sequences by visiting each in turn, and returning the first element of each, followed
         /// by the second, then the third, and so on. So, for example:<br/>
-        /// <code>
+        /// <code><![CDATA[
         /// {1,1,1}.Interleave( {2,2,2}, {3,3,3} ) => { 1,2,3,1,2,3,1,2,3 }
-        /// </code>
+        /// ]]></code>
         /// This operator behaves in a deferred and streaming manner.<br/>
         /// When sequences are of unequal length, this method will use the imbalance strategy specified to
         /// decide how to continue interleaving the remaining sequences. See <see cref="ImbalancedInterleaveStrategy"/>

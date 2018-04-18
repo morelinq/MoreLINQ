@@ -35,12 +35,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] values = { 1, 2, 3, 4 };
         /// var prescan = values.PreScan((a, b) => a + b, 0);
         /// var scan = values.Scan((a, b) => a + b);
         /// var result = values.ZipShortest(prescan, plus);
-        /// </code>
+        /// ]]></code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
         /// shows the relationship between the inclusive and exclusive prefix sum.
@@ -51,23 +51,32 @@ namespace MoreLinq
         /// <param name="identity">Identity element (see remarks)</param>
         /// <returns>The scanned sequence</returns>
 
-        public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
-            Func<TSource, TSource, TSource> transformation, TSource identity)
+        public static IEnumerable<TSource> PreScan<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, TSource> transformation,
+            TSource identity)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
             return _(); IEnumerable<TSource> _()
             {
-                // special case, the first element is set to the identity
                 var aggregator = identity;
 
-                foreach (var i in source)
+                using (var e = source.GetEnumerator())
                 {
-                    yield return aggregator;
+                    if (e.MoveNext())
+                    {
+                        yield return aggregator;
+                        var current = e.Current;
 
-                    // aggregate the next element in the sequence
-                    aggregator = transformation(aggregator, i);
+                        while (e.MoveNext())
+                        {
+                            aggregator = transformation(aggregator, current);
+                            yield return aggregator;
+                            current = e.Current;
+                        }
+                    }
                 }
             }
         }

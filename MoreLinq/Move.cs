@@ -41,9 +41,9 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var result = Enumerable.Range(0, 6).Move(3, 2, 0);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
         /// </example>
 

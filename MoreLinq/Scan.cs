@@ -35,12 +35,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] values = { 1, 2, 3, 4 };
         /// var prescan = values.PreScan((a, b) => a + b, 0);
         /// var scan = values.Scan((a, b) => a + b);
         /// var result = values.ZipShortest(prescan, plus);
-        /// </code>
+        /// ]]></code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
         /// shows the relationship between the inclusive and exclusive prefix sum.
@@ -83,9 +83,15 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
+<<<<<<< HEAD
         /// <code>
         /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) => a + b);
         /// </code>
+=======
+        /// <code><![CDATA[
+        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) => a + b);
+        /// ]]></code>
+>>>>>>> 6de412171ae6f66081ad77b8477db64a6dddbc89
         /// When iterated, <c>result</c> will yield <c>{ 0, 1, 3, 6, 10, 15 }</c>.
         /// </example>
         /// <typeparam name="TSource">Type of elements in source sequence</typeparam>
