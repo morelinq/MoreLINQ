@@ -43,24 +43,14 @@ namespace MoreLinq
 
             return _(); IEnumerable<Action> _()
             {
-                using (var e = loopCounts.GetEnumerator())
+                var count = loopCounts.Assert(n => n >= 0,
+                                              n => new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts)))
+                                      .DefaultIfEmpty()
+                                      .Aggregate((acc, x) => acc * x);
+
+                for (var i = 0; i < count; i++)
                 {
-                    var count = 1;
-                    var yielded = 0;
-
-                    while (e.MoveNext())
-                    {
-                        if (e.Current < 0)
-                            throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
-
-                        count *= e.Current;
-
-                        while (yielded < count)
-                        {
-                            yield return action;
-                            yielded++;
-                        }
-                    }
+                    yield return action;
                 }
             }
         }
