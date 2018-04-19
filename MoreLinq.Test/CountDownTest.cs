@@ -17,7 +17,7 @@
 
 namespace MoreLinq.Test
 {
-    using System.Collections;
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -46,11 +46,12 @@ namespace MoreLinq.Test
             }
             let xs = Enumerable.Range(1, 5)
             select new TestCaseData(xs, e.Count)
-                .Returns(xs.Zip(e.CountDown, (x, cd) => new { X = x, Countdown = cd }))
+                .Returns(xs.Zip(e.CountDown, ValueTuple.Create))
                 .SetName($"{nameof(CountDown)}([{xs.First()}..{xs.Last()}], {e.Count})");
 
         [TestCaseSource(nameof(Data))]
-        public IEnumerable CountDown(IEnumerable<int> xs, int count) =>
-            xs.CountDown(count, (x, cd) => new { X = x, Countdown = cd });
+        public IEnumerable<(int, int?)>
+            CountDown(IEnumerable<int> xs, int count) =>
+                xs.CountDown(count, ValueTuple.Create);
     }
 }
