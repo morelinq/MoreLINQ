@@ -2,7 +2,6 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
-    using static MoreEnumerable;
 
     /// <summary>
     /// Tests that verify the behavior of the NestedLoops extension method.
@@ -20,10 +19,18 @@ namespace MoreLinq.Test
         /// Verify that passing negative loop counts results in an exception
         /// </summary>
         [Test]
-        public void TestNegativeLoopCountsException()
+        public void NestedLoopWithFirstElementNegative()
         {
             AssertThrowsArgument.Exception("loopCounts", () =>
                 BreakingAction.WithoutArguments.NestedLoops(Enumerable.Range(-10, 10))
+                                               .ElementAt(0));
+        }
+
+        [Test]
+        public void NestedLoopWithLastElementNegative()
+        {
+            AssertThrowsArgument.Exception("loopCounts", () =>
+                BreakingAction.WithoutArguments.NestedLoops(MoreEnumerable.Sequence(10, -1))
                                                .ElementAt(0));
         }
 
@@ -51,21 +58,19 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TestNestedLoopConsumesSequenceLazily()
+        public void NestedLoopWithEmptySequence()
         {
-            var i = 0;
-            Action loopBody = () => ++i;
+            var result = BreakingAction.WithoutArguments.NestedLoops(new int[0]);
 
-            const int count = 4;
-            var expectedCount = (int) Combinatorics.Factorial(count);
+            Assert.That(result, Is.Empty);
+        }
 
-            var loopCounts = Enumerable.Range(1, count)
-                                       .Concat(From<int>(() => throw new TestException()));
+        [Test]
+        public void NestedLoopContainingZero()
+        {
+            var result = BreakingAction.WithoutArguments.NestedLoops(new[] { 3, 2, 1, 0, 4 });
 
-            var nestedLoops = loopBody.NestedLoops(loopCounts);
-
-            Assert.AreEqual( expectedCount, nestedLoops.Take(expectedCount).Count() );
-            Assert.Throws<TestException>(() => nestedLoops.ElementAt(expectedCount));
+            Assert.That(result, Is.Empty);
         }
     }
 }
