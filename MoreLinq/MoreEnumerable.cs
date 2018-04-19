@@ -82,5 +82,23 @@ namespace MoreLinq
                 }
             }
         }
+
+        static int CountUpTo<T>(this IEnumerable<T> source, int max)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
+
+            var count = 0;
+
+            using (var e = source.GetEnumerator())
+            {
+                while (count < max && e.MoveNext())
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }

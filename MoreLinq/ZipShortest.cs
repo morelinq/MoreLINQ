@@ -32,12 +32,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "98A", "100B", "102C", in turn.
         /// </example>
@@ -72,13 +72,13 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var flags   = new[] { true, false };
         /// var zipped  = numbers.ZipShortest(letters, chars, flags (n, l, c, f) => n + l + c + f);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "1AaTrue", "2BbFalse" in turn.
         /// </example>
@@ -116,11 +116,11 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
@@ -146,22 +146,7 @@ namespace MoreLinq
             IEnumerable<T3> s3, IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            using (var e1 = s1.GetEnumerator())
-            using (var e2 = s2.GetEnumerator())
-            using (var e3 = s3?.GetEnumerator())
-            using (var e4 = s4?.GetEnumerator())
-            {
-                while (e1.MoveNext())
-                {
-                    if (e2.MoveNext() && (e3 == null || e3.MoveNext())
-                                      && (e4 == null || e4.MoveNext()))
-                    {
-                        yield return resultSelector(e1.Current, e2.Current,
-                            e3 != null ? e3.Current : default,
-                            e4 != null ? e4.Current : default);
-                    }
-                }
-            }
+            return ZipImpl(s1, s2, s3, s4, resultSelector, 0);
         }
     }
 }

@@ -71,6 +71,13 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
+            if (first.TryGetCollectionCount() is int firstCount &&
+                second.TryGetCollectionCount() is int secondCount &&
+                secondCount > firstCount)
+            {
+                return false;
+            }
+
             comparer = comparer ?? EqualityComparer<T>.Default;
 
             using (var firstIter = first.GetEnumerator())

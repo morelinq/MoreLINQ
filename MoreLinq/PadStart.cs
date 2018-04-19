@@ -38,10 +38,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
         /// var result = numbers.PadLeft(5);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
@@ -67,10 +67,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
         /// var result = numbers.PadLeft(5, -1);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
         /// </example>
 
@@ -98,10 +98,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
         /// var result = numbers.PadLeft(6, i => -i);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
         /// </example>
 
@@ -117,12 +117,12 @@ namespace MoreLinq
             int width, T padding, Func<int, T> paddingSelector)
         {
             return
-                source is ICollection<T> collection
-                ? collection.Count >= width
-                  ? collection
-                  : Enumerable.Range(0, width - collection.Count)
+                source.TryGetCollectionCount() is int collectionCount
+                ? collectionCount >= width
+                  ? source
+                  : Enumerable.Range(0, width - collectionCount)
                               .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
-                              .Concat(collection)
+                              .Concat(source)
                 : _(); IEnumerable<T> _()
                 {
                     var array = new T[width];

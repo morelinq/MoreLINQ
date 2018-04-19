@@ -19,6 +19,8 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -27,11 +29,11 @@ namespace MoreLinq
         /// from each of the argument sequences.
         /// </summary>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3, 4 };
         /// string[] letters = { "A", "B", "C", "D" };
         /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "4D" in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
@@ -71,12 +73,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 1, 2, 3, 4 };
         /// var letters = { "A", "B", "C", "D" };
         /// var chars    = { 'a', 'b', 'c', 'd' };
         /// var zipped = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1Aa", "2Bb", "3Cc", "4Dd" in turn.
         /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
@@ -114,13 +116,13 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 1, 2, 3, 4 };
         /// var letters = { "A", "B", "C", "D" };
         /// var chars   = { 'a', 'b', 'c', 'd' };
         /// var flags   = { true, false, true, false };
         /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue", "2BbFalse", "3CcTrue", "4DdFalse" in turn.
         /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
@@ -152,39 +154,45 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
+            IEnumerable<T1> s1,
+            IEnumerable<T2> s2,
+            IEnumerable<T3> s3,
+            IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            using (var e1 = first.GetEnumerator())
-            using (var e2 = second.GetEnumerator())
-            using (var e3 = third?.GetEnumerator())
-            using (var e4 = fourth?.GetEnumerator())
+            Debug.Assert(s1 != null);
+            Debug.Assert(s2 != null);
+
+            const int zero = 0, one = 1;
+
+            var limit = 1 + (s3 != null ? one : zero)
+                          + (s4 != null ? one : zero);
+
+            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
             {
-                while (e1.MoveNext())
-                {
-                    bool m2, m3 = false;
-                    if ((m2 = e2.MoveNext()) && (m3 = (e3 == null || e3.MoveNext()))
-                                             && ((e4 == null || e4.MoveNext())))
-                    {
-                        yield return resultSelector(e1.Current, e2.Current,
-                                                    e3 != null ? e3.Current : default,
-                                                    e4 != null ? e4.Current : default);
-                    }
-                    else
-                    {
-                        var message = string.Format("{0} sequence too short.", !m2 ? "Second" : !m3 ? "Third" : "Fourth");
-                        throw new InvalidOperationException(message);
-                    }
-                }
-                if (e2.MoveNext() || (e3 != null && e3.MoveNext())
-                                  || (e4 != null && e4.MoveNext()))
-                {
-                    throw new InvalidOperationException("First sequence too short.");
-                }
-            }
+                var i = enumerators.Index().First(x => x.Value == null).Key;
+                return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
+            });
         }
+
+        static readonly string[] OrdinalNumbers =
+        {
+            "First",
+            "Second",
+            "Third",
+            "Fourth",
+            // "Fifth",
+            // "Sixth",
+            // "Seventh",
+            // "Eighth",
+            // "Ninth",
+            // "Tenth",
+            // "Eleventh",
+            // "Twelfth",
+            // "Thirteenth",
+            // "Fourteenth",
+            // "Fifteenth",
+            // "Sixteenth",
+        };
     }
 }

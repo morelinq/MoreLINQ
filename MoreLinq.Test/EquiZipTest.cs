@@ -78,7 +78,32 @@ namespace MoreLinq.Test
         public void ZipIsLazy()
         {
             var bs = new BreakingSequence<int>();
-            bs.EquiZip<int, int, int>(bs, delegate { throw new NotImplementedException(); });
+            bs.EquiZip(bs, BreakingFunc.Of<int, int, int>());
+        }
+
+        [Test]
+        public void MoveNextIsNotCalledUnnecessarily()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            using (var s2 = TestingSequence.Of(1, 2, 3))
+            using (var s3 = MoreEnumerable.From(() => 1,
+                                                () => 2,
+                                                () => throw new TestException())
+                                          .AsTestingSequence())
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume());
+            }
+        }
+
+        [Test]
+        public void ZipDisposesInnerSequencesCaseGetEnumeratorThrows()
+        {
+            using (var s1 = TestingSequence.Of(1, 2))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+            }
         }
     }
 }

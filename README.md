@@ -12,6 +12,29 @@ Documentation for the stable and beta releases can be found at
 [morelinq.github.io](http://morelinq.github.io/).
 
 
+## Building
+
+To build MoreLINQ from sources, you will need:
+
+- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
+- [Mono][mono] 5.0 if building on other platforms than Windows
+
+Then run either `build.cmd` if building on Windows or `build.sh` if
+building on macOS or a Linux distribution supported by .NET Core.
+
+Building the documentation is supported on Windows only and requires
+[Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
+generates the documentation in the `docs/api` directory. It can be browsed
+locally using any HTTP server of static files, like
+[http-server][http-server].
+
+
+[mono]: https://www.mono-project.com/
+[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
+[http-server]: https://www.npmjs.com/package/http-server
+
+
 ## Operators
 
 ### Acquire
@@ -523,6 +546,10 @@ or tuples of 2.
 
 This method has 4 overloads.
 
+### Transpose
+
+Transposes the rows of a sequence into columns.
+
 ### TraverseBreadthFirst
 
 Traverses a tree in a breadth-first fashion, starting at a root node and using
@@ -563,6 +590,24 @@ Returns a projection of tuples, where each tuple contains the N-th element
 from each of the argument sequences.
 
 This method has 3 overloads.
+
+
+## Experimental Operators
+
+THESE METHODS ARE EXPERIMENTAL. THEY MAY BE UNSTABLE AND UNTESTED. THEY MAY BE
+REMOVED FROM A FUTURE MAJOR OR MINOR RELEASE AND POSSIBLY WITHOUT NOTICE. USE
+THEM AT YOUR OWN RISK. THE METHODS ARE PUBLISHED FOR FIELD EXPERIMENTATION TO
+SOLICIT FEEDBACK ON THEIR UTILITY AND DESIGN/IMPLEMENTATION DEFECTS.
+
+Use of experimental methods requires importing the `MoreLinq.Experimental`
+namespace.
+
+### Await
+
+Creates a sequence query that streams the result of each task in the source
+sequence as it completes asynchronously.
+
+This method has 2 overloads.
 
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
