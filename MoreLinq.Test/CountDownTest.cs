@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -29,32 +31,27 @@ namespace MoreLinq.Test
                 .CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
-        [TestCase(-1, new[] { -1, -1, -1, -1, -1 })]
-        [TestCase( 0, new[] { -1, -1, -1, -1, -1 })]
-        [TestCase( 1, new[] { -1, -1, -1, -1,  0 })]
-        [TestCase( 2, new[] { -1, -1, -1,  1,  0 })]
-        [TestCase( 3, new[] { -1, -1,  2,  1,  0 })]
-        [TestCase( 4, new[] { -1,  3,  2,  1,  0 })]
-        [TestCase( 5, new[] {  4,  3,  2,  1,  0 })]
-        [TestCase( 6, new[] {  4,  3,  2,  1,  0 })]
-        [TestCase( 7, new[] {  4,  3,  2,  1,  0 })]
-        public void CountDown(int count, int[] countdowns)
-        {
-            var xs = Enumerable.Range(1, 5);
-
-            var result = xs.CountDown(count, (x, cd) => new
+        static readonly IEnumerable<TestCaseData> Data =
+            from e in new[]
             {
-                X = x,
-                Countdown = cd ?? -1
-            });
+                new { Count = -1, CountDown = new int?[] { null, null, null, null, null } },
+                new { Count =  0, CountDown = new int?[] { null, null, null, null, null } },
+                new { Count =  1, CountDown = new int?[] { null, null, null, null,    0 } },
+                new { Count =  2, CountDown = new int?[] { null, null, null,    1,    0 } },
+                new { Count =  3, CountDown = new int?[] { null, null,    2,    1,    0 } },
+                new { Count =  4, CountDown = new int?[] { null,    3,    2,    1,    0 } },
+                new { Count =  5, CountDown = new int?[] {    4,    3,    2,    1,    0 } },
+                new { Count =  6, CountDown = new int?[] {    4,    3,    2,    1,    0 } },
+                new { Count =  7, CountDown = new int?[] {    4,    3,    2,    1,    0 } },
+            }
+            let xs = Enumerable.Range(1, 5)
+            select new TestCaseData(xs, e.Count)
+                .Returns(xs.Zip(e.CountDown, ValueTuple.Create))
+                .SetName($"{nameof(CountDown)}([{xs.First()}..{xs.Last()}], {e.Count})");
 
-            var expected = xs.Zip(countdowns, (x, cd) => new
-            {
-                X = x,
-                Countdown = cd
-            });
-
-            result.AssertSequenceEqual(expected);
-        }
+        [TestCaseSource(nameof(Data))]
+        public IEnumerable<(int, int?)>
+            CountDown(IEnumerable<int> xs, int count) =>
+                xs.CountDown(count, ValueTuple.Create);
     }
 }
