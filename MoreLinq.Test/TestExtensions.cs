@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using NUnit.Framework;
     using NUnit.Framework.Constraints;
+    using System;
 
     static partial class TestExtensions
     {
@@ -55,6 +56,13 @@ namespace MoreLinq.Test
         {
             foreach (var split in str.Split(separators))
                 yield return split;
+        }
+
+        internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
+        {
+            yield return input.Select(x => x);
+            yield return input.ToBreakingCollection(true);
+            yield return input.ToBreakingCollection(false);
         }
     }
 }

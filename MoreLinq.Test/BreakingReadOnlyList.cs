@@ -10,12 +10,14 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class BreakingReadOnlyList<T> : BreakingSequence<T>, IReadOnlyList<T>
+    sealed class BreakingReadOnlyList<T> : BreakingReadOnlyCollection<T>, IReadOnlyList<T>
     {
         readonly IReadOnlyList<T> _list;
 
-        public BreakingReadOnlyList(IReadOnlyList<T> list) => _list = list;
-        public int Count => _list.Count;
+        public BreakingReadOnlyList(params T[] values) : this ((IReadOnlyList<T>) values) {}
+        public BreakingReadOnlyList(IReadOnlyList<T> list) : base (list)
+            => _list = list;
+
         public T this[int index] => _list[index];
     }
 }

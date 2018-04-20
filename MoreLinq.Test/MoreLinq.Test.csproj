@@ -21,6 +21,10 @@
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    <DefineConstants>$(DefineConstants);NO_ASYNC</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
   </ItemGroup>
@@ -35,11 +39,13 @@
 
   <ItemGroup>
       <Compile Include="*Test.cs" />
+      <Compile Include="Test*.cs" />
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingList.cs" />
+      <Compile Include="BreakingReadOnlyCollection.cs" />
       <Compile Include="BreakingReadOnlyList.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
@@ -52,9 +58,6 @@
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
-      <Compile Include="TestingSequence.cs" />
-      <Compile Include="TestExtensions.cs" />
-      <Compile Include="VerifiableEnumerator.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">

@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		build.cmd = build.cmd
 		build.sh = build.sh
+		builddocs.cmd = builddocs.cmd
 		COPYING.txt = COPYING.txt
 		msbuild.cmd = msbuild.cmd
 		pack.cmd = pack.cmd

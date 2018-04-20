@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,25 +32,29 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().Exactly(0));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.Exactly(0));
         }
 
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyOneElement()
         {
-            Assert.IsFalse(Enumerable.Empty<int>().Exactly(1));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.Exactly(1));
         }
 
         [Test]
         public void ExactlyWithSingleElementHasExactlyOneElements()
         {
-            Assert.IsTrue(new[] { 1 }.Exactly(1));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.Exactly(1));
         }
 
         [Test]
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
-            Assert.IsFalse(new[] { 1, 2, 3 }.Exactly(1));
+            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.Exactly(1));
         }
 
         [Test]
@@ -60,7 +63,7 @@ namespace MoreLinq.Test
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => 3,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.IsFalse(source.Exactly(2));
         }
     }

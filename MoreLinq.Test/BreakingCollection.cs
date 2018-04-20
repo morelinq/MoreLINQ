@@ -20,12 +20,20 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
 
+    partial class TestExtensions
+    {
+        internal static IEnumerable<T> ToBreakingCollection<T>(this IEnumerable<T> enumerable, bool readOnly) =>
+            readOnly
+            ? (IEnumerable<T>)new BreakingReadOnlyCollection<T>(enumerable.ToList())
+            : new BreakingCollection<T>(enumerable.ToList());
+    }
+
     class BreakingCollection<T> : BreakingSequence<T>, ICollection<T>
     {
-        protected readonly List<T> List;
+        protected readonly IList<T> List;
 
-        public BreakingCollection() : this(new List<T>()) {}
-        public BreakingCollection(List<T> list) => List = list;
+        public BreakingCollection(params T[] values) : this ((IList<T>) values) {}
+        public BreakingCollection(IList<T> list) => List = list;
         public BreakingCollection(int count) :
             this(Enumerable.Repeat(default(T), count).ToList()) {}
 

@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -47,17 +46,19 @@ namespace MoreLinq.Test
         [Test]
         public void CountBetweenWithMaxEqualsMin()
         {
-            Assert.IsTrue(new[] { 1 }.CountBetween(1, 1));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.CountBetween(1, 1));
         }
 
-        [TestCase(1, 1, 2, 4, false)]
-        [TestCase(1, 2, 2, 4, true)]
-        [TestCase(1, 3, 2, 4, true)]
-        [TestCase(1, 4, 2, 4, true)]
-        [TestCase(1, 5, 2, 4, false)]
-        public void CountBetweenRangeTests(int start, int count, int min, int max, bool expecting)
+        [TestCase(1, 2, 4, false)]
+        [TestCase(2, 2, 4, true)]
+        [TestCase(3, 2, 4, true)]
+        [TestCase(4, 2, 4, true)]
+        [TestCase(5, 2, 4, false)]
+        public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
         {
-            Assert.That(Enumerable.Range(start, count).CountBetween(min, max), Is.EqualTo(expecting));
+            foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionTestCases())
+                Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting));
         }
 
         [Test]
@@ -67,7 +68,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => 4,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.False(source.CountBetween(2, 3));
         }
     }

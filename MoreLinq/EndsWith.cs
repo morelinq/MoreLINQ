@@ -72,9 +72,11 @@ namespace MoreLinq
             comparer = comparer ?? EqualityComparer<T>.Default;
 
             List<T> secondList;
-            return second.TryGetCollectionCount() is int collectionCount
-                 ? Impl(second, collectionCount)
-                 : Impl(secondList = second.ToList(), secondList.Count);
+            return second.TryGetCollectionCount() is int secondCount
+                   ? first.TryGetCollectionCount() is int firstCount && secondCount > firstCount
+                     ? false
+                     : Impl(second, secondCount)
+                   : Impl(secondList = second.ToList(), secondList.Count);
 
             bool Impl(IEnumerable<T> snd, int count)
             {

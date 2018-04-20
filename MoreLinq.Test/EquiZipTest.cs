@@ -78,7 +78,7 @@ namespace MoreLinq.Test
         public void ZipIsLazy()
         {
             var bs = new BreakingSequence<int>();
-            bs.EquiZip<int, int, int>(bs, delegate { throw new NotImplementedException(); });
+            bs.EquiZip(bs, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace MoreLinq.Test
             using (var s2 = TestingSequence.Of(1, 2, 3))
             using (var s3 = MoreEnumerable.From(() => 1,
                                                 () => 2,
-                                                () => throw new ArgumentException())
+                                                () => throw new TestException())
                                           .AsTestingSequence())
             {
                 Assert.Throws<InvalidOperationException>(() =>

@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -33,37 +32,43 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().AtMost(0));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(0));
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
-            Assert.IsTrue(Enumerable.Empty<int>().AtMost(1));
+            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(1));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostZeroElements()
         {
-            Assert.IsFalse(new[] { 1 }.AtMost(0));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtMost(0));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostOneElement()
         {
-            Assert.IsTrue(new[] { 1 }.AtMost(1));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(1));
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostManyElements()
         {
-            Assert.IsTrue(new[] { 1 }.AtMost(2));
+            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
+                Assert.IsTrue(xs.AtMost(2));
         }
 
         [Test]
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
-            Assert.IsFalse(new[] { 1, 2, 3 }.AtMost(1));
+            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
+                Assert.IsFalse(xs.AtMost(1));
         }
 
         [Test]
@@ -72,7 +77,7 @@ namespace MoreLinq.Test
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => 3,
-                                             () => throw new InvalidOperationException());
+                                             () => throw new TestException());
             Assert.IsFalse(source.AtMost(2));
         }
     }
