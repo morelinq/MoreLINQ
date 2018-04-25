@@ -25,18 +25,20 @@ namespace MoreLinq
     {
         /// <summary>
         /// Inserts the elements of a sequence into another sequence at a
-        /// specified index.
+        /// specified index in the tail of the sequence, where zero always represents
+        /// the last position, one represents the second-last element, two represents
+        /// the third-last element and so on.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
         /// <param name="first">The source sequence.</param>
         /// <param name="second">The sequence that will be inserted.</param>
         /// <param name="index">
-        /// The zero-based index at which to insert elements from
+        /// The zero-based index at which to insert elements from.
         /// <paramref name="second"/>.</param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="first"/>
         /// plus the elements of <paramref name="second"/> inserted at
-        /// the given index.
+        /// the given index (counted from end To start).
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="second"/> is null.</exception>
@@ -46,8 +48,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown lazily if <paramref name="index"/> is greater than the
         /// length of <paramref name="first"/>. The validation occurs when
-        /// yielding the next element after having iterated
-        /// <paramref name="first"/> entirely.
+        /// the resulting sequence is iterated.
         /// </exception>
 
         public static IEnumerable<T> InsertEnd<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
