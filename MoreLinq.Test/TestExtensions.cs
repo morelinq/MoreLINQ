@@ -64,5 +64,55 @@ namespace MoreLinq.Test
             yield return input.ToBreakingCollection(true);
             yield return input.ToBreakingCollection(false);
         }
+
+        public static IEnumerable<T> Observe<T>(this IEnumerable<T> source, Func<IObserver<T>> subscriber)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
+
+            return _(); IEnumerable<T> _()
+            {
+                var observer = subscriber();
+                IEnumerator<T> e;
+                try
+                {
+                    e = source.GetEnumerator();
+                }
+                catch (Exception ex)
+                {
+                    observer.OnError(ex);
+                    throw;
+                }
+
+                try
+                {
+                    while (true)
+                    {
+                        bool moved;
+                        try
+                        {
+                            moved = e.MoveNext();
+                        }
+                        catch (Exception ex)
+                        {
+                            observer.OnError(ex);
+                            throw;
+                        }
+
+                        if (!moved)
+                            break;
+
+                        observer.OnNext(e.Current);
+                        yield return e.Current;
+                    }
+
+                    observer.OnCompleted();
+                }
+                finally
+                {
+                    e.Dispose();
+                }
+            }
+        }
     }
 }

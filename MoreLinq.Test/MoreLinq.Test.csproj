@@ -55,10 +55,12 @@
       <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />
       <Compile Include="KeyValuePair.cs" />
+      <Compile Include="Observer.cs" />
       <Compile Include="Program.cs" />
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
+      <Compile Include="WatchableEnumerator.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">

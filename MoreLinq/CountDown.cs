@@ -62,6 +62,10 @@ namespace MoreLinq
                     return IterateList(list, list.Count, (it, i) => it[i]);
                 case IReadOnlyList<T> list:
                     return IterateList(list, list.Count, (it, i) => it[i]);
+                case ICollection<T> collection:
+                    return IterateCollection(collection.Count);
+                case IReadOnlyCollection<T> collection:
+                    return IterateCollection(collection.Count);
                 default:
                     return IterateSequence();
             }
@@ -80,6 +84,12 @@ namespace MoreLinq
                            : (int?) null;
                     yield return resultSelector(indexer(list, i), cd);
                 }
+            }
+
+            IEnumerable<TResult> IterateCollection(int i)
+            {
+                foreach (var item in source)
+                    yield return resultSelector(item, i-- <= count ? i : (int?) null);
             }
 
             IEnumerable<TResult> IterateSequence()
