@@ -31,6 +31,13 @@ namespace MoreLinq.Test
                 .CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
+        enum SequenceKind
+        {
+            Sequence,
+            List,
+            ReadOnlyList,
+        }
+
         static readonly IEnumerable<TestCaseData> Data =
             from e in new[]
             {
@@ -45,9 +52,15 @@ namespace MoreLinq.Test
                 new { Count =  7, CountDown = new int?[] {    4,    3,    2,    1,    0 } },
             }
             let xs = Enumerable.Range(1, 5)
-            select new TestCaseData(xs, e.Count)
+            from ts in new[]
+            {
+                new { Kind = SequenceKind.Sequence    , Source  = xs.Select(x => x),                  },
+                new { Kind = SequenceKind.List        , Source  = xs.ToBreakingList(readOnly: false), },
+                new { Kind = SequenceKind.ReadOnlyList, Source  = xs.ToBreakingList(readOnly: true),  },
+            }
+            select new TestCaseData(ts.Source, e.Count)
                 .Returns(xs.Zip(e.CountDown, ValueTuple.Create))
-                .SetName($"{nameof(CountDown)}([{xs.First()}..{xs.Last()}], {e.Count})");
+                .SetName($"{nameof(CountDown)}({ts.Kind} {{ {xs.First()}..{xs.Last()} }}, {e.Count})");
 
         [TestCaseSource(nameof(Data))]
         public IEnumerable<(int, int?)>

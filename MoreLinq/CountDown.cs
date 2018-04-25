@@ -56,7 +56,33 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            switch (source)
+            {
+                case IList<T> list:
+                    return IterateList(list, list.Count, (it, i) => it[i]);
+                case IReadOnlyList<T> list:
+                    return IterateList(list, list.Count, (it, i) => it[i]);
+                default:
+                    return IterateSequence();
+            }
+
+            IEnumerable<TResult>
+                IterateList<TList>(TList list,
+                                   int listCount,
+                                   Func<TList, int, T> indexer)
+            {
+                var countdown = Math.Min(count, listCount);
+
+                for (var i = 0; i < listCount; i++)
+                {
+                    var cd = listCount - i <= count
+                           ? --countdown
+                           : (int?) null;
+                    yield return resultSelector(indexer(list, i), cd);
+                }
+            }
+
+            IEnumerable<TResult> IterateSequence()
             {
                 var queue = new Queue<T>();
 
