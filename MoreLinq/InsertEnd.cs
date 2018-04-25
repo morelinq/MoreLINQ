@@ -62,29 +62,15 @@ namespace MoreLinq
 
             IEnumerable<T> _() =>
                  first.CountDown(index, (x, cd) => new { Element = x, CountDown = cd })
-                         .SelectMany((e, i) => i == 0
-                                               ? e.CountDown.HasValue
-                                                 ? e.CountDown == (index - 1)
-                                                   ? second.Concat(e.Element)
-                                                   : throw new ArgumentOutOfRangeException()
-                                                 : Enumerable.Repeat(e.Element, 1)
-                                               : e.CountDown == (index - 1)
-                                                 ? second.Concat(e.Element)
-                                                 : Enumerable.Repeat(e.Element, 1));
-        }
-
-        private static IEnumerable<TResult> CountDown<T, TResult>(this IEnumerable<T> source,
-            int count, Func<T, int?, TResult> resultSelector)
-        {
-            var queue = new Queue<T>();
-            foreach (var item in source)
-            {
-                queue.Enqueue(item);
-                if (queue.Count > count)
-                    yield return resultSelector(queue.Dequeue(), null);
-            }
-            while (queue.Count > 0)
-                yield return resultSelector(queue.Dequeue(), queue.Count);
+                      .SelectMany((e, i) => i == 0
+                                            ? e.CountDown.HasValue
+                                              ? e.CountDown == (index - 1)
+                                                ? second.Concat(e.Element)
+                                                : throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.")
+                                              : Enumerable.Repeat(e.Element, 1)
+                                            : e.CountDown == (index - 1)
+                                              ? second.Concat(e.Element)
+                                              : Enumerable.Repeat(e.Element, 1));
         }
     }
 }
