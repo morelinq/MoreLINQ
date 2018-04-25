@@ -21,7 +21,7 @@ namespace MoreLinq.Test
         [Test]
         public void NestedLoopWithFirstElementNegative()
         {
-            AssertThrowsArgument.Exception("loopCounts", () =>
+            Assert.Throws<InvalidOperationException>(() =>
                 BreakingAction.WithoutArguments.NestedLoops(Enumerable.Range(-10, 10))
                                                .ElementAt(0));
         }
@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         [Test]
         public void NestedLoopWithLastElementNegative()
         {
-            AssertThrowsArgument.Exception("loopCounts", () =>
+            Assert.Throws<InvalidOperationException>(() =>
                 BreakingAction.WithoutArguments.NestedLoops(MoreEnumerable.Sequence(10, -1))
                                                .ElementAt(0));
         }
