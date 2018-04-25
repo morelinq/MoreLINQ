@@ -80,7 +80,6 @@ namespace MoreLinq
             comparer = comparer ?? Comparer<TKey>.Default;
             return _(); IEnumerable<int> _()
             {
-                // avoid enumerating source twice
                 var list = (source as IList<TSource>) ?? source.ToList();
 
                 var rankDictionary = list.Distinct()
