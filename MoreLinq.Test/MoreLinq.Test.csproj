@@ -55,7 +55,6 @@
       <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />
       <Compile Include="KeyValuePair.cs" />
-      <Compile Include="Observer.cs" />
       <Compile Include="Program.cs" />
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
