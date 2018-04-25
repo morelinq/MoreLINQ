@@ -18,6 +18,7 @@
 namespace MoreLinq
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -48,6 +49,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+
+            if (count < 1)
+                return Enumerable.Empty<TSource>();
 
             return
                 source.TryGetCollectionCount() is int collectionCount
