@@ -47,7 +47,8 @@ namespace MoreLinq
         /// <remarks>
         /// This method uses deferred execution semantics and streams its
         /// results. At most, <paramref name="count"/> elements of the source
-        /// sequence may be buffered at any one time.
+        /// sequence may be buffered at any one time unless
+        /// <paramref name="source"/> is a collection or a list.
         /// </remarks>
 
         public static IEnumerable<TResult> CountDown<T, TResult>(this IEnumerable<T> source,
