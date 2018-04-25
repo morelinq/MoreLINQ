@@ -49,9 +49,7 @@ namespace MoreLinq
                                       .Aggregate((acc, x) => acc * x);
 
                 for (var i = 0; i < count; i++)
-                {
                     yield return action;
-                }
             }
         }
     }
