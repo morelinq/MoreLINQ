@@ -44,7 +44,7 @@ namespace MoreLinq
             return _(); IEnumerable<Action> _()
             {
                 var count = loopCounts.Assert(n => n >= 0,
-                                              n => new InvalidOperationException("All loop counts must be greater than or equal to zero."))
+                                              n => new InvalidOperationException("Invalid loop count (must be greater than or equal to zero)."))
                                       .DefaultIfEmpty()
                                       .Aggregate((acc, x) => acc * x);
 
