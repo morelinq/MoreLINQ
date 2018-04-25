@@ -80,20 +80,21 @@ namespace MoreLinq
             comparer = comparer ?? Comparer<TKey>.Default;
             return _(); IEnumerable<int> _()
             {
-                source = source.ToArray(); // avoid enumerating source twice
+                // avoid enumerating source twice
+                var list = (source as IList<TSource>) ?? source.ToList();
 
-                var rankDictionary = source.Distinct()
-                                           .OrderByDescending(keySelector, comparer)
-                                           .Index(1)
-                                           .ToDictionary(item => item.Value,
-                                                         item => item.Key);
+                var rankDictionary = list.Distinct()
+                                         .OrderByDescending(keySelector, comparer)
+                                         .Index(1)
+                                         .ToDictionary(item => item.Value,
+                                                       item => item.Key);
 
                 // The following loop should not be be converted to a query to
                 // keep this RankBy lazy.
 
                 // ReSharper disable LoopCanBeConvertedToQuery
 
-                foreach (var item in source)
+                foreach (var item in list)
                     yield return rankDictionary[item];
 
                 // ReSharper restore LoopCanBeConvertedToQuery
