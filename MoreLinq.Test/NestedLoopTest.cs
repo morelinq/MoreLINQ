@@ -61,7 +61,6 @@ namespace MoreLinq.Test
         public void NestedLoopWithEmptySequence()
         {
             var result = BreakingAction.WithoutArguments.NestedLoops(new int[0]);
-
             Assert.That(result, Is.Empty);
         }
 
@@ -69,7 +68,6 @@ namespace MoreLinq.Test
         public void NestedLoopContainingZero()
         {
             var result = BreakingAction.WithoutArguments.NestedLoops(new[] { 3, 2, 1, 0, 4 });
-
             Assert.That(result, Is.Empty);
         }
     }
