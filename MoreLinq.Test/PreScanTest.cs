@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         public void PreScanWithSingleElement()
         {
             var source = new[] { 111 };
-            var result = source.PreScan(SampleData.Plus, 999);
+            var result = source.PreScan(BreakingFunc.Of<int, int, int>(), 999);
             result.AssertSequenceEqual(999);
         }
 
@@ -58,6 +58,17 @@ namespace MoreLinq.Test
             var seq = new[] { 1, 2, 3 };
             var result = seq.PreScan(SampleData.Mul, 1);
             result.AssertSequenceEqual(1, 1, 2);
+        }
+
+        [Test]
+        public void PreScanFuncIsNotInvokedUnnecessarily()
+        {
+            var count = 0;
+            var gold = new[] { 0, 1, 3 };
+            var sequence = Enumerable.Range(1, 3).PreScan((a, b) =>
+                ++count == gold.Length ? throw new TestException() : a + b, 0);
+
+            sequence.AssertSequenceEqual(gold);
         }
     }
 }

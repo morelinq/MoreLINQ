@@ -32,9 +32,9 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var result = MoreEnumerable.Sequence(6, 0);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 6, 5, 4, 3, 2, 1, 0 }</c>.
         /// </example>
 
@@ -57,9 +57,9 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var result = MoreEnumerable.Sequence(6, 0, -2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 6, 4, 2, 0 }</c>.
         /// </example>
 

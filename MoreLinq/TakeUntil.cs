@@ -35,8 +35,8 @@ namespace MoreLinq
         /// </para>
         /// <para>
         /// Secondly, TakeUntil yields the element which causes the predicate to return true. For
-        /// example, in a sequence <code>{ 1, 2, 3, 4, 5 }</code> and with a predicate of
-        /// <code>x => x == 3</code>, the result would be <code>{ 1, 2, 3 }</code>.
+        /// example, in a sequence <code><![CDATA[{ 1, 2, 3, 4, 5 }]]></code> and with a predicate of
+        /// <code><![CDATA[x => x == 3]]></code>, the result would be <code><![CDATA[{ 1, 2, 3 }]]></code>.
         /// </para>
         /// <para>
         /// TakeUntil is as lazy as possible: it will not iterate over the source sequence

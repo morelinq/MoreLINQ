@@ -41,14 +41,14 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.TagFirstLast((num, fst, lst) => new
         ///              {
         ///                  Number = num,
         ///                  IsFirst = fst, IsLast = lst
         ///              });
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// <c>{ Number = 123, IsFirst = True, IsLast = False }</c>,
         /// <c>{ Number = 456, IsFirst = False, IsLast = False }</c> and
