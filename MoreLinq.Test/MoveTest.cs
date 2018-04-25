@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -70,9 +71,14 @@ namespace MoreLinq.Test
         {
             const int length = 10;
 
-            return from index in Enumerable.Range(0, length)
-                   from count in Enumerable.Range(0, length + 1)
-                   select new TestCaseData(length, index, count, index);
+            foreach (var index in Enumerable.Range(0, length))
+            {
+                foreach (var count in Enumerable.Range(0, length + 1))
+                {
+                    yield return new TestCaseData(length, index, count, Math.Max(0, index - 1));
+                    yield return new TestCaseData(length, index, count, index + 1);
+                }
+            }
         }
 
         [TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
