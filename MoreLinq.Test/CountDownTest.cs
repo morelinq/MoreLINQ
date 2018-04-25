@@ -31,7 +31,7 @@ namespace MoreLinq.Test
                 .CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
-        enum SequenceKind
+        public enum SequenceKind
         {
             Sequence,
             List,
@@ -58,13 +58,24 @@ namespace MoreLinq.Test
                 new { Kind = SequenceKind.List        , Source  = xs.ToBreakingList(readOnly: false), },
                 new { Kind = SequenceKind.ReadOnlyList, Source  = xs.ToBreakingList(readOnly: true),  },
             }
-            select new TestCaseData(ts.Source, e.Count)
+            select new TestCaseData(ts.Source, ts.Kind, e.Count)
                 .Returns(xs.Zip(e.CountDown, ValueTuple.Create))
-                .SetName($"{nameof(CountDown)}({ts.Kind} {{ {xs.First()}..{xs.Last()} }}, {e.Count})");
+                .SetName($"{nameof(CountDown)}({{ {xs.First()}..{xs.Last()} }}, {ts.Kind}, {e.Count})");
 
         [TestCaseSource(nameof(Data))]
         public IEnumerable<(int, int?)>
-            CountDown(IEnumerable<int> xs, int count) =>
-                xs.CountDown(count, ValueTuple.Create);
+            CountDown(IEnumerable<int> xs, SequenceKind kind, int count)
+        {
+            return kind != SequenceKind.Sequence
+                 ? xs.CountDown(count, ValueTuple.Create)
+                 : _(); IEnumerable<(int, int?)> _()
+                 {
+                     using (var ts = xs.AsTestingSequence())
+                     {
+                         foreach (var e in ts.CountDown(count, ValueTuple.Create))
+                             yield return e;
+                     }
+                 }
+        }
     }
 }
