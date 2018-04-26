@@ -53,9 +53,9 @@ namespace MoreLinq
             return
                 source.TryGetCollectionCount() is int collectionCount
                 ? source.Slice(Math.Max(0, collectionCount - count), int.MaxValue)
-                : source.CountDown(count, (x, cd) => (Element: x, Countdown: cd ))
-                        .SkipWhile(x => x.Countdown == null)
-                        .Select(x => x.Element);
+                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
+                        .SkipWhile(e => e.Countdown == null)
+                        .Select(e => e.Element);
         }
     }
 }
