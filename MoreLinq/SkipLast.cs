@@ -43,9 +43,9 @@ namespace MoreLinq
             return
                 source.TryGetCollectionCount() is int collectionCount
                 ? source.Take(collectionCount - count)
-                : source.CountDown(count, (x, cd) => (Element: x, Countdown: cd ))
-                        .TakeWhile(x => x.Countdown == null)
-                        .Select(x => x.Element);
+                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd ))
+                        .TakeWhile(e => e.Countdown == null)
+                        .Select(e => e.Element);
         }
     }
 }
