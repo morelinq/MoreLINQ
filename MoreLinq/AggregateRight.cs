@@ -46,12 +46,12 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = (source as IList<TSource>) ?? source.ToList();
+            var (indexer, count) = GetIndexerAndCount(source);
 
-            if (list.Count == 0)
+            if (count == 0)
                 throw new InvalidOperationException("Sequence contains no elements.");
 
-            return AggregateRightImpl(list, list.Last(), func, list.Count - 1);
+            return AggregateRightImpl(indexer, indexer(count - 1), func, count - 1);
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = (source as IList<TSource>) ?? source.ToList();
+            var (indexer, count) = GetIndexerAndCount(source);
 
-            return AggregateRightImpl(list, seed, func, list.Count);
+            return AggregateRightImpl(indexer, seed, func, count);
         }
 
         /// <summary>
@@ -120,14 +120,25 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(Func<int, TSource> indexer, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {
-                accumulator = func(list[i], accumulator);
+                accumulator = func(indexer(i), accumulator);
             }
 
             return accumulator;
+        }
+
+        static (Func<int, TSource>, int) GetIndexerAndCount<TSource>(IEnumerable<TSource> source)
+        {
+            if (source is IList<TSource> list)
+            {
+                return (i => list[i], list.Count);
+            }
+
+            var readOnlyList = source as IReadOnlyList<TSource> ?? source.ToList();
+            return (i => readOnlyList[i], readOnlyList.Count);
         }
     }
 }
