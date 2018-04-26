@@ -42,12 +42,16 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(value));
         }
 
-        [Test]
-        public void AggregateRight()
+        [TestCase(false, TestName = "{m}_List")]
+        [TestCase(true, TestName = "{m}_ReadOnlyList")]
+        [TestCase(TestName = "{m}")]
+        public void AggregateRight(bool? readOnly = null)
         {
-            var result = Enumerable.Range(1, 5)
-                                   .Select(x => x.ToString())
-                                   .AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString());
+            if (readOnly is bool)
+                enumerable = enumerable.ToBreakingList(readOnly.Value);
+
+            var result = enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
