@@ -135,7 +135,7 @@ namespace MoreLinq
             if (source is IList<TSource> list)
             {
                 return (i => list[i], list.Count);
-            };
+            }
 
             var readOnlyList = source as IReadOnlyList<TSource> ?? source.ToList();
             return (i => readOnlyList[i], readOnlyList.Count);
