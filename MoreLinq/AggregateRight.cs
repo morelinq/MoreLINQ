@@ -130,7 +130,7 @@ namespace MoreLinq
             return accumulator;
         }
 
-        static (Func<int, TSource> indexer, int count) GetIndexerAndCount<TSource>(IEnumerable<TSource> source)
+        static (Func<int, TSource>, int) GetIndexerAndCount<TSource>(IEnumerable<TSource> source)
         {
             if (source is IList<TSource> list)
             {
