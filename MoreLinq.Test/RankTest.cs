@@ -16,6 +16,14 @@ namespace MoreLinq.Test
         public void TestRankIsLazy()
         {
             new BreakingSequence<int>().Rank();
+        }
+
+        /// <summary>
+        /// Verify that rank behaves in a lazy manner.
+        /// </summary>
+        [Test]
+        public void TestRankByIsLazy()
+        {
             new BreakingSequence<int>().RankBy(x => x);
         }
 
