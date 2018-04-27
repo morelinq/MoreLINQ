@@ -71,7 +71,7 @@ namespace MoreLinq
                     return IterateSequence();
             }
 
-            IEnumerable<TResult> IterateList(IListLike<T> list)
+            IEnumerable<TResult> IterateList(ListLike<T> list)
             {
                 var countdown = Math.Min(count, list.Count);
 

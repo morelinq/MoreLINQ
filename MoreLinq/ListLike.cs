@@ -21,34 +21,35 @@ namespace MoreLinq
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an list-like (indexable) data structure.
+    /// Represents a union over list types implementing either
+    /// <see cref="IList{T}"/> or <see cref="IReadOnlyList{T}"/>, allowing
+    /// both to be treated the same.
     /// </summary>
 
-    interface IListLike<out T>
+    struct ListLike<T> // TODO Can be readonly when using C# 7.2
     {
-        int Count { get; }
-        T this[int index] { get; }
+        readonly IList<T> _l;
+        readonly IReadOnlyList<T> _r;
+
+        public ListLike(IList<T> list)
+        {
+            _l = list ?? throw new ArgumentNullException(nameof(list));
+            _r = null;
+        }
+
+        public ListLike(IReadOnlyList<T> list)
+        {
+            _l = null;
+            _r = list ?? throw new ArgumentNullException(nameof(list));
+        }
+
+        public int Count => _l?.Count ?? _r.Count;
+        public T this[int index] => _l != null ? _l[index] : _r[index];
     }
 
     static class ListLike
     {
-        public static IListLike<T> AsListLike<T>(this IList<T> list) => new List<T>(list);
-        public static IListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new ReadOnlyList<T>(list);
-
-        sealed class List<T> : IListLike<T>
-        {
-            readonly IList<T> _list;
-            public List(IList<T> list) => _list = list ?? throw new ArgumentNullException(nameof(list));
-            public int Count => _list.Count;
-            public T this[int index] => _list[index];
-        }
-
-        sealed class ReadOnlyList<T> : IListLike<T>
-        {
-            readonly IReadOnlyList<T> _list;
-            public ReadOnlyList(IReadOnlyList<T> list) => _list = list ?? throw new ArgumentNullException(nameof(list));
-            public int Count => _list.Count;
-            public T this[int index] => _list[index];
-        }
+        public static ListLike<T> AsListLike<T>(this IList<T> list) => new ListLike<T>(list);
+        public static ListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new ListLike<T>(list);
     }
 }

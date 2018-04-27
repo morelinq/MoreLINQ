@@ -125,7 +125,7 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(ListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {
