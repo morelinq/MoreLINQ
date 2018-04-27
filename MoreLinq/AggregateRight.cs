@@ -20,33 +20,6 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    /*
-    /// <summary>
-    /// Represents either an <see cref="IList{T}"/> or
-    /// <see cref="IReadOnlyList{T}"/>.
-    /// </summary>
-
-    struct ListUnion<T>
-    {
-        readonly IReadOnlyList<T> _roList;
-        readonly IList<T> _list;
-
-        public ListUnion(IReadOnlyList<T> list)
-        {
-            _roList = list ?? throw new ArgumentNullException(nameof(list));
-            _list = null;
-        }
-
-        public ListUnion(IList<T> list)
-        {
-            _roList = null;
-            _list = list ?? throw new ArgumentNullException(nameof(list));
-        }
-
-        public int Count => _roList?.Count ?? _list.Count;
-        public T this[int index] => _roList != null ? _roList[index] : _list[index];
-    }
-    */
 
     static partial class MoreEnumerable
     {
