@@ -115,7 +115,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(0, count);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanEmpty()
         {
-            Assert.False(new int[0].Scan(SampleData.Plus).GetEnumerator().MoveNext());
+            Assert.That(new int[0].Scan(SampleData.Plus), Is.Empty);
         }
 
         [Test]

@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         {
             AssertTakeLast(new[] { 12, 34, 56 },
                            -2,
-                           result => Assert.IsFalse(result.GetEnumerator().MoveNext()));
+                           result => Assert.That(result, Is.Empty));
         }
 
         [Test]
