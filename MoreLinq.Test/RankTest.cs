@@ -34,8 +34,8 @@ namespace MoreLinq.Test
         public void TestRankNullComparer()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            sequence.AsTestingSequence().Rank(null).AssertSequenceEqual(sequence.ToArray());
-            sequence.AsTestingSequence().RankBy(x => x, null).AssertSequenceEqual(sequence.ToArray());
+            sequence.AsTestingSequence().Rank(null).AssertSequenceEqual(sequence);
+            sequence.AsTestingSequence().RankBy(x => x, null).AssertSequenceEqual(sequence);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(0, count)
                 .Concat(Enumerable.Range(0, count))
                 .Concat(Enumerable.Range(0, count));
-            var result = sequence.AsTestingSequence().Rank().ToArray();
+            var result = sequence.AsTestingSequence().Rank();
 
             Assert.AreEqual(count, result.Distinct().Count());
             Assert.IsTrue(result.SequenceEqual(sequence.Reverse().Select(x => x + 1)));
