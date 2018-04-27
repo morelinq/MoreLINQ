@@ -42,11 +42,14 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(new[] { value }));
         }
 
-        [Test]
-        public void ScanRight()
+        [TestCase(SourceKind.List)]
+        [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.Sequence)]
+        public void ScanRight(SourceKind sourceKind)
         {
             var result = Enumerable.Range(1, 5)
                                    .Select(x => x.ToString())
+                                   .ToSourceKind(sourceKind)
                                    .ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
             var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
