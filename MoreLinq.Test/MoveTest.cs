@@ -70,15 +70,14 @@ namespace MoreLinq.Test
         public static IEnumerable<object> MoveSource()
         {
             const int length = 10;
-
-            foreach (var index in Enumerable.Range(0, length))
-            {
-                foreach (var count in Enumerable.Range(0, length + 1))
-                {
-                    yield return new TestCaseData(length, index, count, Math.Max(0, index - 1));
-                    yield return new TestCaseData(length, index, count, index + 1);
-                }
-            }
+            return from index in Enumerable.Range(0, length)
+                   from count in Enumerable.Range(0, length + 1)
+                   from tcd in new[]
+                   {
+                       new TestCaseData(length, index, count, Math.Max(0, index - 1)),
+                       new TestCaseData(length, index, count, index + 1),
+                   }
+                   select tcd;
         }
 
         [TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
