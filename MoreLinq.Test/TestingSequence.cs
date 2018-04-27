@@ -27,10 +27,25 @@ namespace MoreLinq.Test
         internal static TestingSequence<T> Of<T>(params T[] elements) =>
             new TestingSequence<T>(elements);
 
+        [Obsolete("Use " + nameof(UsingTestingSequence) + " instead.")]
         internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
             source != null
             ? new TestingSequence<T>(source)
             : throw new ArgumentNullException(nameof(source));
+
+        public static TResult UsingTestingSequence<T, TResult>(this IEnumerable<T> source,
+            Func<TestingSequence<T>, TResult> user)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            using (var ts = source.AsTestingSequence())
+                return user(ts);
+        }
+
+        public static TResult[] UsingTestingSequence<T, TResult>(this IEnumerable<T> source,
+            Func<TestingSequence<T>, IEnumerable<TResult>> user) =>
+            source.UsingTestingSequence(ts => user(ts).ToArray());
     }
 
     /// <summary>
