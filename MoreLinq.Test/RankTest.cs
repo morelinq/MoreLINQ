@@ -35,6 +35,15 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
             sequence.AsTestingSequence().Rank(null).AssertSequenceEqual(sequence);
+        }
+
+        /// <summary>
+        /// Verify that Rank uses the default comparer when comparer is <c>null</c>
+        /// </summary>
+        [Test]
+        public void TestRankByNullComparer()
+        {
+            var sequence = Enumerable.Repeat(1, 10);
             sequence.AsTestingSequence().RankBy(x => x, null).AssertSequenceEqual(sequence);
         }
 
