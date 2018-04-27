@@ -47,7 +47,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Range(4, 3);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>)null, sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA.Concat(sequenceB)));
+            Assert.That(result, Is.EqualTo(sequenceA.Concat(sequenceB)));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
             var sequenceA = Enumerable.Range(1, count);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA));
+            Assert.That(result, Is.EqualTo(sequenceA));
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace MoreLinq.Test
             var sequenceC = Enumerable.Empty<int>();
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA));
+            Assert.That(result, Is.EqualTo(sequenceA));
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(1, 12);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(0, count * 3);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace MoreLinq.Test
             var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(x => x);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(0, count * 3).Reverse();
             var result = sequenceA.SortedMerge(OrderByDirection.Descending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace MoreLinq.Test
                                           .OrderBy(a => a, StringComparer.CurrentCultureIgnoreCase);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>

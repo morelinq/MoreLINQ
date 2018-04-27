@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         {
             var numbers = Enumerable.Range(1, 5);
 
-            Assert.IsTrue(numbers.SkipLast(skip).SequenceEqual(numbers));
+            Assert.That(numbers.SkipLast(skip), Is.EqualTo(numbers));
         }
 
         [Test]
