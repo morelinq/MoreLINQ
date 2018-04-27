@@ -20,6 +20,33 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    /*
+    /// <summary>
+    /// Represents either an <see cref="IList{T}"/> or
+    /// <see cref="IReadOnlyList{T}"/>.
+    /// </summary>
+
+    struct ListUnion<T>
+    {
+        readonly IReadOnlyList<T> _roList;
+        readonly IList<T> _list;
+
+        public ListUnion(IReadOnlyList<T> list)
+        {
+            _roList = list ?? throw new ArgumentNullException(nameof(list));
+            _list = null;
+        }
+
+        public ListUnion(IList<T> list)
+        {
+            _roList = null;
+            _list = list ?? throw new ArgumentNullException(nameof(list));
+        }
+
+        public int Count => _roList?.Count ?? _list.Count;
+        public T this[int index] => _roList != null ? _roList[index] : _list[index];
+    }
+    */
 
     static partial class MoreEnumerable
     {
@@ -46,12 +73,15 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var (indexer, count) = GetIndexerAndCount(source);
+            var list
+                = source is IReadOnlyList<TSource> readOnlyList
+                ? readOnlyList.AsListLike()
+                : (source as IList<TSource> ?? source.ToList()).AsListLike();
 
-            if (count == 0)
+            if (list.Count == 0)
                 throw new InvalidOperationException("Sequence contains no elements.");
 
-            return AggregateRightImpl(indexer, indexer(count - 1), func, count - 1);
+            return AggregateRightImpl(list, list[list.Count - 1], func, list.Count - 1);
         }
 
         /// <summary>
@@ -81,9 +111,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var (indexer, count) = GetIndexerAndCount(source);
+            var list = source is IReadOnlyList<TSource> readOnlyList
+                     ? readOnlyList.AsListLike()
+                     : (source as IList<TSource> ?? source.ToList()).AsListLike();
 
-            return AggregateRightImpl(indexer, seed, func, count);
+            return AggregateRightImpl(list, seed, func, list.Count);
         }
 
         /// <summary>
@@ -120,25 +152,14 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        static TResult AggregateRightImpl<TSource, TResult>(Func<int, TSource> indexer, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {
-                accumulator = func(indexer(i), accumulator);
+                accumulator = func(list[i], accumulator);
             }
 
             return accumulator;
-        }
-
-        static (Func<int, TSource>, int) GetIndexerAndCount<TSource>(IEnumerable<TSource> source)
-        {
-            if (source is IList<TSource> list)
-            {
-                return (i => list[i], list.Count);
-            }
-
-            var readOnlyList = source as IReadOnlyList<TSource> ?? source.ToList();
-            return (i => readOnlyList[i], readOnlyList.Count);
         }
     }
 }
