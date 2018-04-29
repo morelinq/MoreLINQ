@@ -79,10 +79,7 @@ namespace MoreLinq.Test
                                                   x => x.Result < 0,
                                                   e => e.State,
                                                   e => e.Result);
-
-            var expectations = new int[] { };
-
-            Assert.That(result, Is.EqualTo(expectations));
+            Assert.That(result, Is.Empty);
         }
     }
 }

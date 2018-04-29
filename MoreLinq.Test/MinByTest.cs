@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         [Test]
         public void MinByEmptySequence()
         {
-            Assert.IsEmpty(new string[0].MinBy(x => x.Length));
+            Assert.That(new string[0].MinBy(x => x.Length), Is.Empty);
         }
 
         [Test]
