@@ -56,14 +56,9 @@ namespace MoreLinq.Test
                 .SetName($"{nameof(WithSequence)}({{ {string.Join(", ", e.Source)} }}, {e.Count})");
 
         [TestCaseSource(nameof(SequenceData))]
-        public IEnumerable<(int, int?)> WithSequence(int[] xs, int count)
-        {
-            using (var ts = xs.Select(x => x).AsTestingSequence())
-            {
-                foreach (var e in ts.CountDown(count, ValueTuple.Create))
-                    yield return e;
-            }
-        }
+        public IEnumerable<(int, int?)> WithSequence(int[] xs, int count) =>
+            xs.Select(x => x)
+              .UsingTestingSequence(ts => ts.CountDown(count, ValueTuple.Create));
 
         static readonly IEnumerable<TestCaseData> ListData =
             from e in GetData((xs, count, countdown) => new
