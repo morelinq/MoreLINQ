@@ -27,25 +27,29 @@ namespace MoreLinq.Test
         internal static TestingSequence<T> Of<T>(params T[] elements) =>
             new TestingSequence<T>(elements);
 
-        [Obsolete("Use " + nameof(UsingTestingSequence) + " instead.")]
         internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
             source != null
             ? new TestingSequence<T>(source)
             : throw new ArgumentNullException(nameof(source));
 
-        public static TResult UsingTestingSequence<T, TResult>(this IEnumerable<T> source,
-            Func<TestingSequence<T>, TResult> user)
+        public static TResult[] Use<T, TResult>(this TestingSequence<T> source,
+            Func<TestingSequence<T>, IEnumerable<TResult>> user)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (user == null) throw new ArgumentNullException(nameof(user));
 
-            using (var ts = source.AsTestingSequence())
-                return user(ts);
+            return user(source).ToArray();
         }
 
         public static TResult[] UsingTestingSequence<T, TResult>(this IEnumerable<T> source,
-            Func<TestingSequence<T>, IEnumerable<TResult>> user) =>
-            source.UsingTestingSequence(ts => user(ts).ToArray());
+            Func<TestingSequence<T>, IEnumerable<TResult>> user)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source is TestingSequence<T>) throw new ArgumentException("Source is already a testing sequence instance.");
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            return source.AsTestingSequence().Use(user);
+        }
     }
 
     /// <summary>

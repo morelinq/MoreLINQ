@@ -119,11 +119,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRankOfHighestItemIsOne()
         {
-            var result =
-                Enumerable.Range(1, 10).UsingTestingSequence(ts =>
-                    ts.Rank().OrderBy(x => x).First());
-
-            Assert.AreEqual(1, result);
+            using (var ts = Enumerable.Range(1, 10).AsTestingSequence())
+                Assert.AreEqual(1, ts.Rank().OrderBy(x => x).First());
         }
 
         /// <summary>
