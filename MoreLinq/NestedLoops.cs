@@ -41,21 +41,16 @@ namespace MoreLinq
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
 
-            using (var iter = loopCounts.GetEnumerator())
+            return _(); IEnumerable<Action> _()
             {
-                var loopCount = NextLoopCount(iter);
-                if (loopCount == null)
-                    return Enumerable.Empty<Action>(); // null loop
-                var loop = Enumerable.Repeat(action, loopCount.Value);
-                while ((loopCount = NextLoopCount(iter)) != null)
-                    loop = loop.Repeat(loopCount.Value);
-                return loop;
-            }
+                var count = loopCounts.Assert(n => n >= 0,
+                                              n => new InvalidOperationException("Invalid loop count (must be greater than or equal to zero)."))
+                                      .DefaultIfEmpty()
+                                      .Aggregate((acc, x) => acc * x);
 
-            int? NextLoopCount(IEnumerator<int> iter)
-                => !iter.MoveNext() ? (int?) null
-                 : iter.Current >= 0 ? iter.Current
-                 : throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
+                for (var i = 0; i < count; i++)
+                    yield return action;
+            }
         }
     }
 }

@@ -39,7 +39,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryEmptySequence()
         {
-            Assert.That(new object[0].TakeEvery(1).GetEnumerator().MoveNext(), Is.False);
+            Assert.That(new object[0].TakeEvery(1), Is.Empty);
         }
 
         [Test]

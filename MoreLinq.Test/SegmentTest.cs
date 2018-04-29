@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(-1, 0);
             var result = sequence.Segment(x => true);
-            Assert.IsFalse(result.Any());
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>

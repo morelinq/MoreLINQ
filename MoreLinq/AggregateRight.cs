@@ -46,12 +46,15 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = (source as IList<TSource>) ?? source.ToList();
+            var list
+                = source is IReadOnlyList<TSource> readOnlyList
+                ? readOnlyList.AsListLike()
+                : (source as IList<TSource> ?? source.ToList()).AsListLike();
 
             if (list.Count == 0)
                 throw new InvalidOperationException("Sequence contains no elements.");
 
-            return AggregateRightImpl(list, list.Last(), func, list.Count - 1);
+            return AggregateRightImpl(list, list[list.Count - 1], func, list.Count - 1);
         }
 
         /// <summary>
@@ -81,7 +84,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = (source as IList<TSource>) ?? source.ToList();
+            var list = source is IReadOnlyList<TSource> readOnlyList
+                     ? readOnlyList.AsListLike()
+                     : (source as IList<TSource> ?? source.ToList()).AsListLike();
 
             return AggregateRightImpl(list, seed, func, list.Count);
         }
@@ -120,7 +125,7 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        static TResult AggregateRightImpl<TSource, TResult>(IList<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {

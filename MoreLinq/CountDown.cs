@@ -60,9 +60,9 @@ namespace MoreLinq
             switch (source)
             {
                 case IList<T> list:
-                    return IterateList(list, list.Count, (it, i) => it[i]);
+                    return IterateList(list.AsListLike());
                 case IReadOnlyList<T> list:
-                    return IterateList(list, list.Count, (it, i) => it[i]);
+                    return IterateList(list.AsListLike());
                 case ICollection<T> collection:
                     return IterateCollection(collection.Count);
                 case IReadOnlyCollection<T> collection:
@@ -71,19 +71,16 @@ namespace MoreLinq
                     return IterateSequence();
             }
 
-            IEnumerable<TResult>
-                IterateList<TList>(TList list,
-                                   int listCount,
-                                   Func<TList, int, T> indexer)
+            IEnumerable<TResult> IterateList(IListLike<T> list)
             {
-                var countdown = Math.Min(count, listCount);
+                var countdown = Math.Min(count, list.Count);
 
-                for (var i = 0; i < listCount; i++)
+                for (var i = 0; i < list.Count; i++)
                 {
-                    var cd = listCount - i <= count
+                    var cd = list.Count - i <= count
                            ? --countdown
                            : (int?) null;
-                    yield return resultSelector(indexer(list, i), cd);
+                    yield return resultSelector(list[i], cd);
                 }
             }
 

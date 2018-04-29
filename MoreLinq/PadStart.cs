@@ -40,7 +40,7 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.PadLeft(5);
+        /// var result = numbers.PadStart(5);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
@@ -69,7 +69,7 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.PadLeft(5, -1);
+        /// var result = numbers.PadStart(5, -1);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
         /// </example>
@@ -78,7 +78,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadLeftImpl(source, width, padding, null);
+            return PadStartImpl(source, width, padding, null);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.PadLeft(6, i => -i);
+        /// var result = numbers.PadStart(6, i => -i);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
         /// </example>
@@ -110,10 +110,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadLeftImpl(source, width, default, paddingSelector);
+            return PadStartImpl(source, width, default, paddingSelector);
         }
 
-        static IEnumerable<T> PadLeftImpl<T>(IEnumerable<T> source,
+        static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T> paddingSelector)
         {
             return

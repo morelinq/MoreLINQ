@@ -27,7 +27,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Empty<int>();
             var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-            Assert.That(result, Is.EqualTo(sequenceA));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>

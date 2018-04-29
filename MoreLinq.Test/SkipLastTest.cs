@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [TestCase(6)]
         public void SkipLastWithSequenceShorterThanCount(int skip)
         {
-            Assert.IsFalse(Enumerable.Range(1, 5).SkipLast(skip).Any());
+            Assert.That(Enumerable.Range(1, 5).SkipLast(skip), Is.Empty);
         }
 
         [Test]

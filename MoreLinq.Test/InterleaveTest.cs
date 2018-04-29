@@ -88,7 +88,7 @@ namespace MoreLinq.Test
             var sequenceE = Enumerable.Empty<int>();
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
 
-            Assert.That(result, Is.EqualTo(Enumerable.Empty<int>()));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>

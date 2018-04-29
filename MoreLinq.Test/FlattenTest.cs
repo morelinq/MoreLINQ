@@ -74,7 +74,7 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-
+        [Test]
         public void FlattenCast()
         {
             var source = new object[]
