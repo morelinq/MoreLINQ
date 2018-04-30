@@ -78,6 +78,13 @@ than or equal to the given integer.
 Determines whether or not the number of elements in the sequence is lesser
 than or equal to the given integer.
 
+### Backsert
+
+Inserts the elements of a sequence into another sequence at a
+specified index from the tail of the sequence, where zero always represents
+the last position, one represents the second-last element, two represents
+the third-last element and so on.
+
 ### Batch
 
 Batches the source sequence into sized buckets.

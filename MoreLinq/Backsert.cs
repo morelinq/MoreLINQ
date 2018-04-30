@@ -25,7 +25,7 @@ namespace MoreLinq
     {
         /// <summary>
         /// Inserts the elements of a sequence into another sequence at a
-        /// specified index in the tail of the sequence, where zero always represents
+        /// specified index from the tail of the sequence, where zero always represents
         /// the last position, one represents the second-last element, two represents
         /// the third-last element and so on.
         /// </summary>
