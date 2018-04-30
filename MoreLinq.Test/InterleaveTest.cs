@@ -43,7 +43,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Range(1, count);
             var result = sequenceA.Interleave(sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, count).Select(x => new[] { x, x }).SelectMany(z => z)));
+            Assert.That(result, Is.EqualTo(Enumerable.Range(1, count).Select(x => new[] { x, x }).SelectMany(z => z)));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Empty<int>();
             var result = sequenceA.Interleave(sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.EqualTo(Enumerable.Empty<int>()));
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MoreLinq.Test
 
             var expectedResult = new[] { 0, 1, 0, 1, 0, 1, 0, 1, 0, 0 };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace MoreLinq.Test
 
             var expectedResult = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>

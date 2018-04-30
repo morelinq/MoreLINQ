@@ -41,8 +41,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
             var resultB = sequenceB.Cartesian(sequenceA, (a, b) => a + b);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceA));
+            Assert.That(resultA, Is.EqualTo(sequenceA));
+            Assert.That(resultB, Is.EqualTo(sequenceA));
         }
 
         /// <summary>
