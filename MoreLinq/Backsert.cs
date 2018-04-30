@@ -51,7 +51,7 @@ namespace MoreLinq
         /// the resulting sequence is iterated.
         /// </exception>
 
-        public static IEnumerable<T> InsertEnd<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
+        public static IEnumerable<T> Backsert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));

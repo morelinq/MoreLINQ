@@ -21,43 +21,43 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class InsertEndTest
+    public class BacksertTest
     {
         [Test]
-        public void InsertEndWithNegativeIndex()
+        public void BacksertWithNegativeIndex()
         {
             AssertThrowsArgument.OutOfRangeException("index", () =>
-                 Enumerable.Range(1, 10).InsertEnd(new[] { 97, 98, 99 }, -1));
+                 Enumerable.Range(1, 10).Backsert(new[] { 97, 98, 99 }, -1));
         }
 
         [Test]
-        public void InsertEndWithIndexGreaterThanSourceLength()
+        public void BacksertWithIndexGreaterThanSourceLength()
         {
             const int count = 5;
             var source = Enumerable.Range(0, count);
-            var result = source.InsertEnd(new[] { 97, 98, 99 }, count + 1);
+            var result = source.Backsert(new[] { 97, 98, 99 }, count + 1);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
         }
 
         [Test]
-        public void InsertEndWithIndexEqualsSourceLength()
+        public void BacksertWithIndexEqualsSourceLength()
         {
             const int count = 5;
             var source = Enumerable.Range(1, count);
             var second = new[] { 9 };
-            var result = source.InsertEnd(second, count);
+            var result = source.Backsert(second, count);
             var expectations = second.Concat(source);
 
             Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
-        public void InsertEndWithIndexZero()
+        public void BacksertWithIndexZero()
         {
             var source = Enumerable.Range(1, 5);
             var second = new[] { 9 };
-            var result = source.InsertEnd(second, 0);
+            var result = source.Backsert(second, 0);
             var expectations = source.Concat(second);
 
             Assert.That(result, Is.EqualTo(expectations));
@@ -65,20 +65,20 @@ namespace MoreLinq.Test
 
         [TestCase(3, 1)]
         [TestCase(3, 2)]
-        public void InsertEnd(int count, int index)
+        public void Backsert(int count, int index)
         {
             var first = Enumerable.Range(1, count);
             var second = new[] { 97, 98, 99 };
-            var result = first.InsertEnd(second, index);
+            var result = first.Backsert(second, index);
             var expectations = first.SkipLast(index).Concat(second).Concat(first.TakeLast(index));
 
             Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
-        public void InsertEndIsLazy()
+        public void BacksertIsLazy()
         {
-            new BreakingSequence<int>().InsertEnd(new BreakingSequence<int>(), 0);
+            new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
         }
     }
 }
