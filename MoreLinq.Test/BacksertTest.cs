@@ -34,45 +34,64 @@ namespace MoreLinq.Test
         public void BacksertWithIndexGreaterThanSourceLength()
         {
             const int count = 5;
-            var source = Enumerable.Range(0, count);
-            var result = source.Backsert(new[] { 97, 98, 99 }, count + 1);
+            var seq1 = Enumerable.Range(0, count);
+            var seq2 = new[] { 97, 98, 99 };
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
+            using (var test1 = seq1.AsTestingSequence())
+            using (var test2 = seq2.AsTestingSequence())
+            {
+                var result = test1.Backsert(test2, count + 1);
+                Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
+            }
         }
 
         [Test]
         public void BacksertWithIndexEqualsSourceLength()
         {
             const int count = 5;
-            var source = Enumerable.Range(1, count);
-            var second = new[] { 9 };
-            var result = source.Backsert(second, count);
-            var expectations = second.Concat(source);
+            var seq1 = Enumerable.Range(1, count);
+            var seq2 = new[] { 9 };
+            var expectations = seq2.Concat(seq1);
 
-            Assert.That(result, Is.EqualTo(expectations));
+            using (var test1 = seq1.AsTestingSequence())
+            using (var test2 = seq2.AsTestingSequence())
+            {
+                var result = test1.Backsert(test2, count);
+                Assert.That(result, Is.EqualTo(expectations));
+            }
         }
 
         [Test]
         public void BacksertWithIndexZero()
         {
-            var source = Enumerable.Range(1, 5);
-            var second = new[] { 9 };
-            var result = source.Backsert(second, 0);
-            var expectations = source.Concat(second);
+            var seq1 = Enumerable.Range(1, 5);
+            var seq2 = new[] { 9 };
+            var expectations = seq1.Concat(seq2);
 
-            Assert.That(result, Is.EqualTo(expectations));
+            using (var test1 = seq1.AsTestingSequence())
+            using (var test2 = seq2.AsTestingSequence())
+            {
+                var result = test1.Backsert(test2, 0);
+                Assert.That(result, Is.EqualTo(expectations));
+            }
         }
 
         [TestCase(3, 1)]
         [TestCase(3, 2)]
         public void Backsert(int count, int index)
         {
-            var first = Enumerable.Range(1, count);
-            var second = new[] { 97, 98, 99 };
-            var result = first.Backsert(second, index);
-            var expectations = first.SkipLast(index).Concat(second).Concat(first.TakeLast(index));
+            var seq1 = Enumerable.Range(1, count);
+            var seq2 = new[] { 97, 98, 99 };
+            var expectations = seq1.SkipLast(index)
+                                   .Concat(seq2)
+                                   .Concat(seq1.TakeLast(index));
 
-            Assert.That(result, Is.EqualTo(expectations));
+            using (var test1 = seq1.AsTestingSequence())
+            using (var test2 = seq2.AsTestingSequence())
+            {
+                var result = test1.Backsert(test2, index);
+                Assert.That(result, Is.EqualTo(expectations));
+            }
         }
 
         [Test]
