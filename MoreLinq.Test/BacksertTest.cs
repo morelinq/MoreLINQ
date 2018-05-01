@@ -51,12 +51,12 @@ namespace MoreLinq.Test
             const int count = 5;
             var seq1 = Enumerable.Range(1, count);
             var seq2 = new[] { 9 };
-            var expectations = seq2.Concat(seq1);
 
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
                 var result = test1.Backsert(test2, count);
+                var expectations = seq2.Concat(seq1);
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
@@ -66,12 +66,12 @@ namespace MoreLinq.Test
         {
             var seq1 = Enumerable.Range(1, 5);
             var seq2 = new[] { 9 };
-            var expectations = seq1.Concat(seq2);
 
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
                 var result = test1.Backsert(test2, 0);
+                var expectations = seq1.Concat(seq2);
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
@@ -82,14 +82,12 @@ namespace MoreLinq.Test
         {
             var seq1 = Enumerable.Range(1, count);
             var seq2 = new[] { 97, 98, 99 };
-            var expectations = seq1.SkipLast(index)
-                                   .Concat(seq2)
-                                   .Concat(seq1.TakeLast(index));
 
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
                 var result = test1.Backsert(test2, index);
+                var expectations = seq1.SkipLast(index).Concat(seq2).Concat(seq1.TakeLast(index));
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
