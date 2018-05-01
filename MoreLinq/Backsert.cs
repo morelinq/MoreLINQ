@@ -62,14 +62,14 @@ namespace MoreLinq
                    : _();
 
             IEnumerable<T> _() =>
-                 first.CountDown(index, (x, cd) => new { Element = x, CountDown = cd })
+                 first.CountDown(index, (e, cd) => (Element: e, Countdown: cd))
                       .SelectMany((e, i) => i == 0
-                                            ? e.CountDown.HasValue
-                                              ? e.CountDown == (index - 1)
+                                            ? e.Countdown.HasValue
+                                              ? e.Countdown == (index - 1)
                                                 ? second.Concat(e.Element)
                                                 : throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.")
                                               : Enumerable.Repeat(e.Element, 1)
-                                            : e.CountDown == (index - 1)
+                                            : e.Countdown == (index - 1)
                                               ? second.Concat(e.Element)
                                               : Enumerable.Repeat(e.Element, 1));
         }
