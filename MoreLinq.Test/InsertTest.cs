@@ -59,8 +59,7 @@ namespace MoreLinq.Test
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
-                var result = test1.Insert(test2, count + 1)
-                                  .Take(count);
+                var result = test1.Insert(test2, count + 1).Take(count);
 
                 Assert.That(seq1, Is.EqualTo(result));
             }
@@ -74,14 +73,12 @@ namespace MoreLinq.Test
         {
             var seq1 = Enumerable.Range(1, count);
             var seq2 = new[] { 97, 98, 99 };
-            var expectations = seq1.Take(index)
-                                   .Concat(seq2)
-                                   .Concat(seq1.Skip(index));
 
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
                 var result = test1.Insert(test2, index);
+                var expectations = seq1.Take(index).Concat(seq2).Concat(seq1.Skip(index));
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
