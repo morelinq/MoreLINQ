@@ -41,6 +41,7 @@ namespace MoreLinq.Test
             using (var test2 = seq2.AsTestingSequence())
             {
                 var result = test1.Backsert(test2, count + 1);
+
                 Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
             }
         }
@@ -57,6 +58,7 @@ namespace MoreLinq.Test
             {
                 var result = test1.Backsert(test2, count);
                 var expectations = seq2.Concat(seq1);
+
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
@@ -72,6 +74,7 @@ namespace MoreLinq.Test
             {
                 var result = test1.Backsert(test2, 0);
                 var expectations = seq1.Concat(seq2);
+
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
@@ -88,6 +91,7 @@ namespace MoreLinq.Test
             {
                 var result = test1.Backsert(test2, index);
                 var expectations = seq1.SkipLast(index).Concat(seq2).Concat(seq1.TakeLast(index));
+
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
