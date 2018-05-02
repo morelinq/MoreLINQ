@@ -62,22 +62,26 @@ namespace MoreLinq
 
             return _(); IEnumerable<T> _()
             {
-                var countdown = first.CountDown(index, (e, cd) => (Element: e, Countdown: cd));
-
-                using (var e = countdown.GetEnumerator())
+                using (var e = first.CountDown(index, ValueTuple.Create)
+                                    .GetEnumerator())
                 {
                     if (e.MoveNext())
                     {
-                        if (e.Current.Countdown.HasValue && e.Current.Countdown != (index - 1))
+                        var (_, countdown) = e.Current;
+                        if (countdown is int n && n != index - 1)
                             throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
 
                         do
                         {
-                            if (e.Current.Countdown == (index - 1))
-                                foreach (var item in second)
-                                    yield return item;
+                            T a;
+                            (a, countdown) = e.Current;
+                            if (countdown == index - 1)
+                            {
+                                foreach (var b in second)
+                                    yield return b;
+                            }
 
-                            yield return e.Current.Element;
+                            yield return a;
                         }
                         while (e.MoveNext());
                     }
