@@ -57,21 +57,32 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (index < 0)  throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
-            return index == 0
-                   ? first.Concat(second)
-                   : _();
+            if (index == 0)
+                return first.Concat(second);
 
-            IEnumerable<T> _() =>
-                 first.CountDown(index, (e, cd) => (Element: e, Countdown: cd))
-                      .SelectMany((e, i) => i == 0
-                                            ? e.Countdown.HasValue
-                                              ? e.Countdown == (index - 1)
-                                                ? second.Concat(e.Element)
-                                                : throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.")
-                                              : Enumerable.Repeat(e.Element, 1)
-                                            : e.Countdown == (index - 1)
-                                              ? second.Concat(e.Element)
-                                              : Enumerable.Repeat(e.Element, 1));
+            return _(); IEnumerable<T> _()
+            {
+                var countdown = first.CountDown(index, (e, cd) => (Element: e, Countdown: cd));
+
+                using (var e = countdown.GetEnumerator())
+                {
+                    if (e.MoveNext())
+                    {
+                        if (e.Current.Countdown.HasValue && e.Current.Countdown != (index - 1))
+                            throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+
+                        do
+                        {
+                            if (e.Current.Countdown == (index - 1))
+                                foreach (var item in second)
+                                    yield return item;
+
+                            yield return e.Current.Element;
+                        }
+                        while (e.MoveNext());
+                    }
+                }
+            }
         }
     }
 }
