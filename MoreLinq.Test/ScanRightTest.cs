@@ -42,8 +42,9 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(new[] { value }));
         }
 
-        [TestCase(SourceKind.List)]
-        [TestCase(SourceKind.ReadOnlyList)]
+        // Cannot test that ListLike optimizations would be used, so 
+        // SourceKind.List and SourceKind.ReadOnlyList not tested
+        // (see https://github.com/morelinq/MoreLINQ/pull/476#discussion_r185191063)
         [TestCase(SourceKind.Sequence)]
         public void ScanRight(SourceKind sourceKind)
         {
