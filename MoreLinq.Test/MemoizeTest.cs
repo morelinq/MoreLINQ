@@ -112,13 +112,14 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeEnumeratesOnlyOnce()
         {
-            using (var ts = Enumerable.Range(1, 10).AsTestingSequence())
+            const int count = 10;
+            using (var ts = Enumerable.Range(1, count).AsTestingSequence())
             {
                 var memoized = ts.Memoize();
                 using ((IDisposable) memoized)
                 {
-                    Assert.IsTrue(memoized.ToList().Count == 10);
-                    Assert.IsTrue(memoized.ToList().Count == 10);
+                    Assert.That(memoized.ToList().Count, Is.EqualTo(count));
+                    Assert.That(memoized.ToList().Count, Is.EqualTo(count));
                 }
             }
         }
