@@ -43,22 +43,9 @@ namespace MoreLinq
             return
                 source.TryGetCollectionCount() is int collectionCount
                 ? source.Take(collectionCount - count)
-                : _(); IEnumerable<T> _()
-                {
-                    var queue = new Queue<T>(count);
-
-                    foreach (var item in source)
-                    {
-                        if (queue.Count < count)
-                        {
-                            queue.Enqueue(item);
-                            continue;
-                        }
-
-                        yield return queue.Dequeue();
-                        queue.Enqueue(item);
-                    }
-                }
+                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd ))
+                        .TakeWhile(e => e.Countdown == null)
+                        .Select(e => e.Element);
         }
     }
 }

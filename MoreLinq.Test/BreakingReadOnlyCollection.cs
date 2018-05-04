@@ -24,7 +24,7 @@ namespace MoreLinq.Test
     {
         readonly IReadOnlyCollection<T> _collection;
 
-        public BreakingReadOnlyCollection(int count) : this(new T[count]) {}
+        public BreakingReadOnlyCollection(params T[] values) : this ((IReadOnlyCollection<T>) values) {}
         public BreakingReadOnlyCollection(IReadOnlyCollection<T> collection) => _collection = collection;
         public int Count => _collection.Count;
     }

@@ -33,7 +33,7 @@ namespace MoreLinq
         /// <c>SortedMerge</c> uses performs the merge in a deferred, streaming manner. <br/>
         ///
         /// Here is an example of a merge, as well as the produced result:
-        /// <code>
+        /// <code><![CDATA[
         ///   var s1 = new[] { 3, 7, 11 };
         ///   var s2 = new[] { 2, 4, 20 };
         ///   var s3 = new[] { 17, 19, 25 };
@@ -41,7 +41,7 @@ namespace MoreLinq
         ///   var result = merged.ToArray();
         ///   // result will be:
         ///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
-        /// </code>
+        /// ]]></code>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
         /// <param name="source">The primary sequence with which to merge</param>

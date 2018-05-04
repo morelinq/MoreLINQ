@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-[[ -e test.sh ]] || { echo >&2 "Please cd into the script location before running it."; exit 1; }
 set -e
+cd "$(dirname "$0")"
 ./build.sh
 for v in 1 2; do
     for c in Debug Release; do

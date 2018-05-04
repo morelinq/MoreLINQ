@@ -105,11 +105,7 @@ namespace MoreLinq.Test
         [TestCase(false)]
         public void MemoizeWithInMemoryCollection(bool readOnly)
         {
-            var collection
-                = readOnly
-                ? new BreakingReadOnlyCollection<int>(0)
-                : (IEnumerable<int>) new BreakingCollection<int>();
-
+            var collection = Enumerable.Empty<int>().ToBreakingCollection(readOnly);
             Assert.That(collection.Memoize(), Is.SameAs(collection));
         }
 

@@ -109,7 +109,7 @@ namespace MoreLinq.Test
             var randomSeq = MoreEnumerable.Random(randB);
             var valuesB = randomSeq.Take(RandomTrials);
 
-            Assert.IsTrue(valuesA.SequenceEqual(valuesB));
+            Assert.That(valuesA, Is.EqualTo(valuesB));
         }
     }
 }

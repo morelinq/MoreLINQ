@@ -18,6 +18,7 @@
 namespace MoreLinq
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -37,10 +38,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 12, 34, 56, 78 };
-        /// IEnumerable&lt;int&gt; result = numbers.TakeLast(2);
-        /// </code>
+        /// var result = numbers.TakeLast(2);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 56 and 78 in turn.
         /// </example>
@@ -52,23 +53,9 @@ namespace MoreLinq
             return
                 source.TryGetCollectionCount() is int collectionCount
                 ? source.Slice(Math.Max(0, collectionCount - count), int.MaxValue)
-                : _(); IEnumerable<TSource> _()
-                {
-                    if (count <= 0)
-                        yield break;
-
-                    var q = new Queue<TSource>(count);
-
-                    foreach (var item in source)
-                    {
-                        if (q.Count == count)
-                            q.Dequeue();
-                        q.Enqueue(item);
-                    }
-
-                    foreach (var item in q)
-                        yield return item;
-                }
+                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
+                        .SkipWhile(e => e.Countdown == null)
+                        .Select(e => e.Element);
         }
     }
 }

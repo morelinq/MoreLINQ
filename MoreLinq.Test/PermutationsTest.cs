@@ -19,7 +19,7 @@ namespace MoreLinq.Test
             var permutations = emptySet.Permutations();
 
             // should contain a single result: the empty set itself
-            Assert.IsTrue(permutations.Single().SequenceEqual(emptySet));
+            Assert.That(permutations.Single(), Is.EqualTo(emptySet));
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace MoreLinq.Test
             var permutations = set.Permutations();
 
             // should contain a single result: the set itself
-            Assert.IsTrue(permutations.Single().SequenceEqual(set));
+            Assert.That(permutations.Single(), Is.EqualTo(set));
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace MoreLinq.Test
 
             // should contain two results: the set itself and its reverse
             Assert.IsTrue(permutations.Count() == 2);
-            Assert.IsTrue(permutations.First().SequenceEqual(set));
-            Assert.IsTrue(permutations.Last().SequenceEqual(set.Reverse()));
+            Assert.That(permutations.First(), Is.EqualTo(set));
+            Assert.That(permutations.Last(), Is.EqualTo(set.Reverse()));
         }
 
         /// <summary>
