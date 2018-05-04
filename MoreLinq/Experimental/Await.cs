@@ -286,7 +286,7 @@ namespace MoreLinq.Experimental
         /// the source sequence as it completes asynchronously. A
         /// <see cref="CancellationToken"/> is passed for each asynchronous
         /// evaluation to abort any asynchronous operations in flight if the
-        /// sequence is not full iterated.
+        /// sequence is not fully iterated.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
         /// <typeparam name="TResult">The type of the result elements.</typeparam>
