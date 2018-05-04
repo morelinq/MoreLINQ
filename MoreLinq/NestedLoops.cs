@@ -36,7 +36,7 @@ namespace MoreLinq
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
         /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
 
-        public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
+        static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
