@@ -291,12 +291,6 @@ given projection.
 
 This method has 2 overloads.
 
-### Memoize
-
-Creates a sequence that lazily caches the source as it is iterated for the
-first time, reusing the cache thereafter for future re-iterations. If the
-source is already cached or buffered then it is returned verbatim.
-
 ### MinBy
 
 Returns the minima (minimal elements) of the given sequence, based on the
@@ -632,6 +626,12 @@ Creates a sequence query that streams the result of each task in the source
 sequence as it completes asynchronously.
 
 This method has 2 overloads.
+
+### Memoize
+
+Creates a sequence that lazily caches the source as it is iterated for the
+first time, reusing the cache thereafter for future re-iterations. If the
+source is already cached or buffered then it is returned verbatim.
 
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
