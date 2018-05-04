@@ -23,6 +23,7 @@ namespace MoreLinq.Test
     using System.Threading;
     using Delegate = Delegating.Delegate;
     using NUnit.Framework;
+    using Experimental;
 
     [TestFixture]
     public class MemoizeTest

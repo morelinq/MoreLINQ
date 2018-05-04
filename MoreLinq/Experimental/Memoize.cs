@@ -15,14 +15,14 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq
+namespace MoreLinq.Experimental
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Runtime.ExceptionServices;
 
-    static partial class MoreEnumerable
+    static partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Creates a sequence that lazily caches the source as it is iterated
