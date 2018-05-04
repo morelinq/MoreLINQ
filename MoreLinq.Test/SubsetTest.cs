@@ -57,7 +57,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(0, 0);
             var result = sequence.Subsets();
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.That(result.Single(), Is.EqualTo(sequence));
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace MoreLinq.Test
 
             var index = 0;
             foreach (var subset in result)
-                Assert.IsTrue(subset.SequenceEqual(expectedSubsets[index++]));
+                Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace MoreLinq.Test
 
             var index = 0;
             foreach (var subset in result)
-                Assert.IsTrue(subset.SequenceEqual(expectedSubsets[index++]));
+                Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
     }
 }

@@ -35,10 +35,10 @@ namespace MoreLinq
         /// respectively.
         /// </returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var (evens, odds) =
         ///     Enumerable.Range(0, 10).Partition(x => x % 2 == 0);
-        /// </code>
+        /// ]]></code>
         /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
         /// and then 8. The <c>odds</c> variable, when iterated over, will yield
         /// 1, 3, 5, 7 and then 9.
@@ -65,11 +65,11 @@ namespace MoreLinq
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var (evens, odds) =
         ///     Enumerable.Range(0, 10)
         ///               .Partition(x => x % 2 == 0, ValueTuple.Create);
-        /// </code>
+        /// ]]></code>
         /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
         /// and then 8. The <c>odds</c> variable, when iterated over, will yield
         /// 1, 3, 5, 7 and then 9.

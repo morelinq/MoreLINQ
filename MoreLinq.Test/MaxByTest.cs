@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByEmptySequence()
         {
-            Assert.IsEmpty(new string[0].MaxBy(x => x.Length));
+            Assert.That(new string[0].MaxBy(x => x.Length), Is.Empty);
         }
 
         [Test]

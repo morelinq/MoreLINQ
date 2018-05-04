@@ -42,12 +42,14 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(value));
         }
 
-        [Test]
-        public void AggregateRight()
+        [TestCase(SourceKind.List)]
+        [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.Sequence)]
+        public void AggregateRight(SourceKind sourceKind)
         {
-            var result = Enumerable.Range(1, 5)
-                                   .Select(x => x.ToString())
-                                   .AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString()).ToSourceKind(sourceKind);
+
+            var result = enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }

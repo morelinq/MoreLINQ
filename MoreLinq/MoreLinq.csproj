@@ -21,6 +21,7 @@
         - CountBetween
         - CompareCount
         - CountBy
+        - CountDown
         - Concat
         - Consume
         - DistinctBy
@@ -48,6 +49,7 @@
         - Lead
         - LeftJoin
         - MaxBy
+        - Memoize
         - MinBy
         - Move
         - NestedLoops
@@ -120,7 +122,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
-    <PackageReleaseNotes>Adds new operators: Await (EXPERIMENTAL), CompareCount, Choose, Transpose. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds new operators: Await (EXPERIMENTAL), CompareCount, Choose, CountDown, Transpose. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -188,6 +190,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

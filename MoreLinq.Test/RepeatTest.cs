@@ -33,7 +33,7 @@ namespace MoreLinq.Test
                 expectedResult = expectedResult.Concat(sequence);
 
             Assert.AreEqual(count * repeatCount, result.Count());
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>

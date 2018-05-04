@@ -33,11 +33,11 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3 };
         /// string[] letters = { "A", "B", "C", "D" };
         /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "0D" in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>

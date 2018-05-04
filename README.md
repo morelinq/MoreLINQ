@@ -22,6 +22,10 @@ To build MoreLINQ from sources, you will need:
 Then run either `build.cmd` if building on Windows or `build.sh` if
 building on macOS or a Linux distribution supported by .NET Core.
 
+Some code in the project is generated using [T4][t4] templates. To regenerate
+the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
+`MoreLinq/tt.sh` depending on your platform.
+
 Building the documentation is supported on Windows only and requires
 [Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
 generates the documentation in the `docs/api` directory. It can be browsed
@@ -33,6 +37,7 @@ locally using any HTTP server of static files, like
 [dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
 [shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
 [http-server]: https://www.npmjs.com/package/http-server
+[t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
 ## Operators
@@ -120,6 +125,12 @@ sequence of unique keys and their number of occurrences in the original
 sequence.
 
 This method has 2 overloads.
+
+### CountDown
+
+Provides a countdown counter for a given count of elements at the tail of the
+sequence where zero always represents the last element, one represents the
+second-last element, two represents the third-last element and so on.
 
 ### DistinctBy
 
@@ -279,6 +290,12 @@ Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
+
+### Memoize
+
+Creates a sequence that lazily caches the source as it is iterated for the
+first time, reusing the cache thereafter for future re-iterations. If the
+source is already cached or buffered then it is returned verbatim.
 
 ### MinBy
 

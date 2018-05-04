@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         public void SkipUntilPredicateNeverTrue()
         {
             var sequence = Enumerable.Range(0, 5).SkipUntil(x => x == 100);
-            sequence.AssertSequenceEqual();
+            Assert.That(sequence, Is.Empty);
         }
 
         [Test]

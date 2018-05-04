@@ -51,7 +51,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(lagBy, lagDefault, (val, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Take(lagBy).SequenceEqual(Enumerable.Repeat(lagDefault, lagBy)));
+            Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(lagDefault, lagBy)));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(lagBy, (val, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Take(lagBy).SequenceEqual(Enumerable.Repeat(default(int), lagBy)));
+            Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(default(int), lagBy)));
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(count + 1, (a, b) => a);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.SequenceEqual(sequence));
+            Assert.That(result, Is.EqualTo(sequence));
         }
 
         /// <summary>
