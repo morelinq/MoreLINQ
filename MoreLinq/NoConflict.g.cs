@@ -67,9 +67,9 @@ namespace MoreLinq.NoConflict
         /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
         /// <returns>The final accumulator value.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
         /// <remarks>
@@ -91,10 +91,10 @@ namespace MoreLinq.NoConflict
         /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
         /// <returns>The final accumulator value.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
         /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
         /// <remarks>
@@ -119,10 +119,10 @@ namespace MoreLinq.NoConflict
         /// <param name="resultSelector">A function to transform the final accumulator value into the result value.</param>
         /// <returns>The transformed final accumulator value.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
         /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
         /// <remarks>
@@ -243,10 +243,10 @@ namespace MoreLinq.NoConflict
         /// <returns><c>true</c> if the number of elements in the sequence is greater than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.AtLeast(2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
@@ -273,10 +273,10 @@ namespace MoreLinq.NoConflict
         /// <returns><c>true</c> if the number of elements in the sequence is lesser than
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.AtMost(2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
@@ -363,11 +363,11 @@ namespace MoreLinq.NoConflict
         /// <returns><c>-1</c> if the first sequence has the fewest elements, <c>0</c> if the two sequences have the same number of elements
         /// or <c>1</c> if the first sequence has the most elements.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var first = { 123, 456 };
         /// var second = { 789 };
         /// var result = first.CompareCount(second);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>1</c>.
         /// </example>
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
@@ -444,10 +444,10 @@ namespace MoreLinq.NoConflict
         /// <returns><c>true</c> if the number of elements in the sequence is between (inclusive)
         /// the min and max given integers or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.CountBetween(1, 2);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
@@ -486,6 +486,46 @@ namespace MoreLinq.NoConflict
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
             => MoreEnumerable.CountBy(source, keySelector, comparer);
+
+    }
+
+    /// <summary><c>CountDown</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class CountDownExtension
+    {
+        /// <summary>
+        /// Provides a countdown counter for a given count of elements at the
+        /// tail of the sequence where zero always represents the last element,
+        /// one represents the second-last element, two represents the
+        /// third-last element and so on.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of elements of <paramref name="source"/></typeparam>
+        /// <typeparam name="TResult">
+        /// The type of elements of the resulting sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="count">Count of tail elements of
+        /// <paramref name="source"/> to count down.</param>
+        /// <param name="resultSelector">
+        /// A function that receives the element and the current countdown
+        /// value for the element and which returns those mapped to a
+        /// result returned in the resulting sequence. For elements before
+        /// the last <paramref name="count"/>, the coundown value is
+        /// <c>null</c>.</param>
+        /// <returns>
+        /// A sequence of results returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This method uses deferred execution semantics and streams its
+        /// results. At most, <paramref name="count"/> elements of the source
+        /// sequence may be buffered at any one time unless
+        /// <paramref name="source"/> is a collection or a list.
+        /// </remarks>
+
+        public static IEnumerable<TResult> CountDown<T, TResult>(this IEnumerable<T> source,
+            int count, Func<T, int?, TResult> resultSelector)
+            => MoreEnumerable.CountDown(source, count, resultSelector);
 
     }
 
@@ -597,11 +637,11 @@ namespace MoreLinq.NoConflict
         /// from each of the argument sequences.
         /// </summary>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3, 4 };
         /// string[] letters = { "A", "B", "C", "D" };
         /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "4D" in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
@@ -635,12 +675,12 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 1, 2, 3, 4 };
         /// var letters = { "A", "B", "C", "D" };
         /// var chars    = { 'a', 'b', 'c', 'd' };
         /// var zipped = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1Aa", "2Bb", "3Cc", "4Dd" in turn.
         /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
@@ -671,13 +711,13 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 1, 2, 3, 4 };
         /// var letters = { "A", "B", "C", "D" };
         /// var chars   = { 'a', 'b', 'c', 'd' };
         /// var flags   = { true, false, true, false };
         /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue", "2BbFalse", "3CcTrue", "4DdFalse" in turn.
         /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
@@ -743,10 +783,10 @@ namespace MoreLinq.NoConflict
         /// <returns><c>true</c> if the number of elements in the sequence is equals
         /// to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.Exactly(3);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
@@ -850,10 +890,10 @@ namespace MoreLinq.NoConflict
         /// if <paramref name="source"/> is empty; otherwise, <paramref name="source"/>.
         /// </returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = { 123, 456, 789 };
         /// var result = numbers.Where(x => x == 100).FallbackIfEmpty(-1).Single();
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>-1</c>.
         /// </example>
 
@@ -2097,9 +2137,9 @@ namespace MoreLinq.NoConflict
         /// <remarks>
         /// Interleave combines sequences by visiting each in turn, and returning the first element of each, followed
         /// by the second, then the third, and so on. So, for example:<br/>
-        /// <code>
+        /// <code><![CDATA[
         /// {1,1,1}.Interleave( {2,2,2}, {3,3,3} ) => { 1,2,3,1,2,3,1,2,3 }
-        /// </code>
+        /// ]]></code>
         /// This operator behaves in a deferred and streaming manner.<br/>
         /// When sequences are of unequal length, this method will skip those sequences that have been fully consumed
         /// and continue interleaving the remaining sequences.<br/>
@@ -2493,9 +2533,9 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var result = Enumerable.Range(0, 6).Move(3, 2, 0);
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 3, 4, 0, 1, 2, 5 }</c>.
         /// </example>
 
@@ -2827,10 +2867,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pad(5);
-        /// </code>
+        /// var result = numbers.Pad(5);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
@@ -2854,10 +2894,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pad(5, -1);
-        /// </code>
+        /// var result = numbers.Pad(5, -1);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 123, 456, and 789 followed by two occurrences of -1, in turn.
         /// </example>
@@ -2881,10 +2921,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 0, 1, 2 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pad(5, i => -i);
-        /// </code>
+        /// var result = numbers.Pad(5, i => -i);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2, -3 and -4, in turn.
         /// </example>
@@ -2914,10 +2954,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.PadLeft(5);
-        /// </code>
+        /// var result = numbers.PadStart(5);
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
@@ -2941,10 +2981,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.PadLeft(5, -1);
-        /// </code>
+        /// var result = numbers.PadStart(5, -1);
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ -1, -1, 123, 456, 789 }</c>.
         /// </example>
 
@@ -2968,10 +3008,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.PadLeft(6, i => -i);
-        /// </code>
+        /// var result = numbers.PadStart(6, i => -i);
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>{ 0, -1, -2, 123, 456, 789 }</c>.
         /// </example>
 
@@ -3003,10 +3043,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 123, 456, 789 };
-        /// IEnumerable&lt;int&gt; result = numbers.Pairwise((a, b) => a + b);
-        /// </code>
+        /// var result = numbers.Pairwise((a, b) => a + b);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 579 and 1245, in turn.
         /// </example>
@@ -3217,10 +3257,10 @@ namespace MoreLinq.NoConflict
         /// respectively.
         /// </returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var (evens, odds) =
         ///     Enumerable.Range(0, 10).Partition(x => x % 2 == 0);
-        /// </code>
+        /// ]]></code>
         /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
         /// and then 8. The <c>odds</c> variable, when iterated over, will yield
         /// 1, 3, 5, 7 and then 9.
@@ -3285,11 +3325,11 @@ namespace MoreLinq.NoConflict
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var (evens, odds) =
         ///     Enumerable.Range(0, 10)
         ///               .Partition(x => x % 2 == 0, ValueTuple.Create);
-        /// </code>
+        /// ]]></code>
         /// The <c>evens</c> variable, when iterated over, will yield 0, 2, 4, 6
         /// and then 8. The <c>odds</c> variable, when iterated over, will yield
         /// 1, 3, 5, 7 and then 9.
@@ -3526,10 +3566,10 @@ namespace MoreLinq.NoConflict
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3 };
-        /// IEnumerable&lt;int&gt; result = numbers.Prepend(0);
-        /// </code>
+        /// var result = numbers.Prepend(0);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2 and 3, in turn.
 
@@ -3556,13 +3596,12 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
-        /// <code>
-        /// Func&lt;int, int, int&gt; plus = (a, b) =&gt; a + b;
+        /// <code><![CDATA[
         /// int[] values = { 1, 2, 3, 4 };
-        /// IEnumerable&lt;int&gt; prescan = values.PreScan(plus, 0);
-        /// IEnumerable&lt;int&gt; scan = values.Scan(plus; a + b);
-        /// IEnumerable&lt;int&gt; result = values.ZipShortest(prescan, plus);
-        /// </code>
+        /// var prescan = values.PreScan((a, b) => a + b, 0);
+        /// var scan = values.Scan((a, b) => a + b);
+        /// var result = values.ZipShortest(prescan, plus);
+        /// ]]></code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
         /// shows the relationship between the inclusive and exclusive prefix sum.
@@ -3573,8 +3612,10 @@ namespace MoreLinq.NoConflict
         /// <param name="identity">Identity element (see remarks)</param>
         /// <returns>The scanned sequence</returns>
 
-        public static IEnumerable<TSource> PreScan<TSource>(this IEnumerable<TSource> source,
-            Func<TSource, TSource, TSource> transformation, TSource identity)
+        public static IEnumerable<TSource> PreScan<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, TSource> transformation,
+            TSource identity)
             => MoreEnumerable.PreScan(source, transformation, identity);
 
     }
@@ -3916,13 +3957,12 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
-        /// <code>
-        /// Func&lt;int, int, int&gt; plus = (a, b) =&gt; a + b;
+        /// <code><![CDATA[
         /// int[] values = { 1, 2, 3, 4 };
-        /// IEnumerable&lt;int&gt; prescan = values.PreScan(plus, 0);
-        /// IEnumerable&lt;int&gt; scan = values.Scan(plus; a + b);
-        /// IEnumerable&lt;int&gt; result = values.ZipShortest(prescan, plus);
-        /// </code>
+        /// var prescan = values.PreScan((a, b) => a + b, 0);
+        /// var scan = values.Scan((a, b) => a + b);
+        /// var result = values.ZipShortest(prescan, plus);
+        /// ]]></code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
         /// shows the relationship between the inclusive and exclusive prefix sum.
@@ -3945,9 +3985,9 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
-        /// <code>
-        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) =&gt; a + b);
-        /// </code>
+        /// <code><![CDATA[
+        /// var result = Enumerable.Range(1, 5).Scan(0, (a, b) => a + b);
+        /// ]]></code>
         /// When iterated, <c>result</c> will yield <c>{ 0, 1, 3, 6, 10, 15 }</c>.
         /// </example>
         /// <typeparam name="TSource">Type of elements in source sequence</typeparam>
@@ -3981,9 +4021,9 @@ namespace MoreLinq.NoConflict
         /// </param>
         /// <returns>The scanned sequence.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => string.Format("({0}/{1})", a, b));
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
         /// <remarks>
@@ -4007,9 +4047,9 @@ namespace MoreLinq.NoConflict
         /// <param name="func">A right-associative accumulator function to be invoked on each element.</param>
         /// <returns>The scanned sequence.</returns>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
         /// <remarks>
@@ -4109,8 +4149,8 @@ namespace MoreLinq.NoConflict
         /// </para>
         /// <para>
         /// Secondly, SkipUntil skips the element which causes the predicate to return true. For
-        /// example, in a sequence <code>{ 1, 2, 3, 4, 5 }</code> and with a predicate of
-        /// <code>x => x == 3</code>, the result would be <code>{ 4, 5 }</code>.
+        /// example, in a sequence <code><![CDATA[{ 1, 2, 3, 4, 5 }]]></code> and with a predicate of
+        /// <code><![CDATA[x => x == 3]]></code>, the result would be <code><![CDATA[{ 4, 5 }]]></code>.
         /// </para>
         /// <para>
         /// SkipUntil is as lazy as possible: it will not iterate over the source sequence
@@ -4172,7 +4212,7 @@ namespace MoreLinq.NoConflict
         /// <c>SortedMerge</c> uses performs the merge in a deferred, streaming manner. <br/>
         ///
         /// Here is an example of a merge, as well as the produced result:
-        /// <code>
+        /// <code><![CDATA[
         ///   var s1 = new[] { 3, 7, 11 };
         ///   var s2 = new[] { 2, 4, 20 };
         ///   var s3 = new[] { 17, 19, 25 };
@@ -4180,7 +4220,7 @@ namespace MoreLinq.NoConflict
         ///   var result = merged.ToArray();
         ///   // result will be:
         ///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
-        /// </code>
+        /// ]]></code>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
         /// <param name="source">The primary sequence with which to merge</param>
@@ -4549,14 +4589,14 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.TagFirstLast((num, fst, lst) => new
         ///              {
         ///                  Number = num,
         ///                  IsFirst = fst, IsLast = lst
         ///              });
-        /// </code>
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// <c>{ Number = 123, IsFirst = True, IsLast = False }</c>,
         /// <c>{ Number = 456, IsFirst = False, IsLast = False }</c> and
@@ -4586,10 +4626,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3, 4, 5 };
-        /// IEnumerable&lt;int&gt; result = numbers.TakeEvery(2);
-        /// </code>
+        /// var result = numbers.TakeEvery(2);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield 1, 3 and 5, in turn.
         /// </example>
 
@@ -4618,10 +4658,10 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 12, 34, 56, 78 };
-        /// IEnumerable&lt;int&gt; result = numbers.TakeLast(2);
-        /// </code>
+        /// var result = numbers.TakeLast(2);
+        /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
         /// 56 and 78 in turn.
         /// </example>
@@ -4649,8 +4689,8 @@ namespace MoreLinq.NoConflict
         /// </para>
         /// <para>
         /// Secondly, TakeUntil yields the element which causes the predicate to return true. For
-        /// example, in a sequence <code>{ 1, 2, 3, 4, 5 }</code> and with a predicate of
-        /// <code>x => x == 3</code>, the result would be <code>{ 1, 2, 3 }</code>.
+        /// example, in a sequence <code><![CDATA[{ 1, 2, 3, 4, 5 }]]></code> and with a predicate of
+        /// <code><![CDATA[x => x == 3]]></code>, the result would be <code><![CDATA[{ 1, 2, 3 }]]></code>.
         /// </para>
         /// <para>
         /// TakeUntil is as lazy as possible: it will not iterate over the source sequence
@@ -5474,6 +5514,45 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Transpose</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class TransposeExtension
+    {
+        /// <summary>
+        /// Transposes a sequence of rows into a sequence of columns.
+        /// </summary>
+        /// <typeparam name="T">Type of source sequence elements.</typeparam>
+        /// <param name="source">Source sequence to transpose.</param>
+        /// <returns>
+        /// Returns a sequence of columns in the source swapped into rows.
+        /// </returns>
+        /// <remarks>
+        /// If a rows is shorter than a follow it then the shorter row's
+        /// elements are skipped in the corresponding column sequences.
+        /// This operator uses deferred execution and streams its results.
+        /// Source sequence is consumed greedily when an iteration begins.
+        /// The inner sequences representing rows are consumed lazily and
+        /// resulting sequences of columns are streamed.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var matrix = new[]
+        /// {
+        ///     new[] { 10, 11 },
+        ///     new[] { 20 },
+        ///     new[] { 30, 31, 32 }
+        /// };
+        /// var result = matrix.Transpose();
+        /// ]]></code>
+        /// The <c>result</c> variable will contain [[10, 20, 30], [11, 31], [32]].
+        /// </example>
+
+        public static IEnumerable<IEnumerable<T>> Transpose<T>(this IEnumerable<IEnumerable<T>> source)
+            => MoreEnumerable.Transpose(source);
+
+    }
+
     /// <summary><c>Windowed</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -5512,11 +5591,11 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// int[] numbers = { 1, 2, 3 };
         /// string[] letters = { "A", "B", "C", "D" };
         /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "0D" in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
@@ -5553,11 +5632,11 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
@@ -5581,12 +5660,12 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "98A", "100B", "102C", in turn.
         /// </example>
@@ -5614,13 +5693,13 @@ namespace MoreLinq.NoConflict
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var flags   = new[] { true, false };
         /// var zipped  = numbers.ZipShortest(letters, chars, flags (n, l, c, f) => n + l + c + f);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "1AaTrue", "2BbFalse" in turn.
         /// </example>
