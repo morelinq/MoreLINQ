@@ -9,6 +9,7 @@ setlocal
 for %%i in (dotnet.exe) do set dotnet=%%~dpnx$PATH:i
 if "%dotnet%"=="" goto :nodotnet
 if "%1"=="docs" shift & goto :docs
+:build
 dotnet --info ^
   && dotnet restore ^
   && dotnet restore MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj ^
@@ -18,7 +19,7 @@ dotnet --info ^
 goto :EOF
 
 :docs
-call msbuild.cmd MoreLinq.shfbproj %1 %2 %3 %4 %5 %6 %7 %8 %9
+call :build && call msbuild.cmd MoreLinq.shfbproj %1 %2 %3 %4 %5 %6 %7 %8 %9
 goto :EOF
 
 :nodotnet

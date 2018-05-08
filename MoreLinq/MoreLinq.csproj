@@ -14,11 +14,13 @@
         - AssertCount
         - AtLeast
         - AtMost
+        - Await (EXPERIMENTAL)
         - Batch
         - Cartesian
         - CountBetween
         - CompareCount
         - CountBy
+        - CountDown
         - Concat
         - Consume
         - DistinctBy
@@ -92,6 +94,7 @@
         - ToHashSet
         - ToLookup
         - Trace
+        - Transpose
         - TraverseBreadthFirst
         - TraverseDepthFirst
         - Unfold
@@ -117,7 +120,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
-    <PackageReleaseNotes>Adds new operators: Flatten. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds new operators: Await (EXPERIMENTAL), CompareCount, CountDown, Transpose. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -153,7 +156,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM</DefineConstants>
+    <DefineConstants>$(DefineConstants);MORELINQ;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
@@ -194,6 +197,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

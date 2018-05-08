@@ -32,12 +32,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "98A", "100B", "102C", in turn.
         /// </example>
@@ -72,13 +72,13 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var flags   = new[] { true, false };
         /// var zipped  = numbers.ZipShortest(letters, chars, flags (n, l, c, f) => n + l + c + f);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "1AaTrue", "2BbFalse" in turn.
         /// </example>
@@ -116,11 +116,11 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
-        /// </code>
+        /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
         /// </example>
         /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>

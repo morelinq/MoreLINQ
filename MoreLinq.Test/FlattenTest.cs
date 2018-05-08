@@ -17,9 +17,8 @@
 
 namespace MoreLinq.Test
 {
-    using NUnit.Framework;
-    using System;
     using System.Collections.Generic;
+    using NUnit.Framework;
 
     [TestFixture]
     public class FlattenTest
@@ -75,7 +74,7 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-
+        [Test]
         public void FlattenCast()
         {
             var source = new object[]
@@ -247,12 +246,12 @@ namespace MoreLinq.Test
             using (var inner1 = TestingSequence.Of(4, 5))
             using (var inner2 = MoreEnumerable.From(() => true,
                                                     () => false,
-                                                    () => throw new InvalidOperationException())
+                                                    () => throw new TestException())
                                               .AsTestingSequence())
             using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
             using (var source = TestingSequence.Of<object>(inner1, inner3))
             {
-                Assert.Throws<InvalidOperationException>(() =>
+                Assert.Throws<TestException>(() =>
                     source.Flatten().Consume());
             }
         }
@@ -272,7 +271,7 @@ namespace MoreLinq.Test
                         MoreEnumerable.From
                         (
                             () => 10,
-                            () => throw new InvalidOperationException(),
+                            () => throw new TestException(),
                             () => 12
                         ),
                         13, 14, 15,
@@ -287,7 +286,7 @@ namespace MoreLinq.Test
 
             Assert.That(result.Take(10), Is.EquivalentTo(expectations));
 
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<TestException>(() =>
                 source.Flatten().ElementAt(11));
         }
     }
