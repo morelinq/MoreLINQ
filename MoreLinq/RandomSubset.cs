@@ -61,7 +61,10 @@ namespace MoreLinq
 
                 var seqArray = sequence.ToArray();
                 if (seqArray.Length < subsetSize)
-                    throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(subsetSize),
+                        "Subset size must be less than or equal to the source length.");
+                }
 
                 var m = 0;                // keeps track of count items shuffled
                 var w = seqArray.Length;  // upper bound of shrinking swap range
