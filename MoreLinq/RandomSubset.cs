@@ -24,12 +24,16 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a sequence of a specified size of random elements from the original sequence
+        /// Returns a sequence of a specified size of random elements from the
+        /// original sequence.
         /// </summary>
-        /// <typeparam name="T">The type of elements in the sequence</typeparam>
-        /// <param name="sequence">The sequence from which to return random elements</param>
-        /// <param name="subsetSize">The size of the random subset to return</param>
-        /// <returns>A random sequence of elements in random order from the original sequence</returns>
+        /// <typeparam name="T">The type of source sequence elements.</typeparam>
+        /// <param name="sequence">
+        /// The sequence from which to return random elements.</param>
+        /// <param name="subsetSize">The size of the random subset to return.</param>
+        /// <returns>
+        /// A random sequence of elements in random order from the original
+        /// sequence.</returns>
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize)
         {
@@ -37,13 +41,19 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a sequence of a specified size of random elements from the original sequence
+        /// Returns a sequence of a specified size of random elements from the
+        /// original sequence. An additional parameter specifies a random
+        /// generator to be used for the random selection algorithm.
         /// </summary>
-        /// <typeparam name="T">The type of elements in the sequence</typeparam>
-        /// <param name="sequence">The sequence from which to return random elements</param>
-        /// <param name="subsetSize">The size of the random subset to return</param>
-        /// <param name="rand">A random generator used as part of the selection algorithm</param>
-        /// <returns>A random sequence of elements in random order from the original sequence</returns>
+        /// <typeparam name="T">The type of source sequence elements.</typeparam>
+        /// <param name="sequence">
+        /// The sequence from which to return random elements.</param>
+        /// <param name="subsetSize">The size of the random subset to return.</param>
+        /// <param name="rand">
+        /// A random generator used as part of the selection algorithm.</param>
+        /// <returns>
+        /// A random sequence of elements in random order from the original
+        /// sequence.</returns>
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
         {
