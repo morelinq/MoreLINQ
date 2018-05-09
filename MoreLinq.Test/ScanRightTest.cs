@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         //
         // ScanRight internally skips ToList materialization if the source is
         // already list-like. Any test to make sure that is occurring would
-        // have to fail if any only if the optimization is removed and ToList
+        // have to fail if and only if the optimization is removed and ToList
         // is called. Such detection is tricky, hack-ish and brittle at best;
         // it would mean relying on current and internal implementation
         // details of Enumerable.ToList that can and have changed.
