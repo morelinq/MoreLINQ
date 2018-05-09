@@ -344,6 +344,44 @@ namespace MoreLinq.NoConflict
 
     }
 
+    /// <summary><c>Choose</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
+    public static partial class ChooseExtension
+    {
+        /// <summary>
+        /// Applies a function to each element of the source sequence and
+        /// returns a new sequence of result elements for source elements
+        /// where the function returns a couple (2-tuple) having a <c>true</c>
+        /// as its first element and result as the second.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements in the returned sequence.</typeparam>
+        /// <param name="source"> The source sequence.</param>
+        /// <param name="chooser">The function that is applied to each source
+        /// element.</param>
+        /// <returns>A sequence <typeparamref name="TResult"/> elements.</returns>
+        /// <remarks>
+        /// This method uses deferred execution semantics and streams its
+        /// results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var str = "O,l,2,3,4,S,6,7,B,9";
+        /// var xs = str.Split(',').Choose(s => (int.TryParse(s, out var n), n));
+        /// ]]></code>
+        /// The <c>xs</c> variable will be a sequence of the integers 2, 3, 4,
+        /// 6, 7 and 9.
+        /// </example>
+
+        public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
+            Func<T, (bool IsSome, TResult Value)> chooser)
+            => MoreEnumerable.Choose(source, chooser);
+
+    }
+
     /// <summary><c>CompareCount</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
@@ -2541,29 +2579,6 @@ namespace MoreLinq.NoConflict
 
         public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
             => MoreEnumerable.Move(source, fromIndex, count, toIndex);
-
-    }
-
-    /// <summary><c>NestedLoops</c> extension.</summary>
-
-    [GeneratedCode("MoreLinq.NoConflictGenerator", "1.0.0.0")]
-    public static partial class NestedLoopsExtension
-    {
-        // This extension method was developed (primarily) to support the
-        // implementation of the Permutations() extension methods. However,
-        // it is of sufficient generality and usefulness to be elevated to
-        // a public extension method in its own right.
-
-        /// <summary>
-        /// Produces a sequence from an action based on the dynamic generation of N nested loops
-        /// whose iteration counts are defined by a sequence of loop counts.
-        /// </summary>
-        /// <param name="action">Action delegate for which to produce a nested loop sequence</param>
-        /// <param name="loopCounts">A sequence of loop repetition counts</param>
-        /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
-
-        public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
-            => MoreEnumerable.NestedLoops(action, loopCounts);
 
     }
 
