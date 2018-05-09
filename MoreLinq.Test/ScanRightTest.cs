@@ -42,14 +42,19 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(new[] { value }));
         }
 
-
-        // The first two cases are commented out intentionally for the following reason:
-        // ScanRight internally skips ToList materialization if the source is already list-like.
-        // Any test to make sure that is occurring would have to fail if any only if the optimization
-        // is removed and ToList is called. Such detection is tricky, hack-ish and brittle at best;
-        // it would mean relying on current and internal implementation details of
-        // Enumerable.ToList that can and have changed.
-        // For further discussion, see https://github.com/morelinq/MoreLINQ/pull/476#discussion_r185191063
+        //
+        // The first two cases are commented out intentionally for the
+        // following reason:
+        //
+        // ScanRight internally skips ToList materialization if the source is
+        // already list-like. Any test to make sure that is occurring would
+        // have to fail if any only if the optimization is removed and ToList
+        // is called. Such detection is tricky, hack-ish and brittle at best;
+        // it would mean relying on current and internal implementation
+        // details of Enumerable.ToList that can and have changed.
+        // For further discussion, see:
+        //
+        // https://github.com/morelinq/MoreLINQ/pull/476#discussion_r185191063
         //
         // [TestCase(SourceKind.List)]
         // [TestCase(SourceKind.ReadOnlyList)]
