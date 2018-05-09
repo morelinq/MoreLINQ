@@ -59,31 +59,31 @@ namespace MoreLinq
                 // than the length of the sequence.
                 // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-                var seqArray = sequence.ToArray();
-                if (seqArray.Length < subsetSize)
+                var array = sequence.ToArray();
+                if (array.Length < subsetSize)
                 {
                     throw new ArgumentOutOfRangeException(nameof(subsetSize),
                         "Subset size must be less than or equal to the source length.");
                 }
 
                 var m = 0;                // keeps track of count items shuffled
-                var w = seqArray.Length;  // upper bound of shrinking swap range
+                var w = array.Length;     // upper bound of shrinking swap range
                 var g = w - 1;            // used to compute the second swap index
 
                 // perform in-place, partial Fisher-Yates shuffle
                 while (m < subsetSize)
                 {
                     var k = g - rand.Next(w);
-                    var tmp = seqArray[k];
-                    seqArray[k] = seqArray[m];
-                    seqArray[m] = tmp;
+                    var tmp = array[k];
+                    array[k] = array[m];
+                    array[m] = tmp;
                     ++m;
                     --w;
                 }
 
                 // yield the random subet as a new sequence
                 for (var i = 0; i < subsetSize; i++)
-                    yield return seqArray[i];
+                    yield return array[i];
             }
         }
     }
