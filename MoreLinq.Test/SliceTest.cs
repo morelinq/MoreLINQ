@@ -33,8 +33,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Slice(0, count);
             var resultB = sequenceB.Slice(0, count);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceB));
+            Assert.That(resultA, Is.EqualTo(sequenceA));
+            Assert.That(resultB, Is.EqualTo(sequenceB));
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Slice(0, 1);
             var resultB = sequenceB.Slice(0, 1);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA.Take(1)));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceB.Take(1)));
+            Assert.That(resultA, Is.EqualTo(sequenceA.Take(1)));
+            Assert.That(resultB, Is.EqualTo(sequenceB.Take(1)));
         }
 
         /// <summary>
@@ -69,8 +69,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Slice(count - 1, 1);
             var resultB = sequenceB.Slice(count - 1, 1);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA.Skip(9).Take(1)));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceB.Skip(9).Take(1)));
+            Assert.That(resultA, Is.EqualTo(sequenceA.Skip(9).Take(1)));
+            Assert.That(resultB, Is.EqualTo(sequenceB.Skip(9).Take(1)));
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Slice(4, 5);
             var resultB = sequenceB.Slice(4, 5);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA.Skip(4).Take(5)));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceB.Skip(4).Take(5)));
+            Assert.That(resultA, Is.EqualTo(sequenceA.Skip(4).Take(5)));
+            Assert.That(resultB, Is.EqualTo(sequenceB.Skip(4).Take(5)));
         }
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Slice(count / 2, count);
             var resultB = sequenceB.Slice(count / 2, count);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA.Skip(count / 2).Take(count)));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceB.Skip(count / 2).Take(count)));
+            Assert.That(resultA, Is.EqualTo(sequenceA.Skip(count / 2).Take(count)));
+            Assert.That(resultB, Is.EqualTo(sequenceB.Skip(count / 2).Take(count)));
         }
 
         /// <summary>

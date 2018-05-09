@@ -139,6 +139,13 @@ Returns the Cartesian product of two sequences by combining each element of
 the first set with each in the second and applying the user=define projection
 to the pair
 
+### Choose
+
+Applies a function to each element of the source sequence and returns a new
+sequence of result elements for source elements where the function returns a
+couple (2-tuple) having a `true` as its first element and result as the
+second.
+
 ### CompareCount
 
 Compares two sequences and returns an integer that indicates whether the
@@ -668,6 +675,12 @@ Creates a sequence query that streams the result of each task in the source
 sequence as it completes asynchronously.
 
 This method has 2 overloads.
+
+### Memoize
+
+Creates a sequence that lazily caches the source as it is iterated for the
+first time, reusing the cache thereafter for future re-iterations. If the
+source is already cached or buffered then it is returned verbatim.
 
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
