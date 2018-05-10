@@ -24,6 +24,12 @@ namespace MoreLinq.Test
     public class BacksertTest
     {
         [Test]
+        public void BacksertIsLazy()
+        {
+            new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
+        }
+
+        [Test]
         public void BacksertWithNegativeIndex()
         {
             AssertThrowsArgument.OutOfRangeException("index", () =>
@@ -80,12 +86,6 @@ namespace MoreLinq.Test
 
                 Assert.That(result, Is.EqualTo(expectations));
             }
-        }
-
-        [Test]
-        public void BacksertIsLazy()
-        {
-            new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
         }
     }
 }
