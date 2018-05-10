@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Delegating" Version="1.1.0" />
     <PackageReference Include="NUnit" Version="3.6.1" />
     <PackageReference Include="NUnitLite" Version="3.6.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
@@ -40,10 +41,10 @@
   <ItemGroup>
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
-      <None Remove="CountDownTest.cs" />
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
+      <Compile Include="BreakingAction.cs" />
       <Compile Include="BreakingFunc.cs" />
       <Compile Include="BreakingList.cs" />
       <Compile Include="BreakingReadOnlyCollection.cs" />

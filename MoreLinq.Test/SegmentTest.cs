@@ -30,7 +30,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Segment(x => false);
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.That(result.Single(), Is.EqualTo(sequence));
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(-1, 0);
             var result = sequence.Segment(x => true);
-            Assert.IsFalse(result.Any());
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>

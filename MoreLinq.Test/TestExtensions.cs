@@ -17,9 +17,19 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using NUnit.Framework.Constraints;
+
+    public enum SourceKind
+    {
+        Sequence,
+        List,
+        ReadOnlyList,
+        Collection,
+        ReadOnlyCollection
+    }
 
     static partial class TestExtensions
     {
@@ -62,6 +72,25 @@ namespace MoreLinq.Test
             yield return input.Select(x => x);
             yield return input.ToBreakingCollection(true);
             yield return input.ToBreakingCollection(false);
+        }
+
+        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
+        {
+            switch (sourceKind)
+            {
+                case SourceKind.Sequence:
+                    return input.Select(x => x);
+                case SourceKind.List:
+                    return input.ToBreakingList(false);
+                case SourceKind.ReadOnlyList:
+                    return input.ToBreakingList(true);
+                case SourceKind.Collection:
+                    return input.ToBreakingCollection(false);
+                case SourceKind.ReadOnlyCollection:
+                    return input.ToBreakingCollection(true);
+                default:
+                    throw new ArgumentException(nameof(sourceKind));
+            }
         }
     }
 }

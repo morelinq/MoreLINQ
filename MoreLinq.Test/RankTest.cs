@@ -16,6 +16,14 @@ namespace MoreLinq.Test
         public void TestRankIsLazy()
         {
             new BreakingSequence<int>().Rank();
+        }
+
+        /// <summary>
+        /// Verify that rank behaves in a lazy manner.
+        /// </summary>
+        [Test]
+        public void TestRankByIsLazy()
+        {
             new BreakingSequence<int>().RankBy(x => x);
         }
 
@@ -26,8 +34,17 @@ namespace MoreLinq.Test
         public void TestRankNullComparer()
         {
             var sequence = Enumerable.Repeat(1, 10);
-            sequence.AsTestingSequence().Rank(null).AssertSequenceEqual(sequence.ToArray());
-            sequence.AsTestingSequence().RankBy(x => x, null).AssertSequenceEqual(sequence.ToArray());
+            sequence.AsTestingSequence().Rank(null).AssertSequenceEqual(sequence);
+        }
+
+        /// <summary>
+        /// Verify that Rank uses the default comparer when comparer is <c>null</c>
+        /// </summary>
+        [Test]
+        public void TestRankByNullComparer()
+        {
+            var sequence = Enumerable.Repeat(1, 10);
+            sequence.AsTestingSequence().RankBy(x => x, null).AssertSequenceEqual(sequence);
         }
 
         /// <summary>
@@ -43,7 +60,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(1, count);
 
             Assert.AreEqual(count, result.Length);
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -59,7 +76,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(1, count).Reverse();
 
             Assert.AreEqual(count, result.Length);
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -73,7 +90,7 @@ namespace MoreLinq.Test
             var result = sequence.AsTestingSequence().Rank().ToArray();
 
             Assert.AreEqual(count, result.Length);
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Repeat(1, count)));
+            Assert.That(result, Is.EqualTo(Enumerable.Repeat(1, count)));
         }
 
         /// <summary>
@@ -86,10 +103,10 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(0, count)
                 .Concat(Enumerable.Range(0, count))
                 .Concat(Enumerable.Range(0, count));
-            var result = sequence.AsTestingSequence().Rank().ToArray();
+            var result = sequence.AsTestingSequence().Rank();
 
             Assert.AreEqual(count, result.Distinct().Count());
-            Assert.IsTrue(result.SequenceEqual(sequence.Reverse().Select(x => x + 1)));
+            Assert.That(result, Is.EqualTo(sequence.Reverse().Select(x => x + 1)));
         }
 
         /// <summary>
@@ -125,7 +142,7 @@ namespace MoreLinq.Test
             var result = sequence.AsTestingSequence().RankBy(x => x.Age).ToArray();
 
             Assert.AreEqual(sequence.Length, result.Length);
-            Assert.IsTrue(result.SequenceEqual(sequence.Select(x => x.ExpectedRank)));
+            Assert.That(result, Is.EqualTo(sequence.Select(x => x.ExpectedRank)));
         }
 
         /// <summary>
@@ -141,8 +158,8 @@ namespace MoreLinq.Test
             var resultA = sequence.AsTestingSequence().Rank(Comparer.Create<DateTime>((a, b) => -a.CompareTo(b)));
             var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer.Create<int>((a, b) => -a.CompareTo(b)));
 
-            Assert.IsTrue(resultA.SequenceEqual(ordinals));
-            Assert.IsTrue(resultB.SequenceEqual(ordinals.Reverse()));
+            Assert.That(resultA, Is.EqualTo(ordinals));
+            Assert.That(resultB, Is.EqualTo(ordinals.Reverse()));
         }
     }
 }
