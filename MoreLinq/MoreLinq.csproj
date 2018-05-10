@@ -52,7 +52,6 @@
         - Memoize
         - MinBy
         - Move
-        - NestedLoops
         - OrderBy
         - OrderedMerge
         - Pad

@@ -303,11 +303,6 @@ This method has 2 overloads.
 Returns a sequence with a range of elements in the source sequence
 moved to a new offset.
 
-### NestedLoops
-
-Produces a sequence from an action based on the dynamic generation of N nested
-loops who iteration counts are defined by
-
 ### OrderBy
 
 Sorts the elements of a sequence in a particular direction (ascending,
