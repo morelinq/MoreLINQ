@@ -30,45 +30,34 @@ namespace MoreLinq.Test
                  Enumerable.Range(1, 10).Backsert(new[] { 97, 98, 99 }, -1));
         }
 
-        [Test]
-        public void BacksertWithIndexGreaterThanSourceLength()
+        [TestCase(new[] { 1, 2, 3 }, 4, new[] { 9 })]
+        public void BacksertWithIndexGreaterThanSourceLength(int[] seq1, int index, int[] seq2)
         {
-            const int count = 5;
-            var seq1 = Enumerable.Range(0, count);
-            var seq2 = new[] { 97, 98, 99 };
-
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
-                var result = test1.Backsert(test2, count + 1);
+                var result = test1.Backsert(test2, index);
 
                 Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
             }
         }
 
-        [Test]
-        public void BacksertWithIndexEqualsSourceLength()
+        [TestCase(new[] { 1, 2, 3 }, 3, new[] { 9 })]
+        public void BacksertWithIndexEqualsSourceLength(int[] seq1, int index, int[] seq2)
         {
-            const int count = 5;
-            var seq1 = Enumerable.Range(1, count);
-            var seq2 = new[] { 9 };
-
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
-                var result = test1.Backsert(test2, count);
+                var result = test1.Backsert(test2, index);
                 var expectations = seq2.Concat(seq1);
 
                 Assert.That(result, Is.EqualTo(expectations));
             }
         }
 
-        [Test]
-        public void BacksertWithIndexZero()
+        [TestCase(new[] { 1, 2, 3 }, 0, new[] { 9 })]
+        public void BacksertWithIndexZero(int[] seq1, int index, int[] seq2)
         {
-            var seq1 = Enumerable.Range(1, 5);
-            var seq2 = new[] { 9 };
-
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
@@ -79,13 +68,10 @@ namespace MoreLinq.Test
             }
         }
 
-        [TestCase(3, 1)]
-        [TestCase(3, 2)]
-        public void Backsert(int count, int index)
+        [TestCase(new[] { 1, 2, 3 }, 1, new[] { 9 })]
+        [TestCase(new[] { 1, 2, 3 }, 2, new[] { 9 })]
+        public void Backsert(int[] seq1, int index, int[] seq2)
         {
-            var seq1 = Enumerable.Range(1, count);
-            var seq2 = new[] { 97, 98, 99 };
-
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
