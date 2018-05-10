@@ -24,9 +24,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         // This extension method was developed (primarily) to support the
-        // implementation of the Permutations() extension methods. However,
-        // it is of sufficient generality and usefulness to be elevated to
-        // a public extension method in its own right.
+        // implementation of the Permutations() extension methods.
 
         /// <summary>
         /// Produces a sequence from an action based on the dynamic generation of N nested loops
@@ -36,26 +34,21 @@ namespace MoreLinq
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
         /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
 
-        public static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
+        static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
 
-            using (var iter = loopCounts.GetEnumerator())
+            return _(); IEnumerable<Action> _()
             {
-                var loopCount = NextLoopCount(iter);
-                if (loopCount == null)
-                    return Enumerable.Empty<Action>(); // null loop
-                var loop = Enumerable.Repeat(action, loopCount.Value);
-                while ((loopCount = NextLoopCount(iter)) != null)
-                    loop = loop.Repeat(loopCount.Value);
-                return loop;
-            }
+                var count = loopCounts.Assert(n => n >= 0,
+                                              n => new InvalidOperationException("Invalid loop count (must be greater than or equal to zero)."))
+                                      .DefaultIfEmpty()
+                                      .Aggregate((acc, x) => acc * x);
 
-            int? NextLoopCount(IEnumerator<int> iter)
-                => !iter.MoveNext() ? (int?) null
-                 : iter.Current >= 0 ? iter.Current
-                 : throw new ArgumentException("All loop counts must be greater than or equal to zero.", nameof(loopCounts));
+                for (var i = 0; i < count; i++)
+                    yield return action;
+            }
         }
     }
 }

@@ -39,7 +39,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.Windowed(5);
 
-            Assert.IsEmpty(result);
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace MoreLinq.Test
 
             // there should only be one window whose contents is the same
             // as the source sequence
-            Assert.IsEmpty(result);
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
             // ensure each window contains the correct set of items
             var index = -1;
             foreach (var window in result)
-                Assert.IsTrue(window.SequenceEqual(sequence.Skip(++index).Take(windowSize)));
+                Assert.That(window, Is.EqualTo(sequence.Skip(++index).Take(windowSize)));
         }
     }
 }

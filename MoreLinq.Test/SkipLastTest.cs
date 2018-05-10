@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         {
             var numbers = Enumerable.Range(1, 5);
 
-            Assert.IsTrue(numbers.SkipLast(skip).SequenceEqual(numbers));
+            Assert.That(numbers.SkipLast(skip), Is.EqualTo(numbers));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [TestCase(6)]
         public void SkipLastWithSequenceShorterThanCount(int skip)
         {
-            Assert.IsFalse(Enumerable.Range(1, 5).SkipLast(skip).Any());
+            Assert.That(Enumerable.Range(1, 5).SkipLast(skip), Is.Empty);
         }
 
         [Test]

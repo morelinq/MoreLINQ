@@ -203,7 +203,7 @@ namespace MoreLinq.Test
             resultB.Consume();
 
             // verify the original sequence is untouched
-            Assert.IsTrue(sequence.SequenceEqual(sequenceClone));
+            Assert.That(sequence, Is.EqualTo(sequenceClone));
         }
 
         static double RelativeStandardDeviation(IEnumerable<double> values)
