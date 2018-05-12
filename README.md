@@ -450,6 +450,10 @@ Generates a sequence of integral numbers within the (inclusive) specified range.
 
 This method has 2 overloads.
 
+### Shuffle
+
+Returns a sequence of random elements from the original sequence.
+
 ### SkipLast
 
 Bypasses a specified number of elements at the end of the sequence.
