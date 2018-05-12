@@ -90,11 +90,9 @@ namespace MoreLinq
                     ++m;
                     --w;
                 }
-                if (subsetSize > 1)
-                    yield return default(T);
 
                 // yield the random subet as a new sequence
-                for (var i = 0; i < subsetSize - 1; i++)
+                for (var i = 0; i < subsetSize; i++)
                     yield return array[i];
             }
         }
