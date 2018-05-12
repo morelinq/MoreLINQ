@@ -217,9 +217,12 @@ namespace MoreLinq.Test
             var resultA = sequence.RandomSubset(count);
             var resultB = sequence.RandomSubset(count, new Random(12345));
 
+            Assert.That(sequence, Is.Not.EqualTo(resultA));
+            Assert.That(sequence, Is.Not.EqualTo(resultB));
+
             // ensure random subset returns exactly the same elements of original sequence
-            Assert.AreEqual(sequence, resultA.OrderBy(x => x));
-            Assert.AreEqual(sequence, resultB.OrderBy(x => x));
+            Assert.That(sequence, Is.EqualTo(resultA.OrderBy(x => x)));
+            Assert.That(sequence, Is.EqualTo(resultB.OrderBy(x => x)));
         }
 
         static double RelativeStandardDeviation(IEnumerable<double> values)
