@@ -24,6 +24,27 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
+        /// Returns a sequence of random elements from the original sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of source sequence elements.</typeparam>
+        /// <param name="sequence">
+        /// The sequence from which to return random elements.</param>
+        /// <returns>
+        /// A random sequence of elements in random order from the original
+        /// sequence.
+        /// </returns>
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+
+            return RandomSubsetImpl(sequence, new Random(), source =>
+            {
+                var array = source.ToArray();
+                return (array, array.Length);
+            });
+        }
+
+        /// <summary>
         /// Returns a sequence of a specified size of random elements from the
         /// original sequence.
         /// </summary>
@@ -61,40 +82,43 @@ namespace MoreLinq
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
 
-            return _(); IEnumerable<T> _()
+            return RandomSubsetImpl(sequence, rand, source => (source.ToArray(), subsetSize));
+        }
+
+        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> sequence, Random rand, Func<IEnumerable<T>, (T[] array, int subsetSize)> seeder)
+        {
+            // The simplest and most efficient way to return a random subet is to perform
+            // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
+            // a full shuffle, it would be wasteful in the cases where subsetSize is shorter
+            // than the length of the sequence.
+            // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+
+            var (array, subsetSize) = seeder(sequence);
+
+            if (array.Length < subsetSize)
             {
-                // The simplest and most efficient way to return a random subet is to perform
-                // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
-                // a full shuffle, it would be wasteful in the cases where subsetSize is shorter
-                // than the length of the sequence.
-                // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-
-                var array = sequence.ToArray();
-                if (array.Length < subsetSize)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(subsetSize),
-                        "Subset size must be less than or equal to the source length.");
-                }
-
-                var m = 0;                // keeps track of count items shuffled
-                var w = array.Length;     // upper bound of shrinking swap range
-                var g = w - 1;            // used to compute the second swap index
-
-                // perform in-place, partial Fisher-Yates shuffle
-                while (m < subsetSize)
-                {
-                    var k = g - rand.Next(w);
-                    var tmp = array[k];
-                    array[k] = array[m];
-                    array[m] = tmp;
-                    ++m;
-                    --w;
-                }
-
-                // yield the random subet as a new sequence
-                for (var i = 0; i < subsetSize; i++)
-                    yield return array[i];
+                throw new ArgumentOutOfRangeException(nameof(subsetSize),
+                    "Subset size must be less than or equal to the source length.");
             }
+
+            var m = 0;                // keeps track of count items shuffled
+            var w = array.Length;     // upper bound of shrinking swap range
+            var g = w - 1;            // used to compute the second swap index
+
+            // perform in-place, partial Fisher-Yates shuffle
+            while (m < subsetSize)
+            {
+                var k = g - rand.Next(w);
+                var tmp = array[k];
+                array[k] = array[m];
+                array[m] = tmp;
+                ++m;
+                --w;
+            }
+
+            // yield the random subet as a new sequence
+            for (var i = 0; i < subsetSize; i++)
+                yield return array[i];
         }
     }
 }
