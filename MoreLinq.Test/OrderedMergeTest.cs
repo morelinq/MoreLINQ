@@ -91,7 +91,7 @@ namespace MoreLinq.Test
 
             var merged = TDDOrderedMerge(first, second, id => id, id => id, ChooseFirst<int>());
 
-            Assert.That(merged, Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace MoreLinq.Test
 
             var merged = TDDOrderedMerge(first, second, id => id, id => id, ChooseFirst<int>());
 
-            Assert.That(merged, Is.EquivalentTo(new[] { 1, 2, 3 }));
+            Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace MoreLinq.Test
 
             var merged = TDDOrderedMerge(first, second, id => id, id => id, ChooseFirst<int>());
 
-            Assert.That(merged, Is.EquivalentTo(new[] { 1, 2, 3, 4, 5, 6 }));
+            Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
         }
 
         [Test]
