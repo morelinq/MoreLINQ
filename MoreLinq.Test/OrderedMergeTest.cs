@@ -13,9 +13,10 @@ namespace MoreLinq.Test
             Func<TSecond, TKey> secondKeySelector,
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
-            Func<TFirst, TSecond, TResult> bothSelector)
+            Func<TFirst, TSecond, TResult> bothSelector,
+            IComparer<TKey> comparer)
         {
-            var comparer = Comparer<TKey>.Default;
+            comparer = comparer ?? Comparer<TKey>.Default;
             return _(); IEnumerable<TResult> _() {
                 using (var e1 = first.GetEnumerator())
                 using (var e2 = second.GetEnumerator())
@@ -62,7 +63,7 @@ namespace MoreLinq.Test
         public void ShouldBeLazy() {
             var first = new BreakingSequence<object>();
             var second = new BreakingSequence<object>();
-            Assert.DoesNotThrow(() => TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f));
+            Assert.DoesNotThrow(() => TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null));
         }
 
         [Test]
@@ -75,7 +76,7 @@ namespace MoreLinq.Test
             var second = new int[] { }.AsVerifiable();
             second.WhenDisposed(_ => secondDisposed = true);
 
-            TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f).ToArray();
+            TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null).ToArray();
 
             Assert.IsTrue(firstDisposed, "First was not disposed");
             Assert.IsTrue(secondDisposed, "Second was not disposed");
@@ -86,7 +87,7 @@ namespace MoreLinq.Test
             var first = new int[] { };
             var second = new[] { 1, 2, 3 };
 
-            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f);
+            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3 }));
         }
@@ -96,7 +97,7 @@ namespace MoreLinq.Test
             var first = new [] { 1, 2, 3 };
             var second = new int[] { };
 
-            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f);
+            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3 }));
         }
@@ -106,7 +107,7 @@ namespace MoreLinq.Test
             var first = new[] { 1, 4, 5 };
             var second = new [] { 2, 3, 6 };
 
-            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f);
+            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
         }
@@ -119,8 +120,8 @@ namespace MoreLinq.Test
             var first = new[] { firstElement };
             var second = new[] { secondElement };
 
-            Assert.That(TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f).First(), Is.SameAs(firstElement), "Should have returned First");
-            Assert.That(TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (_, s) => s).First(), Is.SameAs(secondElement), "Should have returned Second");
+            Assert.That(TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null).First(), Is.SameAs(firstElement), "Should have returned First");
+            Assert.That(TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (_, s) => s, null).First(), Is.SameAs(secondElement), "Should have returned Second");
         }
 
         [Test]
@@ -137,7 +138,8 @@ namespace MoreLinq.Test
                 version => version.Major * 2,
                 version => version.Major,
                 id => id, id => id,
-                (f, _) => f);
+                (f, _) => f,
+                null);
 
             Assert.That(merged, Is.EqualTo(new[] { secondElement, firstElement }));
         }
@@ -154,9 +156,24 @@ namespace MoreLinq.Test
                 int.Parse,
                 intValue => intValue,
                 int.Parse,
-                (f, _) => f);
+                (f, _) => f,
+                null);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
+        }
+
+        [Test]
+        public void ShouldBeAbleToUseNonDefaultComparer() {
+            var first = new[] { 1, 4, 5 };
+            var second = new[] { 2, 3, 6 };
+
+            var merged = TDDOrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, new UpendedComparer());
+
+            Assert.That(merged, Is.EqualTo(new[] { 2, 3, 6, 1, 4, 5 }));
+        }
+
+        class UpendedComparer : IComparer<int> {
+            public int Compare(int x, int y) => y.CompareTo(x);
         }
     }
 }
