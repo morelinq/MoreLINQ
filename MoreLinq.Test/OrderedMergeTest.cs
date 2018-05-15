@@ -134,10 +134,8 @@ namespace MoreLinq.Test
             var merged = TDDOrderedMerge(
                 first,
                 second,
-                version =>
-                    version.Major * 2,
-                version =>
-                    version.Major,
+                version => version.Major * 2,
+                version => version.Major,
                 id => id, id => id,
                 (f, _) => f);
 
@@ -152,14 +150,10 @@ namespace MoreLinq.Test
             var merged = TDDOrderedMerge(
                 first,
                 second,
-                intValue =>
-                    intValue,
-                stringValue =>
-                    int.Parse(stringValue),
-                intValue =>
-                    intValue,
-                stringValue =>
-                    int.Parse(stringValue),
+                intValue => intValue,
+                int.Parse,
+                intValue => intValue,
+                int.Parse,
                 (f, _) => f);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
