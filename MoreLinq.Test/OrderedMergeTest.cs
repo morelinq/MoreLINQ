@@ -103,7 +103,7 @@ namespace MoreLinq.Test
             Version Second(Version _, Version s) => s;
 
             Version Id(Version id) => id;
-            
+
             var firstMerge = MoreEnumerable.OrderedMerge(
                 first: first,
                 second: second,
@@ -139,7 +139,7 @@ namespace MoreLinq.Test
 
             Version Id(Version id) => id;
             Version First(Version f, Version _) => f;
-            
+
             var merged = MoreEnumerable.OrderedMerge(
                 first: first,
                 second: second,
@@ -162,7 +162,7 @@ namespace MoreLinq.Test
             int SecondKeySelector(string value) => int.Parse(value);
             int FirstSelector(int value) => value;
             int SecondSelector(string value) => int.Parse(value);
-            
+
             int First(int f, string _) => f;
 
             var merged = MoreEnumerable.OrderedMerge(
@@ -187,7 +187,7 @@ namespace MoreLinq.Test
 
             int Id(int id) => id;
             int First(int f, int _) => f;
-            
+
             var merged = MoreEnumerable.OrderedMerge(
                 first: first,
                 second: second,
@@ -200,9 +200,9 @@ namespace MoreLinq.Test
 
             Assert.That(merged, Is.EqualTo(new[] { 2, 3, 6, 1, 4, 5 }));
         }
-        
+
         [TestFixture]
-        public class AllParametersEquivalent { 
+        public class AllParametersEquivalent {
 
             [Test]
             public void first_second() {
