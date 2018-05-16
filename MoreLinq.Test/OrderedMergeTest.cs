@@ -34,9 +34,20 @@ namespace MoreLinq.Test
             var first = new int[] { };
             var second = new[] { 1, 2, 3 };
 
-            var merged = MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null);
+            int Id(int id) => id;
+            int First(int f, int _) => f;
 
-            Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3 }));
+            var merged = MoreEnumerable.OrderedMerge(
+                first: first,
+                second: second,
+                firstKeySelector: Id,
+                secondKeySelector: Id,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: First,
+                comparer: null);
+
+            Assert.That(merged, Is.EqualTo(second));
         }
 
         [Test]
@@ -44,17 +55,39 @@ namespace MoreLinq.Test
             var first = new [] { 1, 2, 3 };
             var second = new int[] { };
 
-            var merged = MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null);
+            int Id(int id) => id;
+            int First(int f, int _) => f;
 
-            Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3 }));
+            var merged = MoreEnumerable.OrderedMerge(
+                first: first,
+                second: second,
+                firstKeySelector: Id,
+                secondKeySelector: Id,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: First,
+                comparer: null);
+
+            Assert.That(merged, Is.EqualTo(first));
         }
 
         [Test]
-        public void TwoSequencesWithNoCollistionsShouldMergeUsingTheDefaultComparer() {
+        public void TwoSequencesWithNoCollisionsShouldMergeUsingTheDefaultComparer() {
             var first = new[] { 1, 4, 5 };
             var second = new [] { 2, 3, 6 };
 
-            var merged = MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null);
+            int Id(int id) => id;
+            int First(int f, int _) => f;
+
+            var merged = MoreEnumerable.OrderedMerge(
+                first: first,
+                second: second,
+                firstKeySelector: Id,
+                secondKeySelector: Id,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: First,
+                comparer: null);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
         }
@@ -66,27 +99,56 @@ namespace MoreLinq.Test
 
             var first = new[] { firstElement };
             var second = new[] { secondElement };
+            Version First(Version f, Version _) => f;
+            Version Second(Version _, Version s) => s;
 
-            Assert.That(MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null).First(), Is.SameAs(firstElement), "Should have returned First");
-            Assert.That(MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (_, s) => s, null).First(), Is.SameAs(secondElement), "Should have returned Second");
+            Version Id(Version id) => id;
+            
+            var firstMerge = MoreEnumerable.OrderedMerge(
+                first: first,
+                second: second,
+                firstKeySelector: Id,
+                secondKeySelector: Id,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: First,
+                comparer: null);
+            Assert.That(firstMerge.First(), Is.SameAs(firstElement), "Should have returned First");
+
+            var secondMerge = MoreEnumerable.OrderedMerge(
+                first: first,
+                second: second,
+                firstKeySelector: Id,
+                secondKeySelector: Id,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: Second,
+                comparer: null);
+            Assert.That(secondMerge.First(), Is.SameAs(secondElement), "Should have returned Second");
         }
 
         [Test]
         public void ShouldBeAbleToSelectKeyOfFirstAndSecondCollection() {
-            var firstElement = new Version(2, 4);
+            var firstElement = new Version(2, 0);
             var secondElement = new Version(3, 0);
 
             var first = new[] { firstElement };
             var second = new[] { secondElement };
+            int FirstKeySelector(Version version) => 2 * version.Major;
+            int SecondKeySelector(Version version) => version.Major;
+
+            Version Id(Version id) => id;
+            Version First(Version f, Version _) => f;
             
             var merged = MoreEnumerable.OrderedMerge(
-                first,
-                second,
-                version => version.Major * 2,
-                version => version.Major,
-                id => id, id => id,
-                (f, _) => f,
-                null);
+                first: first,
+                second: second,
+                firstKeySelector: FirstKeySelector,
+                secondKeySelector: SecondKeySelector,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: First,
+                comparer: null);
 
             Assert.That(merged, Is.EqualTo(new[] { secondElement, firstElement }));
         }
@@ -95,16 +157,23 @@ namespace MoreLinq.Test
         public void FirstAndSecondCanBeOfDifferentInputTypesWithASharedOutputType() {
             int[] first = {1, 4, 5};
             string[] second = {"2", "3", "6"};
+
+            int FirstKeySelector(int value) => value;
+            int SecondKeySelector(string value) => int.Parse(value);
+            int FirstSelector(int value) => value;
+            int SecondSelector(string value) => int.Parse(value);
             
+            int First(int f, string _) => f;
+
             var merged = MoreEnumerable.OrderedMerge(
-                first,
-                second,
-                intValue => intValue,
-                int.Parse,
-                intValue => intValue,
-                int.Parse,
-                (f, _) => f,
-                null);
+                first: first,
+                second: second,
+                firstKeySelector: FirstKeySelector,
+                secondKeySelector: SecondKeySelector,
+                firstSelector: FirstSelector,
+                secondSelector: SecondSelector,
+                bothSelector: First,
+                comparer: null);
 
             Assert.That(merged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
         }
@@ -114,15 +183,24 @@ namespace MoreLinq.Test
             var first = new[] { 1, 4, 5 };
             var second = new[] { 2, 3, 6 };
 
-            var merged = MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, new UpendedComparer());
+            var comparer = Comparer.Create<int>((x, y) => y.CompareTo(x));
+
+            int Id(int id) => id;
+            int First(int f, int _) => f;
+            
+            var merged = MoreEnumerable.OrderedMerge(
+                first: first,
+                second: second,
+                firstKeySelector: Id,
+                secondKeySelector: Id,
+                firstSelector: Id,
+                secondSelector: Id,
+                bothSelector: First,
+                comparer: comparer);
 
             Assert.That(merged, Is.EqualTo(new[] { 2, 3, 6, 1, 4, 5 }));
         }
-
-        class UpendedComparer : IComparer<int> {
-            public int Compare(int x, int y) => y.CompareTo(x);
-        }
-
+        
         [TestFixture]
         public class AllParametersEquivalent { 
 
