@@ -70,10 +70,10 @@ namespace MoreLinq.Test
             {
                 Source = xs, Count = count, Countdown = countdown
             })
-            from ro in new[] { true, false }
-            select new TestCaseData(e.Source.ToBreakingList(ro), e.Count)
+            from kind in new[] { SourceKind.List, SourceKind.ReadOnlyList }
+            select new TestCaseData(e.Source.ToSourceKind(kind), e.Count)
                 .Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
-                .SetName($"{nameof(WithList)}({(ro ? "ReadOnly" : null)}List {{ {string.Join(", ", e.Source)} }}, {e.Count})");
+                .SetName($"{nameof(WithList)}({kind} {{ {string.Join(", ", e.Source)} }}, {e.Count})");
 
         [TestCaseSource(nameof(ListData))]
         public IEnumerable<(int, int?)> WithList(IEnumerable<int> xs, int count) =>

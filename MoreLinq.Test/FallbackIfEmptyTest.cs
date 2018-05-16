@@ -36,11 +36,11 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(bool readOnly)
+        [TestCase(SourceKind.Collection)]
+        [TestCase(SourceKind.ReadOnlyCollection)]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(SourceKind sourceKind)
         {
-            var source = new[] { 1 }.ToBreakingList(readOnly);
+            var source = new[] { 1 }.ToSourceKind(sourceKind);
             // ReSharper disable PossibleMultipleEnumeration
             Assert.AreSame(source.FallbackIfEmpty(12), source);
             Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
@@ -51,11 +51,11 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(bool readOnly)
+        [TestCase(SourceKind.Collection)]
+        [TestCase(SourceKind.ReadOnlyCollection)]
+        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(SourceKind sourceKind)
         {
-            var source = new int[0].ToBreakingList(readOnly);
+            var source = new int[0].ToSourceKind(sourceKind);
             var fallback = new[] { 1 };
             Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
             Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);

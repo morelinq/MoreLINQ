@@ -115,13 +115,13 @@ namespace MoreLinq.Test
         /// Verify that slice is optimized for <see cref="IList{T}"/> and <see cref="IReadOnlyList{T}"/> implementations and does not
         /// unnecessarily traverse items outside of the slice region.
         /// </summary>
-        [TestCase(false)]
-        [TestCase(true)]
-        public void TestSliceOptimization(bool readOnly)
+        [TestCase(SourceKind.List)]
+        [TestCase(SourceKind.ReadOnlyList)]
+        public void TestSliceOptimization(SourceKind sourceKind)
         {
             const int sliceStart = 4;
             const int sliceCount = 3;
-            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToBreakingList(readOnly);
+            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);
 
             var result = sequence.Slice(sliceStart, sliceCount);
 
