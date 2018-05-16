@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -69,10 +70,14 @@ namespace MoreLinq.Test
         public static IEnumerable<object> MoveSource()
         {
             const int length = 10;
-
             return from index in Enumerable.Range(0, length)
                    from count in Enumerable.Range(0, length + 1)
-                   select new TestCaseData(length, index, count, index);
+                   from tcd in new[]
+                   {
+                       new TestCaseData(length, index, count, Math.Max(0, index - 1)),
+                       new TestCaseData(length, index, count, index + 1),
+                   }
+                   select tcd;
         }
 
         [TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
@@ -102,7 +107,7 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, 10);
             var result = source.Move(5, 999, 5);
-            
+
             Assert.That(source, Is.SameAs(result));
         }
 
@@ -111,7 +116,7 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, 10);
             var result = source.Move(5, 0, 999);
-            
+
             Assert.That(source, Is.SameAs(result));
         }
     }

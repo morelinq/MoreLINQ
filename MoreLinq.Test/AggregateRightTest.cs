@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,12 +42,14 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(value));
         }
 
-        [Test]
-        public void AggregateRight()
+        [TestCase(SourceKind.List)]
+        [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.Sequence)]
+        public void AggregateRight(SourceKind sourceKind)
         {
-            var result = Enumerable.Range(1, 5)
-                                   .Select(x => x.ToString())
-                                   .AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString()).ToSourceKind(sourceKind);
+
+            var result = enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }

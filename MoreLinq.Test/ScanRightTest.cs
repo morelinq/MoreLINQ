@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2017 Leandro F. Vieira (leandromoh). All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ namespace MoreLinq.Test
     public class ScanRightTest
     {
         // ScanRight(source, func)
-        
+
         [Test]
         public void ScanRightWithEmptySequence()
         {
@@ -42,11 +42,28 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(new[] { value }));
         }
 
-        [Test]
-        public void ScanRight()
+        //
+        // The first two cases are commented out intentionally for the
+        // following reason:
+        //
+        // ScanRight internally skips ToList materialization if the source is
+        // already list-like. Any test to make sure that is occurring would
+        // have to fail if and only if the optimization is removed and ToList
+        // is called. Such detection is tricky, hack-ish and brittle at best;
+        // it would mean relying on current and internal implementation
+        // details of Enumerable.ToList that can and have changed.
+        // For further discussion, see:
+        //
+        // https://github.com/morelinq/MoreLINQ/pull/476#discussion_r185191063
+        //
+        // [TestCase(SourceKind.List)]
+        // [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.Sequence)]
+        public void ScanRight(SourceKind sourceKind)
         {
             var result = Enumerable.Range(1, 5)
                                    .Select(x => x.ToString())
+                                   .ToSourceKind(sourceKind)
                                    .ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
             var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
@@ -61,7 +78,7 @@ namespace MoreLinq.Test
         }
 
         // ScanRight(source, seed, func)
-                
+
         [TestCase(5)]
         [TestCase("c")]
         [TestCase(true)]

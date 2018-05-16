@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -100,6 +101,35 @@ namespace MoreLinq.Test
         public void AssertCountIsLazy()
         {
             new BreakingSequence<object>().AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountWithCollectionIsLazy()
+        {
+            new BreakingCollection<object>(5).AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountWithMatchingCollectionCount()
+        {
+            var xs = new[] { 123, 456, 789 };
+            Assert.AreSame(xs, xs.AssertCount(3));
+        }
+
+        [TestCase(3, 2, "Sequence contains too many elements when exactly 2 were expected.")]
+        [TestCase(3, 4, "Sequence contains too few elements when exactly 4 were expected.")]
+        public void AssertCountWithMismatchingCollectionCount(int sourceCount, int count, string message)
+        {
+            var xs = new int[sourceCount];
+            var enumerator = xs.AssertCount(count).GetEnumerator();
+            var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
+            Assert.AreEqual(e.Message, message);
+        }
+
+        [Test]
+        public void AssertCountWithReadOnlyCollectionIsLazy()
+        {
+            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
         }
     }
 }

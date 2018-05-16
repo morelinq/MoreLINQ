@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -31,9 +30,9 @@ namespace MoreLinq.Test
             Disposable b = null;
             Disposable c = null;
 
-            var allocators = Futures(() => a = new Disposable(),
-                                     () => b = new Disposable(),
-                                     () => c = new Disposable());
+            var allocators = MoreEnumerable.From(() => a = new Disposable(),
+                                                 () => b = new Disposable(),
+                                                 () => c = new Disposable());
 
             var disposables = allocators.Acquire();
 
@@ -53,12 +52,12 @@ namespace MoreLinq.Test
             Disposable b = null;
             Disposable c = null;
 
-            var allocators = Futures(() => a = new Disposable(),
-                                     () => b = new Disposable(),
-                                     () => throw new ApplicationException(),
-                                     () => c = new Disposable());
+            var allocators = MoreEnumerable.From(() => a = new Disposable(),
+                                                 () => b = new Disposable(),
+                                                 () => throw new TestException(),
+                                                 () => c = new Disposable());
 
-            Assert.Throws<ApplicationException>(() => allocators.Acquire());
+            Assert.Throws<TestException>(() => allocators.Acquire());
 
             Assert.That(a, Is.Not.Null);
             Assert.That(a.Disposed, Is.True);
@@ -67,19 +66,10 @@ namespace MoreLinq.Test
             Assert.That(c, Is.Null);
         }
 
-        static IEnumerable<T> Futures<T>(params Func<T>[] allocators)
-            where T : IDisposable
-        {
-            foreach (var allocator in allocators)
-                yield return allocator();
-        }
-
         class Disposable : IDisposable
         {
             public bool Disposed { get; private set; }
             public void Dispose() { Disposed = true; }
         }
-
-        class ApplicationException : Exception {}
     }
 }

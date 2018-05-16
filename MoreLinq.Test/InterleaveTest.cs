@@ -19,7 +19,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that interleaving disposes those enumerators that it managed 
+        /// Verify that interleaving disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
         [Test]
@@ -43,7 +43,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Range(1, count);
             var result = sequenceA.Interleave(sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, count).Select(x => new[] { x, x }).SelectMany(z => z)));
+            Assert.That(result, Is.EqualTo(Enumerable.Range(1, count).Select(x => new[] { x, x }).SelectMany(z => z)));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Empty<int>();
             var result = sequenceA.Interleave(sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.EqualTo(Enumerable.Empty<int>()));
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MoreLinq.Test
 
             var expectedResult = new[] { 0, 1, 0, 1, 0, 1, 0, 1, 0, 0 };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace MoreLinq.Test
             var sequenceE = Enumerable.Empty<int>();
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace MoreLinq.Test
 
             var expectedResult = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -118,20 +118,15 @@ namespace MoreLinq.Test
         public void TestInterleaveDisposesAllIterators()
         {
             const int count = 10;
-            var disposedSequenceA = false;
-            var disposedSequenceB = false;
-            var disposedSequenceC = false;
-            var disposedSequenceD = false;
 
-            var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
-            var sequenceB = Enumerable.Range(1, count - 1).AsVerifiable().WhenDisposed(s => disposedSequenceB = true);
-            var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
-            var sequenceD = Enumerable.Range(1, 0).AsVerifiable().WhenDisposed(s => disposedSequenceD = true);
-
-            var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD);
-
-            result.Consume();
-            Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
+            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
+            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
+            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
+            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
+            {
+                sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
+                         .Consume();
+            }
         }
     }
 }

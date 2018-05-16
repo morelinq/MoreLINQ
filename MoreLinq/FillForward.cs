@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2016 Atif Aziz. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,9 +82,9 @@ namespace MoreLinq
         /// <param name="predicate">The function used to determine if
         /// an element in the sequence is considered missing.</param>
         /// <param name="fillSelector">The function used to produce the element
-        /// that will replace the missing one. It receives the previous
-        /// non-missing element as well as the current element considered
-        /// missing.</param>
+        /// that will replace the missing one. Its first argument receives the
+        /// current element considered missing while the second argument
+        /// receives the previous non-missing element.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> with missing values replaced.

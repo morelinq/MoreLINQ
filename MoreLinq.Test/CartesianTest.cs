@@ -27,7 +27,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Empty<int>();
             var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace MoreLinq.Test
             var resultA = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
             var resultB = sequenceB.Cartesian(sequenceA, (a, b) => a + b);
 
-            Assert.IsTrue(resultA.SequenceEqual(sequenceA));
-            Assert.IsTrue(resultB.SequenceEqual(sequenceA));
+            Assert.That(resultA, Is.EqualTo(sequenceA));
+            Assert.That(resultB, Is.EqualTo(sequenceA));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
 
             Assert.AreEqual( expectedCount, result.Count() );
         }
-        
+
         /// <summary>
         /// Verify that each combination is produced in the Cartesian product
         /// </summary>
