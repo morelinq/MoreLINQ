@@ -15,18 +15,9 @@ namespace MoreLinq.Test
 
         [Test]
         public void ShouldDisposeEnumerators() {
-            var firstDisposed = false;
-            var first = new int[] { }.AsVerifiable();
-            first.WhenDisposed(_ => firstDisposed = true);
-
-            var secondDisposed = false;
-            var second = new int[] { }.AsVerifiable();
-            second.WhenDisposed(_ => secondDisposed = true);
-
-            MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null).ToArray();
-
-            Assert.IsTrue(firstDisposed, "First was not disposed");
-            Assert.IsTrue(secondDisposed, "Second was not disposed");
+            using (var first = TestingSequence.Of(new int[] { }))
+            using (var second = TestingSequence.Of(new int[] { }))
+                MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null).ToArray();
         }
 
         [Test]
