@@ -55,7 +55,7 @@ namespace MoreLinq.Test
         public void ShouldMapResultUsingFirstAndSecondSelectors() {
             var first = new[] { 1 };
             var second = new [] { 2 };
-            
+
             var merged = first.OrderedMerge(second,
                 firstKeySelector: value => value,
                 secondKeySelector: value => value,
@@ -109,7 +109,7 @@ namespace MoreLinq.Test
 
             Assert.That(merged, Is.EqualTo(new[] { 3, 2 }));
         }
-        
+
         [Test]
         public void ShouldBeAbleToUseNonDefaultComparer() {
             var first = new[] { 1 };
