@@ -5,23 +5,27 @@ using NUnit.Framework;
 namespace MoreLinq.Test
 {
     [TestFixture]
-    class OrderedMergeTest {
+    class OrderedMergeTest
+    {
         [Test]
-        public void ShouldBeLazy() {
+        public void ShouldBeLazy()
+        {
             var first = new BreakingSequence<object>();
             var second = new BreakingSequence<object>();
             Assert.DoesNotThrow(() => MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null));
         }
 
         [Test]
-        public void ShouldDisposeEnumerators() {
+        public void ShouldDisposeEnumerators()
+        {
             using (var first = TestingSequence.Of(new int[] { }))
             using (var second = TestingSequence.Of(new int[] { }))
                 MoreEnumerable.OrderedMerge(first, second, id => id, id => id, id => id, id => id, (f, _) => f, null).ToArray();
         }
 
         [Test]
-        public void IfThereAreNoMoreElementsToReturnFromTheFirstCollectionThenReturnTheRemainingSecondCollection() {
+        public void IfThereAreNoMoreElementsToReturnFromTheFirstCollectionThenReturnTheRemainingSecondCollection()
+        {
             var first = new int[] { };
             var second = new[] { 1, 2, 3 };
 
@@ -42,8 +46,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IfThereAreNoMoreElementsToReturnFromTheSecondCollectionThenReturnTheRemainingFirstCollection() {
-            var first = new [] { 1, 2, 3 };
+        public void IfThereAreNoMoreElementsToReturnFromTheSecondCollectionThenReturnTheRemainingFirstCollection()
+        {
+            var first = new[] { 1, 2, 3 };
             var second = new int[] { };
 
             int Id(int id) => id;
@@ -63,7 +68,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TwoSequencesWithNoCollisionsShouldMergeUsingTheDefaultComparer() {
+        public void TwoSequencesWithNoCollisionsShouldMergeUsingTheDefaultComparer()
+        {
             var first = new[] { 1, 4, 5 };
             var second = new [] { 2, 3, 6 };
 
@@ -84,7 +90,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void WhenThereIsACollisionShouldUseBothSelectorToChooseFromFirstOfSecondCollection() {
+        public void WhenThereIsACollisionShouldUseBothSelectorToChooseFromFirstOfSecondCollection()
+        {
             var firstElement = new Version(3, 0);
             var secondElement = new Version(3, 0);
 
@@ -119,7 +126,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ShouldBeAbleToSelectKeyOfFirstAndSecondCollection() {
+        public void ShouldBeAbleToSelectKeyOfFirstAndSecondCollection()
+        {
             var firstElement = new Version(2, 0);
             var secondElement = new Version(3, 0);
 
@@ -145,7 +153,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void FirstAndSecondCanBeOfDifferentInputTypesWithASharedOutputType() {
+        public void FirstAndSecondCanBeOfDifferentInputTypesWithASharedOutputType()
+        {
             int[] first = {1, 4, 5};
             string[] second = {"2", "3", "6"};
 
@@ -170,7 +179,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ShouldBeAbleToUseNonDefaultComparer() {
+        public void ShouldBeAbleToUseNonDefaultComparer()
+        {
             var first = new[] { 1, 4, 5 };
             var second = new[] { 2, 3, 6 };
 
@@ -193,10 +203,12 @@ namespace MoreLinq.Test
         }
 
         [TestFixture]
-        public class AllParametersEquivalent {
+        public class AllParametersEquivalent
+        {
 
             [Test]
-            public void first_second() {
+            public void first_second()
+            {
                 var first = new[] { 1, 4, 5 };
                 var second = new int[] { 2, 3, 6 };
 
