@@ -4,23 +4,27 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class OrderedMergeTest {
+    public class OrderedMergeTest
+    {
         [Test]
-        public void ShouldBeLazy() {
+        public void ShouldBeLazy()
+        {
             var first = new BreakingSequence<object>();
             var second = new BreakingSequence<object>();
             Assert.DoesNotThrow(() => first.OrderedMerge(second, id => id, id => id, id => id, id => id, (f, _) => f, null));
         }
 
         [Test]
-        public void ShouldDisposeEnumerators() {
+        public void ShouldDisposeEnumerators()
+        {
             using (var first = TestingSequence.Of<int>())
             using (var second = TestingSequence.Of<int>())
                 first.OrderedMerge(second, id => id, id => id, id => id, id => id, (f, _) => f, null).ToArray();
         }
 
         [Test]
-        public void WhenEndOfFirstIsReachedThenReturnTheRemainingFromSecond() {
+        public void WhenEndOfFirstIsReachedThenReturnTheRemainingFromSecond()
+        {
             var first = new[] { 1 };
             var second = new[] { 2, 3 };
 
@@ -36,7 +40,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void WhenEndOfSecondIsReachedThenReturnTheRemainingFromFirst() {
+        public void WhenEndOfSecondIsReachedThenReturnTheRemainingFromFirst()
+        {
             var first = new [] { 2, 3 };
             var second = new[] { 1 };
 
@@ -52,7 +57,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ShouldMapResultUsingFirstAndSecondSelectors() {
+        public void ShouldMapResultUsingFirstAndSecondSelectors()
+        {
             var first = new[] { 1 };
             var second = new [] { 2 };
 
@@ -68,7 +74,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ShouldMapResultUsingBothSelectorsWhenThereIsACollision() {
+        public void ShouldMapResultUsingBothSelectorsWhenThereIsACollision()
+        {
             var firstElement = "mergeConflict";
             var secondElement = "mergeConflict";
 
@@ -95,7 +102,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ShouldMapKeyUsingFirstAndSecondKeySelectors() {
+        public void ShouldMapKeyUsingFirstAndSecondKeySelectors()
+        {
             var first = new[] { 2 };
             var second = new[] { 3 };
 
@@ -111,7 +119,8 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ShouldBeAbleToUseNonDefaultComparer() {
+        public void ShouldBeAbleToUseNonDefaultComparer()
+        {
             var first = new[] { 1 };
             var second = new[] { 2, 3 };
 
@@ -127,9 +136,11 @@ namespace MoreLinq.Test
         }
 
         [TestFixture]
-        public class OverloadCorrectness {
+        public class OverloadCorrectness
+        {
             [Test]
-            public void first_second() {
+            public void first_second()
+            {
                 var first = new[] { 1, 4 };
                 var second = new[] { 2, 3 };
 
