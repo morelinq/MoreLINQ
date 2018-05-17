@@ -71,7 +71,7 @@ namespace MoreLinq.Test
         public void TwoSequencesWithNoCollisionsShouldMergeUsingTheDefaultComparer()
         {
             var first = new[] { 1, 4, 5 };
-            var second = new [] { 2, 3, 6 };
+            var second = new[] { 2, 3, 6 };
 
             int Id(int id) => id;
             int First(int f, int _) => f;
@@ -155,8 +155,8 @@ namespace MoreLinq.Test
         [Test]
         public void FirstAndSecondCanBeOfDifferentInputTypesWithASharedOutputType()
         {
-            int[] first = {1, 4, 5};
-            string[] second = {"2", "3", "6"};
+            int[] first = { 1, 4, 5 };
+            string[] second = { "2", "3", "6" };
 
             int FirstKeySelector(int value) => value;
             int SecondKeySelector(string value) => int.Parse(value);
@@ -230,7 +230,7 @@ namespace MoreLinq.Test
                     comparer: null);
 
                 Assert.That(exampleMerged, Is.EqualTo(allParametersMerged));
-                Assert.That(allParametersMerged, Is.EqualTo(new [] { 1, 2, 3, 4, 5, 6 }));
+                Assert.That(allParametersMerged, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
             }
 
             [Test]
