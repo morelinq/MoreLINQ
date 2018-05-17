@@ -620,6 +620,12 @@ sequence as it completes asynchronously.
 
 This method has 2 overloads.
 
+### AwaitCompletion
+
+Awaits completion of all asynchronous evaluations irrespective of whether they
+succeed or fail. An additional argument specifies a function that projects the
+final result given the source item and completed task.
+
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
