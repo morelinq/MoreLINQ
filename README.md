@@ -87,8 +87,15 @@ This method has 2 overloads.
 ### Cartesian
 
 Returns the Cartesian product of two sequences by combining each element of
-the first set with each in the second and applying the user=define projection
-to the pair
+the first set with each in the second and applying a user-defined projection
+to the pair.
+
+### Choose
+
+Applies a function to each element of the source sequence and returns a new
+sequence of result elements for source elements where the function returns a
+couple (2-tuple) having a `true` as its first element and result as the
+second.
 
 ### CompareCount
 
@@ -295,11 +302,6 @@ This method has 2 overloads.
 
 Returns a sequence with a range of elements in the source sequence
 moved to a new offset.
-
-### NestedLoops
-
-Produces a sequence from an action based on the dynamic generation of N nested
-loops who iteration counts are defined by
 
 ### OrderBy
 
@@ -625,6 +627,12 @@ This method has 2 overloads.
 Awaits completion of all asynchronous evaluations irrespective of whether they
 succeed or fail. An additional argument specifies a function that projects the
 final result given the source item and completed task.
+
+### Memoize
+
+Creates a sequence that lazily caches the source as it is iterated for the
+first time, reusing the cache thereafter for future re-iterations. If the
+source is already cached or buffered then it is returned verbatim.
 
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122

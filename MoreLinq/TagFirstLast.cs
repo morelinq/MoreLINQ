@@ -60,15 +60,8 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
-            {
-                var edge = new(bool HasValue, TSource Value)[] { default };
-                return edge.Concat(source.Select(e => (HasValue: true, Value: e)))
-                           .Concat(edge)
-                           .Pairwise((a, b) => (Prev: a, Curr: b))
-                           .Pairwise((a, b) => (a.Prev, a.Curr, Next: b.Curr))
-                           .Select(e => resultSelector(e.Curr.Value, !e.Prev.HasValue, !e.Next.HasValue));
-            }
+            return source.Index() // count-up
+                         .CountDown(1, (e, cd) => resultSelector(e.Value, e.Key == 0, cd == 0));
         }
     }
 }
