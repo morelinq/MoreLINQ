@@ -41,12 +41,15 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            var secondMemo = second.Memoize();
-            using (secondMemo as IDisposable)
+            return _(); IEnumerable<TResult> _()
             {
-                foreach (var item1 in first)
-                foreach (var item2 in secondMemo)
-                    yield return resultSelector(item1, item2);
+                var secondMemo = second.Memoize();
+                using (secondMemo as IDisposable)
+                {
+                    foreach (var item1 in first)
+                    foreach (var item2 in secondMemo)
+                        yield return resultSelector(item1, item2);
+                }
             }
         }
     }
