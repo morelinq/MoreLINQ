@@ -622,6 +622,12 @@ sequence as it completes asynchronously.
 
 This method has 2 overloads.
 
+### AwaitCompletion
+
+Awaits completion of all asynchronous evaluations irrespective of whether they
+succeed or fail. An additional argument specifies a function that projects the
+final result given the source item and completed task.
+
 ### Memoize
 
 Creates a sequence that lazily caches the source as it is iterated for the
