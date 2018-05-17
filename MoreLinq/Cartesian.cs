@@ -19,7 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Experimental;
 
     public static partial class MoreEnumerable
     {
@@ -41,9 +41,13 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return from item1 in first
-                   from item2 in second // TODO buffer to avoid multiple enumerations
-                   select resultSelector(item1, item2);
+            var secondMemo = second.Memoize();
+            using (secondMemo as IDisposable)
+            {
+                foreach (var item1 in first)
+                foreach (var item2 in secondMemo)
+                    yield return resultSelector(item1, item2);
+            }
         }
     }
 }
