@@ -87,8 +87,8 @@ This method has 2 overloads.
 ### Cartesian
 
 Returns the Cartesian product of two sequences by combining each element of
-the first set with each in the second and applying the user=define projection
-to the pair
+the first set with each in the second and applying a user-defined projection
+to the pair.
 
 ### Choose
 
