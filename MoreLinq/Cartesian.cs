@@ -25,7 +25,7 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns the Cartesian product of two sequences by combining each element of the first set with each in the second
-        /// and applying the user=define projection to the pair.
+        /// and applying the user-defined projection to the pair.
         /// </summary>
         /// <typeparam name="TFirst">The type of the elements of <paramref name="first"/></typeparam>
         /// <typeparam name="TSecond">The type of the elements of <paramref name="second"/></typeparam>
