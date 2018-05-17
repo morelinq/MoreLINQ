@@ -41,7 +41,13 @@ namespace MoreLinq
         /// <returns>A sequence of elements returned by
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
-        /// This method uses deferred execution and stream its results.
+        /// <para>
+        /// Elements of <paramref name="second"/> are cached when being paired
+        /// with the first element of the <paramref name="first"/>. The cache is
+        /// then re-used for pairing with all subsequent element of
+        /// <paramref name="first"/>.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
         public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
