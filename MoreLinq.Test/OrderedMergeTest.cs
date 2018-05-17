@@ -4,7 +4,7 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class OrderedMergeTest
+    class OrderedMergeTest {
     {
         [Test]
         public void ShouldBeLazy()
