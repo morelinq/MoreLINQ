@@ -46,6 +46,31 @@ namespace MoreLinq.Test
                  Enumerable.Range(1, 10).Repeat(-3));
         }
 
+        [Test]
+        public void RepeatDoesNotEnumerateSourceMoreThanOnce()
+        {
+            var source = Enumerable.Range(1, 10);
+            var expectations = source.Concat(source);
+
+            using (var test = source.AsTestingSequence())
+            {
+                var result = test.Repeat(2);
+                Assert.IsTrue(result.SequenceEqual(expectations));
+            }
+        }
+
+        [Test]
+        public void RepeatDisposeSourceWithPartialIteration()
+        {
+            var source = Enumerable.Range(1, 10);
+            var expectations = source.Concat(source);
+
+            using (var test = source.AsTestingSequence())
+            {
+                test.Repeat(2).Take(5).Consume();
+            }
+        }
+
         /// <summary>
         /// Verify applying Repeat without passing count produces a circular sequence
         /// </summary>
@@ -86,6 +111,18 @@ namespace MoreLinq.Test
         public void TestRepeatForeverIsLazy()
         {
             new BreakingSequence<int>().Repeat();
+        }
+
+        [Test]
+        public void RepeatForeverDoesNotEnumerateSourceMoreThanOnce()
+        {
+            var source = new[] { 3 };
+
+            using (var test = source.AsTestingSequence())
+            {
+                var result = test.Repeat();
+                Assert.IsTrue(result.Take(100).All(x => x == 3));
+            }
         }
     }
 }

@@ -106,5 +106,37 @@ namespace MoreLinq.Test
             Assert.AreEqual(0, resultB.Count());
             Assert.AreEqual(0, resultC.Count());
         }
+
+        [Test]
+        public void CartesianDoesNotEnumerateSequencesMoreThanOnce()
+        {
+            const int countA = 100;
+            const int countB = 75;
+            const int expectedCount = countA * countB;
+            var sequenceA = Enumerable.Range(1, countA);
+            var sequenceB = Enumerable.Range(1, countB);
+
+            using (var testA = sequenceA.AsTestingSequence())
+            using (var testB = sequenceB.AsTestingSequence())
+            {
+                var result = testA.Cartesian(testB, (a, b) => a + b);
+                Assert.AreEqual(expectedCount, result.Count());
+            }
+        }
+
+        [Test]
+        public void CartesianWithPartialIterationDisposeSequences()
+        {
+            const int countA = 100;
+            const int countB = 75;
+            var sequenceA = Enumerable.Range(1, countA);
+            var sequenceB = Enumerable.Range(1, countB);
+
+            using (var testA = sequenceA.AsTestingSequence())
+            using (var testB = sequenceB.AsTestingSequence())
+            {
+                testA.Cartesian(testB, (a, b) => a + b).Take(10).Consume();
+            }
+        }
     }
 }

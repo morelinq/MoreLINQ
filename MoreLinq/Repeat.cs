@@ -53,11 +53,14 @@ namespace MoreLinq
 
         static IEnumerable<T> RepeatImpl<T>(IEnumerable<T> sequence, int? count)
         {
-            while (count == null || count-- > 0)
+            using (var e = sequence.GetEnumerator())
             {
-                // TODO buffer to avoid multiple enumerations
-                foreach (var item in sequence)
-                    yield return item;
+                var cache = Memoize(e);
+                while (count == null || count-- > 0)
+                {
+                    foreach (var item in cache)
+                        yield return item;
+                }
             }
         }
     }
