@@ -58,7 +58,7 @@ namespace MoreLinq.Test
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
-                return test1.Backsert(test2, index)).ToArray();
+                return test1.Backsert(test2, index).ToArray();
             }
         }
     }
