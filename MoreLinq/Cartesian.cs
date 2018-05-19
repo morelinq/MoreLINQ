@@ -19,7 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Experimental;
 
     public static partial class MoreEnumerable
     {
@@ -41,7 +41,13 @@ namespace MoreLinq
         /// <returns>A sequence of elements returned by
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
-        /// This method uses deferred execution and stream its results.
+        /// <para>
+        /// Elements of <paramref name="second"/> are cached when being paired
+        /// with the first element of the <paramref name="first"/>. The cache is
+        /// then re-used for pairing with all subsequent element of
+        /// <paramref name="first"/>.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
         public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
@@ -50,9 +56,16 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return from item1 in first
-                   from item2 in second // TODO buffer to avoid multiple enumerations
-                   select resultSelector(item1, item2);
+            return _(); IEnumerable<TResult> _()
+            {
+                var secondMemo = second.Memoize();
+                using (secondMemo as IDisposable)
+                {
+                    foreach (var item1 in first)
+                    foreach (var item2 in secondMemo)
+                        yield return resultSelector(item1, item2);
+                }
+            }
         }
     }
 }
