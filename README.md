@@ -454,6 +454,8 @@ This method has 2 overloads.
 
 Returns a sequence of random elements from the original sequence.
 
+This method has 2 overloads.
+
 ### SkipLast
 
 Bypasses a specified number of elements at the end of the sequence.
