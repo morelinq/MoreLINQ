@@ -59,8 +59,33 @@ namespace MoreLinq
 
         public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return Flatten(source, obj => obj is IEnumerable inner && predicate(inner) ? inner : null);
+        }
+
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences. An
+        /// additional parameter specifies a selector function used to
+        /// flattening via property.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <param name="selector">
+        /// A function that receives each element of the sequence and allow
+        /// flattening via property. If the selector function returns <c>null</c>
+        /// the value is skipped and the original element is returned.
+        /// </param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and all nested sequences that selector function projected.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="selector"/> is null.</exception>
+
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             return _(); IEnumerable<object> _()
             {
@@ -79,7 +104,7 @@ namespace MoreLinq
 
                         while (e.MoveNext())
                         {
-                            if (e.Current is IEnumerable inner && predicate(inner))
+                            if (selector(e.Current) is IEnumerable inner)
                             {
                                 stack.Push(e);
                                 e = inner.GetEnumerator();
