@@ -33,6 +33,7 @@ namespace MoreLinq
         /// A random sequence of elements in random order from the original
         /// sequence.
         /// </returns>
+
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence)
         {
             return Shuffle(sequence, new Random());
@@ -50,6 +51,7 @@ namespace MoreLinq
         /// A random sequence of elements in random order from the original
         /// sequence.
         /// </returns>
+
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence, Random rand)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
