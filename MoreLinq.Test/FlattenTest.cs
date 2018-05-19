@@ -23,6 +23,8 @@ namespace MoreLinq.Test
     [TestFixture]
     public class FlattenTest
     {
+        // Flatten(this IEnumerable source)
+
         [Test]
         public void Flatten()
         {
@@ -108,6 +110,8 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<int>().Flatten();
         }
+
+        // Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
 
         [Test]
         public void FlattenPredicate()
@@ -288,6 +292,110 @@ namespace MoreLinq.Test
 
             Assert.Throws<TestException>(() =>
                 source.Flatten().ElementAt(11));
+        }
+
+        // Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
+
+        [Test]
+        public void FlattenSelectorIsLazy()
+        {
+            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
+        }
+
+        [Test]
+        public void FlattenSelector()
+        {
+            var source = new[]
+            {
+                new Series
+                {
+                    Name = "series1",
+                    Attributes = new[]
+                    {
+                        new Attribute { Values = new[] { 1, 2 } },
+                        new Attribute { Values = new[] { 3, 4 } },
+                    }
+                },
+                new Series
+                {
+                    Name = "series2",
+                    Attributes = new[]
+                    {
+                        new Attribute { Values = new[] { 5, 6 } },
+                    }
+                }
+            };
+
+            var result = source.Flatten(obj =>
+            {
+                switch (obj)
+                {
+                    case string str:
+                        return null;
+                    case IEnumerable inner:
+                        return inner;
+                    case Series s:
+                        return new object[] { s.Name, s.Attributes };
+                    case Attribute a:
+                        return a.Values;
+                    default:
+                        return null;
+                }
+            });
+
+            var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
+
+            Assert.That(result, Is.EquivalentTo(expectations));
+        }
+
+        [Test]
+        public void FlattenSelectorFilteringOnlyIntegers()
+        {
+            var source = new object[]
+            {
+                true,
+                false,
+                1,
+                "bar",
+                new object[]
+                {
+                    2,
+                    new[]
+                    {
+                        3,
+                    },
+                },
+                'c',
+                4,
+            };
+
+            var result = source.Flatten(obj =>
+            {
+                switch (obj)
+                {
+                    case int i:
+                        return null;
+                    case IEnumerable inner:
+                        return inner;
+                    default:
+                        return Enumerable.Empty<object>();
+                }
+            });
+
+            var expectations = new object[] { 1, 2, 3, 4 };
+
+            Assert.That(result, Is.EquivalentTo(expectations));
+        }
+
+        class Series
+        {
+            public string Name;
+            public Attribute[] Attributes;
+        }
+
+        class Attribute
+        {
+            public int[] Values;
         }
     }
 }
