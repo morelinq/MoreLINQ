@@ -193,7 +193,7 @@ This method has 3 overloads.
 
 Flattens a sequence containing arbitrarily-nested sequences.
 
-This method has 2 overloads.
+This method has 3 overloads.
 
 ### Fold
 
