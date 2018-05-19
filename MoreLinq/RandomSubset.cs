@@ -64,7 +64,7 @@ namespace MoreLinq
             return RandomSubsetImpl(sequence, rand, source => (source.ToArray(), subsetSize));
         }
 
-        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> sequence, Random rand, Func<IEnumerable<T>, (T[] array, int subsetSize)> seeder)
+        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> sequence, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
         {
             // The simplest and most efficient way to return a random subet is to perform
             // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
