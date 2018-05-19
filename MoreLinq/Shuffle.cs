@@ -30,7 +30,7 @@ namespace MoreLinq
         /// <param name="sequence">
         /// The sequence from which to return random elements.</param>
         /// <returns>
-        /// A random sequence of elements in random order from the original
+        /// A sequence of elements in random order from the original
         /// sequence.
         /// </returns>
 
@@ -48,8 +48,8 @@ namespace MoreLinq
         /// <param name="rand">
         /// A random generator used as part of the selection algorithm.</param>
         /// <returns>
-        /// A random sequence of elements in random order from the original
-        /// sequence.
+        /// A sequence of elements in random order from the original
+        /// sequence. An additional parameter specifies a randomizer.
         /// </returns>
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence, Random rand)
