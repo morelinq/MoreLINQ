@@ -25,10 +25,10 @@ namespace MoreLinq.Test
     public enum SourceKind
     {
         Sequence,
-        List,
-        ReadOnlyList,
-        Collection,
-        ReadOnlyCollection
+        BreakingList,
+        BreakingReadOnlyList,
+        BreakingCollection,
+        BreakingReadOnlyCollection
     }
 
     static partial class TestExtensions
@@ -80,13 +80,13 @@ namespace MoreLinq.Test
             {
                 case SourceKind.Sequence:
                     return input.Select(x => x);
-                case SourceKind.List:
+                case SourceKind.BreakingList:
                     return input.ToBreakingList(false);
-                case SourceKind.ReadOnlyList:
+                case SourceKind.BreakingReadOnlyList:
                     return input.ToBreakingList(true);
-                case SourceKind.Collection:
+                case SourceKind.BreakingCollection:
                     return input.ToBreakingCollection(false);
-                case SourceKind.ReadOnlyCollection:
+                case SourceKind.BreakingReadOnlyCollection:
                     return input.ToBreakingCollection(true);
                 default:
                     throw new ArgumentException(nameof(sourceKind));
