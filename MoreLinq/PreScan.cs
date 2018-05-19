@@ -39,7 +39,7 @@ namespace MoreLinq
         /// int[] values = { 1, 2, 3, 4 };
         /// var prescan = values.PreScan((a, b) => a + b, 0);
         /// var scan = values.Scan((a, b) => a + b);
-        /// var result = values.ZipShortest(prescan, plus);
+        /// var result = values.EquiZip(prescan, ValueTuple.Create);
         /// ]]></code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This

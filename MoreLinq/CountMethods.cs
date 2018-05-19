@@ -36,7 +36,7 @@ namespace MoreLinq
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.AtLeast(2);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
@@ -62,7 +62,7 @@ namespace MoreLinq
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.AtMost(2);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
@@ -87,7 +87,7 @@ namespace MoreLinq
         /// to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.Exactly(3);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
@@ -115,7 +115,7 @@ namespace MoreLinq
         /// the min and max given integers or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.CountBetween(1, 2);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
@@ -151,8 +151,8 @@ namespace MoreLinq
         /// or <c>1</c> if the first sequence has the most elements.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var first = { 123, 456 };
-        /// var second = { 789 };
+        /// var first = new[] { 123, 456 };
+        /// var second = new[] { 789 };
         /// var result = first.CompareCount(second);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>1</c>.
