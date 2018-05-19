@@ -56,8 +56,8 @@ namespace MoreLinq.Test
         //
         // https://github.com/morelinq/MoreLINQ/pull/476#discussion_r185191063
         //
-        // [TestCase(SourceKind.List)]
-        // [TestCase(SourceKind.ReadOnlyList)]
+        // [TestCase(SourceKind.BreakingList)]
+        // [TestCase(SourceKind.BreakingReadOnlyList)]
         [TestCase(SourceKind.Sequence)]
         public void ScanRight(SourceKind sourceKind)
         {

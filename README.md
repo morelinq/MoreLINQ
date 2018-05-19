@@ -94,8 +94,8 @@ This method has 2 overloads.
 ### Cartesian
 
 Returns the Cartesian product of two sequences by combining each element of
-the first set with each in the second and applying the user=define projection
-to the pair
+the first set with each in the second and applying a user-defined projection
+to the pair.
 
 ### Choose
 
@@ -309,11 +309,6 @@ This method has 2 overloads.
 
 Returns a sequence with a range of elements in the source sequence
 moved to a new offset.
-
-### NestedLoops
-
-Produces a sequence from an action based on the dynamic generation of N nested
-loops who iteration counts are defined by
 
 ### OrderBy
 
@@ -633,6 +628,12 @@ Creates a sequence query that streams the result of each task in the source
 sequence as it completes asynchronously.
 
 This method has 2 overloads.
+
+### AwaitCompletion
+
+Awaits completion of all asynchronous evaluations irrespective of whether they
+succeed or fail. An additional argument specifies a function that projects the
+final result given the source item and completed task.
 
 ### Memoize
 

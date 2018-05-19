@@ -74,10 +74,10 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 1, 2, 3, 4 };
-        /// var letters = { "A", "B", "C", "D" };
-        /// var chars    = { 'a', 'b', 'c', 'd' };
-        /// var zipped = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var zipped  = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
         /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1Aa", "2Bb", "3Cc", "4Dd" in turn.
         /// </example>
@@ -117,10 +117,10 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 1, 2, 3, 4 };
-        /// var letters = { "A", "B", "C", "D" };
-        /// var chars   = { 'a', 'b', 'c', 'd' };
-        /// var flags   = { true, false, true, false };
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var flags   = new[] { true, false, true, false };
         /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
         /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue", "2BbFalse", "3CcTrue", "4DdFalse" in turn.
