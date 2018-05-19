@@ -24,45 +24,6 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a sequence of random elements from the original sequence.
-        /// </summary>
-        /// <typeparam name="T">The type of source sequence elements.</typeparam>
-        /// <param name="sequence">
-        /// The sequence from which to return random elements.</param>
-        /// <returns>
-        /// A random sequence of elements in random order from the original
-        /// sequence.
-        /// </returns>
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence)
-        {
-            return Shuffle(sequence, new Random());
-        }
-
-        /// <summary>
-        /// Returns a sequence of random elements from the original sequence.
-        /// </summary>
-        /// <typeparam name="T">The type of source sequence elements.</typeparam>
-        /// <param name="sequence">
-        /// The sequence from which to return random elements.</param>
-        /// <param name="rand">
-        /// A random generator used as part of the selection algorithm.</param>
-        /// <returns>
-        /// A random sequence of elements in random order from the original
-        /// sequence.
-        /// </returns>
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence, Random rand)
-        {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
-
-            return RandomSubsetImpl(sequence, rand, source =>
-            {
-                var array = source.ToArray();
-                return (array, array.Length);
-            });
-        }
-
-        /// <summary>
         /// Returns a sequence of a specified size of random elements from the
         /// original sequence.
         /// </summary>
