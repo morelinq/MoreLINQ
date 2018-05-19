@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -48,43 +49,17 @@ namespace MoreLinq.Test
             }
         }
 
-        [TestCase(new[] { 1, 2, 3 }, 3, new[] { 9 })]
-        public void BacksertWithIndexEqualsSourceLength(int[] seq1, int index, int[] seq2)
+        [TestCase(new[] { 1, 2, 3 }, 0, new[] { 8, 9 }, ExpectedResult = new[] { 1, 2, 3, 8, 9 })]
+        [TestCase(new[] { 1, 2, 3 }, 1, new[] { 8, 9 }, ExpectedResult = new[] { 1, 2, 8, 9, 3 })]
+        [TestCase(new[] { 1, 2, 3 }, 2, new[] { 8, 9 }, ExpectedResult = new[] { 1, 8, 9, 2, 3 })]
+        [TestCase(new[] { 1, 2, 3 }, 3, new[] { 8, 9 }, ExpectedResult = new[] { 8, 9, 1, 2, 3 })]
+        public IEnumerable<int> Backsert(int[] seq1, int index, int[] seq2)
         {
             using (var test1 = seq1.AsTestingSequence())
             using (var test2 = seq2.AsTestingSequence())
             {
-                var result = test1.Backsert(test2, index);
-                var expectations = seq2.Concat(seq1);
-
-                Assert.That(result, Is.EqualTo(expectations));
-            }
-        }
-
-        [TestCase(new[] { 1, 2, 3 }, 0, new[] { 9 })]
-        public void BacksertWithIndexZero(int[] seq1, int index, int[] seq2)
-        {
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                var result = test1.Backsert(test2, 0);
-                var expectations = seq1.Concat(seq2);
-
-                Assert.That(result, Is.EqualTo(expectations));
-            }
-        }
-
-        [TestCase(new[] { 1, 2, 3 }, 1, new[] { 9 })]
-        [TestCase(new[] { 1, 2, 3 }, 2, new[] { 9 })]
-        public void Backsert(int[] seq1, int index, int[] seq2)
-        {
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                var result = test1.Backsert(test2, index);
-                var expectations = seq1.SkipLast(index).Concat(seq2).Concat(seq1.TakeLast(index));
-
-                Assert.That(result, Is.EqualTo(expectations));
+                foreach (var item in test1.Backsert(test2, index))
+                    yield return item;
             }
         }
     }
