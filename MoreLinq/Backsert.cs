@@ -25,20 +25,22 @@ namespace MoreLinq
     {
         /// <summary>
         /// Inserts the elements of a sequence into another sequence at a
-        /// specified index from the tail of the sequence, where zero always represents
-        /// the last position, one represents the second-last element, two represents
-        /// the third-last element and so on.
+        /// specified index from the tail of the sequence, where zero always
+        /// represents the last position, one represents the second-last
+        /// element, two represents the third-last element and so on.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="T">
+        /// Type of elements in all sequences.</typeparam>
         /// <param name="first">The source sequence.</param>
         /// <param name="second">The sequence that will be inserted.</param>
         /// <param name="index">
-        /// The zero-based index at which to insert elements from.
+        /// The zero-based index from the end of <paramref name="first"/> where
+        /// elements from <paramref name="second"/> should be inserted.
         /// <paramref name="second"/>.</param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="first"/>
         /// plus the elements of <paramref name="second"/> inserted at
-        /// the given index (counted from end To start).
+        /// the given index from the end of <paramref name="first"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="second"/> is null.</exception>
