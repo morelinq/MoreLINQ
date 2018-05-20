@@ -28,10 +28,10 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of source sequence elements.</typeparam>
-        /// <param name="sequence">
+        /// <param name="source">
         /// The sequence from which to return random elements.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="sequence"/> randomized in
+        /// A sequence of elements <paramref name="source"/> randomized in
         /// their order.
         /// </returns>
         /// <remarks>
@@ -40,9 +40,9 @@ namespace MoreLinq
         /// streamed.
         /// </remarks>
 
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence)
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
         {
-            return Shuffle(sequence, new Random());
+            return Shuffle(source, new Random());
         }
 
         /// <summary>

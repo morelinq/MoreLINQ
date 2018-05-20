@@ -28,16 +28,16 @@ namespace MoreLinq
         /// original sequence.
         /// </summary>
         /// <typeparam name="T">The type of source sequence elements.</typeparam>
-        /// <param name="sequence">
+        /// <param name="source">
         /// The sequence from which to return random elements.</param>
         /// <param name="subsetSize">The size of the random subset to return.</param>
         /// <returns>
         /// A random sequence of elements in random order from the original
         /// sequence.</returns>
 
-        public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize)
+        public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize)
         {
-            return RandomSubset(sequence, subsetSize, new Random());
+            return RandomSubset(source, subsetSize, new Random());
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace MoreLinq
         /// generator to be used for the random selection algorithm.
         /// </summary>
         /// <typeparam name="T">The type of source sequence elements.</typeparam>
-        /// <param name="sequence">
+        /// <param name="source">
         /// The sequence from which to return random elements.</param>
         /// <param name="subsetSize">The size of the random subset to return.</param>
         /// <param name="rand">
@@ -55,16 +55,16 @@ namespace MoreLinq
         /// A random sequence of elements in random order from the original
         /// sequence.</returns>
 
-        public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> sequence, int subsetSize, Random rand)
+        public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
         {
             if (rand == null) throw new ArgumentNullException(nameof(rand));
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
 
-            return RandomSubsetImpl(sequence, rand, source => (source.ToArray(), subsetSize));
+            return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
         }
 
-        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> sequence, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
+        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
         {
             // The simplest and most efficient way to return a random subet is to perform
             // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
@@ -72,7 +72,7 @@ namespace MoreLinq
             // than the length of the sequence.
             // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-            var (array, subsetSize) = seeder(sequence);
+            var (array, subsetSize) = seeder(source);
 
             if (array.Length < subsetSize)
             {
