@@ -78,6 +78,7 @@
         - ScanRight
         - Segment
         - Sequence
+        - Shuffle
         - SkipLast
         - SkipUntil
         - Slice

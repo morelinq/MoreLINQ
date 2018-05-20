@@ -457,6 +457,12 @@ Generates a sequence of integral numbers within the (inclusive) specified range.
 
 This method has 2 overloads.
 
+### Shuffle
+
+Returns a sequence of elements in random order from the original sequence.
+
+This method has 2 overloads.
+
 ### SkipLast
 
 Bypasses a specified number of elements at the end of the sequence.
