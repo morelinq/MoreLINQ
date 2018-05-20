@@ -51,12 +51,12 @@ namespace MoreLinq
         /// used for the random selection algorithm.
         /// </summary>
         /// <typeparam name="T">The type of source sequence elements.</typeparam>
-        /// <param name="sequence">
+        /// <param name="source">
         /// The sequence from which to return random elements.</param>
         /// <param name="rand">
         /// A random generator used as part of the selection algorithm.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="sequence"/> randomized in
+        /// A sequence of elements <paramref name="source"/> randomized in
         /// their order.
         /// </returns>
         /// <remarks>
@@ -65,14 +65,14 @@ namespace MoreLinq
         /// streamed.
         /// </remarks>
 
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence, Random rand)
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (rand == null) throw new ArgumentNullException(nameof(rand));
 
-            return RandomSubsetImpl(sequence, rand, source =>
+            return RandomSubsetImpl(source, rand, seq =>
             {
-                var array = source.ToArray();
+                var array = seq.ToArray();
                 return (array, array.Length);
             });
         }
