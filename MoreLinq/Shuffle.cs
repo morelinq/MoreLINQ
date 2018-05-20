@@ -34,6 +34,11 @@ namespace MoreLinq
         /// A sequence of elements <paramref name="sequence"/> randomized in
         /// their order.
         /// </returns>
+        /// <remarks>
+        /// This method uses deferred execution and streams its results. The
+        /// source sequence is entirely buffered before the results are
+        /// streamed.
+        /// </remarks>
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence)
         {
@@ -54,6 +59,11 @@ namespace MoreLinq
         /// A sequence of elements <paramref name="sequence"/> randomized in
         /// their order.
         /// </returns>
+        /// <remarks>
+        /// This method uses deferred execution and streams its results. The
+        /// source sequence is entirely buffered before the results are
+        /// streamed.
+        /// </remarks>
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence, Random rand)
         {
