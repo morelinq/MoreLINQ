@@ -52,6 +52,9 @@ namespace MoreLinq
         /// length of <paramref name="first"/>. The validation occurs when
         /// the resulting sequence is iterated.
         /// </exception>
+        /// <remarks>
+        /// This method uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<T> Backsert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
         {
