@@ -452,7 +452,7 @@ This method has 2 overloads.
 
 ### Shuffle
 
-Returns a sequence of random elements from the original sequence.
+Returns a sequence of elements in random order from the original sequence.
 
 This method has 2 overloads.
 
