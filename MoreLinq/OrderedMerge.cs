@@ -92,6 +92,7 @@ namespace MoreLinq
         /// This method uses deferred execution. The behavior is undefined
         /// if the sequences are unordered (by key) as inputs.
         /// </remarks>
+
         public static IEnumerable<T> OrderedMerge<T, TKey>(
             this IEnumerable<T> first,
             IEnumerable<T> second,

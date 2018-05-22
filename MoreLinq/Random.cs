@@ -206,6 +206,7 @@ namespace MoreLinq
         /// <param name="rand">Random generators used to produce the sequence</param>
         /// <param name="nextValue">Generator function that actually produces the next value - specific to T</param>
         /// <returns>An infinite sequence of random numbers of type T</returns>
+
         static IEnumerable<T> RandomImpl<T>(Random rand, Func<Random, T> nextValue)
         {
             while (true)
