@@ -34,8 +34,8 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code><![CDATA[
-        /// int[] numbers = { 1, 2, 3 };
-        /// string[] letters = { "A", "B", "C", "D" };
+        /// var numbers = { 1, 2, 3 };
+        /// var letters = { "A", "B", "C", "D" };
         /// var zipped = numbers.ZipLongest(letters, (n, l) => n + l);
         /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "0D" in turn.

@@ -30,9 +30,9 @@ namespace MoreLinq
         /// </summary>
         /// <example>
         /// <code><![CDATA[
-        /// int[] numbers = { 1, 2, 3, 4 };
-        /// string[] letters = { "A", "B", "C", "D" };
-        /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped  = numbers.EquiZip(letters, (n, l) => n + l);
         /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "4D" in turn.
         /// </example>
