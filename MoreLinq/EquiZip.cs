@@ -113,7 +113,7 @@ namespace MoreLinq
         /// from each of the argument sequences.
         /// </summary>
         /// <remarks>
-        /// If the three input sequences are of different lengths then
+        /// If the four input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
