@@ -23,22 +23,6 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a sequence consisting of the head element and the given tail elements.
-        /// </summary>
-        /// <typeparam name="T">Type of sequence</typeparam>
-        /// <param name="head">Head element of the new sequence.</param>
-        /// <param name="tail">All elements of the tail. Must not be null.</param>
-        /// <returns>A sequence consisting of the head elements and the given tail elements.</returns>
-        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-
-        [Obsolete("Use Prepend instead.")]
-        public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
-        {
-            if (tail == null) throw new ArgumentNullException(nameof(tail));
-            return tail.Prepend(head);
-        }
-
-        /// <summary>
         /// Returns a sequence consisting of the head elements and the given tail element.
         /// </summary>
         /// <typeparam name="T">Type of sequence</typeparam>

@@ -24,45 +24,6 @@ namespace MoreLinq.Test
     public class ConcatTest
     {
         #region Concat with single head and tail sequence
-
-        // NOTE: Concat with single head and tail sequence is now
-        // implemented in terms of Prepend so the tests are identical.
-
-        [Test]
-        public void ConcatWithNonEmptyTailSequence()
-        {
-            var tail = new[] { "second", "third" };
-            var head = "first";
-            var whole = MoreEnumerable.Concat(head, tail);
-            whole.AssertSequenceEqual("first", "second", "third");
-        }
-
-        [Test]
-        public void ConcatWithEmptyTailSequence()
-        {
-            string[] tail = { };
-            var head = "first";
-            var whole = MoreEnumerable.Concat(head, tail);
-            whole.AssertSequenceEqual("first");
-        }
-
-        [Test]
-        public void ConcatWithNullHead()
-        {
-            var tail = new[] { "second", "third" };
-            string head = null;
-            var whole = MoreEnumerable.Concat(head, tail);
-            whole.AssertSequenceEqual(null, "second", "third");
-        }
-
-        [Test]
-        public void ConcatIsLazyInTailSequence()
-        {
-            MoreEnumerable.Concat("head", new BreakingSequence<string>());
-        }
-        #endregion
-
-        #region Concat with single head and tail sequence
         [Test]
         public void ConcatWithNonEmptyHeadSequence()
         {
