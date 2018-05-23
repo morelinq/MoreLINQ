@@ -90,9 +90,7 @@ namespace MoreLinq
 
         static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IListLike<TSource>, (TResult Seed, int Count)?> seeder)
         {
-            var list = source is IReadOnlyList<TSource> readOnlyList
-                     ? readOnlyList.AsListLike()
-                     : (source as IList<TSource> ?? source.ToList()).AsListLike();
+            var list = source.ToListLike();
 
             var r = seeder(list);
             if (!r.HasValue)

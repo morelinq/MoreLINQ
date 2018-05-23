@@ -47,10 +47,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list
-                = source is IReadOnlyList<TSource> readOnlyList
-                ? readOnlyList.AsListLike()
-                : (source as IList<TSource> ?? source.ToList()).AsListLike();
+            var list = source.ToListLike();
 
             if (list.Count == 0)
                 throw new InvalidOperationException("Sequence contains no elements.");
