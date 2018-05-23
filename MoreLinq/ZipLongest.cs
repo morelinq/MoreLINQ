@@ -23,33 +23,38 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences.
         /// </summary>
-        /// <remarks>
-        /// If the two input sequences are of different lengths then the result
-        /// sequence will always be as long as the longer of the two input sequences.
-        /// The default value of the shorter sequence element type is used for padding.
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each pair of elements.</param>
+        /// <returns>
+        /// A sequence that contains elements of the two input sequences,
+        /// combined by <paramref name="resultSelector"/>.
+        /// </returns>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = { 1, 2, 3 };
         /// var letters = { "A", "B", "C", "D" };
         /// var zipped = numbers.ZipLongest(letters, (n, l) => n + l);
         /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "0D" in turn.
+        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
+        /// "2B", "3C", "0D" in turn.
         /// </example>
-        /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">First sequence</param>
-        /// <param name="second">Second sequence</param>
-        /// <param name="resultSelector">Function to apply to each pair of elements</param>
-        /// <returns>
-        /// A sequence that contains elements of the two input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// If the two input sequences are of different lengths then the result
+        /// sequence will always be as long as the longer of the two input
+        /// sequences. The default value of the shorter sequence element type
+        /// is used for padding.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
