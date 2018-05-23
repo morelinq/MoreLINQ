@@ -67,5 +67,112 @@ namespace MoreLinq
 
             return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b), 1);
         }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each triplet of elements.</param>
+        /// <returns>
+        /// A sequence that contains elements of the three input sequences,
+        /// combined by <paramref name="resultSelector"/>.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var zipped  = numbers.ZipLongest(letters, chars, (n, l, c) => n + l + c);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
+        /// "2Bb", "3Cc", "0Dd", "0e" in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths then the result
+        /// sequence will always be as long as the longest of input sequences.
+        /// The default value of the each shorter sequence element type is used
+        /// for padding. This operator uses deferred execution and streams its
+        /// results.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            Func<T1, T2, T3, TResult> resultSelector)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, d) => resultSelector(a, b, c), 2);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each quadruplet of elements.</param>
+        /// <returns>
+        /// A sequence that contains elements of the four input sequences,
+        /// combined by <paramref name="resultSelector"/>.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var flags   = new[] { true, false, true, false, true, false };
+        /// var zipped  = numbers.ZipLongest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
+        /// "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False" in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths then the result
+        /// sequence will always be as long as the longest of input sequences.
+        /// The default value of the each shorter sequence element type is used
+        /// for padding.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            Func<T1, T2, T3, T4, TResult> resultSelector)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return ZipImpl(first, second, third, fourth, resultSelector, 3);
+        }
     }
 }

@@ -610,6 +610,8 @@ subset of the original
 Returns a projection of tuples, where each tuple contains the N-th element
 from each of the argument sequences
 
+This method has 3 overloads.
+
 ### ZipShortest
 
 Returns a projection of tuples, where each tuple contains the N-th element
