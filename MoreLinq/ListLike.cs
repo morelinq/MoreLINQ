@@ -38,9 +38,9 @@ namespace MoreLinq
 
         public static IListLike<T> ToListLike<T>(this IEnumerable<T> source)
             => source is null ? throw new ArgumentNullException(nameof(source))
-            : source is IList<T> list ? new List<T>(list)
-            : source is IReadOnlyList<T> readOnlyList ? (IListLike<T>) new ReadOnlyList<T>(readOnlyList)
-            : new List<T>(source.ToList());
+             : source is IList<T> list ? new List<T>(list)
+             : source is IReadOnlyList<T> readOnlyList ? (IListLike<T>) new ReadOnlyList<T>(readOnlyList)
+             : new List<T>(source.ToList());
 
         sealed class List<T> : IListLike<T>
         {
