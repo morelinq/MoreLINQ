@@ -170,6 +170,7 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (third == null) throw new ArgumentNullException(nameof(third));
+            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return ZipImpl(first, second, third, fourth, resultSelector, 3);
