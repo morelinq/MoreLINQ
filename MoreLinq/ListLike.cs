@@ -40,7 +40,8 @@ namespace MoreLinq
              : new List<T>(source.ToList());
 
         public static IListLike<T> TryAsListLike<T>(this IEnumerable<T> source)
-            => source is IList<T> list ? new List<T>(list)
+            => source is null ? throw new ArgumentNullException(nameof(source))
+             : source is IList<T> list ? new List<T>(list)
              : source is IReadOnlyList<T> readOnlyList ? new ReadOnlyList<T>(readOnlyList)
              : (IListLike<T>) null;
 
