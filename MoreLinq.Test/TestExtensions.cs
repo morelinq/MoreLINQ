@@ -69,9 +69,9 @@ namespace MoreLinq.Test
 
         internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
         {
-            yield return input.Select(x => x);
-            yield return input.ToBreakingCollection(true);
-            yield return input.ToBreakingCollection(false);
+            yield return input.ToSourceKind(SourceKind.Sequence);
+            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
+            yield return input.ToSourceKind(SourceKind.BreakingCollection);
         }
 
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
@@ -81,13 +81,13 @@ namespace MoreLinq.Test
                 case SourceKind.Sequence:
                     return input.Select(x => x);
                 case SourceKind.BreakingList:
-                    return input.ToBreakingList(false);
+                    return new BreakingList<T>(input.ToList());
                 case SourceKind.BreakingReadOnlyList:
-                    return input.ToBreakingList(true);
+                    return new BreakingReadOnlyList<T>(input.ToList());
                 case SourceKind.BreakingCollection:
-                    return input.ToBreakingCollection(false);
+                    return new BreakingCollection<T>(input.ToList());
                 case SourceKind.BreakingReadOnlyCollection:
-                    return input.ToBreakingCollection(true);
+                    return new BreakingReadOnlyCollection<T>(input.ToList());
                 default:
                     throw new ArgumentException(nameof(sourceKind));
             }
