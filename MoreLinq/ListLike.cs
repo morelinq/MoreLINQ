@@ -33,9 +33,6 @@ namespace MoreLinq
 
     static class ListLike
     {
-        public static IListLike<T> AsListLike<T>(this IList<T> list) => new List<T>(list);
-        public static IListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new ReadOnlyList<T>(list);
-
         public static IListLike<T> ToListLike<T>(this IEnumerable<T> source)
             => source is null ? throw new ArgumentNullException(nameof(source))
              : source is IList<T> list ? new List<T>(list)
