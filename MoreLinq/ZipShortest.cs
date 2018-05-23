@@ -51,8 +51,11 @@ namespace MoreLinq
         /// <param name="resultSelector">Function to apply to each triplet of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
 
-        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            Func<T1, T2, T3, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -94,8 +97,12 @@ namespace MoreLinq
         /// <param name="resultSelector">Function to apply to each quadruplet of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences.</returns>
 
-        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth, Func<T1, T2, T3, T4, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -131,8 +138,10 @@ namespace MoreLinq
         /// <param name="resultSelector">Function to apply to each pair of elements</param>
         /// <returns>A projection of tuples, where each tuple contains the N-th element from each of the argument sequences</returns>
 
-        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));

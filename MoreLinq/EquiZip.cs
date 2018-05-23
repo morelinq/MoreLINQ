@@ -52,9 +52,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
-             IEnumerable<TSecond> second,
-             Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -94,8 +95,9 @@ namespace MoreLinq
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
 
-        public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third,
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -140,8 +142,9 @@ namespace MoreLinq
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
 
-        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
