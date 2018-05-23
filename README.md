@@ -113,8 +113,6 @@ first sequence has fewer, the same or more elements than the second sequence.
 
 Returns a sequence consisting of the head element and the given tail elements.
 
-This method has 2 overloads.
-
 ### Consume
 
 Completely consumes the given sequence. This method uses immediate execution,
