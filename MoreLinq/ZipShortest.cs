@@ -23,6 +23,49 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.
+        /// </summary>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each pair of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the two input sequences are of different lengths, the result
+        /// sequence is terminated as soon as the shortest input sequence is
+        /// exhausted.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+        }
+
+        /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element  from each of the argument sequences.
         /// </summary>
@@ -123,49 +166,6 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return ZipImpl(first, second, third, fourth, resultSelector);
-        }
-
-        /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
-        /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
-        /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
-        /// </example>
-        /// <remarks>
-        /// <para>
-        /// If the two input sequences are of different lengths, the result
-        /// sequence is terminated as soon as the shortest input sequence is
-        /// exhausted.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
-        /// </remarks>
-
-        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(
-            this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
-        {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
         }
 
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
