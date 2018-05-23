@@ -92,8 +92,8 @@ namespace MoreLinq.Test
             Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
 
-        [TestCase(SourceKind.Collection)]
-        [TestCase(SourceKind.ReadOnlyCollection)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
         {
             var first = new[] { 1, 2 }.ToSourceKind(sourceKind);

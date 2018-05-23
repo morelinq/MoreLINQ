@@ -36,6 +36,7 @@ namespace MoreLinq
         /// The tree is not checked for loops. If the resulting sequence needs to be finite then it is the
         /// responsibility of <paramref name="childrenSelector"/> to ensure that loops are not produced.
         /// </remarks>
+
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
@@ -68,6 +69,7 @@ namespace MoreLinq
         /// The tree is not checked for loops. If the resulting sequence needs to be finite then it is the
         /// responsibility of <paramref name="childrenSelector"/> to ensure that loops are not produced.
         /// </remarks>
+
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));

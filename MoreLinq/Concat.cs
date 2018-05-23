@@ -31,6 +31,7 @@ namespace MoreLinq
         /// <returns>A sequence consisting of the head elements and the given tail elements.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
+        [Obsolete("Use Prepend instead.")]
         public static IEnumerable<T> Concat<T>(this T head, IEnumerable<T> tail)
         {
             if (tail == null) throw new ArgumentNullException(nameof(tail));

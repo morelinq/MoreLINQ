@@ -101,8 +101,8 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().Memoize();
         }
 
-        [TestCase(SourceKind.Collection)]
-        [TestCase(SourceKind.ReadOnlyCollection)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void MemoizeWithInMemoryCollection(SourceKind sourceKind)
         {
             var collection = Enumerable.Empty<int>().ToSourceKind(sourceKind);

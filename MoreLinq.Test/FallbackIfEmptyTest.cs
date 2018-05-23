@@ -36,8 +36,8 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(SourceKind.Collection)]
-        [TestCase(SourceKind.ReadOnlyCollection)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void FallbackIfEmptyPreservesSourceCollectionIfPossible(SourceKind sourceKind)
         {
             var source = new[] { 1 }.ToSourceKind(sourceKind);
@@ -51,8 +51,8 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(SourceKind.Collection)]
-        [TestCase(SourceKind.ReadOnlyCollection)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(SourceKind sourceKind)
         {
             var source = new int[0].ToSourceKind(sourceKind);

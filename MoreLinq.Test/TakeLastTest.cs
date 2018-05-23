@@ -63,8 +63,8 @@ namespace MoreLinq.Test
             }
         }
 
-        [TestCase(SourceKind.List)]
-        [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
         public void TakeLastOptimizedForCollections(SourceKind sourceKind)
         {
             var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);

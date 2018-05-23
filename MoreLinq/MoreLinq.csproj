@@ -15,6 +15,8 @@
         - AtLeast
         - AtMost
         - Await (EXPERIMENTAL)
+        - AwaitCompletion (EXPERIMENTAL)
+        - Backsert
         - Batch
         - Cartesian
         - Choose
@@ -76,6 +78,7 @@
         - ScanRight
         - Segment
         - Sequence
+        - Shuffle
         - SkipLast
         - SkipUntil
         - Slice
@@ -121,7 +124,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
-    <PackageReleaseNotes>Adds new operators: Await (EXPERIMENTAL), CompareCount, Choose, CountDown, Memoize (EXPERIMENTAL), Transpose. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds new operators: Await (EXPERIMENTAL), AwaitCompletion (EXPERIMENTAL), Backsert, CompareCount, Choose, CountDown, Memoize (EXPERIMENTAL), Transpose. See also https://github.com/morelinq/MoreLINQ/wiki/API-Changes.</PackageReleaseNotes>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>

@@ -25,10 +25,10 @@ namespace MoreLinq.Test
     public enum SourceKind
     {
         Sequence,
-        List,
-        ReadOnlyList,
-        Collection,
-        ReadOnlyCollection
+        BreakingList,
+        BreakingReadOnlyList,
+        BreakingCollection,
+        BreakingReadOnlyCollection
     }
 
     static partial class TestExtensions
@@ -70,8 +70,8 @@ namespace MoreLinq.Test
         internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
         {
             yield return input.ToSourceKind(SourceKind.Sequence);
-            yield return input.ToSourceKind(SourceKind.ReadOnlyCollection);
-            yield return input.ToSourceKind(SourceKind.Collection);
+            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
+            yield return input.ToSourceKind(SourceKind.BreakingCollection);
         }
 
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
@@ -80,13 +80,13 @@ namespace MoreLinq.Test
             {
                 case SourceKind.Sequence:
                     return input.Select(x => x);
-                case SourceKind.List:
+                case SourceKind.BreakingList:
                     return new BreakingList<T>(input.ToList());
-                case SourceKind.ReadOnlyList:
+                case SourceKind.BreakingReadOnlyList:
                     return new BreakingReadOnlyList<T>(input.ToList());
-                case SourceKind.Collection:
+                case SourceKind.BreakingCollection:
                     return new BreakingCollection<T>(input.ToList());
-                case SourceKind.ReadOnlyCollection:
+                case SourceKind.BreakingReadOnlyCollection:
                     return new BreakingReadOnlyCollection<T>(input.ToList());
                 default:
                     throw new ArgumentException(nameof(sourceKind));

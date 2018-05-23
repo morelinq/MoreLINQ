@@ -36,11 +36,12 @@ namespace MoreLinq
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.AtLeast(2);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
+
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
@@ -62,11 +63,12 @@ namespace MoreLinq
         /// or equal to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.AtMost(2);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
+
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
@@ -87,11 +89,12 @@ namespace MoreLinq
         /// to the given integer or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.Exactly(3);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
+
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
@@ -115,11 +118,12 @@ namespace MoreLinq
         /// the min and max given integers or <c>false</c> otherwise.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var numbers = { 123, 456, 789 };
+        /// var numbers = new[] { 123, 456, 789 };
         /// var result = numbers.CountBetween(1, 2);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
+
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
         {
             if (min < 0) throw new ArgumentOutOfRangeException(nameof(min), "Minimum count cannot be negative.");
@@ -151,12 +155,13 @@ namespace MoreLinq
         /// or <c>1</c> if the first sequence has the most elements.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var first = { 123, 456 };
-        /// var second = { 789 };
+        /// var first = new[] { 123, 456 };
+        /// var second = new[] { 789 };
         /// var result = first.CompareCount(second);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>1</c>.
         /// </example>
+
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));

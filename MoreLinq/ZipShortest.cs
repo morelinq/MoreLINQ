@@ -77,7 +77,7 @@ namespace MoreLinq
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var flags   = new[] { true, false };
-        /// var zipped  = numbers.ZipShortest(letters, chars, flags (n, l, c, f) => n + l + c + f);
+        /// var zipped  = numbers.ZipShortest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
         /// ]]></code>
         /// The <c>zipped</c> variable, when iterated over, will yield
         /// "1AaTrue", "2BbFalse" in turn.

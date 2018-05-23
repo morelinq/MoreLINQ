@@ -115,8 +115,8 @@ namespace MoreLinq.Test
         /// Verify that slice is optimized for <see cref="IList{T}"/> and <see cref="IReadOnlyList{T}"/> implementations and does not
         /// unnecessarily traverse items outside of the slice region.
         /// </summary>
-        [TestCase(SourceKind.List)]
-        [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
         public void TestSliceOptimization(SourceKind sourceKind)
         {
             const int sliceStart = 4;

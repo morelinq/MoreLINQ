@@ -162,11 +162,11 @@ namespace MoreLinq.Test
             var s1Seq = (s1.Select(x => x), SequenceKind.Sequence);
             var s2Seq = (s2.Select(x => x), SequenceKind.Sequence);
 
-            var s1Col = (s1.ToSourceKind(SourceKind.Collection), SequenceKind.Collection);
-            var s2Col = (s2.ToSourceKind(SourceKind.Collection), SequenceKind.Collection);
+            var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SequenceKind.Collection);
+            var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SequenceKind.Collection);
 
-            var s1ReadOnlyCol = (s1.ToSourceKind(SourceKind.ReadOnlyCollection), SequenceKind.ReadOnlyCollection);
-            var s2ReadOnlyCol = (s2.ToSourceKind(SourceKind.ReadOnlyCollection), SequenceKind.ReadOnlyCollection);
+            var s1ReadOnlyCol = (s1.ToSourceKind(SourceKind.BreakingReadOnlyCollection), SequenceKind.ReadOnlyCollection);
+            var s2ReadOnlyCol = (s2.ToSourceKind(SourceKind.BreakingReadOnlyCollection), SequenceKind.ReadOnlyCollection);
 
             // sequences
             yield return selector(s1Seq, s2Seq);
