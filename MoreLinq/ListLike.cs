@@ -32,8 +32,16 @@ namespace MoreLinq
 
     static class ListLike
     {
-        public static IListLike<T> AsListLike<T>(this IList<T> list) => new List<T>(list);
-        public static IListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new ReadOnlyList<T>(list);
+        public static IListLike<T> AsListLike<T>(this IEnumerable<T> source)
+        {
+            if (source is IList<T> list)
+                return new List<T>(list);
+
+            if (source is IReadOnlyList<T> readOnlyList)
+                return new ReadOnlyList<T>(readOnlyList);
+
+            return null;
+        }
 
         sealed class List<T> : IListLike<T>
         {
