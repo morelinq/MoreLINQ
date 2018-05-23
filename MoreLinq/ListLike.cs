@@ -39,12 +39,10 @@ namespace MoreLinq
              : source is IReadOnlyList<T> readOnlyList ? (IListLike<T>) new ReadOnlyList<T>(readOnlyList)
              : new List<T>(source.ToList());
 
-        public static IListLike<T> TryAsListLike<T>(this IEnumerable<T> source) =>
-            source is IList<T> list
-            ? new List<T>(list)
-            : source is IReadOnlyList<T> readOnlyList
-              ? new ReadOnlyList<T>(readOnlyList)
-              : (IListLike<T>) null;
+        public static IListLike<T> TryAsListLike<T>(this IEnumerable<T> source)
+            => source is IList<T> list ? new List<T>(list)
+             : source is IReadOnlyList<T> readOnlyList ? new ReadOnlyList<T>(readOnlyList)
+             : (IListLike<T>) null;
 
         sealed class List<T> : IListLike<T>
         {
