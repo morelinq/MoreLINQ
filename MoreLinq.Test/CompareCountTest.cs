@@ -24,21 +24,30 @@ namespace MoreLinq.Test
     [TestFixture]
     public class CompareCountTest
     {
-        static readonly IEnumerable<TestCaseData> CompareCountData =
-            from e in new[]
+        static IEnumerable<TestCaseData> CompareCountData
+        {
+            get
             {
-                new { Count1 = 0, Count2 = 0, Comparison =  0 },
-                new { Count1 = 0, Count2 = 1, Comparison = -1 },
-                new { Count1 = 1, Count2 = 0, Comparison =  1 },
-                new { Count1 = 1, Count2 = 1, Comparison =  0 },
-            }
-            from s in GetTestSequenceKinds(
-                          Enumerable.Range(1, e.Count1),
-                          Enumerable.Range(1, e.Count2),
-                          (xs, ys) => new { First = xs, Second = ys })
-            select new TestCaseData(s.First.Data, s.Second.Data)
+                var types = new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection };
+
+                return
+                from e in new[]
+                {
+                    new { Count1 = 0, Count2 = 0, Comparison =  0 },
+                    new { Count1 = 0, Count2 = 1, Comparison = -1 },
+                    new { Count1 = 1, Count2 = 0, Comparison =  1 },
+                    new { Count1 = 1, Count2 = 1, Comparison =  0 },
+                }
+                from firstKind in types
+                from secondKind in types
+                select new TestCaseData(
+                        Enumerable.Range(1, e.Count1).ToSourceKind(firstKind),
+                        Enumerable.Range(1, e.Count2).ToSourceKind(secondKind)
+                    )
                     .Returns(e.Comparison)
-                    .SetName($"{{m}}({s.First.Kind}[{e.Count1}], {s.Second.Kind}[{e.Count2}]) = {e.Comparison}");
+                    .SetName($"{{m}}({firstKind}[{e.Count1}], {secondKind}[{e.Count2}]) = {e.Comparison}");
+            }
+        }
 
         [TestCaseSource(nameof(CompareCountData))]
         public int CompareCount(IEnumerable<int> xs, IEnumerable<int> ys) =>
@@ -143,43 +152,6 @@ namespace MoreLinq.Test
 
             Assert.AreEqual( 1, seq1.CompareCount(seq2));
             Assert.AreEqual(-1, seq2.CompareCount(seq1));
-        }
-
-        enum SequenceKind
-        {
-            Sequence,
-            Collection,
-            ReadOnlyCollection,
-        }
-
-        static IEnumerable<TResult> GetTestSequenceKinds<T, TResult>(
-            IEnumerable<T> s1, IEnumerable<T> s2,
-            Func<(IEnumerable<T> Data, SequenceKind Kind),
-                (IEnumerable<T> Data, SequenceKind Kind), TResult> selector)
-        {
-            // Test that the operator is optimized for collections
-
-            var s1Seq = (s1.Select(x => x), SequenceKind.Sequence);
-            var s2Seq = (s2.Select(x => x), SequenceKind.Sequence);
-
-            var s1Col = (s1.ToSourceKind(SourceKind.BreakingCollection), SequenceKind.Collection);
-            var s2Col = (s2.ToSourceKind(SourceKind.BreakingCollection), SequenceKind.Collection);
-
-            var s1ReadOnlyCol = (s1.ToSourceKind(SourceKind.BreakingReadOnlyCollection), SequenceKind.ReadOnlyCollection);
-            var s2ReadOnlyCol = (s2.ToSourceKind(SourceKind.BreakingReadOnlyCollection), SequenceKind.ReadOnlyCollection);
-
-            // sequences
-            yield return selector(s1Seq, s2Seq);
-
-            // sequences and collections
-            yield return selector(s1Seq, s2Col);
-            yield return selector(s1Col, s2Seq);
-            yield return selector(s1Col, s2Col);
-
-            // sequences and readOnlyCollections
-            yield return selector(s1Seq, s2ReadOnlyCol);
-            yield return selector(s1ReadOnlyCol, s2Seq);
-            yield return selector(s1ReadOnlyCol, s2ReadOnlyCol);
         }
     }
 }
