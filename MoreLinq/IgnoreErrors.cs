@@ -97,19 +97,16 @@ namespace MoreLinq
                         {
                             if (!e.MoveNext()) break;
                         }
-                        catch (TException1 ex)
+                        catch (TException1 ex) when (error1Predicate(ex))
                         {
-                            if (!error1Predicate(ex)) throw;
                             continue;
                         }
-                        catch (TException2 ex)
+                        catch (TException2 ex) when (error2Predicate(ex))
                         {
-                            if (!error2Predicate(ex)) throw;
                             continue;
                         }
-                        catch (TException3 ex)
+                        catch (TException3 ex) when (error3Predicate(ex))
                         {
-                            if (!error3Predicate(ex)) throw;
                             continue;
                         }
 
