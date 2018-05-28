@@ -456,6 +456,9 @@ namespace MoreLinq.Experimental
                         if (kind == Notice.Error)
                             error.Throw();
 
+                        if (kind == Notice.End)
+                            break;
+
                         Debug.Assert(kind == Notice.Result);
 
                         var (key, inp, value) = result;
