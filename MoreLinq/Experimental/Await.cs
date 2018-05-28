@@ -551,6 +551,15 @@ namespace MoreLinq.Experimental
                               : null;
                 var pendingCount = 1; // terminator
 
+                void OnPendingCompleted()
+                {
+                    if (Interlocked.Decrement(ref pendingCount) == 0)
+                    {
+                        // TODO Consider what happens if following fails
+                        observer.OnCompleted();
+                    }
+                }
+
                 while (e.MoveNext())
                 {
                     if (semaphore != null)
@@ -592,21 +601,13 @@ namespace MoreLinq.Experimental
                             // TODO Consider what happens if following fails
                             observer.OnNext(completionNoticeSelector(item, t));
 
-                            if (Interlocked.Decrement(ref pendingCount) == 0)
-                            {
-                                // TODO Consider what happens if following fails
-                                observer.OnCompleted();
-                            }
+                            OnPendingCompleted();
                         });
 
                     #pragma warning restore 4014
                 }
 
-                if (Interlocked.Decrement(ref pendingCount) == 0)
-                {
-                    // TODO Consider what happens if following fails
-                    observer.OnCompleted();
-                }
+                OnPendingCompleted();
             }
             catch (Exception ex)
             {
