@@ -437,13 +437,12 @@ namespace MoreLinq.Experimental
                 {
                     Task.Factory.StartNew(
                         () =>
-                            enumerator.StartAsync(
+                            enumerator.CollectToAsync(
                                 e => evaluator(e.Value, cancellationToken),
-                                (e, task) => (Notice.Result, (e.Key, e.Value, task), default),
-                                new Observer<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>(
-                                    notices.Add,
-                                    e => notices.Add((Notice.Error, default, ExceptionDispatchInfo.Capture(e))),
-                                    notices.CompleteAdding),
+                                notices,
+                                (e, r) => (Notice.Result, (e.Key, e.Value, r), default),
+                                ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
+                                (Notice.End, default, default),
                                 maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
@@ -527,20 +526,22 @@ namespace MoreLinq.Experimental
             }
         }
 
-        enum Notice { Result, Error }
+        enum Notice { End, Result, Error }
 
-        static async Task StartAsync<T, TResult, TNotice>(
+        static async Task CollectToAsync<T, TResult, TNotice>(
             this IEnumerator<T> e,
             Func<T, Task<TResult>> taskStarter,
+            BlockingCollection<TNotice> collection,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
-            IObserver<TNotice> observer,
+            Func<Exception, TNotice> errorNoticeSelector,
+            TNotice endNotice,
             int? maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
             if (e == null) throw new ArgumentNullException(nameof(e));
             if (taskStarter == null) throw new ArgumentNullException(nameof(taskStarter));
             if (completionNoticeSelector == null) throw new ArgumentNullException(nameof(completionNoticeSelector));
-            if (observer == null) throw new ArgumentNullException(nameof(observer));
+            if (errorNoticeSelector == null) throw new ArgumentNullException(nameof(errorNoticeSelector));
             if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
 
             try
@@ -556,7 +557,7 @@ namespace MoreLinq.Experimental
                     if (Interlocked.Decrement(ref pendingCount) == 0)
                     {
                         // TODO Consider what happens if following fails
-                        observer.OnCompleted();
+                        collection.Add(endNotice);
                     }
                 }
 
@@ -599,7 +600,7 @@ namespace MoreLinq.Experimental
                                 return;
 
                             // TODO Consider what happens if following fails
-                            observer.OnNext(completionNoticeSelector(item, t));
+                            collection.Add(completionNoticeSelector(item, t));
 
                             OnPendingCompleted();
                         });
@@ -613,7 +614,7 @@ namespace MoreLinq.Experimental
             {
                 cancellationTokenSource.Cancel();
                 // TODO Consider what happens if following fails
-                observer.OnError(ex);
+                collection.Add(errorNoticeSelector(ex));
             }
             finally
             {
@@ -651,24 +652,6 @@ namespace MoreLinq.Experimental
 
             public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        }
-
-        sealed class Observer<T> : IObserver<T>
-        {
-            readonly Action<T> _onNext;
-            readonly Action<Exception> _onError;
-            readonly Action _onCompleted;
-
-            public Observer(Action<T> onNext, Action<Exception> onError, Action onCompleted)
-            {
-                _onNext      = onNext      ?? throw new ArgumentNullException(nameof(onNext));
-                _onError     = onError     ?? throw new ArgumentNullException(nameof(onError));
-                _onCompleted = onCompleted ?? throw new ArgumentNullException(nameof(onCompleted));
-            }
-
-            public void OnNext(T value)          => _onNext(value);
-            public void OnError(Exception error) => _onError(error);
-            public void OnCompleted()            => _onCompleted();
         }
 
         static class TupleComparer<T1, T2, T3>
