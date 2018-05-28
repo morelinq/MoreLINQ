@@ -527,26 +527,6 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class Observer<T> : IObserver<T>
-        {
-            readonly Action<T> _onNext;
-            readonly Action<Exception> _onError;
-            readonly Action _onCompleted;
-
-            public Observer(Action<T> onNext, Action<Exception> onError, Action onCompleted)
-            {
-                _onNext      = onNext      ?? throw new ArgumentNullException(nameof(onNext));
-                _onError     = onError     ?? throw new ArgumentNullException(nameof(onError));
-                _onCompleted = onCompleted ?? throw new ArgumentNullException(nameof(onCompleted));
-            }
-
-            public void OnNext(T value)          => _onNext(value);
-            public void OnError(Exception error) => _onError(error);
-            public void OnCompleted()            => _onCompleted();
-        }
-
-        static Lazy<T> Lazy<T>(Func<T> valueFactory) => new Lazy<T>(valueFactory, LazyThreadSafetyMode.None);
-
         enum Notice { Result, Error }
 
         static async Task StartAsync<T, TResult, TNotice>(
@@ -663,6 +643,26 @@ namespace MoreLinq.Experimental
             public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
+
+        sealed class Observer<T> : IObserver<T>
+        {
+            readonly Action<T> _onNext;
+            readonly Action<Exception> _onError;
+            readonly Action _onCompleted;
+
+            public Observer(Action<T> onNext, Action<Exception> onError, Action onCompleted)
+            {
+                _onNext      = onNext      ?? throw new ArgumentNullException(nameof(onNext));
+                _onError     = onError     ?? throw new ArgumentNullException(nameof(onError));
+                _onCompleted = onCompleted ?? throw new ArgumentNullException(nameof(onCompleted));
+            }
+
+            public void OnNext(T value)          => _onNext(value);
+            public void OnError(Exception error) => _onError(error);
+            public void OnCompleted()            => _onCompleted();
+        }
+
+        static Lazy<T> Lazy<T>(Func<T> valueFactory) => new Lazy<T>(valueFactory, LazyThreadSafetyMode.None);
 
         static class TupleComparer<T1, T2, T3>
         {
