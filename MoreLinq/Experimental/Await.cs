@@ -427,6 +427,9 @@ namespace MoreLinq.Experimental
                 var cancellationToken = cancellationTokenSource.Token;
                 var completed = false;
 
+                Exception lastCriticalError = null;
+                var consumerCancellationTokenSource = new CancellationTokenSource();
+
                 var enumerator =
                     source.Index()
                           .GetEnumerator();
@@ -442,6 +445,14 @@ namespace MoreLinq.Experimental
                                 notices,
                                 (e, r) => (Notice.Result, (e.Key, e.Value, r), default),
                                 ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
+                                ex =>
+                                {
+                                    lastCriticalError = ex;
+                                    // Don't use ExceptionDispatchInfo.Capture
+                                    // to avoid inducing allocations if already
+                                    // under low memory conditions.
+                                    consumerCancellationTokenSource.Cancel();
+                                },
                                 (Notice.End, default, default),
                                 maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
@@ -451,8 +462,20 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
 
-                    foreach (var (kind, result, error) in notices.GetConsumingEnumerable())
+                    using (var e = notices.GetConsumingEnumerable(consumerCancellationTokenSource.Token).GetEnumerator())
+                    while (true)
                     {
+                        try
+                        {
+                            if (!e.MoveNext())
+                                break;
+                        }
+                        catch (OperationCanceledException ex) when (ex.CancellationToken == consumerCancellationTokenSource.Token)
+                        {
+                            throw new Exception("A critical error has occurred.", lastCriticalError);
+                        }
+
+                        var (kind, result, error) = e.Current;
                         if (kind == Notice.Error)
                             error.Throw();
 
@@ -537,6 +560,7 @@ namespace MoreLinq.Experimental
             BlockingCollection<TNotice> collection,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
             Func<Exception, TNotice> errorNoticeSelector,
+            Action<Exception> onCriticalError,
             TNotice endNotice,
             int? maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
@@ -546,6 +570,19 @@ namespace MoreLinq.Experimental
             if (completionNoticeSelector == null) throw new ArgumentNullException(nameof(completionNoticeSelector));
             if (errorNoticeSelector == null) throw new ArgumentNullException(nameof(errorNoticeSelector));
             if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
+
+            void PostNotice(TNotice notice)
+            {
+                try
+                {
+                    collection.Add(notice);
+                }
+                catch (Exception ex)
+                {
+                    onCriticalError(ex);
+                    throw;
+                }
+            }
 
             try
             {
@@ -558,10 +595,7 @@ namespace MoreLinq.Experimental
                 void OnPendingCompleted()
                 {
                     if (Interlocked.Decrement(ref pendingCount) == 0)
-                    {
-                        // TODO Consider what happens if following fails
-                        collection.Add(endNotice);
-                    }
+                        PostNotice(endNotice);
                 }
 
                 while (e.MoveNext())
@@ -602,8 +636,7 @@ namespace MoreLinq.Experimental
                             if (cancellationToken.IsCancellationRequested)
                                 return;
 
-                            // TODO Consider what happens if following fails
-                            collection.Add(completionNoticeSelector(item, t));
+                            PostNotice(completionNoticeSelector(item, t));
 
                             OnPendingCompleted();
                         });
@@ -616,8 +649,7 @@ namespace MoreLinq.Experimental
             catch (Exception ex)
             {
                 cancellationTokenSource.Cancel();
-                // TODO Consider what happens if following fails
-                collection.Add(errorNoticeSelector(ex));
+                PostNotice(errorNoticeSelector(ex));
             }
             finally
             {
