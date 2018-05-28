@@ -416,11 +416,11 @@ namespace MoreLinq.Experimental
 
             return
                 AwaitQuery.Create(
-                    options => _(options.MaxConcurrency ?? int.MaxValue,
+                    options => _(options.MaxConcurrency,
                                  options.Scheduler ?? TaskScheduler.Default,
                                  options.PreserveOrder));
 
-            IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
+            IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
                 var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
                 var cancellationTokenSource = new CancellationTokenSource();
@@ -534,7 +534,7 @@ namespace MoreLinq.Experimental
             Func<T, Lazy<Task<TResult>>> taskSelector,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
             IObserver<TNotice> observer,
-            int maxConcurrency,
+            int? maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
             if (e == null) throw new ArgumentNullException(nameof(e));
@@ -546,18 +546,23 @@ namespace MoreLinq.Experimental
             try
             {
                 var cancellationToken = cancellationTokenSource.Token;
-                var semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
+                var semaphore = maxConcurrency is int count
+                              ? new SemaphoreSlim(count, count)
+                              : null;
                 var pendingCount = 1; // terminator
 
                 while (e.MoveNext())
                 {
-                    try
+                    if (semaphore != null)
                     {
-                        await semaphore.WaitAsync(cancellationToken);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        break;
+                        try
+                        {
+                            await semaphore.WaitAsync(cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            break;
+                        }
                     }
 
                     if (cancellationToken.IsCancellationRequested)
@@ -579,7 +584,7 @@ namespace MoreLinq.Experimental
                         scheduler: TaskScheduler.Current,
                         continuationAction: t =>
                         {
-                            semaphore.Release();
+                            semaphore?.Release();
 
                             if (cancellationToken.IsCancellationRequested)
                                 return;
