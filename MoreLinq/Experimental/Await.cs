@@ -575,35 +575,32 @@ namespace MoreLinq.Experimental
                         {
                             semaphore.Release();
 
-                            //
-                            // try
-                            // {
-                            //     collection.Add(completionNoticeSelector(item, t));
-                            // }
-                            // catch (Exception exception)
-                            // {
-                            //     collection.Add(errorNoticeSelector(exception));
-                            // }
-                            //
-
                             if (cancellationToken.IsCancellationRequested)
                                 return;
 
+                            // TODO Consider what happens if following fails
                             observer.OnNext(completionNoticeSelector(item, t));
 
                             if (Interlocked.Decrement(ref pendingCount) == 0)
+                            {
+                                // TODO Consider what happens if following fails
                                 observer.OnCompleted();
+                            }
                         });
 
                     #pragma warning restore 4014
                 }
 
                 if (Interlocked.Decrement(ref pendingCount) == 0)
+                {
+                    // TODO Consider what happens if following fails
                     observer.OnCompleted();
+                }
             }
             catch (Exception ex)
             {
                 cancellationTokenSource.Cancel();
+                // TODO Consider what happens if following fails
                 observer.OnError(ex);
             }
             finally
