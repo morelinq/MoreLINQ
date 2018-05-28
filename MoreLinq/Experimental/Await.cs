@@ -537,6 +537,12 @@ namespace MoreLinq.Experimental
             int maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
+            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (taskSelector == null) throw new ArgumentNullException(nameof(taskSelector));
+            if (completionNoticeSelector == null) throw new ArgumentNullException(nameof(completionNoticeSelector));
+            if (observer == null) throw new ArgumentNullException(nameof(observer));
+            if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
+
             try
             {
                 var cancellationToken = cancellationTokenSource.Token;
