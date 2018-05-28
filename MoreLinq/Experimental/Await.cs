@@ -429,7 +429,6 @@ namespace MoreLinq.Experimental
 
                 var enumerator =
                     source.Index()
-                          .Select(e => (e.Key, Item: e.Value, Task: Lazy(() => evaluator(e.Value, cancellationToken))))
                           .GetEnumerator();
 
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
@@ -438,8 +437,9 @@ namespace MoreLinq.Experimental
                 {
                     Task.Factory.StartNew(
                         () =>
-                            enumerator.StartAsync(e => e.Task,
-                                (e, task) => (Notice.Result, (e.Key, e.Item, task), default),
+                            enumerator.StartAsync(
+                                e => evaluator(e.Value, cancellationToken),
+                                (e, task) => (Notice.Result, (e.Key, e.Value, task), default),
                                 new Observer<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>(
                                     notices.Add,
                                     e => notices.Add((Notice.Error, default, ExceptionDispatchInfo.Capture(e))),
@@ -531,14 +531,14 @@ namespace MoreLinq.Experimental
 
         static async Task StartAsync<T, TResult, TNotice>(
             this IEnumerator<T> e,
-            Func<T, Lazy<Task<TResult>>> taskSelector,
+            Func<T, Task<TResult>> taskStarter,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
             IObserver<TNotice> observer,
             int? maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
             if (e == null) throw new ArgumentNullException(nameof(e));
-            if (taskSelector == null) throw new ArgumentNullException(nameof(taskSelector));
+            if (taskStarter == null) throw new ArgumentNullException(nameof(taskStarter));
             if (completionNoticeSelector == null) throw new ArgumentNullException(nameof(completionNoticeSelector));
             if (observer == null) throw new ArgumentNullException(nameof(observer));
             if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
@@ -571,7 +571,7 @@ namespace MoreLinq.Experimental
                     Interlocked.Increment(ref pendingCount);
 
                     var item = e.Current;
-                    var task = taskSelector(item).Value;
+                    var task = taskStarter(item);
 
                     // Add a continutation that notifies completion of the task,
                     // along with the necessary housekeeping, in case it
@@ -669,8 +669,6 @@ namespace MoreLinq.Experimental
             public void OnError(Exception error) => _onError(error);
             public void OnCompleted()            => _onCompleted();
         }
-
-        static Lazy<T> Lazy<T>(Func<T> valueFactory) => new Lazy<T>(valueFactory, LazyThreadSafetyMode.None);
 
         static class TupleComparer<T1, T2, T3>
         {
