@@ -569,7 +569,7 @@ namespace MoreLinq.Experimental
                         {
                             await semaphore.WaitAsync(cancellationToken);
                         }
-                        catch (OperationCanceledException)
+                        catch (OperationCanceledException ex) when (ex.CancellationToken == cancellationToken)
                         {
                             return;
                         }
