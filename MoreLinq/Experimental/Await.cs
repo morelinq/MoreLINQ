@@ -438,12 +438,12 @@ namespace MoreLinq.Experimental
                 {
                     Task.Factory.StartNew(
                         () =>
-                            CollectToAsync(
-                                enumerator,
-                                e => e.Task,
-                                notices,
-                                (e, r) => (Notice.Result, (e.Key, e.Item, e.Task.Value), default),
-                                ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
+                            enumerator.StartAsync(e => e.Task,
+                                (e, task) => (Notice.Result, (e.Key, e.Item, task), default),
+                                new Observer<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>(
+                                    notices.Add,
+                                    e => notices.Add((Notice.Error, default, ExceptionDispatchInfo.Capture(e))),
+                                    notices.CompleteAdding),
                                 maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
@@ -527,16 +527,33 @@ namespace MoreLinq.Experimental
             }
         }
 
+        sealed class Observer<T> : IObserver<T>
+        {
+            readonly Action<T> _onNext;
+            readonly Action<Exception> _onError;
+            readonly Action _onCompleted;
+
+            public Observer(Action<T> onNext, Action<Exception> onError, Action onCompleted)
+            {
+                _onNext      = onNext      ?? throw new ArgumentNullException(nameof(onNext));
+                _onError     = onError     ?? throw new ArgumentNullException(nameof(onError));
+                _onCompleted = onCompleted ?? throw new ArgumentNullException(nameof(onCompleted));
+            }
+
+            public void OnNext(T value)          => _onNext(value);
+            public void OnError(Exception error) => _onError(error);
+            public void OnCompleted()            => _onCompleted();
+        }
+
         static Lazy<T> Lazy<T>(Func<T> valueFactory) => new Lazy<T>(valueFactory, LazyThreadSafetyMode.None);
 
         enum Notice { Result, Error }
 
-        static async Task CollectToAsync<T, TResult, TNotice>(
+        static async Task StartAsync<T, TResult, TNotice>(
             this IEnumerator<T> e,
             Func<T, Lazy<Task<TResult>>> taskSelector,
-            BlockingCollection<TNotice> collection,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
-            Func<Exception, TNotice> errorNoticeSelector,
+            IObserver<TNotice> observer,
             int maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
@@ -592,22 +609,22 @@ namespace MoreLinq.Experimental
                             if (cancellationToken.IsCancellationRequested)
                                 return;
 
-                            collection.Add(completionNoticeSelector(item, t));
+                            observer.OnNext(completionNoticeSelector(item, t));
 
                             if (Interlocked.Decrement(ref pendingCount) == 0)
-                                collection.CompleteAdding();
+                                observer.OnCompleted();
                         });
 
                     #pragma warning restore 4014
                 }
 
                 if (Interlocked.Decrement(ref pendingCount) == 0)
-                    collection.CompleteAdding();
+                    observer.OnCompleted();
             }
             catch (Exception ex)
             {
                 cancellationTokenSource.Cancel();
-                collection.Add(errorNoticeSelector(ex));
+                observer.OnError(ex);
             }
             finally
             {
