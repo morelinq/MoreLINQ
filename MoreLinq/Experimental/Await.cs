@@ -444,7 +444,6 @@ namespace MoreLinq.Experimental
                                 notices,
                                 (e, r) => (Notice.Result, (e.Key, e.Item, e.Task.Value), default),
                                 ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
-                                (Notice.End, default, default),
                                 maxConcurrency, cancellationTokenSource),
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
@@ -457,9 +456,6 @@ namespace MoreLinq.Experimental
                     {
                         if (kind == Notice.Error)
                             error.Throw();
-
-                        if (kind == Notice.End)
-                            break;
 
                         Debug.Assert(kind == Notice.Result);
 
@@ -533,7 +529,7 @@ namespace MoreLinq.Experimental
 
         static Lazy<T> Lazy<T>(Func<T> valueFactory) => new Lazy<T>(valueFactory, LazyThreadSafetyMode.None);
 
-        enum Notice { Result, Error, End }
+        enum Notice { Result, Error }
 
         static async Task CollectToAsync<T, TResult, TNotice>(
             this IEnumerator<T> e,
@@ -541,7 +537,6 @@ namespace MoreLinq.Experimental
             BlockingCollection<TNotice> collection,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
             Func<Exception, TNotice> errorNoticeSelector,
-            TNotice endNotice,
             int maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
@@ -600,14 +595,14 @@ namespace MoreLinq.Experimental
                             collection.Add(completionNoticeSelector(item, t));
 
                             if (Interlocked.Decrement(ref pendingCount) == 0)
-                                collection.Add(endNotice);
+                                collection.CompleteAdding();
                         });
 
                     #pragma warning restore 4014
                 }
 
                 if (Interlocked.Decrement(ref pendingCount) == 0)
-                    collection.Add(endNotice);
+                    collection.CompleteAdding();
             }
             catch (Exception ex)
             {
