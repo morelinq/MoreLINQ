@@ -571,12 +571,12 @@ namespace MoreLinq.Experimental
                         }
                         catch (OperationCanceledException)
                         {
-                            break;
+                            return;
                         }
                     }
 
                     if (cancellationToken.IsCancellationRequested)
-                        break;
+                        return;
 
                     Interlocked.Increment(ref pendingCount);
 
