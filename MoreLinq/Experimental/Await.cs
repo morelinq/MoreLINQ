@@ -422,36 +422,59 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
                 var cancellationTokenSource = new CancellationTokenSource();
-                var cancellationToken = cancellationTokenSource.Token;
-                var completed = false;
-
-                Exception lastCriticalError = null;
                 var consumerCancellationTokenSource = new CancellationTokenSource();
+                Exception lastCriticalError = null;
+
+                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
+
+                void PostNotice(Notice notice,
+                                (int, T, Task<TTaskResult>) item,
+                                ExceptionDispatchInfo error)
+                {
+                    try
+                    {
+                        if (notice == Notice.Error)
+                            cancellationTokenSource.Cancel();
+                        notices.Add((notice, item, error));
+                    }
+                    catch (Exception e)
+                    {
+                        // Don't use ExceptionDispatchInfo.Capture to avoid
+                        // inducing allocations if already under low memory
+                        // conditions.
+
+                        lastCriticalError = e;
+                        consumerCancellationTokenSource.Cancel();
+                        throw;
+                    }
+                }
+
+                var completed = false;
 
                 var enumerator = source.Index().GetEnumerator();
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
 
                 try
                 {
+                    var cancellationToken = cancellationTokenSource.Token;
+
                     Task.Factory.StartNew(
-                        () =>
-                            enumerator.CollectToAsync(
-                                e => evaluator(e.Value, cancellationToken),
-                                notices,
-                                (e, r) => (Notice.Result, (e.Key, e.Value, r), default),
-                                ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
-                                ex =>
-                                {
-                                    lastCriticalError = ex;
-                                    // Don't use ExceptionDispatchInfo.Capture
-                                    // to avoid inducing allocations if already
-                                    // under low memory conditions.
-                                    consumerCancellationTokenSource.Cancel();
-                                },
-                                (Notice.End, default, default),
-                                maxConcurrency, cancellationTokenSource),
+                        async () =>
+                        {
+                            try
+                            {
+                                await enumerator.StartAsync(
+                                    e => evaluator(e.Value, cancellationToken),
+                                    (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
+                                    () => PostNotice(Notice.End, default, default),
+                                    maxConcurrency, cancellationToken);
+                            }
+                            catch (Exception e)
+                            {
+                                PostNotice(Notice.Error, default, ExceptionDispatchInfo.Capture(e));
+                            }
+                        },
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
                         scheduler);
@@ -553,47 +576,29 @@ namespace MoreLinq.Experimental
 
         enum Notice { End, Result, Error }
 
-        static async Task CollectToAsync<T, TResult, TNotice>(
+        static async Task StartAsync<T, TResult>(
             this IEnumerator<T> enumerator,
-            Func<T, Task<TResult>> taskStarter,
-            BlockingCollection<TNotice> collection,
-            Func<T, Task<TResult>, TNotice> completionNoticeSelector,
-            Func<Exception, TNotice> errorNoticeSelector,
-            Action<Exception> onCriticalError,
-            TNotice endNotice,
+            Func<T, Task<TResult>> starter,
+            Action<T, Task<TResult>> onCompletion,
+            Action onEnd,
             int? maxConcurrency,
-            CancellationTokenSource cancellationTokenSource)
+            CancellationToken cancellationToken)
         {
             if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            if (taskStarter == null) throw new ArgumentNullException(nameof(taskStarter));
-            if (completionNoticeSelector == null) throw new ArgumentNullException(nameof(completionNoticeSelector));
-            if (errorNoticeSelector == null) throw new ArgumentNullException(nameof(errorNoticeSelector));
+            if (starter == null) throw new ArgumentNullException(nameof(starter));
+            if (onCompletion == null) throw new ArgumentNullException(nameof(onCompletion));
+            if (onEnd == null) throw new ArgumentNullException(nameof(onEnd));
             if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
 
-            void PostNotice(TNotice notice)
-            {
-                try
-                {
-                    collection.Add(notice);
-                }
-                catch (Exception e)
-                {
-                    onCriticalError(e);
-                    throw;
-                }
-            }
-
-            try
+            using (enumerator)
             {
                 var pendingCount = 1; // terminator
 
                 void OnPendingCompleted()
                 {
                     if (Interlocked.Decrement(ref pendingCount) == 0)
-                        PostNotice(endNotice);
+                        onEnd();
                 }
-
-                var cancellationToken = cancellationTokenSource.Token;
 
                 var semaphore = maxConcurrency is int count
                               ? new SemaphoreSlim(count, count)
@@ -619,7 +624,7 @@ namespace MoreLinq.Experimental
                     Interlocked.Increment(ref pendingCount);
 
                     var item = enumerator.Current;
-                    var task = taskStarter(item);
+                    var task = starter(item);
 
                     // Add a continutation that notifies completion of the task,
                     // along with the necessary housekeeping, in case it
@@ -637,7 +642,7 @@ namespace MoreLinq.Experimental
                             if (cancellationToken.IsCancellationRequested)
                                 return;
 
-                            PostNotice(completionNoticeSelector(item, t));
+                            onCompletion(item, t);
                             OnPendingCompleted();
                         });
 
@@ -645,15 +650,6 @@ namespace MoreLinq.Experimental
                 }
 
                 OnPendingCompleted();
-            }
-            catch (Exception e)
-            {
-                cancellationTokenSource.Cancel();
-                PostNotice(errorNoticeSelector(e));
-            }
-            finally
-            {
-                enumerator.Dispose();
             }
         }
 
