@@ -429,11 +429,14 @@ namespace MoreLinq.Experimental
 
                 void PostNotice(Notice notice,
                                 (int, T, Task<TTaskResult>) item,
-                                ExceptionDispatchInfo error)
+                                Exception error)
                 {
                     try
                     {
-                        notices.Add((notice, item, error));
+                        var edi = error != null
+                                ? ExceptionDispatchInfo.Capture(error)
+                                : null;
+                        notices.Add((notice, item, edi));
                     }
                     catch (Exception e)
                     {
@@ -470,7 +473,7 @@ namespace MoreLinq.Experimental
                             }
                             catch (Exception e)
                             {
-                                PostNotice(Notice.Error, default, ExceptionDispatchInfo.Capture(e));
+                                PostNotice(Notice.Error, default, e);
                             }
                         },
                         CancellationToken.None,
