@@ -651,9 +651,6 @@ namespace MoreLinq.Experimental
                         return;
                     }
 
-                    if (cancellationToken.IsCancellationRequested)
-                        return;
-
                     Interlocked.Increment(ref pendingCount);
 
                     var item = enumerator.Current;
@@ -762,8 +759,19 @@ namespace MoreLinq.Experimental
             public ConcurrencyGate(int max) :
                 this(new SemaphoreSlim(max, max)) {}
 
-            public Task EnterAsync(CancellationToken token) => _semaphore?.WaitAsync(token) ?? CompletedTask.Instance;
-            public void Exit() => _semaphore?.Release();
+            public Task EnterAsync(CancellationToken token)
+            {
+                if (_semaphore == null)
+                {
+                    token.ThrowIfCancellationRequested();
+                    return CompletedTask.Instance;
+                }
+
+                return _semaphore.WaitAsync(token);
+            }
+
+            public void Exit() =>
+                _semaphore?.Release();
         }
     }
 }
