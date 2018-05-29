@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class AtMostTest
@@ -29,47 +30,21 @@ namespace MoreLinq.Test
                 () => new[] { 1 }.AtMost(-1));
         }
 
-        [Test]
-        public void AtMostWithEmptySequenceHasAtMostZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(0));
-        }
+        [TestCaseSource(nameof(AtMostSource))]
+        public bool AtMost(SourceKind sourceKind, int sequenceSize, int atMostAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtMost(atMostAssertCount);
 
-        [Test]
-        public void AtMostWithEmptySequenceHasAtMostOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(1));
-        }
-
-        [Test]
-        public void AtMostWithSingleElementHasAtMostZeroElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtMost(0));
-        }
-
-        [Test]
-        public void AtMostWithSingleElementHasAtMostOneElement()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(1));
-        }
-
-        [Test]
-        public void AtMostWithSingleElementHasAtMostManyElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(2));
-        }
-
-        [Test]
-        public void AtMostWithManyElementsHasAtMostOneElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtMost(1));
-        }
+        public static IEnumerable<TestCaseData> AtMostSource => CountMethodsTestGenerator.GetTestCases(
+            new[] {
+                (0, 0),
+                (0, 1),
+                (1, 0),
+                (1, 1),
+                (1, 2),
+                (3, 1)
+            },
+            (size, comparedTo) => size <= comparedTo
+        );
 
         [Test]
         public void AtMostDoesNotIterateUnnecessaryElements()

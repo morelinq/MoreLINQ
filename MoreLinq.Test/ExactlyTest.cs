@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class ExactlyTest
@@ -29,33 +30,19 @@ namespace MoreLinq.Test
                 new[] { 1 }.Exactly(-1));
         }
 
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(0));
-        }
+          [TestCaseSource(nameof(ExactlySource))]
+        public bool Exactly(SourceKind sourceKind, int sequenceSize, int ExactlyAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).Exactly(ExactlyAssertCount);
 
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
-        }
-
-        [Test]
-        public void ExactlyWithSingleElementHasExactlyOneElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(1));
-        }
-
-        [Test]
-        public void ExactlyWithManyElementHasExactlyOneElement()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
-        }
+        static IEnumerable<TestCaseData> ExactlySource => CountMethodsTestGenerator.GetTestCases(
+            new[] {
+                (0, 0),
+                (0, 1),
+                (1, 1),
+                (3, 1)
+            },
+            (size, comparedTo) => size == comparedTo
+        );
 
         [Test]
         public void ExactlyDoesNotIterateUnnecessaryElements()

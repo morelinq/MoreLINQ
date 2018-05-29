@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class AtLeastTest
@@ -28,69 +29,19 @@ namespace MoreLinq.Test
             AssertThrowsArgument.OutOfRangeException("count", () =>
                 new[] { 1 }.AtLeast(-1));
         }
+        
+        [TestCaseSource(nameof(AtLeastSource))]
+        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtLeast(atLeastAssertCount);
 
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastManyElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastZeroElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastOneElement()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastManyElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastZeroElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastOneElement()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastManyElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(2));
-        }
+        public static IEnumerable<TestCaseData> AtLeastSource => CountMethodsTestGenerator.GetTestCases(
+            MoreEnumerable.Cartesian(
+                new[] { 0, 1, 3 },
+                new[] { 0, 1, 2 },
+                (size, comparedTo) => (size, comparedTo)
+            ),
+            (size, comparedTo) => size >= comparedTo
+        );
 
         [Test]
         public void AtLeastDoesNotIterateUnnecessaryElements()

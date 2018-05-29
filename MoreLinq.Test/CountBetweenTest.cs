@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class CountBetweenTest
@@ -43,22 +44,29 @@ namespace MoreLinq.Test
                 new[] { 1 }.CountBetween(1, 0));
         }
 
-        [Test]
-        public void CountBetweenWithMaxEqualsMin()
+        [TestCaseSource(nameof(CountBetweenData))]
+        public bool CountBetween(SourceKind sourceKind, int count, int min, int max)
         {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.CountBetween(1, 1));
+            return Enumerable.Range(0, count).ToSourceKind(sourceKind).CountBetween(min, max);
         }
 
-        [TestCase(1, 2, 4, false)]
-        [TestCase(2, 2, 4, true)]
-        [TestCase(3, 2, 4, true)]
-        [TestCase(4, 2, 4, true)]
-        [TestCase(5, 2, 4, false)]
-        public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
+        static IEnumerable<TestCaseData> CountBetweenData()
         {
-            foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionTestCases())
-                Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting));
+            return (
+                from count in new[]
+                {
+                    (1, 1, 1),
+                    (1, 2, 4),
+                    (2, 2, 4),
+                    (3, 2, 4),
+                    (4, 2, 4),
+                    (5, 2, 4)
+                }
+                from type in new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection }
+                select new TestCaseData(type, count.Item1, count.Item2, count.Item3)
+                    .Returns(count.Item1 >= count.Item2 && count.Item1 <= count.Item3)
+                    .SetName($"{{m}}({type}[{count.Item1}], {count.Item2}-{count.Item3}")
+            );
         }
 
         [Test]

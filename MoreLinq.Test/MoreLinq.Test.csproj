@@ -41,6 +41,7 @@
   <ItemGroup>
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
+      <None Remove="CountMethodsTestGenerator.cs" />
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
@@ -52,6 +53,7 @@
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
       <Compile Include="Comparer.cs" />
+      <Compile Include="CountMethodsTestGenerator.cs" />
       <Compile Include="CurrentThreadCultureScope.cs" />
       <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />

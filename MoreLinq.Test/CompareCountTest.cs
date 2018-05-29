@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         {
             get
             {
-                var types = new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection };
+                var sourceKinds = new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection };
 
                 return
                 from e in new[]
@@ -38,8 +38,8 @@ namespace MoreLinq.Test
                     new { Count1 = 1, Count2 = 0, Comparison =  1 },
                     new { Count1 = 1, Count2 = 1, Comparison =  0 },
                 }
-                from firstKind in types
-                from secondKind in types
+                from firstKind in sourceKinds
+                from secondKind in sourceKinds
                 select new TestCaseData(
                         Enumerable.Range(1, e.Count1).ToSourceKind(firstKind),
                         Enumerable.Range(1, e.Count2).ToSourceKind(secondKind)
