@@ -430,10 +430,7 @@ namespace MoreLinq.Experimental
                 Exception lastCriticalError = null;
                 var consumerCancellationTokenSource = new CancellationTokenSource();
 
-                var enumerator =
-                    source.Index()
-                          .GetEnumerator();
-
+                var enumerator = source.Index().GetEnumerator();
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
 
                 try
@@ -462,20 +459,22 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
 
-                    using (var e = notices.GetConsumingEnumerable(consumerCancellationTokenSource.Token).GetEnumerator())
+                    using (var notice = notices.GetConsumingEnumerable(consumerCancellationTokenSource.Token)
+                                               .GetEnumerator())
                     while (true)
                     {
                         try
                         {
-                            if (!e.MoveNext())
+                            if (!notice.MoveNext())
                                 break;
                         }
-                        catch (OperationCanceledException ex) when (ex.CancellationToken == consumerCancellationTokenSource.Token)
+                        catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
                         {
                             throw new Exception("A critical error has occurred.", lastCriticalError);
                         }
 
-                        var (kind, result, error) = e.Current;
+                        var (kind, result, error) = notice.Current;
+
                         if (kind == Notice.Error)
                             error.Throw();
 
@@ -555,7 +554,7 @@ namespace MoreLinq.Experimental
         enum Notice { End, Result, Error }
 
         static async Task CollectToAsync<T, TResult, TNotice>(
-            this IEnumerator<T> e,
+            this IEnumerator<T> enumerator,
             Func<T, Task<TResult>> taskStarter,
             BlockingCollection<TNotice> collection,
             Func<T, Task<TResult>, TNotice> completionNoticeSelector,
@@ -565,7 +564,7 @@ namespace MoreLinq.Experimental
             int? maxConcurrency,
             CancellationTokenSource cancellationTokenSource)
         {
-            if (e == null) throw new ArgumentNullException(nameof(e));
+            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
             if (taskStarter == null) throw new ArgumentNullException(nameof(taskStarter));
             if (completionNoticeSelector == null) throw new ArgumentNullException(nameof(completionNoticeSelector));
             if (errorNoticeSelector == null) throw new ArgumentNullException(nameof(errorNoticeSelector));
@@ -577,19 +576,15 @@ namespace MoreLinq.Experimental
                 {
                     collection.Add(notice);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    onCriticalError(ex);
+                    onCriticalError(e);
                     throw;
                 }
             }
 
             try
             {
-                var cancellationToken = cancellationTokenSource.Token;
-                var semaphore = maxConcurrency is int count
-                              ? new SemaphoreSlim(count, count)
-                              : null;
                 var pendingCount = 1; // terminator
 
                 void OnPendingCompleted()
@@ -598,7 +593,13 @@ namespace MoreLinq.Experimental
                         PostNotice(endNotice);
                 }
 
-                while (e.MoveNext())
+                var cancellationToken = cancellationTokenSource.Token;
+
+                var semaphore = maxConcurrency is int count
+                              ? new SemaphoreSlim(count, count)
+                              : null;
+
+                while (enumerator.MoveNext())
                 {
                     if (semaphore != null)
                     {
@@ -606,7 +607,7 @@ namespace MoreLinq.Experimental
                         {
                             await semaphore.WaitAsync(cancellationToken);
                         }
-                        catch (OperationCanceledException ex) when (ex.CancellationToken == cancellationToken)
+                        catch (OperationCanceledException e) when (e.CancellationToken == cancellationToken)
                         {
                             return;
                         }
@@ -617,7 +618,7 @@ namespace MoreLinq.Experimental
 
                     Interlocked.Increment(ref pendingCount);
 
-                    var item = e.Current;
+                    var item = enumerator.Current;
                     var task = taskStarter(item);
 
                     // Add a continutation that notifies completion of the task,
@@ -637,7 +638,6 @@ namespace MoreLinq.Experimental
                                 return;
 
                             PostNotice(completionNoticeSelector(item, t));
-
                             OnPendingCompleted();
                         });
 
@@ -646,14 +646,14 @@ namespace MoreLinq.Experimental
 
                 OnPendingCompleted();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 cancellationTokenSource.Cancel();
-                PostNotice(errorNoticeSelector(ex));
+                PostNotice(errorNoticeSelector(e));
             }
             finally
             {
-                e.Dispose();
+                enumerator.Dispose();
             }
         }
 
