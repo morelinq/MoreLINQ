@@ -423,7 +423,7 @@ namespace MoreLinq.Experimental
             IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
                 var consumerCancellationTokenSource = new CancellationTokenSource();
-                Exception lastCriticalError = null;
+                (Exception, Exception) lastCriticalErrors = default;
 
                 var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
 
@@ -444,7 +444,7 @@ namespace MoreLinq.Experimental
                         // inducing allocations if already under low memory
                         // conditions.
 
-                        lastCriticalError = e;
+                        lastCriticalErrors = (e, error);
                         consumerCancellationTokenSource.Cancel();
                         throw;
                     }
@@ -494,7 +494,10 @@ namespace MoreLinq.Experimental
                         }
                         catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
                         {
-                            throw new Exception("A critical error has occurred.", lastCriticalError);
+                            var (error1, error2) = lastCriticalErrors;
+                            throw new Exception("One or more critical errors have occurred.",
+                                error2 != null ? new AggregateException(error1, error2)
+                                               : new AggregateException(error1));
                         }
 
                         var (kind, result, error) = notice.Current;
