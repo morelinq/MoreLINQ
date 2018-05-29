@@ -388,6 +388,46 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EquivalentTo(expectations));
         }
 
+        [Test]
+        public void FlattenSelectorWithTree()
+        {
+            var source = new Tree<int>
+            (
+                new Tree<int>
+                (
+                    new Tree<int>(1),
+                    2,
+                    new Tree<int>(3)
+                ),
+                4,
+                new Tree<int>
+                (
+                    new Tree<int>(5),
+                    6,
+                    new Tree<int>(7)
+                )
+            );
+
+            var result = new [] { source }.Flatten(obj =>
+            {
+                switch (obj)
+                {
+                    case int i:
+                        return null;
+                    case Tree<int> tree:
+                        return new object[] { tree.Left, tree.Value, tree.Right };
+                    case IEnumerable inner:
+                        return inner;
+                    default:
+                        return Enumerable.Empty<object>();
+                }
+            });
+
+            var expectations = Enumerable.Range(1, 7);
+
+            Assert.That(result, Is.EquivalentTo(expectations));
+        }
+
         class Series
         {
             public string Name;
@@ -397,6 +437,21 @@ namespace MoreLinq.Test
         class Attribute
         {
             public int[] Values;
+        }
+
+        class Tree<T>
+        {
+            public readonly T Value;
+            public readonly Tree<T> Left;
+            public readonly Tree<T> Right;
+
+            public Tree(T value) : this(null, value, null) {}
+            public Tree(Tree<T> left, T value, Tree<T> right)
+            {
+                Left = left;
+                Value = value;
+                Right = right;
+            }
         }
     }
 }
