@@ -509,7 +509,7 @@ namespace MoreLinq.Experimental
                         TaskCreationOptions.DenyChildAttach,
                         scheduler);
 
-                    // Remainde here is the main loop that waits for and
+                    // Remainder here is the main loop that waits for and
                     // processes notices.
 
                     var nextKey = 0;
