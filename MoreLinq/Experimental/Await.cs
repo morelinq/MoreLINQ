@@ -730,26 +730,29 @@ namespace MoreLinq.Experimental
                 Comparer<(T1, T2, T3)>.Create((x, y) => Comparer<T3>.Default.Compare(x.Item3, y.Item3));
         }
 
+        static class CompletedTask
+        {
+            #if NET451 || NETSTANDARD1_0
+
+            public static readonly Task Instance;
+
+            static CompletedTask()
+            {
+                var tcs = new TaskCompletionSource<object>();
+                tcs.SetResult(null);
+                Instance = tcs.Task;
+            }
+
+            #else
+
+            public static readonly Task Instance = Task.CompletedTask;
+
+            #endif
+        }
+
         sealed class ConcurrencyGate
         {
             public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
-
-            static readonly Task CompletedTask;
-
-            static ConcurrencyGate()
-            {
-                #if NET451 || NETSTANDARD1_0
-
-                var tcs = new TaskCompletionSource<object>();
-                tcs.SetResult(null);
-                CompletedTask = tcs.Task;
-
-                #else
-
-                CompletedTask = Task.CompletedTask;
-
-                #endif
-            }
 
             readonly SemaphoreSlim _semaphore;
 
@@ -759,7 +762,7 @@ namespace MoreLinq.Experimental
             public ConcurrencyGate(int max) :
                 this(new SemaphoreSlim(max, max)) {}
 
-            public Task EnterAsync(CancellationToken token) => _semaphore?.WaitAsync(token) ?? CompletedTask;
+            public Task EnterAsync(CancellationToken token) => _semaphore?.WaitAsync(token) ?? CompletedTask.Instance;
             public void Exit() => _semaphore?.Release();
         }
     }
