@@ -636,22 +636,20 @@ namespace MoreLinq.Experimental
                         onEnd();
                 }
 
-                var semaphore = maxConcurrency is int count
-                              ? new SemaphoreSlim(count, count)
-                              : null;
+                var concurrencyGate
+                    = maxConcurrency is int count
+                    ? new ConcurrencyGate(count)
+                    : ConcurrencyGate.Unbounded;
 
                 while (enumerator.MoveNext())
                 {
-                    if (semaphore != null)
+                    try
                     {
-                        try
-                        {
-                            await semaphore.WaitAsync(cancellationToken);
-                        }
-                        catch (OperationCanceledException e) when (e.CancellationToken == cancellationToken)
-                        {
-                            return;
-                        }
+                        await concurrencyGate.EnterAsync(cancellationToken);
+                    }
+                    catch (OperationCanceledException e) when (e.CancellationToken == cancellationToken)
+                    {
+                        return;
                     }
 
                     if (cancellationToken.IsCancellationRequested)
@@ -673,7 +671,7 @@ namespace MoreLinq.Experimental
                         scheduler: TaskScheduler.Current,
                         continuationAction: t =>
                         {
-                            semaphore?.Release();
+                            concurrencyGate.Exit();
 
                             if (cancellationToken.IsCancellationRequested)
                                 return;
@@ -731,6 +729,39 @@ namespace MoreLinq.Experimental
 
             public static readonly IComparer<(T1, T2, T3)> Item3 =
                 Comparer<(T1, T2, T3)>.Create((x, y) => Comparer<T3>.Default.Compare(x.Item3, y.Item3));
+        }
+
+        sealed class ConcurrencyGate
+        {
+            public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
+
+            static readonly Task CompletedTask;
+
+            static ConcurrencyGate()
+            {
+                #if NET451 || NETSTANDARD1_0
+
+                var tcs = new TaskCompletionSource<object>();
+                tcs.SetResult(null);
+                CompletedTask = tcs.Task;
+
+                #else
+
+                CompletedTask = Task.CompletedTask;
+
+                #endif
+            }
+
+            readonly SemaphoreSlim _semaphore;
+
+            ConcurrencyGate(SemaphoreSlim semaphore = null) =>
+                _semaphore = semaphore;
+
+            public ConcurrencyGate(int max) :
+                this(new SemaphoreSlim(max, max)) {}
+
+            public Task EnterAsync(CancellationToken token) => _semaphore?.WaitAsync(token) ?? CompletedTask;
+            public void Exit() => _semaphore?.Release();
         }
     }
 }
