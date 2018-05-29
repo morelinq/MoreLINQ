@@ -422,15 +422,39 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var consumerCancellationTokenSource = new CancellationTokenSource();
-                (Exception, Exception) lastCriticalErrors = default;
+                // A separate task will enumerate the source and launch tasks.
+                // It will post all progress as notices to the collection below.
+                // A notice is essentially a discriminated union like:
+                //
+                // type Notice<'a, 'b> =
+                // | End
+                // | Result of (int * 'a * Task<'b>)
+                // | Error of ExceptionDispatchInfo
+                //
+                // Note that BlockingCollection.CompleteAdding is never used to
+                // to mark the end (which its own notice above) because
+                // BlockingCollection.Add throws if called after CompleteAdding
+                // and we want to deliberately tolerate the race condition.
 
                 var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
+
+                var consumerCancellationTokenSource = new CancellationTokenSource();
+                (Exception, Exception) lastCriticalErrors = default;
 
                 void PostNotice(Notice notice,
                                 (int, T, Task<TTaskResult>) item,
                                 Exception error)
                 {
+                    // If a notice fails to post then assume critical error
+                    // conditions (like low memory), capture the error without
+                    // further allocation of resources and trip the cancellation
+                    // token source used by the main loop waiting on notices.
+                    // Note that only the "last" critical error is reported
+                    // as maintaining a list would incur allocations. The idea
+                    // here is to make a best effort attempt to report any of
+                    // the error conditions that may be occuring, which is still
+                    // better than nothing.
+
                     try
                     {
                         var edi = error != null
@@ -440,7 +464,7 @@ namespace MoreLinq.Experimental
                     }
                     catch (Exception e)
                     {
-                        // Don't use ExceptionDispatchInfo.Capture to avoid
+                        // Don't use ExceptionDispatchInfo.Capture here to avoid
                         // inducing allocations if already under low memory
                         // conditions.
 
@@ -459,6 +483,11 @@ namespace MoreLinq.Experimental
                 try
                 {
                     var cancellationToken = cancellationTokenSource.Token;
+
+                    // Fire-up a parallel loop to iterate through the source and
+                    // launch tasks, posting a result-notice as each task
+                    // completes and another, an end-notice, when all tasks have
+                    // completed.
 
                     Task.Factory.StartNew(
                         async () =>
@@ -479,6 +508,9 @@ namespace MoreLinq.Experimental
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
                         scheduler);
+
+                    // Remainde here is the main loop that waits for and
+                    // processes notices.
 
                     var nextKey = 0;
                     var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
