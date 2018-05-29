@@ -422,7 +422,6 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var cancellationTokenSource = new CancellationTokenSource();
                 var consumerCancellationTokenSource = new CancellationTokenSource();
                 Exception lastCriticalError = null;
 
@@ -434,8 +433,6 @@ namespace MoreLinq.Experimental
                 {
                     try
                     {
-                        if (notice == Notice.Error)
-                            cancellationTokenSource.Cancel();
                         notices.Add((notice, item, error));
                     }
                     catch (Exception e)
@@ -451,6 +448,7 @@ namespace MoreLinq.Experimental
                 }
 
                 var completed = false;
+                var cancellationTokenSource = new CancellationTokenSource();
 
                 var enumerator = source.Index().GetEnumerator();
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
