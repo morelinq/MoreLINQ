@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Windowed operator
     /// </summary>
@@ -20,17 +18,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking Windowed on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestWindowedNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Windowed(10));
-        }
-
-        /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
@@ -38,7 +25,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            Assert.ThrowsArgumentOutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size",() =>
                 sequence.Windowed(-5));
         }
 
@@ -52,7 +39,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.Windowed(5);
 
-            Assert.IsEmpty(result);
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -87,7 +74,7 @@ namespace MoreLinq.Test
 
             // there should only be one window whose contents is the same
             // as the source sequence
-            Assert.IsEmpty(result);
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -107,7 +94,25 @@ namespace MoreLinq.Test
             // ensure each window contains the correct set of items
             var index = -1;
             foreach (var window in result)
-                Assert.IsTrue(window.SequenceEqual(sequence.Skip(++index).Take(windowSize)));
+                Assert.That(window, Is.EqualTo(sequence.Skip(++index).Take(windowSize)));
+        }
+
+        /// <summary>
+        /// Verify that later windows do not modify any of the previous ones.
+        /// </summary>
+
+        [Test]
+        public void TestWindowedWindowsImmutability()
+        {
+            using (var windows = Enumerable.Range(1, 5).Windowed(2).AsTestingSequence())
+            using (var reader = windows.ToArray().Read())
+            {
+                reader.Read().AssertSequenceEqual(1, 2);
+                reader.Read().AssertSequenceEqual(2, 3);
+                reader.Read().AssertSequenceEqual(3, 4);
+                reader.Read().AssertSequenceEqual(4, 5);
+                reader.ReadEnd();
+            }
         }
     }
 }

@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-[[ -e test.sh ]] || { echo >&2 "Please cd into the script location before running it."; exit 1; }
 set -e
+cd "$(dirname "$0")"
 ./build.sh
-dotnet test -f netcoreapp1.0 MoreLinq.Test
-RID=`dotnet --info | grep RID | sed -E 's/ *RID: *(.+)/\1/'`
+for v in 1 2; do
+    for c in Debug Release; do
+        dotnet exec MoreLinq.Test/bin/$c/netcoreapp$v.0/MoreLinq.Test.dll
+    done
+done
 if [[ -z `which mono 2>/dev/null` ]]; then
     echo>&2 NOTE! Mono does not appear to be installed so unit tests
     echo>&2 against the Mono runtime will be skipped.
 else
-    mono MoreLinq.Test/bin/Debug/net451/$RID/dotnet-test-nunit.exe \
-         MoreLinq.Test/bin/Debug/net451/$RID/MoreLinq.Test.dll
+    mono MoreLinq.Test/bin/Debug/net451/MoreLinq.Test.exe
+    mono MoreLinq.Test/bin/Release/net451/MoreLinq.Test.exe
 fi

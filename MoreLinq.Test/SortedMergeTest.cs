@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the behavior of the SortedMerge operator.
     /// </summary>
@@ -24,30 +23,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that SortedMerge throws an exception if invoked on a <c>null</c> sequence.
-        /// </summary>
-        [Test]
-        public void TestSortedMergeSequenceNullException()
-        {
-            const IEnumerable<int> sequenceA = null;
-            var sequenceB = new BreakingSequence<int>();
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB));
-        }
-
-        /// <summary>
-        /// Verify that SortedMerge throws an exception if invoked with a <c>null</c> <c>otherSequences</c> argument.
-        /// </summary>
-        [Test]
-        public void TestSortedMergeOtherSequencesNullException()
-        {
-            var sequenceA = new BreakingSequence<int>();
-            Assert.ThrowsArgumentNullException("otherSequences",() =>
-                sequenceA.SortedMerge(OrderByDirection.Ascending, (IEnumerable<int>[])null));
-        }
-
-        /// <summary>
-        /// Verify that SortedMerge disposes those enumerators that it managed 
+        /// Verify that SortedMerge disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
         [Test]
@@ -55,15 +31,9 @@ namespace MoreLinq.Test
         {
             using (var sequenceA = TestingSequence.Of<int>())
             {
-                try
-                {
-                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).ToArray();
-                    Assert.Fail("{0} was expected", typeof(InvalidOperationException));
-                }
-                catch (InvalidOperationException)
-                {
-                    // Expected and thrown by BreakingSequence
-                }
+                // Expected and thrown by BreakingSequence
+                Assert.Throws<InvalidOperationException>(() =>
+                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
             }
         }
 
@@ -77,7 +47,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Range(4, 3);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>)null, sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA.Concat(sequenceB)));
+            Assert.That(result, Is.EqualTo(sequenceA.Concat(sequenceB)));
         }
 
         /// <summary>
@@ -90,7 +60,7 @@ namespace MoreLinq.Test
             var sequenceA = Enumerable.Range(1, count);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA));
+            Assert.That(result, Is.EqualTo(sequenceA));
         }
 
         /// <summary>
@@ -104,7 +74,7 @@ namespace MoreLinq.Test
             var sequenceC = Enumerable.Empty<int>();
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(sequenceA));
+            Assert.That(result, Is.EqualTo(sequenceA));
         }
 
         /// <summary>
@@ -119,7 +89,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(1, 12);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -135,7 +105,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(0, count * 3);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -151,7 +121,7 @@ namespace MoreLinq.Test
             var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC).OrderBy(x => x);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -167,7 +137,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(0, count * 3).Reverse();
             var result = sequenceA.SortedMerge(OrderByDirection.Descending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -183,7 +153,7 @@ namespace MoreLinq.Test
                                           .OrderBy(a => a, StringComparer.CurrentCultureIgnoreCase);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -192,21 +162,15 @@ namespace MoreLinq.Test
         [Test]
         public void TestSortedMergeAllSequencesDisposed()
         {
-            var disposedSequenceA = false;
-            var disposedSequenceB = false;
-            var disposedSequenceC = false;
-            var disposedSequenceD = false;
-
             const int count = 10;
-            var sequenceA = Enumerable.Range(1, count).AsVerifiable().WhenDisposed(s => disposedSequenceA = true);
-            var sequenceB = Enumerable.Range(1, count - 1).AsVerifiable().WhenDisposed(s => disposedSequenceB = true);
-            var sequenceC = Enumerable.Range(1, count - 5).AsVerifiable().WhenDisposed(s => disposedSequenceC = true);
-            var sequenceD = Enumerable.Range(1, 0).AsVerifiable().WhenDisposed(s => disposedSequenceD = true);
-
-            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD);
-            result.Count(); // ensures the sequences are actually merged and iterators are obtained
-
-            Assert.IsTrue(disposedSequenceA && disposedSequenceB && disposedSequenceC && disposedSequenceD);
+            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
+            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
+            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
+            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
+            {
+                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
+                         .Consume(); // ensures the sequences are actually merged and iterators are obtained
+            }
         }
     }
 }

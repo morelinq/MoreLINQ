@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Lag operator
     /// </summary>
@@ -21,23 +19,12 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that lag throws an exception if invoked on a <c>null</c> sequence
-        /// </summary>
-        [Test]
-        public void TestLagNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Lag(10, (val, lagVal) => val));
-        }
-
-        /// <summary>
         /// Verify that lagging by a negative offset results in an exception.
         /// </summary>
         [Test]
         public void TestLagNegativeOffsetException()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset",() =>
+            AssertThrowsArgument.OutOfRangeException("offset",() =>
                 Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
         }
 
@@ -47,7 +34,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagZeroOffset()
         {
-            Assert.ThrowsArgumentOutOfRangeException("offset", () =>
+            AssertThrowsArgument.OutOfRangeException("offset", () =>
                 Enumerable.Range(1, 10).Lag(0, (val, lagVal) => val + lagVal));
         }
 
@@ -64,7 +51,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(lagBy, lagDefault, (val, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Take(lagBy).SequenceEqual(Enumerable.Repeat(lagDefault, lagBy)));
+            Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(lagDefault, lagBy)));
         }
 
         /// <summary>
@@ -79,7 +66,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(lagBy, (val, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Take(lagBy).SequenceEqual(Enumerable.Repeat(default(int), lagBy)));
+            Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(default(int), lagBy)));
         }
 
         /// <summary>
@@ -94,7 +81,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(count + 1, (a, b) => a);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.SequenceEqual(sequence));
+            Assert.That(result, Is.EqualTo(sequence));
         }
 
         /// <summary>

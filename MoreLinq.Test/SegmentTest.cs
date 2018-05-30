@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the Segment operator
     /// </summary>
@@ -23,47 +21,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestSegmentNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Segment(curr => false));
-        }
-
-        /// <summary>
-        /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestSegmentNullSequenceException2()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Segment((curr, index) => false));
-        }
-
-        /// <summary>
-        /// Verify that invoking Segment on a <c>null</c> sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestSegmentNullSequenceException3()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("source", () =>
-                sequence.Segment((curr, prev, index) => false));
-        }
-
-        [Test]
-        public void TestSegmentIdentifierNullException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("newSegmentPredicate",() =>
-                sequence.Segment((Func<int, bool>)null));
-        }
-
-        /// <summary>
         /// Verify that segmenting a sequence into a single sequence results in the original sequence.
         /// </summary>
         [Test]
@@ -73,7 +30,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Segment(x => false);
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.That(result.Single(), Is.EqualTo(sequence));
         }
 
         /// <summary>
@@ -84,7 +41,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(-1, 0);
             var result = sequence.Segment(x => true);
-            Assert.IsFalse(result.Any());
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>

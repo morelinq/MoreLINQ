@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,25 +15,22 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
-    internal static class TestingSequence
-    {
-        internal static TestingSequence<T> Of<T>(params T[] elements)
-        {
-            return new TestingSequence<T>(elements);
-        }
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using NUnit.Framework;
 
-        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException("source");
-            return new TestingSequence<T>(source);
-        }
+    static class TestingSequence
+    {
+        internal static TestingSequence<T> Of<T>(params T[] elements) =>
+            new TestingSequence<T>(elements);
+
+        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
+            source != null
+            ? new TestingSequence<T>(source)
+            : throw new ArgumentNullException(nameof(source));
     }
 
     /// <summary>
@@ -41,82 +38,42 @@ namespace MoreLinq.Test
     /// when it is disposed itself and also whether GetEnumerator() is
     /// called exactly once or not.
     /// </summary>
-    internal sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
+    sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        private bool disposed;
-        private IEnumerable<T> sequence;
+        bool? _disposed;
+        IEnumerable<T> _sequence;
 
-        internal TestingSequence(IEnumerable<T> sequence)
-        {
-            this.sequence = sequence;
-        }
+        internal TestingSequence(IEnumerable<T> sequence) =>
+            _sequence = sequence;
 
-        void IDisposable.Dispose()
-        {
+        public int MoveNextCallCount { get; private set; }
+
+        void IDisposable.Dispose() =>
             AssertDisposed();
-        }
 
         /// <summary>
         /// Checks that the iterator was disposed, and then resets.
         /// </summary>
-        private void AssertDisposed()
+        void AssertDisposed()
         {
-            Assert.IsTrue(disposed, "Expected sequence to be disposed.");
-            disposed = false;
+            if (_disposed == null)
+                return;
+            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+            _disposed = null;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(this.sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = new DisposeTestingSequenceEnumerator(this.sequence.GetEnumerator());
-            enumerator.Disposed += delegate { disposed = true; };
-            this.sequence = null;
+            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            var enumerator = _sequence.GetEnumerator().AsWatchtable();
+            _disposed = false;
+            enumerator.Disposed += delegate { _disposed = true; };
+            enumerator.MoveNextCalled += delegate { MoveNextCallCount++; };
+            _sequence = null;
             return enumerator;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private class DisposeTestingSequenceEnumerator : IEnumerator<T>
-        {
-            private readonly IEnumerator<T> sequence;
-
-            public event EventHandler Disposed;
-
-            public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence)
-            {
-                this.sequence = sequence;
-            }
-
-            public T Current
-            {
-                get { return sequence.Current; }
-            }
-
-            public void Dispose()
-            {
-                sequence.Dispose();
-                var disposed = Disposed;
-                if (disposed != null) 
-                    disposed(this, EventArgs.Empty);
-            }
-
-            object IEnumerator.Current
-            {
-                get { return Current; }
-            }
-
-            public bool MoveNext()
-            {
-                return sequence.MoveNext();
-            }
-
-            public void Reset()
-            {
-                sequence.Reset();
-            }
-        }
     }
 }

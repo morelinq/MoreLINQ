@@ -1,6 +1,26 @@
 version: '{build}'
+image: Visual Studio 2017
+skip_commits:
+  files:
+    - '*.md'
+    - '*.txt'
+    - '.editorconfig'
+    - lic/*
+install:
+- ps: Install-Product node 6
+- npm install -g eclint
+- git rm .editorconfig
+- eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
+- eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+- git reset --hard
 build_script:
 - ps: >-
+    grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir MoreLinq.Test\*Test.cs)
+
+    if ($LASTEXITCODE -eq 0) {
+        throw 'Unit tests should not import System.Linq'
+    }
+
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
 
     $id = $id.Substring(0, 13)
@@ -16,6 +36,8 @@ deploy:
   api_key:
     secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
   symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
+  on:
+    branch: master
 notifications:
 - provider: Email
   to:

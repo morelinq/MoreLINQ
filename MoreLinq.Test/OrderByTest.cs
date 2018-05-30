@@ -1,8 +1,7 @@
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the OrderBy/ThenBy operators
     /// </summary>
@@ -21,12 +20,12 @@ namespace MoreLinq.Test
             var resultAsc1 = sequenceAscending.OrderBy(x => x, OrderByDirection.Descending);
             var resultAsc2 = sequenceAscending.OrderByDescending(x => x);
             // ensure both order by operations produce identical results
-            Assert.IsTrue(resultAsc1.SequenceEqual(resultAsc2));
+            Assert.That(resultAsc1, Is.EqualTo(resultAsc2));
 
             var resultDes1 = sequenceDescending.OrderBy(x => x, OrderByDirection.Ascending);
             var resultDes2 = sequenceDescending.OrderBy(x => x);
             // ensure both order by operations produce identical results
-            Assert.IsTrue(resultDes1.SequenceEqual(resultDes2));
+            Assert.That(resultDes1, Is.EqualTo(resultDes2));
         }
 
         /// <summary>
@@ -39,21 +38,21 @@ namespace MoreLinq.Test
             var sequenceAscending = sequence.Select(x => x.ToString());
             var sequenceDescending = sequenceAscending.Reverse();
 
-            var comparer = new ComparerFunc<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
             var resultAsc1 = sequenceAscending.OrderBy(x => x, comparer, OrderByDirection.Descending);
             var resultAsc2 = sequenceAscending.OrderByDescending(x => x, comparer);
             // ensure both order by operations produce identical results
-            Assert.IsTrue(resultAsc1.SequenceEqual(resultAsc2));
+            Assert.That(resultAsc1, Is.EqualTo(resultAsc2));
             // ensure comparer was applied in the order by evaluation
-            Assert.IsTrue(resultAsc1.SequenceEqual(sequenceDescending));
+            Assert.That(resultAsc1, Is.EqualTo(sequenceDescending));
 
             var resultDes1 = sequenceDescending.OrderBy(x => x, comparer, OrderByDirection.Ascending);
             var resultDes2 = sequenceDescending.OrderBy(x => x, comparer);
             // ensure both order by operations produce identical results
-            Assert.IsTrue(resultDes1.SequenceEqual(resultDes2));
+            Assert.That(resultDes1, Is.EqualTo(resultDes2));
             // ensure comparer was applied in the order by evaluation
-            Assert.IsTrue(resultDes1.SequenceEqual(sequenceAscending));
+            Assert.That(resultDes1, Is.EqualTo(sequenceAscending));
         }
 
         /// <summary>
@@ -77,14 +76,14 @@ namespace MoreLinq.Test
             var resultA2 = sequence.OrderBy(x => x.A)
                                    .ThenBy(y => y.B);
             // ensure both produce the same order
-            Assert.IsTrue(resultA1.SequenceEqual(resultA2));
+            Assert.That(resultA1, Is.EqualTo(resultA2));
 
             var resultB1 = sequence.OrderBy(x => x.A, OrderByDirection.Ascending)
                                      .ThenBy(y => y.B, OrderByDirection.Descending);
             var resultB2 = sequence.OrderBy(x => x.A)
                                    .ThenByDescending(y => y.B);
             // ensure both produce the same order
-            Assert.IsTrue(resultB1.SequenceEqual(resultB2));
+            Assert.That(resultB1, Is.EqualTo(resultB2));
         }
 
         /// <summary>
@@ -103,21 +102,21 @@ namespace MoreLinq.Test
                                    new {A = "2", B = "1"},
                                };
 
-            var comparer = new ComparerFunc<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
             var resultA1 = sequence.OrderBy(x => x.A, comparer, OrderByDirection.Ascending)
                                      .ThenBy(y => y.B, comparer, OrderByDirection.Ascending);
             var resultA2 = sequence.OrderBy(x => x.A, comparer)
                                    .ThenBy(y => y.B, comparer);
             // ensure both produce the same order
-            Assert.IsTrue(resultA1.SequenceEqual(resultA2));
+            Assert.That(resultA1, Is.EqualTo(resultA2));
 
             var resultB1 = sequence.OrderBy(x => x.A, comparer, OrderByDirection.Ascending)
                                      .ThenBy(y => y.B, comparer, OrderByDirection.Descending);
             var resultB2 = sequence.OrderBy(x => x.A, comparer)
                                    .ThenByDescending(y => y.B, comparer);
             // ensure both produce the same order
-            Assert.IsTrue(resultB1.SequenceEqual(resultB2));
+            Assert.That(resultB1, Is.EqualTo(resultB2));
         }
     }
 }

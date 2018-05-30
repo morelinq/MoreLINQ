@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-using System.Globalization;
-
 namespace MoreLinq.Test
 {
-    internal sealed class CurrentThreadCultureScope : Scope<CultureInfo>
+    using System.Globalization;
+
+    sealed class CurrentThreadCultureScope : Scope<CultureInfo>
     {
-        public CurrentThreadCultureScope(CultureInfo @new) : 
+        public CurrentThreadCultureScope(CultureInfo @new) :
             base(CultureInfo.CurrentCulture)
         {
             Install(@new);
@@ -32,7 +32,7 @@ namespace MoreLinq.Test
             Install(old);
         }
 
-        private static void Install(CultureInfo value)
+        static void Install(CultureInfo value)
         {
 #if NET451
             System.Threading.Thread.CurrentThread.CurrentCulture = value;

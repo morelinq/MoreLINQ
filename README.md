@@ -12,6 +12,34 @@ Documentation for the stable and beta releases can be found at
 [morelinq.github.io](http://morelinq.github.io/).
 
 
+## Building
+
+To build MoreLINQ from sources, you will need:
+
+- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
+- [Mono][mono] 5.0 if building on other platforms than Windows
+
+Then run either `build.cmd` if building on Windows or `build.sh` if
+building on macOS or a Linux distribution supported by .NET Core.
+
+Some code in the project is generated using [T4][t4] templates. To regenerate
+the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
+`MoreLinq/tt.sh` depending on your platform.
+
+Building the documentation is supported on Windows only and requires
+[Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
+generates the documentation in the `docs/api` directory. It can be browsed
+locally using any HTTP server of static files, like
+[http-server][http-server].
+
+
+[mono]: https://www.mono-project.com/
+[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
+[http-server]: https://www.npmjs.com/package/http-server
+[t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
+
+
 ## Operators
 
 ### Acquire
@@ -19,6 +47,13 @@ Documentation for the stable and beta releases can be found at
 Ensures that a source sequence of objects are all acquired successfully. If
 the acquisition of any one fails then those successfully acquired till that
 point are disposed
+
+### AggregateRight
+
+Applies a right-associative accumulator function over a sequence.
+This operator is the right-associative version of the Aggregate LINQ operator.
+
+This method has 3 overloads.
 
 ### Assert
 
@@ -35,13 +70,20 @@ This method has 2 overloads.
 
 ### AtLeast
 
-Determines whether or not the number of elements in the sequence is greater 
+Determines whether or not the number of elements in the sequence is greater
 than or equal to the given integer.
 
 ### AtMost
 
-Determines whether or not the number of elements in the sequence is lesser 
+Determines whether or not the number of elements in the sequence is lesser
 than or equal to the given integer.
+
+### Backsert
+
+Inserts the elements of a sequence into another sequence at a
+specified index from the tail of the sequence, where zero always represents
+the last position, one represents the second-last element, two represents
+the third-last element and so on.
 
 ### Batch
 
@@ -52,14 +94,24 @@ This method has 2 overloads.
 ### Cartesian
 
 Returns the Cartesian product of two sequences by combining each element of
-the first set with each in the second and applying the user=define projection
-to the pair
+the first set with each in the second and applying a user-defined projection
+to the pair.
+
+### Choose
+
+Applies a function to each element of the source sequence and returns a new
+sequence of result elements for source elements where the function returns a
+couple (2-tuple) having a `true` as its first element and result as the
+second.
+
+### CompareCount
+
+Compares two sequences and returns an integer that indicates whether the
+first sequence has fewer, the same or more elements than the second sequence.
 
 ### Concat
 
 Returns a sequence consisting of the head element and the given tail elements.
-
-This method has 2 overloads.
 
 ### Consume
 
@@ -68,7 +120,7 @@ and doesn't store any data during execution
 
 ### CountBetween
 
-Determines whether or not the number of elements in the sequence is between an 
+Determines whether or not the number of elements in the sequence is between an
 inclusive range of minimum and maximum integers.
 
 ### CountBy
@@ -79,11 +131,24 @@ sequence.
 
 This method has 2 overloads.
 
+### CountDown
+
+Provides a countdown counter for a given count of elements at the tail of the
+sequence where zero always represents the last element, one represents the
+second-last element, two represents the third-last element and so on.
+
 ### DistinctBy
 
 Returns all distinct elements of the given source, where "distinctness" is
 determined via a projection and the default equality comparer for the
 projected type.
+
+This method has 2 overloads.
+
+### EndsWith
+
+Determines whether the end of the first sequence is equivalent to the second
+sequence.
 
 This method has 2 overloads.
 
@@ -96,7 +161,7 @@ This method has 3 overloads.
 
 ### Exactly
 
-Determines whether or not the number of elements in the sequence is equals 
+Determines whether or not the number of elements in the sequence is equals
 to the given integer.
 
 ### ExceptBy
@@ -129,11 +194,17 @@ with the previous non-null reference or value seen in that sequence.
 
 This method has 3 overloads.
 
+### Flatten
+
+Flattens a sequence containing arbitrarily-nested sequences.
+
+This method has 2 overloads.
+
 ### Fold
 
-Returns the result of applying a function to a sequence of 1 element.
+Returns the result of applying a function to a sequence with 1 to 16 elements.
 
-This method has 4 overloads.
+This method has 16 overloads.
 
 ### ForEach
 
@@ -141,11 +212,24 @@ Immediately executes the given action on each element in the source sequence.
 
 This method has 2 overloads.
 
+### From
+
+Returns a sequence containing the values resulting from invoking (in order)
+each function in the source sequence of functions.
+
+This method has 4 overloads.
+
 ### FullGroupJoin
 
 Performs a Full Group Join between the and sequences.
 
-This method has 2 overloads.
+This method has 4 overloads.
+
+### FullJoin
+
+Performs a full outer join between two sequences.
+
+This method has 4 overloads.
 
 ### Generate
 
@@ -164,13 +248,8 @@ This method has 4 overloads.
 
 ### ~~Incremental~~
 
-Use `Pairwise` instead, which is identical to `Incremental`. `Incremental`
-will be removed in a future version.
-
-Computes an incremental value between every adjacent element in a sequence:
-{N,N+1}, {N+1,N+2}, .
-
-This method has 2 overloads.
+`Incremental` was redundant with `Pairwise` and so deprecated since version
+[2.1][v2.1]. It was eventually removed in version [3.0][v3.0].
 
 ### Index
 
@@ -178,6 +257,10 @@ Returns a sequence of where the key is the zero-based index of the value in
 the source sequence.
 
 This method has 2 overloads.
+
+### Insert
+
+Inserts the elements of a sequence into another sequence at a specified index.
 
 ### Interleave
 
@@ -200,24 +283,30 @@ by a positive offset.
 
 This method has 2 overloads.
 
+### LeftJoin
+
+Performs a left outer join between two sequences.
+
+This method has 4 overloads.
+
 ### MaxBy
 
-Returns the maximal element of the given sequence, based on the given
-projection.
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
 
 This method has 2 overloads.
 
 ### MinBy
 
-Returns the minimal element of the given sequence, based on the given
-projection.
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
 
 This method has 2 overloads.
 
-### NestedLoops
+### Move
 
-Produces a sequence from an action based on the dynamic generation of N nested
-loops who iteration counts are defined by
+Returns a sequence with a range of elements in the source sequence
+moved to a new offset.
 
 ### OrderBy
 
@@ -241,11 +330,33 @@ a given width.
 
 This method has 3 overloads.
 
+### PadStart
+
+Pads a sequence with default values in the beginning if it is narrower
+(shorter in length) than a given width.
+
+This method has 3 overloads.
+
 ### Pairwise
 
 Returns a sequence resulting from applying a function to each element in the
 source sequence and its predecessor, with the exception of the first element
 which is only returned as the predecessor of the second element
+
+### PartialSort
+
+Combines `OrderBy` (where element is key) and `Take` in a single operation.
+
+### PartialSortBy
+
+Combines `OrderBy` and `Take` in a single operation.
+
+### Partition
+
+Partitions a sequence by a predicate, or a grouping by Boolean keys or up to 3
+sets of keys.
+
+This method has 10 overloads.
 
 ### Permutations
 
@@ -300,7 +411,15 @@ This method has 2 overloads.
 
 ### Repeat
 
-Repeats the specific sequences times
+Repeats the sequence indefinitely or a specific number of times.
+
+This method has 2 overloads.
+
+### RightJoin
+
+Performs a right outer join between two sequences.
+
+This method has 4 overloads.
 
 ### RunLengthEncode
 
@@ -313,6 +432,13 @@ This method has 2 overloads.
 ### Scan
 
 Peforms a scan (inclusive prefix sum) on a sequence of elements.
+
+This method has 2 overloads.
+
+### ScanRight
+
+Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+This operator is the right-associative version of the Scan operator.
 
 This method has 2 overloads.
 
@@ -329,14 +455,15 @@ Generates a sequence of integral numbers within the (inclusive) specified range.
 
 This method has 2 overloads.
 
-### ~~SingleOrFallback~~
+### Shuffle
 
-Consider using `FallbackIfEmpty` instead. `SingleOrFallback` may be removed in
-a future version. For more information, see issue [#122][#122].
+Returns a sequence of elements in random order from the original sequence.
 
-Returns the single element in the given sequence, or the result of executing a
-fallback delegate if the sequence is empty. This method throws an exception if
-there is more than one element in the sequence
+This method has 2 overloads.
+
+### SkipLast
+
+Bypasses a specified number of elements at the end of the sequence.
 
 ### SkipUntil
 
@@ -359,6 +486,13 @@ This method has 2 overloads.
 Splits the source sequence by a separator.
 
 This method has 12 overloads.
+
+### StartsWith
+
+Determines whether the beginning of the first sequence is equivalent to the
+second sequence.
+
+This method has 2 overloads.
 
 ### Subsets
 
@@ -393,6 +527,13 @@ direction (ascending, descending) according to a key.
 
 This method has 2 overloads.
 
+### ToArrayByIndex
+
+Creates an array from an IEnumerable<T> where a function is used to determine
+the index at which an element will be placed in the array.
+
+This method has 6 overloads.
+
 ### ToDataTable
 
 Appends elements in the sequence as rows of a given object with a set of
@@ -408,6 +549,31 @@ depends on the current culture of the executing thread.
 
 This method has 30 overloads.
 
+### ToDictionary
+
+Creates a [dictionary][dict] from a sequence of [key-value pair][kvp] elements
+or tuples of 2.
+
+This method has 4 overloads.
+
+### ToHashSet
+
+Returns a of the source items using the default equality comparer for the
+type.
+
+This method has 2 overloads.
+
+### ToLookup
+
+Creates a [lookup][lookup] from a sequence of [key-value pair][kvp] elements
+or tuples of 2.
+
+This method has 4 overloads.
+
+### Transpose
+
+Transposes the rows of a sequence into columns.
+
 ### TraverseBreadthFirst
 
 Traverses a tree in a breadth-first fashion, starting at a root node and using
@@ -418,26 +584,19 @@ a user-defined function to get the children at each node of the tree.
 Traverses a tree in a depth-first fashion, starting at a root node and using a
 user-defined function to get the children at each node of the tree.
 
-### ToHashSet
-
-Returns a of the source items using the default equality comparer for the
-type. 
-
-This method has 2 overloads.
-
-### PartialSort
-
-Combines `OrderBy` (where element is key) and `Take` in a single operation.
-
-### PartialSortBy
-
-Combines `OrderBy` and `Take` in a single operation.
-
 ### Trace
 
 Traces the elements of a source sequence for diagnostics.
 
 This method has 3 overloads.
+
+### Unfold
+
+Returns a sequence generated by applying a state to the generator function,
+and from its result, determines if the sequence should have a next element and
+its value, and the next state in the recursive call.
+
+This method has 2 overloads.
 
 ### Windowed
 
@@ -453,6 +612,8 @@ Creates a left-aligned sliding window over the source sequence of a given size.
 Returns a projection of tuples, where each tuple contains the N-th element
 from each of the argument sequences
 
+This method has 3 overloads.
+
 ### ZipShortest
 
 Returns a projection of tuples, where each tuple contains the N-th element
@@ -461,4 +622,39 @@ from each of the argument sequences.
 This method has 3 overloads.
 
 
+## Experimental Operators
+
+THESE METHODS ARE EXPERIMENTAL. THEY MAY BE UNSTABLE AND UNTESTED. THEY MAY BE
+REMOVED FROM A FUTURE MAJOR OR MINOR RELEASE AND POSSIBLY WITHOUT NOTICE. USE
+THEM AT YOUR OWN RISK. THE METHODS ARE PUBLISHED FOR FIELD EXPERIMENTATION TO
+SOLICIT FEEDBACK ON THEIR UTILITY AND DESIGN/IMPLEMENTATION DEFECTS.
+
+Use of experimental methods requires importing the `MoreLinq.Experimental`
+namespace.
+
+### Await
+
+Creates a sequence query that streams the result of each task in the source
+sequence as it completes asynchronously.
+
+This method has 2 overloads.
+
+### AwaitCompletion
+
+Awaits completion of all asynchronous evaluations irrespective of whether they
+succeed or fail. An additional argument specifies a function that projects the
+final result given the source item and completed task.
+
+### Memoize
+
+Creates a sequence that lazily caches the source as it is iterated for the
+first time, reusing the cache thereafter for future re-iterations. If the
+source is already cached or buffered then it is returned verbatim.
+
+
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
+[dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
+[kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
+[lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
+[v2.1]: https://github.com/morelinq/MoreLINQ/releases/tag/v2.1.0
+[v3.0]: https://github.com/morelinq/MoreLINQ/releases/tag/v3.0.0

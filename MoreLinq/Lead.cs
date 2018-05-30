@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,10 +36,10 @@ namespace MoreLinq
         /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
-        
+
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
         {
-            return Lead(source, offset, default(TSource), resultSelector);
+            return Lead(source, offset, default, resultSelector);
         }
 
         /// <summary>
@@ -55,38 +55,34 @@ namespace MoreLinq
         /// <param name="defaultLeadValue">A default value supplied for the leading element when none is available</param>
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
-        
+
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-            return LeadImpl(source, offset, defaultLeadValue, resultSelector);
-        }
-
-        private static IEnumerable<TResult> LeadImpl<TSource, TResult>(IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
-        {
-            var leadQueue = new Queue<TSource>();
-            using (var iter = source.GetEnumerator())
+            return _(); IEnumerable<TResult> _()
             {
-                bool hasMore;
-                // first, prefetch and populate the lead queue with the next step of
-                // items to be streamed out to the consumer of the sequence
-                while ((hasMore = iter.MoveNext()) && leadQueue.Count < offset)
-                    leadQueue.Enqueue(iter.Current);
-                // next, while the source sequence has items, yield the result of
-                // the projection function applied to the top of queue and current item
-                while (hasMore)
+                var leadQueue = new Queue<TSource>();
+                using (var iter = source.GetEnumerator())
                 {
-                    yield return resultSelector(leadQueue.Dequeue(), iter.Current);
-                    leadQueue.Enqueue(iter.Current);
-                    hasMore = iter.MoveNext();
-                }
-                // yield the remaining values in the lead queue with the default lead value
-                while (leadQueue.Count > 0)
-                {
-                    yield return resultSelector(leadQueue.Dequeue(), defaultLeadValue);
+                    bool hasMore;
+                    // first, prefetch and populate the lead queue with the next step of
+                    // items to be streamed out to the consumer of the sequence
+                    while ((hasMore = iter.MoveNext()) && leadQueue.Count < offset)
+                        leadQueue.Enqueue(iter.Current);
+                    // next, while the source sequence has items, yield the result of
+                    // the projection function applied to the top of queue and current item
+                    while (hasMore)
+                    {
+                        yield return resultSelector(leadQueue.Dequeue(), iter.Current);
+                        leadQueue.Enqueue(iter.Current);
+                        hasMore = iter.MoveNext();
+                    }
+                    // yield the remaining values in the lead queue with the default lead value
+                    while (leadQueue.Count > 0)
+                        yield return resultSelector(leadQueue.Dequeue(), defaultLeadValue);
                 }
             }
         }

@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Verify the behavior of the RunLengthEncode() operator
     /// </summary>
@@ -22,28 +21,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that invoking RunLengthEncode on an empty sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestRunLengthEncodeNullSequence()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                sequence.RunLengthEncode());
-        }
-
-        /// <summary>
-        /// Verify that invoking RunLengthEncode on an empty sequence results in an exception
-        /// </summary>
-        [Test]
-        public void TestRunLengthEncodeNullSequence2()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence",() =>
-                sequence.RunLengthEncode(EqualityComparer<int>.Default));
-        }
-
-        /// <summary>
         /// Verify that run-length encoding an empty sequence results in an empty sequence.
         /// </summary>
         [Test]
@@ -52,7 +29,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.RunLengthEncode();
 
-            Assert.IsTrue(result.SequenceEqual(sequence.Select(x => new KeyValuePair<int, int>(x, x))));
+            Assert.That(result, Is.EqualTo(sequence.Select(x => new KeyValuePair<int, int>(x, x))));
         }
 
         /// <summary>
@@ -64,10 +41,10 @@ namespace MoreLinq.Test
             var sequence = new[] { "a", "A", "a", "b", "b", "B", "B" };
             var result = sequence.RunLengthEncode(StringComparer.CurrentCultureIgnoreCase)
                                  .Select(kvp => new KeyValuePair<string, int>(kvp.Key.ToLower(), kvp.Value));
-            var expectedResult = new[] {new KeyValuePair<string, int>("a", 3), 
+            var expectedResult = new[] {new KeyValuePair<string, int>("a", 3),
                                          new KeyValuePair<string, int>("b", 4)};
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -80,7 +57,7 @@ namespace MoreLinq.Test
             var expectedResult = Enumerable.Range(1, 6).Select(x => new KeyValuePair<int, int>(x, x));
             var result = sequence.RunLengthEncode();
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -93,7 +70,7 @@ namespace MoreLinq.Test
             var result = sequence.RunLengthEncode();
             var expectedResult = sequence.Select(x => new KeyValuePair<int, int>(x, 1));
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -109,7 +86,7 @@ namespace MoreLinq.Test
             var result = sequence.RunLengthEncode();
             var expectedResult = new[] { new KeyValuePair<char, int>(value, repeatCount) };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }

@@ -1,8 +1,7 @@
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the Repeat() extension method.
     /// </summary>
@@ -34,7 +33,7 @@ namespace MoreLinq.Test
                 expectedResult = expectedResult.Concat(sequence);
 
             Assert.AreEqual(count * repeatCount, result.Count());
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -43,18 +42,50 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            Assert.ThrowsArgumentOutOfRangeException("count",() =>
-                Enumerable.Range(1, 10).Repeat(-3));
+            AssertThrowsArgument.OutOfRangeException("count", () =>
+                 Enumerable.Range(1, 10).Repeat(-3));
         }
 
         /// <summary>
-        /// Verify applying Repeat to a <c>null</c> sequence results in an exception.
+        /// Verify applying Repeat without passing count produces a circular sequence
         /// </summary>
         [Test]
-        public void TestRepeatSequenceANullException()
+        public void TestRepeatForeverBehaviorSingleElementList()
         {
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                MoreEnumerable.Repeat<object>(null, 42));
+            var value = 3;
+
+            var result = new[] { value }.Repeat();
+
+            Assert.IsTrue(result.Take(100).All(x => x == value));
+        }
+
+        /// <summary>
+        /// Verify applying Repeat without passing count produces a circular sequence
+        /// </summary>
+        [Test]
+        public void TestRepeatForeverBehaviorManyElementsList()
+        {
+            const int repeatCount = 30;
+            const int rangeCount = 10;
+            const int takeCount = repeatCount * rangeCount;
+
+            var sequence = Enumerable.Range(1, rangeCount);
+            var result = sequence.Repeat();
+
+            var expectedResult = Enumerable.Empty<int>();
+            for (var i = 0; i < repeatCount; i++)
+                expectedResult = expectedResult.Concat(sequence);
+
+            Assert.That(expectedResult, Is.EquivalentTo(result.Take(takeCount)));
+        }
+
+        /// <summary>
+        /// Verify that the repeat method returns results in a lazy manner.
+        /// </summary>
+        [Test]
+        public void TestRepeatForeverIsLazy()
+        {
+            new BreakingSequence<int>().Repeat();
         }
     }
 }

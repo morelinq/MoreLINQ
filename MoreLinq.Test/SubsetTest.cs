@@ -1,9 +1,8 @@
-using System;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests of the Subset() family of extension methods.
     /// </summary>
@@ -29,7 +28,7 @@ namespace MoreLinq.Test
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
 
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize",() =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize",() =>
                 sequence.Subsets(-5));
         }
 
@@ -43,9 +42,9 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Subsets(count + 5);
 
-            Assert.ThrowsArgumentOutOfRangeException("subsetSize", () =>
+            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
             {
-                result.Count(); // this particular exception is deferred until sequence evaluation
+                result.Consume(); // this particular exception is deferred until sequence evaluation
             });
         }
 
@@ -58,7 +57,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(0, 0);
             var result = sequence.Subsets();
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.That(result.Single(), Is.EqualTo(sequence));
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace MoreLinq.Test
             var prevSubset = Enumerable.Empty<int>();
             foreach (var subset in result)
             {
-                Assert.GreaterOrEqual(subset.Count(), prevSubset.Count());
+                Assert.GreaterOrEqual(subset.Count, prevSubset.Count());
                 prevSubset = subset;
             }
         }
@@ -114,7 +113,7 @@ namespace MoreLinq.Test
 
             var index = 0;
             foreach (var subset in result)
-                Assert.IsTrue(subset.SequenceEqual(expectedSubsets[index++]));
+                Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
 
         /// <summary>
@@ -164,7 +163,7 @@ namespace MoreLinq.Test
 
             var index = 0;
             foreach (var subset in result)
-                Assert.IsTrue(subset.SequenceEqual(expectedSubsets[index++]));
+                Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
     }
 }

@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public static partial class MoreEnumerable
     {
@@ -34,42 +33,40 @@ namespace MoreLinq
         /// <param name="source">The sequence to evaluate a sliding window over</param>
         /// <param name="size">The size (number of elements) in each window</param>
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
-        
+
         public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            return WindowedImpl(source, size);
-        }
-
-        private static IEnumerable<IEnumerable<TSource>> WindowedImpl<TSource>(this IEnumerable<TSource> source, int size)
-        {
-            using (var iter = source.GetEnumerator())
+            return _(); IEnumerable<IEnumerable<TSource>> _()
             {
-                // generate the first window of items
-                var window = new TSource[size];
-                int i;
-                for (i = 0; i < size && iter.MoveNext(); i++)
-                    window[i] = iter.Current;
-
-                if (i < size)
-                    yield break;
-
-                // return the first window (whatever size it may be)
-                yield return window;
-
-                // generate the next window by shifting forward by one item
-                while (iter.MoveNext())
+                using (var iter = source.GetEnumerator())
                 {
-                    // NOTE: If we used a circular queue rather than a list, 
-                    //       we could make this quite a bit more efficient.
-                    //       Sadly the BCL does not offer such a collection.
-                    var newWindow = new TSource[size];
-                    Array.Copy(window, 1, newWindow, 0, size - 1);
-                    newWindow[size - 1] = iter.Current;
-                    yield return newWindow;
-                    window = newWindow;
+                    // generate the first window of items
+                    var window = new TSource[size];
+                    int i;
+                    for (i = 0; i < size && iter.MoveNext(); i++)
+                        window[i] = iter.Current;
+
+                    if (i < size)
+                        yield break;
+
+                    // return the first window (whatever size it may be)
+                    yield return window;
+
+                    // generate the next window by shifting forward by one item
+                    while (iter.MoveNext())
+                    {
+                        // NOTE: If we used a circular queue rather than a list,
+                        //       we could make this quite a bit more efficient.
+                        //       Sadly the BCL does not offer such a collection.
+                        var newWindow = new TSource[size];
+                        Array.Copy(window, 1, newWindow, 0, size - 1);
+                        newWindow[size - 1] = iter.Current;
+                        yield return newWindow;
+                        window = newWindow;
+                    }
                 }
             }
         }

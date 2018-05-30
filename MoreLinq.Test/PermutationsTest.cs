@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     /// <summary>
     /// Tests that verify the behavior of the Permutations() operator.
     /// </summary>
@@ -20,7 +19,7 @@ namespace MoreLinq.Test
             var permutations = emptySet.Permutations();
 
             // should contain a single result: the empty set itself
-            Assert.IsTrue(permutations.Single().SequenceEqual(emptySet));
+            Assert.That(permutations.Single(), Is.EqualTo(emptySet));
         }
 
         /// <summary>
@@ -33,11 +32,11 @@ namespace MoreLinq.Test
             var permutations = set.Permutations();
 
             // should contain a single result: the set itself
-            Assert.IsTrue(permutations.Single().SequenceEqual(set));
+            Assert.That(permutations.Single(), Is.EqualTo(set));
         }
 
         /// <summary>
-        /// Verify that there are two permutations of a set of two items 
+        /// Verify that there are two permutations of a set of two items
         /// and confirm that the permutations are correct.
         /// </summary>
         [Test]
@@ -48,8 +47,8 @@ namespace MoreLinq.Test
 
             // should contain two results: the set itself and its reverse
             Assert.IsTrue(permutations.Count() == 2);
-            Assert.IsTrue(permutations.First().SequenceEqual(set));
-            Assert.IsTrue(permutations.Last().SequenceEqual(set.Reverse()));
+            Assert.That(permutations.First(), Is.EqualTo(set));
+            Assert.That(permutations.Last(), Is.EqualTo(set.Reverse()));
         }
 
         /// <summary>
@@ -73,8 +72,8 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparerFunc<IList<int>>.As((x, y) => x.SequenceEqual(y)))));
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
+            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
         /// <summary>
@@ -116,8 +115,8 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Count(), permutations.Count());
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparerFunc<IList<int>>.As((x, y) => x.SequenceEqual(y)))));
+            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
+            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ namespace MoreLinq.Test
             //       permuted sets, and verify they are equal to the expected number (count!).
 
             // NOTE: Generating all permutations for sets larger than about 10 items is computationally
-            //       expensive and generally impractical - especially since each additional step adds 
+            //       expensive and generally impractical - especially since each additional step adds
             //       less and less to our confidence in the underlying implementation.
             //       We will assume that if the algorithm scales to sets of up to 10 items, it will work
             //       with any size set.
@@ -155,18 +154,6 @@ namespace MoreLinq.Test
         public void TestPermutationsIsLazy()
         {
             new BreakingSequence<int>().Permutations();
-        }
-
-
-        /// <summary>
-        /// Verify that invoking Permutations() on a <c>null</c> sequence results in an exception.
-        /// </summary>
-        [Test]
-        public void TestPermutationNullSequenceException()
-        {
-            const IEnumerable<int> sequence = null;
-            Assert.ThrowsArgumentNullException("sequence", () =>
-                sequence.Permutations());
         }
 
         /// <summary>

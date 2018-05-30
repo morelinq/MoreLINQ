@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,8 +35,8 @@ namespace MoreLinq
         /// </para>
         /// <para>
         /// Secondly, TakeUntil yields the element which causes the predicate to return true. For
-        /// example, in a sequence <code>{ 1, 2, 3, 4, 5 }</code> and with a predicate of
-        /// <code>x => x == 3</code>, the result would be <code>{ 1, 2, 3 }</code>.
+        /// example, in a sequence <code><![CDATA[{ 1, 2, 3, 4, 5 }]]></code> and with a predicate of
+        /// <code><![CDATA[x => x == 3]]></code>, the result would be <code><![CDATA[{ 1, 2, 3 }]]></code>.
         /// </para>
         /// <para>
         /// TakeUntil is as lazy as possible: it will not iterate over the source sequence
@@ -56,17 +56,14 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-            return TakeUntilImpl(source, predicate);
-        }
 
-        private static IEnumerable<TSource> TakeUntilImpl<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-        {
-            foreach (var item in source)
+            return _(); IEnumerable<TSource> _()
             {
-                yield return item;
-                if (predicate(item))
+                foreach (var item in source)
                 {
-                    yield break;
+                    yield return item;
+                    if (predicate(item))
+                        yield break;
                 }
             }
         }

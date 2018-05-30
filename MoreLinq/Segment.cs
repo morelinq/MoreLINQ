@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2010 Leopold Bushkin. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +32,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
@@ -50,7 +50,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
@@ -68,55 +68,53 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// Thrown if either <paramref name="source"/> or <paramref name="newSegmentPredicate"/> are <see langword="null"/>.
         /// </exception>
-        
+
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
 
-            return SegmentImpl(source, newSegmentPredicate);
-        }
-                
-        private static IEnumerable<IEnumerable<T>> SegmentImpl<T>(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
-        {
-            var index = -1;
-            using (var iter = source.GetEnumerator())
+            return _(); IEnumerable<IEnumerable<T>> _()
             {
-                var segment = new List<T>();
-                var prevItem = default(T);
-
-                // ensure that the first item is always part
-                // of the first segment. This is an intentional
-                // behavior. Segmentation always begins with
-                // the second element in the sequence.
-                if (iter.MoveNext())
+                var index = -1;
+                using (var iter = source.GetEnumerator())
                 {
-                    ++index;
-                    segment.Add(iter.Current);
-                    prevItem = iter.Current;
-                }
+                    var segment = new List<T>();
+                    var prevItem = default(T);
 
-                while (iter.MoveNext())
-                {
-                    ++index;
-                    // check if the item represents the start of a new segment
-                    var isNewSegment = newSegmentPredicate(iter.Current, prevItem, index);
-                    prevItem = iter.Current;
-
-                    if (!isNewSegment)
+                    // ensure that the first item is always part
+                    // of the first segment. This is an intentional
+                    // behavior. Segmentation always begins with
+                    // the second element in the sequence.
+                    if (iter.MoveNext())
                     {
-                        // if not a new segment, append and continue
+                        ++index;
                         segment.Add(iter.Current);
-                        continue;
+                        prevItem = iter.Current;
                     }
-                    yield return segment; // yield the completed segment
 
-                    // start a new segment...
-                    segment = new List<T> { iter.Current };
+                    while (iter.MoveNext())
+                    {
+                        ++index;
+                        // check if the item represents the start of a new segment
+                        var isNewSegment = newSegmentPredicate(iter.Current, prevItem, index);
+                        prevItem = iter.Current;
+
+                        if (!isNewSegment)
+                        {
+                            // if not a new segment, append and continue
+                            segment.Add(iter.Current);
+                            continue;
+                        }
+                        yield return segment; // yield the completed segment
+
+                        // start a new segment...
+                        segment = new List<T> { iter.Current };
+                    }
+                    // handle the case of the sequence ending before new segment is detected
+                    if (segment.Count > 0)
+                        yield return segment;
                 }
-                // handle the case of the sequence ending before new segment is detected
-                if (segment.Count > 0)
-                    yield return segment;
             }
         }
     }

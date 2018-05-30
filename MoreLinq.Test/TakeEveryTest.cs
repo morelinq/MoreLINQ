@@ -1,13 +1,13 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2008 Jonathan Skeet. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,38 +15,31 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class TakeEveryTest
     {
         [Test]
-        public void TakeEveryNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.TakeEvery<object>(null, 1));
-        }
-
-        [Test]
         public void TakeEveryNegativeSkip()
         {
-            Assert.ThrowsArgumentOutOfRangeException("step",() =>
+            AssertThrowsArgument.OutOfRangeException("step",() =>
                 new object[0].TakeEvery(-1));
         }
 
         [Test]
         public void TakeEveryOutOfRangeZeroStep()
         {
-            Assert.ThrowsArgumentOutOfRangeException("step", () =>
+            AssertThrowsArgument.OutOfRangeException("step", () =>
                 new object[0].TakeEvery(0));
         }
 
         [Test]
         public void TakeEveryEmptySequence()
         {
-            Assert.That(new object[0].TakeEvery(1).GetEnumerator().MoveNext(), Is.False);
+            Assert.That(new object[0].TakeEvery(1), Is.Empty);
         }
 
         [Test]
