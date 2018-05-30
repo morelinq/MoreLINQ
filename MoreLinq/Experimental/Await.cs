@@ -615,14 +615,14 @@ namespace MoreLinq.Experimental
         static async Task StartAsync<T, TResult>(
             this IEnumerator<T> enumerator,
             Func<T, Task<TResult>> starter,
-            Action<T, Task<TResult>> onCompletion,
+            Action<T, Task<TResult>> onTaskCompletion,
             Action onEnd,
             int? maxConcurrency,
             CancellationToken cancellationToken)
         {
             if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
             if (starter == null) throw new ArgumentNullException(nameof(starter));
-            if (onCompletion == null) throw new ArgumentNullException(nameof(onCompletion));
+            if (onTaskCompletion == null) throw new ArgumentNullException(nameof(onTaskCompletion));
             if (onEnd == null) throw new ArgumentNullException(nameof(onEnd));
             if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
 
@@ -672,7 +672,7 @@ namespace MoreLinq.Experimental
                             if (cancellationToken.IsCancellationRequested)
                                 return;
 
-                            onCompletion(item, t);
+                            onTaskCompletion(item, t);
                             OnPendingCompleted();
                         });
 
