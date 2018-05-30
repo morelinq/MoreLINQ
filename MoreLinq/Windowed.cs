@@ -55,18 +55,31 @@ namespace MoreLinq
                     // return the first window (whatever size it may be)
                     yield return window;
 
-                    // generate the next window by shifting forward by one item
+                    // generate the next window by using a circular queue
+                    // shifting forward by one item after each pass
+                    int j = 0;
                     while (iter.MoveNext())
                     {
-                        // NOTE: If we used a circular queue rather than a list,
-                        //       we could make this quite a bit more efficient.
-                        //       Sadly the BCL does not offer such a collection.
-                        var newWindow = new TSource[size];
-                        Array.Copy(window, 1, newWindow, 0, size - 1);
-                        newWindow[size - 1] = iter.Current;
-                        yield return newWindow;
-                        window = newWindow;
+                        // overwrite the first item of the previous window
+                        // with the last item of the next window
+                        window[j] = iter.Current;
+
+                        // adjust the start to point to the second item
+                        // of the previous window
+                        j = (j + 1) % window.Length;
+
+                        // return the next window
+                        yield return CircularlyIterate(window, j);
                     }
+                }
+
+                // Private implementation method that circularly iterates over the window buffer.
+                //
+                // Enables reusing the window buffer between yield returns.
+                IEnumerable<TSource> CircularlyIterate(TSource[] buffer, int start)
+                {
+                    for (int i = 0; i < buffer.Length; i++)
+                        yield return buffer[(i + start) % buffer.Length];
                 }
             }
         }
