@@ -37,7 +37,7 @@ namespace MoreLinq
         /// especially as it slides over the end of the sequence.
         /// </remarks>
         /// <example>
-        /// <code>
+        /// <code><![CDATA[
         /// Console.WriteLine(
         ///     Enumerable
         ///         .Range(1, 5)
@@ -51,7 +51,7 @@ namespace MoreLinq
         /// // AVG(3,4,5) = 4
         /// // AVG(4,5) = 4.5
         /// // AVG(5) = 5
-        /// </code>
+        /// ]]></code>
         /// </example>
 
         public static IEnumerable<IList<TSource>> WindowLeft<TSource>(this IEnumerable<TSource> source, int size)
