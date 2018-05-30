@@ -24,17 +24,21 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Creates a left-aligned sliding window over the source sequence
-        /// of a given size.
+        /// Creates a left-aligned sliding window of a given size over the
+        /// source sequence.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The sequence over which to create the sliding window.</param>
+        /// <typeparam name="TSource">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        /// The sequence over which to create the sliding window.</param>
         /// <param name="size">Size of the sliding window.</param>
         /// <returns>A sequence representing each sliding window.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results. A
-        /// window can contain fewer elements than <paramref name="size"/>,
-        /// especially as it slides over the end of the sequence.
+        /// <para>
+        /// A window can contain fewer elements than <paramref name="size"/>,
+        /// especially as it slides over the end of the sequence.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
         /// <example>
         /// <code><![CDATA[
