@@ -3,7 +3,7 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class WindowLeftTests
+    public class WindowLeftTest
     {
         [Test]
         public void WindowLeftIsLazy()
