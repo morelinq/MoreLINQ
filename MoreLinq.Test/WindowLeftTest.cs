@@ -53,11 +53,11 @@ namespace MoreLinq.Test
             using (var sequence = Enumerable.Range(1, 5).AsTestingSequence())
             using (var reader = sequence.WindowLeft(10).Read())
             {
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 1, 2, 3, 4, 5 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 2, 3, 4, 5 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 3, 4, 5 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 4, 5 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 5 }));
+                reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
+                reader.Read().AssertSequenceEqual(2, 3, 4, 5);
+                reader.Read().AssertSequenceEqual(3, 4, 5);
+                reader.Read().AssertSequenceEqual(4, 5);
+                reader.Read().AssertSequenceEqual(5);
                 reader.ReadEnd();
             }
         }
@@ -68,11 +68,11 @@ namespace MoreLinq.Test
             using (var sequence = Enumerable.Range(1, 5).AsTestingSequence())
             using (var reader = sequence.WindowLeft(3).Read())
             {
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 1, 2, 3 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 2, 3, 4 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 3, 4, 5 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 4, 5 }));
-                Assert.That(reader.Read(), Is.EquivalentTo(new[] { 5 }));
+                reader.Read().AssertSequenceEqual(1, 2, 3);
+                reader.Read().AssertSequenceEqual(2, 3, 4);
+                reader.Read().AssertSequenceEqual(3, 4, 5);
+                reader.Read().AssertSequenceEqual(4, 5);
+                reader.Read().AssertSequenceEqual(5);
                 reader.ReadEnd();
             }
         }
