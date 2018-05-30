@@ -59,8 +59,8 @@ namespace MoreLinq.Test
         [TestCaseSource(nameof(PrependManySource))]
         public void PrependMany(int[] head, int[] tail)
         {
-            head.Aggregate(tail.AsEnumerable(), (xs, x) => xs.Prepend(x))
-                .AssertSequenceEqual(head.Concat(tail));
+            Assert.That(tail.Aggregate(head.AsEnumerable(), (xs, x) => xs.Prepend(x)),
+                        Is.EqualTo(tail.Reverse().Concat(head)));
         }
 
         public static IEnumerable<object> PrependManySource =>
