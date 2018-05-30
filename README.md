@@ -607,6 +607,10 @@ subset of the original
 
 Creates a left-aligned sliding window over the source sequence of a given size.
 
+### WindowRight
+
+Creates a right-aligned sliding window over the source sequence of a given size.
+
 ### ZipLongest
 
 Returns a projection of tuples, where each tuple contains the N-th element
