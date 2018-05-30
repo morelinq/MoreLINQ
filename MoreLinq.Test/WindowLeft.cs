@@ -1,8 +1,8 @@
-using System.Linq;
-using NUnit.Framework;
-
 namespace MoreLinq.Test
 {
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class WindowLeftTests
     {
