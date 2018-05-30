@@ -1,5 +1,6 @@
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,8 +22,11 @@ namespace MoreLinq.Test
         [Test]
         public void WindowLeftWithEmptySequence()
         {
-            var result = Enumerable.Empty<int>().WindowLeft(5);
-            Assert.That(result, Is.Empty);
+            using (var xs = Enumerable.Empty<int>().AsTestingSequence())
+            {
+                var result = xs.WindowLeft(5);
+                Assert.That(result, Is.Empty);
+            }
         }
 
         [Test]
@@ -30,7 +34,10 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count).ToArray();
-            var result = sequence.WindowLeft(1).ToArray();
+
+            IList<int>[] result;
+            using (var ts = sequence.AsTestingSequence())
+                result = ts.WindowLeft(1).ToArray();
 
             // number of windows should be equal to the source sequence length
             Assert.That(result.Length, Is.EqualTo(count));
@@ -43,7 +50,7 @@ namespace MoreLinq.Test
         [Test]
         public void WindowLeftWithWindowSizeLargerThanSequence()
         {
-            var sequence = Enumerable.Range(1, 5);
+            using (var sequence = Enumerable.Range(1, 5).AsTestingSequence())
             using (var reader = sequence.WindowLeft(10).Read())
             {
                 Assert.That(reader.Read(), Is.EquivalentTo(new[] { 1, 2, 3, 4, 5 }));
@@ -58,7 +65,7 @@ namespace MoreLinq.Test
         [Test]
         public void WindowLeftWithWindowSizeSmallerThanSequence()
         {
-            var sequence = Enumerable.Range(1, 5);
+            using (var sequence = Enumerable.Range(1, 5).AsTestingSequence())
             using (var reader = sequence.WindowLeft(3).Read())
             {
                 Assert.That(reader.Read(), Is.EquivalentTo(new[] { 1, 2, 3 }));
