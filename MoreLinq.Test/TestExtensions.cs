@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         /// </summary>
 
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
+            Assert.That(actual, Is.EqualTo(expected));
 
         /// <summary>
         /// Make testing even easier - a params array makes for readable tests :)
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         /// </summary>
 
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
+            Assert.That(actual, Is.EqualTo(expected));
 
         internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
         {

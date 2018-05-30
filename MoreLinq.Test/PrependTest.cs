@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class PrependTest
@@ -57,13 +58,12 @@ namespace MoreLinq.Test
         }
 
         [TestCaseSource(nameof(PrependManySource))]
-        public void PrependMany(int[] head, int[] tail)
+        public int[] PrependMany(int[] head, int[] tail)
         {
-            head.Aggregate(tail.AsEnumerable(), (xs, x) => xs.Prepend(x))
-                .AssertSequenceEqual(head.Concat(tail));
+            return tail.Aggregate(head.AsEnumerable(), MoreEnumerable.Prepend).ToArray();
         }
 
-        public static IEnumerable<object> PrependManySource =>
+        public static IEnumerable<ITestCaseData> PrependManySource =>
             from x in Enumerable.Range(0, 11)
             from y in Enumerable.Range(1, 11)
             select new
@@ -72,9 +72,10 @@ namespace MoreLinq.Test
                 Tail = Enumerable.Range(1, x).ToArray(),
             }
             into e
-            select new TestCaseData(e.Head,
-                                    e.Tail).SetName("Head = [" + string.Join(", ", e.Head) + "], " +
-                                                    "Tail = [" + string.Join(", ", e.Tail) + "]");
+            select new TestCaseData(e.Head, e.Tail)
+                .SetName("Head = [" + string.Join(", ", e.Head) + "], " +
+                         "Tail = [" + string.Join(", ", e.Tail) + "]")
+                .Returns(e.Tail.Reverse().Concat(e.Head).ToArray());
 
         [Test]
         public void PrependWithSharedSource()
