@@ -13,13 +13,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void WindowLeftWithNullSequence()
-        {
-            Assert.ThrowsArgumentNullException("source", () =>
-                MoreEnumerable.WindowLeft<object>(null, 10));
-        }
-
-        [Test]
         public void WindowLeftWithNegativeWindowSize()
         {
             Assert.ThrowsArgumentOutOfRangeException("size", () =>
