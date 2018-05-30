@@ -96,5 +96,23 @@ namespace MoreLinq.Test
             foreach (var window in result)
                 Assert.That(window, Is.EqualTo(sequence.Skip(++index).Take(windowSize)));
         }
+
+        /// <summary>
+        /// Verify that later windows do not modify any of the previous ones.
+        /// </summary>
+
+        [Test]
+        public void TestWindowedWindowsImmutability()
+        {
+            using (var windows = Enumerable.Range(1, 5).Windowed(2).AsTestingSequence())
+            using (var reader = windows.ToArray().Read())
+            {
+                reader.Read().AssertSequenceEqual(1, 2);
+                reader.Read().AssertSequenceEqual(2, 3);
+                reader.Read().AssertSequenceEqual(3, 4);
+                reader.Read().AssertSequenceEqual(4, 5);
+                reader.ReadEnd();
+            }
+        }
     }
 }
