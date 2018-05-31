@@ -595,7 +595,7 @@ namespace MoreLinq.Experimental
                     // a consequence generate new and unique task objects.
 
                     var completedTask = await
-                        Task.WhenAny(tasks.Select(it => (Task) it.Task).Concat(cancellationTaskSource.Task))
+                        Task.WhenAny(tasks.Select(it => (Task) it.Task).Append(cancellationTaskSource.Task))
                             .ConfigureAwait(continueOnCapturedContext: false);
 
                     if (completedTask == cancellationTaskSource.Task)

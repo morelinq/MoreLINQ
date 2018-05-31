@@ -55,6 +55,10 @@ This operator is the right-associative version of the Aggregate LINQ operator.
 
 This method has 3 overloads.
 
+### Append
+
+Returns a sequence consisting of the head element and the given tail elements.
+
 ### Assert
 
 Asserts that all elements of a sequence meet a given condition otherwise
@@ -109,9 +113,12 @@ second.
 Compares two sequences and returns an integer that indicates whether the
 first sequence has fewer, the same or more elements than the second sequence.
 
-### Concat
+### ~~Concat~~
 
 Returns a sequence consisting of the head element and the given tail elements.
+
+This method is obsolete and will be removed in a future version. Use `Append`
+insted.
 
 ### Consume
 
