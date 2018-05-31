@@ -41,15 +41,13 @@ namespace MoreLinq
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
+
         public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list
-                = source is IReadOnlyList<TSource> readOnlyList
-                ? readOnlyList.AsListLike()
-                : (source as IList<TSource> ?? source.ToList()).AsListLike();
+            var list = source.ToListLike();
 
             if (list.Count == 0)
                 throw new InvalidOperationException("Sequence contains no elements.");
@@ -79,14 +77,13 @@ namespace MoreLinq
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
+
         public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = source is IReadOnlyList<TSource> readOnlyList
-                     ? readOnlyList.AsListLike()
-                     : (source as IList<TSource> ?? source.ToList()).AsListLike();
+            var list = source.ToListLike();
 
             return AggregateRightImpl(list, seed, func, list.Count);
         }
@@ -116,6 +113,7 @@ namespace MoreLinq
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
+
         public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

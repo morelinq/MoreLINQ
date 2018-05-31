@@ -57,19 +57,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            switch (source)
-            {
-                case IList<T> list:
-                    return IterateList(list.AsListLike());
-                case IReadOnlyList<T> list:
-                    return IterateList(list.AsListLike());
-                case ICollection<T> collection:
-                    return IterateCollection(collection.Count);
-                case IReadOnlyCollection<T> collection:
-                    return IterateCollection(collection.Count);
-                default:
-                    return IterateSequence();
-            }
+            return source.TryAsListLike() is IListLike<T> listLike
+                   ? IterateList(listLike)
+                   : source.TryGetCollectionCount() is int collectionCount
+                     ? IterateCollection(collectionCount)
+                     : IterateSequence();
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
             {

@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TagFirstLastWideSourceSequenceOfOne()
+        public void TagFirstLastWithSourceSequenceOfOne()
         {
             var source = new[] { 123 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TagFirstLastWideSourceSequenceOfTwo()
+        public void TagFirstLastWithSourceSequenceOfTwo()
         {
             var source = new[] { 123, 456 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TagFirstLastWideSourceSequenceOfThree()
+        public void TagFirstLastWithSourceSequenceOfThree()
         {
             var source = new[] { 123, 456, 789 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })

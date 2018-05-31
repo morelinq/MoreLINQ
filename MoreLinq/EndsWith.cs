@@ -41,6 +41,7 @@ namespace MoreLinq
         /// <see cref="EqualityComparer{T}.Default" /> on pairs of elements at
         /// the same index.
         /// </remarks>
+
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
             return EndsWith(first, second, null);
@@ -64,6 +65,7 @@ namespace MoreLinq
         /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs of
         /// elements at the same index.
         /// </remarks>
+
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));

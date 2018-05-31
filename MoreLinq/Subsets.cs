@@ -114,6 +114,7 @@ namespace MoreLinq
         /// <summary>
         /// This class is responsible for producing the lexographically ordered k-subsets
         /// </summary>
+
         sealed class SubsetGenerator<T> : IEnumerable<IList<T>>
         {
             /// <summary>
@@ -121,6 +122,7 @@ namespace MoreLinq
             /// iterative, reductive swap algorithm to produce all subsets of a
             /// predetermined size less than or equal to the original set size.
             /// </summary>
+
             class SubsetEnumerator : IEnumerator<IList<T>>
             {
                 readonly IList<T> _set;   // the original set of elements

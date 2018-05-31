@@ -206,6 +206,23 @@ namespace MoreLinq.Test
             Assert.That(sequence, Is.EqualTo(sequenceClone));
         }
 
+        /// <summary>
+        /// Verify that RandomSubset produces subset where all elements belongs to original sequence.
+        /// </summary>
+        [Test]
+        public void TestRandomSubsetReturnsOriginalSequenceElements()
+        {
+            const int count = 100;
+            var sequence = Enumerable.Range(1, count);
+            var result = sequence.RandomSubset(count, new Random(12345));
+
+            // we do not test overload without seed because it can return original sequence
+            Assert.That(sequence, Is.Not.EqualTo(result));
+
+            // ensure random subset returns exactly the same elements of original sequence
+            Assert.That(sequence, Is.EqualTo(result.OrderBy(x => x)));
+        }
+
         static double RelativeStandardDeviation(IEnumerable<double> values)
         {
             var average = values.Average();

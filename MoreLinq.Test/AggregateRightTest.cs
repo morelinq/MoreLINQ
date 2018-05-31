@@ -42,8 +42,8 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(value));
         }
 
-        [TestCase(SourceKind.List)]
-        [TestCase(SourceKind.ReadOnlyList)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
         [TestCase(SourceKind.Sequence)]
         public void AggregateRight(SourceKind sourceKind)
         {

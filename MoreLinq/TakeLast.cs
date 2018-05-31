@@ -50,6 +50,9 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
+            if (count < 1)
+                return Enumerable.Empty<TSource>();
+
             return
                 source.TryGetCollectionCount() is int collectionCount
                 ? source.Slice(Math.Max(0, collectionCount - count), int.MaxValue)

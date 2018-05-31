@@ -127,6 +127,13 @@ than or equal to the given integer.
 Determines whether or not the number of elements in the sequence is lesser
 than or equal to the given integer.
 
+### Backsert
+
+Inserts the elements of a sequence into another sequence at a
+specified index from the tail of the sequence, where zero always represents
+the last position, one represents the second-last element, two represents
+the third-last element and so on.
+
 ### Batch
 
 Batches the source sequence into sized buckets.
@@ -136,8 +143,8 @@ This method has 2 overloads.
 ### Cartesian
 
 Returns the Cartesian product of two sequences by combining each element of
-the first set with each in the second and applying the user=define projection
-to the pair
+the first set with each in the second and applying a user-defined projection
+to the pair.
 
 ### Choose
 
@@ -154,8 +161,6 @@ first sequence has fewer, the same or more elements than the second sequence.
 ### Concat
 
 Returns a sequence consisting of the head element and the given tail elements.
-
-This method has 2 overloads.
 
 ### Consume
 
@@ -352,11 +357,6 @@ This method has 2 overloads.
 Returns a sequence with a range of elements in the source sequence
 moved to a new offset.
 
-### NestedLoops
-
-Produces a sequence from an action based on the dynamic generation of N nested
-loops who iteration counts are defined by
-
 ### OrderBy
 
 Sorts the elements of a sequence in a particular direction (ascending,
@@ -504,6 +504,12 @@ Generates a sequence of integral numbers within the (inclusive) specified range.
 
 This method has 2 overloads.
 
+### Shuffle
+
+Returns a sequence of elements in random order from the original sequence.
+
+This method has 2 overloads.
+
 ### SkipLast
 
 Bypasses a specified number of elements at the end of the sequence.
@@ -646,10 +652,20 @@ This method has 2 overloads.
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
 
+### WindowLeft
+
+Creates a left-aligned sliding window over the source sequence of a given size.
+
+### WindowRight
+
+Creates a right-aligned sliding window over the source sequence of a given size.
+
 ### ZipLongest
 
 Returns a projection of tuples, where each tuple contains the N-th element
 from each of the argument sequences
+
+This method has 3 overloads.
 
 ### ZipShortest
 
@@ -675,6 +691,12 @@ Creates a sequence query that streams the result of each task in the source
 sequence as it completes asynchronously.
 
 This method has 2 overloads.
+
+### AwaitCompletion
+
+Awaits completion of all asynchronous evaluations irrespective of whether they
+succeed or fail. An additional argument specifies a function that projects the
+final result given the source item and completed task.
 
 ### Memoize
 

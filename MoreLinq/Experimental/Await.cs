@@ -329,7 +329,87 @@ namespace MoreLinq.Experimental
         /// </remarks>
 
         public static IAwaitQuery<TResult> Await<T, TResult>(
-            this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> evaluator)
+            this IEnumerable<T> source, Func<T, CancellationToken, Task<TResult>> evaluator) =>
+            AwaitQuery.Create(options =>
+                from t in source.AwaitCompletion(evaluator, (_, t) => t)
+                                .WithOptions(options)
+                select t.GetAwaiter().GetResult());
+
+        /*
+        /// <summary>
+        /// Awaits completion of all asynchronous evaluations.
+        /// </summary>
+
+        public static IAwaitQuery<TResult> AwaitCompletion<T, TT, TResult>(
+            this IEnumerable<T> source,
+            Func<T, CancellationToken, Task<TT>> evaluator,
+            Func<T, TT, TResult> resultSelector,
+            Func<T, Exception, TResult> errorSelector,
+            Func<T, TResult> cancellationSelector) =>
+            AwaitQuery.Create(options =>
+                from e in source.AwaitCompletion(evaluator, (item, task) => (Item: item, Task: task))
+                                .WithOptions(options)
+                select e.Task.IsFaulted
+                     ? errorSelector(e.Item, e.Task.Exception)
+                     : e.Task.IsCanceled
+                     ? cancellationSelector(e.Item)
+                     : resultSelector(e.Item, e.Task.Result));
+        */
+
+        /// <summary>
+        /// Awaits completion of all asynchronous evaluations irrespective of
+        /// whether they succeed or fail. An additional argument specifies a
+        /// function that projects the final result given the source item and
+        /// completed task.
+        /// </summary>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <typeparam name="TTaskResult"> The type of the tasks's result.</typeparam>
+        /// <typeparam name="TResult">The type of the result elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="evaluator">A function to begin the asynchronous
+        /// evaluation of each element, the second parameter of which is a
+        /// <see cref="CancellationToken"/> that can be used to abort
+        /// asynchronous operations.</param>
+        /// <param name="resultSelector">A fucntion that projects the final
+        /// result given the source item and its asynchronous completion
+        /// result.</param>
+        /// <returns>
+        /// A sequence query that stream its results as they are
+        /// evaluated asynchronously.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This method uses deferred execution semantics. The results are
+        /// yielded as each asynchronous evaluation completes and, by default,
+        /// not guaranteed to be based on the source sequence order. If order
+        /// is important, compose further with
+        /// <see cref="AsOrdered{T}"/>.</para>
+        /// <para>
+        /// This method starts a new task where the asynchronous evaluations
+        /// take place and awaited. If the resulting sequence is partially
+        /// consumed then there's a good chance that some projection work will
+        /// be wasted and a cooperative effort is done that depends on the
+        /// <paramref name="evaluator"/> function (via a
+        /// <see cref="CancellationToken"/> as its second argument) to cancel
+        /// those in flight.</para>
+        /// <para>
+        /// The <paramref name="evaluator"/> function should be designed to be
+        /// thread-agnostic.</para>
+        /// <para>
+        /// The task returned by <paramref name="evaluator"/> should be started
+        /// when the function is called (and not just a mere projection)
+        /// otherwise changing concurrency options via
+        /// <see cref="AsSequential{T}"/>, <see cref="MaxConcurrency{T}"/> or
+        /// <see cref="UnboundedConcurrency{T}"/> will only change how many
+        /// tasks are awaited at any given moment, not how many will be
+        /// kept in flight.
+        /// </para>
+        /// </remarks>
+
+        public static IAwaitQuery<TResult> AwaitCompletion<T, TTaskResult, TResult>(
+            this IEnumerable<T> source,
+            Func<T, CancellationToken, Task<TTaskResult>> evaluator,
+            Func<T, Task<TTaskResult>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (evaluator == null) throw new ArgumentNullException(nameof(evaluator));
@@ -342,14 +422,14 @@ namespace MoreLinq.Experimental
 
             IEnumerable<TResult> _(int maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
-                var notices = new BlockingCollection<(Notice, (int, TResult), ExceptionDispatchInfo)>();
+                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
                 var cancellationTokenSource = new CancellationTokenSource();
                 var cancellationToken = cancellationTokenSource.Token;
                 var completed = false;
 
                 var enumerator =
                     source.Index()
-                          .Select(e => (e.Key, Task: evaluator(e.Value, cancellationToken)))
+                          .Select(e => (e.Key, Item: e.Value, Task: evaluator(e.Value, cancellationToken)))
                           .GetEnumerator();
 
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
@@ -362,7 +442,7 @@ namespace MoreLinq.Experimental
                                 enumerator,
                                 e => e.Task,
                                 notices,
-                                (e, r) => (Notice.Result, (e.Key, r), default),
+                                (e, r) => (Notice.Result, (e.Key, e.Item, e.Task), default),
                                 ex => (Notice.Error, default, ExceptionDispatchInfo.Capture(ex)),
                                 (Notice.End, default, default),
                                 maxConcurrency, cancellationTokenSource),
@@ -371,7 +451,7 @@ namespace MoreLinq.Experimental
                         scheduler);
 
                     var nextKey = 0;
-                    var holds = ordered ? new List<(int, TResult)>() : null;
+                    var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
 
                     foreach (var (kind, result, error) in notices.GetConsumingEnumerable())
                     {
@@ -383,14 +463,14 @@ namespace MoreLinq.Experimental
 
                         Debug.Assert(kind == Notice.Result);
 
-                        var (key, value) = result;
+                        var (key, inp, value) = result;
                         if (holds == null || key == nextKey)
                         {
                             // If order does not need to be preserved or the key
                             // is the next that should be yielded then yield
                             // the result.
 
-                            yield return value;
+                            yield return resultSelector(inp, value);
 
                             if (holds != null) // preserve order?
                             {
@@ -401,12 +481,12 @@ namespace MoreLinq.Experimental
 
                                 for (nextKey++; holds.Count > 0; nextKey++)
                                 {
-                                    var (candidateKey, candidate) = holds[0];
+                                    var (candidateKey, ic, candidate) = holds[0];
                                     if (candidateKey != nextKey)
                                         break;
 
                                     releaseCount++;
-                                    yield return candidate;
+                                    yield return resultSelector(ic, candidate);
                                 }
 
                                 holds.RemoveRange(0, releaseCount);
@@ -419,7 +499,7 @@ namespace MoreLinq.Experimental
                             // where it belongs in the order of results withheld
                             // so far and insert it in the list.
 
-                            var i = holds.BinarySearch(result, TupleComparer<int, TResult>.Item1);
+                            var i = holds.BinarySearch(result, TupleComparer<int, T, Task<TTaskResult>>.Item1);
                             Debug.Assert(i < 0);
                             holds.Insert(~i, result);
                         }
@@ -427,10 +507,10 @@ namespace MoreLinq.Experimental
 
                     if (holds?.Count > 0) // yield any withheld, which should be in order...
                     {
-                        foreach (var (key, value) in holds)
+                        foreach (var (key, x, value) in holds)
                         {
                             Debug.Assert(nextKey++ == key); //...assert so!
-                            yield return value;
+                            yield return resultSelector(x, value);
                         }
                     }
 
@@ -453,14 +533,11 @@ namespace MoreLinq.Experimental
 
         enum Notice { Result, Error, End }
 
-        static async Task<TResult> Select<T, TResult>(this Task<T> task, Func<T, TResult> selector) =>
-            selector(await task.ConfigureAwait(continueOnCapturedContext: false));
-
         static async Task CollectToAsync<T, TResult, TNotice>(
             this IEnumerator<T> e,
             Func<T, Task<TResult>> taskSelector,
             BlockingCollection<TNotice> collection,
-            Func<T, TResult, TNotice> resultNoticeSelector,
+            Func<T, Task<TResult>, TNotice> completionNoticeSelector,
             Func<Exception, TNotice> errorNoticeSelector,
             TNotice endNotice,
             int maxConcurrency,
@@ -476,13 +553,13 @@ namespace MoreLinq.Experimental
                 var cancellationTaskSource = new TaskCompletionSource<bool>();
                 cancellationToken.Register(() => cancellationTaskSource.TrySetResult(true));
 
-                var tasks = new List<Task<(T, TResult)>>();
+                var tasks = new List<(T Item, Task<TResult> Task)>();
 
                 for (var i = 0; i < maxConcurrency; i++)
                 {
                     if (!reader.TryRead(out var item))
                         break;
-                    tasks.Add(taskSelector(item).Select(r => (item, r)));
+                    tasks.Add((item, taskSelector(item)));
                 }
 
                 while (tasks.Count > 0)
@@ -518,7 +595,7 @@ namespace MoreLinq.Experimental
                     // a consequence generate new and unique task objects.
 
                     var completedTask = await
-                        Task.WhenAny(tasks.Cast<Task>().Concat(cancellationTaskSource.Task))
+                        Task.WhenAny(tasks.Select(it => (Task) it.Task).Concat(cancellationTaskSource.Task))
                             .ConfigureAwait(continueOnCapturedContext: false);
 
                     if (completedTask == cancellationTaskSource.Task)
@@ -534,18 +611,23 @@ namespace MoreLinq.Experimental
                         return;
                     }
 
-                    var task = (Task<(T Input, TResult Result)>) completedTask;
-                    tasks.Remove(task);
+                    var i = tasks.FindIndex(it => it.Task.Equals(completedTask));
 
-                    // Await the task rather than using its result directly
-                    // to avoid having the task's exception bubble up as
-                    // AggregateException if the task failed.
+                    {
+                        var (item, task) = tasks[i];
+                        tasks.RemoveAt(i);
 
-                    var eval = await task;
-                    collection.Add(resultNoticeSelector(eval.Input, eval.Result));
+                        // Await the task rather than using its result directly
+                        // to avoid having the task's exception bubble up as
+                        // AggregateException if the task failed.
 
-                    if (reader.TryRead(out var item))
-                        tasks.Add(taskSelector(item).Select(r => (item, r)));
+                        collection.Add(completionNoticeSelector(item, task));
+                    }
+
+                    {
+                        if (reader.TryRead(out var item))
+                            tasks.Add((item, taskSelector(item)));
+                    }
                 }
 
                 collection.Add(endNotice);
@@ -627,13 +709,16 @@ namespace MoreLinq.Experimental
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        static class TupleComparer<T1, T2>
+        static class TupleComparer<T1, T2, T3>
         {
-            public static readonly IComparer<(T1, T2)> Item1 =
-                Comparer<(T1, T2)>.Create((x, y) => Comparer<T1>.Default.Compare(x.Item1, y.Item1));
+            public static readonly IComparer<(T1, T2, T3)> Item1 =
+                Comparer<(T1, T2, T3)>.Create((x, y) => Comparer<T1>.Default.Compare(x.Item1, y.Item1));
 
-            public static readonly IComparer<(T1, T2)> Item2 =
-                Comparer<(T1, T2)>.Create((x, y) => Comparer<T2>.Default.Compare(x.Item2, y.Item2));
+            public static readonly IComparer<(T1, T2, T3)> Item2 =
+                Comparer<(T1, T2, T3)>.Create((x, y) => Comparer<T2>.Default.Compare(x.Item2, y.Item2));
+
+            public static readonly IComparer<(T1, T2, T3)> Item3 =
+                Comparer<(T1, T2, T3)>.Create((x, y) => Comparer<T3>.Default.Compare(x.Item3, y.Item3));
         }
     }
 }
