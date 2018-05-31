@@ -12,7 +12,7 @@ if "%1"=="docs" shift & goto :docs
 :build
 dotnet --info ^
   && dotnet restore ^
-  && dotnet restore MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj ^
+  && dotnet restore bld/MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj ^
   && call :codegen MoreLinq\NoConflict.g.cs -x "[/\\]ToDataTable\.cs$" -u System.Linq -u System.Collections MoreLinq ^
   && call :codegen MoreLinq\NoConflict.ToDataTable.g.cs -i "[/\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq ^
   && for %%i in (debug release) do call msbuild.cmd "MoreLinq.sln" /v:m /p:Configuration=%%i %* || exit /b 1
@@ -29,7 +29,7 @@ exit /b 2
 
 :codegen
 echo | set /p=Generating no-conflict wrappers (%1)...
-dotnet run -p MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
+dotnet run -p bld/MoreLinq.NoConflictGenerator/MoreLinq.NoConflictGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
   && move "%temp%\%~nx1" "%~dp1" > nul ^
   && echo Done.
 goto :EOF
