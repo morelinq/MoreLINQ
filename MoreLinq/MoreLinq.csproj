@@ -167,7 +167,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
     <Compile Remove="ToDataTable.cs" />
-    <Compile Remove="NoConflict.ToDataTable.g.cs" />
+    <Compile Remove="Extensions.ToDataTable.g.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net451'">
