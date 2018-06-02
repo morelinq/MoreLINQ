@@ -27,8 +27,8 @@ by individually importing just the extension methods you need using the
 [static imports feature introduced in C# 6][using-static]:
 
 ```c#
-using static MoreLinq.NoConflict.LagExtension;
-using static MoreLinq.NoConflict.LeadExtension;
+using static MoreLinq.Extensions.LagExtension;
+using static MoreLinq.Extensions.LeadExtension;
 ```
 
 In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
@@ -40,8 +40,8 @@ that *generate* (instead of operating on) sequences, like `Unfold`,
 importing other individual extension methods, you can do so via aliasing:
 
 ```c#
-using static MoreLinq.NoConflict.LagExtension;
-using static MoreLinq.NoConflict.LeadExtension;
+using static MoreLinq.Extensions.LagExtension;
+using static MoreLinq.Extensions.LeadExtension;
 using MoreEnumerable = MoreLinq.MoreEnumerable;
 ```
 
