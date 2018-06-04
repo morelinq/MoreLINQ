@@ -246,6 +246,12 @@ selector function.
 
 This method has 4 overloads.
 
+### IgnoreErrors
+
+Ignore some exceptions that can occurs during the iteration of the sequence.
+
+This method has 3 overloads.
+
 ### ~~Incremental~~
 
 `Incremental` was redundant with `Pairwise` and so deprecated since version
