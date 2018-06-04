@@ -78,5 +78,15 @@ namespace MoreLinq.Test
 
             Assert.That(result, Is.EqualTo(expectations));
         }
+
+        [Test]
+        public void IgnoreErrorsWithParserFunction()
+        {
+            var source = "O,l,2,3,4,S,6,7,B,9".Split(',').Select(int.Parse);
+            var result = source.IgnoreErrors((FormatException ex) => true);
+            var expectations = new[] { 2, 3, 4, 6, 7, 9 };
+
+            Assert.That(result, Is.EqualTo(expectations));
+        }
     }
 }
