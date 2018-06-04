@@ -609,6 +609,14 @@ This method has 2 overloads.
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
 
+### WindowLeft
+
+Creates a left-aligned sliding window over the source sequence of a given size.
+
+### WindowRight
+
+Creates a right-aligned sliding window over the source sequence of a given size.
+
 ### ZipLongest
 
 Returns a projection of tuples, where each tuple contains the N-th element
