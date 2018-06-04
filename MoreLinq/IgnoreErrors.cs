@@ -26,14 +26,23 @@ namespace MoreLinq
         static Func<Exception, bool> defaultErrorPredicate = (Exception ex) => false;
 
         /// <summary>
-        /// Applies a key-generating function to each element of a sequence and returns a sequence of
-        /// unique keys and their number of occurrences in the original sequence.
+        /// Ignore some exceptions that can occurs during the iteration of the sequence.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TException">Type of the exception that can be ignored.</typeparam>
         /// <param name="source">Source sequence.</param>
-        /// <param name="errorPredicate">Source sequence.</param>
-        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+        /// <param name="errorPredicate">
+        /// A function that receives the exceptions of type <typeparamref name="TException"/>
+        /// that occurs during the iteration and indicates if it should be ignored or not.
+        /// </param>
+        /// <returns>
+        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
+        /// <typeparamref name="TException"/> in accordance with <paramref name="errorPredicate"/>.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
         public static IEnumerable<T> IgnoreErrors<T, TException>(
             this IEnumerable<T> source,
             Func<TException, bool> errorPredicate)
@@ -42,16 +51,30 @@ namespace MoreLinq
                             defaultErrorPredicate, defaultErrorPredicate);
 
         /// <summary>
-        /// Applies a key-generating function to each element of a sequence and returns a sequence of
-        /// unique keys and their number of occurrences in the original sequence.
+        /// Ignore some exceptions that can occurs during the iteration of the sequence.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException1">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException2">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TException1">First type of the exception that can be ignored.</typeparam>
+        /// <typeparam name="TException2">Second type of the exception that can be ignored.</typeparam>
         /// <param name="source">Source sequence.</param>
-        /// <param name="error1Predicate">Source sequence.</param>
-        /// <param name="error2Predicate">Source sequence.</param>
-        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+        /// <param name="error1Predicate">
+        /// A function that receives the exceptions of type <typeparamref name="TException1"/>
+        /// that occurs during the iteration and indicates if it should be ignored or not.
+        /// </param>
+        /// <param name="error2Predicate">
+        /// A function that receives the exceptions of type <typeparamref name="TException2"/>
+        /// that occurs during the iteration and indicates if it should be ignored or not.
+        /// </param>
+        /// <returns>
+        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
+        /// <typeparamref name="TException1"/> or <typeparamref name="TException2"/>
+        /// in accordance with predicates.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// Exceptions are caught in order which predicates were passed, as well in a catch block.
+        /// </remarks>
+
         public static IEnumerable<T> IgnoreErrors<T, TException1, TException2>(
             this IEnumerable<T> source,
             Func<TException1, bool> error1Predicate,
@@ -61,18 +84,35 @@ namespace MoreLinq
             => IgnoreErrors(source, error1Predicate, error2Predicate, defaultErrorPredicate);
 
         /// <summary>
-        /// Applies a key-generating function to each element of a sequence and returns a sequence of
-        /// unique keys and their number of occurrences in the original sequence.
+        /// Ignore some exceptions that can occurs during the iteration of the sequence.
         /// </summary>
         /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException1">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException2">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException3">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TException1">First type of the exception that can be ignored.</typeparam>
+        /// <typeparam name="TException2">Second type of the exception that can be ignored.</typeparam>
+        /// <typeparam name="TException3">Third type of the exception that can be ignored.</typeparam>
         /// <param name="source">Source sequence.</param>
-        /// <param name="error1Predicate">Source sequence.</param>
-        /// <param name="error2Predicate">Source sequence.</param>
-        /// <param name="error3Predicate">Source sequence.</param>
-        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+        /// <param name="error1Predicate">
+        /// A function that receives the exceptions of type <typeparamref name="TException1"/>
+        /// that occurs during the iteration and indicates if it should be ignored or not.
+        /// </param>
+        /// <param name="error2Predicate">
+        /// A function that receives the exceptions of type <typeparamref name="TException2"/>
+        /// that occurs during the iteration and indicates if it should be ignored or not.
+        /// </param>
+        /// <param name="error3Predicate">
+        /// A function that receives the exceptions of type <typeparamref name="TException3"/>
+        /// that occurs during the iteration and indicates if it should be ignored or not.
+        /// </param>
+        /// <returns>
+        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
+        /// <typeparamref name="TException1"/>, <typeparamref name="TException2"/> or <typeparamref name="TException3"/>
+        /// in accordance with predicates.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// Exceptions are caught in order which predicates were passed, as well in a catch block.
+        /// </remarks>
+
         public static IEnumerable<T> IgnoreErrors<T, TException1, TException2, TException3>(
             this IEnumerable<T> source,
             Func<TException1, bool> error1Predicate,
