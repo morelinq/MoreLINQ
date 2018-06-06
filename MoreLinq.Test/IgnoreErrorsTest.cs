@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using NUnit.Framework;
     using System;
+    using System.Globalization;
 
     [TestFixture]
     public class IgnoreErrorsTest
@@ -82,7 +83,8 @@ namespace MoreLinq.Test
         [Test]
         public void IgnoreErrorsWithParserFunction()
         {
-            var source = "O,l,2,3,4,S,6,7,B,9".Split(',').Select(int.Parse);
+            var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
+                                              .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
             var result = source.IgnoreErrors((FormatException ex) => true);
             var expectations = new[] { 2, 3, 4, 6, 7, 9 };
 
