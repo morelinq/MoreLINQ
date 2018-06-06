@@ -81,7 +81,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsWithParserFunction()
+        public void IgnoreErrorsInParsing()
         {
             var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
                                               .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
