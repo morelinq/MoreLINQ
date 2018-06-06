@@ -40,9 +40,8 @@ namespace MoreLinq.Test
                                              () => 3);
 
             var result = source.IgnoreErrors((TestException e) => bool.Parse(e.Message));
-            var expectations = Enumerable.Range(1, 2);
 
-            Assert.That(result.Take(2), Is.EqualTo(expectations));
+            Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
             Assert.Throws<TestException>(() => result.ElementAt(2));
         }
 
@@ -55,9 +54,8 @@ namespace MoreLinq.Test
                                              () => 3);
 
             var result = source.IgnoreErrors((ArgumentException e) => true);
-            var expectations = Enumerable.Range(1, 2);
 
-            Assert.That(result.Take(2), Is.EqualTo(expectations));
+            Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
             Assert.Throws<TestException>(() => result.ElementAt(2));
         }
 
@@ -75,9 +73,8 @@ namespace MoreLinq.Test
                                              () => 5);
 
             var result = source.IgnoreErrors((Exception e) => true);
-            var expectations = Enumerable.Range(1, 5);
 
-            Assert.That(result, Is.EqualTo(expectations));
+            Assert.That(result, Is.EqualTo(Enumerable.Range(1, 5)));
         }
 
         [Test]
@@ -86,9 +83,8 @@ namespace MoreLinq.Test
             var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
                                               .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
             var result = source.IgnoreErrors((FormatException ex) => true);
-            var expectations = new[] { 2, 3, 4, 6, 7, 9 };
 
-            Assert.That(result, Is.EqualTo(expectations));
+            Assert.That(result, Is.EqualTo(new[] { 2, 3, 4, 6, 7, 9 }));
         }
     }
 }
