@@ -33,13 +33,14 @@ namespace MoreLinq.Test
         [Test]
         public void IgnoreErrors()
         {
+            const string key = "ignore";
             var source = MoreEnumerable.From(() => 1,
-                                             () => throw new TestException("True"),
+                                             () => throw new TestException() { Data = { [key] = true } },
                                              () => 2,
-                                             () => throw new TestException("False"),
+                                             () => throw new TestException() { Data = { [key] = false } },
                                              () => 3);
 
-            var result = source.IgnoreErrors((TestException e) => bool.Parse(e.Message));
+            var result = source.IgnoreErrors((TestException e) => (bool) e.Data[key]);
 
             Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
             Assert.Throws<TestException>(() => result.ElementAt(2));
