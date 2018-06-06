@@ -46,7 +46,7 @@ namespace MoreLinq
                     exceptions.Value.Add(ex);
                 }
 
-            if (exceptions.Value.Count > 0)
+            if (exceptions.IsValueCreated)
                 throw new AggregateException(exceptions.Value);
         }
 
@@ -77,7 +77,7 @@ namespace MoreLinq
                     exceptions.Value.Add(ex);
                 }
 
-            if (exceptions.Value.Count > 0)
+            if (exceptions.IsValueCreated)
                 throw new AggregateException(exceptions.Value);
         }
     }
