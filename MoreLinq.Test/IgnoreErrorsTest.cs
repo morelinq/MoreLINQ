@@ -25,13 +25,13 @@ namespace MoreLinq.Test
     public class IgnoreErrorsTest
     {
         [Test]
-        public void IgnoreErrorsIsLazy()
+        public void IgnoreErrorsPredicateIsLazy()
         {
             new BreakingSequence<int>().IgnoreErrors(BreakingFunc.Of<Exception, bool>());
         }
 
         [Test]
-        public void IgnoreErrors()
+        public void IgnoreErrorsPredicate()
         {
             const string key = "ignore";
             var source = MoreEnumerable.From(() => 1,
@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsNoExceptionTypeMatch()
+        public void IgnoreErrorsPredicateNoExceptionTypeMatch()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
@@ -61,7 +61,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsWithBaseException()
+        public void IgnoreErrorsPredicateWithBaseException()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
@@ -79,7 +79,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsInParsing()
+        public void IgnoreErrorsPredicateInParsing()
         {
             var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
                                               .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
