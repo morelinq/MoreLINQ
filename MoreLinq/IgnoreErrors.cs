@@ -22,8 +22,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-   //   static Func<Exception, bool> defaultErrorPredicate = (Exception ex) => false;
-
         /// <summary>
         /// Ignore some exceptions that can occurs during the iteration of the sequence.
         /// </summary>
@@ -220,7 +218,10 @@ namespace MoreLinq
                     {
                         try
                         {
-                            if (!e.MoveNext()) break;
+                            if (!e.MoveNext())
+                            {
+                                break;
+                            }
                         }
                         catch (TException1 ex) when (error1Predicate?.Invoke(ex) ?? true)
                         {
