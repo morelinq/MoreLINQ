@@ -250,7 +250,7 @@ This method has 4 overloads.
 
 Ignore some exceptions that can occurs during the iteration of the sequence.
 
-This method has 3 overloads.
+This method has 6 overloads.
 
 ### ~~Incremental~~
 
