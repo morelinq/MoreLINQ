@@ -25,13 +25,125 @@ namespace MoreLinq.Test
     public class IgnoreErrorsTest
     {
         [Test]
-        public void IgnoreErrorsPredicateIsLazy()
+        public void IgnoreErrorsError1IsLazy()
+        {
+            new BreakingSequence<int>().IgnoreErrors<int, TestException>();
+        }
+
+        [Test]
+        public void IgnoreErrorsError1()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => throw new TestException(),
+                                             () => throw new TestException(),
+                                             () => 2,
+                                             () => throw new NullReferenceException(),
+                                             () => 3);
+
+            var result = source.IgnoreErrors<int, TestException>();
+
+            Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
+            Assert.Throws<NullReferenceException>(() => result.ElementAt(2));
+        }
+
+       [Test]
+        public void IgnoreErrorsError1WithBaseException()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => throw new TestException(),
+                                             () => 2,
+                                             () => throw new NullReferenceException(),
+                                             () => 3,
+                                             () => throw new ArgumentException(),
+                                             () => 4,
+                                             () => throw new TestException(),
+                                             () => 5,
+                                             () => throw new NullReferenceException(),
+                                             () => 6,
+                                             () => throw new ArgumentException(),
+                                             () => 7,
+                                             () => throw new Exception(),
+                                             () => 8);
+
+            var result = source.IgnoreErrors<int, Exception>();
+
+            Assert.That(result, Is.EqualTo(Enumerable.Range(1, 8)));
+        }
+
+        [Test]
+        public void IgnoreErrorsError1InParsing()
+        {
+            var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
+                                              .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
+            var result = source.IgnoreErrors<int, FormatException>();
+
+            Assert.That(result, Is.EqualTo(new[] { 2, 3, 4, 6, 7, 9 }));
+        }
+
+        [Test]
+        public void IgnoreErrorsError2IsLazy()
+        {
+            new BreakingSequence<int>().IgnoreErrors<int, TestException, NullReferenceException>();
+        }
+
+        [Test]
+        public void IgnoreErrorsError2()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => throw new TestException(),
+                                             () => 2,
+                                             () => throw new NullReferenceException(),
+                                             () => 3,
+                                             () => throw new NullReferenceException(),
+                                             () => 4,
+                                             () => throw new Exception(),
+                                             () => 5);
+
+            var result = source.IgnoreErrors<int, TestException, NullReferenceException>();
+
+            Assert.That(result.Take(4), Is.EqualTo(Enumerable.Range(1, 4)));
+            Assert.Throws<Exception>(() => result.ElementAt(4));
+        }
+
+        [Test]
+        public void IgnoreErrorsError3IsLazy()
+        {
+            new BreakingSequence<int>().IgnoreErrors<int, TestException, NullReferenceException, ArgumentException>();
+        }
+
+        [Test]
+        public void IgnoreErrorsError3()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => throw new TestException(),
+                                             () => 2,
+                                             () => throw new NullReferenceException(),
+                                             () => 3,
+                                             () => throw new ArgumentException(),
+                                             () => 4,
+                                             () => throw new TestException(),
+                                             () => 5,
+                                             () => throw new NullReferenceException(),
+                                             () => 6,
+                                             () => throw new ArgumentException(),
+                                             () => 7,
+                                             () => throw new Exception(),
+                                             () => 8);
+
+            var result = source.IgnoreErrors<int, TestException, NullReferenceException, ArgumentException>();
+
+            Assert.That(result.Take(7), Is.EqualTo(Enumerable.Range(1, 7)));
+            Assert.Throws<Exception>(() => result.ElementAt(7));
+        }
+
+        [Test]
+        public void IgnoreErrorsError1PredicateIsLazy()
         {
             new BreakingSequence<int>().IgnoreErrors(BreakingFunc.Of<Exception, bool>());
         }
 
         [Test]
-        public void IgnoreErrorsPredicate()
+        public void IgnoreErrorsError1Predicate()
         {
             const string key = "ignore";
             var source = MoreEnumerable.From(() => 1,
@@ -47,7 +159,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsPredicateNoExceptionTypeMatch()
+        public void IgnoreErrorsError1PredicateNoTypeMatch()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
@@ -61,31 +173,48 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsPredicateWithBaseException()
+        public void IgnoreErrorsError1PredicateWithBaseException()
+        {
+            var source = MoreEnumerable.From(() => 1,
+                                             () => throw new TestException(),
+                                             () => throw new Exception(),
+                                             () => 2,
+                                             () => throw new ArgumentException(),
+                                             () => 3,
+                                             () => throw new NullReferenceException(),
+                                             () => 4,
+                                             () => throw new Exception(),
+                                             () => 5);
+
+            var result = source.IgnoreErrors((Exception e) => !(e is NullReferenceException));
+
+            Assert.That(result.Take(3), Is.EqualTo(Enumerable.Range(1, 3)));
+            Assert.Throws<NullReferenceException>(() => result.ElementAt(3));
+        }
+
+        [Test]
+        public void IgnoreErrorsError2PredicateIsCaughtInOrder()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
                                              () => 2,
                                              () => throw new Exception(),
-                                             () => 3,
-                                             () => throw new NullReferenceException(),
-                                             () => 4,
-                                             () => throw new ArgumentException(),
-                                             () => 5);
+                                             () => 3);
 
-            var result = source.IgnoreErrors((Exception e) => true);
+            Func<TestException, bool> testExceptionPredicate = e => true;
+            Func<Exception, bool> exceptionPredicate = e => false;
 
-            Assert.That(result, Is.EqualTo(Enumerable.Range(1, 5)));
-        }
+            var result = source.IgnoreErrors(testExceptionPredicate,
+                                             exceptionPredicate);
 
-        [Test]
-        public void IgnoreErrorsPredicateInParsing()
-        {
-            var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
-                                              .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
-            var result = source.IgnoreErrors((FormatException ex) => true);
+            Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
+            Assert.Throws<Exception>(() => result.ElementAt(2));
 
-            Assert.That(result, Is.EqualTo(new[] { 2, 3, 4, 6, 7, 9 }));
+            result = source.IgnoreErrors(exceptionPredicate,
+                                         testExceptionPredicate);
+
+            Assert.That(result.Take(1), Is.EqualTo(Enumerable.Range(1, 1)));
+            Assert.Throws<TestException>(() => result.ElementAt(1));
         }
     }
 }
