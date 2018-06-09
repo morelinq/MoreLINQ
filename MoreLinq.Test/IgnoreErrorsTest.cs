@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using Experimental;
     using NUnit.Framework;
     using System;
     using System.Globalization;
@@ -42,7 +43,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, TestException>();
+                var result = test.IgnoreErrors<int, TestException>()
+                                 .Memoize();
 
                 Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
                 Assert.Throws<NullReferenceException>(() => result.ElementAt(2));
@@ -111,7 +113,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, TestException, NullReferenceException>();
+                var result = test.IgnoreErrors<int, TestException, NullReferenceException>()
+                                 .Memoize();
 
                 Assert.That(result.Take(4), Is.EqualTo(Enumerable.Range(1, 4)));
                 Assert.Throws<Exception>(() => result.ElementAt(4));
@@ -145,7 +148,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, TestException, NullReferenceException, ArgumentException>();
+                var result = test.IgnoreErrors<int, TestException, NullReferenceException, ArgumentException>()
+                                 .Memoize();
 
                 Assert.That(result.Take(7), Is.EqualTo(Enumerable.Range(1, 7)));
                 Assert.Throws<Exception>(() => result.ElementAt(7));
@@ -170,7 +174,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors((TestException e) => (bool) e.Data[key]);
+                var result = test.IgnoreErrors((TestException e) => (bool) e.Data[key])
+                                 .Memoize();
 
                 Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
                 Assert.Throws<TestException>(() => result.ElementAt(2));
@@ -187,7 +192,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors((ArgumentException e) => true);
+                var result = test.IgnoreErrors((ArgumentException e) => true)
+                                 .Memoize();
 
                 Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
                 Assert.Throws<TestException>(() => result.ElementAt(2));
@@ -210,7 +216,8 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors((Exception e) => !(e is NullReferenceException));
+                var result = test.IgnoreErrors((Exception e) => !(e is NullReferenceException))
+                                 .Memoize();
 
                 Assert.That(result.Take(3), Is.EqualTo(Enumerable.Range(1, 3)));
                 Assert.Throws<NullReferenceException>(() => result.ElementAt(3));
@@ -225,21 +232,24 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => throw new Exception(),
                                              () => 3);
+            int testCount = 0;
+            int exceptionCount = 0;
 
-            Func<TestException, bool> testExceptionPredicate = e => true;
-            Func<Exception, bool> exceptionPredicate = e => false;
+            Func<TestException, bool> testExceptionPredicate = e => { testCount++; return true; };
+            Func<Exception, bool>  exceptionPredicate= e => { exceptionCount++; return true; };
 
-            var result = source.IgnoreErrors(testExceptionPredicate,
-                                             exceptionPredicate);
+            source.IgnoreErrors(testExceptionPredicate, exceptionPredicate).Consume();
 
-            Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
-            Assert.Throws<Exception>(() => result.ElementAt(2));
+            Assert.AreEqual(1, testCount);
+            Assert.AreEqual(1, exceptionCount);
 
-            result = source.IgnoreErrors(exceptionPredicate,
-                                         testExceptionPredicate);
+            testCount = 0;
+            exceptionCount = 0;
 
-            Assert.That(result.Take(1), Is.EqualTo(Enumerable.Range(1, 1)));
-            Assert.Throws<TestException>(() => result.ElementAt(1));
+            source.IgnoreErrors(exceptionPredicate, testExceptionPredicate).Consume();
+
+            Assert.AreEqual(0, testCount);
+            Assert.AreEqual(2, exceptionCount);
         }
     }
 }
