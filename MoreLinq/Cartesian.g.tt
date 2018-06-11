@@ -29,7 +29,7 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
 
-<#      
+<#
         var ordinalArray = new[]{"first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth"};
         var amountArray = new[]{"two", "three", "four", "five", "six", "seven", "eight"};
         var itemsInfo =
