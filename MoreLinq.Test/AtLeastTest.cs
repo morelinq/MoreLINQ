@@ -29,7 +29,7 @@ namespace MoreLinq.Test
             AssertThrowsArgument.OutOfRangeException("count", () =>
                 new[] { 1 }.AtLeast(-1));
         }
-        
+
         [TestCaseSource(nameof(AtLeastSource))]
         public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>
             Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtLeast(atLeastAssertCount);
