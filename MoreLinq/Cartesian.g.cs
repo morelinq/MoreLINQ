@@ -65,7 +65,7 @@ namespace MoreLinq
             {
                 var secondMemo = second.Memoize();
 
-                using (second as IDisposable)
+                using (secondMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -121,8 +121,8 @@ namespace MoreLinq
                 var secondMemo = second.Memoize();
                 var thirdMemo = third.Memoize();
 
-                using (second as IDisposable)
-                using (third as IDisposable)
+                using (secondMemo as IDisposable)
+                using (thirdMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -185,9 +185,9 @@ namespace MoreLinq
                 var thirdMemo = third.Memoize();
                 var fourthMemo = fourth.Memoize();
 
-                using (second as IDisposable)
-                using (third as IDisposable)
-                using (fourth as IDisposable)
+                using (secondMemo as IDisposable)
+                using (thirdMemo as IDisposable)
+                using (fourthMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -257,10 +257,10 @@ namespace MoreLinq
                 var fourthMemo = fourth.Memoize();
                 var fifthMemo = fifth.Memoize();
 
-                using (second as IDisposable)
-                using (third as IDisposable)
-                using (fourth as IDisposable)
-                using (fifth as IDisposable)
+                using (secondMemo as IDisposable)
+                using (thirdMemo as IDisposable)
+                using (fourthMemo as IDisposable)
+                using (fifthMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -337,11 +337,11 @@ namespace MoreLinq
                 var fifthMemo = fifth.Memoize();
                 var sixthMemo = sixth.Memoize();
 
-                using (second as IDisposable)
-                using (third as IDisposable)
-                using (fourth as IDisposable)
-                using (fifth as IDisposable)
-                using (sixth as IDisposable)
+                using (secondMemo as IDisposable)
+                using (thirdMemo as IDisposable)
+                using (fourthMemo as IDisposable)
+                using (fifthMemo as IDisposable)
+                using (sixthMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -425,12 +425,12 @@ namespace MoreLinq
                 var sixthMemo = sixth.Memoize();
                 var seventhMemo = seventh.Memoize();
 
-                using (second as IDisposable)
-                using (third as IDisposable)
-                using (fourth as IDisposable)
-                using (fifth as IDisposable)
-                using (sixth as IDisposable)
-                using (seventh as IDisposable)
+                using (secondMemo as IDisposable)
+                using (thirdMemo as IDisposable)
+                using (fourthMemo as IDisposable)
+                using (fifthMemo as IDisposable)
+                using (sixthMemo as IDisposable)
+                using (seventhMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -521,13 +521,13 @@ namespace MoreLinq
                 var seventhMemo = seventh.Memoize();
                 var eighthMemo = eighth.Memoize();
 
-                using (second as IDisposable)
-                using (third as IDisposable)
-                using (fourth as IDisposable)
-                using (fifth as IDisposable)
-                using (sixth as IDisposable)
-                using (seventh as IDisposable)
-                using (eighth as IDisposable)
+                using (secondMemo as IDisposable)
+                using (thirdMemo as IDisposable)
+                using (fourthMemo as IDisposable)
+                using (fifthMemo as IDisposable)
+                using (sixthMemo as IDisposable)
+                using (seventhMemo as IDisposable)
+                using (eighthMemo as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)

@@ -102,7 +102,7 @@ namespace MoreLinq
 <# }#>
 
 <# foreach (var arg in o.Arguments.Skip(1)) {#>
-                using (<#= arg.Ordinal #> as IDisposable)
+                using (<#= arg.Ordinal #>Memo as IDisposable)
 <# }#>
                 {
                     foreach (var item1 in first)
