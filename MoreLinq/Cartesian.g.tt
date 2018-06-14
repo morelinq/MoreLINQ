@@ -52,13 +52,11 @@ namespace MoreLinq
         })
         into args
         select args.ToList() into args
-        from e in from a in args.Skip(1)
-                  select new { a.Arity, Arguments = args.Take(a.Count).ToList() }
+        from a in args.Skip(1)
         select new
         {
-            e.Arity,
-            e.Arguments,
-            ArgGenericsStr = string.Join(", ", from x in e.Arguments select "T" + x.Number),
+            a.Arity,
+            Arguments = args.Take(a.Count).ToList(),
         };
 
     foreach (var o in overloads)
@@ -91,13 +89,13 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> Cartesian<<#= o.ArgGenericsStr #>, TResult>(
+        public static IEnumerable<TResult> Cartesian<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult>(
             this <#
         foreach (var arg in o.Arguments) { #>
 IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
             <#
         } #>
-Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
+Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult> resultSelector)
         {
 <#      foreach (var arg in o.Arguments) { #>
             if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
