@@ -21,7 +21,7 @@ namespace MoreLinq
     using System.Collections.Generic;
     using Experimental;
 
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Returns the Cartesian product of two sequences by enumerating all
