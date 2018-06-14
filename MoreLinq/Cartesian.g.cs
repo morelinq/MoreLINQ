@@ -23,9 +23,6 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {
-
-
-
         /// <summary>
         /// Returns the Cartesian product of two sequences by enumerating all
         /// possible combinations of one item from each sequence, and applying a user-defined
@@ -73,8 +70,6 @@ namespace MoreLinq
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns the Cartesian product of three sequences by enumerating all
@@ -131,8 +126,6 @@ namespace MoreLinq
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns the Cartesian product of four sequences by enumerating all
@@ -197,8 +190,6 @@ namespace MoreLinq
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns the Cartesian product of five sequences by enumerating all
@@ -271,8 +262,6 @@ namespace MoreLinq
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns the Cartesian product of six sequences by enumerating all
@@ -353,8 +342,6 @@ namespace MoreLinq
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns the Cartesian product of seven sequences by enumerating all
@@ -443,8 +430,6 @@ namespace MoreLinq
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns the Cartesian product of eight sequences by enumerating all
@@ -541,6 +526,5 @@ namespace MoreLinq
                 }
             }
         }
-
     }
 }

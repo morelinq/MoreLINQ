@@ -27,9 +27,7 @@ namespace MoreLinq
     using Experimental;
 
     public static partial class MoreEnumerable
-    {
-
-<#
+    {<#
     var ordinalArray = new[] { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth" };
     var amountArray  = new[] { "two", "three", "four", "five", "six", "seven", "eight" };
     var itemsInfo =
@@ -41,8 +39,6 @@ namespace MoreLinq
             IndexStr = indexStr,
             ItemStr  = "item" + indexStr
         }).ToList();
-
-
 
     var overloads =
         from i in Enumerable.Range(2, ordinalArray.Length - 1)
@@ -56,8 +52,8 @@ namespace MoreLinq
             ResultSelectorArgsStr = string.Join(", ", arguments.Select(x => x.ItemStr))
         };
 
-    foreach (var o in overloads) { #>
-
+    foreach (var o in overloads)
+    { #>
 
         /// <summary>
         /// Returns the Cartesian product of <#= o.AmountString #> sequences by enumerating all
@@ -113,7 +109,6 @@ namespace MoreLinq
                 }
             }
         }
-
 <#  } #>
     }
 }
