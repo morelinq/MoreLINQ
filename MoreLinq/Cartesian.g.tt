@@ -31,25 +31,31 @@ namespace MoreLinq
     var ordinalArray = new[] { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth" };
     var amountArray  = new[] { "two", "three", "four", "five", "six", "seven", "eight" };
     var itemsInfo =
-        (from i in Enumerable.Range(1, ordinalArray.Length)
-        let indexStr = i.ToString(CultureInfo.InvariantCulture)
-        select new
-        {
-            Ordinal  = ordinalArray[i - 1],
-            IndexStr = indexStr,
-            ItemStr  = "item" + indexStr
-        }).ToList();
+        ordinalArray
+            .Select((o, i) => new
+            {
+                Ordinal  = o,
+                Count    = i + 1,
+                IndexStr = (i + 1).ToString(CultureInfo.InvariantCulture)
+            })
+            .Select(e => new { e.Ordinal, e.Count, e.IndexStr,
+                               ItemStr = "item" + e.IndexStr })
+            .ToList();
 
     var overloads =
-        from i in Enumerable.Range(2, ordinalArray.Length - 1)
-        let arguments = itemsInfo.Take(i).ToList()
+        from e in itemsInfo.Skip(1)
+                           .Zip(amountArray, (i, a) => new
+                           {
+                               Arguments    = itemsInfo.Take(i.Count).ToList(),
+                               AmountString = a
+                           })
         select new
         {
-            AmountString          = amountArray[i - 2],
-            Arguments             = arguments,
-            ArgGenericsStr        = string.Join(", ", arguments.Select(x => "T" + x.IndexStr)),
-            ParameterStr          = string.Join(",\r\n\t\t\t", arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
-            ResultSelectorArgsStr = string.Join(", ", arguments.Select(x => x.ItemStr))
+            e.AmountString,
+            e.Arguments,
+            ArgGenericsStr        = string.Join(", ", e.Arguments.Select(x => "T" + x.IndexStr)),
+            ParameterStr          = string.Join(",\r\n\t\t\t", e.Arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
+            ResultSelectorArgsStr = string.Join(", ", e.Arguments.Select(x => x.ItemStr))
         };
 
     foreach (var o in overloads)
