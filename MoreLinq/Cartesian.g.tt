@@ -28,26 +28,35 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {<#
-    var ordinals = new[] { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth" };
-    var amounts  = new[] { "two", "three", "four", "five", "six", "seven", "eight" };
+    var args = new[]
+    {
+        new { Ordinal = "first"  , Amount = "one"   },
+        new { Ordinal = "second" , Amount = "two"   },
+        new { Ordinal = "third"  , Amount = "three" },
+        new { Ordinal = "fourth" , Amount = "four"  },
+        new { Ordinal = "fifth"  , Amount = "five"  },
+        new { Ordinal = "sixth"  , Amount = "six"   },
+        new { Ordinal = "seventh", Amount = "seven" },
+        new { Ordinal = "eighth" , Amount = "eight" },
+    };
 
     var items =
-        ordinals
-            .Select((o, i) => new
+        args.Select((a, i) => new
             {
-                Ordinal = o,
+                a.Ordinal,
+                a.Amount,
                 Count   = i + 1,
-                Number  = (i + 1).ToString(CultureInfo.InvariantCulture)
+                Number  = (i + 1).ToString(CultureInfo.InvariantCulture),
             })
-            .Select(e => new { e.Ordinal, e.Count, e.Number })
+            .Select(e => new { e.Ordinal, e.Amount, e.Count, e.Number })
             .ToList();
 
     var overloads =
         from e in items.Skip(1)
-                       .Zip(amounts, (i, a) => new
+                       .Zip(args, (i, a) => new
                        {
                            Arguments    = items.Take(i.Count).ToList(),
-                           AmountString = a
+                           AmountString = i.Amount
                        })
         select new
         {
