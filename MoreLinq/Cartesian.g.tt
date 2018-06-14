@@ -39,8 +39,7 @@ namespace MoreLinq
                 Count    = i + 1,
                 IndexStr = (i + 1).ToString(CultureInfo.InvariantCulture)
             })
-            .Select(e => new { e.Ordinal, e.Count, e.IndexStr,
-                               ItemStr = "item" + e.IndexStr })
+            .Select(e => new { e.Ordinal, e.Count, e.IndexStr })
             .ToList();
 
     var overloads =
@@ -112,9 +111,9 @@ Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
                 {
                     foreach (var item1 in first)
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                    foreach (var <#= arg.ItemStr #> in <#= arg.Ordinal #>Memo)
+                    foreach (var item<#= arg.IndexStr #> in <#= arg.Ordinal #>Memo)
 <#      } #>
-                        yield return resultSelector(<#= string.Join(", ", o.Arguments.Select(x => x.ItemStr)) #>);
+                        yield return resultSelector(<#= string.Join(", ", o.Arguments.Select(x => "item" + x.IndexStr)) #>);
                 }
             }
         }
