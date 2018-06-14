@@ -25,8 +25,8 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns the Cartesian product of two sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -42,9 +42,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
@@ -73,8 +74,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the Cartesian product of three sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -93,9 +94,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
@@ -129,8 +131,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the Cartesian product of four sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -152,9 +154,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
@@ -193,8 +196,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the Cartesian product of five sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -219,9 +222,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
@@ -265,8 +269,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the Cartesian product of six sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -294,9 +298,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
@@ -345,8 +350,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the Cartesian product of seven sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -377,9 +382,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
@@ -433,8 +439,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns the Cartesian product of eight sequences by enumerating all
-        /// possible combinations of one item from each sequence, and applying a user-defined
-        /// projection to the items in a given combination.
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
         /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
@@ -468,9 +474,10 @@ namespace MoreLinq
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// The method returns items in the same order as a nested foreach loop, but
-        /// all sequences except for <paramref name="first"/> are cached when iterated over.
-        /// The cache is then re-used for any subsequent iterations.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
