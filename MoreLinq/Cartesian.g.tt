@@ -43,16 +43,15 @@ namespace MoreLinq
                 new { Ordinal = "eighth" , Arity = "eight" },
             }
         }
-        select
-            args.Select((a, i) => new
-                {
-                    a.Ordinal,
-                    a.Arity,
-                    Count  = i + 1,
-                    Number = (i + 1).ToString(CultureInfo.InvariantCulture),
-                })
-                .ToList()
+        select args.Select((a, i) => new
+        {
+            a.Ordinal,
+            a.Arity,
+            Count  = i + 1,
+            Number = (i + 1).ToString(CultureInfo.InvariantCulture),
+        })
         into args
+        select args.ToList() into args
         from e in from a in args.Skip(1)
                   select new { a.Arity, Arguments = args.Take(a.Count).ToList() }
         select new
