@@ -48,7 +48,6 @@ namespace MoreLinq
                 Count   = i + 1,
                 Number  = (i + 1).ToString(CultureInfo.InvariantCulture),
             })
-            .Select(e => new { e.Ordinal, e.Amount, e.Count, e.Number })
             .ToList();
 
     var overloads =
