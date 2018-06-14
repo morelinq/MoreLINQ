@@ -28,35 +28,37 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {<#
-    var args = new[]
-    {
-        new { Ordinal = "first"  , Arity = "one"   },
-        new { Ordinal = "second" , Arity = "two"   },
-        new { Ordinal = "third"  , Arity = "three" },
-        new { Ordinal = "fourth" , Arity = "four"  },
-        new { Ordinal = "fifth"  , Arity = "five"  },
-        new { Ordinal = "sixth"  , Arity = "six"   },
-        new { Ordinal = "seventh", Arity = "seven" },
-        new { Ordinal = "eighth" , Arity = "eight" },
-    };
-
-    var items =
-        args.Select((a, i) => new
-            {
-                a.Ordinal,
-                a.Arity,
-                Count  = i + 1,
-                Number = (i + 1).ToString(CultureInfo.InvariantCulture),
-            })
-            .ToList();
-
     var overloads =
-        from e in items.Skip(1)
-                       .Select(i => new
-                       {
-                           Arguments = items.Take(i.Count).ToList(),
-                           i.Arity
-                       })
+        from args in new[]
+        {
+            new[]
+            {
+                new { Ordinal = "first"  , Arity = "one"   },
+                new { Ordinal = "second" , Arity = "two"   },
+                new { Ordinal = "third"  , Arity = "three" },
+                new { Ordinal = "fourth" , Arity = "four"  },
+                new { Ordinal = "fifth"  , Arity = "five"  },
+                new { Ordinal = "sixth"  , Arity = "six"   },
+                new { Ordinal = "seventh", Arity = "seven" },
+                new { Ordinal = "eighth" , Arity = "eight" },
+            }
+        }
+        select
+            args.Select((a, i) => new
+                {
+                    a.Ordinal,
+                    a.Arity,
+                    Count  = i + 1,
+                    Number = (i + 1).ToString(CultureInfo.InvariantCulture),
+                })
+                .ToList()
+        into args
+        from e in args.Skip(1)
+                      .Select(a => new
+                      {
+                          Arguments = args.Take(a.Count).ToList(),
+                          a.Arity
+                      })
         select new
         {
             e.Arity,
