@@ -55,7 +55,6 @@ namespace MoreLinq
             e.AmountString,
             e.Arguments,
             ArgGenericsStr = string.Join(", ", e.Arguments.Select(x => "T" + x.IndexStr)),
-            ParameterStr   = string.Join(",\r\n\t\t\t", e.Arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
         };
 
     foreach (var o in overloads)
@@ -89,8 +88,12 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<TResult> Cartesian<<#= o.ArgGenericsStr #>, TResult>(
-            this <#= o.ParameterStr #>,
-            Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
+            this <#
+        foreach (var arg in o.Arguments) { #>
+IEnumerable<T<#= arg.IndexStr #>> <#= arg.Ordinal #>,
+            <#
+        } #>
+Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
         {
 <#      foreach (var arg in o.Arguments) { #>
             if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));

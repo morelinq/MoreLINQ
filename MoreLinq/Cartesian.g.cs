@@ -51,7 +51,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
+            IEnumerable<T2> second,
             Func<T1, T2, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -102,8 +102,8 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
-			IEnumerable<T3> third,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -161,9 +161,9 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
-			IEnumerable<T3> third,
-			IEnumerable<T4> fourth,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -228,10 +228,10 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
-			IEnumerable<T3> third,
-			IEnumerable<T4> fourth,
-			IEnumerable<T5> fifth,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
             Func<T1, T2, T3, T4, T5, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -303,11 +303,11 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
-			IEnumerable<T3> third,
-			IEnumerable<T4> fourth,
-			IEnumerable<T5> fifth,
-			IEnumerable<T6> sixth,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
             Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -386,12 +386,12 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, T7, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
-			IEnumerable<T3> third,
-			IEnumerable<T4> fourth,
-			IEnumerable<T5> fifth,
-			IEnumerable<T6> sixth,
-			IEnumerable<T7> seventh,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
             Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -477,13 +477,13 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
             this IEnumerable<T1> first,
-			IEnumerable<T2> second,
-			IEnumerable<T3> third,
-			IEnumerable<T4> fourth,
-			IEnumerable<T5> fifth,
-			IEnumerable<T6> sixth,
-			IEnumerable<T7> seventh,
-			IEnumerable<T8> eighth,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
