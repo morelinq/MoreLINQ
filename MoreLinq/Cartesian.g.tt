@@ -56,7 +56,9 @@ namespace MoreLinq
         select new
         {
             a.Arity,
-            Arguments = args.Take(a.Count).ToList(),
+            Arguments = args.Take(a.Count)
+                            .Select(aa => new { aa.Number, aa.Ordinal })
+                            .ToList(),
         };
 
     foreach (var o in overloads)
