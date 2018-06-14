@@ -35,11 +35,11 @@ namespace MoreLinq
         ordinals
             .Select((o, i) => new
             {
-                Ordinal  = o,
-                Count    = i + 1,
-                IndexStr = (i + 1).ToString(CultureInfo.InvariantCulture)
+                Ordinal = o,
+                Count   = i + 1,
+                Number  = (i + 1).ToString(CultureInfo.InvariantCulture)
             })
-            .Select(e => new { e.Ordinal, e.Count, e.IndexStr })
+            .Select(e => new { e.Ordinal, e.Count, e.Number })
             .ToList();
 
     var overloads =
@@ -53,7 +53,7 @@ namespace MoreLinq
         {
             e.AmountString,
             e.Arguments,
-            ArgGenericsStr = string.Join(", ", e.Arguments.Select(x => "T" + x.IndexStr)),
+            ArgGenericsStr = string.Join(", ", e.Arguments.Select(x => "T" + x.Number)),
         };
 
     foreach (var o in overloads)
@@ -65,7 +65,7 @@ namespace MoreLinq
         /// projection to the items in a given combination.
         /// </summary>
 <#      foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.IndexStr #>">
+        /// <typeparam name="T<#= arg.Number #>">
         /// The type of the elements of <paramref name="<#= arg.Ordinal #>"/>.</typeparam>
 <#      } #>
         /// <typeparam name="TResult">
@@ -89,7 +89,7 @@ namespace MoreLinq
         public static IEnumerable<TResult> Cartesian<<#= o.ArgGenericsStr #>, TResult>(
             this <#
         foreach (var arg in o.Arguments) { #>
-IEnumerable<T<#= arg.IndexStr #>> <#= arg.Ordinal #>,
+IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
             <#
         } #>
 Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
@@ -111,9 +111,9 @@ Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
                 {
                     foreach (var item1 in first)
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                    foreach (var item<#= arg.IndexStr #> in <#= arg.Ordinal #>Memo)
+                    foreach (var item<#= arg.Number #> in <#= arg.Ordinal #>Memo)
 <#      } #>
-                        yield return resultSelector(<#= string.Join(", ", o.Arguments.Select(x => "item" + x.IndexStr)) #>);
+                        yield return resultSelector(<#= string.Join(", ", o.Arguments.Select(x => "item" + x.Number)) #>);
                 }
             }
         }
