@@ -52,7 +52,7 @@ namespace MoreLinq
 
     var overloads =
         from e in items.Skip(1)
-                       .Zip(args, (i, a) => new
+                       .Select(i => new
                        {
                            Arguments = items.Take(i.Count).ToList(),
                            i.Arity
