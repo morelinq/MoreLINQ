@@ -107,11 +107,11 @@ Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TRes
             return _(); IEnumerable<TResult> _()
             {
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                var <#= arg.Ordinal #>Memo = <#= arg.Ordinal #>.Memoize();
+                IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Memo;
 <#      } #>
 
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                using (<#= arg.Ordinal #>Memo as IDisposable)
+                using ((<#= arg.Ordinal #>Memo = <#= arg.Ordinal #>.Memoize()) as IDisposable)
 <#      } #>
                 {
                     foreach (var item1 in first)

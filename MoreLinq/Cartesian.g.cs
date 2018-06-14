@@ -60,9 +60,9 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
+                IEnumerable<T2> secondMemo;
 
-                using (secondMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -113,11 +113,11 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
-                var thirdMemo = third.Memoize();
+                IEnumerable<T2> secondMemo;
+                IEnumerable<T3> thirdMemo;
 
-                using (secondMemo as IDisposable)
-                using (thirdMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
+                using ((thirdMemo = third.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -174,13 +174,13 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
-                var thirdMemo = third.Memoize();
-                var fourthMemo = fourth.Memoize();
+                IEnumerable<T2> secondMemo;
+                IEnumerable<T3> thirdMemo;
+                IEnumerable<T4> fourthMemo;
 
-                using (secondMemo as IDisposable)
-                using (thirdMemo as IDisposable)
-                using (fourthMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
+                using ((thirdMemo = third.Memoize()) as IDisposable)
+                using ((fourthMemo = fourth.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -243,15 +243,15 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
-                var thirdMemo = third.Memoize();
-                var fourthMemo = fourth.Memoize();
-                var fifthMemo = fifth.Memoize();
+                IEnumerable<T2> secondMemo;
+                IEnumerable<T3> thirdMemo;
+                IEnumerable<T4> fourthMemo;
+                IEnumerable<T5> fifthMemo;
 
-                using (secondMemo as IDisposable)
-                using (thirdMemo as IDisposable)
-                using (fourthMemo as IDisposable)
-                using (fifthMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
+                using ((thirdMemo = third.Memoize()) as IDisposable)
+                using ((fourthMemo = fourth.Memoize()) as IDisposable)
+                using ((fifthMemo = fifth.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -320,17 +320,17 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
-                var thirdMemo = third.Memoize();
-                var fourthMemo = fourth.Memoize();
-                var fifthMemo = fifth.Memoize();
-                var sixthMemo = sixth.Memoize();
+                IEnumerable<T2> secondMemo;
+                IEnumerable<T3> thirdMemo;
+                IEnumerable<T4> fourthMemo;
+                IEnumerable<T5> fifthMemo;
+                IEnumerable<T6> sixthMemo;
 
-                using (secondMemo as IDisposable)
-                using (thirdMemo as IDisposable)
-                using (fourthMemo as IDisposable)
-                using (fifthMemo as IDisposable)
-                using (sixthMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
+                using ((thirdMemo = third.Memoize()) as IDisposable)
+                using ((fourthMemo = fourth.Memoize()) as IDisposable)
+                using ((fifthMemo = fifth.Memoize()) as IDisposable)
+                using ((sixthMemo = sixth.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -405,19 +405,19 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
-                var thirdMemo = third.Memoize();
-                var fourthMemo = fourth.Memoize();
-                var fifthMemo = fifth.Memoize();
-                var sixthMemo = sixth.Memoize();
-                var seventhMemo = seventh.Memoize();
+                IEnumerable<T2> secondMemo;
+                IEnumerable<T3> thirdMemo;
+                IEnumerable<T4> fourthMemo;
+                IEnumerable<T5> fifthMemo;
+                IEnumerable<T6> sixthMemo;
+                IEnumerable<T7> seventhMemo;
 
-                using (secondMemo as IDisposable)
-                using (thirdMemo as IDisposable)
-                using (fourthMemo as IDisposable)
-                using (fifthMemo as IDisposable)
-                using (sixthMemo as IDisposable)
-                using (seventhMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
+                using ((thirdMemo = third.Memoize()) as IDisposable)
+                using ((fourthMemo = fourth.Memoize()) as IDisposable)
+                using ((fifthMemo = fifth.Memoize()) as IDisposable)
+                using ((sixthMemo = sixth.Memoize()) as IDisposable)
+                using ((seventhMemo = seventh.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
@@ -498,21 +498,21 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var secondMemo = second.Memoize();
-                var thirdMemo = third.Memoize();
-                var fourthMemo = fourth.Memoize();
-                var fifthMemo = fifth.Memoize();
-                var sixthMemo = sixth.Memoize();
-                var seventhMemo = seventh.Memoize();
-                var eighthMemo = eighth.Memoize();
+                IEnumerable<T2> secondMemo;
+                IEnumerable<T3> thirdMemo;
+                IEnumerable<T4> fourthMemo;
+                IEnumerable<T5> fifthMemo;
+                IEnumerable<T6> sixthMemo;
+                IEnumerable<T7> seventhMemo;
+                IEnumerable<T8> eighthMemo;
 
-                using (secondMemo as IDisposable)
-                using (thirdMemo as IDisposable)
-                using (fourthMemo as IDisposable)
-                using (fifthMemo as IDisposable)
-                using (sixthMemo as IDisposable)
-                using (seventhMemo as IDisposable)
-                using (eighthMemo as IDisposable)
+                using ((secondMemo = second.Memoize()) as IDisposable)
+                using ((thirdMemo = third.Memoize()) as IDisposable)
+                using ((fourthMemo = fourth.Memoize()) as IDisposable)
+                using ((fifthMemo = fifth.Memoize()) as IDisposable)
+                using ((sixthMemo = sixth.Memoize()) as IDisposable)
+                using ((seventhMemo = seventh.Memoize()) as IDisposable)
+                using ((eighthMemo = eighth.Memoize()) as IDisposable)
                 {
                     foreach (var item1 in first)
                     foreach (var item2 in secondMemo)
