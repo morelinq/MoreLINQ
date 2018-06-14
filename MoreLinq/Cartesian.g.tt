@@ -30,33 +30,33 @@ namespace MoreLinq
     {
 
 <#
-        var ordinalArray = new[] { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth" };
-        var amountArray  = new[] { "two", "three", "four", "five", "six", "seven", "eight" };
-        var itemsInfo =
-            (from i in Enumerable.Range(1, ordinalArray.Length)
-            let indexStr = i.ToString(CultureInfo.InvariantCulture)
-            select new
-            {
-                Ordinal  = ordinalArray[i - 1],
-                IndexStr = indexStr,
-                ItemStr  = "item" + indexStr
-            }).ToList();
+    var ordinalArray = new[] { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth" };
+    var amountArray  = new[] { "two", "three", "four", "five", "six", "seven", "eight" };
+    var itemsInfo =
+        (from i in Enumerable.Range(1, ordinalArray.Length)
+        let indexStr = i.ToString(CultureInfo.InvariantCulture)
+        select new
+        {
+            Ordinal  = ordinalArray[i - 1],
+            IndexStr = indexStr,
+            ItemStr  = "item" + indexStr
+        }).ToList();
 
 
 
-        var overloads =
-            from i in Enumerable.Range(2, ordinalArray.Length - 1)
-            let arguments = itemsInfo.Take(i).ToList()
-            select new
-            {
-                AmountString          = amountArray[i - 2],
-                Arguments             = arguments,
-                ArgGenericsStr        = string.Join(", ", arguments.Select(x => "T" + x.IndexStr)),
-                ParameterStr          = string.Join(",\r\n\t\t\t", arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
-                ResultSelectorArgsStr = string.Join(", ", arguments.Select(x => x.ItemStr))
-            };
+    var overloads =
+        from i in Enumerable.Range(2, ordinalArray.Length - 1)
+        let arguments = itemsInfo.Take(i).ToList()
+        select new
+        {
+            AmountString          = amountArray[i - 2],
+            Arguments             = arguments,
+            ArgGenericsStr        = string.Join(", ", arguments.Select(x => "T" + x.IndexStr)),
+            ParameterStr          = string.Join(",\r\n\t\t\t", arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
+            ResultSelectorArgsStr = string.Join(", ", arguments.Select(x => x.ItemStr))
+        };
 
-        foreach (var o in overloads) { #>
+    foreach (var o in overloads) { #>
 
 
         /// <summary>
@@ -64,15 +64,15 @@ namespace MoreLinq
         /// possible combinations of one item from each sequence, and applying a user-defined
         /// projection to the items in a given combination.
         /// </summary>
-<# foreach (var arg in o.Arguments) { #>
+<#      foreach (var arg in o.Arguments) { #>
         /// <typeparam name="T<#= arg.IndexStr #>">
         /// The type of the elements of <paramref name="<#= arg.Ordinal #>"/>.</typeparam>
-<# } #>
+<#      } #>
         /// <typeparam name="TResult">
         /// The type of the elements of the result sequence.</typeparam>
-<# foreach (var arg in o.Arguments) {#>
+<#      foreach (var arg in o.Arguments) {#>
         /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> sequence of elements.</param>
-<# } #>
+<#      } #>
         /// <param name="resultSelector">A projection function that combines
         /// elements from all of the sequences.</param>
         /// <returns>A sequence of elements returned by
@@ -90,30 +90,30 @@ namespace MoreLinq
             this <#= o.ParameterStr #>,
             Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
         {
-<# foreach (var arg in o.Arguments) { #>
+<#      foreach (var arg in o.Arguments) { #>
             if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
-<# } #>
+<#      } #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
-<# foreach (var arg in o.Arguments.Skip(1)) { #>
+<#      foreach (var arg in o.Arguments.Skip(1)) { #>
                 var <#= arg.Ordinal #>Memo = <#= arg.Ordinal #>.Memoize();
-<# } #>
+<#      } #>
 
-<# foreach (var arg in o.Arguments.Skip(1)) { #>
+<#      foreach (var arg in o.Arguments.Skip(1)) { #>
                 using (<#= arg.Ordinal #>Memo as IDisposable)
-<# } #>
+<#      } #>
                 {
                     foreach (var item1 in first)
-<# foreach (var arg in o.Arguments.Skip(1)) { #>
+<#      foreach (var arg in o.Arguments.Skip(1)) { #>
                     foreach (var <#= arg.ItemStr #> in <#= arg.Ordinal #>Memo)
-<# } #>
+<#      } #>
                         yield return resultSelector(<#= o.ResultSelectorArgsStr #>);
                 }
             }
         }
 
-<#      } #>
+<#  } #>
     }
 }
