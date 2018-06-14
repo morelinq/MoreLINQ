@@ -53,17 +53,13 @@ namespace MoreLinq
                 })
                 .ToList()
         into args
-        from e in args.Skip(1)
-                      .Select(a => new
-                      {
-                          Arguments = args.Take(a.Count).ToList(),
-                          a.Arity
-                      })
+        from e in from a in args.Skip(1)
+                  select new { a.Arity, Arguments = args.Take(a.Count).ToList() }
         select new
         {
             e.Arity,
             e.Arguments,
-            ArgGenericsStr = string.Join(", ", e.Arguments.Select(x => "T" + x.Number)),
+            ArgGenericsStr = string.Join(", ", from x in e.Arguments select "T" + x.Number),
         };
 
     foreach (var o in overloads)
@@ -123,7 +119,7 @@ Func<<#= o.ArgGenericsStr #>, TResult> resultSelector)
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
                     foreach (var item<#= arg.Number #> in <#= arg.Ordinal #>Memo)
 <#      } #>
-                        yield return resultSelector(<#= string.Join(", ", o.Arguments.Select(x => "item" + x.Number)) #>);
+                        yield return resultSelector(<#= string.Join(", ", from x in o.Arguments select "item" + x.Number) #>);
                 }
             }
         }
