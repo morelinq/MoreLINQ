@@ -54,9 +54,8 @@ namespace MoreLinq
         {
             e.AmountString,
             e.Arguments,
-            ArgGenericsStr        = string.Join(", ", e.Arguments.Select(x => "T" + x.IndexStr)),
-            ParameterStr          = string.Join(",\r\n\t\t\t", e.Arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
-            ResultSelectorArgsStr = string.Join(", ", e.Arguments.Select(x => x.ItemStr))
+            ArgGenericsStr = string.Join(", ", e.Arguments.Select(x => "T" + x.IndexStr)),
+            ParameterStr   = string.Join(",\r\n\t\t\t", e.Arguments.Select(x => "IEnumerable<T" + x.IndexStr + "> " + x.Ordinal)),
         };
 
     foreach (var o in overloads)
@@ -112,7 +111,7 @@ namespace MoreLinq
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
                     foreach (var <#= arg.ItemStr #> in <#= arg.Ordinal #>Memo)
 <#      } #>
-                        yield return resultSelector(<#= o.ResultSelectorArgsStr #>);
+                        yield return resultSelector(<#= string.Join(", ", o.Arguments.Select(x => x.ItemStr)) #>);
                 }
             }
         }
