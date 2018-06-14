@@ -30,23 +30,23 @@ namespace MoreLinq
     {<#
     var args = new[]
     {
-        new { Ordinal = "first"  , Amount = "one"   },
-        new { Ordinal = "second" , Amount = "two"   },
-        new { Ordinal = "third"  , Amount = "three" },
-        new { Ordinal = "fourth" , Amount = "four"  },
-        new { Ordinal = "fifth"  , Amount = "five"  },
-        new { Ordinal = "sixth"  , Amount = "six"   },
-        new { Ordinal = "seventh", Amount = "seven" },
-        new { Ordinal = "eighth" , Amount = "eight" },
+        new { Ordinal = "first"  , Arity = "one"   },
+        new { Ordinal = "second" , Arity = "two"   },
+        new { Ordinal = "third"  , Arity = "three" },
+        new { Ordinal = "fourth" , Arity = "four"  },
+        new { Ordinal = "fifth"  , Arity = "five"  },
+        new { Ordinal = "sixth"  , Arity = "six"   },
+        new { Ordinal = "seventh", Arity = "seven" },
+        new { Ordinal = "eighth" , Arity = "eight" },
     };
 
     var items =
         args.Select((a, i) => new
             {
                 a.Ordinal,
-                a.Amount,
-                Count   = i + 1,
-                Number  = (i + 1).ToString(CultureInfo.InvariantCulture),
+                a.Arity,
+                Count  = i + 1,
+                Number = (i + 1).ToString(CultureInfo.InvariantCulture),
             })
             .ToList();
 
@@ -54,12 +54,12 @@ namespace MoreLinq
         from e in items.Skip(1)
                        .Zip(args, (i, a) => new
                        {
-                           Arguments    = items.Take(i.Count).ToList(),
-                           AmountString = i.Amount
+                           Arguments = items.Take(i.Count).ToList(),
+                           i.Arity
                        })
         select new
         {
-            e.AmountString,
+            e.Arity,
             e.Arguments,
             ArgGenericsStr = string.Join(", ", e.Arguments.Select(x => "T" + x.Number)),
         };
@@ -68,7 +68,7 @@ namespace MoreLinq
     { #>
 
         /// <summary>
-        /// Returns the Cartesian product of <#= o.AmountString #> sequences by enumerating all
+        /// Returns the Cartesian product of <#= o.Arity #> sequences by enumerating all
         /// possible combinations of one item from each sequence, and applying a user-defined
         /// projection to the items in a given combination.
         /// </summary>
