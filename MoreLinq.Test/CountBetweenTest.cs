@@ -44,29 +44,25 @@ namespace MoreLinq.Test
                 new[] { 1 }.CountBetween(1, 0));
         }
 
-        [TestCaseSource(nameof(CountBetweenData))]
+        static IEnumerable<TestCaseData> CountBetweenSource => 
+            from args in new[]
+            {
+                (Count: 1, Min: 1, Max: 1),
+                (Count: 1, Min: 2, Max: 4),
+                (Count: 2, Min: 2, Max: 4),
+                (Count: 3, Min: 2, Max: 4),
+                (Count: 4, Min: 2, Max: 4),
+                (Count: 5, Min: 2, Max: 4),
+            }
+            from type in new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection }
+            select new TestCaseData(type, args.Count, args.Min, args.Max)
+                .Returns(args.Count >= args.Min && args.Count <= args.Max)
+                .SetName($"{{m}}({type}[{args.Count}], {args.Min}, {args.Max})");
+
+        [TestCaseSource(nameof(CountBetweenSource))]
         public bool CountBetween(SourceKind sourceKind, int count, int min, int max)
         {
             return Enumerable.Range(0, count).ToSourceKind(sourceKind).CountBetween(min, max);
-        }
-
-        static IEnumerable<TestCaseData> CountBetweenData()
-        {
-            return (
-                from count in new[]
-                {
-                    (1, 1, 1),
-                    (1, 2, 4),
-                    (2, 2, 4),
-                    (3, 2, 4),
-                    (4, 2, 4),
-                    (5, 2, 4)
-                }
-                from type in new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection }
-                select new TestCaseData(type, count.Item1, count.Item2, count.Item3)
-                    .Returns(count.Item1 >= count.Item2 && count.Item1 <= count.Item3)
-                    .SetName($"{{m}}({type}[{count.Item1}], {count.Item2}-{count.Item3}")
-            );
         }
 
         [Test]

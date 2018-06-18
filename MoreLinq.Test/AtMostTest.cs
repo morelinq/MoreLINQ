@@ -30,10 +30,6 @@ namespace MoreLinq.Test
                 () => new[] { 1 }.AtMost(-1));
         }
 
-        [TestCaseSource(nameof(AtMostSource))]
-        public bool AtMost(SourceKind sourceKind, int sequenceSize, int atMostAssertCount) =>
-            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtMost(atMostAssertCount);
-
         public static IEnumerable<TestCaseData> AtMostSource => CountMethodsTestGenerator.GetTestCases(
             new[] {
                 (0, 0),
@@ -45,6 +41,10 @@ namespace MoreLinq.Test
             },
             (size, comparedTo) => size <= comparedTo
         );
+
+        [TestCaseSource(nameof(AtMostSource))]
+        public bool AtMost(SourceKind sourceKind, int sequenceSize, int atMostAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtMost(atMostAssertCount);
 
         [Test]
         public void AtMostDoesNotIterateUnnecessaryElements()

@@ -30,10 +30,6 @@ namespace MoreLinq.Test
                 new[] { 1 }.AtLeast(-1));
         }
 
-        [TestCaseSource(nameof(AtLeastSource))]
-        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>
-            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtLeast(atLeastAssertCount);
-
         public static IEnumerable<TestCaseData> AtLeastSource => CountMethodsTestGenerator.GetTestCases(
             MoreEnumerable.Cartesian(
                 new[] { 0, 1, 3 },
@@ -42,6 +38,10 @@ namespace MoreLinq.Test
             ),
             (size, comparedTo) => size >= comparedTo
         );
+
+        [TestCaseSource(nameof(AtLeastSource))]
+        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtLeast(atLeastAssertCount);
 
         [Test]
         public void AtLeastDoesNotIterateUnnecessaryElements()

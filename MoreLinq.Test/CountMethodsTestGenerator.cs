@@ -19,24 +19,20 @@ namespace MoreLinq.Test
 {
     using NUnit.Framework;
     using System;
-	using System.Collections.Generic;
-	using System.Text;
+    using System.Collections.Generic;
 
-	public static class CountMethodsTestGenerator
+    static class CountMethodsTestGenerator
     {
-        public static IEnumerable<TestCaseData> GetTestCases
-        (
-            IEnumerable<(int size, int comparedTo)> counts,
-            Func<int, int, bool> expectedResultCalculator
-        )
-		{
-            return (
-				from count in counts
+        public static IEnumerable<TestCaseData> GetTestCases(
+            IEnumerable<(int Size, int ComparedTo)> counts,
+            Func<int, int, bool> expectedResultCalculator)
+        {
+            return
+                from count in counts
                 from type in new[] { SourceKind.Sequence, SourceKind.BreakingCollection, SourceKind.BreakingReadOnlyCollection }
-                select new TestCaseData(type, count.size, count.comparedTo)
-					.Returns(expectedResultCalculator(count.size, count.comparedTo))
-					.SetName($"{{m}}({type}[{count.size}], {count.comparedTo}")
-			);
-		}
+                select new TestCaseData(type, count.Size, count.ComparedTo)
+                    .Returns(expectedResultCalculator(count.Size, count.ComparedTo))
+                    .SetName($"{{m}}({type}[{count.Size}], {count.ComparedTo})");
+        }
     }
 }

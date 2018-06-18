@@ -41,7 +41,6 @@
   <ItemGroup>
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
-      <None Remove="CountMethodsTestGenerator.cs" />
       <None Remove="TestResult.xml" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />

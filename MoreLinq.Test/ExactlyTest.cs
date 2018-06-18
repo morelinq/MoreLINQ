@@ -30,10 +30,6 @@ namespace MoreLinq.Test
                 new[] { 1 }.Exactly(-1));
         }
 
-          [TestCaseSource(nameof(ExactlySource))]
-        public bool Exactly(SourceKind sourceKind, int sequenceSize, int ExactlyAssertCount) =>
-            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).Exactly(ExactlyAssertCount);
-
         static IEnumerable<TestCaseData> ExactlySource => CountMethodsTestGenerator.GetTestCases(
             new[] {
                 (0, 0),
@@ -43,6 +39,11 @@ namespace MoreLinq.Test
             },
             (size, comparedTo) => size == comparedTo
         );
+
+        [TestCaseSource(nameof(ExactlySource))]
+        public bool Exactly(SourceKind sourceKind, int sequenceSize, int exactlyAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).Exactly(exactlyAssertCount);
+
 
         [Test]
         public void ExactlyDoesNotIterateUnnecessaryElements()
