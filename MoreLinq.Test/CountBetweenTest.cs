@@ -44,7 +44,7 @@ namespace MoreLinq.Test
                 new[] { 1 }.CountBetween(1, 0));
         }
 
-        static IEnumerable<TestCaseData> CountBetweenSource => 
+        static IEnumerable<TestCaseData> CountBetweenSource =>
             from args in new[]
             {
                 (Count: 1, Min: 1, Max: 1),
