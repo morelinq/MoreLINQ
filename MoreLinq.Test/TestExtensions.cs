@@ -62,6 +62,21 @@ namespace MoreLinq.Test
 
     static partial class TestExtensions
     {
+        /// <summary>
+        /// Just to make our testing easier so we can chain the assertion call.
+        /// </summary>
+
+        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
+            Assert.That(actual, Is.EqualTo(expected));
+
+        /// <summary>
+        /// Make testing even easier - a params array makes for readable tests :)
+        /// The sequence should be evaluated exactly once.
+        /// </summary>
+
+        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
+            Assert.That(actual, Is.EqualTo(expected));
+
         internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
         {
             var i = 0;
@@ -75,23 +90,17 @@ namespace MoreLinq.Test
             Assert.That(i, Is.EqualTo(expectations.Length), "Actual sequence has fewer items than expected.");
         }
 
-        /// <summary>
-        /// Just to make our testing easier so we can chain the assertion call.
-        /// </summary>
-        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
-
-        /// <summary>
-        /// Make testing even easier - a params array makes for readable tests :)
-        /// The sequence should be evaluated exactly once.
-        /// </summary>
-        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
-
         internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
         {
             foreach (var split in str.Split(separators))
                 yield return split;
+        }
+
+        internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
+        {
+            yield return input.ToSourceKind(SourceKind.Sequence);
+            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
+            yield return input.ToSourceKind(SourceKind.BreakingCollection);
         }
 
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
