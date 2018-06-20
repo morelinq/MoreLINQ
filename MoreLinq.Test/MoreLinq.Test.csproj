@@ -52,7 +52,6 @@
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
       <Compile Include="Comparer.cs" />
-      <Compile Include="CountMethodsTestGenerator.cs" />
       <Compile Include="CurrentThreadCultureScope.cs" />
       <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />

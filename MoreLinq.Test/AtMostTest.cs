@@ -30,17 +30,20 @@ namespace MoreLinq.Test
                 () => new[] { 1 }.AtMost(-1));
         }
 
-        public static IEnumerable<TestCaseData> AtMostSource => CountMethodsTestGenerator.GetTestCases(
-            new[] {
-                (0, 0),
-                (0, 1),
-                (1, 0),
-                (1, 1),
-                (1, 2),
-                (3, 1)
-            },
-            (size, comparedTo) => size <= comparedTo
-        );
+        public static IEnumerable<TestCaseData> AtMostSource =>
+            from k in SourceKinds.SequenceAndCollection
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 1, Count: 0),
+                (Size: 1, Count: 1),
+                (Size: 1, Count: 2),
+                (Size: 3, Count: 1)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size <= e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
         [TestCaseSource(nameof(AtMostSource))]
         public bool AtMost(SourceKind sourceKind, int sequenceSize, int atMostAssertCount) =>

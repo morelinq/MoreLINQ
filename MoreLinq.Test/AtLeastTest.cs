@@ -30,14 +30,23 @@ namespace MoreLinq.Test
                 new[] { 1 }.AtLeast(-1));
         }
 
-        public static IEnumerable<TestCaseData> AtLeastSource => CountMethodsTestGenerator.GetTestCases(
-            MoreEnumerable.Cartesian(
-                new[] { 0, 1, 3 },
-                new[] { 0, 1, 2 },
-                (size, comparedTo) => (size, comparedTo)
-            ),
-            (size, comparedTo) => size >= comparedTo
-        );
+        public static IEnumerable<TestCaseData> AtLeastSource =>
+            from k in SourceKinds.SequenceAndCollection
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 0, Count: 2),
+                (Size: 1, Count: 0),
+                (Size: 1, Count: 1),
+                (Size: 1, Count: 2),
+                (Size: 3, Count: 0),
+                (Size: 3, Count: 1),
+                (Size: 3, Count: 2)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size >= e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
         [TestCaseSource(nameof(AtLeastSource))]
         public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>

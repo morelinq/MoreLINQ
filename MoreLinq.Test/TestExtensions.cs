@@ -31,23 +31,37 @@ namespace MoreLinq.Test
         BreakingReadOnlyCollection
     }
 
+    internal static class SourceKinds
+    {
+        public static readonly IEnumerable<SourceKind> Collection = new[]
+        {
+            SourceKind.BreakingCollection,
+            SourceKind.BreakingReadOnlyCollection
+        };
+
+        public static readonly IEnumerable<SourceKind> List = new[]
+        {
+            SourceKind.BreakingList,
+            SourceKind.BreakingReadOnlyList
+        };
+
+        public static readonly IEnumerable<SourceKind> SequenceAndCollection = new[]
+        {
+            SourceKind.Sequence,
+            SourceKind.BreakingCollection,
+            SourceKind.BreakingReadOnlyCollection
+        };
+
+        public static readonly IEnumerable<SourceKind> SequenceAndList = new[]
+        {
+            SourceKind.Sequence,
+            SourceKind.BreakingList,
+            SourceKind.BreakingReadOnlyList
+        };
+    }
+
     static partial class TestExtensions
     {
-        /// <summary>
-        /// Just to make our testing easier so we can chain the assertion call.
-        /// </summary>
-
-        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
-
-        /// <summary>
-        /// Make testing even easier - a params array makes for readable tests :)
-        /// The sequence should be evaluated exactly once.
-        /// </summary>
-
-        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
-
         internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
         {
             var i = 0;
@@ -60,6 +74,19 @@ namespace MoreLinq.Test
             }
             Assert.That(i, Is.EqualTo(expectations.Length), "Actual sequence has fewer items than expected.");
         }
+
+        /// <summary>
+        /// Just to make our testing easier so we can chain the assertion call.
+        /// </summary>
+        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
+            Assert.That(actual, Is.EquivalentTo(expected));
+
+        /// <summary>
+        /// Make testing even easier - a params array makes for readable tests :)
+        /// The sequence should be evaluated exactly once.
+        /// </summary>
+        internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
+            Assert.That(actual, Is.EquivalentTo(expected));
 
         internal static IEnumerable<string> GenerateSplits(this string str, params char[] separators)
         {
