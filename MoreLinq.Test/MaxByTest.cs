@@ -59,5 +59,57 @@ namespace MoreLinq.Test
         {
             Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], SampleData.ReverseCharComparer));
         }
+
+        [TestCase(0, ExpectedResult = new string[0]             )]
+        [TestCase(1, ExpectedResult = new[] { "hello"          })]
+        [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
+        [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
+        public string[] MaxByTakeReturnsMaxima(int count)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MaxBy(s => s.Length).Take(count).ToArray();
+        }
+
+        [TestCase(0, ExpectedResult = new string[0]             )]
+        [TestCase(1, ExpectedResult = new[] { "world"          })]
+        [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
+        [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
+        public string[] MaxByTakeLastReturnsMaxima(int count)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MaxBy(s => s.Length).TakeLast(count).ToArray();
+        }
+
+        [TestCase(0, 0, ExpectedResult = new string[0]                         )]
+        [TestCase(3, 1, ExpectedResult = new[] { "aa"                         })]
+        [TestCase(1, 0, ExpectedResult = new[] { "ax"                         })]
+        [TestCase(2, 0, ExpectedResult = new[] { "ax", "aa"                   })]
+        [TestCase(3, 0, ExpectedResult = new[] { "ax", "aa", "ab"             })]
+        [TestCase(4, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay"       })]
+        [TestCase(5, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        [TestCase(6, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        public string[] MaxByTakeWithComparerReturnsMaxima(int count, int index)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MaxBy(s => s[index], SampleData.ReverseCharComparer)
+                              .Take(count)
+                              .ToArray();
+        }
+
+        [TestCase(0, 0, ExpectedResult = new string[0]                         )]
+        [TestCase(3, 1, ExpectedResult = new[] { "aa"                         })]
+        [TestCase(1, 0, ExpectedResult = new[] { "az"                         })]
+        [TestCase(2, 0, ExpectedResult = new[] { "ay", "az"                   })]
+        [TestCase(3, 0, ExpectedResult = new[] { "ab", "ay", "az"             })]
+        [TestCase(4, 0, ExpectedResult = new[] { "aa", "ab", "ay", "az"       })]
+        [TestCase(5, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        [TestCase(6, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        public string[] MaxByTakeLastWithComparerReturnsMaxima(int count, int index)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MaxBy(s => s[index], SampleData.ReverseCharComparer)
+                              .TakeLast(count)
+                              .ToArray();
+        }
     }
 }
