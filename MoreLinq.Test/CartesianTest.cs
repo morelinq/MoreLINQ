@@ -73,6 +73,29 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that the number of elements in a Cartesian product is the product of the number of elements of each sequence,
+        /// even when there are more than two sequences
+        /// </summary>
+        [Test]
+        public void TestCartesianProductCount_Multidimensional()
+        {
+            const int countA = 10;
+            const int countB = 9;
+            const int countC = 8;
+            const int countD = 7;
+
+            const int expectedCount = countA * countB * countC * countD;
+            using (var sequenceA = Enumerable.Range(1, countA).AsTestingSequence())
+            using (var sequenceB = Enumerable.Range(1, countB).AsTestingSequence())
+            using (var sequenceC = Enumerable.Range(1, countC).AsTestingSequence())
+            using (var sequenceD = Enumerable.Range(1, countD).AsTestingSequence())
+            {
+                var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
+                Assert.AreEqual(expectedCount, result.Count());
+            }
+        }
+
+        /// <summary>
         /// Verify that each combination is produced in the Cartesian product
         /// </summary>
         [Test]
