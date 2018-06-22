@@ -376,34 +376,319 @@ namespace MoreLinq.Extensions
     public static partial class CartesianExtension
     {
         /// <summary>
-        /// Returns the Cartesian product of two sequences by combining each
-        /// element of the first set with each in the second and applying a
-        /// user-defined projection to the pair.
+        /// Returns the Cartesian product of two sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
         /// </summary>
-        /// <typeparam name="TFirst">
+        /// <typeparam name="T1">
         /// The type of the elements of <paramref name="first"/>.</typeparam>
-        /// <typeparam name="TSecond">
+        /// <typeparam name="T2">
         /// The type of the elements of <paramref name="second"/>.</typeparam>
         /// <typeparam name="TResult">
         /// The type of the elements of the result sequence.</typeparam>
         /// <param name="first">The first sequence of elements.</param>
         /// <param name="second">The second sequence of elements.</param>
         /// <param name="resultSelector">A projection function that combines
-        /// elements from both sequences.</param>
+        /// elements from all of the sequences.</param>
         /// <returns>A sequence of elements returned by
         /// <paramref name="resultSelector"/>.</returns>
         /// <remarks>
         /// <para>
-        /// Elements of <paramref name="second"/> are cached when being paired
-        /// with the first element of the <paramref name="first"/>. The cache is
-        /// then re-used for pairing with all subsequent element of
-        /// <paramref name="first"/>.</para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
         /// <para>
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> Cartesian<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> Cartesian<T1, T2, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            Func<T1, T2, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first, second, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of three sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+        /// <typeparam name="T1">
+        /// The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">
+        /// The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">
+        /// The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<T1, T2, T3, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            Func<T1, T2, T3, TResult> resultSelector)
+            => MoreEnumerable.Cartesian(first, second, third, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of four sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+        /// <typeparam name="T1">
+        /// The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">
+        /// The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">
+        /// The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">
+        /// The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            Func<T1, T2, T3, T4, TResult> resultSelector)
+            => MoreEnumerable.Cartesian(first, second, third, fourth, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of five sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+        /// <typeparam name="T1">
+        /// The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">
+        /// The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">
+        /// The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">
+        /// The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">
+        /// The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            Func<T1, T2, T3, T4, T5, TResult> resultSelector)
+            => MoreEnumerable.Cartesian(first, second, third, fourth, fifth, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of six sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+        /// <typeparam name="T1">
+        /// The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">
+        /// The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">
+        /// The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">
+        /// The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">
+        /// The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">
+        /// The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
+            => MoreEnumerable.Cartesian(first, second, third, fourth, fifth, sixth, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of seven sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+        /// <typeparam name="T1">
+        /// The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">
+        /// The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">
+        /// The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">
+        /// The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">
+        /// The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">
+        /// The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="T7">
+        /// The type of the elements of <paramref name="seventh"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="seventh">The seventh sequence of elements.</param>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, T7, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
+            => MoreEnumerable.Cartesian(first, second, third, fourth, fifth, sixth, seventh, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of eight sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+        /// <typeparam name="T1">
+        /// The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">
+        /// The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">
+        /// The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">
+        /// The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">
+        /// The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">
+        /// The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="T7">
+        /// The type of the elements of <paramref name="seventh"/>.</typeparam>
+        /// <typeparam name="T8">
+        /// The type of the elements of <paramref name="eighth"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="seventh">The seventh sequence of elements.</param>
+        /// <param name="eighth">The eighth sequence of elements.</param>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
+            => MoreEnumerable.Cartesian(first, second, third, fourth, fifth, sixth, seventh, eighth, resultSelector);
 
     }
 
@@ -1253,6 +1538,51 @@ namespace MoreLinq.Extensions
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
             => MoreEnumerable.FillForward(source, predicate, fillSelector);
+
+    }
+
+    /// <summary><c>First</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class FirstExtension
+    {
+        /// <summary>
+        /// Returns the first element of a sequence.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The input sequence.</param>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequence is empty.</exception>
+        /// <returns>
+        /// The first element of the input sequence.
+        /// </returns>
+
+        public static T First<T>(this IExtremaEnumerable<T> source)
+            => MoreEnumerable.First(source);
+
+    }
+
+    /// <summary><c>FirstOrDefault</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class FirstOrDefaultExtension
+    {
+
+        /// <summary>
+        /// Returns the first element of a sequence, or a default value if the
+        /// sequence contains no elements.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The input sequence.</param>
+        /// <returns>
+        /// Default value of type <typeparamref name="T"/> if source is empty;
+        /// otherwise, the first element in source.
+        /// </returns>
+
+        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+            => MoreEnumerable.FirstOrDefault(source);
 
     }
 
@@ -2311,6 +2641,52 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Last</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class LastExtension
+    {
+
+        /// <summary>
+        /// Returns the last element of a sequence.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The input sequence.</param>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequence is empty.</exception>
+        /// <returns>
+        /// The last element of the input sequence.
+        /// </returns>
+
+        public static T Last<T>(this IExtremaEnumerable<T> source)
+            => MoreEnumerable.Last(source);
+
+    }
+
+    /// <summary><c>LastOrDefault</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class LastOrDefaultExtension
+    {
+
+        /// <summary>
+        /// Returns the last element of a sequence, or a default value if the
+        /// sequence contains no elements.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The input sequence.</param>
+        /// <returns>
+        /// Default value of type <typeparamref name="T"/> if source is empty;
+        /// otherwise, the last element in source.
+        /// </returns>
+
+        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+            => MoreEnumerable.LastOrDefault(source);
+
+    }
+
     /// <summary><c>Lead</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
@@ -2528,6 +2904,7 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class MaxByExtension
     {
+
         /// <summary>
         /// Returns the maximal elements of the given sequence, based on
         /// the given projection.
@@ -2545,7 +2922,7 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MaxBy(source, selector);
 
@@ -2567,7 +2944,7 @@ namespace MoreLinq.Extensions
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
             => MoreEnumerable.MaxBy(source, selector, comparer);
 
@@ -2595,7 +2972,7 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MinBy(source, selector);
 
@@ -2617,7 +2994,7 @@ namespace MoreLinq.Extensions
         /// or <paramref name="comparer"/> is null</exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
             => MoreEnumerable.MinBy(source, selector, comparer);
 
@@ -4260,6 +4637,54 @@ namespace MoreLinq.Extensions
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
             => MoreEnumerable.Shuffle(source, rand);
+
+    }
+
+    /// <summary><c>Single</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class SingleExtension
+    {
+
+        /// <summary>
+        /// Returns the only element of a sequence, and throws an exception if
+        /// there is not exactly one element in the sequence.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The input sequence.</param>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequence contains more than one element.</exception>
+        /// <returns>
+        /// The single element of the input sequence.
+        /// </returns>
+
+        public static T Single<T>(this IExtremaEnumerable<T> source)
+            => MoreEnumerable.Single(source);
+
+    }
+
+    /// <summary><c>SingleOrDefault</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class SingleOrDefaultExtension
+    {
+
+        /// <summary>
+        /// Returns the only element of a sequence, or a default value if the
+        /// sequence is empty; this method throws an exception if there is more
+        /// than one element in the sequence.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The input sequence.</param>
+        /// <returns>
+        /// The single element of the input sequence, or default value of type
+        /// <typeparamref name="T"/> if the sequence contains no elements.
+        /// </returns>
+
+        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+            => MoreEnumerable.SingleOrDefault(source);
 
     }
 
