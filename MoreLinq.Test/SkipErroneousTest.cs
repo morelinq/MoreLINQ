@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using Experimental;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
 
     [TestFixture]
@@ -34,14 +35,19 @@ namespace MoreLinq.Test
         [Test]
         public void SkipErroneousError1()
         {
-            var source = MoreEnumerable.From(() => 1,
-                                             () => throw new TestException(),
-                                             () => throw new TestException(),
-                                             () => 2,
-                                             () => throw new NullReferenceException(),
-                                             () => 3);
+            IEnumerable<int> Source()
+            {
+                yield return 1;
+                throw new TestException();
+                #pragma warning disable 162 // Code is unreachable
+                throw new TestException();
+                yield return 2;
+                throw new NullReferenceException();
+                yield return 3;
+                #pragma warning restore 162
+            }
 
-            using (var test = source.AsTestingSequence())
+            using (var test = Source().AsTestingSequence())
             {
                 var result = test.SkipErroneous<int, TestException>()
                                  .Memoize();
