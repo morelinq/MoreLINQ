@@ -23,16 +23,16 @@ namespace MoreLinq.Test
     using System.Globalization;
 
     [TestFixture]
-    public class IgnoreErrorsTest
+    public class SkipErroneousTest
     {
         [Test]
-        public void IgnoreErrorsError1IsLazy()
+        public void SkipErroneousError1IsLazy()
         {
             new BreakingSequence<int>().SkipErroneous<int, TestException>();
         }
 
         [Test]
-        public void IgnoreErrorsError1()
+        public void SkipErroneousError1()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
@@ -52,7 +52,7 @@ namespace MoreLinq.Test
         }
 
        [Test]
-        public void IgnoreErrorsError1WithBaseException()
+        public void SkipErroneousError1WithBaseException()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
@@ -79,7 +79,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError1InParsing()
+        public void SkipErroneousError1InParsing()
         {
             var source = "O,l,2,3,4,S,6,7,B,9".Split(',')
                                               .Select(x => int.Parse(x, CultureInfo.InvariantCulture));
@@ -93,13 +93,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError2IsLazy()
+        public void SkipErroneousError2IsLazy()
         {
             new BreakingSequence<int>().SkipErroneous<int, TestException, NullReferenceException>();
         }
 
         [Test]
-        public void IgnoreErrorsError2()
+        public void SkipErroneousError2()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
@@ -122,13 +122,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError3IsLazy()
+        public void SkipErroneousError3IsLazy()
         {
             new BreakingSequence<int>().SkipErroneous<int, TestException, NullReferenceException, ArgumentException>();
         }
 
         [Test]
-        public void IgnoreErrorsError3()
+        public void SkipErroneousError3()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
@@ -157,13 +157,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError1PredicateIsLazy()
+        public void SkipErroneousError1PredicateIsLazy()
         {
             new BreakingSequence<int>().SkipErroneous(BreakingFunc.Of<Exception, bool>());
         }
 
         [Test]
-        public void IgnoreErrorsError1Predicate()
+        public void SkipErroneousError1Predicate()
         {
             const string key = "ignore";
             var source = MoreEnumerable.From(() => 1,
@@ -183,7 +183,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError1PredicateNoTypeMatch()
+        public void SkipErroneousError1PredicateNoTypeMatch()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
@@ -201,7 +201,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError1PredicateWithBaseException()
+        public void SkipErroneousError1PredicateWithBaseException()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
@@ -225,7 +225,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void IgnoreErrorsError2PredicateIsCaughtInOrder()
+        public void SkipErroneousError2PredicateIsCaughtInOrder()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => throw new TestException(),
