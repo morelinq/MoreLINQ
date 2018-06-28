@@ -23,13 +23,17 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Ignore some exceptions that can occurs during the iteration of the sequence.
+        /// Skips elements of a sequence that cause a type of exception during
+        /// iteration.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException">Type of the exception that can be ignored.</typeparam>
-        /// <param name="source">Source sequence.</param>
+        /// <typeparam name="T">
+        /// Type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TException">
+        /// Type or sub-type of exception to tolerate.</typeparam>
+        /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
+        /// A sequence of elements from <paramref name="source"/> except those
+        /// that caused an exception of type or sub-type of
         /// <typeparamref name="TException"/>.
         /// </returns>
         /// <remarks>
@@ -42,19 +46,30 @@ namespace MoreLinq
             => SkipErroneousImpl<T, TException, TException, TException>(source, null, null, null);
 
         /// <summary>
-        /// Ignore some exceptions that can occurs during the iteration of the sequence.
+        /// Skips elements of a sequence that cause one of two types of
+        /// exceptions during iteration.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException1">First type of the exception that can be ignored.</typeparam>
-        /// <typeparam name="TException2">Second type of the exception that can be ignored.</typeparam>
-        /// <param name="source">Source sequence.</param>
+        /// <typeparam name="T">
+        /// Type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TException1">
+        /// First type or sub-type of exception to tolerate.</typeparam>
+        /// <typeparam name="TException2">
+        /// Second type or sub-type of exception to tolerate.</typeparam>
+        /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
-        /// <typeparamref name="TException1"/> or <typeparamref name="TException2"/>.
+        /// A sequence of elements from <paramref name="source"/> except those
+        /// that caused an exception of type or sub-type of
+        /// either <typeparamref name="TException1"/> or
+        /// <typeparamref name="TException2"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// Exceptions are caught in order which were passed, as well in a catch block.
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// Exceptions are caught in the order in which they are specified
+        /// as type parameters, from most specific
+        /// (<typeparamref name="TException1"/>) to most general
+        /// (<typeparamref name="TException2"/>).</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2>(
@@ -64,20 +79,33 @@ namespace MoreLinq
             => SkipErroneousImpl<T, TException1, TException2, TException2>(source, null, null, null);
 
         /// <summary>
-        /// Ignore some exceptions that can occurs during the iteration of the sequence.
+        /// Skips elements of a sequence that cause one of three types of
+        /// exceptions during iteration.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException1">First type of the exception that can be ignored.</typeparam>
-        /// <typeparam name="TException2">Second type of the exception that can be ignored.</typeparam>
-        /// <typeparam name="TException3">Third type of the exception that can be ignored.</typeparam>
-        /// <param name="source">Source sequence.</param>
+        /// <typeparam name="T">
+        /// Type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TException1">
+        /// First type or sub-typeof exception to tolerate.</typeparam>
+        /// <typeparam name="TException2">
+        /// Second type or sub-typeof exception to tolerate.</typeparam>
+        /// <typeparam name="TException3">
+        /// Third type or sub-type of exception to tolerate.</typeparam>
+        /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
-        /// <typeparamref name="TException1"/>, <typeparamref name="TException2"/> or <typeparamref name="TException3"/>.
+        /// A sequence of elements from <paramref name="source"/> except those
+        /// that caused an exception of type or sub-type of
+        /// either <typeparamref name="TException1"/>,
+        /// <typeparamref name="TException2"/> or
+        /// <typeparamref name="TException3"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// Exceptions are caught in order which were passed, as well in a catch block.
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// Exceptions are caught in the order in which they are specified
+        /// as type parameters, from most specific
+        /// (<typeparamref name="TException1"/>) to most general
+        /// (<typeparamref name="TException3"/>).</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2, TException3>(
@@ -88,18 +116,22 @@ namespace MoreLinq
             => SkipErroneousImpl<T, TException1, TException2, TException3>(source, null, null, null);
 
         /// <summary>
-        /// Ignore some exceptions that can occurs during the iteration of the sequence.
+        /// Skips elements of a sequence that cause a type of exception of some
+        /// condition during iteration.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException">Type of the exception that can be ignored.</typeparam>
-        /// <param name="source">Source sequence.</param>
+        /// <typeparam name="T">
+        /// Type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TException">
+        /// Type or sub-type of exception to tolerate.</typeparam>
         /// <param name="errorPredicate">
-        /// A function that receives the exceptions of type <typeparamref name="TException"/>
-        /// that occurs during the iteration and indicates if it should be ignored or not.
-        /// </param>
+        /// A function that receives exceptions of type or sub-type of
+        /// <typeparamref name="TException"/> and determines if it should be
+        /// tolerated or not.</param>
+        /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
-        /// <typeparamref name="TException"/> in accordance with <paramref name="errorPredicate"/>.
+        /// A sequence of elements from <paramref name="source"/> except those
+        /// that conditionally caused an exception of type or sub-type of
+        /// <typeparamref name="TException"/>.
         /// </returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
@@ -116,28 +148,38 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Ignore some exceptions that can occurs during the iteration of the sequence.
+        /// Skips elements of a sequence that cause one of two types of
+        /// exceptions of some condition during iteration.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException1">First type of the exception that can be ignored.</typeparam>
-        /// <typeparam name="TException2">Second type of the exception that can be ignored.</typeparam>
-        /// <param name="source">Source sequence.</param>
+        /// <typeparam name="T">
+        /// Type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TException1">
+        /// First type or sub-typeof exception to tolerate.</typeparam>
+        /// <typeparam name="TException2">
+        /// Second type or sub-typeof exception to tolerate.</typeparam>
+        /// <param name="source">The source sequence.</param>
         /// <param name="error1Predicate">
-        /// A function that receives the exceptions of type <typeparamref name="TException1"/>
-        /// that occurs during the iteration and indicates if it should be ignored or not.
-        /// </param>
+        /// A function that receives exceptions of type or sub-type of
+        /// <typeparamref name="TException1"/> and determines if it should be
+        /// tolerated or not.</param>
         /// <param name="error2Predicate">
-        /// A function that receives the exceptions of type <typeparamref name="TException2"/>
-        /// that occurs during the iteration and indicates if it should be ignored or not.
-        /// </param>
+        /// A function that receives exceptions of type or sub-type of
+        /// <typeparamref name="TException2"/> and determines if it should be
+        /// tolerated or not.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
-        /// <typeparamref name="TException1"/> or <typeparamref name="TException2"/>
-        /// in accordance with predicates.
+        /// A sequence of elements from <paramref name="source"/> except those
+        /// that conditionally caused an exception of type or sub-type of
+        /// either <typeparamref name="TException1"/> or
+        /// <typeparamref name="TException2"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// Exceptions are caught in order which predicates were passed, as well in a catch block.
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// Exceptions are caught in the order in which they are specified
+        /// as type parameters, from most specific
+        /// (<typeparamref name="TException1"/>) to most general
+        /// (<typeparamref name="TException2"/>).</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2>(
@@ -154,33 +196,45 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Ignore some exceptions that can occurs during the iteration of the sequence.
+        /// Skips elements of a sequence that cause one of three types of
+        /// exceptions of some condition during iteration.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TException1">First type of the exception that can be ignored.</typeparam>
-        /// <typeparam name="TException2">Second type of the exception that can be ignored.</typeparam>
-        /// <typeparam name="TException3">Third type of the exception that can be ignored.</typeparam>
-        /// <param name="source">Source sequence.</param>
+        /// <typeparam name="T">
+        /// Type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TException1">
+        /// First type or sub-typeof exception to tolerate.</typeparam>
+        /// <typeparam name="TException2">
+        /// Second type or sub-typeof exception to tolerate.</typeparam>
+        /// <typeparam name="TException3">
+        /// Second type or sub-typeof exception to tolerate.</typeparam>
+        /// <param name="source">The source sequence.</param>
         /// <param name="error1Predicate">
-        /// A function that receives the exceptions of type <typeparamref name="TException1"/>
-        /// that occurs during the iteration and indicates if it should be ignored or not.
-        /// </param>
+        /// A function that receives exceptions of type or sub-type of
+        /// <typeparamref name="TException1"/> and determines if it should be
+        /// tolerated or not.</param>
         /// <param name="error2Predicate">
-        /// A function that receives the exceptions of type <typeparamref name="TException2"/>
-        /// that occurs during the iteration and indicates if it should be ignored or not.
-        /// </param>
+        /// A function that receives exceptions of type or sub-type of
+        /// <typeparamref name="TException2"/> and determines if it should be
+        /// tolerated or not.</param>
         /// <param name="error3Predicate">
-        /// A function that receives the exceptions of type <typeparamref name="TException3"/>
-        /// that occurs during the iteration and indicates if it should be ignored or not.
-        /// </param>
+        /// A function that receives exceptions of type or sub-type of
+        /// <typeparamref name="TException3"/> and determines if it should be
+        /// tolerated or not.</param>
         /// <returns>
-        /// A sequence of elements <paramref name="source"/> that ignore the exceptions of type
-        /// <typeparamref name="TException1"/>, <typeparamref name="TException2"/> or <typeparamref name="TException3"/>
-        /// in accordance with predicates.
+        /// A sequence of elements from <paramref name="source"/> except those
+        /// that conditionally caused an exception of type or sub-type of
+        /// either <typeparamref name="TException1"/>,
+        /// <typeparamref name="TException2"/> or
+        /// <typeparamref name="TException3"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// Exceptions are caught in order which predicates were passed, as well in a catch block.
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// Exceptions are caught in the order in which they are specified
+        /// as type parameters, from most specific
+        /// (<typeparamref name="TException1"/>) to most general
+        /// (<typeparamref name="TException3"/>).</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2, TException3>(

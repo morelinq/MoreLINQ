@@ -257,7 +257,7 @@ This method has 4 overloads.
 
 ### SkipErroneous
 
-Ignore some exceptions that can occurs during the iteration of the sequence.
+Skips elements of a sequence that cause exceptions during iteration.
 
 This method has 6 overloads.
 
