@@ -37,7 +37,11 @@ namespace MoreLinq
         /// <typeparamref name="TException"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// If exceptions are intermittent then the operation is
+        /// non-deterministic.</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException>(
@@ -70,6 +74,9 @@ namespace MoreLinq
         /// as type parameters, from most specific
         /// (<typeparamref name="TException1"/>) to most general
         /// (<typeparamref name="TException2"/>).</para>
+        /// <para>
+        /// If exceptions are intermittent then the operation is
+        /// non-deterministic.</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2>(
@@ -106,6 +113,9 @@ namespace MoreLinq
         /// as type parameters, from most specific
         /// (<typeparamref name="TException1"/>) to most general
         /// (<typeparamref name="TException3"/>).</para>
+        /// <para>
+        /// If exceptions are intermittent then the operation is
+        /// non-deterministic.</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2, TException3>(
@@ -134,7 +144,11 @@ namespace MoreLinq
         /// <typeparamref name="TException"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// If exceptions are intermittent then the operation is
+        /// non-deterministic.</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException>(
@@ -180,6 +194,9 @@ namespace MoreLinq
         /// as type parameters, from most specific
         /// (<typeparamref name="TException1"/>) to most general
         /// (<typeparamref name="TException2"/>).</para>
+        /// <para>
+        /// If exceptions are intermittent then the operation is
+        /// non-deterministic.</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2>(
@@ -235,6 +252,9 @@ namespace MoreLinq
         /// as type parameters, from most specific
         /// (<typeparamref name="TException1"/>) to most general
         /// (<typeparamref name="TException3"/>).</para>
+        /// <para>
+        /// If exceptions are intermittent then the operation is
+        /// non-deterministic.</para>
         /// </remarks>
 
         public static IEnumerable<T> SkipErroneous<T, TException1, TException2, TException3>(
