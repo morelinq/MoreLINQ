@@ -232,8 +232,8 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => throw new Exception(),
                                              () => 3);
-            int testCount = 0;
-            int exceptionCount = 0;
+            var testCount = 0;
+            var exceptionCount = 0;
 
             Func<TestException, bool> testExceptionPredicate = e => { testCount++; return true; };
             Func<Exception, bool>  exceptionPredicate= e => { exceptionCount++; return true; };
