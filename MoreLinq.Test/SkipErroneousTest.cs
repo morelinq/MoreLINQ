@@ -236,7 +236,7 @@ namespace MoreLinq.Test
             var exceptionCount = 0;
 
             Func<TestException, bool> testExceptionPredicate = e => { testCount++; return true; };
-            Func<Exception, bool>  exceptionPredicate= e => { exceptionCount++; return true; };
+            Func<Exception, bool>  exceptionPredicate = e => { exceptionCount++; return true; };
 
             source.SkipErroneous(testExceptionPredicate, exceptionPredicate).Consume();
 
