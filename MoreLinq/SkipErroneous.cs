@@ -36,10 +36,10 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<T> IgnoreErrors<T, TException>(
+        public static IEnumerable<T> SkipErroneous<T, TException>(
             this IEnumerable<T> source)
             where TException : Exception
-            => IgnoreErrorsImpl<T, TException, TException, TException>(source, null, null, null);
+            => SkipErroneousImpl<T, TException, TException, TException>(source, null, null, null);
 
         /// <summary>
         /// Ignore some exceptions that can occurs during the iteration of the sequence.
@@ -57,11 +57,11 @@ namespace MoreLinq
         /// Exceptions are caught in order which were passed, as well in a catch block.
         /// </remarks>
 
-        public static IEnumerable<T> IgnoreErrors<T, TException1, TException2>(
+        public static IEnumerable<T> SkipErroneous<T, TException1, TException2>(
             this IEnumerable<T> source)
             where TException1 : Exception
             where TException2 : Exception
-            => IgnoreErrorsImpl<T, TException1, TException2, TException2>(source, null, null, null);
+            => SkipErroneousImpl<T, TException1, TException2, TException2>(source, null, null, null);
 
         /// <summary>
         /// Ignore some exceptions that can occurs during the iteration of the sequence.
@@ -80,12 +80,12 @@ namespace MoreLinq
         /// Exceptions are caught in order which were passed, as well in a catch block.
         /// </remarks>
 
-        public static IEnumerable<T> IgnoreErrors<T, TException1, TException2, TException3>(
+        public static IEnumerable<T> SkipErroneous<T, TException1, TException2, TException3>(
             this IEnumerable<T> source)
             where TException1 : Exception
             where TException2 : Exception
             where TException3 : Exception
-            => IgnoreErrorsImpl<T, TException1, TException2, TException3>(source, null, null, null);
+            => SkipErroneousImpl<T, TException1, TException2, TException3>(source, null, null, null);
 
         /// <summary>
         /// Ignore some exceptions that can occurs during the iteration of the sequence.
@@ -105,14 +105,14 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<T> IgnoreErrors<T, TException>(
+        public static IEnumerable<T> SkipErroneous<T, TException>(
             this IEnumerable<T> source,
             Func<TException, bool> errorPredicate)
             where TException : Exception
         {
             if (errorPredicate == null) throw new ArgumentNullException(nameof(errorPredicate));
 
-            return IgnoreErrorsImpl(source, errorPredicate, errorPredicate, errorPredicate);
+            return SkipErroneousImpl(source, errorPredicate, errorPredicate, errorPredicate);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace MoreLinq
         /// Exceptions are caught in order which predicates were passed, as well in a catch block.
         /// </remarks>
 
-        public static IEnumerable<T> IgnoreErrors<T, TException1, TException2>(
+        public static IEnumerable<T> SkipErroneous<T, TException1, TException2>(
             this IEnumerable<T> source,
             Func<TException1, bool> error1Predicate,
             Func<TException2, bool> error2Predicate)
@@ -150,7 +150,7 @@ namespace MoreLinq
             if (error1Predicate == null) throw new ArgumentNullException(nameof(error1Predicate));
             if (error2Predicate == null) throw new ArgumentNullException(nameof(error2Predicate));
 
-            return IgnoreErrorsImpl(source, error1Predicate, error2Predicate, error2Predicate);
+            return SkipErroneousImpl(source, error1Predicate, error2Predicate, error2Predicate);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace MoreLinq
         /// Exceptions are caught in order which predicates were passed, as well in a catch block.
         /// </remarks>
 
-        public static IEnumerable<T> IgnoreErrors<T, TException1, TException2, TException3>(
+        public static IEnumerable<T> SkipErroneous<T, TException1, TException2, TException3>(
             this IEnumerable<T> source,
             Func<TException1, bool> error1Predicate,
             Func<TException2, bool> error2Predicate,
@@ -196,10 +196,10 @@ namespace MoreLinq
             if (error2Predicate == null) throw new ArgumentNullException(nameof(error2Predicate));
             if (error3Predicate == null) throw new ArgumentNullException(nameof(error3Predicate));
 
-            return IgnoreErrorsImpl(source, error1Predicate, error2Predicate, error3Predicate);
+            return SkipErroneousImpl(source, error1Predicate, error2Predicate, error3Predicate);
         }
 
-        static IEnumerable<T> IgnoreErrorsImpl<T, TException1, TException2, TException3>(
+        static IEnumerable<T> SkipErroneousImpl<T, TException1, TException2, TException3>(
             this IEnumerable<T> source,
             Func<TException1, bool> error1Predicate,
             Func<TException2, bool> error2Predicate,

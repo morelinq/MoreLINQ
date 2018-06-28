@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void IgnoreErrorsError1IsLazy()
         {
-            new BreakingSequence<int>().IgnoreErrors<int, TestException>();
+            new BreakingSequence<int>().SkipErroneous<int, TestException>();
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, TestException>()
+                var result = test.SkipErroneous<int, TestException>()
                                  .Memoize();
 
                 Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
@@ -72,7 +72,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, Exception>();
+                var result = test.SkipErroneous<int, Exception>();
 
                 Assert.That(result, Is.EqualTo(Enumerable.Range(1, 8)));
             }
@@ -86,7 +86,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, FormatException>();
+                var result = test.SkipErroneous<int, FormatException>();
 
                 Assert.That(result, Is.EqualTo(new[] { 2, 3, 4, 6, 7, 9 }));
             }
@@ -95,7 +95,7 @@ namespace MoreLinq.Test
         [Test]
         public void IgnoreErrorsError2IsLazy()
         {
-            new BreakingSequence<int>().IgnoreErrors<int, TestException, NullReferenceException>();
+            new BreakingSequence<int>().SkipErroneous<int, TestException, NullReferenceException>();
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, TestException, NullReferenceException>()
+                var result = test.SkipErroneous<int, TestException, NullReferenceException>()
                                  .Memoize();
 
                 Assert.That(result.Take(4), Is.EqualTo(Enumerable.Range(1, 4)));
@@ -124,7 +124,7 @@ namespace MoreLinq.Test
         [Test]
         public void IgnoreErrorsError3IsLazy()
         {
-            new BreakingSequence<int>().IgnoreErrors<int, TestException, NullReferenceException, ArgumentException>();
+            new BreakingSequence<int>().SkipErroneous<int, TestException, NullReferenceException, ArgumentException>();
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors<int, TestException, NullReferenceException, ArgumentException>()
+                var result = test.SkipErroneous<int, TestException, NullReferenceException, ArgumentException>()
                                  .Memoize();
 
                 Assert.That(result.Take(7), Is.EqualTo(Enumerable.Range(1, 7)));
@@ -159,7 +159,7 @@ namespace MoreLinq.Test
         [Test]
         public void IgnoreErrorsError1PredicateIsLazy()
         {
-            new BreakingSequence<int>().IgnoreErrors(BreakingFunc.Of<Exception, bool>());
+            new BreakingSequence<int>().SkipErroneous(BreakingFunc.Of<Exception, bool>());
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors((TestException e) => (bool) e.Data[key])
+                var result = test.SkipErroneous((TestException e) => (bool) e.Data[key])
                                  .Memoize();
 
                 Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
@@ -192,7 +192,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors((ArgumentException e) => true)
+                var result = test.SkipErroneous((ArgumentException e) => true)
                                  .Memoize();
 
                 Assert.That(result.Take(2), Is.EqualTo(Enumerable.Range(1, 2)));
@@ -216,7 +216,7 @@ namespace MoreLinq.Test
 
             using (var test = source.AsTestingSequence())
             {
-                var result = test.IgnoreErrors((Exception e) => !(e is NullReferenceException))
+                var result = test.SkipErroneous((Exception e) => !(e is NullReferenceException))
                                  .Memoize();
 
                 Assert.That(result.Take(3), Is.EqualTo(Enumerable.Range(1, 3)));
@@ -238,7 +238,7 @@ namespace MoreLinq.Test
             Func<TestException, bool> testExceptionPredicate = e => { testCount++; return true; };
             Func<Exception, bool>  exceptionPredicate= e => { exceptionCount++; return true; };
 
-            source.IgnoreErrors(testExceptionPredicate, exceptionPredicate).Consume();
+            source.SkipErroneous(testExceptionPredicate, exceptionPredicate).Consume();
 
             Assert.AreEqual(1, testCount);
             Assert.AreEqual(1, exceptionCount);
@@ -246,7 +246,7 @@ namespace MoreLinq.Test
             testCount = 0;
             exceptionCount = 0;
 
-            source.IgnoreErrors(exceptionPredicate, testExceptionPredicate).Consume();
+            source.SkipErroneous(exceptionPredicate, testExceptionPredicate).Consume();
 
             Assert.AreEqual(0, testCount);
             Assert.AreEqual(2, exceptionCount);

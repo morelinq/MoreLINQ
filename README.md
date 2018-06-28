@@ -246,7 +246,7 @@ selector function.
 
 This method has 4 overloads.
 
-### IgnoreErrors
+### SkipErroneous
 
 Ignore some exceptions that can occurs during the iteration of the sequence.
 
