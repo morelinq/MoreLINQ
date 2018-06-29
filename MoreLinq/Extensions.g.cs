@@ -136,6 +136,25 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Append</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class AppendExtension
+    {
+        /// <summary>
+        /// Returns a sequence consisting of the head elements and the given tail element.
+        /// </summary>
+        /// <typeparam name="T">Type of sequence</typeparam>
+        /// <param name="head">All elements of the head. Must not be null.</param>
+        /// <param name="tail">Tail element of the new sequence.</param>
+        /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
+            => MoreEnumerable.Append(head, tail);
+
+    }
+
     /// <summary><c>Assert</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
@@ -759,25 +778,6 @@ namespace MoreLinq.Extensions
 
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
             => MoreEnumerable.CompareCount(first, second);
-
-    }
-
-    /// <summary><c>Concat</c> extension.</summary>
-
-    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class ConcatExtension
-    {
-        /// <summary>
-        /// Returns a sequence consisting of the head elements and the given tail element.
-        /// </summary>
-        /// <typeparam name="T">Type of sequence</typeparam>
-        /// <param name="head">All elements of the head. Must not be null.</param>
-        /// <param name="tail">Tail element of the new sequence.</param>
-        /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
-        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-
-        public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail)
-            => MoreEnumerable.Concat(head, tail);
 
     }
 
@@ -6132,10 +6132,10 @@ namespace MoreLinq.Extensions
 
     }
 
-    /// <summary><c>Windowed</c> extension.</summary>
+    /// <summary><c>Window</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class WindowedExtension
+    public static partial class WindowExtension
     {
         /// <summary>
         /// Processes a sequence into a series of subsequences representing a windowed subset of the original
@@ -6149,8 +6149,8 @@ namespace MoreLinq.Extensions
         /// <param name="size">The size (number of elements) in each window</param>
         /// <returns>A series of sequences representing each sliding window subsequence</returns>
 
-        public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size)
-            => MoreEnumerable.Windowed(source, size);
+        public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
+            => MoreEnumerable.Window(source, size);
 
     }
 
