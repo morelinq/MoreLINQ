@@ -607,10 +607,18 @@ its value, and the next state in the recursive call.
 
 This method has 2 overloads.
 
-### Windowed
+### Window
 
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
+
+### ~~Windowed~~
+
+Processes a sequence into a series of subsequences representing a windowed
+subset of the original
+
+This method is obsolete and will be removed in a future version. Use `Window`
+instead.
 
 ### WindowLeft
 
