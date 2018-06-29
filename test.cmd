@@ -11,6 +11,8 @@ call build ^
   && call :test netcoreapp1.0 Release ^
   && call :test netcoreapp2.0 Debug ^
   && call :test netcoreapp2.0 Release ^
+  && call :test netcoreapp2.1 Debug ^
+  && call :test netcoreapp2.1 Release ^
   && call :test net451 Debug ^
   && call :test net451 Release
 goto :EOF
