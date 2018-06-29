@@ -50,4 +50,5 @@ script:
   - ./build.sh /v:m /p:Configuration=$CONFIGURATION
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.1/MoreLinq.Test.dll
   - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe
