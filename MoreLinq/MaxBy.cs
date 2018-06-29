@@ -26,6 +26,7 @@ namespace MoreLinq
     /// Exposes the enumerator, which supports iteration over a sequence of
     /// some extremum property (maximum or minimum) of a specified type.
     /// </summary>
+    /// <typeparam name="T">The type of objects to enumerate.</typeparam>
 
     public interface IExtremaEnumerable<out T> : IEnumerable<T>
     {
