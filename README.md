@@ -21,10 +21,10 @@ you to use on the types they extend (typically some instantiation of
 with other libraries you may be using that incidentally also extend the same
 type with an identically named method and signature. This happened with
 MoreLINQ, for example, when Microsoft .NET Framework 4.0 introduced
-[`Zip`][netzip] and [MoreLINQ already had one][zip]. Starting with version 2.4
-of MoreLINQ, you reduce the potential for present (or even future) conflicts
-by individually importing just the extension methods you need using the
-[static imports feature introduced in C# 6][using-static]:
+[`Zip`][netzip] and [MoreLINQ already had one][zip]. Starting with version 3.0
+of MoreLINQ, you can reduce the potential for present (or even future)
+conflicts by individually importing just the extension methods you need using
+the [static imports feature introduced in C# 6][using-static]:
 
 ```c#
 using static MoreLinq.Extensions.LagExtension;
