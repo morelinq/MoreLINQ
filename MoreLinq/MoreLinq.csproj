@@ -171,6 +171,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
     <Compile Remove="ToDataTable.cs" />
+    <Compile Remove="Extensions.ToDataTable.g.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net451'">
@@ -193,6 +194,14 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Fold.g.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Fold16.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Fold16.g.tt</DependentUpon>
     </Compile>
     <Compile Update="ToDelimitedString.g.cs">
       <DesignTime>True</DesignTime>

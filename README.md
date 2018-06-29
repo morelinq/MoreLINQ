@@ -12,6 +12,55 @@ Documentation for the stable and beta releases can be found at
 [morelinq.github.io](http://morelinq.github.io/).
 
 
+## Usage
+
+MoreLINQ can be used in one of two ways. The simplest is to just import the
+`MoreLinq` namespace and all extension methods become instantly available for
+you to use on the types they extend (typically some instantiation of
+`IEnumerable<T>`). In some very rare instances, however, this cause conflicts
+with other libraries you may be using that incidentally also extend the same
+type with an identically named method and signature. This happened with
+MoreLINQ, for example, when Microsoft .NET Framework 4.0 introduced
+[`Zip`][netzip] and [MoreLINQ already had one][zip]. Starting with version 3.0
+of MoreLINQ, you can reduce the potential for present (or even future)
+conflicts by individually importing just the extension methods you need using
+the [static imports feature introduced in C# 6][using-static]:
+
+```c#
+using static MoreLinq.Extensions.LagExtension;
+using static MoreLinq.Extensions.LeadExtension;
+```
+
+In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
+methods will be available in scope.
+
+Apart from extension methods, MoreLINQ also offers regular static method
+that *generate* (instead of operating on) sequences, like `Unfold`,
+`Random`, `Sequence` and others. If you want to use these while statically
+importing other individual extension methods, you can do so via aliasing:
+
+```c#
+using static MoreLinq.Extensions.LagExtension;
+using static MoreLinq.Extensions.LeadExtension;
+using MoreEnumerable = MoreLinq.MoreEnumerable;
+```
+
+In the example above, [`Lag`][lag] and [`Lead`][lead] will be available as
+extension methods as well as all the regular static methods on
+`MoreEnumerable` but _without_ any of the extension methods offered by
+`MoreEnumerable`.
+
+
+[lag]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lag.htm
+[lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
+[using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
+[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip--3
+[zip]: https://morelinq.github.io/2.0/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
+[unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
+[random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
+[sequence]: https://morelinq.github.io/2.2/ref/api/html/Overload_MoreLinq_MoreEnumerable_Sequence.htm
+
+
 ## Building
 
 To build MoreLINQ from sources, you will need:

@@ -44,7 +44,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
         /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
         /// in a single operation.
         /// An additional parameter specifies the direction of the sort
@@ -89,7 +89,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
         /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
         /// in a single operation.
         /// Additional parameters specify how the elements compare to each other and
@@ -139,7 +139,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
         /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
@@ -190,7 +190,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
         /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
