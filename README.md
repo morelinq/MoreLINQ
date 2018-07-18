@@ -616,7 +616,7 @@ This method has 4 overloads.
 
 ### ToHashSet
 
-Returns a of the source items using the default equality comparer for the
+Returns a [hashset][hashset] of the source items using the default equality comparer for the
 type.
 
 This method has 2 overloads.
@@ -724,6 +724,7 @@ source is already cached or buffered then it is returned verbatim.
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
+[hashset]: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
 [v2.1]: https://github.com/morelinq/MoreLINQ/releases/tag/v2.1.0
