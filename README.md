@@ -616,7 +616,7 @@ This method has 4 overloads.
 
 ### ToHashSet
 
-Returns a [hashset][hashset] of the source items using the default equality comparer for the
+Returns a [hash-set][hashset] of the source items using the default equality comparer for the
 type.
 
 This method has 2 overloads.
