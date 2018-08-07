@@ -84,7 +84,7 @@ namespace MoreLinq
 
             IEnumerable<TResult> IterateSequence()
             {
-                var queue = new Queue<T>();
+                var queue = new Queue<T>(count + 1);
 
                 foreach (var item in source)
                 {
