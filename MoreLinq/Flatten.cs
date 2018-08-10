@@ -54,8 +54,10 @@ namespace MoreLinq
         /// and all nested sequences for which the predicate function
         /// returned <c>true</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="predicate"/> is <c>null</c>.</exception>
 
         public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
