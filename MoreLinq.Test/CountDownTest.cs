@@ -32,6 +32,15 @@ namespace MoreLinq.Test
                 .CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
+        [Test]
+        public void WithNegativeCount()
+        {
+            const int count = 10;
+            Enumerable.Range(1, count)
+                      .CountDown(-1000, (_, cd) => cd)
+                      .AssertSequenceEqual(Enumerable.Repeat((int?) null, count));
+        }
+
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
         {
             var xs = Enumerable.Range(0, 5).ToArray();
