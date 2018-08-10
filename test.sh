@@ -2,9 +2,9 @@
 set -e
 cd "$(dirname "$0")"
 ./build.sh
-for v in 1 2; do
+for v in 1.0 2.0 2.1; do
     for c in Debug Release; do
-        dotnet exec MoreLinq.Test/bin/$c/netcoreapp$v.0/MoreLinq.Test.dll
+        dotnet exec MoreLinq.Test/bin/$c/netcoreapp$v/MoreLinq.Test.dll
     done
 done
 if [[ -z `which mono 2>/dev/null` ]]; then

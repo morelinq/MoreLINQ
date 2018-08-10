@@ -41,6 +41,7 @@ namespace MoreLinq
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
+
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
@@ -67,6 +68,7 @@ namespace MoreLinq
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
+
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
@@ -92,6 +94,7 @@ namespace MoreLinq
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>true</c>.
         /// </example>
+
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
         {
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
@@ -120,6 +123,7 @@ namespace MoreLinq
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>false</c>.
         /// </example>
+
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
         {
             if (min < 0) throw new ArgumentOutOfRangeException(nameof(min), "Minimum count cannot be negative.");
@@ -157,6 +161,7 @@ namespace MoreLinq
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>1</c>.
         /// </example>
+
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));

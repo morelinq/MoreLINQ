@@ -21,86 +21,47 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class ConcatTest
+    public class AppendTest
     {
-        #region Concat with single head and tail sequence
-
-        // NOTE: Concat with single head and tail sequence is now
-        // implemented in terms of Prepend so the tests are identical.
-
+        #region Append with single head and tail sequence
         [Test]
-        public void ConcatWithNonEmptyTailSequence()
-        {
-            var tail = new[] { "second", "third" };
-            var head = "first";
-            var whole = MoreEnumerable.Concat(head, tail);
-            whole.AssertSequenceEqual("first", "second", "third");
-        }
-
-        [Test]
-        public void ConcatWithEmptyTailSequence()
-        {
-            string[] tail = { };
-            var head = "first";
-            var whole = MoreEnumerable.Concat(head, tail);
-            whole.AssertSequenceEqual("first");
-        }
-
-        [Test]
-        public void ConcatWithNullHead()
-        {
-            var tail = new[] { "second", "third" };
-            string head = null;
-            var whole = MoreEnumerable.Concat(head, tail);
-            whole.AssertSequenceEqual(null, "second", "third");
-        }
-
-        [Test]
-        public void ConcatIsLazyInTailSequence()
-        {
-            MoreEnumerable.Concat("head", new BreakingSequence<string>());
-        }
-        #endregion
-
-        #region Concat with single head and tail sequence
-        [Test]
-        public void ConcatWithNonEmptyHeadSequence()
+        public void AppendWithNonEmptyHeadSequence()
         {
             var head = new[] { "first", "second" };
             var tail = "third";
-            var whole = head.Concat(tail);
+            var whole = head.Append(tail);
             whole.AssertSequenceEqual("first", "second", "third");
         }
 
         [Test]
-        public void ConcatWithEmptyHeadSequence()
+        public void AppendWithEmptyHeadSequence()
         {
             string[] head = { };
             var tail = "first";
-            var whole = head.Concat(tail);
+            var whole = head.Append(tail);
             whole.AssertSequenceEqual("first");
         }
 
         [Test]
-        public void ConcatWithNullTail()
+        public void AppendWithNullTail()
         {
             var head = new[] { "first", "second" };
             string tail = null;
-            var whole = head.Concat(tail);
+            var whole = head.Append(tail);
             whole.AssertSequenceEqual("first", "second", null);
         }
 
         [Test]
-        public void ConcatIsLazyInHeadSequence()
+        public void AppendIsLazyInHeadSequence()
         {
-            new BreakingSequence<string>().Concat("tail");
+            new BreakingSequence<string>().Append("tail");
         }
         #endregion
 
         [TestCaseSource(nameof(ContactManySource))]
-        public void ConcatMany(int[] head, int[] tail)
+        public void AppendMany(int[] head, int[] tail)
         {
-            tail.Aggregate(head.AsEnumerable(), (xs, x) => xs.Concat(x))
+            tail.Aggregate(head.AsEnumerable(), (xs, x) => xs.Append(x))
                 .AssertSequenceEqual(head.Concat(tail));
         }
 
@@ -118,11 +79,11 @@ namespace MoreLinq.Test
                                                     "Tail = [" + string.Join(", ", e.Tail) + "]");
 
         [Test]
-        public void ConcatWithSharedSource()
+        public void AppendWithSharedSource()
         {
-            var first  = new [] { 1 }.Concat(2);
-            var second = first.Concat(3).Concat(4);
-            var third  = first.Concat(4).Concat(8);
+            var first  = new [] { 1 }.Append(2);
+            var second = first.Append(3).Append(4);
+            var third  = first.Append(4).Append(8);
 
             second.AssertSequenceEqual(1, 2, 3, 4);
             third.AssertSequenceEqual(1, 2, 4, 8);

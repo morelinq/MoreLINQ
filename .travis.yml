@@ -7,7 +7,7 @@ solution: MoreLinq.sln
 mono: 5.0.1
 dist: trusty
 sudo: required
-dotnet: 2.1.2
+dotnet: 2.1.300
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
@@ -50,4 +50,5 @@ script:
   - ./build.sh /v:m /p:Configuration=$CONFIGURATION
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.1/MoreLinq.Test.dll
   - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe

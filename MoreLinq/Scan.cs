@@ -31,7 +31,7 @@ namespace MoreLinq
         /// N-th element is the sum of the first N input elements. More
         /// generally, the scan allows any commutative binary operation, not
         /// just a sum.
-        /// The exclusive version of Scan is <see cref="PreScan{TSource}"/>.
+        /// The exclusive version of Scan is <see cref="MoreEnumerable.PreScan{TSource}"/>.
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>

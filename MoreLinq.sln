@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.sh = build.sh
 		builddocs.cmd = builddocs.cmd
 		COPYING.txt = COPYING.txt
+		global.json = global.json
 		msbuild.cmd = msbuild.cmd
 		pack.cmd = pack.cmd
 		pack.sh = pack.sh
@@ -26,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq", "MoreLinq\MoreLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq.ExtensionsGenerator", "bld\ExtensionsGenerator\MoreLinq.ExtensionsGenerator.csproj", "{5FA8F0E8-648A-4C4F-B1BB-B0C46959A36E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +43,10 @@ Global
 		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE8BA6AF-584F-44E0-9F80-2DE800672A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA8F0E8-648A-4C4F-B1BB-B0C46959A36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA8F0E8-648A-4C4F-B1BB-B0C46959A36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA8F0E8-648A-4C4F-B1BB-B0C46959A36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA8F0E8-648A-4C4F-B1BB-B0C46959A36E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
