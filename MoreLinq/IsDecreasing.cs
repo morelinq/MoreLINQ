@@ -24,7 +24,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-
         /// <summary>
         /// Verifies if the Sequence is sorted in Descending Order.
         /// </summary>
