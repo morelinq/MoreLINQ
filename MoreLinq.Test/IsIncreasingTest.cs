@@ -1,7 +1,5 @@
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MoreLinq.Test
 {
@@ -38,7 +36,7 @@ namespace MoreLinq.Test
         {
             var sequenceAscending = Enumerable.Range(1, 100).Shuffle();
             sequenceAscending = null;
-            Assert.Throws<ArgumentNullException>(() => sequenceAscending.IsIncreasing<int>()); 
+            Assert.Throws<ArgumentNullException>(() => sequenceAscending.IsIncreasing<int>());
         }
     }
 }
