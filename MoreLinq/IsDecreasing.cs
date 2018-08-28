@@ -33,7 +33,7 @@ namespace MoreLinq
         public static bool IsDecreasing<T>(this IEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.Zip(source.Skip(1), (first, second) => Comparer<T>.Default.Compare(first, second) > 0).All(b => b);
+            return source.Pairwise((a, b) => Comparer<T>.Default.Compare(a, b) > 0).All(f => f);
         }
     }
 }
