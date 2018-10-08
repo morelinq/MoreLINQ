@@ -17,10 +17,10 @@ Documentation for the stable and beta releases can be found at
 MoreLINQ can be used in one of two ways. The simplest is to just import the
 `MoreLinq` namespace and all extension methods become instantly available for
 you to use on the types they extend (typically some instantiation of
-`IEnumerable<T>`). In some very rare instances, however, this cause conflicts
-with other libraries you may be using that incidentally also extend the same
-type with an identically named method and signature. This happened with
-MoreLINQ, for example, when Microsoft .NET Framework 4.0 introduced
+`IEnumerable<T>`). In some very rare instances, however, doing so can cause
+conflicts with other libraries you may be using that incidentally also extend
+the same type with an identically named method and signature. This happened
+with MoreLINQ, for example, when Microsoft .NET Framework 4.0 introduced
 [`Zip`][netzip] and [MoreLINQ already had one][zip]. Starting with version 3.0
 of MoreLINQ, you can reduce the potential for present (or even future)
 conflicts by individually importing just the extension methods you need using
