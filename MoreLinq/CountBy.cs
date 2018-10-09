@@ -86,9 +86,16 @@ namespace MoreLinq
                     var index = 0;
                     var nullIndex = (int?) null;
 
-                    int? IndexOf(TKey key) =>
-                        key == null ? nullIndex is int ni ? ni : (int?) null
-                                    : dic.TryGetValue(key, out var i) ? i : (int?) null;
+                    bool TryGetIndex(TKey key, out int i)
+                    {
+                        if (key == null)
+                        {
+                            i = nullIndex.GetValueOrDefault();
+                            return nullIndex.HasValue;
+                        }
+
+                        return dic.TryGetValue(key, out i);
+                    }
 
                     foreach (var item in source)
                     {
@@ -98,7 +105,7 @@ namespace MoreLinq
                             havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
                                          && cmp.Equals(prevKey, key)
                             // otherwise try & find index of the key
-                            || IndexOf(key) is int i && (index = i) >= 0 /* always true */)
+                            || TryGetIndex(key, out index))
                         {
                             counts[index]++;
                         }
