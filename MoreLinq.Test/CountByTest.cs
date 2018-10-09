@@ -87,5 +87,21 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<string>().CountBy(x => x.Length);
         }
+
+        [Test]
+        public void CounttByWithSomeNullKeys()
+        {
+            var ss = new[]
+            {
+                "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
+            };
+            var result = ss.CountBy(s => s);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create("foo", 2),
+                KeyValuePair.Create((string) null, 4),
+                KeyValuePair.Create("bar", 2),
+                KeyValuePair.Create("baz", 2));
+        }
     }
 }

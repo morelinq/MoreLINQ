@@ -84,23 +84,31 @@ namespace MoreLinq
                     var havePrevKey = false;
                     var prevKey = default(TKey);
                     var index = 0;
+                    var nullIndex = (int?) null;
+
+                    int? IndexOf(TKey key) =>
+                        key == null ? nullIndex is int ni ? ni : (int?) null
+                                    : dic.TryGetValue(key, out var i) ? i : (int?) null;
 
                     foreach (var item in source)
                     {
                         var key = keySelector(item);
 
                         if (// key same as the previous? then re-use the index
-                            (havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
-                                          && cmp.Equals(prevKey, key))
+                            havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
+                                         && cmp.Equals(prevKey, key)
                             // otherwise try & find index of the key
-                            || dic.TryGetValue(key, out index))
+                            || IndexOf(key) is int i && (index = i) >= 0 /* always true */)
                         {
                             counts[index]++;
                         }
                         else
                         {
-                            dic[key] = keys.Count;
                             index = keys.Count;
+                            if (key != null)
+                                dic[key] = index;
+                            else
+                                nullIndex = index;
                             keys.Add(key);
                             counts.Add(1);
                         }
