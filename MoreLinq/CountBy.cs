@@ -79,6 +79,19 @@ namespace MoreLinq
                 void Loop(IEqualityComparer<TKey> cmp)
                 {
                     var dic = new Dictionary<TKey, int>(cmp);
+                    var nullIndex = (int?) null;
+
+                    bool TryGetIndex(TKey key, out int i)
+                    {
+                        if (key == null)
+                        {
+                            i = nullIndex.GetValueOrDefault();
+                            return nullIndex.HasValue;
+                        }
+
+                        return dic.TryGetValue(key, out i);
+                    }
+
                     keys = new List<TKey>();
                     counts = new List<int>();
                     var havePrevKey = false;
@@ -90,17 +103,20 @@ namespace MoreLinq
                         var key = keySelector(item);
 
                         if (// key same as the previous? then re-use the index
-                            (havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
-                                          && cmp.Equals(prevKey, key))
+                            havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
+                                         && cmp.Equals(prevKey, key)
                             // otherwise try & find index of the key
-                            || dic.TryGetValue(key, out index))
+                            || TryGetIndex(key, out index))
                         {
                             counts[index]++;
                         }
                         else
                         {
-                            dic[key] = keys.Count;
                             index = keys.Count;
+                            if (key != null)
+                                dic[key] = index;
+                            else
+                                nullIndex = index;
                             keys.Add(key);
                             counts.Add(1);
                         }
