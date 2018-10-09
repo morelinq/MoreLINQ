@@ -89,7 +89,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void CounttByWithSomeNullKeys()
+        public void CountByWithSomeNullKeys()
         {
             var ss = new[]
             {
