@@ -79,11 +79,6 @@ namespace MoreLinq
                 void Loop(IEqualityComparer<TKey> cmp)
                 {
                     var dic = new Dictionary<TKey, int>(cmp);
-                    keys = new List<TKey>();
-                    counts = new List<int>();
-                    var havePrevKey = false;
-                    var prevKey = default(TKey);
-                    var index = 0;
                     var nullIndex = (int?) null;
 
                     bool TryGetIndex(TKey key, out int i)
@@ -96,6 +91,12 @@ namespace MoreLinq
 
                         return dic.TryGetValue(key, out i);
                     }
+
+                    keys = new List<TKey>();
+                    counts = new List<int>();
+                    var havePrevKey = false;
+                    var prevKey = default(TKey);
+                    var index = 0;
 
                     foreach (var item in source)
                     {
