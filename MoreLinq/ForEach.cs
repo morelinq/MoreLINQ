@@ -29,13 +29,14 @@ namespace MoreLinq
         /// <param name="source">The sequence of elements</param>
         /// <param name="action">The action to execute on each element</param>
 
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
 
             foreach (var element in source)
                 action(element);
+			return source;
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace MoreLinq
         /// <param name="action">The action to execute on each element; the second parameter
         /// of the action represents the index of the source element.</param>
 
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
+        public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
@@ -55,6 +56,7 @@ namespace MoreLinq
             var index = 0;
             foreach (var element in source)
                 action(element, index++);
+			return source;
         }
     }
 }
