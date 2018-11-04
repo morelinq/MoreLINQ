@@ -54,8 +54,10 @@ namespace MoreLinq
         /// and all nested sequences for which the predicate function
         /// returned <c>true</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="predicate"/> is <c>null</c>.</exception>
 
         public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
@@ -66,21 +68,25 @@ namespace MoreLinq
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
-        /// additional parameter specifies a selector function used to
-        /// flattening via property.
+        /// additional parameter specifies a function that projects an inner
+        /// sequence via a propert of an object.
         /// </summary>
         /// <param name="source">The sequence that will be flattened.</param>
         /// <param name="selector">
-        /// A function that receives each element of the sequence and allow
-        /// flattening via property. If the selector function returns <c>null</c>
-        /// the value is skipped and the original element is returned.
+        /// A function that receives each element of the sequence as an object
+        /// and projects an inner sequence to be flattened. If the function
+        /// returns <c>null</c> then the object argument is considered a leaf
+        /// of the flattening process.
         /// </param>
         /// <returns>
         /// A sequence that contains the elements of <paramref name="source"/>
-        /// and all nested sequences that selector function projected.
+        /// and all nested sequences projected via the
+        /// <paramref name="selector"/> function.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="selector"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="selector"/> is <c>null</c>.</exception>
 
         public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
         {
