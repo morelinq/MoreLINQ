@@ -32,6 +32,15 @@ namespace MoreLinq.Test
                 .CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
+        [Test]
+        public void WithNegativeCount()
+        {
+            const int count = 10;
+            Enumerable.Range(1, count)
+                      .CountDown(-1000, (_, cd) => cd)
+                      .AssertSequenceEqual(Enumerable.Repeat((int?) null, count));
+        }
+
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
         {
             var xs = Enumerable.Range(0, 5).ToArray();
@@ -70,10 +79,10 @@ namespace MoreLinq.Test
             {
                 Source = xs, Count = count, Countdown = countdown
             })
-            from ro in new[] { true, false }
-            select new TestCaseData(e.Source.ToBreakingList(ro), e.Count)
+            from kind in new[] { SourceKind.BreakingList, SourceKind.BreakingReadOnlyList }
+            select new TestCaseData(e.Source.ToSourceKind(kind), e.Count)
                 .Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
-                .SetName($"{nameof(WithList)}({(ro ? "ReadOnly" : null)}List {{ {string.Join(", ", e.Source)} }}, {e.Count})");
+                .SetName($"{nameof(WithList)}({kind} {{ {string.Join(", ", e.Source)} }}, {e.Count})");
 
         [TestCaseSource(nameof(ListData))]
         public IEnumerable<(int, int?)> WithList(IEnumerable<int> xs, int count) =>

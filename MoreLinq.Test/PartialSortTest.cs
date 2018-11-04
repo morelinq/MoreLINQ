@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         {
             var sorted = Enumerable.Range(1, 10)
                                    .Reverse()
-                                   .Concat(0)
+                                   .Append(0)
                                    .PartialSort(5);
 
             sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
@@ -39,13 +39,13 @@ namespace MoreLinq.Test
         {
             var sorted = Enumerable.Range(1, 10)
                                     .Reverse()
-                                    .Concat(0)
+                                    .Append(0)
                                     .PartialSort(5, OrderByDirection.Ascending);
 
             sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
             sorted = Enumerable.Range(1, 10)
                                 .Reverse()
-                                .Concat(0)
+                                .Append(0)
                                 .PartialSort(5, OrderByDirection.Descending);
             sorted.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
         }

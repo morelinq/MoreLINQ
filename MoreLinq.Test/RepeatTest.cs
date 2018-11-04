@@ -1,5 +1,6 @@
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -26,13 +27,16 @@ namespace MoreLinq.Test
             const int count = 10;
             const int repeatCount = 3;
             var sequence = Enumerable.Range(1, 10);
-            var result = sequence.Repeat(repeatCount);
+
+            int[] result;
+            using (var ts = sequence.AsTestingSequence())
+                result = ts.Repeat(repeatCount).ToArray();
 
             var expectedResult = Enumerable.Empty<int>();
             for (var i = 0; i < repeatCount; i++)
                 expectedResult = expectedResult.Concat(sequence);
 
-            Assert.AreEqual(count * repeatCount, result.Count());
+            Assert.That(result.Length, Is.EqualTo(count * repeatCount));
             Assert.That(result, Is.EqualTo(expectedResult));
         }
 
@@ -52,11 +56,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatForeverBehaviorSingleElementList()
         {
-            var value = 3;
-
-            var result = new[] { value }.Repeat();
-
-            Assert.IsTrue(result.Take(100).All(x => x == value));
+            const int value = 3;
+            using (var sequence = new[] { value }.AsTestingSequence())
+            {
+                var result = sequence.Repeat();
+                Assert.IsTrue(result.Take(100).All(x => x == value));
+            }
         }
 
         /// <summary>
@@ -70,13 +75,16 @@ namespace MoreLinq.Test
             const int takeCount = repeatCount * rangeCount;
 
             var sequence = Enumerable.Range(1, rangeCount);
-            var result = sequence.Repeat();
+
+            int[] result;
+            using (var ts = sequence.AsTestingSequence())
+                result = ts.Repeat().Take(takeCount).ToArray();
 
             var expectedResult = Enumerable.Empty<int>();
             for (var i = 0; i < repeatCount; i++)
                 expectedResult = expectedResult.Concat(sequence);
 
-            Assert.That(expectedResult, Is.EquivalentTo(result.Take(takeCount)));
+            Assert.That(expectedResult, Is.EquivalentTo(result));
         }
 
         /// <summary>

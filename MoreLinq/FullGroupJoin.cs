@@ -42,6 +42,7 @@ namespace MoreLinq
         /// <param name="secondKeySelector">The mapping from second sequence to key</param>
         /// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
         /// </returns>
+
         public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
@@ -70,6 +71,7 @@ namespace MoreLinq
         /// If null, the default equality comparer for <c>TKey</c> is used.</param>
         /// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
         /// </returns>
+
         public static IEnumerable<(TKey Key, IEnumerable<TFirst> First, IEnumerable<TSecond> Second)> FullGroupJoin<TFirst, TSecond, TKey>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
@@ -99,6 +101,7 @@ namespace MoreLinq
         /// <param name="resultSelector">Function to apply to each pair of elements plus the key</param>
         /// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
         /// </returns>
+
         public static IEnumerable<TResult> FullGroupJoin<TFirst, TSecond, TKey, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
@@ -130,6 +133,7 @@ namespace MoreLinq
         /// If null, the default equality comparer for <c>TKey</c> is used.</param>
         /// <returns>A sequence of elements joined from <paramref name="first"/> and <paramref name="second"/>.
         /// </returns>
+
         public static IEnumerable<TResult> FullGroupJoin<TFirst, TSecond, TKey, TResult>(this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
