@@ -69,7 +69,7 @@ namespace MoreLinq
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
         /// additional parameter specifies a function that projects an inner
-        /// sequence via a propert of an object.
+        /// sequence via a property of an object.
         /// </summary>
         /// <param name="source">The sequence that will be flattened.</param>
         /// <param name="selector">
