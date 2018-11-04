@@ -103,7 +103,7 @@ namespace MoreLinq.Test
             var result = source.Flatten().Cast<int>();
             var expectations = Enumerable.Range(1, 20);
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace MoreLinq.Test
                 7,
             };
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => false);
 
-            Assert.That(result, Is.EquivalentTo(source));
+            Assert.That(result, Is.EqualTo(source));
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace MoreLinq.Test
                 6
             };
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -241,7 +241,7 @@ namespace MoreLinq.Test
             using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
             using (var source = TestingSequence.Of<object>(inner1, inner3))
             {
-                Assert.That(source.Flatten(), Is.EquivalentTo(expectations));
+                Assert.That(source.Flatten(), Is.EqualTo(expectations));
             }
         }
 
@@ -289,7 +289,7 @@ namespace MoreLinq.Test
             var result = source.Flatten().Cast<int>();
             var expectations = Enumerable.Range(1, 10);
 
-            Assert.That(result.Take(10), Is.EquivalentTo(expectations));
+            Assert.That(result.Take(10), Is.EqualTo(expectations));
 
             Assert.Throws<TestException>(() =>
                 source.Flatten().ElementAt(11));
@@ -346,7 +346,7 @@ namespace MoreLinq.Test
 
             var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -385,7 +385,7 @@ namespace MoreLinq.Test
 
             var expectations = new object[] { 1, 2, 3, 4 };
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -425,7 +425,7 @@ namespace MoreLinq.Test
 
             var expectations = Enumerable.Range(1, 7);
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         class Series
