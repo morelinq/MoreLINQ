@@ -45,15 +45,10 @@ namespace MoreLinq
         {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
 
-            return _(); IEnumerable<TResult> _()
-            {
-                var current = initial;
-                while (true)
-                {
-                    yield return current;
-                    current = generator(current);
-                }
-            }
+            return MoreEnumerable.Unfold(initial, e => e,
+                                                  _ => true,
+                                                  e => generator(e),
+                                                  e => e);
         }
     }
 }
