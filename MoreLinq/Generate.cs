@@ -47,7 +47,7 @@ namespace MoreLinq
 
             return MoreEnumerable.Unfold(initial, e => e,
                                                   _ => true,
-                                                  e => generator(e),
+                                                  generator,
                                                   e => e);
         }
     }
