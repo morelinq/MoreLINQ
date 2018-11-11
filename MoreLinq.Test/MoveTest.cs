@@ -63,7 +63,7 @@ namespace MoreLinq.Test
             using (var test = source.AsTestingSequence())
             {
                 var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EquivalentTo(expectations));
+                Assert.That(result, Is.EqualTo(expectations));
             }
         }
 
@@ -90,7 +90,7 @@ namespace MoreLinq.Test
             using (var test = source.AsTestingSequence())
             {
                 var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EquivalentTo(expectations));
+                Assert.That(result, Is.EqualTo(expectations));
             }
         }
 

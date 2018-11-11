@@ -35,7 +35,7 @@ namespace MoreLinq.Test
             int? na = null;
             var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
             var result = input.FillForward();
-            Assert.That(result, Is.EquivalentTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
+            Assert.That(result, Is.EqualTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace MoreLinq.Test
                        .FillForward(e => e.Country   == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
 
 
-            Assert.That(data, Is.EquivalentTo(new[]
+            Assert.That(data, Is.EqualTo(new[]
             {
                 new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
                 new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },
