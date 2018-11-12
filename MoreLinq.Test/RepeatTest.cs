@@ -84,7 +84,7 @@ namespace MoreLinq.Test
             for (var i = 0; i < repeatCount; i++)
                 expectedResult = expectedResult.Concat(sequence);
 
-            Assert.That(expectedResult, Is.EquivalentTo(result));
+            Assert.That(expectedResult, Is.EqualTo(result));
         }
 
         /// <summary>

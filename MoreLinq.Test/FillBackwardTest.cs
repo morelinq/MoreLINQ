@@ -34,7 +34,7 @@ namespace MoreLinq.Test
             int? na = null;
             var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
             var result = input.FillBackward();
-            Assert.That(result, Is.EquivalentTo(new[] { 1, 1, 1, 2, 3, 3, 3, 3, 4, na, na }));
+            Assert.That(result, Is.EqualTo(new[] { 1, 1, 1, 2, 3, 3, 3, 3, 4, na, na }));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
                 xs.Select(x => new { X = x, Y = x })
                   .FillBackward(e => e.X == 0, (m, nm) => new { m.X, nm.Y });
 
-            Assert.That(result, Is.EquivalentTo(new[]
+            Assert.That(result, Is.EqualTo(new[]
             {
                 new { X = 0, Y = 1 },
                 new { X = 0, Y = 1 },

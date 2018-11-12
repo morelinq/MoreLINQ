@@ -179,8 +179,8 @@ namespace MoreLinq.Test
                    .ToArray() // start all before joining
                    .ForEach(t => t.Join());
 
-            Assert.That(sequence, Is.EquivalentTo(memoized));
-            lists.ForEach(list => Assert.That(list, Is.EquivalentTo(memoized)));
+            Assert.That(sequence, Is.EqualTo(memoized));
+            lists.ForEach(list => Assert.That(list, Is.EqualTo(memoized)));
         }
 
         [Test]
