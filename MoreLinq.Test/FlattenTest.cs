@@ -331,7 +331,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case string str:
+                    case string _:
                         return null;
                     case IEnumerable inner:
                         return inner;
@@ -374,7 +374,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case int i:
+                    case int _:
                         return null;
                     case IEnumerable inner:
                         return inner;
@@ -412,7 +412,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case int i:
+                    case int _:
                         return null;
                     case Tree<int> tree:
                         return new object[] { tree.Left, tree.Value, tree.Right };
@@ -422,6 +422,48 @@ namespace MoreLinq.Test
                         return Enumerable.Empty<object>();
                 }
             });
+
+            var expectations = Enumerable.Range(1, 7);
+
+            Assert.That(result, Is.EqualTo(expectations));
+        }
+
+        [Test]
+        public void FlattenSelectorWithTree2()
+        {
+            var source = new Tree<int>
+            (
+                new Tree<int>
+                (
+                    new Tree<int>(1),
+                    2,
+                    new Tree<int>(3)
+                ),
+                4,
+                new Tree<int>
+                (
+                    new Tree<int>(5),
+                    6,
+                    new Tree<int>(7)
+                )
+            );
+
+            var result = MoreEnumerable.TraverseBreadthFirst(source, (object obj) =>
+            {
+                switch (obj)
+                {
+                    case int x:
+                        return Enumerable.Repeat((object) x, 1);
+                    case Tree<int> tree:
+                        return new object[] { tree.Left, tree.Value, tree.Right };
+                    case IEnumerable inner:
+                        return inner.Cast<object>();
+                    default:
+                        return Enumerable.Empty<object>();
+                }
+            });
+
+            result = result.ToArray();
 
             var expectations = Enumerable.Range(1, 7);
 
