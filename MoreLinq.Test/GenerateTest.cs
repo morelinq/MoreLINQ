@@ -45,6 +45,14 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void GenerateFuncIsNotInvokedUnnecessarily()
+        {
+            MoreEnumerable.Generate(0, BreakingFunc.Of<int, int>())
+                          .Take(1)
+                          .Consume();
+        }
+
+        [Test]
         public void GenerateByIndexIsLazy()
         {
             MoreEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
