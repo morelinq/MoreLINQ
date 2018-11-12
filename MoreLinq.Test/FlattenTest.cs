@@ -331,7 +331,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case string str:
+                    case string _:
                         return null;
                     case IEnumerable inner:
                         return inner;
@@ -374,7 +374,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case int i:
+                    case int _:
                         return null;
                     case IEnumerable inner:
                         return inner;
@@ -412,7 +412,7 @@ namespace MoreLinq.Test
             {
                 switch (obj)
                 {
-                    case int i:
+                    case int _:
                         return null;
                     case Tree<int> tree:
                         return new object[] { tree.Left, tree.Value, tree.Right };
