@@ -41,7 +41,8 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateIsLazy()
         {
-            var result = MoreEnumerable.Generate(0, BreakingFunc.Of<int, int>()).TakeWhile(n => false);
+            MoreEnumerable.Generate(0, BreakingFunc.Of<int, int>());
+        }
 
         [Test]
         public void GenerateFuncIsNotInvokedUnnecessarily()
