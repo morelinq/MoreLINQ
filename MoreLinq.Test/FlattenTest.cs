@@ -18,11 +18,14 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
+    using System.Collections;
     using NUnit.Framework;
 
     [TestFixture]
     public class FlattenTest
     {
+        // Flatten(this IEnumerable source)
+
         [Test]
         public void Flatten()
         {
@@ -100,7 +103,7 @@ namespace MoreLinq.Test
             var result = source.Flatten().Cast<int>();
             var expectations = Enumerable.Range(1, 20);
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -108,6 +111,8 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<int>().Flatten();
         }
+
+        // Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
 
         [Test]
         public void FlattenPredicate()
@@ -152,7 +157,7 @@ namespace MoreLinq.Test
                 7,
             };
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -174,7 +179,7 @@ namespace MoreLinq.Test
 
             var result = source.Flatten(_ => false);
 
-            Assert.That(result, Is.EquivalentTo(source));
+            Assert.That(result, Is.EqualTo(source));
         }
 
         [Test]
@@ -209,7 +214,7 @@ namespace MoreLinq.Test
                 6
             };
 
-            Assert.That(result, Is.EquivalentTo(expectations));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -236,7 +241,7 @@ namespace MoreLinq.Test
             using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
             using (var source = TestingSequence.Of<object>(inner1, inner3))
             {
-                Assert.That(source.Flatten(), Is.EquivalentTo(expectations));
+                Assert.That(source.Flatten(), Is.EqualTo(expectations));
             }
         }
 
@@ -284,10 +289,169 @@ namespace MoreLinq.Test
             var result = source.Flatten().Cast<int>();
             var expectations = Enumerable.Range(1, 10);
 
-            Assert.That(result.Take(10), Is.EquivalentTo(expectations));
+            Assert.That(result.Take(10), Is.EqualTo(expectations));
 
             Assert.Throws<TestException>(() =>
                 source.Flatten().ElementAt(11));
+        }
+
+        // Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
+
+        [Test]
+        public void FlattenSelectorIsLazy()
+        {
+            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
+        }
+
+        [Test]
+        public void FlattenSelector()
+        {
+            var source = new[]
+            {
+                new Series
+                {
+                    Name = "series1",
+                    Attributes = new[]
+                    {
+                        new Attribute { Values = new[] { 1, 2 } },
+                        new Attribute { Values = new[] { 3, 4 } },
+                    }
+                },
+                new Series
+                {
+                    Name = "series2",
+                    Attributes = new[]
+                    {
+                        new Attribute { Values = new[] { 5, 6 } },
+                    }
+                }
+            };
+
+            var result = source.Flatten(obj =>
+            {
+                switch (obj)
+                {
+                    case string _:
+                        return null;
+                    case IEnumerable inner:
+                        return inner;
+                    case Series s:
+                        return new object[] { s.Name, s.Attributes };
+                    case Attribute a:
+                        return a.Values;
+                    default:
+                        return null;
+                }
+            });
+
+            var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
+
+            Assert.That(result, Is.EqualTo(expectations));
+        }
+
+        [Test]
+        public void FlattenSelectorFilteringOnlyIntegers()
+        {
+            var source = new object[]
+            {
+                true,
+                false,
+                1,
+                "bar",
+                new object[]
+                {
+                    2,
+                    new[]
+                    {
+                        3,
+                    },
+                },
+                'c',
+                4,
+            };
+
+            var result = source.Flatten(obj =>
+            {
+                switch (obj)
+                {
+                    case int _:
+                        return null;
+                    case IEnumerable inner:
+                        return inner;
+                    default:
+                        return Enumerable.Empty<object>();
+                }
+            });
+
+            var expectations = new object[] { 1, 2, 3, 4 };
+
+            Assert.That(result, Is.EqualTo(expectations));
+        }
+
+        [Test]
+        public void FlattenSelectorWithTree()
+        {
+            var source = new Tree<int>
+            (
+                new Tree<int>
+                (
+                    new Tree<int>(1),
+                    2,
+                    new Tree<int>(3)
+                ),
+                4,
+                new Tree<int>
+                (
+                    new Tree<int>(5),
+                    6,
+                    new Tree<int>(7)
+                )
+            );
+
+            var result = new [] { source }.Flatten(obj =>
+            {
+                switch (obj)
+                {
+                    case int _:
+                        return null;
+                    case Tree<int> tree:
+                        return new object[] { tree.Left, tree.Value, tree.Right };
+                    case IEnumerable inner:
+                        return inner;
+                    default:
+                        return Enumerable.Empty<object>();
+                }
+            });
+
+            var expectations = Enumerable.Range(1, 7);
+
+            Assert.That(result, Is.EqualTo(expectations));
+        }
+
+        class Series
+        {
+            public string Name;
+            public Attribute[] Attributes;
+        }
+
+        class Attribute
+        {
+            public int[] Values;
+        }
+
+        class Tree<T>
+        {
+            public readonly T Value;
+            public readonly Tree<T> Left;
+            public readonly Tree<T> Right;
+
+            public Tree(T value) : this(null, value, null) {}
+            public Tree(Tree<T> left, T value, Tree<T> right)
+            {
+                Left = left;
+                Value = value;
+                Right = right;
+            }
         }
     }
 }
