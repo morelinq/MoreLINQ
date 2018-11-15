@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2012 Atif Aziz. All rights reserved.
+// Copyright (c) 2012 Atif Aziz, 2018 Thibault Reigner. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Linq;
 
@@ -207,7 +206,7 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             // This should be removed once the target framework is bumped to something that supports covariance
-            TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
+            TResult ResultSelectorWrapper(TKey key, IEnumerable<TSource> group) => resultSelector(key, group);
 
             return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
                                      EqualityComparer<TKey>.Default);
@@ -253,16 +252,31 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             // This should be removed once the target framework is bumped to something that supports covariance
-            TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
+            TResult ResultSelectorWrapper(TKey key, IEnumerable<TSource> group) => resultSelector(key, group);
             return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
                                      comparer ?? EqualityComparer<TKey>.Default);
         }
 
-        static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
+        private static IEnumerable<TElement> GetAdjacentGroup<TSource, TKey, TElement>(
+            IEnumerator<TSource> iterator,
+            TKey currentKey,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector,
+            IEqualityComparer<TKey> comparer)
+        {
+            yield return elementSelector(iterator.Current);
+
+            while (iterator.MoveNext() && comparer.Equals(currentKey, keySelector(iterator.Current)))
+            {
+                yield return elementSelector(iterator.Current);
+            }
+        }
+
+        private static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
-            Func<TKey, IList<TElement>, TResult> resultSelector,
+            Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
             Debug.Assert(source != null);
@@ -271,37 +285,21 @@ namespace MoreLinq
             Debug.Assert(resultSelector != null);
             Debug.Assert(comparer != null);
 
-            using (var iterator = source.GetEnumerator())
+            using (var iterator = new EnumeratorWithEndTracking<TSource>(source.GetEnumerator()))
             {
-                var group = default(TKey);
-                var members = (List<TElement>) null;
-
-                while (iterator.MoveNext())
+                iterator.MoveNext();
+                while (!iterator.HasEnded)
                 {
-                    var key = keySelector(iterator.Current);
-                    var element = elementSelector(iterator.Current);
-                    if (members != null && comparer.Equals(group, key))
-                    {
-                        members.Add(element);
-                    }
-                    else
-                    {
-                        if (members != null)
-                            yield return resultSelector(group, members);
-                        group = key;
-                        members = new List<TElement> { element };
-                    }
+                    var currentKey = keySelector(iterator.Current);
+                    yield return resultSelector(currentKey, GetAdjacentGroup(iterator, currentKey, keySelector, elementSelector, comparer));
                 }
-
-                if (members != null)
-                    yield return resultSelector(group, members);
-            }
+            }           
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members)
+        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IEnumerable<TElement> members)
         {
             Debug.Assert(members != null);
-            return Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
+            return Grouping.Create(key, members);
         }
 
         static class Grouping
@@ -328,6 +326,38 @@ namespace MoreLinq
 
             public IEnumerator<TElement> GetEnumerator() => _members.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+
+        private class EnumeratorWithEndTracking<T> : IEnumerator<T>
+        {
+            private readonly IEnumerator<T> _enumerator;
+            public bool HasEnded { get; private set; } = false;
+
+            public EnumeratorWithEndTracking(IEnumerator<T> enumerator)
+            {
+                _enumerator = enumerator;
+            }
+
+            public void Dispose()
+            {
+                _enumerator.Dispose();
+            }
+
+            public bool MoveNext()
+            {
+                HasEnded = !_enumerator.MoveNext();
+                return !HasEnded;
+            }
+
+            public void Reset()
+            {
+                _enumerator.Reset();
+                HasEnded = false;
+            }
+
+            public T Current => _enumerator.Current;
+
+            object IEnumerator.Current => Current;
         }
     }
 }
