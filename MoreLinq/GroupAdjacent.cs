@@ -291,12 +291,14 @@ namespace MoreLinq
                 while (!iterator.HasEnded)
                 {
                     var currentKey = keySelector(iterator.Current);
-                    yield return resultSelector(currentKey, GetAdjacentGroup(iterator, currentKey, keySelector, elementSelector, comparer));
+                    yield return resultSelector(currentKey,
+                        GetAdjacentGroup(iterator, currentKey, keySelector, elementSelector, comparer));
                 }
-            }           
+            }
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IEnumerable<TElement> members)
+        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key,
+            IEnumerable<TElement> members)
         {
             Debug.Assert(members != null);
             return Grouping.Create(key, members);
