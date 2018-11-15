@@ -57,6 +57,12 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
+            return BatchImpl(source, size, resultSelector);
+        }
+
+        private static IEnumerable<TResult> BatchImpl<TSource, TResult>(IEnumerable<TSource> source, int size,
+            Func<IEnumerable<TSource>, TResult> resultSelector)
+        {
             using (var enumerator = source.GetEnumerator())
             {
                 while (enumerator.MoveNext())
