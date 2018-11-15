@@ -371,20 +371,19 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.Batch(source, size);
 
         /// <summary>
-        /// Batches the source sequence into sized buckets and applies a projection to each bucket.
+        /// Batches the source sequence into sized enumerables and applies a projection to each enumerable.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of result returned by <paramref name="resultSelector"/>.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="size">Size of buckets.</param>
+        /// <param name="size">Size of enumerable.</param>
         /// <param name="resultSelector">The projection to apply to each bucket.</param>
-        /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
+        /// <returns>A sequence of projections on equally sized enumerables containing elements of the source collection.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results (buckets and bucket content).
+        /// This operator uses deferred execution and streams its results (enmerables and their contents).
         /// </remarks>
 
-        public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
+        public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> resultSelector)
             => MoreEnumerable.Batch(source, size, resultSelector);
 
     }
@@ -2514,6 +2513,7 @@ namespace MoreLinq.Extensions
         /// buffered. Each grouping is therefore yielded as soon as it
         /// is complete and before the next grouping occurs.
         /// </remarks>
+
 
         public static IEnumerable<TResult> GroupAdjacent<TSource, TKey, TResult>(
             this IEnumerable<TSource> source,

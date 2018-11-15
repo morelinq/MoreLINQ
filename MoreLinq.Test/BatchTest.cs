@@ -27,14 +27,14 @@ namespace MoreLinq.Test
         public void BatchZeroSize()
         {
             AssertThrowsArgument.OutOfRangeException("size",() =>
-                new object[0].Batch(0));
+                new object[0].Batch(0).ToList()); // force enumeration to trigger the exception
         }
 
         [Test]
         public void BatchNegativeSize()
         {
             AssertThrowsArgument.OutOfRangeException("size",() =>
-                new object[0].Batch(-1));
+                new object[0].Batch(-1).ToList()); // force enumeration to trigger the exception
         }
 
         [Test]
@@ -71,6 +71,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        [Ignore("Obsolete : Batch performs fully deferred processing hence not instantiating lists")]
         public void BatchSequenceYieldsListsOfBatches()
         {
             var result = new[] { 1, 2, 3 }.Batch(2);
