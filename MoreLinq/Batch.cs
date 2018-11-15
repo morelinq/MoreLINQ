@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2009 Atif Aziz. All rights reserved.
+// Copyright (c) 2009 Atif Aziz, 2018 Thibault Reigner All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,58 +39,39 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Batches the source sequence into sized buckets and applies a projection to each bucket.
+        /// Batches the source sequence into sized enumerables and applies a projection to each enumerable.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of result returned by <paramref name="resultSelector"/>.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="size">Size of buckets.</param>
+        /// <param name="size">Size of enumerable.</param>
         /// <param name="resultSelector">The projection to apply to each bucket.</param>
-        /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
+        /// <returns>A sequence of projections on equally sized enumerables containing elements of the source collection.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results (buckets and bucket content).
+        /// This operator uses deferred execution and streams its results (enmerables and their contents).
         /// </remarks>
 
-        public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
+        public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            using (var enumerator = source.GetEnumerator())
             {
-                TSource[] bucket = null;
-                var count = 0;
-
-                foreach (var item in source)
-                {
-                    if (bucket == null)
-                    {
-                        bucket = new TSource[size];
-                    }
-
-                    bucket[count++] = item;
-
-                    // The bucket is fully buffered before it's yielded
-                    if (count != size)
-                    {
-                        continue;
-                    }
-
-                    yield return resultSelector(bucket);
-
-                    bucket = null;
-                    count = 0;
-                }
-
-                // Return the last bucket with all remaining elements
-                if (bucket != null && count > 0)
-                {
-                    Array.Resize(ref bucket, count);
-                    yield return resultSelector(bucket);
-                }
+                while (enumerator.MoveNext())
+                    yield return resultSelector(GetBatch(enumerator, size));
             }
+        }
+
+        private static IEnumerable<TSource> GetBatch<TSource>(IEnumerator<TSource> enumerator, int size)
+        {
+            var i = 0;
+            do
+            {
+                i++;
+                yield return enumerator.Current;
+            } while (i < size && enumerator.MoveNext());
         }
     }
 }
