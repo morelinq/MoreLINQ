@@ -56,7 +56,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
-            return ScanImpl(source, transformation, e => e.MoveNext() ? (e.Current) : ((TSource)?) null);
+            return ScanImpl(source, transformation, e => e.MoveNext() ? (true, e.Current) : default);
         }
 
         /// <summary>
@@ -86,21 +86,20 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
-            return ScanImpl(source, transformation, e => (seed));
+            return ScanImpl(source, transformation, e => (true, seed));
         }
 
         static IEnumerable<TState> ScanImpl<TSource, TState>(IEnumerable<TSource> source,
             Func<TState, TSource, TState> transformation,
-            Func<IEnumerator<TSource>, (TResult Seed)?> seeder)
+            Func<IEnumerator<TSource>, (bool MoveNext, TState Seed)> seeder)
         {
             using (var e = source.GetEnumerator())
             {
-                var seed = seeder(e);
+                var (moveNext, aggregator) = seeder(e);
 
-                if (!seed.HasValue)
+                if (!moveNext)
                     yield break;
 
-                var accumulator = r.Value.Seed;
                 yield return aggregator;
 
                 while (e.MoveNext())
