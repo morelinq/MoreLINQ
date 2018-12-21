@@ -4452,7 +4452,7 @@ namespace MoreLinq.Extensions
     public static partial class ScanExtension
     {
         /// <summary>
-        /// Peforms a scan (inclusive prefix sum) on a sequence of elements.
+        /// Performs a scan (inclusive prefix sum) on a sequence of elements.
         /// </summary>
         /// <remarks>
         /// An inclusive prefix sum returns an equal-length sequence where the
