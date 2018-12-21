@@ -55,23 +55,8 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return _(); IEnumerable<TSource> _()
-            {
-                using (var i = source.GetEnumerator())
-                {
-                    if (!i.MoveNext())
-                        yield break;
 
-                    var aggregator = i.Current;
-                    yield return aggregator;
-
-                    while (i.MoveNext())
-                    {
-                        aggregator = transformation(aggregator, i.Current);
-                        yield return aggregator;
-                    }
-                }
-            }
+            return ScanImpl(source, transformation, e => e.MoveNext() ? (e.Current) : ((TSource)?) null);
         }
 
         /// <summary>
@@ -101,18 +86,27 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
-            return _(); IEnumerable<TState> _()
-            {
-                using (var i = source.GetEnumerator())
-                {
-                    var aggregator = seed;
-                    yield return aggregator;
+            return ScanImpl(source, transformation, e => (seed));
+        }
 
-                    while (i.MoveNext())
-                    {
-                        aggregator = transformation(aggregator, i.Current);
-                        yield return aggregator;
-                    }
+        static IEnumerable<TState> ScanImpl<TSource, TState>(IEnumerable<TSource> source,
+            Func<TState, TSource, TState> transformation,
+            Func<IEnumerator<TSource>, (TResult Seed)?> seeder)
+        {
+            using (var e = source.GetEnumerator())
+            {
+                var seed = seeder(e);
+
+                if (!seed.HasValue)
+                    yield break;
+
+                var accumulator = r.Value.Seed;
+                yield return aggregator;
+
+                while (e.MoveNext())
+                {
+                    aggregator = transformation(aggregator, e.Current);
+                    yield return aggregator;
                 }
             }
         }
