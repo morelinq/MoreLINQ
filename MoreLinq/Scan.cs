@@ -91,13 +91,13 @@ namespace MoreLinq
 
         static IEnumerable<TState> ScanImpl<TSource, TState>(IEnumerable<TSource> source,
             Func<TState, TSource, TState> transformation,
-            Func<IEnumerator<TSource>, (bool MoveNext, TState Seed)> seeder)
+            Func<IEnumerator<TSource>, (bool, TState)> seeder)
         {
             using (var e = source.GetEnumerator())
             {
-                var (moveNext, aggregator) = seeder(e);
+                var (seeded, aggregator) = seeder(e);
 
-                if (!moveNext)
+                if (!seeded)
                     yield break;
 
                 yield return aggregator;
