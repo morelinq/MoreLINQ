@@ -47,6 +47,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
+            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
+
             var queue = new Queue<T>();
             return TraverseImpl(root, childrenSelector, queue.Enqueue, queue.Dequeue, queue);
         }
@@ -74,6 +76,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
+            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
+
             // because a stack pops the elements out in LIFO order, we need to push them in reverse
             // if we want to traverse the returned list in the same order as was returned to us
 
@@ -88,8 +92,6 @@ namespace MoreLinq
             Func<T> Pop,
             ICollection collection)
         {
-            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
-
             return _(); IEnumerable<T> _()
             {
                 Push(root);
