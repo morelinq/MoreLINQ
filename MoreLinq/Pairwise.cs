@@ -18,6 +18,7 @@
 namespace MoreLinq
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -49,25 +50,8 @@ namespace MoreLinq
         /// </example>
 
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-
-            return _(); IEnumerable<TResult> _()
-            {
-                using (var e = source.GetEnumerator())
-                {
-                    if (!e.MoveNext())
-                        yield break;
-
-                    var previous = e.Current;
-                    while (e.MoveNext())
-                    {
-                        yield return resultSelector(previous, e.Current);
-                        previous = e.Current;
-                    }
-                }
-            }
-        }
+            => source.Scan((Previous: default(TSource), Current: default(TSource)), (acc, current) => (Previous: acc.Current, Current: current))
+                     .Skip(2)
+                     .Select(acc => resultSelector(acc.Previous, acc.Current));
     }
 }
