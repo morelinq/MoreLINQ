@@ -50,8 +50,15 @@ namespace MoreLinq
         /// </example>
 
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
-            => source.Scan((Previous: default(TSource), Current: default(TSource)), (acc, current) => (Previous: acc.Current, Current: current))
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source
+                     .Scan((Previous: default(TSource), Current: default(TSource)),
+                           (acc, current) => (Previous: acc.Current, Current: current))
                      .Skip(2)
                      .Select(acc => resultSelector(acc.Previous, acc.Current));
+        }
     }
 }
