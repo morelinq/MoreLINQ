@@ -327,6 +327,10 @@ skipping sequences as they are consumed.
 
 This method has 2 overloads.
 
+### IsEmpty
+
+Determines whether source sequence is empty or not.
+
 ### Lag
 
 Produces a projection of a sequence by evaluating pairs of elements separated
