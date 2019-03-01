@@ -55,76 +55,129 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return _(); IEnumerable<KeyValuePair<TKey, int>> _()
+            return CountByImpl(source, keySelector, (_, key, count) => new KeyValuePair<TKey, int>(key, count), comparer, false);
+        }
+
+        /// <summary>
+        /// Applies a key-generating function to each element of a sequence and returns a sequence that
+        /// contains the elements of the original sequence as well its key and index inside the group of its key.
+        /// An additional argument specifies a comparer to use for testing equivalence of keys.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TKey">Type of the projected key.</typeparam>
+        /// <typeparam name="TResult">Type of the projected element.</typeparam>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
+        /// <param name="resultSelector">The projection to each element, its key and index.</param>
+        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+
+        public static IEnumerable<TResult> IndexBy<TSource, TKey, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TKey, int, TResult> resultSelector)
+        {
+            return IndexBy(source, keySelector, resultSelector, null);
+        }
+
+        /// <summary>
+        /// Applies a key-generating function to each element of a sequence and returns a sequence that
+        /// contains the elements of the original sequence as well its key and index inside the group of its key.
+        /// An additional argument specifies a comparer to use for testing equivalence of keys.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TKey">Type of the projected key.</typeparam>
+        /// <typeparam name="TResult">Type of the projected element.</typeparam>
+        /// <param name="source">Source sequence.</param>
+        /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
+        /// <param name="resultSelector">The projection to each element, its key and index.</param>
+        /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
+        /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
+        /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+
+        public static IEnumerable<TResult> IndexBy<TSource, TKey, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TKey, int, TResult> resultSelector,
+            IEqualityComparer<TKey> comparer)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return CountByImpl(source, keySelector, (e, key, count) => resultSelector(e, key, count - 1), comparer, true);
+        }
+
+        static IEnumerable<TResult> CountByImpl<TSource, TKey, TResult>(
+            IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TKey, int, TResult> resultSelector,
+            IEqualityComparer<TKey> comparer,
+            bool yieldIntermediaryValues)
+        {
+            comparer = comparer ?? EqualityComparer<TKey>.Default;
+
+            var dic = new Dictionary<TKey, int>(comparer);
+            var nullIndex = (int?) null;
+
+            bool TryGetIndex(TKey key, out int i)
             {
-                List<TKey> keys;
-                List<int> counts;
-
-                // Avoid the temptation to inline the Loop method, which
-                // exists solely to separate the scope & lifetimes of the
-                // locals needed for the actual looping of the source &
-                // production of the results (that happens once at the start
-                // of iteration) from those needed to simply yield the
-                // results. It is harder to reason about the lifetimes (if the
-                // code is inlined) with respect to how the compiler will
-                // rewrite the iterator code as a state machine. For
-                // background, see:
-                // http://blog.stephencleary.com/2010/02/q-should-i-set-variables-to-null-to.html
-
-                Loop(comparer ?? EqualityComparer<TKey>.Default);
-
-                for (var i = 0; i < keys.Count; i++)
-                    yield return new KeyValuePair<TKey, int>(keys[i], counts[i]);
-
-                void Loop(IEqualityComparer<TKey> cmp)
+                if (key == null)
                 {
-                    var dic = new Dictionary<TKey, int>(cmp);
-                    var nullIndex = (int?) null;
-
-                    bool TryGetIndex(TKey key, out int i)
-                    {
-                        if (key == null)
-                        {
-                            i = nullIndex.GetValueOrDefault();
-                            return nullIndex.HasValue;
-                        }
-
-                        return dic.TryGetValue(key, out i);
-                    }
-
-                    keys = new List<TKey>();
-                    counts = new List<int>();
-                    var havePrevKey = false;
-                    var prevKey = default(TKey);
-                    var index = 0;
-
-                    foreach (var item in source)
-                    {
-                        var key = keySelector(item);
-
-                        if (// key same as the previous? then re-use the index
-                            havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
-                                         && cmp.Equals(prevKey, key)
-                            // otherwise try & find index of the key
-                            || TryGetIndex(key, out index))
-                        {
-                            counts[index]++;
-                        }
-                        else
-                        {
-                            index = keys.Count;
-                            if (key != null)
-                                dic[key] = index;
-                            else
-                                nullIndex = index;
-                            keys.Add(key);
-                            counts.Add(1);
-                        }
-
-                        prevKey = key;
-                        havePrevKey = true;
-                    }
+                    i = nullIndex.GetValueOrDefault();
+                    return nullIndex.HasValue;
                 }
+
+                return dic.TryGetValue(key, out i);
+            }
+
+            var keys = new List<TKey>();
+            var counts = new List<int>();
+            var elements = new List<TSource>();
+
+            var havePrevKey = false;
+            var prevKey = default(TKey);
+            var index = 0;
+
+            foreach (var item in source)
+            {
+                var key = keySelector(item);
+
+                if (// key same as the previous? then re-use the index
+                    havePrevKey && comparer.GetHashCode(prevKey) == comparer.GetHashCode(key)
+                                && comparer.Equals(prevKey, key)
+                    // otherwise try & find index of the key
+                    || TryGetIndex(key, out index))
+                {
+                    counts[index]++;
+                    elements[index] = item;
+                }
+                else
+                {
+                    index = keys.Count;
+
+                    if (key != null)
+                        dic[key] = index;
+                    else
+                        nullIndex = index;
+
+                    keys.Add(key);
+                    counts.Add(1);
+                    elements.Add(item);
+                }
+
+                prevKey = key;
+                havePrevKey = true;
+
+                if (yieldIntermediaryValues)
+                {
+                    yield return resultSelector(item, key, counts[index]);
+                }
+            }
+
+            if (!yieldIntermediaryValues)
+            {
+                for (var i = 0; i < keys.Count; i++)
+                    yield return resultSelector(elements[i], keys[i], counts[i]);
             }
         }
     }
