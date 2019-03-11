@@ -217,7 +217,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.0.0" />
+    <DotNetCliToolReference Include="dotnet-t4-project-tool" Version="2.0.3" />
   </ItemGroup>
 
 </Project>
