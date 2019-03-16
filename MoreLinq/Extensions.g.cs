@@ -2565,11 +2565,9 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class IndexByExtension
     {
-
         /// <summary>
         /// Applies a key-generating function to each element of a sequence and returns a sequence that
         /// contains the elements of the original sequence as well its key and index inside the group of its key.
-        /// An additional argument specifies a comparer to use for testing equivalence of keys.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
         /// <typeparam name="TKey">Type of the projected key.</typeparam>
