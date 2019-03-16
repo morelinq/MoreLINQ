@@ -27,45 +27,46 @@ namespace MoreLinq.Test
         public void IndexBySimpleTest()
         {
             var source = new[] { "ana", "beatriz", "carla", "bob", "davi", "adriano", "angelo", "carlos" };
-            var result = source.IndexBy(x => x.First(), (item, key, index) => (item, key, index));
+            var result = source.IndexBy(x => x.First(), ValueTuple.Create);
 
             result.AssertSequenceEqual(
-                ( item: "ana",     key: 'a', index: 0 ),
-                ( item: "beatriz", key: 'b', index: 0 ),
-                ( item: "carla",   key: 'c', index: 0 ),
-                ( item: "bob",     key: 'b', index: 1 ),
-                ( item: "davi",    key: 'd', index: 0 ),
-                ( item: "adriano", key: 'a', index: 1 ),
-                ( item: "angelo",  key: 'a', index: 2 ),
-                ( item: "carlos",  key: 'c', index: 1 ));
+                ("ana",     'a', 0),
+                ("beatriz", 'b', 0),
+                ("carla",   'c', 0),
+                ("bob",     'b', 1),
+                ("davi",    'd', 0),
+                ("adriano", 'a', 1),
+                ("angelo",  'a', 2),
+                ("carlos",  'c', 1));
         }
 
         [Test]
         public void IndexByWithSecondOccurenceImmediatelyAfterFirst()
         {
-            var result = "jaffer".IndexBy(c => c, (item, key, index) => (item, key, index));
+            var result = "jaffer".IndexBy(c => c, ValueTuple.Create);
 
             result.AssertSequenceEqual(
-                ( item: 'j', key: 'j', index: 0 ),
-                ( item: 'a', key: 'a', index: 0 ),
-                ( item: 'f', key: 'f', index: 0 ),
-                ( item: 'f', key: 'f', index: 1 ),
-                ( item: 'e', key: 'e', index: 0 ),
-                ( item: 'r', key: 'r', index: 0 ));
+                ('j', 'j', 0),
+                ('a', 'a', 0),
+                ('f', 'f', 0),
+                ('f', 'f', 1),
+                ('e', 'e', 0),
+                ('r', 'r', 0));
         }
 
         [Test]
         public void IndexByWithEqualityComparer()
         {
-            var result = new[] { "a", "B", "c", "A", "b", "A" }.IndexBy(c => c, (item, key, index) => (item, key, index), StringComparer.OrdinalIgnoreCase);
+            var source = new[] { "a", "B", "c", "A", "b", "A" };
+            var result = source.IndexBy(c => c, ValueTuple.Create, StringComparer.OrdinalIgnoreCase);
 
             result.AssertSequenceEqual(
-               ( item: "a", key: "a", index: 0 ),
-               ( item: "B", key: "B", index: 0 ),
-               ( item: "c", key: "c", index: 0 ),
-               ( item: "A", key: "A", index: 1 ),
-               ( item: "b", key: "b", index: 1 ),
-               ( item: "A", key: "A", index: 2 ));
+               ("a", "a", 0),
+               ("B", "B", 0),
+               ("c", "c", 0),
+               ("A", "A", 1),
+               ("b", "b", 1),
+               ("A", "A", 2));
         }
 
         [Test]
@@ -77,24 +78,20 @@ namespace MoreLinq.Test
         [Test]
         public void IndexByWithSomeNullKeys()
         {
-            var source = new[]
-            {
-                "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
-            };
-
-            var result = source.IndexBy(c => c, (item, key, index) => (item, key, index));
+            var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
+            var result = source.IndexBy(c => c, ValueTuple.Create);
 
             result.AssertSequenceEqual(
-                ( item: "foo", key: "foo", index: 0 ),
-                ( item: null,  key: null,  index: 0 ),
-                ( item: "bar", key: "bar", index: 0 ),
-                ( item: "baz", key: "baz", index: 0 ),
-                ( item: null,  key: null,  index: 1 ),
-                ( item: null,  key: null,  index: 2 ),
-                ( item: "baz", key: "baz", index: 1 ),
-                ( item: "bar", key: "bar", index: 1 ),
-                ( item: null,  key: null,  index: 3 ),
-                ( item: "foo", key: "foo", index: 1 ));
+                ("foo", "foo", 0),
+                (null,  null,  0),
+                ("bar", "bar", 0),
+                ("baz", "baz", 0),
+                (null,  null,  1),
+                (null,  null,  2),
+                ("baz", "baz", 1),
+                ("bar", "bar", 1),
+                (null,  null,  3),
+                ("foo", "foo", 1));
         }
     }
 }
