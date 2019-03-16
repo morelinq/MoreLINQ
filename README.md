@@ -318,9 +318,11 @@ This method has 2 overloads.
 
 ### IndexBy
 
- Applies a key-generating function to each element of a sequence and returns a sequence that
- contains the elements of the original sequence as well its key and index inside the group of its key.
- An additional argument specifies a comparer to use for testing equivalence of keys.
+
+Applies a key-generating function to each element of a sequence and returns
+a sequence that contains the elements of the original sequence as well its
+key and index inside the group of its key. An additional argument specifies
+a comparer to use for testing equivalence of keys.
 
 This method has 2 overloads.
 
