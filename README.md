@@ -55,7 +55,7 @@ extension methods as well as all the regular static methods on
 [lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
 [using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
 [netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip--3
-[zip]: https://morelinq.github.io/2.0/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
+[zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
 [unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
 [random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
 [sequence]: https://morelinq.github.io/2.2/ref/api/html/Overload_MoreLinq_MoreEnumerable_Sequence.htm
