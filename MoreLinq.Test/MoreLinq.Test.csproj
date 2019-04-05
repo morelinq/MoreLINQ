@@ -17,7 +17,7 @@
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject>MoreLinq.Test.Program</StartupObject>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.2</LangVersion>
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
