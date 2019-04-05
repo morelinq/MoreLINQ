@@ -34,6 +34,7 @@ namespace MoreLinq.Test
 
             public string AString { get; }
             public decimal? ANullableDecimal { get; }
+            public object Unreadable { set => throw new NotImplementedException(); }
 
             public object this[int index]
             {
