@@ -111,7 +111,7 @@ Returns a sequence consisting of the head element and the given tail elements.
 ### Assert
 
 Asserts that all elements of a sequence meet a given condition otherwise
-throws an object.
+throws an exception.
 
 This method has 2 overloads.
 
