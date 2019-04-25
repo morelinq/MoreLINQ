@@ -76,14 +76,14 @@ namespace MoreLinq.Test
                 ValueTuple.Create);
 
             result.AssertSequenceEqual(
-                ("ana", 'a', 0),
+                ("ana",     'a', 0),
                 ("beatriz", 'b', 0),
-                ("carla", 'c', 0),
-                ("bob", 'b', 1),
-                ("davi", 'd', 0),
+                ("carla",   'c', 0),
+                ("bob",     'b', 1),
+                ("davi",    'd', 0),
                 ("adriano", 'a', 1),
-                ("angelo", 'a', 2),
-                ("carlos", 'c', 1));
+                ("angelo",  'a', 2),
+                ("carlos",  'c', 1));
         }
 
         [Test]
