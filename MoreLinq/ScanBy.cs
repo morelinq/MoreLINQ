@@ -87,15 +87,15 @@ namespace MoreLinq
 
                 var stateByKey = new Dictionary<TKey, TState>(comparer);
                 var prevKey = (Value: default(TKey), HasValue: false);
-                var valueOfNullKey = (Value: default(TState), HasValue: false);
+                var nullKeyState = (Value: default(TState), HasValue: false);
                 var state = default(TState);
 
                 bool TryGetState(TKey key, out TState value)
                 {
                     if (key == null)
                     {
-                        value = valueOfNullKey.Value;
-                        return valueOfNullKey.HasValue;
+                        value = nullKeyState.Value;
+                        return nullKeyState.HasValue;
                     }
 
                     return stateByKey.TryGetValue(key, out value);
@@ -120,7 +120,7 @@ namespace MoreLinq
                     if (key != null)
                         stateByKey[key] = state;
                     else
-                        valueOfNullKey = (state, true);
+                        nullKeyState = (state, true);
 
                     yield return resultSelector(item, key, state);
 
