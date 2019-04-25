@@ -21,6 +21,7 @@ addons:
     - dotnet-sharedframework-microsoft.netcore.app-1.0.5
 
 before_install:
+  - dotnet --info
   - msbuild /version
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
