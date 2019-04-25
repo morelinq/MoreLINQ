@@ -86,8 +86,7 @@ namespace MoreLinq
                 comparer = comparer ?? EqualityComparer<TKey>.Default;
 
                 var stateByKey = new Dictionary<TKey, TState>(comparer);
-                var havePrevKey = false;
-                var prevKey = default(TKey);
+                var prevKey = (Value: default(TKey), HasValue: false);
                 var valueOfNullKey = (Value: default(TState), HasValue: false);
                 var state = default(TState);
 
@@ -106,10 +105,10 @@ namespace MoreLinq
                 {
                     var key = keySelector(item);
 
-                    if (!(havePrevKey
+                    if (!(prevKey.HasValue
                        // key same as the previous? then re-use the state
-                       && comparer.GetHashCode(prevKey) == comparer.GetHashCode(key)
-                       && comparer.Equals(prevKey, key)
+                       && comparer.GetHashCode(prevKey.Value) == comparer.GetHashCode(key)
+                       && comparer.Equals(prevKey.Value, key)
                        // otherwise try & find state of the key
                        || TryGetState(key, out state)))
                     {
@@ -125,8 +124,7 @@ namespace MoreLinq
 
                     yield return resultSelector(item, key, state);
 
-                    prevKey = key;
-                    havePrevKey = true;
+                    prevKey = (key, true);
                 }
             }
         }
