@@ -13,6 +13,8 @@ install:
 - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
 - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
 - git reset --hard
+before_build:
+- dotnet --info
 build_script:
 - ps: >-
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir MoreLinq.Test\*Test.cs)
