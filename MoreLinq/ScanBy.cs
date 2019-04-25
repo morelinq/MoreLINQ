@@ -91,7 +91,7 @@ namespace MoreLinq
                 var valueOfNullKey = (Value: default(TState), HasValue: false);
                 var state = default(TState);
 
-                bool TryGetValue(TKey key, out TState value)
+                bool TryGetState(TKey key, out TState value)
                 {
                     if (key == null)
                     {
@@ -111,7 +111,7 @@ namespace MoreLinq
                        && comparer.GetHashCode(prevKey) == comparer.GetHashCode(key)
                        && comparer.Equals(prevKey, key)
                        // otherwise try & find state of the key
-                       || TryGetValue(key, out state)))
+                       || TryGetState(key, out state)))
                     {
                         state = seedSelector(key);
                     }
