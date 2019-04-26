@@ -85,8 +85,8 @@ namespace MoreLinq
                 comparer = comparer ?? EqualityComparer<TKey>.Default;
 
                 var stateByKey = new Dictionary<TKey, TState>(comparer);
-                var prevKey = (Value: default(TKey), HasValue: false);
-                var nullKeyState = (Value: default(TState), HasValue: false);
+                var prevKey = (HasValue: false, Value: default(TKey));
+                var nullKeyState = (HasValue: false, Value: default(TState));
                 var state = default(TState);
 
                 bool TryGetState(TKey key, out TState value)
