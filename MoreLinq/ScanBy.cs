@@ -119,11 +119,11 @@ namespace MoreLinq
                     if (key != null)
                         stateByKey[key] = state;
                     else
-                        nullKeyState = (state, true);
+                        nullKeyState = (true, state);
 
                     yield return resultSelector(item, key, state);
 
-                    prevKey = (key, true);
+                    prevKey = (true, key);
                 }
             }
         }
