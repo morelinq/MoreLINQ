@@ -744,7 +744,7 @@ namespace MoreLinq.Extensions
         /// </example>
 
         public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
-            Func<T, (bool IsSome, TResult Value)> chooser)
+            Func<T, (bool, TResult)> chooser)
             => MoreEnumerable.Choose(source, chooser);
 
     }
