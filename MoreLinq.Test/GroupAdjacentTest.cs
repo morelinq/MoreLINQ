@@ -28,12 +28,16 @@ namespace MoreLinq.Test
         public void GroupAdjacentIsLazy()
         {
             var bs = new BreakingSequence<object>();
-            bs.GroupAdjacent(delegate { return 0; });
-            bs.GroupAdjacent(delegate { return 0; }, o => o);
-            bs.GroupAdjacent(delegate { return 0; }, o => o, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(delegate { return 0; }, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g);
-            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g, EqualityComparer<int>.Default);
+            var bf = BreakingFunc.Of<object, int>();
+            var bfo = BreakingFunc.Of<object, object>();
+            var bfg = BreakingFunc.Of<int, IEnumerable<object>, IEnumerable<object>>();
+
+            bs.GroupAdjacent(bf);
+            bs.GroupAdjacent(bf, bfo);
+            bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
+            bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
+            bs.GroupAdjacent(bf, bfg);
+            bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
         }
 
         [Test]
