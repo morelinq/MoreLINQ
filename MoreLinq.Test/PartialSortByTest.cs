@@ -71,7 +71,7 @@ namespace MoreLinq.Test
         [Test]
         public void PartialSortByIsLazy()
         {
-            new BreakingSequence<object>().PartialSortBy(1, o => o);
+            new BreakingSequence<object>().PartialSortBy(1, BreakingFunc.Of<object, object>());
         }
 
         [Test, Ignore("TODO")]
