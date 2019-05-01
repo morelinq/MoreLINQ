@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastIsLazy()
         {
-            new BreakingSequence<object>().TagFirstLast(delegate { return 0; });
+            new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
         }
 
         [Test]
