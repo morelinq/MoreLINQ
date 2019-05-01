@@ -29,11 +29,11 @@ namespace MoreLinq.Test
 
         public void FullGroupIsLazy()
         {
-            var listA = new BreakingSequence<int>();
-            var listB = new BreakingSequence<int>();
+            var bs = new BreakingSequence<int>();
+            var bf = BreakingFunc.Of<int, int>();
+            var bfg = BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>();
 
-            listA.FullGroupJoin(listB, x => x, x => x, BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>());
-            Assert.True(true);
+            bs.FullGroupJoin(bs, bf, bf, bfg);
         }
 
         [TestCase(CustomResult)]

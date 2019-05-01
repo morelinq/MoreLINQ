@@ -15,9 +15,9 @@ namespace MoreLinq.Test
         [Test]
         public void TestSegmentIsLazy()
         {
-            new BreakingSequence<int>().Segment(curr => false);
-            new BreakingSequence<int>().Segment((curr,i) => false);
-            new BreakingSequence<int>().Segment((curr,prev,i) => false);
+            new BreakingSequence<int>().Segment(BreakingFunc.Of<int, bool>());
+            new BreakingSequence<int>().Segment(BreakingFunc.Of<int, int, bool>());
+            new BreakingSequence<int>().Segment(BreakingFunc.Of<int, int, int, bool>());
         }
 
         /// <summary>
@@ -88,9 +88,9 @@ namespace MoreLinq.Test
         public void TestSegmentationStartsWithSecondItem()
         {
             var sequence = new[] { 0 };
-            var resultA = sequence.Segment((Func<int, bool>)delegate { throw new Exception(); });
-            var resultB = sequence.Segment((Func<int, int, bool>)delegate { throw new Exception(); });
-            var resultC = sequence.Segment((Func<int, int, int, bool>)delegate { throw new Exception(); });
+            var resultA = sequence.Segment(BreakingFunc.Of<int, bool>());
+            var resultB = sequence.Segment(BreakingFunc.Of<int, int, bool>());
+            var resultC = sequence.Segment(BreakingFunc.Of<int, int, int, bool>());
 
             Assert.IsTrue(resultA.Any());
             Assert.IsTrue(resultB.Any());
