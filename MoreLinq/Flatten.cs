@@ -123,6 +123,7 @@ namespace MoreLinq
                         }
 
                         (e as IDisposable)?.Dispose();
+                        e = null;
                     }
                 }
                 finally
