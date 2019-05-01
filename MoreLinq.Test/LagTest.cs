@@ -14,8 +14,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLagIsLazy()
         {
-            new BreakingSequence<int>().Lag(5, (a, b) => a);
-            new BreakingSequence<int>().Lag(5, -1, (a, b) => a);
+            new BreakingSequence<int>().Lag(5, BreakingFunc.Of<int, int, int>());
+            new BreakingSequence<int>().Lag(5, -1, BreakingFunc.Of<int, int, int>());
         }
 
         /// <summary>
