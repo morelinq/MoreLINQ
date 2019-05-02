@@ -66,24 +66,25 @@ namespace MoreLinq
         /// elements at the same index.
         /// </remarks>
 
-        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
+        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            comparer ??= EqualityComparer<T>.Default;
 
             List<T> secondList;
             return second.TryGetCollectionCount() is int secondCount
                    ? first.TryGetCollectionCount() is int firstCount && secondCount > firstCount
                      ? false
-                     : Impl(second, secondCount)
-                   : Impl(secondList = second.ToList(), secondList.Count);
+                     : Impl(second, secondCount, comparer)
+                   : Impl(secondList = second.ToList(), secondList.Count, comparer);
 
-            bool Impl(IEnumerable<T> snd, int count)
+            bool Impl(IEnumerable<T> snd, int count, IEqualityComparer<T> cmp)
             {
                 using (var firstIter = first.TakeLast(count).GetEnumerator())
-                    return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                    return snd.All(item => firstIter.MoveNext()
+                                        && cmp.Equals(firstIter.Current, item));
             }
         }
     }

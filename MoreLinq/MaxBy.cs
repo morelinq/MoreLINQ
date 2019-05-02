@@ -209,13 +209,13 @@ namespace MoreLinq
         /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
-            Func<TSource, TKey> selector, IComparer<TKey> comparer)
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
-            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => comparer.Compare(x, y));
+            var cmp = comparer ?? Comparer<TKey>.Default;
+            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => cmp.Compare(x, y));
         }
 
         sealed class ExtremaEnumerable<T, TKey> : IExtremaEnumerable<T>
@@ -343,8 +343,8 @@ namespace MoreLinq
 
         abstract class Extrema<TStore, T>
         {
-            public virtual TStore New() => default;
-            public virtual void Restart(ref TStore store) => store = default;
+            public virtual TStore New() => default!;
+            public virtual void Restart(ref TStore store) => store = default!;
 
             public void Add(ref TStore store, int? limit, T item)
             {

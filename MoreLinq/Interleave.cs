@@ -83,13 +83,13 @@ namespace MoreLinq
                 var sequences = new[] { sequence }.Concat(otherSequences);
 
                 // produce an iterator collection for all IEnumerable<T> instancess passed to us
-                var iterators = sequences.Select(e => e.GetEnumerator()).Acquire();
-                List<IEnumerator<T>> iteratorList = null;
+                IEnumerator<T>[]? iterators = sequences.Select(e => e.GetEnumerator()).Acquire();
+                List<IEnumerator<T>>? iteratorList = null;
 
                 try
                 {
                     iteratorList = new List<IEnumerator<T>>(iterators);
-                    iterators = null;
+                    iterators = null; // disown
                     var shouldContinue = true;
                     var consumedIterators = 0;
                     var iterCount = iteratorList.Count;
@@ -115,7 +115,7 @@ namespace MoreLinq
                                 switch (imbalanceStrategy)
                                 {
                                     case ImbalancedInterleaveStrategy.Pad:
-                                        var newIter = iteratorList[index] = Generate(default(T), x => default).GetEnumerator();
+                                        var newIter = iteratorList[index] = Generate(default(T)!, x => default!).GetEnumerator();
                                         newIter.MoveNext();
                                         break;
 
@@ -143,7 +143,7 @@ namespace MoreLinq
                 finally
                 {
                     Debug.Assert(iteratorList != null || iterators != null);
-                    foreach (var iter in (iteratorList ?? (IList<IEnumerator<T>>) iterators))
+                    foreach (var iter in iteratorList ?? (IList<IEnumerator<T>>) iterators!)
                         iter.Dispose();
                 }
             }

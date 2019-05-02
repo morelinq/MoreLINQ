@@ -169,8 +169,10 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1, IEnumerable<T2> s2,
-            IEnumerable<T3> s3, IEnumerable<T4> s4,
+            IEnumerable<T1>  s1,
+            IEnumerable<T2>  s2,
+            IEnumerable<T3>? s3,
+            IEnumerable<T4>? s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             return ZipImpl(s1, s2, s3, s4, resultSelector, 0);

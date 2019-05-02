@@ -68,7 +68,7 @@ namespace MoreLinq
         /// of elements at the same index.
         /// </remarks>
 
-        public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
+        public static bool StartsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -80,11 +80,11 @@ namespace MoreLinq
                 return false;
             }
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            var cmp = comparer ?? EqualityComparer<T>.Default;
 
             using (var firstIter = first.GetEnumerator())
             {
-                return second.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                return second.All(item => firstIter.MoveNext() && cmp.Equals(firstIter.Current, item));
             }
         }
     }

@@ -83,7 +83,7 @@ namespace MoreLinq
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -160,7 +160,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -246,7 +246,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -265,36 +265,31 @@ namespace MoreLinq
             Func<TKey, IList<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(keySelector != null);
-            Debug.Assert(elementSelector != null);
-            Debug.Assert(resultSelector != null);
-            Debug.Assert(comparer != null);
 
             using (var iterator = source.GetEnumerator())
             {
                 var group = default(TKey);
-                var members = (List<TElement>) null;
+                var members = (List<TElement>?) null;
 
                 while (iterator.MoveNext())
                 {
                     var key = keySelector(iterator.Current);
                     var element = elementSelector(iterator.Current);
-                    if (members != null && comparer.Equals(group, key))
+                    if (members != null && comparer.Equals(group!, key))
                     {
                         members.Add(element);
                     }
                     else
                     {
                         if (members != null)
-                            yield return resultSelector(group, members);
+                            yield return resultSelector(group!, members);
                         group = key;
                         members = new List<TElement> { element };
                     }
                 }
 
                 if (members != null)
-                    yield return resultSelector(group, members);
+                    yield return resultSelector(group!, members);
             }
         }
 

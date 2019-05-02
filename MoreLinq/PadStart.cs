@@ -47,7 +47,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
         {
-            return PadStart(source, width, default(TSource));
+            return PadStart(source, width, default(TSource)!);
         }
 
         /// <summary>
@@ -112,11 +112,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadStartImpl(source, width, default, paddingSelector);
+            return PadStartImpl(source, width, default!, paddingSelector);
         }
 
         static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
-            int width, T padding, Func<int, T> paddingSelector)
+            int width, T padding, Func<int, T>? paddingSelector)
         {
             return
                 source.TryGetCollectionCount() is int collectionCount

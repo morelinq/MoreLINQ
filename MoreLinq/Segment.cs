@@ -97,7 +97,7 @@ namespace MoreLinq
                     {
                         ++index;
                         // check if the item represents the start of a new segment
-                        var isNewSegment = newSegmentPredicate(iter.Current, prevItem, index);
+                        var isNewSegment = newSegmentPredicate(iter.Current, prevItem!, index);
                         prevItem = iter.Current;
 
                         if (!isNewSegment)

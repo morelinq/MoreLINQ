@@ -82,7 +82,7 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
-            int count, IComparer<T> comparer)
+            int count, IComparer<T>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return PartialSortByImpl<T, T>(source, count, null, null, comparer);
@@ -107,9 +107,9 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
-            int count, IComparer<T> comparer, OrderByDirection direction)
+            int count, IComparer<T>? comparer, OrderByDirection direction)
         {
-            comparer = comparer ?? Comparer<T>.Default;
+            comparer ??= Comparer<T>.Default;
             if (direction == OrderByDirection.Descending) {
                 comparer = new ReverseComparer<T>(comparer);
             }
@@ -182,7 +182,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector,
-            IComparer<TKey> comparer)
+            IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -211,10 +211,10 @@ namespace MoreLinq
         public static IEnumerable<TSource> PartialSortBy<TSource, TKey>(
             this IEnumerable<TSource> source, int count,
             Func<TSource, TKey> keySelector,
-            IComparer<TKey> comparer,
+            IComparer<TKey>? comparer,
             OrderByDirection direction)
         {
-            comparer = comparer ?? Comparer<TKey>.Default;
+            comparer ??= Comparer<TKey>.Default;
             if (direction == OrderByDirection.Descending) {
                 comparer = new ReverseComparer<TKey>(comparer);
             }
@@ -223,8 +223,9 @@ namespace MoreLinq
 
         static IEnumerable<TSource> PartialSortByImpl<TSource, TKey>(
             IEnumerable<TSource> source, int count,
-            Func<TSource, TKey> keySelector,
-            IComparer<TKey> keyComparer, IComparer<TSource> comparer)
+            Func<TSource, TKey>? keySelector,
+            IComparer<TKey>? keyComparer,
+            IComparer<TSource>? comparer)
         {
             Debug.Assert(source != null);
 
@@ -237,6 +238,7 @@ namespace MoreLinq
                 var key = default(TKey);
                 if (keys != null)
                 {
+                    Debug.Assert(keySelector != null);
                     key = keySelector(item);
                     i = keys.BinarySearch(key, keyComparer);
                 }
@@ -256,7 +258,7 @@ namespace MoreLinq
 
                 // TODO Stable sorting
 
-                keys?.Insert(i, key);
+                keys?.Insert(i, key!);
                 top.Insert(i, item);
             }
 

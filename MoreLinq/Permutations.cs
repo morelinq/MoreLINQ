@@ -73,6 +73,8 @@ namespace MoreLinq
             IEnumerator<Action> _generatorIterator;
             bool _hasMoreResults;
 
+            IList<T>? _current;
+
             public PermutationEnumerator(IEnumerable<T> valueSet)
             {
                 _valueSet = valueSet.ToArray();
@@ -81,30 +83,34 @@ namespace MoreLinq
                 // 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
                 // 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
                 _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
-                Reset();
+                Reset(ref _current, ref _generatorIterator, ref _hasMoreResults);
             }
 
-            public void Reset()
+            public void Reset() =>
+                Reset(ref _current, ref _generatorIterator, ref _hasMoreResults);
+
+            void Reset(ref IList<T>? current, ref IEnumerator<Action> generatorIterator, ref bool hasMoreResults)
             {
-                _generatorIterator?.Dispose();
+                current = null;
+                generatorIterator?.Dispose();
                 // restore lexographic ordering of the permutation indexes
                 for (var i = 0; i < _permutation.Length; i++)
                     _permutation[i] = i;
                 // start a newiteration over the nested loop generator
-                _generatorIterator = _generator.GetEnumerator();
+                generatorIterator = _generator.GetEnumerator();
                 // we must advance the nestedloop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
-                _generatorIterator.MoveNext();
-                _hasMoreResults = true; // there's always at least one permutation: the original set itself
+                generatorIterator.MoveNext();
+                hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
-            public IList<T> Current { get; private set; }
+            public IList<T> Current => _current!;
 
             object IEnumerator.Current => Current;
 
             public bool MoveNext()
             {
-                Current = PermuteValueSet();
+                _current = PermuteValueSet();
                 // check if more permutation left to enumerate
                 var prevResult = _hasMoreResults;
                 _hasMoreResults = _generatorIterator.MoveNext();

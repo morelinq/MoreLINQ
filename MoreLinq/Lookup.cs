@@ -24,6 +24,8 @@
 // SOFTWARE.
 #endregion
 
+#nullable disable
+
 namespace MoreLinq
 {
     using System;

@@ -20,6 +20,7 @@ namespace MoreLinq.Experimental
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Runtime.ExceptionServices;
 
     static partial class ExperimentalEnumerable
@@ -62,12 +63,12 @@ namespace MoreLinq.Experimental
 
     sealed class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
     {
-        List<T> _cache;
+        List<T>? _cache;
         readonly object _locker;
         readonly IEnumerable<T> _source;
-        IEnumerator<T> _sourceEnumerator;
+        IEnumerator<T>? _sourceEnumerator;
         int? _errorIndex;
-        ExceptionDispatchInfo _error;
+        ExceptionDispatchInfo? _error;
 
         public MemoizedEnumerable(IEnumerable<T> sequence)
         {
@@ -115,7 +116,10 @@ namespace MoreLinq.Experimental
                         if (index >= _cache.Count)
                         {
                             if (index == _errorIndex)
+                            {
+                                Debug.Assert(_error != null);
                                 _error.Throw();
+                            }
 
                             if (_sourceEnumerator == null)
                                 break;

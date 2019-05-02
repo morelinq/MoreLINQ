@@ -28,6 +28,7 @@ namespace MoreLinq.Experimental
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
+    using Unit = System.ValueTuple;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.
@@ -436,14 +437,14 @@ namespace MoreLinq.Experimental
                 // BlockingCollection.Add throws if called after CompleteAdding
                 // and we want to deliberately tolerate the race condition.
 
-                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
+                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo?)>();
 
                 var consumerCancellationTokenSource = new CancellationTokenSource();
-                (Exception, Exception) lastCriticalErrors = default;
+                (Exception?, Exception?) lastCriticalErrors = default;
 
                 void PostNotice(Notice notice,
                                 (int, T, Task<TTaskResult>) item,
-                                Exception error)
+                                Exception? error)
                 {
                     // If a notice fails to post then assume critical error
                     // conditions (like low memory), capture the error without
@@ -535,7 +536,10 @@ namespace MoreLinq.Experimental
                         var (kind, result, error) = notice.Current;
 
                         if (kind == Notice.Error)
+                        {
+                            Debug.Assert(error != null);
                             error.Throw();
+                        }
 
                         if (kind == Notice.End)
                             break;
@@ -584,7 +588,7 @@ namespace MoreLinq.Experimental
                         }
                     }
 
-                    if (holds?.Count > 0) // yield any withheld, which should be in order...
+                    if (holds != null && holds.Count > 0) // yield any withheld, which should be in order...
                     {
                         foreach (var (key, x, value) in holds)
                         {
@@ -688,7 +692,7 @@ namespace MoreLinq.Experimental
             public static IAwaitQuery<T>
                 Create<T>(
                     Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                    AwaitQueryOptions options = null) =>
+                    AwaitQueryOptions? options = null) =>
                 new AwaitQuery<T>(impl, options);
         }
 
@@ -697,7 +701,7 @@ namespace MoreLinq.Experimental
             readonly Func<AwaitQueryOptions, IEnumerable<T>> _impl;
 
             public AwaitQuery(Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                AwaitQueryOptions options = null)
+                AwaitQueryOptions? options = null)
             {
                 _impl = impl;
                 Options = options ?? AwaitQueryOptions.Default;
@@ -735,8 +739,8 @@ namespace MoreLinq.Experimental
 
             static CompletedTask()
             {
-                var tcs = new TaskCompletionSource<object>();
-                tcs.SetResult(null);
+                var tcs = new TaskCompletionSource<Unit>();
+                tcs.SetResult(default);
                 Instance = tcs.Task;
             }
 
@@ -751,9 +755,9 @@ namespace MoreLinq.Experimental
         {
             public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
 
-            readonly SemaphoreSlim _semaphore;
+            readonly SemaphoreSlim? _semaphore;
 
-            ConcurrencyGate(SemaphoreSlim semaphore = null) =>
+            ConcurrencyGate(SemaphoreSlim? semaphore = null) =>
                 _semaphore = semaphore;
 
             public ConcurrencyGate(int max) :

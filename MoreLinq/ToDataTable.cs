@@ -20,9 +20,15 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+
+    static class Array<T>
+    {
+        public static readonly T[] Empty = new T[0];
+    }
 
     static partial class MoreEnumerable
     {
@@ -41,7 +47,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, null);
+            return ToDataTable(source, table, Array<Expression<Func<T, object>>>.Empty);
         }
 
         /// <summary>
@@ -209,7 +215,7 @@ namespace MoreLinq
 
             if (columns.Count == 0)
             {
-                columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
+                columns.AddRange(schemas.Select(m => new DataColumn(m.Member!.Name /* TODO(nullable): should not be needed */, m.Type)).ToArray());
             }
             else
             {
@@ -219,6 +225,8 @@ namespace MoreLinq
                 {
                     var member = info.Member;
                     var column = info.Column;
+
+                    Debug.Assert(member != null); // TODO(nullable): should not be needed
 
                     if (column == null)
                         throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));

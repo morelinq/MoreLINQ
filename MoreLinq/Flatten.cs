@@ -88,7 +88,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException">
         /// <paramref name="selector"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
+        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable?> selector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));

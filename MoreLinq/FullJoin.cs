@@ -113,7 +113,7 @@ namespace MoreLinq
             Func<TSource, TResult> firstSelector,
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             return first.FullJoin(second,
@@ -218,7 +218,7 @@ namespace MoreLinq
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));

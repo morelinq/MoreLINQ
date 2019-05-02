@@ -174,11 +174,11 @@ namespace MoreLinq
         /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey key, IEqualityComparer<TKey> comparer,
+            TKey key, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 1, key, default, default, comparer,
+            return PartitionImpl(source, 1, key, default!, default!, comparer,
                                  (a, b, c, rest) => resultSelector(a, rest));
         }
 
@@ -232,11 +232,11 @@ namespace MoreLinq
         /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey key1, TKey key2, IEqualityComparer<TKey> comparer,
+            TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 2, key1, key2, default, comparer,
+            return PartitionImpl(source, 2, key1, key2, default!, comparer,
                                  (a, b, c, rest) => resultSelector(a, b, rest));
         }
 
@@ -292,12 +292,12 @@ namespace MoreLinq
         /// </returns>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
-            TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
+            TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
             PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
 
         static TResult PartitionImpl<TKey, TElement, TResult>(IEnumerable<IGrouping<TKey, TElement>> source,
-            int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey> comparer,
+            int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             Debug.Assert(count > 0 && count <= 3);
@@ -305,9 +305,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            comparer = comparer ?? EqualityComparer<TKey>.Default;
+            comparer ??= EqualityComparer<TKey>.Default;
 
-            List<IGrouping<TKey, TElement>> etc = null;
+            List<IGrouping<TKey, TElement>>? etc = null;
 
             var groups = new[]
             {

@@ -68,7 +68,7 @@ namespace MoreLinq
         public static IEnumerable<T> OrderedMerge<T>(
             this IEnumerable<T> first,
             IEnumerable<T> second,
-            IComparer<T> comparer)
+            IComparer<T>? comparer)
         {
             return OrderedMerge(first, second, e => e, f => f, s => s, (a, _) => a, comparer);
         }
@@ -178,7 +178,7 @@ namespace MoreLinq
             Func<T, TResult> firstSelector,
             Func<T, TResult> secondSelector,
             Func<T, T, TResult> bothSelector,
-            IComparer<TKey> comparer)
+            IComparer<TKey>? comparer)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector)); // Argument name changes to 'firstKeySelector'
             return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
@@ -272,7 +272,7 @@ namespace MoreLinq
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
-            IComparer<TKey> comparer)
+            IComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -282,7 +282,7 @@ namespace MoreLinq
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
+            var cmp = comparer ?? Comparer<TKey>.Default;
             return _(); IEnumerable<TResult> _()
             {
                 using (var e1 = first.GetEnumerator())
@@ -299,7 +299,7 @@ namespace MoreLinq
                             var key1 = firstKeySelector(element1);
                             var element2 = e2.Current;
                             var key2 = secondKeySelector(element2);
-                            var comparison = comparer.Compare(key1, key2);
+                            var comparison = cmp.Compare(key1, key2);
 
                             if (comparison < 0)
                             {

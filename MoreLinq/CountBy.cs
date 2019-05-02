@@ -50,7 +50,7 @@ namespace MoreLinq
         /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -94,8 +94,7 @@ namespace MoreLinq
 
                     keys = new List<TKey>();
                     counts = new List<int>();
-                    var havePrevKey = false;
-                    var prevKey = default(TKey);
+                    var prevKey = (false, default(TKey));
                     var index = 0;
 
                     foreach (var item in source)
@@ -103,10 +102,15 @@ namespace MoreLinq
                         var key = keySelector(item);
 
                         if (// key same as the previous? then re-use the index
-                            havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
-                                         && cmp.Equals(prevKey, key)
-                            // otherwise try & find index of the key
-                            || TryGetIndex(key, out index))
+                            prevKey switch
+                            {
+                                var (some, pk)
+                                    when some => cmp.GetHashCode(pk) == cmp.GetHashCode(key)
+                                              && cmp.Equals(pk, key)
+                                              // otherwise try & find index of the key
+                                              || TryGetIndex(key, out index),
+                                _ => false
+                            })
                         {
                             counts[index]++;
                         }
@@ -121,8 +125,7 @@ namespace MoreLinq
                             counts.Add(1);
                         }
 
-                        prevKey = key;
-                        havePrevKey = true;
+                        prevKey = (true, key);
                     }
                 }
             }

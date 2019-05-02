@@ -45,7 +45,7 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 1, fallback, default, default, default, null);
+            return FallbackIfEmptyImpl(source, 1, fallback, default!, default!, default!, null);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default, default, null);
+            return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default!, default!, null);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace MoreLinq
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default, null);
+            return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default!, null);
         }
 
         /// <summary>
@@ -154,12 +154,12 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
-            return FallbackIfEmptyImpl(source, null, default, default, default, default, fallback);
+            return FallbackIfEmptyImpl(source, null, default!, default!, default!, default!, fallback);
         }
 
         static IEnumerable<T> FallbackIfEmptyImpl<T>(IEnumerable<T> source,
             int? count, T fallback1, T fallback2, T fallback3, T fallback4,
-            IEnumerable<T> fallback)
+            IEnumerable<T>? fallback)
         {
             return source.TryGetCollectionCount() is int collectionCount
                  ? collectionCount == 0 ? Fallback() : source
@@ -185,7 +185,7 @@ namespace MoreLinq
             {
                 switch (count)
                 {
-                    case null: return fallback;
+                    case null: return fallback!;
                     case int n when n >= 1 && n <= 4: return FallbackOnArgs();
                     default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
                 }
