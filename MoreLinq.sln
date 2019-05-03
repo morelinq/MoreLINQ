@@ -18,11 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		test.sh = test.sh
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corefx", "corefx", "{F73528F4-B669-4AFF-84C9-D62B77CA3848}"
-	ProjectSection(SolutionItems) = preProject
-		lic\corefx\LICENSE = lic\corefx\LICENSE
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq", "MoreLinq\MoreLinq.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A87}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoreLinq.Test", "MoreLinq.Test\MoreLinq.Test.csproj", "{FE8BA6AF-584F-44E0-9F80-2DE800672A88}"

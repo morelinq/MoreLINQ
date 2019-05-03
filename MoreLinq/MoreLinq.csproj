@@ -127,7 +127,7 @@
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
     <PackageOutputPath>..\dist</PackageOutputPath>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
@@ -145,9 +145,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="..\COPYING.txt;..\lic\corefx\LICENSE">
-      <Pack>true</Pack>
-    </None>
+    <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
     <None Update="Cartesian.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
