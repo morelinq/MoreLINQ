@@ -13,6 +13,7 @@ install:
 - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
 - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
 - git reset --hard
+- ps: tools\dotnet-install.ps1 -Version ((type .\global.json | ConvertFrom-Json).sdk.version)
 before_build:
 - dotnet --info
 build_script:
