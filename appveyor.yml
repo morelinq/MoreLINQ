@@ -8,6 +8,7 @@ skip_commits:
     - lic/*
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 install:
 - ps: Install-Product node 6
 - npm install -g eclint
