@@ -27,7 +27,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences.
-        /// If the two input sequences are of different lengths then
+        /// If the input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
@@ -69,7 +69,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences.
-        /// If the two input sequences are of different lengths then
+        /// If the input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
@@ -115,7 +115,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences.
-        /// If the two input sequences are of different lengths then
+        /// If the input sequences are of different lengths then
         /// <see cref="InvalidOperationException"/> is thrown.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
