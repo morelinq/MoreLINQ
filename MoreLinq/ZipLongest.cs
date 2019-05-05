@@ -25,6 +25,10 @@ namespace MoreLinq
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences.
+        /// If the input sequences are of different lengths then the result
+        /// sequence will always be as long as the longest of input sequences.
+        /// The default value of the each shorter sequence element type is used
+        /// for padding.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
@@ -47,13 +51,7 @@ namespace MoreLinq
         /// "2B", "3C", "0D" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the two input sequences are of different lengths then the result
-        /// sequence will always be as long as the longer of the two input
-        /// sequences. The default value of the shorter sequence element type
-        /// is used for padding.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
@@ -71,6 +69,10 @@ namespace MoreLinq
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
+        /// If the input sequences are of different lengths then the result
+        /// sequence will always be as long as the longest of input sequences.
+        /// The default value of the each shorter sequence element type is used
+        /// for padding.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -96,14 +98,7 @@ namespace MoreLinq
         /// "2Bb", "3Cc", "0Dd", "0e" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the input sequences are of different lengths then the result
-        /// sequence will always be as long as the longest of input sequences.
-        /// The default value of the each shorter sequence element type is used
-        /// for padding. This operator uses deferred execution and streams its
-        /// results.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
@@ -123,6 +118,10 @@ namespace MoreLinq
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.
+        /// If the input sequences are of different lengths then the result
+        /// sequence will always be as long as the longest of input sequences.
+        /// The default value of the each shorter sequence element type is used
+        /// for padding.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence</typeparam>
@@ -151,13 +150,7 @@ namespace MoreLinq
         /// "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the input sequences are of different lengths then the result
-        /// sequence will always be as long as the longest of input sequences.
-        /// The default value of the each shorter sequence element type is used
-        /// for padding.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
