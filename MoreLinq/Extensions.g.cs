@@ -155,6 +155,30 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>AsDeconstructible</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class AsDeconstructibleExtension
+    {
+        /// <summary>
+        /// Enables a sequence's elements to be deconstructed into separate
+        /// variables.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <typeparam name="T">The type of the source elements.</typeparam>
+        /// <returns>
+        /// The same sequence that can be deconstructed.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution semantics and streams its
+        /// results unless deconstructed.
+        /// </remarks>
+
+        public static DeconstructibleEnumerable<T> AsDeconstructible<T>(this IEnumerable<T> source)
+            => MoreEnumerable.AsDeconstructible(source);
+
+    }
+
     /// <summary><c>Assert</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
