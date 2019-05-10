@@ -36,9 +36,9 @@ namespace MoreLinq
         /// results unless deconstructed.
         /// </remarks>
 
-        public static DeconstructibleSequence<T> AsDeconstructible<T>(this IEnumerable<T> source)
+        public static DeconstructibleEnumerable<T> AsDeconstructible<T>(this IEnumerable<T> source)
             => source == null
              ? throw new ArgumentNullException(nameof(source))
-             : new DeconstructibleSequence<T>(source);
+             : new DeconstructibleEnumerable<T>(source);
     }
 }

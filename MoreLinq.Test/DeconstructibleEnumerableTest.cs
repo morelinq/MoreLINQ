@@ -22,13 +22,13 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class DeconstructibleSequenceTest
+    public class DeconstructibleEnumerableTest
     {
         [Test]
         public void InitWithNullSource()
         {
             var e = Assert.Throws<ArgumentNullException>(() =>
-                new DeconstructibleSequence<object>(null));
+                new DeconstructibleEnumerable<object>(null));
 
             Assert.That(e.ParamName, Is.EqualTo("source"));
         }
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         public void DeconstructDefault()
         {
             var e = Assert.Throws<InvalidOperationException>(() =>
-                default(DeconstructibleSequence<int>).Deconstruct(out _, out _));
+                default(DeconstructibleEnumerable<int>).Deconstruct(out _, out _));
             Assert.That(e.Message, Contains.Substring("short"));
         }
 

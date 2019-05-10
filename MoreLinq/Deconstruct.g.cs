@@ -19,7 +19,7 @@ namespace MoreLinq
 {
     using System;
 
-    partial struct DeconstructibleSequence<T>
+    partial struct DeconstructibleEnumerable<T>
     {
         /// <summary>
         /// Deconstructs exactly 2 elements into separate variables.

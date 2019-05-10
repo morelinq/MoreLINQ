@@ -28,18 +28,18 @@ namespace MoreLinq
     /// </summary>
     /// <typeparam name="T">The type of the elements.</typeparam>
 
-    public partial struct DeconstructibleSequence<T> : IEnumerable<T>
+    public partial struct DeconstructibleEnumerable<T> : IEnumerable<T>
     {
         readonly IEnumerable<T> _source;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DeconstructibleSequence{T}"/>
+        /// Initializes a new instance of <see cref="DeconstructibleEnumerable{T}"/>
         /// with a sequence.
         /// </summary>
         /// <param name="source">
         /// The source sequence on which to enable deconstruction.</param>
 
-        public DeconstructibleSequence(IEnumerable<T> source) =>
+        public DeconstructibleEnumerable(IEnumerable<T> source) =>
             _source = source ?? throw new ArgumentNullException(nameof(source));
 
         /// <inheritdoc />

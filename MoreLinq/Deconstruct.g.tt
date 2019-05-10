@@ -24,7 +24,7 @@ namespace MoreLinq
 {
     using System;
 
-    partial struct DeconstructibleSequence<T>
+    partial struct DeconstructibleEnumerable<T>
     {
 <#
         var ordinalNumbers = new[]
