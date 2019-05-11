@@ -83,6 +83,9 @@ namespace MoreLinq.Test
                 ("adriano", 'a', 1),
                 ("angelo",  'a', 2),
                 ("carlos",  'c', 1));
+
+            Assert.That(sourceIndex, Is.EqualTo(source.Length));
+            Assert.That(uniqueKeysIndex, Is.EqualTo(uniqueKeys.Length));
         }
 
         [Test]
