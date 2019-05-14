@@ -20,7 +20,6 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     /// <summary>
     /// Represents a source whose elements can be sequentially deconstructed
@@ -48,34 +47,6 @@ namespace MoreLinq
                             : throw CreateTooShortError();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        void Deconstruct(int count, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14, out T item15, out T item16)
-        {
-            Debug.Assert(count >= 2);
-            Debug.Assert(count <= 16);
-
-            using (var e = GetEnumerator())
-            {
-                item1  = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2  = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3  = count >=  3 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item4  = count >=  4 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item5  = count >=  5 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item6  = count >=  6 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item7  = count >=  7 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item8  = count >=  8 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item9  = count >=  9 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item10 = count >= 10 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item11 = count >= 11 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item12 = count >= 12 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item13 = count >= 13 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item14 = count >= 14 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item15 = count >= 15 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                item16 = count >= 16 ? e.MoveNext() ? e.Current : throw CreateTooShortError() : default;
-                if (e.MoveNext())
-                    throw CreateTooLongError();
-            }
-        }
 
         static InvalidOperationException CreateTooShortError() =>
             new InvalidOperationException("Sequence too short.");
