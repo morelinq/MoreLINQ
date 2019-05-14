@@ -312,53 +312,43 @@ namespace MoreLinq.Test
             }
         }
 
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        [TestCase(12)]
-        [TestCase(13)]
-        [TestCase(14)]
-        [TestCase(15)]
-        [TestCase(16)]
-        public void DeconstructWithTooFewElements(int count)
+        [TestCase( 2,  1)]
+        [TestCase( 3,  1)]
+        [TestCase( 4,  1)]
+        [TestCase( 5,  1)]
+        [TestCase( 6,  1)]
+        [TestCase( 7,  1)]
+        [TestCase( 8,  1)]
+        [TestCase( 9,  1)]
+        [TestCase(10,  1)]
+        [TestCase(11,  1)]
+        [TestCase(12,  1)]
+        [TestCase(13,  1)]
+        [TestCase(14,  1)]
+        [TestCase(15,  1)]
+        [TestCase(16,  1)]
+        [TestCase( 2, -1)]
+        [TestCase( 3, -1)]
+        [TestCase( 4, -1)]
+        [TestCase( 5, -1)]
+        [TestCase( 6, -1)]
+        [TestCase( 7, -1)]
+        [TestCase( 8, -1)]
+        [TestCase( 9, -1)]
+        [TestCase(10, -1)]
+        [TestCase(11, -1)]
+        [TestCase(12, -1)]
+        [TestCase(13, -1)]
+        [TestCase(14, -1)]
+        [TestCase(15, -1)]
+        [TestCase(16, -1)]
+        public void DeconstructWithMismatchedLength(int count, int actualCountDelta)
         {
-            using (var xs = Enumerable.Range(1, count - 1).AsTestingSequence())
+            using (var xs = Enumerable.Range(1, count + actualCountDelta).AsTestingSequence())
             {
                 var e = Assert.Throws<InvalidOperationException>(() =>
                     Deconstruct(xs, count));
-                Assert.That(e.Message, Does.Match($@"\bfew( \w+)* {Regex.Escape(count.ToString(CultureInfo.InvariantCulture))}\b"));
-            }
-        }
-
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        [TestCase(12)]
-        [TestCase(13)]
-        [TestCase(14)]
-        [TestCase(15)]
-        [TestCase(16)]
-        public void DeconstructWithTooManyElements(int count)
-        {
-            using (var xs = Enumerable.Range(1, count + 1).AsTestingSequence())
-            {
-                var e = Assert.Throws<InvalidOperationException>(() =>
-                    Deconstruct(xs, count));
-                Assert.That(e.Message, Does.Match($@"\bmany( \w+)* {Regex.Escape(count.ToString(CultureInfo.InvariantCulture))}\b"));
+                Assert.That(e.Message, Does.Match($@"\b{Regex.Escape(actualCountDelta > 0 ? "many" : "few")}( \w+)* {Regex.Escape(count.ToString(CultureInfo.InvariantCulture))}\b"));
             }
         }
 
