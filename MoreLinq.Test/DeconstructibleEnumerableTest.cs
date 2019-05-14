@@ -43,6 +43,14 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void Enumeration()
+        {
+            var xs = Enumerable.Range(1, 10);
+            using (var ts = xs.AsTestingSequence())
+                ts.AsDeconstructible().AssertSequenceEqual(xs);
+        }
+
+        [Test]
         public void Deconstruct2()
         {
             using (var xs = Enumerable.Range(1, 2).AsTestingSequence())
