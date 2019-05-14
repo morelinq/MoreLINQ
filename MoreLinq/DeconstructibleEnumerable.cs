@@ -23,7 +23,7 @@ namespace MoreLinq
 
     /// <summary>
     /// Represents a source whose elements can be sequentially deconstructed
-    /// into separate variables.
+    /// into a matching number of variables.
     /// </summary>
     /// <typeparam name="T">The type of the elements.</typeparam>
 
