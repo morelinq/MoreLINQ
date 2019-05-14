@@ -161,8 +161,8 @@ namespace MoreLinq.Extensions
     public static partial class AsDeconstructibleExtension
     {
         /// <summary>
-        /// Enables a sequence's elements to be deconstructed into separate
-        /// variables.
+        /// Enables a sequence's elements to be deconstructed into matching
+        /// number of variables.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">The type of the source elements.</typeparam>
