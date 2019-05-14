@@ -27,7 +27,7 @@ namespace MoreLinq
     /// </summary>
     /// <typeparam name="T">The type of the elements.</typeparam>
 
-    public partial struct DeconstructibleEnumerable<T> : IEnumerable<T>
+    public readonly partial struct DeconstructibleEnumerable<T> : IEnumerable<T>
     {
         readonly IEnumerable<T> _source;
 
