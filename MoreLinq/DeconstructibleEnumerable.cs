@@ -43,6 +43,7 @@ namespace MoreLinq
 
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator() =>
+            // can be null via default construction
             _source != null ? _source.GetEnumerator()
                             : throw new InvalidOperationException();
 
