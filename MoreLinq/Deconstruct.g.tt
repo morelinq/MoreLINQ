@@ -25,8 +25,7 @@ namespace MoreLinq
     using System;
 
     partial struct DeconstructibleEnumerable<T>
-    {
-<#
+    {<#
         var ordinalNumbers = new[]
         {
             "first",
@@ -58,6 +57,7 @@ namespace MoreLinq
             };
 
         foreach (var e in overloads) { #>
+
         /// <summary>
         /// Deconstructs exactly <#= e.CountArg #> elements into separate variables.
         /// </summary>
