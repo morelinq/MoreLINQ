@@ -49,10 +49,13 @@ namespace MoreLinq
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        static InvalidOperationException CreateTooShortError() =>
-            new InvalidOperationException("Sequence too short.");
+        static InvalidOperationException CreateTooShortError(int expectedCount) =>
+            CreateLengthMismatchError(expectedCount, "few");
 
-        static InvalidOperationException CreateTooLongError() =>
-            new InvalidOperationException("Sequence too long.");
+        static InvalidOperationException CreateTooLongError(int expectedCount) =>
+            CreateLengthMismatchError(expectedCount, "many");
+
+        static InvalidOperationException CreateLengthMismatchError(int expectedCount, string actualQuantifier) =>
+            new InvalidOperationException($"Sequence contains too {actualQuantifier} elements when exactly {expectedCount} {(expectedCount == 1 ? "was" : "were")} expected.");
     }
 }

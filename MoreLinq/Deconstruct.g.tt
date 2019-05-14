@@ -71,13 +71,15 @@ namespace MoreLinq
 
         public void Deconstruct(<#= string.Join(", ", from i in Enumerable.Range(1, e.Count) select "out T item" + i.ToString(CultureInfo.InvariantCulture))#>)
         {
+            const int count = <#= e.CountArg #>;
+
             using (var e = GetEnumerator())
             {
 <#          foreach (var i in Enumerable.Range(1, e.Count)) { #>
-                item<#= i.ToString(CultureInfo.InvariantCulture) #> = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item<#= i.ToString(CultureInfo.InvariantCulture) #> = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
 <#          } #>
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
 <#      } #>

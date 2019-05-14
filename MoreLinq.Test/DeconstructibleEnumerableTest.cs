@@ -19,6 +19,8 @@ namespace MoreLinq.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -325,13 +327,13 @@ namespace MoreLinq.Test
         [TestCase(14)]
         [TestCase(15)]
         [TestCase(16)]
-        public void DeconstructWithTooShortSequence(int count)
+        public void DeconstructWithTooFewElements(int count)
         {
             using (var xs = Enumerable.Range(1, count - 1).AsTestingSequence())
             {
                 var e = Assert.Throws<InvalidOperationException>(() =>
                     Deconstruct(xs, count));
-                Assert.That(e.Message, Contains.Substring("short"));
+                Assert.That(e.Message, Does.Match($@"\bfew( \w+)* {Regex.Escape(count.ToString(CultureInfo.InvariantCulture))}\b"));
             }
         }
 
@@ -350,13 +352,13 @@ namespace MoreLinq.Test
         [TestCase(14)]
         [TestCase(15)]
         [TestCase(16)]
-        public void DeconstructWithTooLongSequence(int count)
+        public void DeconstructWithTooManyElements(int count)
         {
             using (var xs = Enumerable.Range(1, count + 1).AsTestingSequence())
             {
                 var e = Assert.Throws<InvalidOperationException>(() =>
                     Deconstruct(xs, count));
-                Assert.That(e.Message, Contains.Substring("long"));
+                Assert.That(e.Message, Does.Match($@"\bmany( \w+)* {Regex.Escape(count.ToString(CultureInfo.InvariantCulture))}\b"));
             }
         }
 

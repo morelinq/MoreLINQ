@@ -33,12 +33,14 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2)
         {
+            const int count = 2;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -54,13 +56,15 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3)
         {
+            const int count = 3;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -77,14 +81,16 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4)
         {
+            const int count = 4;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -102,15 +108,17 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5)
         {
+            const int count = 5;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -129,16 +137,18 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6)
         {
+            const int count = 6;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -158,17 +168,19 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7)
         {
+            const int count = 7;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -189,18 +201,20 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8)
         {
+            const int count = 8;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -222,19 +236,21 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9)
         {
+            const int count = 9;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -257,20 +273,22 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10)
         {
+            const int count = 10;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -294,21 +312,23 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11)
         {
+            const int count = 11;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -333,22 +353,24 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12)
         {
+            const int count = 12;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -374,23 +396,25 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13)
         {
+            const int count = 13;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -417,24 +441,26 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14)
         {
+            const int count = 14;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item14 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item14 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -462,25 +488,27 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14, out T item15)
         {
+            const int count = 15;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item14 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item15 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item14 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item15 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
         /// <summary>
@@ -509,26 +537,28 @@ namespace MoreLinq
 
         public void Deconstruct(out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14, out T item15, out T item16)
         {
+            const int count = 16;
+
             using (var e = GetEnumerator())
             {
-                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item14 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item15 = e.MoveNext() ? e.Current : throw CreateTooShortError();
-                item16 = e.MoveNext() ? e.Current : throw CreateTooShortError();
+                item1 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item2 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item3 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item4 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item5 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item6 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item7 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item8 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item9 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item10 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item11 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item12 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item13 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item14 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item15 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
+                item16 = e.MoveNext() ? e.Current : throw CreateTooShortError(count);
                 if (e.MoveNext())
-                    throw CreateTooLongError();
+                    throw CreateTooLongError(count);
             }
         }
     }
