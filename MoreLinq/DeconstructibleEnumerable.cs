@@ -44,7 +44,7 @@ namespace MoreLinq
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator() =>
             _source != null ? _source.GetEnumerator()
-                            : throw CreateTooShortError();
+                            : throw new InvalidOperationException();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

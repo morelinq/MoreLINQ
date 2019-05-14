@@ -36,9 +36,8 @@ namespace MoreLinq.Test
         [Test]
         public void DeconstructDefault()
         {
-            var e = Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
                 default(DeconstructibleEnumerable<int>).Deconstruct(out _, out _));
-            Assert.That(e.Message, Contains.Substring("short"));
         }
 
         [Test]
