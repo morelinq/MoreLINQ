@@ -265,9 +265,12 @@ namespace MoreLinq.ExtensionsGenerator
                                             ArgumentList(
                                                 SeparatedList(
                                                     from p in md.ParameterList.Parameters
-                                                    select Argument(IdentifierName(p.Identifier)),
-                                                    Enumerable.Repeat(ParseToken(",").WithTrailingTrivia(Space),
-                                                                      md.ParameterList.Parameters.Count - 1))))
+                                                    let arg = Argument(IdentifierName(p.Identifier))
+                                                    select p.Modifiers.Any(pm => pm.IsKind(SyntaxKind.OutKeyword))
+                                                         ? arg.WithRefKindKeyword(Token(SyntaxKind.OutKeyword))
+                                                         : arg,
+                                                    Enumerable.Repeat(ParseToken(","),
+                                                                      md.ParameterList.Parameters.Count - 1))).NormalizeWhitespace())
                                             .WithLeadingTrivia(Space))
                                         .WithLeadingTrivia(Whitespace(indent3)))
                                 .WithSemicolonToken(ParseToken(";").WithTrailingTrivia(LineFeed))

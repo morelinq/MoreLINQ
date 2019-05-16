@@ -108,6 +108,12 @@ This method has 3 overloads.
 
 Returns a sequence consisting of the head element and the given tail elements.
 
+### Deconstruct
+
+Deconstructs initial elements (up to 16) of a sequence into given variables.
+
+This method has 15 overloads.
+
 ### Assert
 
 Asserts that all elements of a sequence meet a given condition otherwise

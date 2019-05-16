@@ -67,6 +67,7 @@ namespace MoreLinq.Test
 
         static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object[], string, Action> testCaseFactory) =>
             from m in typeof (MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            where m.Name != nameof(MoreEnumerable.Deconstruct)
             from t in CreateTestCases(m, canBeNull, testCaseFactory)
             select t;
 

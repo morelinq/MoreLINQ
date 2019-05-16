@@ -1,0 +1,91 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2019 Atif Aziz. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    partial class MoreEnumerable
+    {<#
+        var ordinalNumbers = new[]
+        {
+            "first",
+            "second",
+            "third",
+            "fourth",
+            "fifth",
+            "sixth",
+            "seventh",
+            "eighth",
+            "ninth",
+            "tenth",
+            "eleventh",
+            "twelfth",
+            "thirteenth",
+            "fourteenth",
+            "fifteenth",
+            "sixteenth",
+        };
+
+        var overloads =
+            from i in Enumerable.Range(2, 15)
+            let istr = i.ToString(CultureInfo.InvariantCulture)
+            select new
+            {
+                Count         = i,
+                CountElements = istr + " " + (i == 1 ? "element" : "elements"),
+                CountArg      = istr,
+            };
+
+        foreach (var e in overloads) { #>
+
+        /// <summary>
+        /// Deconstructs first <#= e.CountArg #> elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+<#          foreach (var i in Enumerable.Range(0, e.Count)) { #>
+        /// <param name="item<#= (i + 1).ToString(CultureInfo.InvariantCulture) #>">The value of the <#= ordinalNumbers[i] #> element.</param>
+<#          } #>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, <#= string.Join(", ", from i in Enumerable.Range(1, e.Count) select "out T item" + i.ToString(CultureInfo.InvariantCulture))#>, out int count)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            count = 0;
+
+            using (var e = source.GetEnumerator())
+            {
+<#          foreach (var i in Enumerable.Range(1, e.Count)) { #>
+                (count, item<#= i.ToString(CultureInfo.InvariantCulture) #>) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+<#          } #>
+            }
+        }
+<#      } #>
+    }
+}

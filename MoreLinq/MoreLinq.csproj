@@ -26,6 +26,7 @@
         - CountBy
         - CountDown
         - Consume
+        - Deconstruct
         - DistinctBy
         - EndsWith
         - EquiZip
@@ -150,6 +151,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
     </None>
+    <None Update="Deconstruct.g.tt">
+      <LastGenOutput>Deconstruct.g.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="Fold.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Fold.g.cs</LastGenOutput>
@@ -195,6 +200,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Cartesian.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Deconstruct.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Deconstruct.g.tt</DependentUpon>
     </Compile>
     <Compile Update="Fold.g.cs">
       <DesignTime>True</DesignTime>

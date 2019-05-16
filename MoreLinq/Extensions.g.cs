@@ -907,6 +907,358 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Deconstruct</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class DeconstructExtension
+    {
+        /// <summary>
+        /// Deconstructs first 2 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out count);
+
+        /// <summary>
+        /// Deconstructs first 3 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out count);
+
+        /// <summary>
+        /// Deconstructs first 4 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out count);
+
+        /// <summary>
+        /// Deconstructs first 5 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out count);
+
+        /// <summary>
+        /// Deconstructs first 6 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out count);
+
+        /// <summary>
+        /// Deconstructs first 7 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out count);
+
+        /// <summary>
+        /// Deconstructs first 8 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out count);
+
+        /// <summary>
+        /// Deconstructs first 9 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out count);
+
+        /// <summary>
+        /// Deconstructs first 10 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out count);
+
+        /// <summary>
+        /// Deconstructs first 11 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="item11">The value of the eleventh element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out item11, out count);
+
+        /// <summary>
+        /// Deconstructs first 12 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="item11">The value of the eleventh element.</param>
+        /// <param name="item12">The value of the twelfth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out item11, out item12, out count);
+
+        /// <summary>
+        /// Deconstructs first 13 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="item11">The value of the eleventh element.</param>
+        /// <param name="item12">The value of the twelfth element.</param>
+        /// <param name="item13">The value of the thirteenth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out item11, out item12, out item13, out count);
+
+        /// <summary>
+        /// Deconstructs first 14 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="item11">The value of the eleventh element.</param>
+        /// <param name="item12">The value of the twelfth element.</param>
+        /// <param name="item13">The value of the thirteenth element.</param>
+        /// <param name="item14">The value of the fourteenth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out item11, out item12, out item13, out item14, out count);
+
+        /// <summary>
+        /// Deconstructs first 15 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="item11">The value of the eleventh element.</param>
+        /// <param name="item12">The value of the twelfth element.</param>
+        /// <param name="item13">The value of the thirteenth element.</param>
+        /// <param name="item14">The value of the fourteenth element.</param>
+        /// <param name="item15">The value of the fifteenth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14, out T item15, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out item11, out item12, out item13, out item14, out item15, out count);
+
+        /// <summary>
+        /// Deconstructs first 16 elements of the sequence into given variables.
+        /// </summary>
+        /// <param name="source">The sequence to deconstruct.</param>
+        /// <param name="item1">The value of the first element.</param>
+        /// <param name="item2">The value of the second element.</param>
+        /// <param name="item3">The value of the third element.</param>
+        /// <param name="item4">The value of the fourth element.</param>
+        /// <param name="item5">The value of the fifth element.</param>
+        /// <param name="item6">The value of the sixth element.</param>
+        /// <param name="item7">The value of the seventh element.</param>
+        /// <param name="item8">The value of the eighth element.</param>
+        /// <param name="item9">The value of the ninth element.</param>
+        /// <param name="item10">The value of the tenth element.</param>
+        /// <param name="item11">The value of the eleventh element.</param>
+        /// <param name="item12">The value of the twelfth element.</param>
+        /// <param name="item13">The value of the thirteenth element.</param>
+        /// <param name="item14">The value of the fourteenth element.</param>
+        /// <param name="item15">The value of the fifteenth element.</param>
+        /// <param name="item16">The value of the sixteenth element.</param>
+        /// <param name="count">The actual count of elements deconstructed.</param>
+        /// <remarks>
+        /// If <paramref name="source"/> contains fewer elements then the
+        /// remaining item variables will be initialized to the default value
+        /// of <typeparamref name="T"/>.
+        /// </remarks>
+
+        public static void Deconstruct<T>(this IEnumerable<T> source, out T item1, out T item2, out T item3, out T item4, out T item5, out T item6, out T item7, out T item8, out T item9, out T item10, out T item11, out T item12, out T item13, out T item14, out T item15, out T item16, out int count)
+            => MoreEnumerable.Deconstruct(source, out item1, out item2, out item3, out item4, out item5, out item6, out item7, out item8, out item9, out item10, out item11, out item12, out item13, out item14, out item15, out item16, out count);
+
+    }
+
     /// <summary><c>DistinctBy</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
