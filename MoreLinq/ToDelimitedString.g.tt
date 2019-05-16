@@ -1,7 +1,8 @@
 <#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
-<#@ import namespace="System.CodeDom" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System.ComponentModel.Primitives" #>
+<#@ import namespace="System.CodeDom" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Text" #>
