@@ -113,7 +113,7 @@ namespace MoreLinq
                         state = seedSelector(default(TKey));
                     }
 
-                    state = accumulator(state, default(TKey), item);
+                    state = accumulator(state, key, item);
 
                     if (key != null)
                         stateByKey[key] = state;
