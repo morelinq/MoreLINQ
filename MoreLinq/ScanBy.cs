@@ -110,7 +110,7 @@ namespace MoreLinq
                        // otherwise try & find state of the key
                        || TryGetState(key, out state)))
                     {
-                        state = seedSelector(default(TKey));
+                        state = seedSelector(key);
                     }
 
                     state = accumulator(state, key, item);
