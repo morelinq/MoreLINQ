@@ -35,7 +35,6 @@ namespace MoreLinq.Test
         [Test]
         public void ScanBy()
         {
-            var sourceIndex = 0;
             var source = new[]
             {
                 "ana",
@@ -48,31 +47,12 @@ namespace MoreLinq.Test
                 "carlos"
             };
 
-            var uniqueKeysIndex = 0;
-            var uniqueKeys = source.Select(name => name.First())
-                                   .Distinct()
-                                   .ToArray();
-
-            var result = source.ScanBy(
-                item =>
-                {
-                    Assert.That(item, Is.EqualTo(source[sourceIndex]));
-                    return item.First();
-                },
-                firstLetter =>
-                {
-                    Assert.That(firstLetter, Is.EqualTo(uniqueKeys[uniqueKeysIndex]));
-                    uniqueKeysIndex++;
-                    return (Element: default(string), State: -1);
-                },
-                (state, key, item) =>
-                {
-                    Assert.That(item, Is.EqualTo(source[sourceIndex]));
-                    Assert.That(key, Is.EqualTo(item.First()));
-                    sourceIndex++;
-                    return (Element: item, State: state.State + 1);
-                })
-                .Select(x => (x.Value.Element, x.Key, x.Value.State));
+            var result =
+                source.ScanBy(
+                          item => item.First(),
+                          key => (Element: default(string), State: -1),
+                          (state, key, item) => (Element: item, State: state.State + 1))
+                      .Select(x => (x.Value.Element, x.Key, x.Value.State));
 
             result.AssertSequenceEqual(
                 ("ana",     'a', 0),
@@ -83,9 +63,6 @@ namespace MoreLinq.Test
                 ("adriano", 'a', 1),
                 ("angelo",  'a', 2),
                 ("carlos",  'c', 1));
-
-            Assert.That(sourceIndex, Is.EqualTo(source.Length));
-            Assert.That(uniqueKeysIndex, Is.EqualTo(uniqueKeys.Length));
         }
 
         [Test]
