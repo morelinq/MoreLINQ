@@ -18,10 +18,19 @@
 namespace MoreLinq
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     static partial class MoreEnumerable
     {
-        static void ReadWithCount<T>(IEnumerator<T> e, ref int count, out T item) =>
-            (count, item) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+        static T ReadWithCount<T>(this IEnumerator<T> enumerator, ref int count, ref bool ended)
+        {
+            Debug.Assert(enumerator != null);
+
+            if (ended || (ended = !enumerator.MoveNext()))
+                return default;
+
+            count++;
+            return enumerator.Current;
+        }
     }
 }

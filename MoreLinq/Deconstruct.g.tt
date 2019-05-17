@@ -77,12 +77,12 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
 <#          foreach (var i in Enumerable.Range(1, e.Count)) { #>
-                ReadWithCount(e, ref count, out item<#= i.ToString(CultureInfo.InvariantCulture) #>);
+                item<#= i.ToString(CultureInfo.InvariantCulture) #> = e.ReadWithCount(ref count, ref ended);
 <#          } #>
             }
         }

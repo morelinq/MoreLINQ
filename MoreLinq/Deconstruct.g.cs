@@ -39,12 +39,12 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -66,13 +66,13 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -95,14 +95,14 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -126,15 +126,15 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -159,16 +159,16 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -194,17 +194,17 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -231,18 +231,18 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -270,19 +270,19 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -311,20 +311,20 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -354,21 +354,21 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
-                ReadWithCount(e, ref count, out item11);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
+                item11 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -399,22 +399,22 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
-                ReadWithCount(e, ref count, out item11);
-                ReadWithCount(e, ref count, out item12);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
+                item11 = e.ReadWithCount(ref count, ref ended);
+                item12 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -446,23 +446,23 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
-                ReadWithCount(e, ref count, out item11);
-                ReadWithCount(e, ref count, out item12);
-                ReadWithCount(e, ref count, out item13);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
+                item11 = e.ReadWithCount(ref count, ref ended);
+                item12 = e.ReadWithCount(ref count, ref ended);
+                item13 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -495,24 +495,24 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
-                ReadWithCount(e, ref count, out item11);
-                ReadWithCount(e, ref count, out item12);
-                ReadWithCount(e, ref count, out item13);
-                ReadWithCount(e, ref count, out item14);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
+                item11 = e.ReadWithCount(ref count, ref ended);
+                item12 = e.ReadWithCount(ref count, ref ended);
+                item13 = e.ReadWithCount(ref count, ref ended);
+                item14 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -546,25 +546,25 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
-                ReadWithCount(e, ref count, out item11);
-                ReadWithCount(e, ref count, out item12);
-                ReadWithCount(e, ref count, out item13);
-                ReadWithCount(e, ref count, out item14);
-                ReadWithCount(e, ref count, out item15);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
+                item11 = e.ReadWithCount(ref count, ref ended);
+                item12 = e.ReadWithCount(ref count, ref ended);
+                item13 = e.ReadWithCount(ref count, ref ended);
+                item14 = e.ReadWithCount(ref count, ref ended);
+                item15 = e.ReadWithCount(ref count, ref ended);
             }
         }
 
@@ -599,26 +599,26 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            count = 0;
+            count = 0; var ended = false;
 
             using (var e = source.GetEnumerator())
             {
-                ReadWithCount(e, ref count, out item1);
-                ReadWithCount(e, ref count, out item2);
-                ReadWithCount(e, ref count, out item3);
-                ReadWithCount(e, ref count, out item4);
-                ReadWithCount(e, ref count, out item5);
-                ReadWithCount(e, ref count, out item6);
-                ReadWithCount(e, ref count, out item7);
-                ReadWithCount(e, ref count, out item8);
-                ReadWithCount(e, ref count, out item9);
-                ReadWithCount(e, ref count, out item10);
-                ReadWithCount(e, ref count, out item11);
-                ReadWithCount(e, ref count, out item12);
-                ReadWithCount(e, ref count, out item13);
-                ReadWithCount(e, ref count, out item14);
-                ReadWithCount(e, ref count, out item15);
-                ReadWithCount(e, ref count, out item16);
+                item1 = e.ReadWithCount(ref count, ref ended);
+                item2 = e.ReadWithCount(ref count, ref ended);
+                item3 = e.ReadWithCount(ref count, ref ended);
+                item4 = e.ReadWithCount(ref count, ref ended);
+                item5 = e.ReadWithCount(ref count, ref ended);
+                item6 = e.ReadWithCount(ref count, ref ended);
+                item7 = e.ReadWithCount(ref count, ref ended);
+                item8 = e.ReadWithCount(ref count, ref ended);
+                item9 = e.ReadWithCount(ref count, ref ended);
+                item10 = e.ReadWithCount(ref count, ref ended);
+                item11 = e.ReadWithCount(ref count, ref ended);
+                item12 = e.ReadWithCount(ref count, ref ended);
+                item13 = e.ReadWithCount(ref count, ref ended);
+                item14 = e.ReadWithCount(ref count, ref ended);
+                item15 = e.ReadWithCount(ref count, ref ended);
+                item16 = e.ReadWithCount(ref count, ref ended);
             }
         }
     }
