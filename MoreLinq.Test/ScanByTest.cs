@@ -50,19 +50,19 @@ namespace MoreLinq.Test
             var result =
                 source.ScanBy(
                           item => item.First(),
-                          key => (Element: default(string), State: (int)key - 1),
-                          (state, key, item) => (Element: item, State: state.State + 1))
-                      .Select(x => (x.Value.Element, x.Key, x.Value.State - x.Key));
+                          key => (Element: default(string), Key: key, State: (int)key - 1),
+                          (state, key, item) => (Element: item, Key: key, State: state.State + 1))
+                      .Select(x => (x.Key, (x.Value.Element, x.Value.Key, x.Value.State - x.Key)));
 
             result.AssertSequenceEqual(
-               ("ana",     'a', 0),
-               ("beatriz", 'b', 0),
-               ("carla",   'c', 0),
-               ("bob",     'b', 1),
-               ("davi",    'd', 0),
-               ("adriano", 'a', 1),
-               ("angelo",  'a', 2),
-               ("carlos",  'c', 1));
+               ('a', ("ana",     'a', 0)),
+               ('b', ("beatriz", 'b', 0)),
+               ('c', ("carla",   'c', 0)),
+               ('b', ("bob",     'b', 1)),
+               ('d', ("davi",    'd', 0)),
+               ('a', ("adriano", 'a', 1)),
+               ('a', ("angelo",  'a', 2)),
+               ('c', ("carlos",  'c', 1)));
         }
 
         [Test]
