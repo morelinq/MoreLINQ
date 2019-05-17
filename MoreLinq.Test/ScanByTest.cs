@@ -29,7 +29,7 @@ namespace MoreLinq.Test
             new BreakingSequence<string>().ScanBy(
                 BreakingFunc.Of<string, int>(),
                 BreakingFunc.Of<int, char>(),
-                BreakingFunc.Of<string, int, char, char>());
+                BreakingFunc.Of<char, int, string, char>());
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace MoreLinq.Test
                     uniqueKeysIndex++;
                     return (Element: default(string), State: -1);
                 },
-                (item, key, state) =>
+                (state, key, item) =>
                 {
                     Assert.That(item, Is.EqualTo(source[sourceIndex]));
                     Assert.That(key, Is.EqualTo(item.First()));
@@ -91,7 +91,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanByWithSecondOccurenceImmediatelyAfterFirst()
         {
-            var result = "jaffer".ScanBy(c => c, k => -1, (e, k, i) => i + 1);
+            var result = "jaffer".ScanBy(c => c, k => -1, (i, k, e) => i + 1);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create('j', 0),
@@ -108,7 +108,7 @@ namespace MoreLinq.Test
             var source = new[] { "a", "B", "c", "A", "b", "A" };
             var result = source.ScanBy(c => c,
                                        k => -1,
-                                       (e, k, i) => i + 1,
+                                       (i, k, e) => i + 1,
                                        StringComparer.OrdinalIgnoreCase);
 
             result.AssertSequenceEqual(
@@ -124,7 +124,7 @@ namespace MoreLinq.Test
         public void ScanByWithSomeNullKeys()
         {
             var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
-            var result = source.ScanBy(c => c, k => -1, (e, k, i) => i + 1);
+            var result = source.ScanBy(c => c, k => -1, (i, k, e) => i + 1);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create("foo"       , 0),

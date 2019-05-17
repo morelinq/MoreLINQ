@@ -4535,7 +4535,7 @@ namespace MoreLinq.Extensions
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, TState> seedSelector,
-            Func<TSource, TKey, TState, TState> accumulator)
+            Func<TState, TKey, TSource, TState> accumulator)
             => MoreEnumerable.ScanBy(source, keySelector, seedSelector, accumulator);
 
         /// <summary>
@@ -4561,7 +4561,7 @@ namespace MoreLinq.Extensions
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, TState> seedSelector,
-            Func<TSource, TKey, TState, TState> accumulator,
+            Func<TState, TKey, TSource, TState> accumulator,
             IEqualityComparer<TKey> comparer)
             => MoreEnumerable.ScanBy(source, keySelector, seedSelector, accumulator, comparer);
 

@@ -43,7 +43,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, TState> seedSelector,
-            Func<TSource, TKey, TState, TState> accumulator)
+            Func<TState, TKey, TSource, TState> accumulator)
         {
             return source.ScanBy(keySelector, seedSelector, accumulator, null);
         }
@@ -71,7 +71,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, TState> seedSelector,
-            Func<TSource, TKey, TState, TState> accumulator,
+            Func<TState, TKey, TSource, TState> accumulator,
             IEqualityComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -113,7 +113,7 @@ namespace MoreLinq
                         state = seedSelector(key);
                     }
 
-                    state = accumulator(item, key, state);
+                    state = accumulator(state, key, item);
 
                     if (key != null)
                         stateByKey[key] = state;
