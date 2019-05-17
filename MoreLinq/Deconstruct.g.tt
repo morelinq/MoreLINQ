@@ -82,7 +82,7 @@ namespace MoreLinq
             using (var e = source.GetEnumerator())
             {
 <#          foreach (var i in Enumerable.Range(1, e.Count)) { #>
-                (count, item<#= i.ToString(CultureInfo.InvariantCulture) #>) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item<#= i.ToString(CultureInfo.InvariantCulture) #>);
 <#          } #>
             }
         }

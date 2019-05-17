@@ -43,8 +43,8 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
             }
         }
 
@@ -70,9 +70,9 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
             }
         }
 
@@ -99,10 +99,10 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
             }
         }
 
@@ -130,11 +130,11 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
             }
         }
 
@@ -163,12 +163,12 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
             }
         }
 
@@ -198,13 +198,13 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
             }
         }
 
@@ -235,14 +235,14 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
             }
         }
 
@@ -274,15 +274,15 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
             }
         }
 
@@ -315,16 +315,16 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
             }
         }
 
@@ -358,17 +358,17 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item11) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
+                ReadWithCount(e, ref count, out item11);
             }
         }
 
@@ -403,18 +403,18 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item11) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item12) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
+                ReadWithCount(e, ref count, out item11);
+                ReadWithCount(e, ref count, out item12);
             }
         }
 
@@ -450,19 +450,19 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item11) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item12) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item13) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
+                ReadWithCount(e, ref count, out item11);
+                ReadWithCount(e, ref count, out item12);
+                ReadWithCount(e, ref count, out item13);
             }
         }
 
@@ -499,20 +499,20 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item11) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item12) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item13) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item14) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
+                ReadWithCount(e, ref count, out item11);
+                ReadWithCount(e, ref count, out item12);
+                ReadWithCount(e, ref count, out item13);
+                ReadWithCount(e, ref count, out item14);
             }
         }
 
@@ -550,21 +550,21 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item11) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item12) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item13) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item14) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item15) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
+                ReadWithCount(e, ref count, out item11);
+                ReadWithCount(e, ref count, out item12);
+                ReadWithCount(e, ref count, out item13);
+                ReadWithCount(e, ref count, out item14);
+                ReadWithCount(e, ref count, out item15);
             }
         }
 
@@ -603,22 +603,22 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                (count, item1) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item2) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item3) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item4) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item5) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item6) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item7) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item8) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item9) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item10) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item11) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item12) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item13) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item14) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item15) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
-                (count, item16) = e.MoveNext() ? (count + 1, e.Current) : (count, default);
+                ReadWithCount(e, ref count, out item1);
+                ReadWithCount(e, ref count, out item2);
+                ReadWithCount(e, ref count, out item3);
+                ReadWithCount(e, ref count, out item4);
+                ReadWithCount(e, ref count, out item5);
+                ReadWithCount(e, ref count, out item6);
+                ReadWithCount(e, ref count, out item7);
+                ReadWithCount(e, ref count, out item8);
+                ReadWithCount(e, ref count, out item9);
+                ReadWithCount(e, ref count, out item10);
+                ReadWithCount(e, ref count, out item11);
+                ReadWithCount(e, ref count, out item12);
+                ReadWithCount(e, ref count, out item13);
+                ReadWithCount(e, ref count, out item14);
+                ReadWithCount(e, ref count, out item15);
+                ReadWithCount(e, ref count, out item16);
             }
         }
     }
