@@ -495,9 +495,8 @@ This method has 2 overloads.
 
 ### ScanBy
 
-Scans the source sequence and performs accumulations of state for each group of keys.
-Returns a sequence of states per key, that is, the key of each element of the
-source sequence, and the current state for that key.
+Applies an accumulator function over sequence element keys, returning the keys
+along with intermediate accumulator states.
 
 This method has 2 overloads.
 

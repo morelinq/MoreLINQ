@@ -4515,20 +4515,22 @@ namespace MoreLinq.Extensions
     public static partial class ScanByExtension
     {
         /// <summary>
-        /// Scans the source sequence and performs accumulations of state for each group of keys.
-        /// Returns a sequence of states per key, that is, the key of each element of the
-        /// source sequence, and the current state for that key.
+        /// Applies an accumulator function over sequence element keys,
+        /// returning the keys along with intermediate accumulator states.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TKey">Type of the projected key.</typeparam>
-        /// <typeparam name="TState">Type of state elements.</typeparam>
-        /// <param name="source">Source sequence.</param>
-        /// <param name="keySelector">Function that transforms each item of source sequence into a key.</param>
-        /// <param name="seedSelector">Function that defines the initial state for that key.</param>
-        /// <param name="accumulator">Function that defines the current state for that key.</param>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TState">Type of the state.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="keySelector">
+        /// A function that returns the key given an element.</param>
+        /// <param name="seedSelector">
+        /// A function to determine the initial value for the accumulator that is
+        /// invoked once per key encountered.</param>
+        /// <param name="accumulator">
+        /// An accumulator function invoked for each element.</param>
         /// <returns>
-        /// Returns a sequence of states per key, that is, the key of each element of the
-        /// source sequence, and the current state for that key.
+        /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
 
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
@@ -4539,22 +4541,26 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.ScanBy(source, keySelector, seedSelector, accumulator);
 
         /// <summary>
-        /// Scans the source sequence and performs accumulations of state for each group of keys.
-        /// Returns a sequence of states per key, that is, the key of each element of the
-        /// source sequence, and the current state for that key.
+        /// Applies an accumulator function over sequence element keys,
+        /// returning the keys along with intermediate accumulator states. An
+        /// additional parameter specifies the comparer to use to compare keys.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
-        /// <typeparam name="TKey">Type of the projected key.</typeparam>
-        /// <typeparam name="TState">Type of state elements.</typeparam>
-        /// <param name="source">Source sequence.</param>
-        /// <param name="keySelector">Function that transforms each item of source sequence into a key.</param>
-        /// <param name="seedSelector">Function that defines the initial state for that key.</param>
-        /// <param name="accumulator">Function that defines the current state for that key.</param>
-        /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-        /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TState">Type of the state.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="keySelector">
+        /// A function that returns the key given an element.</param>
+        /// <param name="seedSelector">
+        /// A function to determine the initial value for the accumulator that is
+        /// invoked once per key encountered.</param>
+        /// <param name="accumulator">
+        /// An accumulator function invoked for each element.</param>
+        /// <param name="comparer">The equality comparer to use to determine
+        /// whether or not keys are equal. If <c>null</c>, the default equality
+        /// comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>
-        /// Returns a sequence of states per key, that is, the key of each element of the
-        /// source sequence, and the current state for that key.
+        /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
 
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
