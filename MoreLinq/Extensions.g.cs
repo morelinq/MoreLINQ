@@ -2571,17 +2571,14 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
         /// <typeparam name="TKey">Type of the projected key.</typeparam>
-        /// <typeparam name="TResult">Type of the projected element.</typeparam>
         /// <param name="source">Source sequence.</param>
         /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
-        /// <param name="resultSelector">The projection to each element, its key and index.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<TResult> IndexBy<TSource, TKey, TResult>(
-            this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector,
-            Func<TSource, TKey, int, TResult> resultSelector)
-            => MoreEnumerable.IndexBy(source, keySelector, resultSelector);
+        public static IEnumerable<KeyValuePair<int, TSource>>
+            IndexBy<TSource, TKey>(
+                this IEnumerable<TSource> source,
+                Func<TSource, TKey> keySelector)             => MoreEnumerable.            IndexBy(source, keySelector);
 
         /// <summary>
         /// Applies a key-generating function to each element of a sequence and returns a sequence that
@@ -2590,20 +2587,17 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
         /// <typeparam name="TKey">Type of the projected key.</typeparam>
-        /// <typeparam name="TResult">Type of the projected element.</typeparam>
         /// <param name="source">Source sequence.</param>
         /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
-        /// <param name="resultSelector">The projection to each element, its key and index.</param>
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
         /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<TResult> IndexBy<TSource, TKey, TResult>(
-            this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector,
-            Func<TSource, TKey, int, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
-            => MoreEnumerable.IndexBy(source, keySelector, resultSelector, comparer);
+        public static IEnumerable<KeyValuePair<int, TSource>>
+            IndexBy<TSource, TKey>(
+                this IEnumerable<TSource> source,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> comparer)             => MoreEnumerable.            IndexBy(source, keySelector, comparer);
 
     }
 
