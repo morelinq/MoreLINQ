@@ -499,6 +499,13 @@ Peforms a scan (inclusive prefix sum) on a sequence of elements.
 
 This method has 2 overloads.
 
+### ScanBy
+
+Applies an accumulator function over sequence element keys, returning the keys
+along with intermediate accumulator states.
+
+This method has 2 overloads.
+
 ### ScanRight
 
 Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
