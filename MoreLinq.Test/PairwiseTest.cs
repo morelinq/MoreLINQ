@@ -25,15 +25,24 @@ namespace MoreLinq.Test
         [Test]
         public void PairwiseIsLazy()
         {
-            new BreakingSequence<object>().Pairwise(delegate { return 0; });
+            new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        public void PairwiseWithSequenceShorterThanTwo(int count)
+        {
+            var source = Enumerable.Range(0, count);
+            var result = source.Pairwise(BreakingFunc.Of<int, int, int>());
+
+            Assert.That(result, Is.Empty);
         }
 
         [Test]
         public void PairwiseWideSourceSequence()
         {
-            var result = new[] { 123, 456, 789 }.Pairwise((a, b) => new { A = a, B = b, });
-            result.AssertSequenceEqual(new { A = 123, B = 456, },
-                                       new { A = 456, B = 789, });
+            var result = new[] { "a", "b", "c", "d" }.Pairwise((x, y) => x + y);
+            result.AssertSequenceEqual("ab", "bc", "cd");
         }
     }
 }

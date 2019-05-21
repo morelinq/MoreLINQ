@@ -115,7 +115,7 @@
     <VersionPrefix>3.2.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -127,7 +127,10 @@
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
+    <PackageOutputPath>..\dist</PackageOutputPath>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
@@ -142,9 +145,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="..\COPYING.txt;..\lic\corefx\LICENSE">
-      <Pack>true</Pack>
-    </None>
+    <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
     <None Update="Cartesian.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
@@ -217,7 +218,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.0.0" />
+    <DotNetCliToolReference Include="dotnet-t4-project-tool" Version="2.0.4" />
   </ItemGroup>
 
 </Project>

@@ -744,7 +744,7 @@ namespace MoreLinq.Extensions
         /// </example>
 
         public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
-            Func<T, (bool IsSome, TResult Value)> chooser)
+            Func<T, (bool, TResult)> chooser)
             => MoreEnumerable.Choose(source, chooser);
 
     }
@@ -3542,7 +3542,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to pad.</param>
         /// <param name="width">The width/length below which to pad.</param>
-        /// <param name="paddingSelector">Function to calculate padding.</param>
+        /// <param name="paddingSelector">
+        /// Function to calculate padding given the index of the missing element.
+        /// </param>
         /// <returns>
         /// Returns a sequence that is at least as wide/long as the width/length
         /// specified by the <paramref name="width"/> parameter.
@@ -3587,11 +3589,11 @@ namespace MoreLinq.Extensions
         /// </remarks>
         /// <example>
         /// <code><![CDATA[
-        /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.Pairwise((a, b) => a + b);
+        /// var source = new[] { "a", "b", "c", "d" };
+        /// var result = source.Pairwise((a, b) => a + b);
         /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
-        /// 579 and 1245, in turn.
+        /// "ab", "bc" and "cd", in turn.
         /// </example>
 
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
@@ -4553,6 +4555,70 @@ namespace MoreLinq.Extensions
         public static IEnumerable<TState> Scan<TSource, TState>(this IEnumerable<TSource> source,
             TState seed, Func<TState, TSource, TState> transformation)
             => MoreEnumerable.Scan(source, seed, transformation);
+
+    }
+
+    /// <summary><c>ScanBy</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class ScanByExtension
+    {
+        /// <summary>
+        /// Applies an accumulator function over sequence element keys,
+        /// returning the keys along with intermediate accumulator states.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TState">Type of the state.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="keySelector">
+        /// A function that returns the key given an element.</param>
+        /// <param name="seedSelector">
+        /// A function to determine the initial value for the accumulator that is
+        /// invoked once per key encountered.</param>
+        /// <param name="accumulator">
+        /// An accumulator function invoked for each element.</param>
+        /// <returns>
+        /// A sequence of keys paired with intermediate accumulator states.
+        /// </returns>
+
+        public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TKey, TState> seedSelector,
+            Func<TState, TKey, TSource, TState> accumulator)
+            => MoreEnumerable.ScanBy(source, keySelector, seedSelector, accumulator);
+
+        /// <summary>
+        /// Applies an accumulator function over sequence element keys,
+        /// returning the keys along with intermediate accumulator states. An
+        /// additional parameter specifies the comparer to use to compare keys.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TState">Type of the state.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="keySelector">
+        /// A function that returns the key given an element.</param>
+        /// <param name="seedSelector">
+        /// A function to determine the initial value for the accumulator that is
+        /// invoked once per key encountered.</param>
+        /// <param name="accumulator">
+        /// An accumulator function invoked for each element.</param>
+        /// <param name="comparer">The equality comparer to use to determine
+        /// whether or not keys are equal. If <c>null</c>, the default equality
+        /// comparer for <typeparamref name="TSource"/> is used.</param>
+        /// <returns>
+        /// A sequence of keys paired with intermediate accumulator states.
+        /// </returns>
+
+        public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TKey, TState> seedSelector,
+            Func<TState, TKey, TSource, TState> accumulator,
+            IEqualityComparer<TKey> comparer)
+            => MoreEnumerable.ScanBy(source, keySelector, seedSelector, accumulator, comparer);
 
     }
 

@@ -41,11 +41,11 @@ namespace MoreLinq
         /// </remarks>
         /// <example>
         /// <code><![CDATA[
-        /// int[] numbers = { 123, 456, 789 };
-        /// var result = numbers.Pairwise((a, b) => a + b);
+        /// var source = new[] { "a", "b", "c", "d" };
+        /// var result = source.Pairwise((a, b) => a + b);
         /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
-        /// 579 and 1245, in turn.
+        /// "ab", "bc" and "cd", in turn.
         /// </example>
 
         public static IEnumerable<TResult> Pairwise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)

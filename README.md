@@ -55,7 +55,7 @@ extension methods as well as all the regular static methods on
 [lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
 [using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
 [netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip--3
-[zip]: https://morelinq.github.io/2.0/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
+[zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
 [unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
 [random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
 [sequence]: https://morelinq.github.io/2.2/ref/api/html/Overload_MoreLinq_MoreEnumerable_Sequence.htm
@@ -111,7 +111,7 @@ Returns a sequence consisting of the head element and the given tail elements.
 ### Assert
 
 Asserts that all elements of a sequence meet a given condition otherwise
-throws an object.
+throws an exception.
 
 This method has 2 overloads.
 
@@ -500,6 +500,13 @@ This method has 2 overloads.
 ### Scan
 
 Peforms a scan (inclusive prefix sum) on a sequence of elements.
+
+This method has 2 overloads.
+
+### ScanBy
+
+Applies an accumulator function over sequence element keys, returning the keys
+along with intermediate accumulator states.
 
 This method has 2 overloads.
 

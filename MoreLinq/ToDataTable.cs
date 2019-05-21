@@ -136,7 +136,8 @@ namespace MoreLinq
             {
                 return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
-                             || m.MemberType == MemberTypes.Property && ((PropertyInfo) m).GetIndexParameters().Length == 0
+                          || m is PropertyInfo p && p.CanRead
+                                                 && p.GetIndexParameters().Length == 0
                        select m;
             }
 

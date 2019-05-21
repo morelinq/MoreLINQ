@@ -32,7 +32,7 @@ namespace MoreLinq.Test
         readonly IEnumerator<T> _source;
 
         public event EventHandler Disposed;
-        public event EventHandler MoveNextCalled;
+        public event EventHandler<bool> MoveNextCalled;
 
         public WatchableEnumerator(IEnumerator<T> source) =>
             _source = source ?? throw new ArgumentNullException(nameof(source));
@@ -43,8 +43,9 @@ namespace MoreLinq.Test
 
         public bool MoveNext()
         {
-            MoveNextCalled?.Invoke(this, EventArgs.Empty);
-            return _source.MoveNext();
+            var moved = _source.MoveNext();
+            MoveNextCalled?.Invoke(this, moved);
+            return moved;
         }
 
         public void Dispose()

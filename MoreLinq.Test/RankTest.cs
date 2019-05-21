@@ -24,7 +24,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRankByIsLazy()
         {
-            new BreakingSequence<int>().RankBy(x => x);
+            new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
         }
 
         /// <summary>

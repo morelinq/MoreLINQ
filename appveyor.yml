@@ -6,6 +6,9 @@ skip_commits:
     - '*.txt'
     - '.editorconfig'
     - lic/*
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 install:
 - ps: Install-Product node 6
 - npm install -g eclint
@@ -13,6 +16,9 @@ install:
 - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
 - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
 - git reset --hard
+- ps: tools\dotnet-install.ps1 -Version ((type .\global.json | ConvertFrom-Json).sdk.version)
+before_build:
+- dotnet --info
 build_script:
 - ps: >-
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir MoreLinq.Test\*Test.cs)

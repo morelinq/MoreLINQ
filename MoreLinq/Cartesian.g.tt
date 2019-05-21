@@ -1,6 +1,7 @@
 <#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System.Collections" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
 #region License and Terms

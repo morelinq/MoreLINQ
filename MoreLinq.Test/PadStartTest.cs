@@ -81,7 +81,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithSelectorIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0, x => x);
+            new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
         }
 
         [TestCase(new[] { 123, 456, 789 }, 2, new[] {                    123, 456, 789 })]
