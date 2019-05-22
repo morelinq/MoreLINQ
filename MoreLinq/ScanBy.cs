@@ -116,18 +116,14 @@ namespace MoreLinq
                 {
                     var key = keySelector(item);
 
-                    if (// key same as the previous? then re-use the state
-                        prevKey switch
-                        {
-                            (true, var pk)
-                                => (cmp.GetHashCode(pk) != cmp.GetHashCode(key) || !cmp.Equals(pk, key))
-                                // otherwise try & find state of the key
-                                && !TryGetState(key, out state),
-                            _ => true
-                        })
-                    {
+                    var haveState =
+                        // key same as the previous? then re-use the state
+                        prevKey is (true, var pk) && cmp.GetHashCode(pk) == cmp.GetHashCode(key) && cmp.Equals(pk, key)
+                        // otherwise try & find state of the key
+                        || TryGetState(key, out state);
+
+                    if (!haveState)
                         state = seedSelector(key);
-                    }
 
                     state = accumulator(state!, key, item);
 

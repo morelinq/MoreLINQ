@@ -102,15 +102,11 @@ namespace MoreLinq
                         var key = keySelector(item);
 
                         if (// key same as the previous? then re-use the index
-                            prevKey switch
-                            {
-                                var (some, pk)
-                                    when some => cmp.GetHashCode(pk) == cmp.GetHashCode(key)
-                                              && cmp.Equals(pk, key)
-                                              // otherwise try & find index of the key
-                                              || TryGetIndex(key, out index),
-                                _ => false
-                            })
+                            prevKey is (true, var pk)
+                                && cmp.GetHashCode(pk) == cmp.GetHashCode(key)
+                                && cmp.Equals(pk, key)
+                            // otherwise try & find index of the key
+                            || TryGetIndex(key, out index))
                         {
                             counts[index]++;
                         }
