@@ -94,5 +94,30 @@ namespace MoreLinq.Test
                 KeyValuePair.Create(3, @null),
                 KeyValuePair.Create(1, "foo"));
         }
+
+        [Test]
+        public void IndexBytDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => "ana",
+                                             () => "beatriz",
+                                             () => "carla",
+                                             () => "bob",
+                                             () => "davi",
+                                             () => throw new TestException(),
+                                             () => "angelo",
+                                             () => "carlos");
+
+            var result = source.IndexBy(x => x.First());
+
+            result.Take(5).AssertSequenceEqual(
+                KeyValuePair.Create(0, "ana"    ),
+                KeyValuePair.Create(0, "beatriz"),
+                KeyValuePair.Create(0, "carla"  ),
+                KeyValuePair.Create(1, "bob"    ),
+                KeyValuePair.Create(0, "davi"   ));
+
+            Assert.Throws<TestException>(() =>
+                result.ElementAt(5));
+        }
     }
 }
