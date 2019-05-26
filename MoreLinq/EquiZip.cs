@@ -42,7 +42,7 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
-        /// <exception>
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -88,7 +88,7 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
-        /// <exception>
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -138,7 +138,7 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
-        /// <exception>
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
