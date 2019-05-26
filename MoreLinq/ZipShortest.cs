@@ -47,9 +47,9 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// <para>
-        /// If the two input sequences are of different lengths, the result
-        /// sequence is terminated as soon as the shortest input sequence is
-        /// exhausted.</para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
@@ -96,7 +96,8 @@ namespace MoreLinq
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
@@ -149,7 +150,8 @@ namespace MoreLinq
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
