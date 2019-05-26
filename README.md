@@ -679,11 +679,11 @@ Creates a right-aligned sliding window over the source sequence of a given size.
 
 ### ZipLongest
 
-Returns a projection of tuples, where each tuple contains the N-th element
-from each of the argument sequences. If the input sequences are of different
-lengths then the result sequence will always be as long as the longest of
-input sequences. The default value of the each shorter sequence element type
-is used for padding.
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. The resulting sequence
+will always be as long as the longest of input sequences where the
+default value of each of the shorter sequence element types is used
+for padding.
 
 This method has 3 overloads.
 
