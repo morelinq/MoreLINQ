@@ -52,54 +52,45 @@ namespace MoreLinq.Test
         }
 
         [TestCaseSource(nameof(MoveSource))]
-        public void Move(int length, int fromIndex, int count, int toIndex)
+        public IEnumerable<int> Move(IEnumerable<int> source, int fromIndex, int count, int toIndex)
         {
-            var source = Enumerable.Range(0, length);
-
-            var exclude = source.Exclude(fromIndex, count);
-            var slice = source.Slice(fromIndex, count);
-            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
-
             using (var test = source.AsTestingSequence())
             {
-                var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EqualTo(expectations));
+                return test.Move(fromIndex, count, toIndex);
             }
         }
 
         public static IEnumerable<object> MoveSource()
         {
             const int length = 10;
-            return from index in Enumerable.Range(0, length)
+            var source = Enumerable.Range(0, length);
+
+            return from index in source
                    from count in Enumerable.Range(0, length + 1)
                    from tcd in new[]
                    {
-                       new TestCaseData(length, index, count, Math.Max(0, index - 1)),
-                       new TestCaseData(length, index, count, index + 1),
+                       CreateTestCaseData(source, index, count, Math.Max(0, index - 1)),
+                       CreateTestCaseData(source, index, count, index + 1),
                    }
                    select tcd;
         }
 
         [TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
-        public void MoveWithSequenceShorterThanToIndex(int length, int fromIndex, int count, int toIndex)
+        public IEnumerable<int> MoveWithSequenceShorterThanToIndex(IEnumerable<int> source, int fromIndex, int count, int toIndex)
         {
-            var source = Enumerable.Range(0, length);
-
-            var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
-
             using (var test = source.AsTestingSequence())
             {
-                var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EqualTo(expectations));
+                return test.Move(fromIndex, count, toIndex);
             }
         }
 
         public static IEnumerable<object> MoveWithSequenceShorterThanToIndexSource()
         {
             const int length = 10;
+            var source = Enumerable.Range(0, length);
 
             return Enumerable.Range(length, length + 5)
-                             .Select(toIndex => new TestCaseData(length, 5, 2, toIndex));
+                             .Select(toIndex => CreateTestCaseData(source, 5, 2, toIndex));
         }
 
         [Test]
@@ -118,6 +109,21 @@ namespace MoreLinq.Test
             var result = source.Move(5, 0, 999);
 
             Assert.That(source, Is.SameAs(result));
+        }
+
+        private static TestCaseData CreateTestCaseData(IEnumerable<int> source, int fromIndex, int count, int toIndex)
+        {
+            var exclude = source.Exclude(fromIndex, count);
+            var slice = source.Slice(fromIndex, count);
+            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
+
+            return new TestCaseData(source, fromIndex, count, toIndex)
+                    .Returns(expectations)
+                    .SetName($"source = [{string.Join(", ", source)}], " +
+                             $"fromIndex = {fromIndex}, " +
+                             $"count = {count}, " +
+                             $"toIndex = {toIndex}, " +
+                             $"expectations = [{string.Join(", ", expectations)}]");
         }
     }
 }
