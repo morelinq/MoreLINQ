@@ -23,8 +23,9 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
@@ -67,7 +68,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element  from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -116,7 +118,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
