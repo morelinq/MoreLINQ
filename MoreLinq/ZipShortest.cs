@@ -50,6 +50,7 @@ namespace MoreLinq
         /// If the input sequences are of different lengths, the result sequence
         /// is terminated as soon as the shortest input sequence is exhausted
         /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
