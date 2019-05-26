@@ -40,6 +40,9 @@ namespace MoreLinq
         /// A sequence that contains elements of the two input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// <exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -83,6 +86,9 @@ namespace MoreLinq
         /// A sequence that contains elements of the three input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// <exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -130,6 +136,9 @@ namespace MoreLinq
         /// A sequence that contains elements of the four input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// <exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
