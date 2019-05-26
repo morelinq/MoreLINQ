@@ -218,7 +218,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <DotNetCliToolReference Include="dotnet-t4-project-tool" Version="2.0.3" />
+    <DotNetCliToolReference Include="dotnet-t4-project-tool" Version="2.0.4" />
   </ItemGroup>
 
 </Project>
