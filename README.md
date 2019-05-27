@@ -212,8 +212,9 @@ This method has 2 overloads.
 
 ### EquiZip
 
-Returns a projection of tuples, where each tuple contains the N-th element
-from each of the argument sequences.
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. An exception is thrown
+if the input sequences are of different lengths.
 
 This method has 3 overloads.
 

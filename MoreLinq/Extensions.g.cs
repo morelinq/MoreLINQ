@@ -1014,7 +1014,8 @@ namespace MoreLinq.Extensions
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
@@ -1027,6 +1028,9 @@ namespace MoreLinq.Extensions
         /// A sequence that contains elements of the two input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -1037,11 +1041,7 @@ namespace MoreLinq.Extensions
         /// "2B", "3C", "4D" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the two input sequences are of different lengths then
-        /// <see cref="InvalidOperationException"/> is thrown.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
@@ -1052,7 +1052,8 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -1067,6 +1068,9 @@ namespace MoreLinq.Extensions
         /// A sequence that contains elements of the three input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -1078,10 +1082,7 @@ namespace MoreLinq.Extensions
         /// "2Bb", "3Cc", "4Dd" in turn.
         /// </example>
         /// <remarks>
-        /// <para>If the three input sequences are of different lengths then
-        /// <see cref="InvalidOperationException"/> is thrown.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
@@ -1092,7 +1093,8 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence</typeparam>
@@ -1109,6 +1111,9 @@ namespace MoreLinq.Extensions
         /// A sequence that contains elements of the four input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -1121,11 +1126,7 @@ namespace MoreLinq.Extensions
         /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the four input sequences are of different lengths then
-        /// <see cref="InvalidOperationException"/> is thrown.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
