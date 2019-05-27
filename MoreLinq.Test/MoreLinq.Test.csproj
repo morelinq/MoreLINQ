@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\bld\DotNetSdkMono.props" />
-
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
     <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;netcoreapp2.1;net451</TargetFrameworks>
@@ -31,6 +29,10 @@
 
   <ItemGroup>
     <PackageReference Include="Delegating" Version="1.1.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="NUnit" Version="3.6.1" />
     <PackageReference Include="NUnitLite" Version="3.6.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
