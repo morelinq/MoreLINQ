@@ -23,8 +23,9 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
@@ -46,9 +47,10 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// <para>
-        /// If the two input sequences are of different lengths, the result
-        /// sequence is terminated as soon as the shortest input sequence is
-        /// exhausted.</para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
@@ -67,7 +69,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element  from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -94,7 +97,8 @@ namespace MoreLinq
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
@@ -116,7 +120,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -146,7 +151,8 @@ namespace MoreLinq
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
