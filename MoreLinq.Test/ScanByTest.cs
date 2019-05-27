@@ -114,5 +114,30 @@ namespace MoreLinq.Test
                 KeyValuePair.Create((string)null, 3),
                 KeyValuePair.Create("foo"       , 1));
         }
+
+        [Test]
+        public void ScanByDoesNotIterateUnnecessaryElements()
+        {
+            var source = MoreEnumerable.From(() => "ana",
+                                             () => "beatriz",
+                                             () => "carla",
+                                             () => "bob",
+                                             () => "davi",
+                                             () => throw new TestException(),
+                                             () => "angelo",
+                                             () => "carlos");
+
+            var result = source.ScanBy(c => c.First(), k => -1, (i, k, e) => i + 1);
+
+            result.Take(5).AssertSequenceEqual(
+                KeyValuePair.Create('a', 0),
+                KeyValuePair.Create('b', 0),
+                KeyValuePair.Create('c', 0),
+                KeyValuePair.Create('b', 1),
+                KeyValuePair.Create('d', 0));
+
+            Assert.Throws<TestException>(() =>
+                result.ElementAt(5));
+        }
     }
 }
