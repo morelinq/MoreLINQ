@@ -93,9 +93,9 @@ locally using any HTTP server of static files, like
 
 ### Acquire
 
-Ensures that a source sequence of objects are all acquired successfully. If
-the acquisition of any one fails then those successfully acquired till that
-point are disposed
+Ensures that a source sequence of disposable objects are all acquired
+successfully. If the acquisition of any one fails then those successfully
+acquired till that point are disposed.
 
 ### AggregateRight
 
