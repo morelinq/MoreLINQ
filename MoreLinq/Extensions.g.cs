@@ -3525,6 +3525,25 @@ namespace MoreLinq.Extensions
     public static partial class PairwiseExtension
     {
         /// <summary>
+        /// Returns a sequence where each element in the source sequence is
+        /// paired with its predecessor, with the exception of the first
+        /// element which is only returned as the predecessor of the second
+        /// element.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(TSource, TSource)>
+            Pairwise<TSource>(this IEnumerable<TSource> source)             => MoreEnumerable.            Pairwise(source);
+
+        /// <summary>
         /// Returns a sequence resulting from applying a function to each
         /// element in the source sequence and its
         /// predecessor, with the exception of the first element which is
