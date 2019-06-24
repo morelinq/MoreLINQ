@@ -62,7 +62,7 @@ namespace MoreLinq.Test
             Assert.That(result.Average, Is.EqualTo(5.5));
             Assert.That(result.Min, Is.EqualTo(1));
             Assert.That(result.Max, Is.EqualTo(10));
-            result.UniqueLengths.AssertSequenceEqual(1, 2);
+            result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
             result.Items
                   .OrderBy(e => e.Num)
                   .AssertSequenceEqual(new { Num =  1, Str =  "1" },
