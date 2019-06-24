@@ -24,7 +24,7 @@ namespace MoreLinq.Reactive
     /// Provides a set of static methods for writing in-memory queries over observable sequences.
     /// </summary>
 
-    public static partial class Observable
+    static partial class Observable
     {
         /// <summary>
         /// Subscribes an element handler and a completion handler to an
