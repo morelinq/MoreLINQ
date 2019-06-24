@@ -38,6 +38,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult>(
             this IEnumerable<T> source,
@@ -81,6 +84,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult>(
             this IEnumerable<T> source,
@@ -130,6 +136,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult>(
             this IEnumerable<T> source,
@@ -185,6 +194,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult>(
             this IEnumerable<T> source,
@@ -246,6 +258,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult>(
             this IEnumerable<T> source,
@@ -313,6 +328,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult>(
             this IEnumerable<T> source,
@@ -386,6 +404,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult>(
             this IEnumerable<T> source,

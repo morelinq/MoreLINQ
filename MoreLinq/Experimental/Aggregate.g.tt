@@ -83,6 +83,9 @@ namespace MoreLinq.Experimental
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
         /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
 
         public static TResult Aggregate<T, <#= string.Join(", ", from x in o.Arguments select "TResult" + x.Number) #>, TResult>(
             this IEnumerable<T> source,
