@@ -48,6 +48,10 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
             Func<TResult1, TResult2, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
 
@@ -62,9 +66,11 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)));
+                GetAggregateResult(r2[0], nameof(aggregatorSelector2))
+            );
         }
 
         /// <summary>
@@ -95,6 +101,11 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
             Func<TResult1, TResult2, TResult3, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
             var r3 = new (bool, TResult3)[1];
@@ -111,10 +122,12 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3)));
+                GetAggregateResult(r3[0], nameof(aggregatorSelector3))
+            );
         }
 
         /// <summary>
@@ -148,6 +161,12 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult4>> aggregatorSelector4,
             Func<TResult1, TResult2, TResult3, TResult4, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
             var r3 = new (bool, TResult3)[1];
@@ -166,11 +185,13 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
                 GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
-                GetAggregateResult(r4[0], nameof(aggregatorSelector4)));
+                GetAggregateResult(r4[0], nameof(aggregatorSelector4))
+            );
         }
 
         /// <summary>
@@ -207,6 +228,13 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult5>> aggregatorSelector5,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
+            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
             var r3 = new (bool, TResult3)[1];
@@ -227,12 +255,14 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
                 GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
                 GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
-                GetAggregateResult(r5[0], nameof(aggregatorSelector5)));
+                GetAggregateResult(r5[0], nameof(aggregatorSelector5))
+            );
         }
 
         /// <summary>
@@ -272,6 +302,14 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult6>> aggregatorSelector6,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
+            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
+            if (aggregatorSelector6 == null) throw new ArgumentNullException(nameof(aggregatorSelector6));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
             var r3 = new (bool, TResult3)[1];
@@ -294,13 +332,15 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
                 GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
                 GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
                 GetAggregateResult(r5[0], nameof(aggregatorSelector5)),
-                GetAggregateResult(r6[0], nameof(aggregatorSelector6)));
+                GetAggregateResult(r6[0], nameof(aggregatorSelector6))
+            );
         }
 
         /// <summary>
@@ -343,6 +383,15 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult7>> aggregatorSelector7,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
+            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
+            if (aggregatorSelector6 == null) throw new ArgumentNullException(nameof(aggregatorSelector6));
+            if (aggregatorSelector7 == null) throw new ArgumentNullException(nameof(aggregatorSelector7));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
             var r3 = new (bool, TResult3)[1];
@@ -367,14 +416,16 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
                 GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
                 GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
                 GetAggregateResult(r5[0], nameof(aggregatorSelector5)),
                 GetAggregateResult(r6[0], nameof(aggregatorSelector6)),
-                GetAggregateResult(r7[0], nameof(aggregatorSelector7)));
+                GetAggregateResult(r7[0], nameof(aggregatorSelector7))
+            );
         }
 
         /// <summary>
@@ -420,6 +471,16 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult8>> aggregatorSelector8,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
+            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
+            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
+            if (aggregatorSelector6 == null) throw new ArgumentNullException(nameof(aggregatorSelector6));
+            if (aggregatorSelector7 == null) throw new ArgumentNullException(nameof(aggregatorSelector7));
+            if (aggregatorSelector8 == null) throw new ArgumentNullException(nameof(aggregatorSelector8));
+
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
             var r3 = new (bool, TResult3)[1];
@@ -446,7 +507,8 @@ namespace MoreLinq.Experimental
                 subject.OnCompleted();
             }
 
-            return resultSelector(
+            return resultSelector
+            (
                 GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
                 GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
@@ -454,7 +516,8 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r5[0], nameof(aggregatorSelector5)),
                 GetAggregateResult(r6[0], nameof(aggregatorSelector6)),
                 GetAggregateResult(r7[0], nameof(aggregatorSelector7)),
-                GetAggregateResult(r8[0], nameof(aggregatorSelector8)));
+                GetAggregateResult(r8[0], nameof(aggregatorSelector8))
+            );
         }
     }
 }
