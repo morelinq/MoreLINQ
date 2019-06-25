@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using NUnit.Framework;
     using Experimental;
@@ -28,7 +30,58 @@ namespace MoreLinq.Test
         // TODO add more tests
 
         [Test]
-        public void Seven()
+        public void Seven1()
+        {
+            var result =
+                Enumerable
+                    .Range(1, 10)
+                    .Shuffle()
+                    .Select(n => new { Num = n, Str = n.ToString(CultureInfo.InvariantCulture) })
+                    .Aggregate(
+                        0, (s, e) => s + e.Num,
+                        0, (s, e) => e.Num % 2 == 0 ? s + e.Num : s,
+                        0, (s, _) => s + 1,
+                        (int?)null, (s, e) => s is int n ? Math.Min(n, e.Num) : e.Num,
+                        (int?)null, (s, e) => s is int n ? Math.Max(n, e.Num) : e.Num,
+                        new HashSet<int>(), (s, e) => { s.Add(e.Str.Length); return s; },
+                        new List<(int Num, string Str)>(), (s, e) => { s.Add((e.Num, e.Str)); return s; },
+                        (sum, esum, count, min, max, lengths, items) => new
+                        {
+                            Sum           = sum,
+                            EvenSum       = esum,
+                            Count         = count,
+                            Average       = (double)sum / count,
+                            Min           = min is int mn ? mn : throw new InvalidOperationException(),
+                            Max           = max is int mx ? mx : throw new InvalidOperationException(),
+                            UniqueLengths = lengths,
+                            Items         = items,
+                        }
+                    );
+
+            Assert.That(result.Sum, Is.EqualTo(55));
+            Assert.That(result.EvenSum, Is.EqualTo(30));
+            Assert.That(result.Count, Is.EqualTo(10));
+            Assert.That(result.Average, Is.EqualTo(5.5));
+            Assert.That(result.Min, Is.EqualTo(1));
+            Assert.That(result.Max, Is.EqualTo(10));
+            result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
+            result.Items
+                  .Select(e => new { e.Num, e.Str })
+                  .OrderBy(e => e.Num)
+                  .AssertSequenceEqual(new { Num =  1, Str =  "1" },
+                                       new { Num =  2, Str =  "2" },
+                                       new { Num =  3, Str =  "3" },
+                                       new { Num =  4, Str =  "4" },
+                                       new { Num =  5, Str =  "5" },
+                                       new { Num =  6, Str =  "6" },
+                                       new { Num =  7, Str =  "7" },
+                                       new { Num =  8, Str =  "8" },
+                                       new { Num =  9, Str =  "9" },
+                                       new { Num = 10, Str = "10" });
+        }
+
+        [Test]
+        public void Seven2()
         {
             var result =
                 Enumerable
