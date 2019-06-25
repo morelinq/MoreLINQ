@@ -82,7 +82,8 @@ namespace MoreLinq.Extensions
             this IEnumerable<T> source,
             TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
-            Func<TAccumulate1, TAccumulate2, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, resultSelector);
         /// <summary>
         /// Applies three accumulators sequentially in a single pass over a
         /// sequence.
@@ -112,7 +113,8 @@ namespace MoreLinq.Extensions
             TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, resultSelector);
         /// <summary>
         /// Applies four accumulators sequentially in a single pass over a
         /// sequence.
@@ -146,7 +148,8 @@ namespace MoreLinq.Extensions
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, resultSelector);
         /// <summary>
         /// Applies five accumulators sequentially in a single pass over a
         /// sequence.
@@ -184,7 +187,8 @@ namespace MoreLinq.Extensions
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, resultSelector);
         /// <summary>
         /// Applies six accumulators sequentially in a single pass over a
         /// sequence.
@@ -226,7 +230,8 @@ namespace MoreLinq.Extensions
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, resultSelector);
         /// <summary>
         /// Applies seven accumulators sequentially in a single pass over a
         /// sequence.
@@ -272,7 +277,8 @@ namespace MoreLinq.Extensions
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
             TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, seed7, accumulator7, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, seed7, accumulator7, resultSelector);
         /// <summary>
         /// Applies eight accumulators sequentially in a single pass over a
         /// sequence.
@@ -322,7 +328,8 @@ namespace MoreLinq.Extensions
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
             TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
             TAccumulate8 seed8, Func<TAccumulate8, T, TAccumulate8> accumulator8,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, seed7, accumulator7, seed8, accumulator8, resultSelector);
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector)
+            => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, seed7, accumulator7, seed8, accumulator8, resultSelector);
 
     }
 

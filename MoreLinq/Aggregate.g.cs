@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -48,11 +47,24 @@ namespace MoreLinq
             this IEnumerable<T> source,
             TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
-            Func<TAccumulate1, TAccumulate2, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e)),
-                s => resultSelector(s.Item1, s.Item2));
+            Func<TAccumulate1, TAccumulate2, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+            }
+
+            return resultSelector(a1, a2);
+        }
     }
 }
 
@@ -120,7 +132,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -153,11 +164,27 @@ namespace MoreLinq
             TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2, seed3),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e)),
-                s => resultSelector(s.Item1, s.Item2, s.Item3));
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+            var a3 = seed3;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+                a3 = accumulator3(a3, item);
+            }
+
+            return resultSelector(a1, a2, a3);
+        }
     }
 }
 
@@ -232,7 +259,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -269,11 +295,30 @@ namespace MoreLinq
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2, seed3, seed4),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e)),
-                s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4));
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+            var a3 = seed3;
+            var a4 = seed4;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+                a3 = accumulator3(a3, item);
+                a4 = accumulator4(a4, item);
+            }
+
+            return resultSelector(a1, a2, a3, a4);
+        }
     }
 }
 
@@ -355,7 +400,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -396,11 +440,33 @@ namespace MoreLinq
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2, seed3, seed4, seed5),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e)),
-                s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5));
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
+            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+            var a3 = seed3;
+            var a4 = seed4;
+            var a5 = seed5;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+                a3 = accumulator3(a3, item);
+                a4 = accumulator4(a4, item);
+                a5 = accumulator5(a5, item);
+            }
+
+            return resultSelector(a1, a2, a3, a4, a5);
+        }
     }
 }
 
@@ -489,7 +555,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -534,11 +599,36 @@ namespace MoreLinq
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2, seed3, seed4, seed5, seed6),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e)),
-                s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5, s.Item6));
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
+            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
+            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+            var a3 = seed3;
+            var a4 = seed4;
+            var a5 = seed5;
+            var a6 = seed6;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+                a3 = accumulator3(a3, item);
+                a4 = accumulator4(a4, item);
+                a5 = accumulator5(a5, item);
+                a6 = accumulator6(a6, item);
+            }
+
+            return resultSelector(a1, a2, a3, a4, a5, a6);
+        }
     }
 }
 
@@ -634,7 +724,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -683,11 +772,39 @@ namespace MoreLinq
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
             TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2, seed3, seed4, seed5, seed6, seed7),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e), accumulator7(s.Item7, e)),
-                s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5, s.Item6, s.Item7));
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
+            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
+            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
+            if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+            var a3 = seed3;
+            var a4 = seed4;
+            var a5 = seed5;
+            var a6 = seed6;
+            var a7 = seed7;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+                a3 = accumulator3(a3, item);
+                a4 = accumulator4(a4, item);
+                a5 = accumulator5(a5, item);
+                a6 = accumulator6(a6, item);
+                a7 = accumulator7(a7, item);
+            }
+
+            return resultSelector(a1, a2, a3, a4, a5, a6, a7);
+        }
     }
 }
 
@@ -790,7 +907,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -843,11 +959,42 @@ namespace MoreLinq
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
             TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
             TAccumulate8 seed8, Func<TAccumulate8, T, TAccumulate8> accumulator8,
-            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector) =>
-            source.Aggregate(
-                (seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8),
-                (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e), accumulator7(s.Item7, e), accumulator8(s.Item8, e)),
-                s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5, s.Item6, s.Item7, s.Item8));
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
+            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
+            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
+            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
+            if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
+            if (accumulator8 == null) throw new ArgumentNullException(nameof(accumulator8));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            var a1 = seed1;
+            var a2 = seed2;
+            var a3 = seed3;
+            var a4 = seed4;
+            var a5 = seed5;
+            var a6 = seed6;
+            var a7 = seed7;
+            var a8 = seed8;
+
+            foreach (var item in source)
+            {
+                a1 = accumulator1(a1, item);
+                a2 = accumulator2(a2, item);
+                a3 = accumulator3(a3, item);
+                a4 = accumulator4(a4, item);
+                a5 = accumulator5(a5, item);
+                a6 = accumulator6(a6, item);
+                a7 = accumulator7(a7, item);
+                a8 = accumulator8(a8, item);
+            }
+
+            return resultSelector(a1, a2, a3, a4, a5, a6, a7, a8);
+        }
     }
 }
 
