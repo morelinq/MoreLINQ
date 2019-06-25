@@ -28,8 +28,8 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -44,11 +44,11 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            Func<TState1, TState2, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            Func<TAccumulate1, TAccumulate2, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e)),
@@ -73,8 +73,8 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult2">The type of the result of the second accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -85,21 +85,21 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
             Func<TResult1, TResult2, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -109,8 +109,8 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2))
             );
         }
     }
@@ -129,9 +129,9 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
-        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate3">The type of third accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -148,12 +148,12 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TState3, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            TState3 seed3, Func<TState3, T, TState3> accumulator3,
-            Func<TState1, TState2, TState3, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2, seed3),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e)),
@@ -179,9 +179,9 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult3">The type of the result of the third accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
-        /// <param name="aggregatorSelector3">The third accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector3">The third accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -192,15 +192,15 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
-            Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
+            Func<IObservable<T>, IObservable<TResult3>> accumulatorSelector3,
             Func<TResult1, TResult2, TResult3, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
-            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
+            if (accumulatorSelector3 == null) throw new ArgumentNullException(nameof(accumulatorSelector3));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -208,9 +208,9 @@ namespace MoreLinq.Experimental
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
-            using (SubscribeSingle(aggregatorSelector3, subject, r3, nameof(aggregatorSelector3)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector3, subject, r3, nameof(accumulatorSelector3)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -220,9 +220,9 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2)),
+                GetAggregateResult(r3[0], nameof(accumulatorSelector3))
             );
         }
     }
@@ -241,10 +241,10 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
-        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
-        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate3">The type of third accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate4">The type of fourth accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -263,13 +263,13 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            TState3 seed3, Func<TState3, T, TState3> accumulator3,
-            TState4 seed4, Func<TState4, T, TState4> accumulator4,
-            Func<TState1, TState2, TState3, TState4, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
+            TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2, seed3, seed4),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e)),
@@ -296,10 +296,10 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult4">The type of the result of the fourth accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
-        /// <param name="aggregatorSelector3">The third accumulator.</param>
-        /// <param name="aggregatorSelector4">The fourth accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector3">The third accumulator.</param>
+        /// <param name="accumulatorSelector4">The fourth accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -310,17 +310,17 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
-            Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
-            Func<IObservable<T>, IObservable<TResult4>> aggregatorSelector4,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
+            Func<IObservable<T>, IObservable<TResult3>> accumulatorSelector3,
+            Func<IObservable<T>, IObservable<TResult4>> accumulatorSelector4,
             Func<TResult1, TResult2, TResult3, TResult4, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
-            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
-            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
+            if (accumulatorSelector3 == null) throw new ArgumentNullException(nameof(accumulatorSelector3));
+            if (accumulatorSelector4 == null) throw new ArgumentNullException(nameof(accumulatorSelector4));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -329,10 +329,10 @@ namespace MoreLinq.Experimental
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
-            using (SubscribeSingle(aggregatorSelector3, subject, r3, nameof(aggregatorSelector3)))
-            using (SubscribeSingle(aggregatorSelector4, subject, r4, nameof(aggregatorSelector4)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector3, subject, r3, nameof(accumulatorSelector3)))
+            using (SubscribeSingle(accumulatorSelector4, subject, r4, nameof(accumulatorSelector4)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -342,10 +342,10 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
-                GetAggregateResult(r4[0], nameof(aggregatorSelector4))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2)),
+                GetAggregateResult(r3[0], nameof(accumulatorSelector3)),
+                GetAggregateResult(r4[0], nameof(accumulatorSelector4))
             );
         }
     }
@@ -364,11 +364,11 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
-        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
-        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
-        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate3">The type of third accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate4">The type of fourth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate5">The type of fifth accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -389,14 +389,14 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            TState3 seed3, Func<TState3, T, TState3> accumulator3,
-            TState4 seed4, Func<TState4, T, TState4> accumulator4,
-            TState5 seed5, Func<TState5, T, TState5> accumulator5,
-            Func<TState1, TState2, TState3, TState4, TState5, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
+            TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
+            TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2, seed3, seed4, seed5),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e)),
@@ -424,11 +424,11 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult5">The type of the result of the fifth accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
-        /// <param name="aggregatorSelector3">The third accumulator.</param>
-        /// <param name="aggregatorSelector4">The fourth accumulator.</param>
-        /// <param name="aggregatorSelector5">The fifth accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector3">The third accumulator.</param>
+        /// <param name="accumulatorSelector4">The fourth accumulator.</param>
+        /// <param name="accumulatorSelector5">The fifth accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -439,19 +439,19 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
-            Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
-            Func<IObservable<T>, IObservable<TResult4>> aggregatorSelector4,
-            Func<IObservable<T>, IObservable<TResult5>> aggregatorSelector5,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
+            Func<IObservable<T>, IObservable<TResult3>> accumulatorSelector3,
+            Func<IObservable<T>, IObservable<TResult4>> accumulatorSelector4,
+            Func<IObservable<T>, IObservable<TResult5>> accumulatorSelector5,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
-            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
-            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
-            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
+            if (accumulatorSelector3 == null) throw new ArgumentNullException(nameof(accumulatorSelector3));
+            if (accumulatorSelector4 == null) throw new ArgumentNullException(nameof(accumulatorSelector4));
+            if (accumulatorSelector5 == null) throw new ArgumentNullException(nameof(accumulatorSelector5));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -461,11 +461,11 @@ namespace MoreLinq.Experimental
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
-            using (SubscribeSingle(aggregatorSelector3, subject, r3, nameof(aggregatorSelector3)))
-            using (SubscribeSingle(aggregatorSelector4, subject, r4, nameof(aggregatorSelector4)))
-            using (SubscribeSingle(aggregatorSelector5, subject, r5, nameof(aggregatorSelector5)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector3, subject, r3, nameof(accumulatorSelector3)))
+            using (SubscribeSingle(accumulatorSelector4, subject, r4, nameof(accumulatorSelector4)))
+            using (SubscribeSingle(accumulatorSelector5, subject, r5, nameof(accumulatorSelector5)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -475,11 +475,11 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
-                GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
-                GetAggregateResult(r5[0], nameof(aggregatorSelector5))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2)),
+                GetAggregateResult(r3[0], nameof(accumulatorSelector3)),
+                GetAggregateResult(r4[0], nameof(accumulatorSelector4)),
+                GetAggregateResult(r5[0], nameof(accumulatorSelector5))
             );
         }
     }
@@ -498,12 +498,12 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
-        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
-        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
-        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
-        /// <typeparam name="TState6">The type of the state of the sixth accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate3">The type of third accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate4">The type of fourth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate5">The type of fifth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate6">The type of sixth accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -526,15 +526,15 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TState6, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            TState3 seed3, Func<TState3, T, TState3> accumulator3,
-            TState4 seed4, Func<TState4, T, TState4> accumulator4,
-            TState5 seed5, Func<TState5, T, TState5> accumulator5,
-            TState6 seed6, Func<TState6, T, TState6> accumulator6,
-            Func<TState1, TState2, TState3, TState4, TState5, TState6, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
+            TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
+            TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
+            TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2, seed3, seed4, seed5, seed6),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e)),
@@ -563,12 +563,12 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult6">The type of the result of the sixth accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
-        /// <param name="aggregatorSelector3">The third accumulator.</param>
-        /// <param name="aggregatorSelector4">The fourth accumulator.</param>
-        /// <param name="aggregatorSelector5">The fifth accumulator.</param>
-        /// <param name="aggregatorSelector6">The sixth accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector3">The third accumulator.</param>
+        /// <param name="accumulatorSelector4">The fourth accumulator.</param>
+        /// <param name="accumulatorSelector5">The fifth accumulator.</param>
+        /// <param name="accumulatorSelector6">The sixth accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -579,21 +579,21 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
-            Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
-            Func<IObservable<T>, IObservable<TResult4>> aggregatorSelector4,
-            Func<IObservable<T>, IObservable<TResult5>> aggregatorSelector5,
-            Func<IObservable<T>, IObservable<TResult6>> aggregatorSelector6,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
+            Func<IObservable<T>, IObservable<TResult3>> accumulatorSelector3,
+            Func<IObservable<T>, IObservable<TResult4>> accumulatorSelector4,
+            Func<IObservable<T>, IObservable<TResult5>> accumulatorSelector5,
+            Func<IObservable<T>, IObservable<TResult6>> accumulatorSelector6,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
-            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
-            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
-            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
-            if (aggregatorSelector6 == null) throw new ArgumentNullException(nameof(aggregatorSelector6));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
+            if (accumulatorSelector3 == null) throw new ArgumentNullException(nameof(accumulatorSelector3));
+            if (accumulatorSelector4 == null) throw new ArgumentNullException(nameof(accumulatorSelector4));
+            if (accumulatorSelector5 == null) throw new ArgumentNullException(nameof(accumulatorSelector5));
+            if (accumulatorSelector6 == null) throw new ArgumentNullException(nameof(accumulatorSelector6));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -604,12 +604,12 @@ namespace MoreLinq.Experimental
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
-            using (SubscribeSingle(aggregatorSelector3, subject, r3, nameof(aggregatorSelector3)))
-            using (SubscribeSingle(aggregatorSelector4, subject, r4, nameof(aggregatorSelector4)))
-            using (SubscribeSingle(aggregatorSelector5, subject, r5, nameof(aggregatorSelector5)))
-            using (SubscribeSingle(aggregatorSelector6, subject, r6, nameof(aggregatorSelector6)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector3, subject, r3, nameof(accumulatorSelector3)))
+            using (SubscribeSingle(accumulatorSelector4, subject, r4, nameof(accumulatorSelector4)))
+            using (SubscribeSingle(accumulatorSelector5, subject, r5, nameof(accumulatorSelector5)))
+            using (SubscribeSingle(accumulatorSelector6, subject, r6, nameof(accumulatorSelector6)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -619,12 +619,12 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
-                GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
-                GetAggregateResult(r5[0], nameof(aggregatorSelector5)),
-                GetAggregateResult(r6[0], nameof(aggregatorSelector6))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2)),
+                GetAggregateResult(r3[0], nameof(accumulatorSelector3)),
+                GetAggregateResult(r4[0], nameof(accumulatorSelector4)),
+                GetAggregateResult(r5[0], nameof(accumulatorSelector5)),
+                GetAggregateResult(r6[0], nameof(accumulatorSelector6))
             );
         }
     }
@@ -643,13 +643,13 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
-        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
-        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
-        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
-        /// <typeparam name="TState6">The type of the state of the sixth accumulator.</typeparam>
-        /// <typeparam name="TState7">The type of the state of the seventh accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate3">The type of third accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate4">The type of fourth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate5">The type of fifth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate6">The type of sixth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate7">The type of seventh accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -674,16 +674,16 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TState6, TState7, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            TState3 seed3, Func<TState3, T, TState3> accumulator3,
-            TState4 seed4, Func<TState4, T, TState4> accumulator4,
-            TState5 seed5, Func<TState5, T, TState5> accumulator5,
-            TState6 seed6, Func<TState6, T, TState6> accumulator6,
-            TState7 seed7, Func<TState7, T, TState7> accumulator7,
-            Func<TState1, TState2, TState3, TState4, TState5, TState6, TState7, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
+            TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
+            TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
+            TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
+            TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2, seed3, seed4, seed5, seed6, seed7),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e), accumulator7(s.Item7, e)),
@@ -713,13 +713,13 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult7">The type of the result of the seventh accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
-        /// <param name="aggregatorSelector3">The third accumulator.</param>
-        /// <param name="aggregatorSelector4">The fourth accumulator.</param>
-        /// <param name="aggregatorSelector5">The fifth accumulator.</param>
-        /// <param name="aggregatorSelector6">The sixth accumulator.</param>
-        /// <param name="aggregatorSelector7">The seventh accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector3">The third accumulator.</param>
+        /// <param name="accumulatorSelector4">The fourth accumulator.</param>
+        /// <param name="accumulatorSelector5">The fifth accumulator.</param>
+        /// <param name="accumulatorSelector6">The sixth accumulator.</param>
+        /// <param name="accumulatorSelector7">The seventh accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -730,23 +730,23 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
-            Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
-            Func<IObservable<T>, IObservable<TResult4>> aggregatorSelector4,
-            Func<IObservable<T>, IObservable<TResult5>> aggregatorSelector5,
-            Func<IObservable<T>, IObservable<TResult6>> aggregatorSelector6,
-            Func<IObservable<T>, IObservable<TResult7>> aggregatorSelector7,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
+            Func<IObservable<T>, IObservable<TResult3>> accumulatorSelector3,
+            Func<IObservable<T>, IObservable<TResult4>> accumulatorSelector4,
+            Func<IObservable<T>, IObservable<TResult5>> accumulatorSelector5,
+            Func<IObservable<T>, IObservable<TResult6>> accumulatorSelector6,
+            Func<IObservable<T>, IObservable<TResult7>> accumulatorSelector7,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
-            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
-            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
-            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
-            if (aggregatorSelector6 == null) throw new ArgumentNullException(nameof(aggregatorSelector6));
-            if (aggregatorSelector7 == null) throw new ArgumentNullException(nameof(aggregatorSelector7));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
+            if (accumulatorSelector3 == null) throw new ArgumentNullException(nameof(accumulatorSelector3));
+            if (accumulatorSelector4 == null) throw new ArgumentNullException(nameof(accumulatorSelector4));
+            if (accumulatorSelector5 == null) throw new ArgumentNullException(nameof(accumulatorSelector5));
+            if (accumulatorSelector6 == null) throw new ArgumentNullException(nameof(accumulatorSelector6));
+            if (accumulatorSelector7 == null) throw new ArgumentNullException(nameof(accumulatorSelector7));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -758,13 +758,13 @@ namespace MoreLinq.Experimental
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
-            using (SubscribeSingle(aggregatorSelector3, subject, r3, nameof(aggregatorSelector3)))
-            using (SubscribeSingle(aggregatorSelector4, subject, r4, nameof(aggregatorSelector4)))
-            using (SubscribeSingle(aggregatorSelector5, subject, r5, nameof(aggregatorSelector5)))
-            using (SubscribeSingle(aggregatorSelector6, subject, r6, nameof(aggregatorSelector6)))
-            using (SubscribeSingle(aggregatorSelector7, subject, r7, nameof(aggregatorSelector7)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector3, subject, r3, nameof(accumulatorSelector3)))
+            using (SubscribeSingle(accumulatorSelector4, subject, r4, nameof(accumulatorSelector4)))
+            using (SubscribeSingle(accumulatorSelector5, subject, r5, nameof(accumulatorSelector5)))
+            using (SubscribeSingle(accumulatorSelector6, subject, r6, nameof(accumulatorSelector6)))
+            using (SubscribeSingle(accumulatorSelector7, subject, r7, nameof(accumulatorSelector7)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -774,13 +774,13 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
-                GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
-                GetAggregateResult(r5[0], nameof(aggregatorSelector5)),
-                GetAggregateResult(r6[0], nameof(aggregatorSelector6)),
-                GetAggregateResult(r7[0], nameof(aggregatorSelector7))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2)),
+                GetAggregateResult(r3[0], nameof(accumulatorSelector3)),
+                GetAggregateResult(r4[0], nameof(accumulatorSelector4)),
+                GetAggregateResult(r5[0], nameof(accumulatorSelector5)),
+                GetAggregateResult(r6[0], nameof(accumulatorSelector6)),
+                GetAggregateResult(r7[0], nameof(accumulatorSelector7))
             );
         }
     }
@@ -799,14 +799,14 @@ namespace MoreLinq
         /// sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
-        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
-        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
-        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
-        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
-        /// <typeparam name="TState6">The type of the state of the sixth accumulator.</typeparam>
-        /// <typeparam name="TState7">The type of the state of the seventh accumulator.</typeparam>
-        /// <typeparam name="TState8">The type of the state of the eighth accumulator.</typeparam>
+        /// <typeparam name="TAccumulate1">The type of first accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate2">The type of second accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate3">The type of third accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate4">The type of fourth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate5">The type of fifth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate6">The type of sixth accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate7">The type of seventh accumulator value.</typeparam>
+        /// <typeparam name="TAccumulate8">The type of eighth accumulator value.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
         /// <param name="seed1">The seed value for the first accumulator.</param>
@@ -833,17 +833,17 @@ namespace MoreLinq
         /// This operator executes immediately.
         /// </remarks>
 
-        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TState6, TState7, TState8, TResult>(
+        public static TResult Aggregate<T, TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult>(
             this IEnumerable<T> source,
-            TState1 seed1, Func<TState1, T, TState1> accumulator1,
-            TState2 seed2, Func<TState2, T, TState2> accumulator2,
-            TState3 seed3, Func<TState3, T, TState3> accumulator3,
-            TState4 seed4, Func<TState4, T, TState4> accumulator4,
-            TState5 seed5, Func<TState5, T, TState5> accumulator5,
-            TState6 seed6, Func<TState6, T, TState6> accumulator6,
-            TState7 seed7, Func<TState7, T, TState7> accumulator7,
-            TState8 seed8, Func<TState8, T, TState8> accumulator8,
-            Func<TState1, TState2, TState3, TState4, TState5, TState6, TState7, TState8, TResult> resultSelector) =>
+            TAccumulate1 seed1, Func<TAccumulate1, T, TAccumulate1> accumulator1,
+            TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
+            TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
+            TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
+            TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
+            TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
+            TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
+            TAccumulate8 seed8, Func<TAccumulate8, T, TAccumulate8> accumulator8,
+            Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector) =>
             source.Aggregate(
                 (seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e), accumulator7(s.Item7, e), accumulator8(s.Item8, e)),
@@ -874,14 +874,14 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TResult8">The type of the result of the eighth accumulator.</typeparam>
         /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="aggregatorSelector1">The first accumulator.</param>
-        /// <param name="aggregatorSelector2">The second accumulator.</param>
-        /// <param name="aggregatorSelector3">The third accumulator.</param>
-        /// <param name="aggregatorSelector4">The fourth accumulator.</param>
-        /// <param name="aggregatorSelector5">The fifth accumulator.</param>
-        /// <param name="aggregatorSelector6">The sixth accumulator.</param>
-        /// <param name="aggregatorSelector7">The seventh accumulator.</param>
-        /// <param name="aggregatorSelector8">The eighth accumulator.</param>
+        /// <param name="accumulatorSelector1">The first accumulator.</param>
+        /// <param name="accumulatorSelector2">The second accumulator.</param>
+        /// <param name="accumulatorSelector3">The third accumulator.</param>
+        /// <param name="accumulatorSelector4">The fourth accumulator.</param>
+        /// <param name="accumulatorSelector5">The fifth accumulator.</param>
+        /// <param name="accumulatorSelector6">The sixth accumulator.</param>
+        /// <param name="accumulatorSelector7">The seventh accumulator.</param>
+        /// <param name="accumulatorSelector8">The eighth accumulator.</param>
         /// <param name="resultSelector">
         /// A function that projects a single result given the result of each
         /// accumulator.</param>
@@ -892,25 +892,25 @@ namespace MoreLinq.Experimental
 
         public static TResult Aggregate<T, TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult>(
             this IEnumerable<T> source,
-            Func<IObservable<T>, IObservable<TResult1>> aggregatorSelector1,
-            Func<IObservable<T>, IObservable<TResult2>> aggregatorSelector2,
-            Func<IObservable<T>, IObservable<TResult3>> aggregatorSelector3,
-            Func<IObservable<T>, IObservable<TResult4>> aggregatorSelector4,
-            Func<IObservable<T>, IObservable<TResult5>> aggregatorSelector5,
-            Func<IObservable<T>, IObservable<TResult6>> aggregatorSelector6,
-            Func<IObservable<T>, IObservable<TResult7>> aggregatorSelector7,
-            Func<IObservable<T>, IObservable<TResult8>> aggregatorSelector8,
+            Func<IObservable<T>, IObservable<TResult1>> accumulatorSelector1,
+            Func<IObservable<T>, IObservable<TResult2>> accumulatorSelector2,
+            Func<IObservable<T>, IObservable<TResult3>> accumulatorSelector3,
+            Func<IObservable<T>, IObservable<TResult4>> accumulatorSelector4,
+            Func<IObservable<T>, IObservable<TResult5>> accumulatorSelector5,
+            Func<IObservable<T>, IObservable<TResult6>> accumulatorSelector6,
+            Func<IObservable<T>, IObservable<TResult7>> accumulatorSelector7,
+            Func<IObservable<T>, IObservable<TResult8>> accumulatorSelector8,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (aggregatorSelector1 == null) throw new ArgumentNullException(nameof(aggregatorSelector1));
-            if (aggregatorSelector2 == null) throw new ArgumentNullException(nameof(aggregatorSelector2));
-            if (aggregatorSelector3 == null) throw new ArgumentNullException(nameof(aggregatorSelector3));
-            if (aggregatorSelector4 == null) throw new ArgumentNullException(nameof(aggregatorSelector4));
-            if (aggregatorSelector5 == null) throw new ArgumentNullException(nameof(aggregatorSelector5));
-            if (aggregatorSelector6 == null) throw new ArgumentNullException(nameof(aggregatorSelector6));
-            if (aggregatorSelector7 == null) throw new ArgumentNullException(nameof(aggregatorSelector7));
-            if (aggregatorSelector8 == null) throw new ArgumentNullException(nameof(aggregatorSelector8));
+            if (accumulatorSelector1 == null) throw new ArgumentNullException(nameof(accumulatorSelector1));
+            if (accumulatorSelector2 == null) throw new ArgumentNullException(nameof(accumulatorSelector2));
+            if (accumulatorSelector3 == null) throw new ArgumentNullException(nameof(accumulatorSelector3));
+            if (accumulatorSelector4 == null) throw new ArgumentNullException(nameof(accumulatorSelector4));
+            if (accumulatorSelector5 == null) throw new ArgumentNullException(nameof(accumulatorSelector5));
+            if (accumulatorSelector6 == null) throw new ArgumentNullException(nameof(accumulatorSelector6));
+            if (accumulatorSelector7 == null) throw new ArgumentNullException(nameof(accumulatorSelector7));
+            if (accumulatorSelector8 == null) throw new ArgumentNullException(nameof(accumulatorSelector8));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -923,14 +923,14 @@ namespace MoreLinq.Experimental
 
             var subject = new Subject<T>();
 
-            using (SubscribeSingle(aggregatorSelector1, subject, r1, nameof(aggregatorSelector1)))
-            using (SubscribeSingle(aggregatorSelector2, subject, r2, nameof(aggregatorSelector2)))
-            using (SubscribeSingle(aggregatorSelector3, subject, r3, nameof(aggregatorSelector3)))
-            using (SubscribeSingle(aggregatorSelector4, subject, r4, nameof(aggregatorSelector4)))
-            using (SubscribeSingle(aggregatorSelector5, subject, r5, nameof(aggregatorSelector5)))
-            using (SubscribeSingle(aggregatorSelector6, subject, r6, nameof(aggregatorSelector6)))
-            using (SubscribeSingle(aggregatorSelector7, subject, r7, nameof(aggregatorSelector7)))
-            using (SubscribeSingle(aggregatorSelector8, subject, r8, nameof(aggregatorSelector8)))
+            using (SubscribeSingle(accumulatorSelector1, subject, r1, nameof(accumulatorSelector1)))
+            using (SubscribeSingle(accumulatorSelector2, subject, r2, nameof(accumulatorSelector2)))
+            using (SubscribeSingle(accumulatorSelector3, subject, r3, nameof(accumulatorSelector3)))
+            using (SubscribeSingle(accumulatorSelector4, subject, r4, nameof(accumulatorSelector4)))
+            using (SubscribeSingle(accumulatorSelector5, subject, r5, nameof(accumulatorSelector5)))
+            using (SubscribeSingle(accumulatorSelector6, subject, r6, nameof(accumulatorSelector6)))
+            using (SubscribeSingle(accumulatorSelector7, subject, r7, nameof(accumulatorSelector7)))
+            using (SubscribeSingle(accumulatorSelector8, subject, r8, nameof(accumulatorSelector8)))
             {
                 foreach (var item in source)
                     subject.OnNext(item);
@@ -940,14 +940,14 @@ namespace MoreLinq.Experimental
 
             return resultSelector
             (
-                GetAggregateResult(r1[0], nameof(aggregatorSelector1)),
-                GetAggregateResult(r2[0], nameof(aggregatorSelector2)),
-                GetAggregateResult(r3[0], nameof(aggregatorSelector3)),
-                GetAggregateResult(r4[0], nameof(aggregatorSelector4)),
-                GetAggregateResult(r5[0], nameof(aggregatorSelector5)),
-                GetAggregateResult(r6[0], nameof(aggregatorSelector6)),
-                GetAggregateResult(r7[0], nameof(aggregatorSelector7)),
-                GetAggregateResult(r8[0], nameof(aggregatorSelector8))
+                GetAggregateResult(r1[0], nameof(accumulatorSelector1)),
+                GetAggregateResult(r2[0], nameof(accumulatorSelector2)),
+                GetAggregateResult(r3[0], nameof(accumulatorSelector3)),
+                GetAggregateResult(r4[0], nameof(accumulatorSelector4)),
+                GetAggregateResult(r5[0], nameof(accumulatorSelector5)),
+                GetAggregateResult(r6[0], nameof(accumulatorSelector6)),
+                GetAggregateResult(r7[0], nameof(accumulatorSelector7)),
+                GetAggregateResult(r8[0], nameof(accumulatorSelector8))
             );
         }
     }
