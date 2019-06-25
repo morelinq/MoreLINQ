@@ -58,12 +58,12 @@ namespace MoreLinq.Test
                         }
                     );
 
-            Assert.That(result.Sum, Is.EqualTo(55));
+            Assert.That(result.Sum    , Is.EqualTo(55));
             Assert.That(result.EvenSum, Is.EqualTo(30));
-            Assert.That(result.Count, Is.EqualTo(10));
+            Assert.That(result.Count  , Is.EqualTo(10));
             Assert.That(result.Average, Is.EqualTo(5.5));
-            Assert.That(result.Min, Is.EqualTo(1));
-            Assert.That(result.Max, Is.EqualTo(10));
+            Assert.That(result.Min    , Is.EqualTo(1));
+            Assert.That(result.Max    , Is.EqualTo(10));
             result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
             result.Items
                   .Select(e => new { e.Num, e.Str })
@@ -109,12 +109,12 @@ namespace MoreLinq.Test
                         }
                     );
 
-            Assert.That(result.Sum, Is.EqualTo(55));
+            Assert.That(result.Sum    , Is.EqualTo(55));
             Assert.That(result.EvenSum, Is.EqualTo(30));
-            Assert.That(result.Count, Is.EqualTo(10));
+            Assert.That(result.Count  , Is.EqualTo(10));
             Assert.That(result.Average, Is.EqualTo(5.5));
-            Assert.That(result.Min, Is.EqualTo(1));
-            Assert.That(result.Max, Is.EqualTo(10));
+            Assert.That(result.Min    , Is.EqualTo(1));
+            Assert.That(result.Max    , Is.EqualTo(10));
             result.UniqueLengths.OrderBy(n => n).AssertSequenceEqual(1, 2);
             result.Items
                   .OrderBy(e => e.Num)
