@@ -104,6 +104,7 @@ namespace MoreLinq.Experimental
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
             if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -228,6 +229,7 @@ namespace MoreLinq.Experimental
             if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
             if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
             if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -366,6 +368,7 @@ namespace MoreLinq.Experimental
             if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
             if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
             if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -518,6 +521,7 @@ namespace MoreLinq.Experimental
             if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
             if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
             if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -684,6 +688,7 @@ namespace MoreLinq.Experimental
             if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
             if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
             if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -864,6 +869,7 @@ namespace MoreLinq.Experimental
             if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
             if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
             if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -1058,6 +1064,7 @@ namespace MoreLinq.Experimental
             if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
             if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
             if (accumulator8 == null) throw new ArgumentNullException(nameof(accumulator8));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
