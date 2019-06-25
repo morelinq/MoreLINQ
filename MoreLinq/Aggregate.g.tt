@@ -20,16 +20,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #endregion
-
-namespace MoreLinq.Experimental
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Reactive;
-
-    static partial class ExperimentalEnumerable
-    {<#
+<#
     var overloads =
         from args in new[]
         {
@@ -65,8 +56,17 @@ namespace MoreLinq.Experimental
         };
 
     foreach (var o in overloads)
-    { #>
+    {
+#>
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies <#= o.Arity #> accumulators sequentially in a single pass over a
         /// sequence.
@@ -99,7 +99,17 @@ namespace MoreLinq.Experimental
                 (<#= string.Join(", ", from x in o.Arguments select "seed" + x.Number) #>),
                 (s, e) => (<#= string.Join(", ", from x in o.Arguments select "accumulator" + x.Number + "(s.Item" + x.Number + ", e)") #>),
                 s => resultSelector(<#= string.Join(", ", from x in o.Arguments select "s.Item" + x.Number) #>));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies <#= o.Arity #> accumulators sequentially in a single pass over a
         /// sequence.
@@ -156,6 +166,6 @@ namespace MoreLinq.Experimental
 <#      } #>
             );
         }
-<#  } #>
     }
 }
+<#  } #>

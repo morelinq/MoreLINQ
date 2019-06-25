@@ -149,6 +149,10 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    <None Update="Aggregate.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Aggregate.g.cs</LastGenOutput>
+    </None>
     <None Update="Cartesian.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
@@ -198,6 +202,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Aggregate.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Aggregate.g.tt</DependentUpon>
+    </Compile>
     <Compile Update="Cartesian.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

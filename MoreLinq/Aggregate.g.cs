@@ -15,14 +15,13 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq.Experimental
+namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Reactive;
 
-    static partial class ExperimentalEnumerable
+    static partial class MoreEnumerable
     {
         /// <summary>
         /// Applies two accumulators sequentially in a single pass over a
@@ -54,7 +53,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e)),
                 s => resultSelector(s.Item1, s.Item2));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies two accumulators sequentially in a single pass over a
         /// sequence.
@@ -104,7 +113,17 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r2[0], nameof(aggregatorSelector2))
             );
         }
+    }
+}
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies three accumulators sequentially in a single pass over a
         /// sequence.
@@ -139,7 +158,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2, seed3),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e)),
                 s => resultSelector(s.Item1, s.Item2, s.Item3));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies three accumulators sequentially in a single pass over a
         /// sequence.
@@ -196,7 +225,17 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r3[0], nameof(aggregatorSelector3))
             );
         }
+    }
+}
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies four accumulators sequentially in a single pass over a
         /// sequence.
@@ -235,7 +274,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2, seed3, seed4),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e)),
                 s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies four accumulators sequentially in a single pass over a
         /// sequence.
@@ -299,7 +348,17 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r4[0], nameof(aggregatorSelector4))
             );
         }
+    }
+}
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies five accumulators sequentially in a single pass over a
         /// sequence.
@@ -342,7 +401,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2, seed3, seed4, seed5),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e)),
                 s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies five accumulators sequentially in a single pass over a
         /// sequence.
@@ -413,7 +482,17 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r5[0], nameof(aggregatorSelector5))
             );
         }
+    }
+}
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies six accumulators sequentially in a single pass over a
         /// sequence.
@@ -460,7 +539,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2, seed3, seed4, seed5, seed6),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e)),
                 s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5, s.Item6));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies six accumulators sequentially in a single pass over a
         /// sequence.
@@ -538,7 +627,17 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r6[0], nameof(aggregatorSelector6))
             );
         }
+    }
+}
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies seven accumulators sequentially in a single pass over a
         /// sequence.
@@ -589,7 +688,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2, seed3, seed4, seed5, seed6, seed7),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e), accumulator7(s.Item7, e)),
                 s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5, s.Item6, s.Item7));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies seven accumulators sequentially in a single pass over a
         /// sequence.
@@ -674,7 +783,17 @@ namespace MoreLinq.Experimental
                 GetAggregateResult(r7[0], nameof(aggregatorSelector7))
             );
         }
+    }
+}
 
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    static partial class MoreEnumerable
+    {
         /// <summary>
         /// Applies eight accumulators sequentially in a single pass over a
         /// sequence.
@@ -729,7 +848,17 @@ namespace MoreLinq.Experimental
                 (seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8),
                 (s, e) => (accumulator1(s.Item1, e), accumulator2(s.Item2, e), accumulator3(s.Item3, e), accumulator4(s.Item4, e), accumulator5(s.Item5, e), accumulator6(s.Item6, e), accumulator7(s.Item7, e), accumulator8(s.Item8, e)),
                 s => resultSelector(s.Item1, s.Item2, s.Item3, s.Item4, s.Item5, s.Item6, s.Item7, s.Item8));
+    }
+}
 
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    static partial class ExperimentalEnumerable
+    {
         /// <summary>
         /// Applies eight accumulators sequentially in a single pass over a
         /// sequence.

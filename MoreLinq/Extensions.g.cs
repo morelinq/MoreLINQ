@@ -52,6 +52,280 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Aggregate</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class AggregateExtension
+    {
+        /// <summary>
+        /// Applies two accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            Func<TState1, TState2, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, resultSelector);
+        /// <summary>
+        /// Applies three accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="seed3">The seed value for the third accumulator.</param>
+        /// <param name="accumulator3">The third accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TState3, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            TState3 seed3, Func<TState3, T, TState3> accumulator3,
+            Func<TState1, TState2, TState3, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, resultSelector);
+        /// <summary>
+        /// Applies four accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="seed3">The seed value for the third accumulator.</param>
+        /// <param name="accumulator3">The third accumulator.</param>
+        /// <param name="seed4">The seed value for the fourth accumulator.</param>
+        /// <param name="accumulator4">The fourth accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            TState3 seed3, Func<TState3, T, TState3> accumulator3,
+            TState4 seed4, Func<TState4, T, TState4> accumulator4,
+            Func<TState1, TState2, TState3, TState4, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, resultSelector);
+        /// <summary>
+        /// Applies five accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
+        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="seed3">The seed value for the third accumulator.</param>
+        /// <param name="accumulator3">The third accumulator.</param>
+        /// <param name="seed4">The seed value for the fourth accumulator.</param>
+        /// <param name="accumulator4">The fourth accumulator.</param>
+        /// <param name="seed5">The seed value for the fifth accumulator.</param>
+        /// <param name="accumulator5">The fifth accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            TState3 seed3, Func<TState3, T, TState3> accumulator3,
+            TState4 seed4, Func<TState4, T, TState4> accumulator4,
+            TState5 seed5, Func<TState5, T, TState5> accumulator5,
+            Func<TState1, TState2, TState3, TState4, TState5, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, resultSelector);
+        /// <summary>
+        /// Applies six accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
+        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
+        /// <typeparam name="TState6">The type of the state of the sixth accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="seed3">The seed value for the third accumulator.</param>
+        /// <param name="accumulator3">The third accumulator.</param>
+        /// <param name="seed4">The seed value for the fourth accumulator.</param>
+        /// <param name="accumulator4">The fourth accumulator.</param>
+        /// <param name="seed5">The seed value for the fifth accumulator.</param>
+        /// <param name="accumulator5">The fifth accumulator.</param>
+        /// <param name="seed6">The seed value for the sixth accumulator.</param>
+        /// <param name="accumulator6">The sixth accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TState6, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            TState3 seed3, Func<TState3, T, TState3> accumulator3,
+            TState4 seed4, Func<TState4, T, TState4> accumulator4,
+            TState5 seed5, Func<TState5, T, TState5> accumulator5,
+            TState6 seed6, Func<TState6, T, TState6> accumulator6,
+            Func<TState1, TState2, TState3, TState4, TState5, TState6, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, resultSelector);
+        /// <summary>
+        /// Applies seven accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
+        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
+        /// <typeparam name="TState6">The type of the state of the sixth accumulator.</typeparam>
+        /// <typeparam name="TState7">The type of the state of the seventh accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="seed3">The seed value for the third accumulator.</param>
+        /// <param name="accumulator3">The third accumulator.</param>
+        /// <param name="seed4">The seed value for the fourth accumulator.</param>
+        /// <param name="accumulator4">The fourth accumulator.</param>
+        /// <param name="seed5">The seed value for the fifth accumulator.</param>
+        /// <param name="accumulator5">The fifth accumulator.</param>
+        /// <param name="seed6">The seed value for the sixth accumulator.</param>
+        /// <param name="accumulator6">The sixth accumulator.</param>
+        /// <param name="seed7">The seed value for the seventh accumulator.</param>
+        /// <param name="accumulator7">The seventh accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TState6, TState7, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            TState3 seed3, Func<TState3, T, TState3> accumulator3,
+            TState4 seed4, Func<TState4, T, TState4> accumulator4,
+            TState5 seed5, Func<TState5, T, TState5> accumulator5,
+            TState6 seed6, Func<TState6, T, TState6> accumulator6,
+            TState7 seed7, Func<TState7, T, TState7> accumulator7,
+            Func<TState1, TState2, TState3, TState4, TState5, TState6, TState7, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, seed7, accumulator7, resultSelector);
+        /// <summary>
+        /// Applies eight accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TState1">The type of the state of the first accumulator.</typeparam>
+        /// <typeparam name="TState2">The type of the state of the second accumulator.</typeparam>
+        /// <typeparam name="TState3">The type of the state of the third accumulator.</typeparam>
+        /// <typeparam name="TState4">The type of the state of the fourth accumulator.</typeparam>
+        /// <typeparam name="TState5">The type of the state of the fifth accumulator.</typeparam>
+        /// <typeparam name="TState6">The type of the state of the sixth accumulator.</typeparam>
+        /// <typeparam name="TState7">The type of the state of the seventh accumulator.</typeparam>
+        /// <typeparam name="TState8">The type of the state of the eighth accumulator.</typeparam>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+        /// <param name="seed1">The seed value for the first accumulator.</param>
+        /// <param name="accumulator1">The first accumulator.</param>
+        /// <param name="seed2">The seed value for the second accumulator.</param>
+        /// <param name="accumulator2">The second accumulator.</param>
+        /// <param name="seed3">The seed value for the third accumulator.</param>
+        /// <param name="accumulator3">The third accumulator.</param>
+        /// <param name="seed4">The seed value for the fourth accumulator.</param>
+        /// <param name="accumulator4">The fourth accumulator.</param>
+        /// <param name="seed5">The seed value for the fifth accumulator.</param>
+        /// <param name="accumulator5">The fifth accumulator.</param>
+        /// <param name="seed6">The seed value for the sixth accumulator.</param>
+        /// <param name="accumulator6">The sixth accumulator.</param>
+        /// <param name="seed7">The seed value for the seventh accumulator.</param>
+        /// <param name="accumulator7">The seventh accumulator.</param>
+        /// <param name="seed8">The seed value for the eighth accumulator.</param>
+        /// <param name="accumulator8">The eighth accumulator.</param>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, TState1, TState2, TState3, TState4, TState5, TState6, TState7, TState8, TResult>(
+            this IEnumerable<T> source,
+            TState1 seed1, Func<TState1, T, TState1> accumulator1,
+            TState2 seed2, Func<TState2, T, TState2> accumulator2,
+            TState3 seed3, Func<TState3, T, TState3> accumulator3,
+            TState4 seed4, Func<TState4, T, TState4> accumulator4,
+            TState5 seed5, Func<TState5, T, TState5> accumulator5,
+            TState6 seed6, Func<TState6, T, TState6> accumulator6,
+            TState7 seed7, Func<TState7, T, TState7> accumulator7,
+            TState8 seed8, Func<TState8, T, TState8> accumulator8,
+            Func<TState1, TState2, TState3, TState4, TState5, TState6, TState7, TState8, TResult> resultSelector)             => MoreEnumerable.Aggregate(source, seed1, accumulator1, seed2, accumulator2, seed3, accumulator3, seed4, accumulator4, seed5, accumulator5, seed6, accumulator6, seed7, accumulator7, seed8, accumulator8, resultSelector);
+
+    }
+
     /// <summary><c>AggregateRight</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
