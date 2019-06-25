@@ -30,6 +30,8 @@ namespace MoreLinq.Reactive
         bool HasObservers => (_observers?.Count ?? 0) > 0;
         List<IObserver<T>> Observers => _observers ?? (_observers = new List<IObserver<T>>());
 
+        bool IsMuted => _completed || _error != null;
+
         public IDisposable Subscribe(IObserver<T> observer)
         {
             if (observer == null) throw new ArgumentNullException(nameof(observer));
@@ -61,10 +63,13 @@ namespace MoreLinq.Reactive
 
         public void OnError(Exception error)
         {
-            if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
+            if (IsMuted)
                 return;
 
             _error = error;
+
+            if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
+                return;
 
             foreach (var observer in observers)
                 observer.OnError(error);
@@ -72,10 +77,13 @@ namespace MoreLinq.Reactive
 
         public void OnCompleted()
         {
-            if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
+            if (IsMuted)
                 return;
 
             _completed = true;
+
+            if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
+                return;
 
             foreach (var observer in observers)
                 observer.OnCompleted();
