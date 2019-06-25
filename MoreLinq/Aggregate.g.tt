@@ -126,8 +126,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies <#= o.Arity #> accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies <#= o.Arity #> accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
 <#      foreach (var arg in o.Arguments) { #>

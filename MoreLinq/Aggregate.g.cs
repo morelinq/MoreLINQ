@@ -77,8 +77,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies two accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies two accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
@@ -198,8 +198,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies three accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies three accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
@@ -333,8 +333,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies four accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies four accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
@@ -482,8 +482,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies five accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies five accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
@@ -645,8 +645,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies six accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies six accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
@@ -822,8 +822,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies seven accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies seven accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
@@ -1013,8 +1013,8 @@ namespace MoreLinq.Experimental
     static partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Applies eight accumulators sequentially in a single pass over a
-        /// sequence.
+        /// Applies eight accumulator queries sequentially in a single
+        /// pass over a sequence.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult1">The type of the result of the first accumulator.</typeparam>
