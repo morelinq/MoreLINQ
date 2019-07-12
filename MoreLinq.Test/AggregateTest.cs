@@ -20,17 +20,86 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq.Expressions;
     using NUnit.Framework;
     using Experimental;
     using System.Reactive.Linq;
+    using System.Reflection;
+    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class AggregateTest
     {
-        // TODO add more tests
+        public static IEnumerable<ITestCaseData> AccumulatorsTestSource(string name, int count) =>
+
+            /* Generates an invocation as follows for 2 accumulators:
+
+                Enumerable.Range(1, count)
+                          .Shuffle()
+                          .Aggregate(0, (s, e) => s + e,
+                                     0, (s, e) => s + e,
+                                     (sum1, sum2) => new[] { sum1, sum2 });
+            */
+
+            from source in new[] { Enumerable.Range(1, count).Shuffle() }
+            let sum = source.Sum()
+            from m in typeof(MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static)
+            where m.Name == nameof(MoreEnumerable.Aggregate)
+               && m.IsGenericMethodDefinition
+            select new
+            {
+                Source = source,
+                Expectation = sum,
+                Instantiation = m.MakeGenericMethod(Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
+                                                 .Append(typeof(int[])) // TResult
+                                                 .ToArray()),
+            }
+            into m
+            let rst = m.Instantiation.GetParameters().Last().ParameterType
+            select new
+            {
+                m.Instantiation,
+                m.Source,
+                m.Expectation,
+                AccumulatorCount   = (m.Instantiation.GetParameters().Length - 2 /* source + resultSelector */) / 2 /* seed + accumulator */,
+                ResultSelectorType = rst,
+                Parameters =
+                    rst.GetMethod("Invoke")
+                       .GetParameters()
+                       .Select(p => Expression.Parameter(p.ParameterType))
+                       .ToArray(),
+            }
+            into m
+            let resultSelector =
+                Expression.Lambda(m.ResultSelectorType,
+                                  Expression.NewArrayInit(typeof(int), m.Parameters),
+                                  m.Parameters)
+                          .Compile()
+            let accumulator = new Func<int, int, int>((s, n) => s + n)
+            select new
+            {
+                Name = $"{name}({m.AccumulatorCount})",
+                Method = m.Instantiation,
+                Args =
+                    Enumerable.Repeat(m.Source, 1)
+                              .Concat(from pairs in Enumerable.Repeat(new object[] { /* seed */ 0, accumulator }, m.AccumulatorCount)
+                                      from pair in pairs
+                                      select pair)
+                              .Append(resultSelector)
+                              .ToArray(),
+                Expectation =
+                    Enumerable.Repeat(m.Expectation, m.AccumulatorCount)
+                              .ToArray(),
+            }
+            into t
+            select new TestCaseData(t.Method, t.Args).SetName(t.Name).Returns(t.Expectation);
+
+        [TestCaseSource(nameof(AccumulatorsTestSource), new object[] { nameof(Accumulators), 10 })]
+        public object Accumulators(MethodInfo method, object[] args) =>
+            method.Invoke(null, args);
 
         [Test]
-        public void Seven1()
+        public void SevenUniqueAccumulators()
         {
             var result =
                 Enumerable
@@ -81,7 +150,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void Seven2()
+        public void SevenUniqueAccumulatorComprehensions()
         {
             var result =
                 Enumerable
