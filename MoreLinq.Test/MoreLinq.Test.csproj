@@ -45,7 +45,6 @@
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
       <None Remove="TestResult.xml" />
-      <Compile Include="..\MoreLinq\Assignment.cs" Link="Assignment.cs" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
       <Compile Include="AssertThrowsArgument.cs" />

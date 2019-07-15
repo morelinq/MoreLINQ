@@ -61,42 +61,31 @@ namespace MoreLinq.Reactive
                 observer.OnNext(value);
         }
 
-        public void OnError(Exception error)
+        public void OnError(Exception error) =>
+            OnFinality(ref _error, error, (observer, err) => observer.OnError(err));
+
+        public void OnCompleted() =>
+            OnFinality(ref _completed, true, (observer, _) => observer.OnCompleted());
+
+        void OnFinality<TState>(ref TState state, TState value, Action<IObserver<T>, TState> action)
         {
             if (IsMuted)
                 return;
 
-            _error = error;
+            state = value;
 
             // Once an error occurs, no other method of the subject is expected
-            // to be called so release the list of observers from the subject's
-            // state. The list of observers will be garbage once this method
-            // returns.
+            // to be called so release the list of observers of this subject.
+            // The list of observers will be garbage once this method returns.
 
-            if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
+            var observers = _observers;
+            _observers = null;
+
+            if (observers == null)
                 return;
 
             foreach (var observer in observers)
-                observer.OnError(error);
-        }
-
-        public void OnCompleted()
-        {
-            if (IsMuted)
-                return;
-
-            _completed = true;
-
-            // Once an error occurs, no other method of the subject is expected
-            // to be called so release the list of observers from the subject's
-            // state. The list of observers will be garbage once this method
-            // returns.
-
-            if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
-                return;
-
-            foreach (var observer in observers)
-                observer.OnCompleted();
+                action(observer, value);
         }
     }
 }
