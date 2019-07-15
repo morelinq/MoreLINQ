@@ -38,14 +38,14 @@ namespace Delegating
             new DelegatingObserver<T>(onNext, onError, onCompleted);
     }
 
-    class DelegatingDisposable : IDisposable
+    sealed class DelegatingDisposable : IDisposable
     {
         Action _delegatee;
 
         public DelegatingDisposable(Action delegatee) =>
             _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             var delegatee = _delegatee;
             if (delegatee == null || Interlocked.CompareExchange(ref _delegatee, null, delegatee) != delegatee)
@@ -54,7 +54,7 @@ namespace Delegating
         }
     }
 
-    class DelegatingObserver<T> : IObserver<T>
+    sealed class DelegatingObserver<T> : IObserver<T>
     {
         readonly Action<T> _onNext;
         readonly Action<Exception> _onError;
@@ -69,8 +69,8 @@ namespace Delegating
             _onCompleted = onCompleted;
         }
 
-        public virtual void OnCompleted() => _onCompleted?.Invoke();
-        public virtual void OnError(Exception error) => _onError?.Invoke(error);
-        public virtual void OnNext(T value) => _onNext(value);
+        public void OnCompleted() => _onCompleted?.Invoke();
+        public void OnError(Exception error) => _onError?.Invoke(error);
+        public void OnNext(T value) => _onNext(value);
     }
 }
