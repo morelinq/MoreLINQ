@@ -68,6 +68,11 @@ namespace MoreLinq.Reactive
 
             _error = error;
 
+            // Once an error occurs, no other method of the subject is expected
+            // to be called so release the list of observers from the subject's
+            // state. The list of observers will be garbage once this method
+            // returns.
+
             if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
                 return;
 
@@ -81,6 +86,11 @@ namespace MoreLinq.Reactive
                 return;
 
             _completed = true;
+
+            // Once an error occurs, no other method of the subject is expected
+            // to be called so release the list of observers from the subject's
+            // state. The list of observers will be garbage once this method
+            // returns.
 
             if (!(Assignment.Set(ref _observers, default) is List<IObserver<T>> observers))
                 return;
