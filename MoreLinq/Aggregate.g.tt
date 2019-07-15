@@ -64,7 +64,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies <#= o.Arity #> accumulators sequentially in a single pass over a
@@ -123,7 +123,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies <#= o.Arity #> accumulator queries sequentially in a single

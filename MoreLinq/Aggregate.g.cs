@@ -20,7 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies two accumulators sequentially in a single pass over a
@@ -74,7 +74,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies two accumulator queries sequentially in a single
@@ -149,7 +149,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies three accumulators sequentially in a single pass over a
@@ -210,7 +210,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies three accumulator queries sequentially in a single
@@ -292,7 +292,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies four accumulators sequentially in a single pass over a
@@ -360,7 +360,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies four accumulator queries sequentially in a single
@@ -449,7 +449,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies five accumulators sequentially in a single pass over a
@@ -524,7 +524,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies five accumulator queries sequentially in a single
@@ -620,7 +620,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies six accumulators sequentially in a single pass over a
@@ -702,7 +702,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies six accumulator queries sequentially in a single
@@ -805,7 +805,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies seven accumulators sequentially in a single pass over a
@@ -894,7 +894,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies seven accumulator queries sequentially in a single
@@ -1004,7 +1004,7 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    static partial class MoreEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// Applies eight accumulators sequentially in a single pass over a
@@ -1100,7 +1100,7 @@ namespace MoreLinq.Experimental
     using System.Collections.Generic;
     using Reactive;
 
-    static partial class ExperimentalEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Applies eight accumulator queries sequentially in a single
