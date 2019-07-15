@@ -99,13 +99,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
@@ -236,13 +237,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
@@ -387,13 +389,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
@@ -552,13 +555,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
@@ -731,13 +735,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
@@ -924,13 +929,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
@@ -1131,13 +1137,14 @@ namespace MoreLinq.Experimental
         /// <para>This operator executes immediately.</para>
         /// <para>
         /// Each accumulator argument is a function that receives an
-        /// <see cref="IObservable{T}"/> that produces the items in the
-        /// <paramref name="source"/> sequence (in original order) and that
-        /// must return an <see cref="IObservable{T}"/> that produces a single
-        /// aggregate on completion (when <see cref="IObserver{T}.OnCompleted"/>
-        /// is called). An error is raised at run-time if the
-        /// <see cref="IObserver{T}"/> returned by an accumulator function
-        /// produces no result or produces more than a single result.
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
         /// </para>
         /// </remarks>
 
