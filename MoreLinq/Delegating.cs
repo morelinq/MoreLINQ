@@ -27,7 +27,7 @@ namespace Delegating
     using System;
     using System.Threading;
 
-    static partial class Delegate
+    static class Delegate
     {
         public static IDisposable Disposable(Action delegatee) =>
             new DelegatingDisposable(delegatee);
@@ -38,7 +38,7 @@ namespace Delegating
             new DelegatingObserver<T>(onNext, onError, onCompleted);
     }
 
-    partial class DelegatingDisposable : IDisposable
+    class DelegatingDisposable : IDisposable
     {
         Action _delegatee;
 
@@ -54,7 +54,7 @@ namespace Delegating
         }
     }
 
-    partial class DelegatingObserver<T> : IObserver<T>
+    class DelegatingObserver<T> : IObserver<T>
     {
         readonly Action<T> _onNext;
         readonly Action<Exception> _onError;
