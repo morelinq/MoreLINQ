@@ -36,9 +36,9 @@ namespace MoreLinq.Reactive
         {
             if (observer == null) throw new ArgumentNullException(nameof(observer));
 
-            if (_error is Exception error)
+            if (_error != null)
             {
-                observer.OnError(error);
+                observer.OnError(_error);
                 return Disposable.Nop;
             }
 
