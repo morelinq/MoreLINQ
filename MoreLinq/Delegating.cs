@@ -32,9 +32,6 @@ namespace Delegating
         public static IDisposable Disposable(Action delegatee) =>
             new DelegatingDisposable(delegatee);
 
-        public static IObservable<T> Observable<T>(Func<IObserver<T>, IDisposable> delegatee) =>
-            new DelegatingObservable<T>(delegatee);
-
         public static IObserver<T> Observer<T>(Action<T> onNext,
                                                Action<Exception> onError = null,
                                                Action onCompleted = null) =>
@@ -55,17 +52,6 @@ namespace Delegating
                 return;
             delegatee();
         }
-    }
-
-    partial class DelegatingObservable<T> : IObservable<T>
-    {
-        readonly Func<IObserver<T>, IDisposable> _delegatee;
-
-        public DelegatingObservable(Func<IObserver<T>, IDisposable> delegatee) =>
-            _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
-
-        public virtual IDisposable Subscribe(IObserver<T> observer) =>
-            _delegatee(observer);
     }
 
     partial class DelegatingObserver<T> : IObserver<T>
