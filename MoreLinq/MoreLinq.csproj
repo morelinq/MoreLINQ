@@ -8,6 +8,7 @@
         This project enhances LINQ to Objects with the following methods:
 
         - Acquire
+        - Aggregate (some EXPERIMENTAL)
         - AggregateRight
         - Append
         - Assert
@@ -149,9 +150,17 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    <None Update="Aggregate.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Aggregate.g.cs</LastGenOutput>
+    </None>
     <None Update="Cartesian.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
+    </None>
+    <None Update="Experimental\Aggregate.g.tt">
+      <LastGenOutput>Aggregate.g.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="Fold.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -194,10 +203,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Aggregate.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Aggregate.g.tt</DependentUpon>
+    </Compile>
     <Compile Update="Cartesian.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Cartesian.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Experimental\Aggregate.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Aggregate.g.tt</DependentUpon>
     </Compile>
     <Compile Update="Fold.g.cs">
       <DesignTime>True</DesignTime>

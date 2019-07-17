@@ -97,6 +97,12 @@ Ensures that a source sequence of disposable objects are all acquired
 successfully. If the acquisition of any one fails then those successfully
 acquired till that point are disposed.
 
+### Aggregate
+
+Applies multiple accumulators sequentially in a single pass over a sequence.
+
+This method has 8 overloads.
+
 ### AggregateRight
 
 Applies a right-associative accumulator function over a sequence.
@@ -713,6 +719,13 @@ SOLICIT FEEDBACK ON THEIR UTILITY AND DESIGN/IMPLEMENTATION DEFECTS.
 
 Use of experimental methods requires importing the `MoreLinq.Experimental`
 namespace.
+
+### Aggregate
+
+Applies multiple accumulator queries sequentially in a single pass over a
+sequence.
+
+This method has 8 overloads.
 
 ### Await
 

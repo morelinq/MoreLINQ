@@ -1,0 +1,202 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Collections" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2017 Atif Aziz. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+<#
+    var overloads =
+        from args in new[]
+        {
+            new[]
+            {
+                new { Ordinal = "first"  , Arity = "one"   },
+                new { Ordinal = "second" , Arity = "two"   },
+                new { Ordinal = "third"  , Arity = "three" },
+                new { Ordinal = "fourth" , Arity = "four"  },
+                new { Ordinal = "fifth"  , Arity = "five"  },
+                new { Ordinal = "sixth"  , Arity = "six"   },
+                new { Ordinal = "seventh", Arity = "seven" },
+                new { Ordinal = "eighth" , Arity = "eight" },
+            }
+        }
+        select args.Select((a, i) => new
+        {
+            a.Ordinal,
+            a.Arity,
+            Count = i + 1,
+            Number = (i + 1).ToString(CultureInfo.InvariantCulture),
+        })
+        into args
+        select args.ToList() into args
+        from a in args.Skip(1)
+        select new
+        {
+            a.Arity,
+            a.Count,
+            Arguments = args.Take(a.Count)
+                            .Select(aa => new { aa.Number, Num = aa.Count, aa.Ordinal })
+                            .ToList(),
+        };
+
+    foreach (var o in overloads)
+    {
+#>
+
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    partial class MoreEnumerable
+    {
+        /// <summary>
+        /// Applies <#= o.Arity #> accumulators sequentially in a single pass over a
+        /// sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="TAccumulate<#= arg.Number #>">The type of <#= arg.Ordinal #> accumulator value.</typeparam>
+<#      } #>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <param name="seed<#= arg.Number #>">The seed value for the <#= arg.Ordinal #> accumulator.</param>
+        /// <param name="accumulator<#= arg.Number #>">The <#= arg.Ordinal #> accumulator.</param>
+<#      } #>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator executes immediately.
+        /// </remarks>
+
+        public static TResult Aggregate<T, <#= string.Join(", ", from x in o.Arguments select "TAccumulate" + x.Number) #>, TResult>(
+            this IEnumerable<T> source,
+<#      foreach (var arg in o.Arguments) { #>
+            TAccumulate<#= arg.Number #> seed<#= arg.Number #>, Func<TAccumulate<#= arg.Number #>, T, TAccumulate<#= arg.Number #>> accumulator<#= arg.Number #>,
+<#      } #>
+            Func<<#= string.Join(", ", from x in o.Arguments select "TAccumulate" + x.Number) #>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+<#      foreach (var arg in o.Arguments) { #>
+            if (accumulator<#= arg.Number #> == null) throw new ArgumentNullException(nameof(accumulator<#= arg.Number #>));
+<#      } #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+<#      foreach (var arg in o.Arguments) { #>
+            var a<#= arg.Number #> = seed<#= arg.Number #>;
+<#      } #>
+
+            foreach (var item in source)
+            {
+<#      foreach (var arg in o.Arguments) { #>
+                a<#= arg.Number #> = accumulator<#= arg.Number #>(a<#= arg.Number #>, item);
+<#      } #>
+            }
+
+            return resultSelector(<#= string.Join(", ", from x in o.Arguments select "a" + x.Number) #>);
+        }
+    }
+}
+
+namespace MoreLinq.Experimental
+{
+    using System;
+    using System.Collections.Generic;
+    using Reactive;
+
+    partial class ExperimentalEnumerable
+    {
+        /// <summary>
+        /// Applies <#= o.Arity #> accumulator queries sequentially in a single
+        /// pass over a sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="TResult<#= arg.Number #>">The type of the result of the <#= arg.Ordinal #> accumulator.</typeparam>
+<#      } #>
+        /// <typeparam name="TResult">The type of the accumulated result.</typeparam>
+        /// <param name="source">The source sequence</param>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <param name="accumulator<#= arg.Number #>">The <#= arg.Ordinal #> accumulator.</param>
+<#      } #>
+        /// <param name="resultSelector">
+        /// A function that projects a single result given the result of each
+        /// accumulator.</param>
+        /// <returns>The value returned by <paramref name="resultSelector"/>.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// An <see cref="IObservable{T}"/> returned by an accumulator function
+        /// produced zero or more than a single aggregate result.
+        /// </exception>
+        /// <remarks>
+        /// <para>This operator executes immediately.</para>
+        /// <para>
+        /// Each accumulator argument is a function that receives an
+        /// <see cref="IObservable{T}"/>, which when subscribed to, produces the
+        /// items in the <paramref name="source"/> sequence and in original
+        /// order; the function must then return an <see cref="IObservable{T}"/>
+        /// that produces a single aggregate on completion (when
+        /// <see cref="IObserver{T}.OnCompleted"/> is called. An error is raised
+        /// at run-time if the <see cref="IObserver{T}"/> returned by an
+        /// accumulator function produces no result or produces more than a
+        /// single result.
+        /// </para>
+        /// </remarks>
+
+        public static TResult Aggregate<T, <#= string.Join(", ", from x in o.Arguments select "TResult" + x.Number) #>, TResult>(
+            this IEnumerable<T> source,
+<#      foreach (var arg in o.Arguments) { #>
+            Func<IObservable<T>, IObservable<TResult<#= arg.Number #>>> accumulator<#= arg.Number #>,
+<#      } #>
+            Func<<#= string.Join(", ", from x in o.Arguments select "TResult" + x.Number) #>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+<#      foreach (var arg in o.Arguments) { #>
+            if (accumulator<#= arg.Number #> == null) throw new ArgumentNullException(nameof(accumulator<#= arg.Number #>));
+<#      } #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+<#      foreach (var arg in o.Arguments) { #>
+            var r<#= arg.Number #> = new (bool, TResult<#= arg.Number #>)[1];
+<#      } #>
+
+            var subject = new Subject<T>();
+
+<#      foreach (var arg in o.Arguments) { #>
+            using (SubscribeSingle(accumulator<#= arg.Number #>, subject, r<#= arg.Number #>, nameof(accumulator<#= arg.Number #>)))
+<#      } #>
+            {
+                foreach (var item in source)
+                    subject.OnNext(item);
+
+                subject.OnCompleted();
+            }
+
+            return resultSelector
+            (
+<#      foreach (var arg in o.Arguments) { #>
+                GetAggregateResult(r<#= arg.Number #>[0], nameof(accumulator<#= arg.Number #>))<#= arg.Num < o.Count ? "," : "" #>
+<#      } #>
+            );
+        }
+    }
+}
+<#  } #>

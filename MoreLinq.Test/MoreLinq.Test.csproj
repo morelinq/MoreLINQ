@@ -35,6 +35,7 @@
     </PackageReference>
     <PackageReference Include="NUnit" Version="3.6.1" />
     <PackageReference Include="NUnitLite" Version="3.6.1" />
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
@@ -44,6 +45,8 @@
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
       <None Remove="TestResult.xml" />
+      <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
+      <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
       <Compile Include="AssertThrowsArgument.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingAction.cs" />
