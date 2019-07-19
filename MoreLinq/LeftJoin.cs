@@ -207,14 +207,12 @@ namespace MoreLinq
             if (firstSelector == null) throw new ArgumentNullException(nameof(firstSelector));
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
 
-            KeyValuePair<TK, TV> Pair<TK, TV>(TK k, TV v) => new KeyValuePair<TK, TV>(k, v);
-
-            return // TODO replace KeyValuePair<,> with (,) for clarity
-                from j in first.GroupJoin(second, firstKeySelector, secondKeySelector,
-                                          (f, ss) => Pair(f, from s in ss select Pair(true, s)),
+            return
+                from f in first.GroupJoin(second, firstKeySelector, secondKeySelector,
+                                          (f, ss) => (Value: f, Seconds: from s in ss select (HasValue: true, Value: s)),
                                           comparer)
-                from s in j.Value.DefaultIfEmpty()
-                select s.Key ? bothSelector(j.Key, s.Value) : firstSelector(j.Key);
+                from s in f.Seconds.DefaultIfEmpty()
+                select s.HasValue ? bothSelector(f.Value, s.Value) : firstSelector(f.Value);
         }
     }
 }
