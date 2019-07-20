@@ -156,7 +156,7 @@ namespace MoreLinq
                 throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
             }
 
-            static MemberInfo GetAccessedMember(LambdaExpression lambda)
+            MemberInfo GetAccessedMember(LambdaExpression lambda)
             {
                 var body = lambda.Body;
 
