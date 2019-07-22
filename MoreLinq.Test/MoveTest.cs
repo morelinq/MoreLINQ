@@ -103,7 +103,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void MoveCanBeIteratedTwice()
+        public void MoveIsRepeatable()
         {
             var source = Enumerable.Range(0, 10);
             var result = source.Move(0, 5, 10);
