@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TrySingleWithOne()
+        public void TrySingleWithSingleton()
         {
             var arrayWithOne = new int?[] {10};
 
