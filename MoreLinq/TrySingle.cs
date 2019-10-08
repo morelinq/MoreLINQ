@@ -40,6 +40,9 @@ namespace MoreLinq
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
         {
+            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             var result = values.Take(2).ToArray();
             switch (result.Length)
             {
