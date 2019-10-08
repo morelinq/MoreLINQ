@@ -37,7 +37,7 @@ namespace MoreLinq
         /// <typeparam name="TCardinality">The type that expresses cardinality.</typeparam>
         /// <typeparam name="TResult">The result type of the resultSelector.</typeparam>
         /// <returns>The value provided by the resultSelector.</returns>
-        public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> values,
+        public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
         {
