@@ -23,7 +23,7 @@ namespace MoreLinq
     partial class MoreEnumerable
     {
         /// <summary>
-        /// Similar to <see cref="Single{T}"/> or <see cref="SingleOrDefault{T}"/> but allows the caller to determine
+        /// Similar to Single() or SingleOrDefault() but allows the caller to determine
         /// whether there were zero or many elements in the sequence in the event that there isn't just one.
         /// </summary>
         /// <param name="values">The source sequence that will be tested for its cardinality.</param>
