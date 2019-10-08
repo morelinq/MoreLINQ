@@ -35,7 +35,7 @@ namespace MoreLinq.Test
         [Test]
         public void TrySingleWithSingleton()
         {
-            var arrayWithOne = new int?[] {10};
+            var arrayWithOne = new int?[] { 10 };
 
             var result = arrayWithOne.TrySingle("zero", "one", "many", (cardinality, value) => (cardinality, value));
             Assert.AreEqual(result.cardinality, "one");
