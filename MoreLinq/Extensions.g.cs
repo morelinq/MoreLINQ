@@ -6568,8 +6568,10 @@ namespace MoreLinq.Extensions
     public static partial class TrySingleExtension
     {
         /// <summary>
-        /// Similar to <see cref="Single{T}"/> or <see cref="SingleOrDefault{T}"/> but allows the caller to determine
-        /// whether there were zero or many elements in the sequence in the event that there isn't just one.
+        /// Determines the cardinality of the source sequence, provides a selector method with this cardinality and
+        /// the single element of the sequence if it contains one element only. Enables the caller to distinguish between
+        /// sequences that have zero elements and those that have multiple elements, when the caller expects the sequence
+        /// to contain a single element.
         /// </summary>
         /// <param name="source">The source sequence that will be tested for its cardinality.</param>
         /// <param name="zero">The value that should be provided to <paramref name="resultSelector" /> if the sequence has zero elements.</param>
