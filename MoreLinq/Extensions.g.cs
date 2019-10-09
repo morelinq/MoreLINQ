@@ -6562,6 +6562,32 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>TrySingle</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class TrySingleExtension
+    {
+        /// <summary>
+        /// Similar to <see cref="Single{T}"/> or <see cref="SingleOrDefault{T}"/> but allows the caller to determine
+        /// whether there were zero or many elements in the sequence in the event that there isn't just one.
+        /// </summary>
+        /// <param name="source">The source sequence that will be tested for its cardinality.</param>
+        /// <param name="zero">The value that should be provided to <paramref name="resultSelector" /> if the sequence has zero elements.</param>
+        /// <param name="one">The value that should be provided to resultSelector if the sequence has one element.</param>
+        /// <param name="many">The value that should be provided to resultSelector if the sequence has two or more elements.</param>
+        /// <param name="resultSelector">A function that is provided with the cardinality, and if the sequence has just
+        /// one element, the value of that element. Then transforms the result to an instance of TResult.</param>
+        /// <typeparam name="T">The type of the elements of the sequence</typeparam>
+        /// <typeparam name="TCardinality">The type that expresses cardinality.</typeparam>
+        /// <typeparam name="TResult">The result type of the resultSelector.</typeparam>
+        /// <returns>The value provided by the resultSelector.</returns>
+        public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
+            TCardinality zero, TCardinality one, TCardinality many,
+            Func<TCardinality, T, TResult> resultSelector)
+            => MoreEnumerable.TrySingle(source, zero, one, many, resultSelector);
+
+    }
+
     /// <summary><c>Window</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]

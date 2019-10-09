@@ -24,10 +24,10 @@ namespace MoreLinq
     partial class MoreEnumerable
     {
         /// <summary>
-        /// Similar to Single() or SingleOrDefault() but allows the caller to determine
+        /// Similar to <see cref="Single{T}"/> or <see cref="SingleOrDefault{T}"/> but allows the caller to determine
         /// whether there were zero or many elements in the sequence in the event that there isn't just one.
         /// </summary>
-        /// <param name="sources">The source sequence that will be tested for its cardinality.</param>
+        /// <param name="source">The source sequence that will be tested for its cardinality.</param>
         /// <param name="zero">The value that should be provided to <paramref name="resultSelector" /> if the sequence has zero elements.</param>
         /// <param name="one">The value that should be provided to resultSelector if the sequence has one element.</param>
         /// <param name="many">The value that should be provided to resultSelector if the sequence has two or more elements.</param>
@@ -41,10 +41,10 @@ namespace MoreLinq
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
         {
-            if (values == null) throw new ArgumentNullException(nameof(values));
+            if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            var result = values.Take(2).ToArray();
+            var result = source.Take(2).ToArray();
             switch (result.Length)
             {
                 case 0:

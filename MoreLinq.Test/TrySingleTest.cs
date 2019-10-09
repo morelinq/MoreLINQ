@@ -37,9 +37,9 @@ namespace MoreLinq.Test
         {
             var arrayWithOne = new int?[] { 10 };
 
-            var result = arrayWithOne.TrySingle("zero", "one", "many", (cardinality, value) => (cardinality, value));
-            Assert.AreEqual(result.cardinality, "one");
-            Assert.AreEqual(result.value, 10);
+            var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many", (c, v) => (c, v));
+            Assert.AreEqual(cardinality, "one");
+            Assert.AreEqual(value, 10);
         }
 
         [Test]
@@ -47,10 +47,10 @@ namespace MoreLinq.Test
         {
             var arrayWithMultiple = new int?[] {10, 20};
 
-            var result = arrayWithMultiple.TrySingle("zero", "one", "many", (cardinality, value) => (cardinality, value));
+            var (cardinality, value) = arrayWithMultiple.TrySingle("zero", "one", "many", (c, v) => (c, v));
 
-            Assert.AreEqual(result.cardinality, "many");
-            Assert.IsNull(result.value);
+            Assert.AreEqual(cardinality, "many");
+            Assert.IsNull(value);
         }
     }
 }
