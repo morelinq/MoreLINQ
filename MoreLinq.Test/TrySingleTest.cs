@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         [Test]
         public void TrySingleWithMoreThanOne()
         {
-            var arrayWithMultiple = new int?[] {10, 20};
+            var arrayWithMultiple = new int?[] { 10, 20 };
 
             var (cardinality, value) = arrayWithMultiple.TrySingle("zero", "one", "many", (c, v) => (c, v));
 
