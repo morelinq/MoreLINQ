@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -27,9 +28,10 @@ namespace MoreLinq.Test
         {
             var arrayWithNone = new int?[0];
 
-            var result = arrayWithNone.TrySingle("zero", "one", "many", ((cardinality, value) => (cardinality, value)));
-            Assert.AreEqual(result.cardinality, "zero");
-            Assert.IsNull(result.value);
+            var (cardinality, value) = arrayWithNone.TrySingle("zero", "one", "many", ValueTuple.Create);
+
+            Assert.AreEqual(cardinality, "zero");
+            Assert.IsNull(value);
         }
 
         [Test]
@@ -37,7 +39,8 @@ namespace MoreLinq.Test
         {
             var arrayWithOne = new int?[] { 10 };
 
-            var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many", (c, v) => (c, v));
+            var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many", ValueTuple.Create);
+
             Assert.AreEqual(cardinality, "one");
             Assert.AreEqual(value, 10);
         }
@@ -47,7 +50,7 @@ namespace MoreLinq.Test
         {
             var arrayWithMultiple = new int?[] { 10, 20 };
 
-            var (cardinality, value) = arrayWithMultiple.TrySingle("zero", "one", "many", (c, v) => (c, v));
+            var (cardinality, value) = arrayWithMultiple.TrySingle("zero", "one", "many", ValueTuple.Create);
 
             Assert.AreEqual(cardinality, "many");
             Assert.IsNull(value);
