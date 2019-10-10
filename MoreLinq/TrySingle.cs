@@ -51,7 +51,8 @@ namespace MoreLinq
                 if (!e.MoveNext())
                     return resultSelector(zero, default);
                 var current = e.Current;
-                return !e.MoveNext() ? resultSelector(one, current) : resultSelector(many, default);
+                return !e.MoveNext() ? resultSelector(one, current)
+                                     : resultSelector(many, default);
             }
         }
     }
