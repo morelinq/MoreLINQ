@@ -6573,13 +6573,19 @@ namespace MoreLinq.Extensions
         /// that projects the observed cardinality and the sequence's
         /// single element or the default value, into a tuple.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="zero"></param>
-        /// <param name="one"></param>
-        /// <param name="many"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TCardinality"></typeparam>
-        /// <returns></returns>
+        /// <param name="source">
+        /// The source sequence that will be tested for its cardinality.</param>
+        /// <param name="zero">The value that is returned in the tuple
+        /// that indicates there are no elements in the sequence.</param>
+        /// <param name="one">The value that is returned in the tuple
+        /// that indicates there is one element in the sequence.</param>
+        /// <param name="many">The value that is returned in the tuple
+        /// that indicates there are multiple elements in the sequence.</param>
+        /// <typeparam name="T">
+        /// The type of the elements of the sequence.</typeparam>
+        /// <typeparam name="TCardinality">
+        /// The type that expresses cardinality.</typeparam>
+        /// <returns>A tuple of <typeparamref name="TCardinality"/> and <typeparamref name="T"/>.</returns>
         public static (TCardinality Cardinality, T Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
                 TCardinality zero,
