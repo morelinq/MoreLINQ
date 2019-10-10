@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
+
 namespace MoreLinq.Test
 {
     using System;
@@ -54,6 +56,21 @@ namespace MoreLinq.Test
 
             Assert.AreEqual(cardinality, "many");
             Assert.IsNull(value);
+        }
+
+        [Test]
+        public void TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
+        {
+            IEnumerable<int> TestSequence()
+            {
+                yield return 1;
+                yield return 2;
+                throw new Exception("TrySingle not have attempted to consume a third element.");
+            }
+
+            var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");
+            Assert.AreEqual("many", cardinality);
+            Assert.AreEqual(default(int), value);
         }
     }
 }
