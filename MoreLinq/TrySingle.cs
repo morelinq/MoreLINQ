@@ -16,6 +16,7 @@
 #endregion
 
 using System.Linq;
+using MoreLinq.Extensions;
 
 namespace MoreLinq
 {
@@ -62,8 +63,11 @@ namespace MoreLinq
         /// The value returned by the <paramref name="resultSelector"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses immediate execution, but never consumer more
-        /// than two elements from the sequence.
+        /// This operator uses immediate execution, but never consumes more
+        /// than two elements from the sequence. When the source sequence is an
+        /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
+        /// implementation optimizes by checking the number of elements in
+        /// the underlying sequence.
         /// </remarks>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
@@ -73,6 +77,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
+            if (source is ICollection<T> collection)
+                return TrySingleForCollection(collection);
+
             using (var e = source.GetEnumerator())
             {
                 if (!e.MoveNext())
@@ -80,6 +87,21 @@ namespace MoreLinq
                 var current = e.Current;
                 return !e.MoveNext() ? resultSelector(one, current)
                                      : resultSelector(many, default);
+            }
+
+            TResult TrySingleForCollection(ICollection<T> theCollection)
+            {
+                switch (theCollection.Count)
+                {
+                    case 0:
+                        return resultSelector(zero, default);
+                    case 1:
+                        return resultSelector(one,
+                            theCollection is IList<T> theList ? theList[0]
+                                                              : theCollection.First());
+                    default:
+                        return resultSelector(many, default);
+                }
             }
         }
 

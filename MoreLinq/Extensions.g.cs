@@ -6623,8 +6623,11 @@ namespace MoreLinq.Extensions
         /// The value returned by the <paramref name="resultSelector"/>.
         /// </returns>
         /// <remarks>
-        /// This operator uses immediate execution, but never consumer more
-        /// than two elements from the sequence.
+        /// This operator uses immediate execution, but never consumes more
+        /// than two elements from the sequence. When the source sequence is an
+        /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
+        /// implementation optimizes by checking the number of elements in
+        /// the underlying sequence.
         /// </remarks>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,

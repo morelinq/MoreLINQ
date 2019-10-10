@@ -72,5 +72,25 @@ namespace MoreLinq.Test
             Assert.AreEqual("many", cardinality);
             Assert.AreEqual(default(int), value);
         }
+
+        [Test]
+        public void TrySingleOptimizesForIList()
+        {
+            var list = new BreakingList<int>();
+
+            var (cardinality, value) = list.TrySingle("zero", "one", "many");
+            Assert.AreEqual("zero", cardinality);
+            Assert.AreEqual(default(int), value);
+
+            list = new BreakingList<int>(new List<int> {1});
+            (cardinality, value) = list.TrySingle("zero", "one", "many");
+            Assert.AreEqual("one", cardinality);
+            Assert.AreEqual(1, value);
+
+            list = new BreakingList<int>(new List<int> {1, 2});
+            (cardinality, value) = list.TrySingle("zero", "one", "many");
+            Assert.AreEqual("many", cardinality);
+            Assert.AreEqual(default(int), value);
+        }
     }
 }
