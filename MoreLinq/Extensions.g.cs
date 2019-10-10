@@ -6568,21 +6568,41 @@ namespace MoreLinq.Extensions
     public static partial class TrySingleExtension
     {
         /// <summary>
-        /// Determines the cardinality of the source sequence, provides a selector method with this cardinality and
-        /// the single element of the sequence if it contains one element only. Enables the caller to distinguish between
-        /// sequences that have zero elements and those that have multiple elements, when the caller expects the sequence
-        /// to contain a single element.
+        /// Determines the cardinality of the source sequence, provides a
+        /// selector method with this cardinality and the single element of
+        /// the sequence if it contains one element only. Enables the caller
+        /// to distinguish between sequences that have zero elements and
+        /// those that have multiple elements, when the caller expects the
+        /// sequence to contain a single element.
         /// </summary>
-        /// <param name="source">The source sequence that will be tested for its cardinality.</param>
-        /// <param name="zero">The value that should be provided to <paramref name="resultSelector" /> if the sequence has zero elements.</param>
-        /// <param name="one">The value that should be provided to <paramref name="resultSelector" /> if the sequence has one element.</param>
-        /// <param name="many">The value that should be provided to <paramref name="resultSelector"/> if the sequence has two or more elements.</param>
-        /// <param name="resultSelector">A function that is provided with the cardinality, and if the sequence has just
-        /// one element, the value of that element. Then transforms the result to an instance of TResult.</param>
-        /// <typeparam name="T">The type of the elements of the sequence.</typeparam>
-        /// <typeparam name="TCardinality">The type that expresses cardinality.</typeparam>
-        /// <typeparam name="TResult">The result type of the <paramref name="resultSelector"/> function.</typeparam>
-        /// <returns>The value returned by the <paramref name="resultSelector"/>.</returns>
+        /// <param name="source">
+        /// The source sequence that will be tested for its cardinality.</param>
+        /// <param name="zero">
+        /// The value that is passed as the first argument to
+        /// <paramref name="resultSelector" /> if the sequence has zero
+        /// elements.</param>
+        /// <param name="one">
+        /// The value that is passed as the first argument to
+        /// <paramref name="resultSelector" /> if the sequence has a
+        /// single element only.</param>
+        /// <param name="many">
+        /// The value that is passed as the first argument to
+        /// <paramref name="resultSelector" /> if the sequence has two or
+        /// more elements.</param>
+        /// <param name="resultSelector">
+        /// A function that is provided with the cardinality, and if the
+        /// sequence has just one element, the value of that element. Then
+        /// transforms the result to an instance of TResult.</param>
+        /// <typeparam name="T">
+        /// The type of the elements of the sequence.</typeparam>
+        /// <typeparam name="TCardinality">
+        /// The type that expresses cardinality.</typeparam>
+        /// <typeparam name="TResult">
+        /// The result type of the <paramref name="resultSelector"/> function.
+        /// </typeparam>
+        /// <returns>
+        /// The value returned by the <paramref name="resultSelector"/>.
+        /// </returns>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
