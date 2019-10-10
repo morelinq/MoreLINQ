@@ -48,7 +48,8 @@ namespace MoreLinq
 
             using (var e = source.GetEnumerator())
             {
-                if (!e.MoveNext()) return resultSelector(zero, default);
+                if (!e.MoveNext())
+                    return resultSelector(zero, default);
                 var current = e.Current;
                 return !e.MoveNext() ? resultSelector(one, current) : resultSelector(many, default);
             }
