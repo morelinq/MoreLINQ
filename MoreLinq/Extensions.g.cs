@@ -6581,10 +6581,10 @@ namespace MoreLinq.Extensions
         /// one element, the value of that element. Then transforms the result to an instance of TResult.</param>
         /// <typeparam name="T">The type of the elements of the sequence</typeparam>
         /// <typeparam name="TCardinality">The type that expresses cardinality.</typeparam>
-        /// <typeparam name="TResult">The result type of the resultSelector.</typeparam>
-        /// <returns>The value provided by the resultSelector.</returns>
+        /// <typeparam name="TResult">The result type of the <paramref name="resultSelector"/> function.</typeparam>
+        /// <returns>The value returned by the <paramref name="resultSelector"/>.</returns>
 
-                public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
+        public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
             => MoreEnumerable.TrySingle(source, zero, one, many, resultSelector);

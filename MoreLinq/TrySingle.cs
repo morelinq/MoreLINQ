@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     partial class MoreEnumerable
     {
@@ -37,8 +36,8 @@ namespace MoreLinq
         /// one element, the value of that element. Then transforms the result to an instance of TResult.</param>
         /// <typeparam name="T">The type of the elements of the sequence</typeparam>
         /// <typeparam name="TCardinality">The type that expresses cardinality.</typeparam>
-        /// <typeparam name="TResult">The result type of the resultSelector.</typeparam>
-        /// <returns>The value provided by the resultSelector.</returns>
+        /// <typeparam name="TResult">The result type of the <paramref name="resultSelector"/> function.</typeparam>
+        /// <returns>The value returned by the <paramref name="resultSelector"/>.</returns>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
@@ -47,15 +46,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            var result = source.Take(2).ToArray();
-            switch (result.Length)
+            using (var e = source.GetEnumerator())
             {
-                case 0:
-                    return resultSelector(zero, default);
-                case 1:
-                    return resultSelector(one, result[0]);
-                default:
-                    return resultSelector(many, default);
+                if (!e.MoveNext()) return resultSelector(zero, default);
+                var current = e.Current;
+                return !e.MoveNext() ? resultSelector(one, current) : resultSelector(many, default);
             }
         }
     }
