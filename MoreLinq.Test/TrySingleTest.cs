@@ -26,7 +26,7 @@ namespace MoreLinq.Test
     public class TrySingleTest
     {
         [Test]
-        public void TrySingleWithNone()
+        public void TrySingleWithEmptySource()
         {
             var arrayWithNone = new int?[0];
 
