@@ -30,8 +30,8 @@ namespace MoreLinq
         /// </summary>
         /// <param name="source">The source sequence that will be tested for its cardinality.</param>
         /// <param name="zero">The value that should be provided to <paramref name="resultSelector" /> if the sequence has zero elements.</param>
-        /// <param name="one">The value that should be provided to resultSelector if the sequence has one element.</param>
-        /// <param name="many">The value that should be provided to resultSelector if the sequence has two or more elements.</param>
+        /// <param name="one">The value that should be provided to <paramref name="resultSelector" /> if the sequence has one element.</param>
+        /// <param name="many">The value that should be provided to <<aramref name="resultSelector"/> if the sequence has two or more elements.</param>
         /// <param name="resultSelector">A function that is provided with the cardinality, and if the sequence has just
         /// one element, the value of that element. Then transforms the result to an instance of TResult.</param>
         /// <typeparam name="T">The type of the elements of the sequence</typeparam>
