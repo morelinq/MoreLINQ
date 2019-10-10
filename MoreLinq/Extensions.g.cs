@@ -6570,8 +6570,8 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// An overload of <see cref="TrySingle{T, TCardinality, TResult}(IEnumerable{T},TCardinality, TCardinality, TCardinality, Func{TCardinality, T, TResult})"/>
-        /// that returns the observed cardinality and single element,
-        /// if available, in a tuple.
+        /// that projects the observed cardinality and the sequence's
+        /// single element or the default value, into a tuple.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="zero"></param>
@@ -6622,6 +6622,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The value returned by the <paramref name="resultSelector"/>.
         /// </returns>
+        /// <remarks>
+        /// This operator uses immediate execution, but never consumer more
+        /// than two elements from the sequence.
+        /// </remarks>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
