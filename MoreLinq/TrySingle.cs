@@ -121,6 +121,7 @@ namespace MoreLinq
         /// <typeparam name="TCardinality">
         /// The type that expresses cardinality.</typeparam>
         /// <returns>A tuple of <typeparamref name="TCardinality"/> and <typeparamref name="T"/>.</returns>
+
         public static (TCardinality Cardinality, T Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
                 TCardinality zero,
