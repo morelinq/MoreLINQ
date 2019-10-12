@@ -73,7 +73,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TrySingleOptimizesForIList()
+        public void TrySingleOptimizesForList()
         {
             var list = new BreakingList<int>();
 
