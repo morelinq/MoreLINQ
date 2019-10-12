@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         {
             var arrayWithNone = new int?[0];
 
-            var (cardinality, value) = arrayWithNone.TrySingle("zero", "one", "many", ValueTuple.Create);
+            var (cardinality, value) = arrayWithNone.TrySingle("zero", "one", "many");
 
             Assert.AreEqual(cardinality, "zero");
             Assert.IsNull(value);
