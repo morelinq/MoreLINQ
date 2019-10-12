@@ -64,7 +64,7 @@ namespace MoreLinq.Test
             {
                 yield return 1;
                 yield return 2;
-                throw new Exception("TrySingle should not have attempted to consume a third element.");
+                throw new Exception(nameof(MoreEnumerable.TrySingle) + " should not have attempted to consume a third element.");
             }
 
             var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");
