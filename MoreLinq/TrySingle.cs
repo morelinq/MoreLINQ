@@ -75,8 +75,15 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            if (source is ICollection<T> collection)
-                return TrySingleForCollection(collection);
+            switch (source)
+            {
+                case IReadOnlyList<T> coll:
+                    return TrySingleForReadOnlyList(coll);
+                case IReadOnlyCollection<T> roColl:
+                    return TrySingleForCollectionX(roColl);
+                case ICollection<T> collection:
+                    return TrySingleForCollection(collection);
+            }
 
             using (var e = source.GetEnumerator())
             {
@@ -85,6 +92,32 @@ namespace MoreLinq
                 var current = e.Current;
                 return !e.MoveNext() ? resultSelector(one, current)
                                      : resultSelector(many, default);
+            }
+
+            TResult TrySingleForReadOnlyList(IReadOnlyList<T> theRoList)
+            {
+                switch (theRoList.Count)
+                {
+                    case 0:
+                        return resultSelector(zero, default);
+                    case 1:
+                        return resultSelector(one, theRoList[0]);
+                    default:
+                        return resultSelector(many, default);
+                }
+            }
+
+            TResult TrySingleForCollectionX(IReadOnlyCollection<T> theCollection)
+            {
+                switch (theCollection.Count)
+                {
+                    case 0:
+                        return resultSelector(zero, default);
+                    case 1:
+                        return resultSelector(one, theCollection.First());
+                    default:
+                        return resultSelector(many, default);
+                }
             }
 
             TResult TrySingleForCollection(ICollection<T> theCollection)

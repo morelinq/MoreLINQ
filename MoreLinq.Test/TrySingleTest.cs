@@ -24,10 +24,14 @@ namespace MoreLinq.Test
     [TestFixture]
     public class TrySingleTest
     {
-        [Test]
-        public void TrySingleWithEmptySource()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void TrySingleWithEmptySource(SourceKind kind)
         {
-            var arrayWithNone = new int?[0];
+            var arrayWithNone = new int?[0].ToSourceKind(kind);
 
             var (cardinality, value) = arrayWithNone.TrySingle("zero", "one", "many");
 
@@ -35,10 +39,14 @@ namespace MoreLinq.Test
             Assert.IsNull(value);
         }
 
-        [Test]
-        public void TrySingleWithSingleton()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void TrySingleWithSingleton(SourceKind kind)
         {
-            var arrayWithOne = new int?[] { 10 };
+            var arrayWithOne = new int?[] { 10 }.ToSourceKind(kind);
 
             var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many");
 
@@ -46,10 +54,14 @@ namespace MoreLinq.Test
             Assert.AreEqual(value, 10);
         }
 
-        [Test]
-        public void TrySingleWithMoreThanOne()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void TrySingleWithMoreThanOne(SourceKind kind)
         {
-            var arrayWithMultiple = new int?[] { 10, 20 };
+            var arrayWithMultiple = new int?[] { 10, 20 }.ToSourceKind(kind);
 
             var (cardinality, value) = arrayWithMultiple.TrySingle("zero", "one", "many");
 
@@ -93,7 +105,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TrySingleOptimizesForICollection()
+        public void TrySingleOptimizesForCollection()
         {
             var coll = new BreakingCollection<int>();
 
