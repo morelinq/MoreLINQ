@@ -75,44 +75,24 @@ namespace MoreLinq
 
             switch (source)
             {
-                case IReadOnlyList<T> coll:
-                    return TrySingleForReadOnlyList(coll);
-                case IReadOnlyCollection<T> roColl:
-                    return TrySingleForCollectionX(roColl);
+                case IReadOnlyCollection<T> readOnlyCollection:
+                    return TrySingleForReadOnlyCollection(readOnlyCollection);
                 case ICollection<T> collection:
                     return TrySingleForCollection(collection);
+                default:
+                    return TrySingleForEnumerable(source);
             }
 
-            using (var e = source.GetEnumerator())
-            {
-                if (!e.MoveNext())
-                    return resultSelector(zero, default);
-                var current = e.Current;
-                return !e.MoveNext() ? resultSelector(one, current)
-                                     : resultSelector(many, default);
-            }
-
-            TResult TrySingleForReadOnlyList(IReadOnlyList<T> theRoList)
-            {
-                switch (theRoList.Count)
-                {
-                    case 0:
-                        return resultSelector(zero, default);
-                    case 1:
-                        return resultSelector(one, theRoList[0]);
-                    default:
-                        return resultSelector(many, default);
-                }
-            }
-
-            TResult TrySingleForCollectionX(IReadOnlyCollection<T> theCollection)
+            TResult TrySingleForReadOnlyCollection(IReadOnlyCollection<T> theCollection)
             {
                 switch (theCollection.Count)
                 {
                     case 0:
                         return resultSelector(zero, default);
                     case 1:
-                        return resultSelector(one, theCollection.First());
+                        return resultSelector(one,
+                            theCollection is IReadOnlyList<T> theList ? theList[0]
+                                                                      : theCollection.First());
                     default:
                         return resultSelector(many, default);
                 }
@@ -130,6 +110,18 @@ namespace MoreLinq
                                                               : theCollection.First());
                     default:
                         return resultSelector(many, default);
+                }
+            }
+
+            TResult TrySingleForEnumerable(IEnumerable<T> theEnumerable)
+            {
+                using (var e = theEnumerable.GetEnumerator())
+                {
+                    if (!e.MoveNext())
+                        return resultSelector(zero, default);
+                    var current = e.Current;
+                    return !e.MoveNext() ? resultSelector(one, current)
+                                         : resultSelector(many, default);
                 }
             }
         }
