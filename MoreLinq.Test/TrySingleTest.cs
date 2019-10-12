@@ -40,7 +40,7 @@ namespace MoreLinq.Test
         {
             var arrayWithOne = new int?[] { 10 };
 
-            var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many", ValueTuple.Create);
+            var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many");
 
             Assert.AreEqual(cardinality, "one");
             Assert.AreEqual(value, 10);
