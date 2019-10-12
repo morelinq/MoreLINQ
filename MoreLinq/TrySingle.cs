@@ -65,9 +65,7 @@ namespace MoreLinq
         /// than two elements from the sequence. When the source sequence is an
         /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
         /// implementation optimizes by checking the number of elements in
-        /// the underlying sequence.
-        /// </remarks>
-
+        /// the underlying sequence.</remarks>
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
@@ -137,24 +135,40 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// An overload of <see cref="TrySingle{T, TCardinality, TResult}(IEnumerable{T},TCardinality, TCardinality, TCardinality, Func{TCardinality, T, TResult})"/>
-        /// that projects the observed cardinality and the sequence's
-        /// single element or the default value, into a tuple.
-        /// </summary>
+        /// Attempts to retrieve and project the only element of a sequence,
+        /// similar to <see cref="Enumerable.Single{T}(IEnumerable{T})"/>.
+        /// Unlike that extension method if the sequence contains zero or many
+        /// elements this operator doesn't throw an exception, rather it returns
+        /// a tuple containing the observed cardinality of the sequence and
+        /// either the single value (if only one element in the sequence) or
+        /// the default value of <typeparamref name="T"/>. This enables the
+        /// caller to differentiate between the case where a sequence contains
+        /// zero elements and many elements.</summary>
         /// <param name="source">
         /// The source sequence that will be tested for its cardinality.</param>
-        /// <param name="zero">The value that is returned in the tuple
-        /// that indicates there are no elements in the sequence.</param>
-        /// <param name="one">The value that is returned in the tuple
-        /// that indicates there is one element in the sequence.</param>
-        /// <param name="many">The value that is returned in the tuple
-        /// that indicates there are multiple elements in the sequence.</param>
+        /// <param name="zero">
+        /// The value that is returned in the tuple if the sequence has zero
+        /// elements.</param>
+        /// <param name="one">
+        /// The value that is returned in the tuple if the sequence has a
+        /// single element only.</param>
+        /// <param name="many">
+        /// The value that is returned in the tuple if the sequence has two or
+        /// more elements.</param>
         /// <typeparam name="T">
         /// The type of the elements of the sequence.</typeparam>
         /// <typeparam name="TCardinality">
         /// The type that expresses cardinality.</typeparam>
-        /// <returns>A tuple of <typeparamref name="TCardinality"/> and <typeparamref name="T"/>.</returns>
-
+        /// <returns>
+        /// A tuple containing the identified <typeparamref name="TCardinality"/>
+        /// and either the single value of <typeparamref name="T"/> in the sequence
+        /// or its default value.</returns>
+        /// <remarks>
+        /// This operator uses immediate execution, but never consumes more
+        /// than two elements from the sequence. When the source sequence is an
+        /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
+        /// implementation optimizes by checking the number of elements in
+        /// the underlying sequence.</remarks>
         public static (TCardinality Cardinality, T Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
                 TCardinality zero,

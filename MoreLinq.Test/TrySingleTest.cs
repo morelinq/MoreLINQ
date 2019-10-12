@@ -134,6 +134,18 @@ namespace MoreLinq.Test
             Assert.AreEqual(default(int), value);
         }
 
+        [TestCase(0, "zero")]
+        [TestCase(1, "one")]
+        [TestCase(2, "many")]
+        public void TrySingleEnumeratesOnceOnlyAndDisposes(int numberOfElements, string expectedCardinality)
+        {
+            using (var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence())
+            {
+                var (cardinality, _) = seq.TrySingle("zero", "one", "many");
+                Assert.AreEqual(expectedCardinality, cardinality);
+            }
+        }
+
         private class BreakingSingleElementCollection<T> : ICollection<T>
         {
             private readonly T _element;
