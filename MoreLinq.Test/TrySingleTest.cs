@@ -86,7 +86,7 @@ namespace MoreLinq.Test
             Assert.AreEqual("one", cardinality);
             Assert.AreEqual(1, value);
 
-            list = new BreakingList<int>(new List<int> {1, 2});
+            list = new BreakingList<int>(new List<int> { 1, 2 });
             (cardinality, value) = list.TrySingle("zero", "one", "many");
             Assert.AreEqual("many", cardinality);
             Assert.AreEqual(default(int), value);
