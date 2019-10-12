@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -42,8 +43,6 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.Sequence)]
         [TestCase(SourceKind.BreakingList)]
         [TestCase(SourceKind.BreakingReadOnlyList)]
-        [TestCase(SourceKind.BreakingCollection)]
-        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void TrySingleWithSingleton(SourceKind kind)
         {
             var arrayWithOne = new int?[] { 10 }.ToSourceKind(kind);
@@ -53,6 +52,21 @@ namespace MoreLinq.Test
             Assert.AreEqual(cardinality, "one");
             Assert.AreEqual(value, 10);
         }
+
+        [TestCaseSource(nameof(_singletonCollectionTestCases))]
+        public void TrySingleWithSingletonCollections<T>(IEnumerable<T> collection, T result)
+        {
+            var (cardinality, value) = collection.TrySingle("zero", "one", "many");
+
+            Assert.AreEqual(cardinality, "one");
+            Assert.AreEqual(value, result);
+        }
+
+        private static object[] _singletonCollectionTestCases =
+        {
+            new object[] { new BreakingSingleElementCollection<int>(10), 10 },
+            new object[] { new BreakingSingleElementReadOnlyCollection<int>(20), 20 }
+        };
 
         [TestCase(SourceKind.Sequence)]
         [TestCase(SourceKind.BreakingList)]
@@ -118,6 +132,50 @@ namespace MoreLinq.Test
             (cardinality, value) = coll.TrySingle("zero", "one", "many");
             Assert.AreEqual("many", cardinality);
             Assert.AreEqual(default(int), value);
+        }
+
+        private class BreakingSingleElementCollection<T> : ICollection<T>
+        {
+            private readonly T _element;
+
+            public BreakingSingleElementCollection(T element)
+            {
+                _element = element;
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                yield return _element;
+                throw new Exception($"{nameof(MoreEnumerable.TrySingle)} should not have attempted to consume a second element.");
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public void Add(T item) => throw new NotImplementedException();
+            public void Clear() => throw new NotImplementedException();
+            public bool Contains(T item) => throw new NotImplementedException();
+            public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
+            public bool Remove(T item) => throw new NotImplementedException();
+            public int Count => 1;
+            public bool IsReadOnly => true;
+        }
+
+        private class BreakingSingleElementReadOnlyCollection<T> : IReadOnlyCollection<T>
+        {
+            private readonly T _element;
+
+            public BreakingSingleElementReadOnlyCollection(T element)
+            {
+                _element = element;
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                yield return _element;
+                throw new Exception($"{nameof(MoreEnumerable.TrySingle)} should not have attempted to consume a second element.");
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public int Count => 1;
         }
     }
 }
