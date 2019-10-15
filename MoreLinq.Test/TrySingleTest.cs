@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using NUnit.Framework.Interfaces;
+
 namespace MoreLinq.Test
 {
     using System;
@@ -53,7 +55,7 @@ namespace MoreLinq.Test
             Assert.AreEqual(value, 10);
         }
 
-        [TestCaseSource(nameof(_singletonCollectionTestCases))]
+        [TestCaseSource(nameof(SingletonCollectionTestCases))]
         public void TrySingleWithSingletonCollections<T>(IEnumerable<T> collection, T result)
         {
             var (cardinality, value) = collection.TrySingle("zero", "one", "many");
@@ -62,10 +64,10 @@ namespace MoreLinq.Test
             Assert.AreEqual(value, result);
         }
 
-        private static object[] _singletonCollectionTestCases =
+        static readonly ITestCaseData[] SingletonCollectionTestCases =
         {
-            new object[] { new BreakingSingleElementCollection<int>(10), 10 },
-            new object[] { new BreakingSingleElementReadOnlyCollection<int>(20), 20 }
+            new TestCaseData(new BreakingSingleElementCollection<int>(10), 10),
+            new TestCaseData(new BreakingSingleElementReadOnlyCollection<int>(20), 20)
         };
 
         [TestCase(SourceKind.Sequence)]
