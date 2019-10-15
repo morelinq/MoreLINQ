@@ -171,7 +171,7 @@ namespace MoreLinq.Test
             public bool IsReadOnly => true;
         }
 
-        private class BreakingSingleElementReadOnlyCollection<T> : IReadOnlyCollection<T>
+        sealed class BreakingSingleElementReadOnlyCollection<T> : IReadOnlyCollection<T>
         {
             readonly T _element;
 
