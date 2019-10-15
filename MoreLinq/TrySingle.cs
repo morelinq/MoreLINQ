@@ -66,6 +66,7 @@ namespace MoreLinq
         /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
         /// implementation optimizes by checking the number of elements in
         /// the underlying sequence.</remarks>
+
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
