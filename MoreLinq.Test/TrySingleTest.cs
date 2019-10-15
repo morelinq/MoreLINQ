@@ -98,42 +98,6 @@ namespace MoreLinq.Test
             Assert.AreEqual(default(int), value);
         }
 
-        [Test]
-        public void TrySingleOptimizesForList()
-        {
-            var list = new BreakingList<int>();
-
-            var (cardinality, value) = list.TrySingle("zero", "one", "many");
-            Assert.AreEqual("zero", cardinality);
-            Assert.AreEqual(default(int), value);
-
-            list = new BreakingList<int>(new List<int> { 1 });
-            (cardinality, value) = list.TrySingle("zero", "one", "many");
-            Assert.AreEqual("one", cardinality);
-            Assert.AreEqual(1, value);
-
-            list = new BreakingList<int>(new List<int> { 1, 2 });
-            (cardinality, value) = list.TrySingle("zero", "one", "many");
-            Assert.AreEqual("many", cardinality);
-            Assert.AreEqual(default(int), value);
-        }
-
-        [Test]
-        public void TrySingleOptimizesForCollection()
-        {
-            var coll = new BreakingCollection<int>();
-
-            var (cardinality, value) = coll.TrySingle("zero", "one", "many");
-            Assert.AreEqual("zero", cardinality);
-            Assert.AreEqual(default(int), value);
-
-            coll = new BreakingCollection<int>(new List<int> {1, 2});
-
-            (cardinality, value) = coll.TrySingle("zero", "one", "many");
-            Assert.AreEqual("many", cardinality);
-            Assert.AreEqual(default(int), value);
-        }
-
         [TestCase(0, "zero")]
         [TestCase(1, "one")]
         [TestCase(2, "many")]
@@ -146,14 +110,13 @@ namespace MoreLinq.Test
             }
         }
 
-        sealed class BreakingSingleElementCollection<T> : ICollection<T>
+        class BreakingSingleElementCollectionBase<T> : IEnumerable<T>
         {
             readonly T _element;
 
-            public BreakingSingleElementCollection(T element)
-            {
-                _element = element;
-            }
+            protected BreakingSingleElementCollectionBase(T element) => _element = element;
+
+            public int Count => 1;
 
             public IEnumerator<T> GetEnumerator()
             {
@@ -162,32 +125,25 @@ namespace MoreLinq.Test
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+
+        sealed class BreakingSingleElementCollection<T> :
+            BreakingSingleElementCollectionBase<T>, ICollection<T>
+        {
+            public BreakingSingleElementCollection(T element) : base(element) {}
+
             public void Add(T item) => throw new NotImplementedException();
             public void Clear() => throw new NotImplementedException();
             public bool Contains(T item) => throw new NotImplementedException();
             public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
             public bool Remove(T item) => throw new NotImplementedException();
-            public int Count => 1;
             public bool IsReadOnly => true;
         }
 
-        sealed class BreakingSingleElementReadOnlyCollection<T> : IReadOnlyCollection<T>
+        sealed class BreakingSingleElementReadOnlyCollection<T> :
+            BreakingSingleElementCollectionBase<T>, IReadOnlyCollection<T>
         {
-            readonly T _element;
-
-            public BreakingSingleElementReadOnlyCollection(T element)
-            {
-                _element = element;
-            }
-
-            public IEnumerator<T> GetEnumerator()
-            {
-                yield return _element;
-                throw new Exception($"{nameof(MoreEnumerable.TrySingle)} should not have attempted to consume a second element.");
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-            public int Count => 1;
+            public BreakingSingleElementReadOnlyCollection(T element) : base(element) {}
         }
     }
 }

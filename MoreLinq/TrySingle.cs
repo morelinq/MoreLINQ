@@ -74,55 +74,37 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            switch (source)
+            switch (source.TryGetCollectionCount())
             {
-                case IReadOnlyCollection<T> readOnlyCollection:
-                    return TrySingleForReadOnlyCollection(readOnlyCollection);
-                case ICollection<T> collection:
-                    return TrySingleForCollection(collection);
+                case int count:
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            return resultSelector(zero, default);
+                        case 1:
+                            T item;
+                            switch (source)
+                            {
+                                case IReadOnlyList<T> list: item = list[0]; break;
+                                case IList<T> list: item = list[0]; break;
+                                default: item = source.First(); break;
+                            }
+                            return resultSelector(one, item);
+                        default:
+                            return resultSelector(many, default);
+                    }
+                }
                 default:
-                    return TrySingleForEnumerable(source);
-            }
-
-            TResult TrySingleForReadOnlyCollection(IReadOnlyCollection<T> theCollection)
-            {
-                switch (theCollection.Count)
                 {
-                    case 0:
-                        return resultSelector(zero, default);
-                    case 1:
-                        return resultSelector(one,
-                            theCollection is IReadOnlyList<T> theList ? theList[0]
-                                                                      : theCollection.First());
-                    default:
-                        return resultSelector(many, default);
-                }
-            }
-
-            TResult TrySingleForCollection(ICollection<T> theCollection)
-            {
-                switch (theCollection.Count)
-                {
-                    case 0:
-                        return resultSelector(zero, default);
-                    case 1:
-                        return resultSelector(one,
-                            theCollection is IList<T> theList ? theList[0]
-                                                              : theCollection.First());
-                    default:
-                        return resultSelector(many, default);
-                }
-            }
-
-            TResult TrySingleForEnumerable(IEnumerable<T> theEnumerable)
-            {
-                using (var e = theEnumerable.GetEnumerator())
-                {
-                    if (!e.MoveNext())
-                        return resultSelector(zero, default);
-                    var current = e.Current;
-                    return !e.MoveNext() ? resultSelector(one, current)
-                                         : resultSelector(many, default);
+                    using (var e = source.GetEnumerator())
+                    {
+                        if (!e.MoveNext())
+                            return resultSelector(zero, default);
+                        var current = e.Current;
+                        return !e.MoveNext() ? resultSelector(one, current)
+                            : resultSelector(many, default);
+                    }
                 }
             }
         }
