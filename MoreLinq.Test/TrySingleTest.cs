@@ -148,7 +148,7 @@ namespace MoreLinq.Test
 
         private class BreakingSingleElementCollection<T> : ICollection<T>
         {
-            private readonly T _element;
+            readonly T _element;
 
             public BreakingSingleElementCollection(T element)
             {
