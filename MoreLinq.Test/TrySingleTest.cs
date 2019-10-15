@@ -146,7 +146,7 @@ namespace MoreLinq.Test
             }
         }
 
-        private class BreakingSingleElementCollection<T> : ICollection<T>
+        sealed class BreakingSingleElementCollection<T> : ICollection<T>
         {
             readonly T _element;
 
