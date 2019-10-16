@@ -34,9 +34,9 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void TrySingleWithEmptySource(SourceKind kind)
         {
-            var arrayWithNone = new int?[0].ToSourceKind(kind);
+            var source = new int?[0].ToSourceKind(kind);
 
-            var (cardinality, value) = arrayWithNone.TrySingle("zero", "one", "many");
+            var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
             Assert.AreEqual(cardinality, "zero");
             Assert.IsNull(value);
@@ -47,18 +47,18 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.BreakingReadOnlyList)]
         public void TrySingleWithSingleton(SourceKind kind)
         {
-            var arrayWithOne = new int?[] { 10 }.ToSourceKind(kind);
+            var source = new int?[] { 10 }.ToSourceKind(kind);
 
-            var (cardinality, value) = arrayWithOne.TrySingle("zero", "one", "many");
+            var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
             Assert.AreEqual(cardinality, "one");
             Assert.AreEqual(value, 10);
         }
 
         [TestCaseSource(nameof(SingletonCollectionTestCases))]
-        public void TrySingleWithSingletonCollections<T>(IEnumerable<T> collection, T result)
+        public void TrySingleWithSingletonCollections<T>(IEnumerable<T> source, T result)
         {
-            var (cardinality, value) = collection.TrySingle("zero", "one", "many");
+            var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
             Assert.AreEqual(cardinality, "one");
             Assert.AreEqual(value, result);
@@ -77,9 +77,9 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.BreakingReadOnlyCollection)]
         public void TrySingleWithMoreThanOne(SourceKind kind)
         {
-            var arrayWithMultiple = new int?[] { 10, 20 }.ToSourceKind(kind);
+            var source = new int?[] { 10, 20 }.ToSourceKind(kind);
 
-            var (cardinality, value) = arrayWithMultiple.TrySingle("zero", "one", "many");
+            var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
             Assert.AreEqual(cardinality, "many");
             Assert.IsNull(value);
