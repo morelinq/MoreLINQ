@@ -144,7 +144,7 @@ namespace MoreLinq
                             return resultSelector(zero, default);
                         var current = e.Current;
                         return !e.MoveNext() ? resultSelector(one, current)
-                            : resultSelector(many, default);
+                                             : resultSelector(many, default);
                     }
                 }
             }
