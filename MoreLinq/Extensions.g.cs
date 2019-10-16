@@ -6567,7 +6567,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class TrySingleExtension
     {
-
         /// <summary>
         /// Attempts to retrieve and project the only element of a sequence,
         /// similar to <see cref="Enumerable.Single{T}(IEnumerable{T})"/>.
@@ -6606,9 +6605,8 @@ namespace MoreLinq.Extensions
 
         public static (TCardinality Cardinality, T Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
-                TCardinality zero,
-                TCardinality one,
-                TCardinality many)             => MoreEnumerable.            TrySingle(source, zero, one, many);
+                TCardinality zero, TCardinality one, TCardinality many)             => MoreEnumerable.            TrySingle(source, zero, one, many);
+
         /// <summary>
         /// Attempts to retrieve and project the only element of a sequence,
         /// similar to <see cref="Enumerable.Single{T}(IEnumerable{T})"/>.
