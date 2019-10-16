@@ -56,7 +56,7 @@ namespace MoreLinq.Test
         }
 
         [TestCaseSource(nameof(SingletonCollectionTestCases))]
-        public void TrySingleWithSingletonCollections<T>(IEnumerable<T> source, T result)
+        public void TrySingleWithSingletonCollection<T>(IEnumerable<T> source, T result)
         {
             var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
