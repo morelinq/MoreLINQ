@@ -210,5 +210,17 @@ namespace MoreLinq.Test
 
             Assert.That(count, Is.EqualTo(1));
         }
+
+        [Test]
+        public void SafeToDisposeDuringOnNext()
+        {
+            var subject = new Subject<int>();
+            IDisposable subscription = null;
+            var action = new Action(() => subscription.Dispose());
+            subscription = subject.Subscribe(_ => action());
+            subject.OnNext(42);
+            action = BreakingAction.WithoutArguments;
+            subject.OnNext(42);
+        }
     }
 }

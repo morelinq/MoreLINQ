@@ -23,12 +23,12 @@ namespace MoreLinq.Reactive
 
     sealed class Subject<T> : IObservable<T>, IObserver<T>
     {
-        List<IObserver<T>> _observers;
+        List<Observer> _observers;
         bool _completed;
         Exception _error;
 
         bool HasObservers => (_observers?.Count ?? 0) > 0;
-        List<IObserver<T>> Observers => _observers ?? (_observers = new List<IObserver<T>>());
+        List<Observer> Observers => _observers ?? (_observers = new List<Observer>());
 
         bool IsMuted => _completed || _error != null;
 
@@ -48,17 +48,60 @@ namespace MoreLinq.Reactive
                 return Disposable.Nop;
             }
 
-            Observers.Add(observer);
-            return Delegate.Disposable(() => Observers.Remove(observer));
+            Observers.Add(new Observer(observer));
+
+            return Delegate.Disposable(() =>
+            {
+                var observers = Observers;
+                for (var i = 0; i < observers.Count; i++)
+                {
+                    if (observers[i].Is(observer))
+                    {
+                        if (_shouldDeleteObserver)
+                            observers[i].Delete();
+                        else
+                            observers.RemoveAt(i);
+                        break;
+                    }
+                }
+            });
         }
+
+        bool _shouldDeleteObserver;
 
         public void OnNext(T value)
         {
             if (!HasObservers)
                 return;
 
-            foreach (var observer in Observers)
-                observer.OnNext(value);
+            var observers = Observers;
+
+            // An observer can dispose its subscription during the call to
+            // OnNext but the observers collection cannot be modified while
+            // its being iterated. Set a flag around iteration to indicate
+            // that observer that dispose their subscription should be marked
+            // for deletion.
+
+            _shouldDeleteObserver = true;
+
+            try
+            {
+                foreach (var observer in observers)
+                    observer.OnNext(value);
+            }
+            finally
+            {
+                _shouldDeleteObserver = false;
+
+                // Remove any observers that were marked for deletion during
+                // iteration.
+
+                for (var i = observers.Count - 1; i >= 0; i--)
+                {
+                    if (observers[i].IsDeleted)
+                        observers.RemoveAt(i);
+                }
+            }
         }
 
         public void OnError(Exception error) =>
@@ -86,6 +129,28 @@ namespace MoreLinq.Reactive
 
             foreach (var observer in observers)
                 action(observer, value);
+        }
+
+        /// <summary>
+        /// An entry record holding an <see cref="IObserver{T}"/> along with a
+        /// flag indicating whether the entry is marked for deletion or not.
+        /// </summary>
+
+        sealed class Observer : IObserver<T>
+        {
+            readonly IObserver<T> _observer;
+
+            public Observer(IObserver<T> observer) =>
+                _observer = observer;
+
+            public bool Is(IObserver<T> other) => _observer == other;
+
+            public bool IsDeleted { get; private set; }
+            public void Delete() => IsDeleted = true;
+
+            public void OnCompleted()            { if (!IsDeleted) _observer.OnCompleted();  }
+            public void OnError(Exception error) { if (!IsDeleted) _observer.OnError(error); }
+            public void OnNext(T value)          { if (!IsDeleted) _observer.OnNext(value);  }
         }
     }
 }
