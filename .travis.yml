@@ -19,6 +19,8 @@ addons:
     packages:
     - dotnet-hostfxr-1.0.1
     - dotnet-sharedframework-microsoft.netcore.app-1.0.5
+    - dotnet-runtime-2.0.9
+    - dotnet-runtime-2.1
 
 before_install:
   - dotnet --info
