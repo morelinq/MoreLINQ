@@ -53,6 +53,14 @@ namespace MoreLinq.Reactive
             return Delegate.Disposable(() =>
             {
                 var observers = Observers;
+
+                // Could do the following to find the index of the
+                // the observer:
+                //
+                // var i = observers.FindIndex(o => o == observer);
+                //
+                // but it would require a closure allocation.
+
                 for (var i = 0; i < observers.Count; i++)
                 {
                     if (observers[i] == observer)
