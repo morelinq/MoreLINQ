@@ -109,11 +109,7 @@ namespace MoreLinq.Reactive
                 // Remove any observers that were marked for deletion during
                 // iteration.
 
-                for (var i = observers.Count - 1; i >= 0; i--)
-                {
-                    if (observers[i] == null)
-                        observers.RemoveAt(i);
-                }
+                observers.RemoveAll(o => o == null);
             }
         }
 
