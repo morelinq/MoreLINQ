@@ -5,9 +5,9 @@ os:
 osx_image: xcode8.3
 solution: MoreLinq.sln
 mono: 5.0.1
-dist: xenial
+dist: bionic
 sudo: required
-dotnet: 2.2.203
+dotnet: 3.0.100
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
@@ -51,4 +51,5 @@ script:
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.1/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp3.0/MoreLinq.Test.dll
   - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe
