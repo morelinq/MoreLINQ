@@ -23,7 +23,6 @@ addons:
     - dotnet-runtime-2.1
 
 before_install:
-  - dotnet --info
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
       # Handle too many files on OS X
@@ -38,6 +37,7 @@ before_install:
       wget --retry-connrefused --waitretry=1 -O /tmp/dn21.pkg 'https://download.visualstudio.microsoft.com/download/pr/9314da31-774c-4d2b-8743-998f2a21f5ab/bc918ca05ab6b650f2991b205c04f623/dotnet-runtime-2.1.13-osx-x64.pkg'
       sudo installer -pkg /tmp/dn21.pkg -target /
     fi
+  - dotnet --info
 
 install:
   - dotnet restore
