@@ -19,5 +19,5 @@ else
     configs="$1"
 fi
 for c in $configs; do
-    echo dotnet build --no-restore -c $c
+    dotnet build --no-restore -c $c
 done
