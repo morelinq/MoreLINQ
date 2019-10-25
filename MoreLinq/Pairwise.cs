@@ -55,17 +55,16 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                using (var e = source.GetEnumerator())
-                {
-                    if (!e.MoveNext())
-                        yield break;
+                using var e = source.GetEnumerator();
 
-                    var previous = e.Current;
-                    while (e.MoveNext())
-                    {
-                        yield return resultSelector(previous, e.Current);
-                        previous = e.Current;
-                    }
+                if (!e.MoveNext())
+                    yield break;
+
+                var previous = e.Current;
+                while (e.MoveNext())
+                {
+                    yield return resultSelector(previous, e.Current);
+                    previous = e.Current;
                 }
             }
         }

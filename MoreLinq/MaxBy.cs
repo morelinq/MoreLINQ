@@ -308,34 +308,33 @@ namespace MoreLinq
 
             IEnumerable<TSource> Extrema()
             {
-                using (var e = source.GetEnumerator())
+                using var e = source.GetEnumerator();
+
+                if (!e.MoveNext())
+                    return new List<TSource>();
+
+                var store = extrema.New();
+                extrema.Add(ref store, limit, e.Current);
+                var extremaKey = selector(e.Current);
+
+                while (e.MoveNext())
                 {
-                    if (!e.MoveNext())
-                        return new List<TSource>();
-
-                    var store = extrema.New();
-                    extrema.Add(ref store, limit, e.Current);
-                    var extremaKey = selector(e.Current);
-
-                    while (e.MoveNext())
+                    var item = e.Current;
+                    var key = selector(item);
+                    var comparison = comparer(key, extremaKey);
+                    if (comparison > 0)
                     {
-                        var item = e.Current;
-                        var key = selector(item);
-                        var comparison = comparer(key, extremaKey);
-                        if (comparison > 0)
-                        {
-                            extrema.Restart(ref store);
-                            extrema.Add(ref store, limit, item);
-                            extremaKey = key;
-                        }
-                        else if (comparison == 0)
-                        {
-                            extrema.Add(ref store, limit, item);
-                        }
+                        extrema.Restart(ref store);
+                        extrema.Add(ref store, limit, item);
+                        extremaKey = key;
                     }
-
-                    return extrema.GetEnumerable(store);
+                    else if (comparison == 0)
+                    {
+                        extrema.Add(ref store, limit, item);
+                    }
                 }
+
+                return extrema.GetEnumerable(store);
             }
         }
 

@@ -41,32 +41,31 @@ namespace MoreLinq
 
             return _(); IEnumerable<IList<TSource>> _()
             {
-                using (var iter = source.GetEnumerator())
+                using var iter = source.GetEnumerator();
+
+                // generate the first window of items
+                var window = new TSource[size];
+                int i;
+                for (i = 0; i < size && iter.MoveNext(); i++)
+                    window[i] = iter.Current;
+
+                if (i < size)
+                    yield break;
+
+                // return the first window (whatever size it may be)
+                yield return window;
+
+                // generate the next window by shifting forward by one item
+                while (iter.MoveNext())
                 {
-                    // generate the first window of items
-                    var window = new TSource[size];
-                    int i;
-                    for (i = 0; i < size && iter.MoveNext(); i++)
-                        window[i] = iter.Current;
-
-                    if (i < size)
-                        yield break;
-
-                    // return the first window (whatever size it may be)
-                    yield return window;
-
-                    // generate the next window by shifting forward by one item
-                    while (iter.MoveNext())
-                    {
-                        // NOTE: If we used a circular queue rather than a list,
-                        //       we could make this quite a bit more efficient.
-                        //       Sadly the BCL does not offer such a collection.
-                        var newWindow = new TSource[size];
-                        Array.Copy(window, 1, newWindow, 0, size - 1);
-                        newWindow[size - 1] = iter.Current;
-                        yield return newWindow;
-                        window = newWindow;
-                    }
+                    // NOTE: If we used a circular queue rather than a list,
+                    //       we could make this quite a bit more efficient.
+                    //       Sadly the BCL does not offer such a collection.
+                    var newWindow = new TSource[size];
+                    Array.Copy(window, 1, newWindow, 0, size - 1);
+                    newWindow[size - 1] = iter.Current;
+                    yield return newWindow;
+                    window = newWindow;
                 }
             }
         }

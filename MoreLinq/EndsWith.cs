@@ -82,8 +82,8 @@ namespace MoreLinq
 
             bool Impl(IEnumerable<T> snd, int count)
             {
-                using (var firstIter = first.TakeLast(count).GetEnumerator())
-                    return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                using var firstIter = first.TakeLast(count).GetEnumerator();
+                return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
             }
         }
     }

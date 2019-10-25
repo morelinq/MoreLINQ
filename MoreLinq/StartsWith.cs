@@ -82,10 +82,8 @@ namespace MoreLinq
 
             comparer ??= EqualityComparer<T>.Default;
 
-            using (var firstIter = first.GetEnumerator())
-            {
-                return second.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
-            }
+            using var firstIter = first.GetEnumerator();
+            return second.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
         }
     }
 }
