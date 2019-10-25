@@ -58,37 +58,69 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            switch (source)
             {
-                TSource[] bucket = null;
-                var count = 0;
-
-                foreach (var item in source)
+                case ICollection<TSource> collection when collection.Count < size:
                 {
-                    if (bucket == null)
+                    return _(); IEnumerable<TResult> _()
                     {
-                        bucket = new TSource[size];
+                        var bucket = new TSource[collection.Count];
+                        collection.CopyTo(bucket, 0);
+                        yield return resultSelector(bucket);
                     }
-
-                    bucket[count++] = item;
-
-                    // The bucket is fully buffered before it's yielded
-                    if (count != size)
-                    {
-                        continue;
-                    }
-
-                    yield return resultSelector(bucket);
-
-                    bucket = null;
-                    count = 0;
                 }
-
-                // Return the last bucket with all remaining elements
-                if (bucket != null && count > 0)
+                case IReadOnlyList<TSource> list when list.Count < size:
                 {
-                    Array.Resize(ref bucket, count);
-                    yield return resultSelector(bucket);
+                    return _(); IEnumerable<TResult> _()
+                    {
+                        var bucket = new TSource[list.Count];
+                        for (var index = 0; index < list.Count; index++)
+                            bucket[index] = list[index];
+                        yield return resultSelector(bucket);
+                    }
+                }
+                case IReadOnlyCollection<TSource> collection when collection.Count < size:
+                {
+                    return _(); IEnumerable<TResult> _()
+                    {
+                        var bucket = new TSource[collection.Count];
+                        var i = 0;
+                        foreach (var item in collection)
+                            bucket[i++] = item;
+                        yield return resultSelector(bucket);
+                    }
+                }
+                default:
+                {
+                    return _(); IEnumerable<TResult> _()
+                    {
+                        TSource[] bucket = null;
+                        var count = 0;
+
+                        foreach (var item in source)
+                        {
+                            if (bucket == null)
+                                bucket = new TSource[size];
+
+                            bucket[count++] = item;
+
+                            // The bucket is fully buffered before it's yielded
+                            if (count != size)
+                                continue;
+
+                            yield return resultSelector(bucket);
+
+                            bucket = null;
+                            count = 0;
+                        }
+
+                        // Return the last bucket with all remaining elements
+                        if (bucket != null && count > 0)
+                        {
+                            Array.Resize(ref bucket, count);
+                            yield return resultSelector(bucket);
+                        }
+                    }
                 }
             }
         }

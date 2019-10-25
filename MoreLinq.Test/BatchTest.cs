@@ -87,5 +87,27 @@ namespace MoreLinq.Test
         {
             new BreakingSequence<object>().Batch(1);
         }
+
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void BatchCollectionSmallerThanSize(SourceKind kind)
+        {
+            var xs = new[] { 1, 2, 3, 4, 5 };
+            var result = xs.ToSourceKind(kind).Batch(xs.Length * 2);
+            using var reader = result.Read();
+            reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
+            reader.ReadEnd();
+        }
+
+        [Test]
+        public void BatchReadOnlyCollectionSmallerThanSize()
+        {
+            var collection = ReadOnlyCollection.From(1, 2, 3, 4, 5);
+            var result = collection.Batch(collection.Count * 2);
+            using var reader = result.Read();
+            reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
+            reader.ReadEnd();
+        }
     }
 }
