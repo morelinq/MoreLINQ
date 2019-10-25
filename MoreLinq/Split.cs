@@ -182,7 +182,7 @@ namespace MoreLinq
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            comparer = comparer ?? EqualityComparer<TSource>.Default;
+            comparer ??= EqualityComparer<TSource>.Default;
             return Split(source, item => comparer.Equals(item, separator), count, resultSelector);
         }
 

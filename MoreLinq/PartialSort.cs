@@ -109,7 +109,7 @@ namespace MoreLinq
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, IComparer<T> comparer, OrderByDirection direction)
         {
-            comparer = comparer ?? Comparer<T>.Default;
+            comparer ??= Comparer<T>.Default;
             if (direction == OrderByDirection.Descending)
                 comparer = new ReverseComparer<T>(comparer);
             return source.PartialSort(count, comparer);
@@ -213,7 +213,7 @@ namespace MoreLinq
             IComparer<TKey> comparer,
             OrderByDirection direction)
         {
-            comparer = comparer ?? Comparer<TKey>.Default;
+            comparer ??= Comparer<TKey>.Default;
             if (direction == OrderByDirection.Descending)
                 comparer = new ReverseComparer<TKey>(comparer);
             return source.PartialSortBy(count, keySelector, comparer);

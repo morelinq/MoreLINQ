@@ -71,7 +71,7 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            comparer ??= EqualityComparer<T>.Default;
 
             List<T> secondList;
             return second.TryGetCollectionCount() is int secondCount

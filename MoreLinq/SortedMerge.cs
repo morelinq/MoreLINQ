@@ -73,7 +73,7 @@ namespace MoreLinq
             if (otherSequences.Length == 0)
                 return source; // optimization for when otherSequences is empty
 
-            comparer = comparer ?? Comparer<TSource>.Default;
+            comparer ??= Comparer<TSource>.Default;
 
             // define an precedence function based on the comparer and direction
             // this is a function that will return True if (b) should precede (a)
