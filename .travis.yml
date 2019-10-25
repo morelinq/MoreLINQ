@@ -54,7 +54,7 @@ script:
         echo "System.Linq import found, failing the build!" >&2
         exit 1
     fi
-  - ./build.sh /v:m /p:Configuration=$CONFIGURATION
+  - ./build.sh $CONFIGURATION
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
   - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.1/MoreLinq.Test.dll
