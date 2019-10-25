@@ -212,7 +212,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
+            comparer ??= Comparer<TKey>.Default;
             return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => comparer.Compare(x, y));
         }
 
@@ -254,7 +254,7 @@ namespace MoreLinq
                 {
                     protected override IEnumerable<T> GetSomeEnumerable(List<T> store) => store;
                     protected override int Count(List<T> store) => store?.Count ?? 0;
-                    protected override void Push(ref List<T> store, T item) => (store ?? (store = new List<T>())).Add(item);
+                    protected override void Push(ref List<T> store, T item) => (store ??= new List<T>()).Add(item);
                     protected override bool TryPop(ref List<T> store) => false;
                 }
 
@@ -262,7 +262,7 @@ namespace MoreLinq
                 {
                     protected override IEnumerable<T> GetSomeEnumerable(Queue<T> store) => store;
                     protected override int Count(Queue<T> store) => store?.Count ?? 0;
-                    protected override void Push(ref Queue<T> store, T item) => (store ?? (store = new Queue<T>())).Enqueue(item);
+                    protected override void Push(ref Queue<T> store, T item) => (store ??= new Queue<T>()).Enqueue(item);
                     protected override bool TryPop(ref Queue<T> store) { store.Dequeue(); return true; }
                 }
             }

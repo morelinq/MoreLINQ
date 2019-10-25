@@ -80,7 +80,7 @@ namespace MoreLinq
                 return false;
             }
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            comparer ??= EqualityComparer<T>.Default;
 
             using (var firstIter = first.GetEnumerator())
             {
