@@ -93,20 +93,19 @@ namespace MoreLinq
             Func<TState, TSource, TState> transformation,
             Func<IEnumerator<TSource>, (bool, TState)> seeder)
         {
-            using (var e = source.GetEnumerator())
+            using var e = source.GetEnumerator();
+
+            var (seeded, aggregator) = seeder(e);
+
+            if (!seeded)
+                yield break;
+
+            yield return aggregator;
+
+            while (e.MoveNext())
             {
-                var (seeded, aggregator) = seeder(e);
-
-                if (!seeded)
-                    yield break;
-
+                aggregator = transformation(aggregator, e.Current);
                 yield return aggregator;
-
-                while (e.MoveNext())
-                {
-                    aggregator = transformation(aggregator, e.Current);
-                    yield return aggregator;
-                }
             }
         }
     }
