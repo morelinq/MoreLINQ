@@ -110,9 +110,8 @@ namespace MoreLinq
             int count, IComparer<T> comparer, OrderByDirection direction)
         {
             comparer = comparer ?? Comparer<T>.Default;
-            if (direction == OrderByDirection.Descending) {
+            if (direction == OrderByDirection.Descending)
                 comparer = new ReverseComparer<T>(comparer);
-            }
             return source.PartialSort(count, comparer);
         }
 
@@ -215,9 +214,8 @@ namespace MoreLinq
             OrderByDirection direction)
         {
             comparer = comparer ?? Comparer<TKey>.Default;
-            if (direction == OrderByDirection.Descending) {
+            if (direction == OrderByDirection.Descending)
                 comparer = new ReverseComparer<TKey>(comparer);
-            }
             return source.PartialSortBy(count, keySelector, comparer);
         }
 
