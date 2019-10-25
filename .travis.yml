@@ -40,7 +40,6 @@ before_install:
   - dotnet --info
 
 install:
-  - dotnet restore
   - npm install -g eclint
 
 before_script:
