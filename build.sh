@@ -2,6 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 dotnet restore
+dotnet tool restore
 codegen() {
     dest="$1"
     printf "Generating extensions wrappers (%s)..." "$1"
