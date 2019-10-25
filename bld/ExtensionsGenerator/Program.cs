@@ -41,9 +41,6 @@ namespace MoreLinq.ExtensionsGenerator
             var usings = new List<string>();
             var noClassLead = false;
 
-            Exception MissingArgValue() =>
-                new InvalidOperationException("Missing argument value.");
-
             using (var arg = args.GetEnumerator())
             {
                 while (arg.MoveNext())
@@ -78,12 +75,16 @@ namespace MoreLinq.ExtensionsGenerator
                             break;
                     }
                 }
+
+                static Exception MissingArgValue() =>
+                    new InvalidOperationException("Missing argument value.");
             }
 
-            Func<string, bool> PredicateFromPattern(string pattern, bool @default) =>
-                string.IsNullOrEmpty(pattern)
-                ? delegate { return @default; }
-                : new Func<string, bool>(new Regex(pattern).IsMatch);
+            static Func<string, bool>
+                PredicateFromPattern(string pattern, bool @default) =>
+                    string.IsNullOrEmpty(pattern)
+                    ? delegate { return @default; }
+                    : new Func<string, bool>(new Regex(pattern).IsMatch);
 
             var includePredicate = PredicateFromPattern(includePattern, true);
             var excludePredicate = PredicateFromPattern(excludePattern, false);
@@ -320,22 +321,24 @@ namespace MoreLinq.Extensions
         {
             return Walk(root ?? throw new ArgumentNullException(nameof(root)));
 
-            TypeKey Walk(TypeSyntax ts) =>
-                ts is GenericNameSyntax gns
-                ? new GenericTypeKey(gns.Identifier.ToString(),
-                                     ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk)))
-                : ts is IdentifierNameSyntax ins
-                ? abbreviator?.Invoke(ins.Identifier.ValueText) ?? new SimpleTypeKey(ins.ToString())
-                : ts is PredefinedTypeSyntax pts
-                ? new SimpleTypeKey(pts.ToString())
-                : ts is ArrayTypeSyntax ats
-                ? new ArrayTypeKey(Walk(ats.ElementType),
-                                   ImmutableList.CreateRange(from rs in ats.RankSpecifiers select rs.Rank))
-                : ts is NullableTypeSyntax nts
-                ? new NullableTypeKey(Walk(nts.ElementType))
-                : ts is TupleTypeSyntax tts
-                ? (TypeKey) new TupleTypeKey(ImmutableList.CreateRange(from te in tts.Elements select Walk(te.Type)))
-                : throw new NotSupportedException("Unhandled type: " + ts);
+            TypeKey Walk(TypeSyntax ts) => ts switch
+            {
+                PredefinedTypeSyntax pts => new SimpleTypeKey(pts.ToString()),
+                NullableTypeSyntax nts   => new NullableTypeKey(Walk(nts.ElementType)),
+                IdentifierNameSyntax ins => abbreviator?.Invoke(ins.Identifier.ValueText)
+                                            ?? new SimpleTypeKey(ins.ToString()),
+                GenericNameSyntax gns =>
+                    new GenericTypeKey(gns.Identifier.ToString(),
+                                       ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk))),
+                ArrayTypeSyntax ats =>
+                    new ArrayTypeKey(Walk(ats.ElementType),
+                                     ImmutableList.CreateRange(from rs in ats.RankSpecifiers
+                                                               select rs.Rank)),
+                TupleTypeSyntax tts =>
+                    new TupleTypeKey(ImmutableList.CreateRange(from te in tts.Elements
+                                                               select Walk(te.Type))),
+                _ => throw new NotSupportedException("Unhandled type: " + ts)
+            };
         }
 
         static T Read<T>(IEnumerator<T> e, Func<Exception> errorFactory = null)
