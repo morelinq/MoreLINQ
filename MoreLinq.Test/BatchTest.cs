@@ -88,20 +88,28 @@ namespace MoreLinq.Test
             new BreakingSequence<object>().Batch(1);
         }
 
-        [TestCase(SourceKind.BreakingCollection)]
-        [TestCase(SourceKind.BreakingList)]
-        [TestCase(SourceKind.BreakingReadOnlyList)]
-        public void BatchCollectionSmallerThanSize(SourceKind kind)
+        [TestCase(SourceKind.BreakingCollection  , 0)]
+        [TestCase(SourceKind.BreakingList        , 0)]
+        [TestCase(SourceKind.BreakingReadOnlyList, 0)]
+        [TestCase(SourceKind.BreakingCollection  , 1)]
+        [TestCase(SourceKind.BreakingList        , 1)]
+        [TestCase(SourceKind.BreakingReadOnlyList, 1)]
+        [TestCase(SourceKind.BreakingCollection  , 2)]
+        [TestCase(SourceKind.BreakingList        , 2)]
+        [TestCase(SourceKind.BreakingReadOnlyList, 2)]
+        public void BatchCollectionSmallerThanSize(SourceKind kind, int oversize)
         {
             var xs = new[] { 1, 2, 3, 4, 5 };
-            var result = xs.ToSourceKind(kind).Batch(xs.Length * 2);
+            var result = xs.ToSourceKind(kind).Batch(xs.Length + oversize);
             using var reader = result.Read();
             reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
             reader.ReadEnd();
         }
 
-        [Test]
-        public void BatchReadOnlyCollectionSmallerThanSize()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void BatchReadOnlyCollectionSmallerThanSize(int oversize)
         {
             var collection = ReadOnlyCollection.From(1, 2, 3, 4, 5);
             var result = collection.Batch(collection.Count * 2);
