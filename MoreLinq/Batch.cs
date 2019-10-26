@@ -60,7 +60,7 @@ namespace MoreLinq
 
             switch (source)
             {
-                case ICollection<TSource> collection when collection.Count < size:
+                case ICollection<TSource> collection when collection.Count <= size:
                 {
                     return _(); IEnumerable<TResult> _()
                     {
@@ -69,7 +69,7 @@ namespace MoreLinq
                         yield return resultSelector(bucket);
                     }
                 }
-                case IReadOnlyList<TSource> list when list.Count < size:
+                case IReadOnlyList<TSource> list when list.Count <= size:
                 {
                     return _(); IEnumerable<TResult> _()
                     {
@@ -79,7 +79,7 @@ namespace MoreLinq
                         yield return resultSelector(bucket);
                     }
                 }
-                case IReadOnlyCollection<TSource> collection when collection.Count < size:
+                case IReadOnlyCollection<TSource> collection when collection.Count <= size:
                 {
                     return _(); IEnumerable<TResult> _()
                     {
