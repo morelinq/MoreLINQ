@@ -305,7 +305,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            comparer = comparer ?? EqualityComparer<TKey>.Default;
+            comparer ??= EqualityComparer<TKey>.Default;
 
             List<IGrouping<TKey, TElement>> etc = null;
 
@@ -325,7 +325,7 @@ namespace MoreLinq
 
                 if (i < 0)
                 {
-                    etc = etc ?? new List<IGrouping<TKey, TElement>>();
+                    etc ??= new List<IGrouping<TKey, TElement>>();
                     etc.Add(e);
                 }
                 else

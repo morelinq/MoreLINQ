@@ -62,20 +62,18 @@ namespace MoreLinq
             return _(); IEnumerable<TSource> _()
             {
                 var aggregator = identity;
+                using var e = source.GetEnumerator();
 
-                using (var e = source.GetEnumerator())
+                if (e.MoveNext())
                 {
-                    if (e.MoveNext())
-                    {
-                        yield return aggregator;
-                        var current = e.Current;
+                    yield return aggregator;
+                    var current = e.Current;
 
-                        while (e.MoveNext())
-                        {
-                            aggregator = transformation(aggregator, current);
-                            yield return aggregator;
-                            current = e.Current;
-                        }
+                    while (e.MoveNext())
+                    {
+                        aggregator = transformation(aggregator, current);
+                        yield return aggregator;
+                        current = e.Current;
                     }
                 }
             }

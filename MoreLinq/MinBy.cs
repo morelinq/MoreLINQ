@@ -67,7 +67,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
+            comparer ??= Comparer<TKey>.Default;
             return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
         }
     }

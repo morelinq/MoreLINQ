@@ -28,7 +28,7 @@ namespace MoreLinq.Reactive
         Exception _error;
 
         bool HasObservers => (_observers?.Count ?? 0) > 0;
-        List<IObserver<T>> Observers => _observers ?? (_observers = new List<IObserver<T>>());
+        List<IObserver<T>> Observers => _observers ??= new List<IObserver<T>>();
 
         bool IsMuted => _completed || _error != null;
 
@@ -49,16 +49,68 @@ namespace MoreLinq.Reactive
             }
 
             Observers.Add(observer);
-            return Delegate.Disposable(() => Observers.Remove(observer));
+
+            return Delegate.Disposable(() =>
+            {
+                var observers = Observers;
+
+                // Could do the following to find the index of the
+                // the observer:
+                //
+                // var i = observers.FindIndex(o => o == observer);
+                //
+                // but it would require a closure allocation.
+
+                for (var i = 0; i < observers.Count; i++)
+                {
+                    if (observers[i] == observer)
+                    {
+                        if (_shouldDeleteObserver)
+                            observers[i] = null;
+                        else
+                            observers.RemoveAt(i);
+                        break;
+                    }
+                }
+            });
         }
+
+        bool _shouldDeleteObserver; // delete (null) or remove an observer?
 
         public void OnNext(T value)
         {
             if (!HasObservers)
                 return;
 
-            foreach (var observer in Observers)
-                observer.OnNext(value);
+            var observers = Observers;
+
+            // Set a flag around iteration to indicate that an observer that
+            // disposes their subscription should be marked for deletion
+            // instead of being removed from the list of observers. The actual
+            // removal is then deferred until after the iteration is complete.
+
+            _shouldDeleteObserver = true;
+
+            try
+            {
+                // DO NOT change the following loop into the for-each variant
+                // because an observer might dispose its subscription during
+                // the call to "OnNext" and List<T>'s enumerator will throw
+                // seeing that as a modification of the collection during
+                // enumeration.
+
+                for (var i = 0; i < observers.Count; i++)
+                    observers[i].OnNext(value);
+            }
+            finally
+            {
+                _shouldDeleteObserver = false;
+
+                // Remove any observers that were marked for deletion during
+                // iteration.
+
+                observers.RemoveAll(o => o == null);
+            }
         }
 
         public void OnError(Exception error) =>

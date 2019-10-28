@@ -198,5 +198,18 @@ namespace MoreLinq.Test
                                        new { Num =  9, Str =  "9" },
                                        new { Num = 10, Str = "10" });
         }
+
+        [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/616")]
+        public void Issue616()
+        {
+            var (first, last) =
+                Enumerable.Range(1, 10)
+                          .Aggregate(ds => ds.FirstAsync(),
+                                     ds => ds.LastAsync(),
+                                     ValueTuple.Create);
+
+            Assert.That(first, Is.EqualTo(1));
+            Assert.That(last, Is.EqualTo(10));
+        }
     }
 }

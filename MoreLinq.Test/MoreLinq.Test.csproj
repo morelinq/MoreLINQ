@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;netcoreapp2.1;net451</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;net451</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
@@ -15,7 +15,7 @@
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject>MoreLinq.Test.Program</StartupObject>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>8</LangVersion>
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
