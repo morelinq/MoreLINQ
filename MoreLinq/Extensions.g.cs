@@ -6592,10 +6592,7 @@ namespace MoreLinq.Extensions
         /// or its default value.</returns>
         /// <remarks>
         /// This operator uses immediate execution, but never consumes more
-        /// than two elements from the sequence. When the source sequence is a
-        /// <see cref="IList{T}"/> or a <see cref="ICollection{T}"/> then the
-        /// implementation optimizes by checking the number of elements in
-        /// the underlying sequence instead of iterating it.
+        /// than two elements from the sequence.
         /// </remarks>
 
         public static (TCardinality Cardinality, T Value)
@@ -6637,10 +6634,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>
         /// This operator uses immediate execution, but never consumes more
-        /// than two elements from the sequence. When the source sequence is an
-        /// <see cref="IList{T}"/> or a <see cref="ICollection{T}"/> then the
-        /// implementation optimizes by checking the number of elements in
-        /// the underlying sequence.
+        /// than two elements from the sequence.
         /// </remarks>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
