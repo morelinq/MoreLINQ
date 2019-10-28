@@ -103,25 +103,21 @@ namespace MoreLinq
 
             switch (source.TryGetCollectionCount())
             {
-                case int count:
+                case 0:
+                    return resultSelector(zero, default);
+                case 1:
                 {
-                    switch (count)
+                    T item;
+                    switch (source)
                     {
-                        case 0:
-                            return resultSelector(zero, default);
-                        case 1:
-                            T item;
-                            switch (source)
-                            {
-                                case IReadOnlyList<T> list: item = list[0]; break;
-                                case IList<T> list: item = list[0]; break;
-                                default: item = source.First(); break;
-                            }
-                            return resultSelector(one, item);
-                        default:
-                            return resultSelector(many, default);
+                        case IReadOnlyList<T> list: item = list[0]; break;
+                        case IList<T> list: item = list[0]; break;
+                        default: item = source.First(); break;
                     }
+                    return resultSelector(one, item);
                 }
+                case int _:
+                    return resultSelector(many, default);
                 default:
                 {
                     using (var e = source.GetEnumerator())
