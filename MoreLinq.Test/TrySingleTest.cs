@@ -124,7 +124,7 @@ namespace MoreLinq.Test
         [Test]
         public void TrySingleDoesNotConsumeMoreThanTwoElementsFromTheSequence()
         {
-            IEnumerable<int> TestSequence()
+            static IEnumerable<int> TestSequence()
             {
                 yield return 1;
                 yield return 2;
@@ -142,12 +142,9 @@ namespace MoreLinq.Test
         [TestCase(2, "many")]
         public void TrySingleEnumeratesOnceOnlyAndDisposes(int numberOfElements, string expectedCardinality)
         {
-            using (var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence())
-            {
-                var (cardinality, _) = seq.TrySingle("zero", "one", "many");
-                Assert.That(cardinality, Is.EqualTo(expectedCardinality));
-            }
+            using var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence();
+            var (cardinality, _) = seq.TrySingle("zero", "one", "many");
+            Assert.That(cardinality, Is.EqualTo(expectedCardinality));
         }
-
     }
 }

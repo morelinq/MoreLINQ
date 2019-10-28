@@ -107,30 +107,26 @@ namespace MoreLinq
                     return resultSelector(zero, default);
                 case 1:
                 {
-                    T item;
-                    switch (source)
+                    var item = source switch
                     {
-                        case IReadOnlyList<T> list: item = list[0]; break;
-                        case IList<T> list: item = list[0]; break;
-                        default: item = source.First(); break;
-                    }
+                        IReadOnlyList<T> list => list[0],
+                        IList<T> list => list[0],
+                        _ => source.First()
+                    };
                     return resultSelector(one, item);
                 }
                 case int _:
                     return resultSelector(many, default);
                 default:
                 {
-                    using (var e = source.GetEnumerator())
-                    {
-                        if (!e.MoveNext())
-                            return resultSelector(zero, default);
-                        var current = e.Current;
-                        return !e.MoveNext() ? resultSelector(one, current)
-                                             : resultSelector(many, default);
-                    }
+                    using var e = source.GetEnumerator();
+                    if (!e.MoveNext())
+                        return resultSelector(zero, default);
+                    var current = e.Current;
+                    return !e.MoveNext() ? resultSelector(one, current)
+                                         : resultSelector(many, default);
                 }
             }
         }
-
     }
 }
