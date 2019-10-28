@@ -24,17 +24,11 @@ namespace MoreLinq
     partial class MoreEnumerable
     {
         /// <summary>
-        /// Attempts to retrieve and project the only element of a sequence,
+        /// Returns a tuple with the cardinality of the sequence and the
+        /// single element in the sequence if it contains exactly one element.
         /// similar to <see cref="Enumerable.Single{T}(IEnumerable{T})"/>.
-        /// Unlike that extension method if the sequence contains zero or many
-        /// elements this operator doesn't throw an exception, rather it returns
-        /// a tuple containing the observed cardinality of the sequence and
-        /// either the single value (if only one element in the sequence) or
-        /// the default value of <typeparamref name="T"/>. This enables the
-        /// caller to differentiate between the case where a sequence contains
-        /// zero elements and many elements.</summary>
-        /// <param name="source">
-        /// The source sequence that will be tested for its cardinality.</param>
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
         /// <param name="zero">
         /// The value that is returned in the tuple if the sequence has zero
         /// elements.</param>
@@ -45,7 +39,7 @@ namespace MoreLinq
         /// The value that is returned in the tuple if the sequence has two or
         /// more elements.</param>
         /// <typeparam name="T">
-        /// The type of the elements of the sequence.</typeparam>
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
         /// <typeparam name="TCardinality">
         /// The type that expresses cardinality.</typeparam>
         /// <returns>
@@ -54,10 +48,11 @@ namespace MoreLinq
         /// or its default value.</returns>
         /// <remarks>
         /// This operator uses immediate execution, but never consumes more
-        /// than two elements from the sequence. When the source sequence is an
-        /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
+        /// than two elements from the sequence. When the source sequence is a
+        /// <see cref="IList{T}"/> or a <see cref="ICollection{T}"/> then the
         /// implementation optimizes by checking the number of elements in
-        /// the underlying sequence.</remarks>
+        /// the underlying sequence instead of iterating it.
+        /// </remarks>
 
         public static (TCardinality Cardinality, T Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
@@ -65,16 +60,11 @@ namespace MoreLinq
             TrySingle(source, zero, one, many, ValueTuple.Create);
 
         /// <summary>
-        /// Attempts to retrieve and project the only element of a sequence,
-        /// similar to <see cref="Enumerable.Single{T}(IEnumerable{T})"/>.
-        /// Unlike that extension method if the sequence contains zero or many
-        /// elements this operator doesn't throw an exception, rather it provides
-        /// the <paramref name="resultSelector"/> function with the observed
-        /// cardinality. This enables the caller to differentiate between the
-        /// case where a sequence contains zero elements and many elements.
+        /// Returns a result projected from the the cardinality of the sequence
+        /// and the single element in the sequence if it contains exactly one
+        /// element.
         /// </summary>
-        /// <param name="source">
-        /// The source sequence that will be tested for its cardinality.</param>
+        /// <param name="source">The source sequence.</param>
         /// <param name="zero">
         /// The value that is passed as the first argument to
         /// <paramref name="resultSelector" /> if the sequence has zero
@@ -88,25 +78,27 @@ namespace MoreLinq
         /// <paramref name="resultSelector" /> if the sequence has two or
         /// more elements.</param>
         /// <param name="resultSelector">
-        /// A function that is provided with the cardinality, and if the
-        /// sequence has just one element, the value of that element. Then
-        /// transforms the result to an instance of TResult.</param>
+        /// A function that receives the cardinality and, if the
+        /// sequence has just one element, the value of that element as
+        /// argument and projects a resulting value of type
+        /// <typeparamref name="TResult"/>.</param>
         /// <typeparam name="T">
-        /// The type of the elements of the sequence.</typeparam>
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
         /// <typeparam name="TCardinality">
         /// The type that expresses cardinality.</typeparam>
         /// <typeparam name="TResult">
-        /// The result type of the <paramref name="resultSelector"/> function.
-        /// </typeparam>
+        /// The type of the result value returned by the
+        /// <paramref name="resultSelector"/> function. </typeparam>
         /// <returns>
-        /// The value returned by the <paramref name="resultSelector"/>.
+        /// The value returned by <paramref name="resultSelector"/>.
         /// </returns>
         /// <remarks>
         /// This operator uses immediate execution, but never consumes more
         /// than two elements from the sequence. When the source sequence is an
-        /// <see cref="IList{T}"/> or <see cref="ICollection{T}"/> then the
+        /// <see cref="IList{T}"/> or a <see cref="ICollection{T}"/> then the
         /// implementation optimizes by checking the number of elements in
-        /// the underlying sequence.</remarks>
+        /// the underlying sequence.
+        /// </remarks>
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
