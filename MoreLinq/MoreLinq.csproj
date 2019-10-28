@@ -101,6 +101,7 @@
         - Transpose
         - TraverseBreadthFirst
         - TraverseDepthFirst
+        - TrySingle
         - Unfold
         - Window
         - WindowLeft
