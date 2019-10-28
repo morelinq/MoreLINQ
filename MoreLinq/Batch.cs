@@ -74,8 +74,8 @@ namespace MoreLinq
                     return _(); IEnumerable<TResult> _()
                     {
                         var bucket = new TSource[list.Count];
-                        for (var index = 0; index < list.Count; index++)
-                            bucket[index] = list[index];
+                        for (var i = 0; i < list.Count; i++)
+                            bucket[i] = list[i];
                         yield return resultSelector(bucket);
                     }
                 }
