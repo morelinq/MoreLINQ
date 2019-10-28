@@ -81,45 +81,40 @@ namespace MoreLinq
                 }
                 case IReadOnlyCollection<TSource> collection when collection.Count <= size:
                 {
-                    return _(); IEnumerable<TResult> _()
-                    {
-                        var bucket = new TSource[collection.Count];
-                        var i = 0;
-                        foreach (var item in collection)
-                            bucket[i++] = item;
-                        yield return resultSelector(bucket);
-                    }
+                    return Batch(collection.Count);
                 }
                 default:
                 {
-                    return _(); IEnumerable<TResult> _()
+                    return Batch(size);
+                }
+
+                IEnumerable<TResult> Batch(int size)
+                {
+                    TSource[] bucket = null;
+                    var count = 0;
+
+                    foreach (var item in source)
                     {
-                        TSource[] bucket = null;
-                        var count = 0;
+                        if (bucket == null)
+                            bucket = new TSource[size];
 
-                        foreach (var item in source)
-                        {
-                            if (bucket == null)
-                                bucket = new TSource[size];
+                        bucket[count++] = item;
 
-                            bucket[count++] = item;
+                        // The bucket is fully buffered before it's yielded
+                        if (count != size)
+                            continue;
 
-                            // The bucket is fully buffered before it's yielded
-                            if (count != size)
-                                continue;
+                        yield return resultSelector(bucket);
 
-                            yield return resultSelector(bucket);
+                        bucket = null;
+                        count = 0;
+                    }
 
-                            bucket = null;
-                            count = 0;
-                        }
-
-                        // Return the last bucket with all remaining elements
-                        if (bucket != null && count > 0)
-                        {
-                            Array.Resize(ref bucket, count);
-                            yield return resultSelector(bucket);
-                        }
+                    // Return the last bucket with all remaining elements
+                    if (bucket != null && count > 0)
+                    {
+                        Array.Resize(ref bucket, count);
+                        yield return resultSelector(bucket);
                     }
                 }
             }
