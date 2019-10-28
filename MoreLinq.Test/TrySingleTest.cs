@@ -38,8 +38,8 @@ namespace MoreLinq.Test
 
             var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-            Assert.AreEqual(cardinality, "zero");
-            Assert.IsNull(value);
+            Assert.That(cardinality, Is.EqualTo("zero"));
+            Assert.That(value, Is.Null);
         }
 
         [TestCase(SourceKind.Sequence)]
@@ -51,8 +51,8 @@ namespace MoreLinq.Test
 
             var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-            Assert.AreEqual(cardinality, "one");
-            Assert.AreEqual(value, 10);
+            Assert.That(cardinality, Is.EqualTo("one"));
+            Assert.That(value, Is.EqualTo(10));
         }
 
         [TestCaseSource(nameof(SingletonCollectionTestCases))]
@@ -60,8 +60,8 @@ namespace MoreLinq.Test
         {
             var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-            Assert.AreEqual(cardinality, "one");
-            Assert.AreEqual(value, result);
+            Assert.That(cardinality, Is.EqualTo("one"));
+            Assert.That(value, Is.EqualTo(result));
         }
 
         static readonly ITestCaseData[] SingletonCollectionTestCases =
@@ -117,8 +117,8 @@ namespace MoreLinq.Test
 
             var (cardinality, value) = source.TrySingle("zero", "one", "many");
 
-            Assert.AreEqual(cardinality, "many");
-            Assert.IsNull(value);
+            Assert.That(cardinality, Is.EqualTo("many"));
+            Assert.That(value, Is.Null);
         }
 
         [Test]
@@ -132,8 +132,9 @@ namespace MoreLinq.Test
             }
 
             var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");
-            Assert.AreEqual("many", cardinality);
-            Assert.AreEqual(default(int), value);
+
+            Assert.That(cardinality, Is.EqualTo("many"));
+            Assert.That(value, Is.EqualTo(0));
         }
 
         [TestCase(0, "zero")]
@@ -144,7 +145,7 @@ namespace MoreLinq.Test
             using (var seq = Enumerable.Range(1, numberOfElements).AsTestingSequence())
             {
                 var (cardinality, _) = seq.TrySingle("zero", "one", "many");
-                Assert.AreEqual(expectedCardinality, cardinality);
+                Assert.That(cardinality, Is.EqualTo(expectedCardinality));
             }
         }
 
