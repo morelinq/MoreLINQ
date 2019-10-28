@@ -674,9 +674,9 @@ This method has 3 overloads.
 
 ### TrySingle
 
-Attempts to return the only element of a sequence that has just one element.
-If the sequence has zero or multiple elements, then returns a value that
-indicates the cardinality of the result sequence.
+Returns the only element of a sequence that has just one element. If the
+sequence has zero or multiple elements, then returns a user-defined value
+that indicates the cardinality of the result sequence.
 
 This method has 2 overloads.
 
