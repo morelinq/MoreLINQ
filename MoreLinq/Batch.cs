@@ -58,37 +58,64 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            switch (source)
             {
-                TSource[] bucket = null;
-                var count = 0;
-
-                foreach (var item in source)
+                case ICollection<TSource> collection when collection.Count <= size:
                 {
-                    if (bucket == null)
+                    return _(); IEnumerable<TResult> _()
                     {
-                        bucket = new TSource[size];
+                        var bucket = new TSource[collection.Count];
+                        collection.CopyTo(bucket, 0);
+                        yield return resultSelector(bucket);
                     }
-
-                    bucket[count++] = item;
-
-                    // The bucket is fully buffered before it's yielded
-                    if (count != size)
+                }
+                case IReadOnlyList<TSource> list when list.Count <= size:
+                {
+                    return _(); IEnumerable<TResult> _()
                     {
-                        continue;
+                        var bucket = new TSource[list.Count];
+                        for (var i = 0; i < list.Count; i++)
+                            bucket[i] = list[i];
+                        yield return resultSelector(bucket);
                     }
-
-                    yield return resultSelector(bucket);
-
-                    bucket = null;
-                    count = 0;
+                }
+                case IReadOnlyCollection<TSource> collection when collection.Count <= size:
+                {
+                    return Batch(collection.Count);
+                }
+                default:
+                {
+                    return Batch(size);
                 }
 
-                // Return the last bucket with all remaining elements
-                if (bucket != null && count > 0)
+                IEnumerable<TResult> Batch(int size)
                 {
-                    Array.Resize(ref bucket, count);
-                    yield return resultSelector(bucket);
+                    TSource[] bucket = null;
+                    var count = 0;
+
+                    foreach (var item in source)
+                    {
+                        if (bucket == null)
+                            bucket = new TSource[size];
+
+                        bucket[count++] = item;
+
+                        // The bucket is fully buffered before it's yielded
+                        if (count != size)
+                            continue;
+
+                        yield return resultSelector(bucket);
+
+                        bucket = null;
+                        count = 0;
+                    }
+
+                    // Return the last bucket with all remaining elements
+                    if (bucket != null && count > 0)
+                    {
+                        Array.Resize(ref bucket, count);
+                        yield return resultSelector(bucket);
+                    }
                 }
             }
         }

@@ -62,6 +62,7 @@
       <Compile Include="EqualityComparer.cs" />
       <Compile Include="KeyValuePair.cs" />
       <Compile Include="Program.cs" />
+      <Compile Include="ReadOnlyCollection.cs" />
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
