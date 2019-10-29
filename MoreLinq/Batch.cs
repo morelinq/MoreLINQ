@@ -30,7 +30,8 @@ namespace MoreLinq
         /// <param name="size">Size of buckets.</param>
         /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results (buckets and bucket content).
+        /// This operator uses deferred execution and streams its results
+        /// (buckets are streamed but their content buffered).
         /// </remarks>
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
@@ -48,7 +49,8 @@ namespace MoreLinq
         /// <param name="resultSelector">The projection to apply to each bucket.</param>
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results (buckets and bucket content).
+        /// This operator uses deferred execution and streams its results
+        /// (buckets are streamed but their content buffered).
         /// </remarks>
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
