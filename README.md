@@ -418,6 +418,8 @@ Returns a sequence resulting from applying a function to each element in the
 source sequence and its predecessor, with the exception of the first element
 which is only returned as the predecessor of the second element
 
+This method has 2 overloads.
+
 ### PartialSort
 
 Combines `OrderBy` (where element is key) and `Take` in a single operation.
