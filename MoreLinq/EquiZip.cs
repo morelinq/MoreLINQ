@@ -168,6 +168,130 @@ namespace MoreLinq
             return EquiZipImpl(first, second, third, fourth, resultSelector);
         }
 
+        /// <summary>
+        /// Returns tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the two input sequences.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped = numbers.EquiZip(letters);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A),
+        /// (2, B), (3, C), (4, D) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2)> EquiZip<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+
+            return EquiZipImpl<T1, T2, object, object, (T1, T2)>(first, second, null, null, (a, b, _, _) => ValueTuple.Create(a, b));
+        }
+
+        /// <summary>
+        /// Returns tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the three input sequences.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var zipped = numbers.EquiZip(letters, chars);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A, a),
+        /// (2, B, b), (3, C, c), (4, D, d) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> EquiZip<T1, T2, T3>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+
+            return EquiZipImpl<T1, T2, T3, object, (T1, T2, T3)>(first, second, third, null, (a, b, c, _) => ValueTuple.Create(a, b, c));
+        }
+
+        /// <summary>
+        /// Returns tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the four input sequences.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var flags   = new[] { true, false, true, false };
+        /// var zipped = numbers.EquiZip(letters, chars, flags);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A, a, True),
+        /// (2, B, b, False), (3, C, c, True), (4, D, d, False) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> EquiZip<T1, T2, T3, T4>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth)
+        {
+            if (first == null) throw new ArgumentNullException(nameof(first));
+            if (second == null) throw new ArgumentNullException(nameof(second));
+            if (third == null) throw new ArgumentNullException(nameof(third));
+            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
+
+            return EquiZipImpl(first, second, third, fourth, ValueTuple.Create);
+        }
+
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
             IEnumerable<T1> s1,
             IEnumerable<T2> s2,
