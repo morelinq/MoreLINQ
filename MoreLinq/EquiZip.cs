@@ -201,7 +201,7 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            return EquiZipImpl<T1, T2, object, object, (T1, T2)>(first, second, null, null, (a, b, _, _) => ValueTuple.Create(a, b));
+            return EquiZipImpl<T1, T2, object, object, (T1, T2)>(first, second, null, null, (a, b, c, d) => ValueTuple.Create(a, b));
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (third == null) throw new ArgumentNullException(nameof(third));
 
-            return EquiZipImpl<T1, T2, T3, object, (T1, T2, T3)>(first, second, third, null, (a, b, c, _) => ValueTuple.Create(a, b, c));
+            return EquiZipImpl<T1, T2, T3, object, (T1, T2, T3)>(first, second, third, null, (a, b, c, d) => ValueTuple.Create(a, b, c));
         }
 
         /// <summary>
