@@ -57,15 +57,15 @@ namespace MoreLinq
             if (toIndex == fromIndex || count == 0)
                 return source;
 
-            bool hasMore = true;
-            bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
-
             return toIndex < fromIndex
                  ? _(toIndex, fromIndex - toIndex, count)
                  : _(fromIndex, count, toIndex - fromIndex);
 
             IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
+                bool hasMore = true;
+                bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
+
                 using (var e = source.GetEnumerator())
                 {
                     for (var i = 0; i < bufferStartIndex && MoveNext(e); i++)

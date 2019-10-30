@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 ./build.sh
-for v in 1.0 2.0 2.1; do
+for v in 1.0 2.0 2.1 3.0; do
     for c in Debug Release; do
         dotnet exec MoreLinq.Test/bin/$c/netcoreapp$v/MoreLinq.Test.dll
     done

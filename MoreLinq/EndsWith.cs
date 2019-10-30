@@ -71,7 +71,7 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            comparer ??= EqualityComparer<T>.Default;
 
             List<T> secondList;
             return second.TryGetCollectionCount() is int secondCount
@@ -82,8 +82,8 @@ namespace MoreLinq
 
             bool Impl(IEnumerable<T> snd, int count)
             {
-                using (var firstIter = first.TakeLast(count).GetEnumerator())
-                    return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                using var firstIter = first.TakeLast(count).GetEnumerator();
+                return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
             }
         }
     }

@@ -73,7 +73,7 @@ namespace MoreLinq
             if (otherSequences.Length == 0)
                 return source; // optimization for when otherSequences is empty
 
-            comparer = comparer ?? Comparer<TSource>.Default;
+            comparer ??= Comparer<TSource>.Default;
 
             // define an precedence function based on the comparer and direction
             // this is a function that will return True if (b) should precede (a)
@@ -98,43 +98,42 @@ namespace MoreLinq
 
             IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences)
             {
-                using (var disposables = new DisposableGroup<TSource>(sequences.Select(e => e.GetEnumerator()).Acquire()))
+                using var disposables = new DisposableGroup<TSource>(sequences.Select(e => e.GetEnumerator()).Acquire());
+
+                var iterators = disposables.Iterators;
+
+                // prime all of the iterators by advancing them to their first element (if any)
+                // NOTE: We start with the last index to simplify the removal of an iterator if
+                //       it happens to be terminal (no items) before we start merging
+                for (var i = iterators.Count - 1; i >= 0; i--)
                 {
-                    var iterators = disposables.Iterators;
+                    if (!iterators[i].MoveNext())
+                        disposables.Exclude(i);
+                }
 
-                    // prime all of the iterators by advancing them to their first element (if any)
-                    // NOTE: We start with the last index to simplify the removal of an iterator if
-                    //       it happens to be terminal (no items) before we start merging
-                    for (var i = iterators.Count - 1; i >= 0; i--)
+                // while all iterators have not yet been consumed...
+                while (iterators.Count > 0)
+                {
+                    var nextIndex = 0;
+                    var nextValue = disposables[0].Current;
+
+                    // find the next least element to return
+                    for (var i = 1; i < iterators.Count; i++)
                     {
-                        if (!iterators[i].MoveNext())
-                            disposables.Exclude(i);
-                    }
-
-                    // while all iterators have not yet been consumed...
-                    while (iterators.Count > 0)
-                    {
-                        var nextIndex = 0;
-                        var nextValue = disposables[0].Current;
-
-                        // find the next least element to return
-                        for (var i = 1; i < iterators.Count; i++)
+                        var anotherElement = disposables[i].Current;
+                        // determine which element follows based on ordering function
+                        if (precedenceFunc(nextValue, anotherElement))
                         {
-                            var anotherElement = disposables[i].Current;
-                            // determine which element follows based on ordering function
-                            if (precedenceFunc(nextValue, anotherElement))
-                            {
-                                nextIndex = i;
-                                nextValue = anotherElement;
-                            }
+                            nextIndex = i;
+                            nextValue = anotherElement;
                         }
-
-                        yield return nextValue; // next value in precedence order
-
-                        // advance iterator that yielded element, excluding it when consumed
-                        if (!iterators[nextIndex].MoveNext())
-                            disposables.Exclude(nextIndex);
                     }
+
+                    yield return nextValue; // next value in precedence order
+
+                    // advance iterator that yielded element, excluding it when consumed
+                    if (!iterators[nextIndex].MoveNext())
+                        disposables.Exclude(nextIndex);
                 }
             }
         }

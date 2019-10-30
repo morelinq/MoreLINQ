@@ -180,7 +180,7 @@ namespace MoreLinq
                 bool firstHasNext;
                 bool secondHasNext;
 
-                using (var e1 = first.GetEnumerator())
+                using var e1 = first.GetEnumerator();
                 using (var e2 = second.GetEnumerator())
                 {
                     do

@@ -77,8 +77,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
-            return _(); IEnumerable<int> _()
+            return _(comparer ?? Comparer<TKey>.Default);
+
+            IEnumerable<int> _(IComparer<TKey> comparer)
             {
                 source = source.ToArray(); // avoid enumerating source twice
 

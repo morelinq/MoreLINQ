@@ -50,36 +50,36 @@ namespace MoreLinq
             if (sequence == null)
                 throw new ArgumentNullException(nameof(sequence));
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
-            return _(); IEnumerable<KeyValuePair<T, int>> _()
+            return _(comparer ?? EqualityComparer<T>.Default);
+
+            IEnumerable<KeyValuePair<T, int>> _(IEqualityComparer<T> comparer)
             {
                 // This implementation could also have been written using a foreach loop,
                 // but it proved to be easier to deal with edge certain cases that occur
                 // (such as empty sequences) using an explicit iterator and a while loop.
 
-                using (var iter = sequence.GetEnumerator())
+                using var iter = sequence.GetEnumerator();
+
+                if (iter.MoveNext())
                 {
-                    if (iter.MoveNext())
+                    var prevItem = iter.Current;
+                    var runCount = 1;
+
+                    while (iter.MoveNext())
                     {
-                        var prevItem = iter.Current;
-                        var runCount = 1;
-
-                        while (iter.MoveNext())
+                        if (comparer.Equals(prevItem, iter.Current))
                         {
-                            if (comparer.Equals(prevItem, iter.Current))
-                            {
-                                ++runCount;
-                            }
-                            else
-                            {
-                                yield return new KeyValuePair<T, int>(prevItem, runCount);
-                                prevItem = iter.Current;
-                                runCount = 1;
-                            }
+                            ++runCount;
                         }
-
-                        yield return new KeyValuePair<T, int>(prevItem, runCount);
+                        else
+                        {
+                            yield return new KeyValuePair<T, int>(prevItem, runCount);
+                            prevItem = iter.Current;
+                            runCount = 1;
+                        }
                     }
+
+                    yield return new KeyValuePair<T, int>(prevItem, runCount);
                 }
             }
         }

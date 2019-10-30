@@ -147,18 +147,18 @@ namespace MoreLinq
             if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
-            {
-                comparer = comparer ?? EqualityComparer<TKey>.Default;
+            return _(comparer ?? EqualityComparer<TKey>.Default);
 
+            IEnumerable<TResult> _(IEqualityComparer<TKey> comparer)
+            {
                 var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
                 var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
-                foreach (var a in alookup) {
+                foreach (var a in alookup)
                     yield return resultSelector(a.Key, a, blookup[a.Key]);
-                }
 
-                foreach (var b in blookup) {
+                foreach (var b in blookup)
+                {
                     if (alookup.Contains(b.Key))
                         continue;
                     // We can skip the lookup because we are iterating over keys not found in the first sequence

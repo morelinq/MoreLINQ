@@ -182,7 +182,6 @@ namespace MoreLinq
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <returns>The maximal element, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
@@ -206,7 +205,6 @@ namespace MoreLinq
         /// <returns>The maximal element, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
@@ -214,7 +212,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
+            comparer ??= Comparer<TKey>.Default;
             return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => comparer.Compare(x, y));
         }
 
@@ -256,7 +254,7 @@ namespace MoreLinq
                 {
                     protected override IEnumerable<T> GetSomeEnumerable(List<T> store) => store;
                     protected override int Count(List<T> store) => store?.Count ?? 0;
-                    protected override void Push(ref List<T> store, T item) => (store ?? (store = new List<T>())).Add(item);
+                    protected override void Push(ref List<T> store, T item) => (store ??= new List<T>()).Add(item);
                     protected override bool TryPop(ref List<T> store) => false;
                 }
 
@@ -264,7 +262,7 @@ namespace MoreLinq
                 {
                     protected override IEnumerable<T> GetSomeEnumerable(Queue<T> store) => store;
                     protected override int Count(Queue<T> store) => store?.Count ?? 0;
-                    protected override void Push(ref Queue<T> store, T item) => (store ?? (store = new Queue<T>())).Enqueue(item);
+                    protected override void Push(ref Queue<T> store, T item) => (store ??= new Queue<T>()).Enqueue(item);
                     protected override bool TryPop(ref Queue<T> store) { store.Dequeue(); return true; }
                 }
             }
@@ -310,34 +308,33 @@ namespace MoreLinq
 
             IEnumerable<TSource> Extrema()
             {
-                using (var e = source.GetEnumerator())
+                using var e = source.GetEnumerator();
+
+                if (!e.MoveNext())
+                    return new List<TSource>();
+
+                var store = extrema.New();
+                extrema.Add(ref store, limit, e.Current);
+                var extremaKey = selector(e.Current);
+
+                while (e.MoveNext())
                 {
-                    if (!e.MoveNext())
-                        return new List<TSource>();
-
-                    var store = extrema.New();
-                    extrema.Add(ref store, limit, e.Current);
-                    var extremaKey = selector(e.Current);
-
-                    while (e.MoveNext())
+                    var item = e.Current;
+                    var key = selector(item);
+                    var comparison = comparer(key, extremaKey);
+                    if (comparison > 0)
                     {
-                        var item = e.Current;
-                        var key = selector(item);
-                        var comparison = comparer(key, extremaKey);
-                        if (comparison > 0)
-                        {
-                            extrema.Restart(ref store);
-                            extrema.Add(ref store, limit, item);
-                            extremaKey = key;
-                        }
-                        else if (comparison == 0)
-                        {
-                            extrema.Add(ref store, limit, item);
-                        }
+                        extrema.Restart(ref store);
+                        extrema.Add(ref store, limit, item);
+                        extremaKey = key;
                     }
-
-                    return extrema.GetEnumerable(store);
+                    else if (comparison == 0)
+                    {
+                        extrema.Add(ref store, limit, item);
+                    }
                 }
+
+                return extrema.GetEnumerable(store);
             }
         }
 
