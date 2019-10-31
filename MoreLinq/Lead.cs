@@ -65,22 +65,13 @@ namespace MoreLinq
             return _(); IEnumerable<TResult> _()
             {
                 var leadQueue = new Queue<TSource>(offset);
-                var iter = source.GetEnumerator();
-
-                bool hasMore;
-                // first, prefetch and populate the lead queue with the next step of
-                // items to be streamed out to the consumer of the sequence
-                while ((hasMore = iter.MoveNext()) && leadQueue.Count < offset)
-                    leadQueue.Enqueue(iter.Current);
-                // next, while the source sequence has items, yield the result of
-                // the projection function applied to the top of queue and current item
-                while (hasMore)
+                foreach (var value in source)
                 {
-                    yield return resultSelector(leadQueue.Dequeue(), iter.Current);
-                    leadQueue.Enqueue(iter.Current);
-                    hasMore = iter.MoveNext();
+                    if (leadQueue.Count == offset)
+                        yield return resultSelector(leadQueue.Dequeue(), value);
+                    leadQueue.Enqueue(value);
                 }
-                // yield the remaining values in the lead queue with the default lead value
+
                 while (leadQueue.Count > 0)
                     yield return resultSelector(leadQueue.Dequeue(), defaultLeadValue);
             }
