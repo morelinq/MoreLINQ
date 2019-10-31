@@ -727,7 +727,7 @@ Returns a projection of tuples, where each tuple contains the N-th
 element from each of the argument sequences. The resulting sequence
 is as short as the shortest input sequence.
 
-This method has 3 overloads.
+This method has 6 overloads.
 
 
 ## Experimental Operators
