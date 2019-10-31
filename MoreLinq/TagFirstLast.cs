@@ -90,7 +90,7 @@ namespace MoreLinq
 
         public static IEnumerable<(TSource Value, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
         {
-            return TagFirstLast(source, (value, isFirst, isLast) => (value, isFirst, isLast));
+            return TagFirstLast(source, ValueTuple.Create);
         }
     }
 }
