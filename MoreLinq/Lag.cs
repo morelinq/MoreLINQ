@@ -66,31 +66,12 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                using var iter = source.GetEnumerator();
-
-                var i = offset;
                 var lagQueue = new Queue<TSource>(offset);
-                // until we progress far enough, the lagged value is defaultLagValue
-                var hasMore = true;
-                // NOTE: The if statement below takes advantage of short-circuit evaluation
-                //       to ensure we don't advance the iterator when we reach the lag offset.
-                //       Do not reorder the terms in the condition!
-                while (i-- > 0 && (hasMore = iter.MoveNext()))
+                foreach (var value in source)
                 {
-                    lagQueue.Enqueue(iter.Current);
-                    // until we reach the lag offset, the lagged value is the defaultLagValue
-                    yield return resultSelector(iter.Current, defaultLagValue);
-                }
-
-                if (hasMore) // check that we didn't consume the sequence yet
-                {
-                    // now the lagged value is derived from the sequence
-                    while (iter.MoveNext())
-                    {
-                        var lagValue = lagQueue.Dequeue();
-                        yield return resultSelector(iter.Current, lagValue);
-                        lagQueue.Enqueue(iter.Current);
-                    }
+                    var lagValue = lagQueue.Count == offset ? lagQueue.Dequeue() : defaultLagValue;
+                    yield return resultSelector(value, lagValue);
+                    lagQueue.Enqueue(value);
                 }
             }
         }
