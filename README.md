@@ -591,6 +591,8 @@ Returns a sequence resulting from applying a function to each element in the
 source sequence with additional parameters indicating whether the element is
 the first and/or last of the sequence
 
+This method has 2 overloads.
+
 ### TakeEvery
 
 Returns every N-th element of a source sequence
