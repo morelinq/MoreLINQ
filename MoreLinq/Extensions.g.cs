@@ -7151,6 +7151,82 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class ZipShortestExtension
     {
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the two input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped  = numbers.ZipShortest(letters);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// (1, "A"), (2, "B"), (3, "C") in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(TFirst, TSecond)> ZipShortest<TFirst, TSecond>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second)
+            => MoreEnumerable.ZipShortest(first, second);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <param name="first">First sequence</param>
+        /// <param name="second">Second sequence</param>
+        /// <param name="third">Third sequence</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the three input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var zipped  = numbers.ZipShortest(letters, chars);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// (1, "A", 'a'), (2, "B", 'b'), (3, "C", 'c') in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> ZipShortest<T1, T2, T3>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+            => MoreEnumerable.ZipShortest(first, second, third);
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences. The resulting sequence
@@ -7189,6 +7265,50 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst, TSecond, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first, second, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the four input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var flags   = new[] { true, false };
+        /// var zipped  = numbers.ZipShortest(letters, chars, flags);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// (1, "A", 'a', <see langword="true"/>), (2, "B", 'b', <see langword="false"/>) in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> ZipShortest<T1, T2, T3, T4>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
