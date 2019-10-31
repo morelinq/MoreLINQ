@@ -83,12 +83,12 @@ namespace MoreLinq
         /// var result = numbers.TagFirstLast();
         /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
-        /// <c>(Value = 123, IsFirst = <see langword="true"/>, IsLast = <see langword="false"/>)</c>,
-        /// <c>(Value = 456, IsFirst = <see langword="false"/>, IsLast = <see langword="false"/>)</c> and
-        /// <c>(Value = 789, IsFirst = <see langword="false"/>, IsLast = <see langword="true"/>)</c> in turn.
+        /// <c>(123, <see langword="true"/>, <see langword="false"/>)</c>,
+        /// <c>(456, <see langword="false"/>, <see langword="false"/>)</c> and
+        /// <c>(789, <see langword="false"/>, <see langword="true"/>)</c> in turn.
         /// </example>
 
-        public static IEnumerable<(TSource Value, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
+        public static IEnumerable<(TSource Item, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
         {
             return TagFirstLast(source, ValueTuple.Create);
         }
