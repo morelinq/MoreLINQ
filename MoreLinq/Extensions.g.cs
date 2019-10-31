@@ -5731,6 +5731,33 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class TagFirstLastExtension
     {
+
+        /// <summary>
+        /// Returns a sequence of tuples, where the N-th tuple contains the N-th
+        /// element of the source sequence and two booleans indicating whether the
+        /// element is the first and/or last.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 123, 456, 789 };
+        /// var result = numbers.TagFirstLast();
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// <c>(123, <see langword="true"/>, <see langword="false"/>)</c>,
+        /// <c>(456, <see langword="false"/>, <see langword="false"/>)</c> and
+        /// <c>(789, <see langword="false"/>, <see langword="true"/>)</c> in turn.
+        /// </example>
+
+        public static IEnumerable<(TSource Item, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
+            => MoreEnumerable.TagFirstLast(source);
         /// <summary>
         /// Returns a sequence resulting from applying a function to each
         /// element in the source sequence with additional parameters
