@@ -3105,6 +3105,37 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class LagExtension
     {
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a negative offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
+        /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
+
+        public static IEnumerable<(TSource Current, TSource Lagged)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
+            => MoreEnumerable.Lag(source, offset);
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a negative offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements prior to the lag offset, <paramref name="defaultLagValue"/> is used as the lagged value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
+        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
+        /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
+
+        public static IEnumerable<(TSource Current, TSource Lagged)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
+            => MoreEnumerable.Lag(source, offset, defaultLagValue);
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
         /// </summary>
