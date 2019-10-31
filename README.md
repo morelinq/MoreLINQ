@@ -719,7 +719,7 @@ will always be as long as the longest of input sequences where the
 default value of each of the shorter sequence element types is used
 for padding.
 
-This method has 3 overloads.
+This method has 6 overloads.
 
 ### ZipShortest
 
