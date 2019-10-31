@@ -5751,8 +5751,7 @@ namespace MoreLinq.Extensions
         /// var result = numbers.TagFirstLast();
         /// ]]></code>
         /// The <c>result</c> variable, when iterated over, will yield
-        /// <c>(123, True, False)</c>,
-        /// <c>(456, False, False)</c> and
+        /// <c>(123, True, False)</c>, <c>(456, False, False)</c> and
         /// <c>(789, False, True)</c> in turn.
         /// </example>
 
