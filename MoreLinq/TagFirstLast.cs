@@ -63,5 +63,34 @@ namespace MoreLinq
             return source.Index() // count-up
                          .CountDown(1, (e, cd) => resultSelector(e.Value, e.Key == 0, cd == 0));
         }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where the N-th tuple contains the N-th
+        /// element of the source sequence and two booleans indicating whether the
+        /// element is the first and/or last.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 123, 456, 789 };
+        /// var result = numbers.TagFirstLast();
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// <c>(Value = 123, IsFirst = <see langword="true"/>, IsLast = <see langword="false"/>)</c>,
+        /// <c>(Value = 456, IsFirst = <see langword="false"/>, IsLast = <see langword="false"/>)</c> and
+        /// <c>(Value = 789, IsFirst = <see langword="false"/>, IsLast = <see langword="true"/>)</c> in turn.
+        /// </example>
+
+        public static IEnumerable<(TSource Value, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
+        {
+            return TagFirstLast(source, (value, isFirst, isLast) => (value, isFirst, isLast));
+        }
     }
 }
