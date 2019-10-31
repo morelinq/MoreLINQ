@@ -198,10 +198,7 @@ namespace MoreLinq
 
         public static IEnumerable<(T1, T2)> EquiZip<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-
-            return EquiZipImpl<T1, T2, object, object, (T1, T2)>(first, second, null, null, (a, b, c, d) => ValueTuple.Create(a, b));
+            return first.EquiZip(second, ValueTuple.Create);
         }
 
         /// <summary>
@@ -239,11 +236,7 @@ namespace MoreLinq
             this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (third == null) throw new ArgumentNullException(nameof(third));
-
-            return EquiZipImpl<T1, T2, T3, object, (T1, T2, T3)>(first, second, third, null, (a, b, c, d) => ValueTuple.Create(a, b, c));
+            return first.EquiZip(second, third, ValueTuple.Create);
         }
 
         /// <summary>
@@ -284,12 +277,7 @@ namespace MoreLinq
             this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (third == null) throw new ArgumentNullException(nameof(third));
-            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-
-            return EquiZipImpl(first, second, third, fourth, ValueTuple.Create);
+            return first.EquiZip(second, third, fourth, ValueTuple.Create);
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
