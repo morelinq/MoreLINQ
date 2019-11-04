@@ -58,10 +58,10 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.TryAsListLike() is IListLike<T> listLike
-                    ? IterateList(listLike)
-                    : source.TryGetCollectionCount() is int collectionCount
-                        ? IterateCollection(collectionCount)
-                        : IterateSequence();
+                   ? IterateList(listLike)
+                   : source.TryGetCollectionCount() is int collectionCount
+                       ? IterateCollection(collectionCount)
+                       : IterateSequence();
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
             {
@@ -70,8 +70,8 @@ namespace MoreLinq
                 for (var i = 0; i < list.Count; i++)
                 {
                     var cd = list.Count - i <= count
-                            ? --countdown
-                            : (int?) null;
+                           ? --countdown
+                           : (int?) null;
                     yield return resultSelector(list[i], cd);
                 }
             }

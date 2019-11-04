@@ -1196,7 +1196,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">The source sequence.</param>
         /// <param name="count">Count of tail elements of <paramref name="source"/> to count down.</param>
         /// <returns>
-        /// A sequence of tuple containing elements from <paramref name="source"/> and their countdown.
+        /// A sequence of tuple with an element from <paramref name="source"/> and its countdown.
         /// For elements before the last <paramref name="count"/>, the countdown value is <c>null</c>.
         /// </returns>
         /// <remarks>
