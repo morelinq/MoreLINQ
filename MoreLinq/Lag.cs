@@ -107,7 +107,7 @@ namespace MoreLinq
         /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
         /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<(TSource Current, TSource Lagged)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
         {
             return Lag(source, offset, default, ValueTuple.Create);
         }
@@ -125,7 +125,7 @@ namespace MoreLinq
         /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
         /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<(TSource Current, TSource Lagged)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
         {
             return Lag(source, offset, defaultLagValue, ValueTuple.Create);
         }
