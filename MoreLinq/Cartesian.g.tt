@@ -60,6 +60,7 @@ namespace MoreLinq
             Arguments = args.Take(a.Count)
                             .Select(aa => new { aa.Number, aa.Ordinal })
                             .ToList(),
+            TypeParams = string.Join(", ", Enumerable.Range(1, a.Count).Select(i => $"T{i}"))
         };
 
     foreach (var o in overloads)
@@ -93,13 +94,13 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> Cartesian<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult>(
+        public static IEnumerable<TResult> Cartesian<<#=o.TypeParams#>, TResult>(
             this <#
         foreach (var arg in o.Arguments) { #>
 IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
             <#
         } #>
-Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult> resultSelector)
+Func<<#=o.TypeParams#>, TResult> resultSelector)
         {
 <#      foreach (var arg in o.Arguments) { #>
             if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
@@ -123,6 +124,34 @@ Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TRes
                         yield return resultSelector(<#= string.Join(", ", from x in o.Arguments select "item" + x.Number) #>);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of <#= o.Arity #> sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">The type of the elements of <paramref name="<#= arg.Ordinal #>"/>.</typeparam>
+<#      } #>
+<#      foreach (var arg in o.Arguments) {#>
+        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> sequence of elements.</param>
+<#      } #>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(<#=o.TypeParams#>)> Cartesian<<#=o.TypeParams#>>(
+            this <#=string.Join($",{Environment.NewLine}            ", from arg in o.Arguments select
+            $"IEnumerable<T{arg.Number}> {arg.Ordinal}")#>)
+        {
+            return Cartesian(<#= string.Join(", ", o.Arguments.Select(a => a.Ordinal)) #>);
         }
 <#  } #>
     }
