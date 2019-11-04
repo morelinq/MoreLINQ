@@ -319,47 +319,11 @@ namespace MoreLinq
             using var <#= arg.Ordinal #>Enumerator = new ZipEnumerator<T<#= arg.Number #>>(<#= arg.Ordinal #>Source.GetEnumerator(), nameof(<#= arg.Ordinal #>Source), <#= arg.Ordinal #>SourceConfiguration);
 <#} #>
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Enumerator<#= arg.Num < o.Count ? "," : "" #>
+                <#= arg.Ordinal #>Enumerator<#= arg.Num < o.Count ? "," : "))" #>
 <#}#>
-            };
-
-            for (;;)
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
 <# foreach (var arg in o.Arguments) { #>
                     <#= arg.Ordinal #>Enumerator.Current<#= arg.Num < o.Count ? "," : "" #>
@@ -367,8 +331,39 @@ namespace MoreLinq
                 );
             }
         }
-
 <#  } #>
+
+        private static bool MoveNext(params IZipEnumerator[] enumerators)
+        {
+            var hasNext = false;
+            IZipEnumerator equiStopper = null;
+
+            foreach (var enumerator in enumerators)
+            {
+                switch (enumerator.MoveNext())
+                {
+                    case ZipEnumeratorStatus.AskForStop:
+                        return false;
+                    case ZipEnumeratorStatus.AskForEquiStop:
+                        if (hasNext) // there is some sequences ahead
+                        {
+                            enumerator.ThrowToShort();
+                        }
+                        equiStopper = enumerator;
+                        break;
+                    case ZipEnumeratorStatus.Continue:
+                        equiStopper?.ThrowToShort();
+                        hasNext = true;
+                        break;
+                    case ZipEnumeratorStatus.EndOfStream:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            return hasNext;
+        }
     }
 
     internal interface IZipEnumerator
