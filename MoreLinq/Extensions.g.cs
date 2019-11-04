@@ -3192,6 +3192,37 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class LeadExtension
     {
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a positive offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
+        /// default(T) is used as the lead value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate Lead</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
+        /// <returns>The produced sequence of tuple</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lead<TSource>(this IEnumerable<TSource> source, int offset)
+            => MoreEnumerable.Lead(source, offset);
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a positive offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate Lead</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
+        /// <param name="defaultLeadValue">A default value supplied for the leading element when none is available</param>
+        /// <returns>The produced sequence of tuple</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lead<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue)
+            => MoreEnumerable.Lead(source, offset, defaultLeadValue);
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
         /// </summary>
