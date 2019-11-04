@@ -95,7 +95,7 @@ namespace MoreLinq
             this IEnumerable<T1> first,
             IEnumerable<T2> second)
         {
-            return Cartesian(first, second);
+            return Cartesian(first, second, ValueTuple.Create);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace MoreLinq
             IEnumerable<T2> second,
             IEnumerable<T3> third)
         {
-            return Cartesian(first, second, third);
+            return Cartesian(first, second, third, ValueTuple.Create);
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace MoreLinq
             IEnumerable<T3> third,
             IEnumerable<T4> fourth)
         {
-            return Cartesian(first, second, third, fourth);
+            return Cartesian(first, second, third, fourth, ValueTuple.Create);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace MoreLinq
             IEnumerable<T4> fourth,
             IEnumerable<T5> fifth)
         {
-            return Cartesian(first, second, third, fourth, fifth);
+            return Cartesian(first, second, third, fourth, fifth, ValueTuple.Create);
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace MoreLinq
             IEnumerable<T5> fifth,
             IEnumerable<T6> sixth)
         {
-            return Cartesian(first, second, third, fourth, fifth, sixth);
+            return Cartesian(first, second, third, fourth, fifth, sixth, ValueTuple.Create);
         }
 
         /// <summary>
@@ -635,7 +635,7 @@ namespace MoreLinq
             IEnumerable<T6> sixth,
             IEnumerable<T7> seventh)
         {
-            return Cartesian(first, second, third, fourth, fifth, sixth, seventh);
+            return Cartesian(first, second, third, fourth, fifth, sixth, seventh, ValueTuple.Create);
         }
 
         /// <summary>
@@ -776,7 +776,7 @@ namespace MoreLinq
             IEnumerable<T7> seventh,
             IEnumerable<T8> eighth)
         {
-            return Cartesian(first, second, third, fourth, fifth, sixth, seventh, eighth);
+            return Cartesian(first, second, third, fourth, fifth, sixth, seventh, eighth, ValueTuple.Create);
         }
     }
 }
