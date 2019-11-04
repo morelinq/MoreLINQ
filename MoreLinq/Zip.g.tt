@@ -1,0 +1,458 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Collections" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2019 Pierre Lando. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+<#
+    var overloads =
+        from args in new[]
+        {
+            new[]
+            {
+                new { Ordinal = "first"  , Arity = "one"   },
+                new { Ordinal = "second" , Arity = "two"   },
+                new { Ordinal = "third"  , Arity = "three" },
+                new { Ordinal = "fourth" , Arity = "four"  },
+                new { Ordinal = "fifth"  , Arity = "five"  },
+                new { Ordinal = "sixth"  , Arity = "six"   },
+                new { Ordinal = "seventh", Arity = "seven" },
+                new { Ordinal = "eighth" , Arity = "eight" },
+            }
+        }
+        select args.Select((a, i) => new
+        {
+            a.Ordinal,
+            a.Arity,
+            Count = i + 1,
+            Number = (i + 1).ToString(CultureInfo.InvariantCulture),
+        })
+        into args
+        select args.ToList() into args
+        from a in args.Skip(1)
+        select new
+        {
+            a.Arity,
+            a.Count,
+            Arguments = args.Take(a.Count)
+                            .Select(aa => new { aa.Number, Num = aa.Count, aa.Ordinal })
+                            .ToList(),
+            Types = string.Join(", ", Enumerable.Range(1, a.Count).Select(i => $"T{i}")),
+        };
+#>
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    static partial class MoreEnumerable
+    {
+<#  foreach (var o in overloads)
+    {
+#>
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> EquiZip<<#= o.Types#>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source,
+<#}#>
+            Func<<#= o.Types#>, TResult> resultSelector)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return CustomZip(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.ThrowOnShort,
+<#}#>
+                resultSelector);
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(<#= o.Types#>)> EquiZip<<#= o.Types#>>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source<#= arg.Num < o.Count ? "," : ")" #>
+<#}#>
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+
+            return CustomZip(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.ThrowOnShort,
+<#}#>
+                ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipLongest<<#= o.Types#>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source,
+<#}#>
+            Func<<#= o.Types#>, TResult> resultSelector)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return CustomZip(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.PaddingWith(default),
+<#}#>
+                resultSelector);
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(<#= o.Types#>)> ZipLongest<<#= o.Types#>>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source<#= arg.Num < o.Count ? "," : ")" #>
+<#}#>
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+
+            return CustomZip(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.PaddingWith(default),
+<#}#>
+                ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<<#= o.Types#>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source,
+<#}#>
+            Func<<#= o.Types#>, TResult> resultSelector)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return CustomZip(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.StopOnShort,
+<#}#>
+                resultSelector);
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(<#= o.Types#>)> ZipShortest<<#= o.Types#>>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source<#= arg.Num < o.Count ? "," : ")" #>
+<#}#>
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+
+            return CustomZip(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.StopOnShort,
+<#}#>
+                ValueTuple.Create);
+        }
+
+<#  } #>
+
+<#  foreach (var o in overloads)
+    {
+#>
+        internal static IEnumerable<TResult> CustomZip<<#= o.Types#>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>> <#= arg.Ordinal #>SourceConfiguration,
+<#}#>
+            Func<<#= o.Types#>, TResult> resultSelector)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            using var <#= arg.Ordinal #>Enumerator = new ZipEnumerator<T<#= arg.Number #>>(<#= arg.Ordinal #>Source.GetEnumerator(), nameof(<#= arg.Ordinal #>Source), <#= arg.Ordinal #>SourceConfiguration);
+<#} #>
+
+            var enumerators = new IZipEnumerator[]
+            {
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Enumerator<#= arg.Num < o.Count ? "," : "" #>
+<#}#>
+            };
+
+            for (;;)
+            {
+                var isEnd = true;
+                IZipEnumerator equiStopper = null;
+
+                foreach (var enumerator in enumerators)
+                {
+                    switch (enumerator.MoveNext())
+                    {
+                        case ZipEnumeratorStatus.AskForStop:
+                            yield break;
+                        case ZipEnumeratorStatus.AskForEquiStop:
+                            if (!isEnd) // there is some sequences ahead
+                            {
+                                enumerator.ThrowToShort();
+                            }
+                            equiStopper = enumerator;
+                            break;
+                        case ZipEnumeratorStatus.Continue:
+                            equiStopper?.ThrowToShort();
+                            isEnd = false;
+                            break;
+                        case ZipEnumeratorStatus.EndOfStream:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                if (isEnd)
+                {
+                    yield break;
+                }
+
+                yield return resultSelector(
+<# foreach (var arg in o.Arguments) { #>
+                    <#= arg.Ordinal #>Enumerator.Current<#= arg.Num < o.Count ? "," : "" #>
+<#}#>
+                );
+            }
+        }
+
+<#  } #>
+    }
+
+    internal interface IZipEnumerator
+    {
+        ZipEnumeratorStatus MoveNext();
+        void ThrowToShort();
+    }
+
+    internal class ZipEnumerator<T> : IZipEnumerator, IDisposable
+    {
+        private readonly ZipSourceConfiguration<T> _configuration;
+        private readonly string _name;
+        private IEnumerator<T> _source;
+
+        public ZipEnumerator(IEnumerator<T> source, string name, ZipSourceConfiguration<T> configuration)
+        {
+            _source = source;
+            _name = name;
+            _configuration = configuration;
+        }
+
+        public T Current => _source == null ? _configuration.PaddingValue : _source.Current;
+
+        public void Dispose() => _source?.Dispose();
+
+        public ZipEnumeratorStatus MoveNext()
+        {
+            if (_source?.MoveNext() == false)
+            {
+                _source.Dispose();
+                _source = null;
+            }
+
+            if (_source != null)
+            {
+                return ZipEnumeratorStatus.Continue;
+            }
+
+            switch (_configuration.Behavior)
+            {
+                case ZipEnumeratorBehavior.StopOnShort:
+                    return ZipEnumeratorStatus.AskForStop;
+                case ZipEnumeratorBehavior.Padding:
+                    return ZipEnumeratorStatus.EndOfStream;
+                case ZipEnumeratorBehavior.ThrowOnShort:
+                    return ZipEnumeratorStatus.AskForEquiStop;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public void Reset() => _source.Reset();
+
+        public void ThrowToShort() => throw new InvalidOperationException($"{_name} sequence too short.");
+    }
+
+    internal enum ZipEnumeratorBehavior
+    {
+        StopOnShort,
+        ThrowOnShort,
+        Padding
+    }
+
+    internal enum ZipEnumeratorStatus
+    {
+        AskForStop,
+        AskForEquiStop,
+        Continue,
+        EndOfStream
+    }
+
+    internal class ZipSourceConfiguration<T>
+    {
+        public static ZipSourceConfiguration<T> StopOnShort { get; } = new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.StopOnShort, default);
+        public static ZipSourceConfiguration<T> ThrowOnShort { get; } = new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.ThrowOnShort, default);
+        public static ZipSourceConfiguration<T> PaddingWith(T paddingValue) => new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.Padding, paddingValue);
+
+        ZipSourceConfiguration(ZipEnumeratorBehavior behavior, T paddingValue)
+        {
+            Behavior = behavior;
+            PaddingValue = paddingValue;
+        }
+
+        public ZipEnumeratorBehavior Behavior { get; }
+        public T PaddingValue { get; }
+    }
+}

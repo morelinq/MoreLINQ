@@ -171,6 +171,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
     </None>
+    <None Update="Zip.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Zip.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
@@ -234,6 +238,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Zip.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Zip.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
