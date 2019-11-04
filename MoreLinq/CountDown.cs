@@ -58,10 +58,10 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.TryAsListLike() is IListLike<T> listLike
-                ? IterateList(listLike)
-                : source.TryGetCollectionCount() is int collectionCount
-                    ? IterateCollection(collectionCount)
-                    : IterateSequence();
+                    ? IterateList(listLike)
+                    : source.TryGetCollectionCount() is int collectionCount
+                        ? IterateCollection(collectionCount)
+                        : IterateSequence();
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
             {
@@ -70,8 +70,8 @@ namespace MoreLinq
                 for (var i = 0; i < list.Count; i++)
                 {
                     var cd = list.Count - i <= count
-                        ? --countdown
-                        : (int?) null;
+                            ? --countdown
+                            : (int?) null;
                     yield return resultSelector(list[i], cd);
                 }
             }
@@ -109,7 +109,7 @@ namespace MoreLinq
         /// <param name="source">The source sequence.</param>
         /// <param name="count">Count of tail elements of <paramref name="source"/> to count down.</param>
         /// <returns>
-        /// A sequence of tuple containing elements from <paramref name="source"/> and their countdown.
+        /// A sequence of tuple with an element from <paramref name="source"/> and its countdown.
         /// For elements before the last <paramref name="count"/>, the countdown value is <c>null</c>.
         /// </returns>
         /// <remarks>
