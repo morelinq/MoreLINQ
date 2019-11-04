@@ -2110,53 +2110,16 @@ namespace MoreLinq
             using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
             using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
-                secondEnumerator
-            };
-
-            for (;;)
+                secondEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current
                 );
             }
         }
-
         internal static IEnumerable<TResult> CustomZip<T1, T2, T3, TResult>(
             this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
             IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
@@ -2167,47 +2130,11 @@ namespace MoreLinq
             using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
             using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
                 secondEnumerator,
-                thirdEnumerator
-            };
-
-            for (;;)
+                thirdEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current,
@@ -2215,7 +2142,6 @@ namespace MoreLinq
                 );
             }
         }
-
         internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
             IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
@@ -2228,48 +2154,12 @@ namespace MoreLinq
             using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
             using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
                 secondEnumerator,
                 thirdEnumerator,
-                fourthEnumerator
-            };
-
-            for (;;)
+                fourthEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current,
@@ -2278,7 +2168,6 @@ namespace MoreLinq
                 );
             }
         }
-
         internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, TResult>(
             this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
             IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
@@ -2293,49 +2182,13 @@ namespace MoreLinq
             using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
             using var fifthEnumerator = new ZipEnumerator<T5>(fifthSource.GetEnumerator(), nameof(fifthSource), fifthSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
                 secondEnumerator,
                 thirdEnumerator,
                 fourthEnumerator,
-                fifthEnumerator
-            };
-
-            for (;;)
+                fifthEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current,
@@ -2345,7 +2198,6 @@ namespace MoreLinq
                 );
             }
         }
-
         internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, T6, TResult>(
             this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
             IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
@@ -2362,50 +2214,14 @@ namespace MoreLinq
             using var fifthEnumerator = new ZipEnumerator<T5>(fifthSource.GetEnumerator(), nameof(fifthSource), fifthSourceConfiguration);
             using var sixthEnumerator = new ZipEnumerator<T6>(sixthSource.GetEnumerator(), nameof(sixthSource), sixthSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
                 secondEnumerator,
                 thirdEnumerator,
                 fourthEnumerator,
                 fifthEnumerator,
-                sixthEnumerator
-            };
-
-            for (;;)
+                sixthEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current,
@@ -2416,7 +2232,6 @@ namespace MoreLinq
                 );
             }
         }
-
         internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, T6, T7, TResult>(
             this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
             IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
@@ -2435,51 +2250,15 @@ namespace MoreLinq
             using var sixthEnumerator = new ZipEnumerator<T6>(sixthSource.GetEnumerator(), nameof(sixthSource), sixthSourceConfiguration);
             using var seventhEnumerator = new ZipEnumerator<T7>(seventhSource.GetEnumerator(), nameof(seventhSource), seventhSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
                 secondEnumerator,
                 thirdEnumerator,
                 fourthEnumerator,
                 fifthEnumerator,
                 sixthEnumerator,
-                seventhEnumerator
-            };
-
-            for (;;)
+                seventhEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current,
@@ -2491,7 +2270,6 @@ namespace MoreLinq
                 );
             }
         }
-
         internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
             this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
             IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
@@ -2512,8 +2290,7 @@ namespace MoreLinq
             using var seventhEnumerator = new ZipEnumerator<T7>(seventhSource.GetEnumerator(), nameof(seventhSource), seventhSourceConfiguration);
             using var eighthEnumerator = new ZipEnumerator<T8>(eighthSource.GetEnumerator(), nameof(eighthSource), eighthSourceConfiguration);
 
-            var enumerators = new IZipEnumerator[]
-            {
+            while (MoveNext(
                 firstEnumerator,
                 secondEnumerator,
                 thirdEnumerator,
@@ -2521,43 +2298,8 @@ namespace MoreLinq
                 fifthEnumerator,
                 sixthEnumerator,
                 seventhEnumerator,
-                eighthEnumerator
-            };
-
-            for (;;)
+                eighthEnumerator))
             {
-                var isEnd = true;
-                IZipEnumerator equiStopper = null;
-
-                foreach (var enumerator in enumerators)
-                {
-                    switch (enumerator.MoveNext())
-                    {
-                        case ZipEnumeratorStatus.AskForStop:
-                            yield break;
-                        case ZipEnumeratorStatus.AskForEquiStop:
-                            if (!isEnd) // there is some sequences ahead
-                            {
-                                enumerator.ThrowToShort();
-                            }
-                            equiStopper = enumerator;
-                            break;
-                        case ZipEnumeratorStatus.Continue:
-                            equiStopper?.ThrowToShort();
-                            isEnd = false;
-                            break;
-                        case ZipEnumeratorStatus.EndOfStream:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                if (isEnd)
-                {
-                    yield break;
-                }
-
                 yield return resultSelector(
                     firstEnumerator.Current,
                     secondEnumerator.Current,
@@ -2571,6 +2313,37 @@ namespace MoreLinq
             }
         }
 
+        private static bool MoveNext(params IZipEnumerator[] enumerators)
+        {
+            var hasNext = false;
+            IZipEnumerator equiStopper = null;
+
+            foreach (var enumerator in enumerators)
+            {
+                switch (enumerator.MoveNext())
+                {
+                    case ZipEnumeratorStatus.AskForStop:
+                        return false;
+                    case ZipEnumeratorStatus.AskForEquiStop:
+                        if (hasNext) // there is some sequences ahead
+                        {
+                            enumerator.ThrowToShort();
+                        }
+                        equiStopper = enumerator;
+                        break;
+                    case ZipEnumeratorStatus.Continue:
+                        equiStopper?.ThrowToShort();
+                        hasNext = true;
+                        break;
+                    case ZipEnumeratorStatus.EndOfStream:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            return hasNext;
+        }
     }
 
     internal interface IZipEnumerator
