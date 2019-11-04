@@ -148,7 +148,7 @@ Func<<#=o.TypeParams#>, TResult> resultSelector)
         /// </remarks>
 
         public static IEnumerable<(<#=o.TypeParams#>)> Cartesian<<#=o.TypeParams#>>(
-            this <#=string.Join($",{Environment.NewLine}            ", from arg in o.Arguments select
+            this <#=string.Join($",\r\n            ", from arg in o.Arguments select
             $"IEnumerable<T{arg.Number}> {arg.Ordinal}")#>)
         {
             return Cartesian(<#= string.Join(", ", o.Arguments.Select(a => a.Ordinal)) #>, ValueTuple.Create);
