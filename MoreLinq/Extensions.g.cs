@@ -1335,128 +1335,481 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class EquiZipExtension
     {
+
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. An exception is thrown
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
         /// <returns>
-        /// A sequence that contains elements of the two input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
         /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3, 4 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var zipped  = numbers.EquiZip(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
-        /// "2B", "3C", "4D" in turn.
-        /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
-        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
-            this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(first, second, resultSelector);
+        public static IEnumerable<(T1, T2)> EquiZip<T1, T2>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. An exception is thrown
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each triplet of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
         /// <returns>
-        /// A sequence that contains elements of the three input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
         /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3, 4 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
-        /// var zipped  = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
-        /// "2Bb", "3Cc", "4Dd" in turn.
-        /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+        public static IEnumerable<(T1, T2, T3)> EquiZip<T1, T2, T3>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource);
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> EquiZip<T1, T2, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            Func<T1, T2, TResult> resultSelector)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, resultSelector);
 
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4)> EquiZip<T1, T2, T3, T4>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third,
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(first, second, third, resultSelector);
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. An exception is thrown
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="fourth">The fourth sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each quadruplet of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
         /// <returns>
-        /// A sequence that contains elements of the four input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
         /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3, 4 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
-        /// var flags   = new[] { true, false, true, false };
-        /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
-        /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
-        /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5)> EquiZip<T1, T2, T3, T4, T5>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource);
 
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(first, second, third, fourth, resultSelector);
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6)> EquiZip<T1, T2, T3, T4, T5, T6>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            Func<T1, T2, T3, T4, T5, TResult> resultSelector)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> EquiZip<T1, T2, T3, T4, T5, T6, T7>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, T6, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> EquiZip<T1, T2, T3, T4, T5, T6, T7, T8>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, T6, T7, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, resultSelector);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
+            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource, resultSelector);
 
     }
 
@@ -6719,128 +7072,468 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class ZipLongestExtension
     {
+
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
         /// for padding.
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
         /// <returns>
-        /// A sequence that contains elements of the two input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = { 1, 2, 3 };
-        /// var letters = { "A", "B", "C", "D" };
-        /// var zipped = numbers.ZipLongest(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
-        /// "2B", "3C", "0D" in turn.
-        /// </example>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
-        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
-            this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(first, second, resultSelector);
+        public static IEnumerable<(T1, T2)> ZipLongest<T1, T2>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
         /// for padding.
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each triplet of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
         /// <returns>
-        /// A sequence that contains elements of the three input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var zipped  = numbers.ZipLongest(letters, chars, (n, l, c) => n + l + c);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
-        /// "2Bb", "3Cc", "0Dd", "0e" in turn.
-        /// </example>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+        public static IEnumerable<(T1, T2, T3)> ZipLongest<T1, T2, T3>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource);
 
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipLongest<T1, T2, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            Func<T1, T2, TResult> resultSelector)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4)> ZipLongest<T1, T2, T3, T4>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(first, second, third, resultSelector);
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
         /// for padding.
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="fourth">The fourth sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each quadruplet of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
         /// <returns>
-        /// A sequence that contains elements of the four input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var flags   = new[] { true, false, true, false, true, false };
-        /// var zipped  = numbers.ZipLongest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
-        /// "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False" in turn.
-        /// </example>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5)> ZipLongest<T1, T2, T3, T4, T5>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource);
 
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(first, second, third, fourth, resultSelector);
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6)> ZipLongest<T1, T2, T3, T4, T5, T6>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            Func<T1, T2, T3, T4, T5, TResult> resultSelector)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> ZipLongest<T1, T2, T3, T4, T5, T6, T7>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> ZipLongest<T1, T2, T3, T4, T5, T6, T7, T8>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, T7, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, resultSelector);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
+            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource, resultSelector);
 
     }
 
@@ -6849,29 +7542,19 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class ZipShortestExtension
     {
+
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
         /// is as short as the shortest input sequence.
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
-        /// </example>
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
@@ -6882,39 +7565,122 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(
-            this IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(first, second, resultSelector);
+        public static IEnumerable<(T1, T2)> ZipShortest<T1, T2>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> ZipShortest<T1, T2, T3>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
+        /// element from each of the input sequences. The resulting sequence
         /// is as short as the shortest input sequence.
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">First sequence</param>
-        /// <param name="second">Second sequence</param>
-        /// <param name="third">Third sequence</param>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each triplet of elements.</param>
+        /// Function to apply to each tuple of elements.</param>
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield
-        /// "98A", "100B", "102C", in turn.
-        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<T1, T2, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            Func<T1, T2, TResult> resultSelector)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> ZipShortest<T1, T2, T3, T4>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
@@ -6926,42 +7692,67 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(first, second, third, resultSelector);
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4, T5)> ZipShortest<T1, T2, T3, T4, T5>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
+        /// element from each of the input sequences. The resulting sequence
         /// is as short as the shortest input sequence.
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth sequence.</typeparam>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="fourth">The fourth sequence.</param>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each quadruplet of elements.</param>
+        /// Function to apply to each tuple of elements.</param>
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var flags   = new[] { true, false };
-        /// var zipped  = numbers.ZipShortest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield
-        /// "1AaTrue", "2BbFalse" in turn.
-        /// </example>
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
@@ -6973,12 +7764,316 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(first, second, third, fourth, resultSelector);
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6)> ZipShortest<T1, T2, T3, T4, T5, T6>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            Func<T1, T2, T3, T4, T5, TResult> resultSelector)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> ZipShortest<T1, T2, T3, T4, T5, T6, T7>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, T6, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> ZipShortest<T1, T2, T3, T4, T5, T6, T7, T8>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, T6, T7, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, resultSelector);
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
+            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource, resultSelector);
 
     }
 }
