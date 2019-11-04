@@ -60,8 +60,8 @@ namespace MoreLinq
             return source.TryAsListLike() is IListLike<T> listLike
                    ? IterateList(listLike)
                    : source.TryGetCollectionCount() is int collectionCount
-                       ? IterateCollection(collectionCount)
-                       : IterateSequence();
+                     ? IterateCollection(collectionCount)
+                     : IterateSequence();
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
             {
