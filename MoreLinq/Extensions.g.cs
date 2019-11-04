@@ -3118,7 +3118,7 @@ namespace MoreLinq.Extensions
         /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
         /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<(TSource Current, TSource Lagged)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
             => MoreEnumerable.Lag(source, offset);
 
         /// <summary>
@@ -3134,7 +3134,7 @@ namespace MoreLinq.Extensions
         /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
         /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<(TSource Current, TSource Lagged)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
             => MoreEnumerable.Lag(source, offset, defaultLagValue);
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
