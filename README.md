@@ -201,6 +201,8 @@ Provides a countdown counter for a given count of elements at the tail of the
 sequence where zero always represents the last element, one represents the
 second-last element, two represents the third-last element and so on.
 
+This method has 2 overloads.
+
 ### DistinctBy
 
 Returns all distinct elements of the given source, where "distinctness" is

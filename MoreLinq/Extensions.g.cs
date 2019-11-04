@@ -1184,6 +1184,30 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class CountDownExtension
     {
+
+        /// <summary>
+        /// Provides a countdown counter for a given count of elements at the
+        /// tail of the sequence where zero always represents the last element,
+        /// one represents the second-last element, two represents the
+        /// third-last element and so on.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of elements of <paramref name="source"/></typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="count">Count of tail elements of <paramref name="source"/> to count down.</param>
+        /// <returns>
+        /// A sequence of tuple with an element from <paramref name="source"/> and its countdown.
+        /// For elements before the last <paramref name="count"/>, the countdown value is <c>null</c>.
+        /// </returns>
+        /// <remarks>
+        /// This method uses deferred execution semantics and streams its
+        /// results. At most, <paramref name="count"/> elements of the source
+        /// sequence may be buffered at any one time unless
+        /// <paramref name="source"/> is a collection or a list.
+        /// </remarks>
+
+        public static IEnumerable<(T Item, int? CountDown)> CountDown<T>(this IEnumerable<T> source, int count)
+            => MoreEnumerable.CountDown(source, count);
         /// <summary>
         /// Provides a countdown counter for a given count of elements at the
         /// tail of the sequence where zero always represents the last element,
@@ -1201,7 +1225,7 @@ namespace MoreLinq.Extensions
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
