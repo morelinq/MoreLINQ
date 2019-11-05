@@ -101,11 +101,40 @@ namespace MoreLinq
 <#} #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
+            return _(); IEnumerable<TResult> _()
+            {
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.ThrowOnShort,
-<#}#>
-                resultSelector);
+                using var e<#= arg.Number #> = <#= arg.Ordinal #>Source.GetEnumerator();
+<#} #>
+
+                for (;;)
+                {
+                    if (e<#= o.Arguments.First().Number #>.MoveNext())
+                    {
+                        if (<# foreach (var arg in o.Arguments.Skip(1)) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " && " : "" #><#}#>)
+                        {
+                            yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? "," : "" #><#}#>);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (<# foreach (var arg in o.Arguments.Skip(1)) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " || " : "" #><#}#>)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -133,13 +162,9 @@ namespace MoreLinq
             <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source<#= arg.Num < o.Count ? "," : ")" #>
 <#}#>
         {
+            return EquiZip(
 <# foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
-<#} #>
-
-            return CustomZip(
-<# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.ThrowOnShort,
+                <#= arg.Ordinal #>Source,
 <#}#>
                 ValueTuple.Create);
         }
@@ -177,11 +202,37 @@ namespace MoreLinq
 <#} #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
+            return _(); IEnumerable<TResult> _()
+            {
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.PaddingWith(default),
+                IEnumerator<T<#= arg.Number #>> e<#= arg.Number #> = null;
+<#} #>
+
+                try
+                {
+<# foreach (var arg in o.Arguments) { #>
+                    e<#= arg.Number #> = <#= arg.Ordinal #>Source.GetEnumerator();
+<#} #>
+
+<# foreach (var arg in o.Arguments) { #>
+                    var v<#= arg.Number #> = default(T<#= arg.Number #>);
+<#} #>
+
+                    while (
+<# foreach (var arg in o.Arguments) { #>
+                        ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " | " : ")" #>
 <#}#>
-                resultSelector);
+                    {
+                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? "," : "" #><#}#>);
+                    }
+                }
+                finally
+                {
+<# foreach (var arg in o.Arguments) { #>
+                    e<#= arg.Number #>?.Dispose();
+<#} #>
+                }
+            }
         }
 
         /// <summary>
@@ -208,13 +259,9 @@ namespace MoreLinq
             <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source<#= arg.Num < o.Count ? "," : ")" #>
 <#}#>
         {
+            return ZipLongest(
 <# foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
-<#} #>
-
-            return CustomZip(
-<# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.PaddingWith(default),
+                <#= arg.Ordinal #>Source,
 <#}#>
                 ValueTuple.Create);
         }
@@ -257,11 +304,17 @@ namespace MoreLinq
 <#} #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
+            return _(); IEnumerable<TResult> _()
+            {
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.StopOnShort,
-<#}#>
-                resultSelector);
+                using var e<#= arg.Number #> = <#= arg.Ordinal #>Source.GetEnumerator();
+<#} #>
+
+                while (<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " && " : "" #><#}#>)
+                {
+                    yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? "," : "" #><#}#>);
+                }
+            }
         }
 
         /// <summary>
@@ -293,161 +346,34 @@ namespace MoreLinq
             <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source<#= arg.Num < o.Count ? "," : ")" #>
 <#}#>
         {
+            return ZipShortest(
 <# foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
-<#} #>
-
-            return CustomZip(
-<# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>>.StopOnShort,
+                <#= arg.Ordinal #>Source,
 <#}#>
                 ValueTuple.Create);
         }
 
 <#  } #>
-
-<#  foreach (var o in overloads)
-    {
-#>
-        internal static IEnumerable<TResult> CustomZip<<#= o.Types#>, TResult>(
-<# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source, ZipSourceConfiguration<T<#= arg.Number #>> <#= arg.Ordinal #>SourceConfiguration,
-<#}#>
-            Func<<#= o.Types#>, TResult> resultSelector)
+        static class ZipHelper
         {
-<# foreach (var arg in o.Arguments) { #>
-            using var <#= arg.Ordinal #>Enumerator = new ZipEnumerator<T<#= arg.Number #>>(<#= arg.Ordinal #>Source.GetEnumerator(), nameof(<#= arg.Ordinal #>Source), <#= arg.Ordinal #>SourceConfiguration);
-<#} #>
-
-            while (MoveNext(
-<# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>Enumerator<#= arg.Num < o.Count ? "," : "))" #>
-<#}#>
+            public static bool MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
             {
-                yield return resultSelector(
-<# foreach (var arg in o.Arguments) { #>
-                    <#= arg.Ordinal #>Enumerator.Current<#= arg.Num < o.Count ? "," : "" #>
-<#}#>
-                );
-            }
-        }
-<#  } #>
-
-        private static bool MoveNext(params IZipEnumerator[] enumerators)
-        {
-            var hasNext = false;
-            IZipEnumerator equiStopper = null;
-
-            foreach (var enumerator in enumerators)
-            {
-                switch (enumerator.MoveNext())
+                if (enumerator == null)
                 {
-                    case ZipEnumeratorStatus.AskForStop:
-                        return false;
-                    case ZipEnumeratorStatus.AskForEquiStop:
-                        if (hasNext) // there is some sequences ahead
-                        {
-                            enumerator.ThrowToShort();
-                        }
-                        equiStopper = enumerator;
-                        break;
-                    case ZipEnumeratorStatus.Continue:
-                        equiStopper?.ThrowToShort();
-                        hasNext = true;
-                        break;
-                    case ZipEnumeratorStatus.EndOfStream:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    return false;
                 }
-            }
 
-            return hasNext;
-        }
-    }
+                if (enumerator.MoveNext())
+                {
+                    value = enumerator.Current;
+                    return true;
+                }
 
-    internal interface IZipEnumerator
-    {
-        ZipEnumeratorStatus MoveNext();
-        void ThrowToShort();
-    }
-
-    internal class ZipEnumerator<T> : IZipEnumerator, IDisposable
-    {
-        private readonly ZipSourceConfiguration<T> _configuration;
-        private readonly string _name;
-        private IEnumerator<T> _source;
-
-        public ZipEnumerator(IEnumerator<T> source, string name, ZipSourceConfiguration<T> configuration)
-        {
-            _source = source;
-            _name = name;
-            _configuration = configuration;
-        }
-
-        public T Current => _source == null ? _configuration.PaddingValue : _source.Current;
-
-        public void Dispose() => _source?.Dispose();
-
-        public ZipEnumeratorStatus MoveNext()
-        {
-            if (_source?.MoveNext() == false)
-            {
-                _source.Dispose();
-                _source = null;
-            }
-
-            if (_source != null)
-            {
-                return ZipEnumeratorStatus.Continue;
-            }
-
-            switch (_configuration.Behavior)
-            {
-                case ZipEnumeratorBehavior.StopOnShort:
-                    return ZipEnumeratorStatus.AskForStop;
-                case ZipEnumeratorBehavior.Padding:
-                    return ZipEnumeratorStatus.EndOfStream;
-                case ZipEnumeratorBehavior.ThrowOnShort:
-                    return ZipEnumeratorStatus.AskForEquiStop;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                enumerator.Dispose();
+                enumerator = null;
+                value = default;
+                return false;
             }
         }
-
-        public void Reset() => _source.Reset();
-
-        public void ThrowToShort() => throw new InvalidOperationException($"{_name} sequence too short.");
-    }
-
-    internal enum ZipEnumeratorBehavior
-    {
-        StopOnShort,
-        ThrowOnShort,
-        Padding
-    }
-
-    internal enum ZipEnumeratorStatus
-    {
-        AskForStop,
-        AskForEquiStop,
-        Continue,
-        EndOfStream
-    }
-
-    internal class ZipSourceConfiguration<T>
-    {
-        public static ZipSourceConfiguration<T> StopOnShort { get; } = new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.StopOnShort, default);
-        public static ZipSourceConfiguration<T> ThrowOnShort { get; } = new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.ThrowOnShort, default);
-        public static ZipSourceConfiguration<T> PaddingWith(T paddingValue) => new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.Padding, paddingValue);
-
-        ZipSourceConfiguration(ZipEnumeratorBehavior behavior, T paddingValue)
-        {
-            Behavior = behavior;
-            PaddingValue = paddingValue;
-        }
-
-        public ZipEnumeratorBehavior Behavior { get; }
-        public T PaddingValue { get; }
     }
 }
