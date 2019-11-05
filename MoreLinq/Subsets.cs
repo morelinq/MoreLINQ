@@ -108,7 +108,9 @@ namespace MoreLinq
             // preconditions. This however, needs to be carefully considered - and perhaps
             // may change after further thought and review.
 
-            return new SubsetGenerator<T>(sequence, subsetSize);
+            return subsetSize == 0
+                ? (IEnumerable<IList<T>>) new[] {new List<T>()}
+                : new SubsetGenerator<T>(sequence, subsetSize);
         }
 
         /// <summary>

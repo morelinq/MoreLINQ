@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MoreLinq.Test
 {
     using System;
@@ -114,6 +116,19 @@ namespace MoreLinq.Test
             var index = 0;
             foreach (var subset in result)
                 Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
+        }
+
+        /// <summary>
+        /// See issue #645
+        /// </summary>
+        [Test]
+        public void Test0SubsetIsEmptyList()
+        {
+            var sequence = Enumerable.Range(1, 4);
+            var actual = sequence.Subsets(0);
+            var expected = new[] {new int[0]};
+
+            CollectionAssert.AreEquivalent(expected, actual);
         }
 
         /// <summary>
