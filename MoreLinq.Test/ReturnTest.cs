@@ -70,5 +70,11 @@ namespace MoreLinq.Test
 
             Assert.That(array[0], Is.EqualTo(item));
         }
+
+        [Test]
+        public void TestResultingCollectionIsReadOnly()
+        {
+            Assert.That(((ICollection<object>)MoreEnumerable.Return(new object())).IsReadOnly, Is.True);
+        }
     }
 }
