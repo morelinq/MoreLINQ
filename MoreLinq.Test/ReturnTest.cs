@@ -82,5 +82,12 @@ namespace MoreLinq.Test
         {
             Assert.That(((ICollection<object>)MoreEnumerable.Return(new object())).Count, Is.EqualTo(1));
         }
+
+        [Test]
+        public void TestIndexZeroContainsTheItemProvided()
+        {
+            var item = new object();
+            Assert.That(((IList<object>) MoreEnumerable.Return(item))[0], Is.EqualTo(item));
+        }
     }
 }
