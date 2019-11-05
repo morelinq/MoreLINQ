@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     class ReturnTest
     {
@@ -28,10 +29,29 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TestResultingSequenceContainsItemProvided()
+        public void TestResultingSequenceContainsTheItemProvided()
         {
             var item = new object();
             Assert.That(MoreEnumerable.Return(item), Has.Member(item));
+        }
+
+        [Test]
+        public void TestResultingListHasCountOne()
+        {
+            Assert.That(((IList<object>) MoreEnumerable.Return(new object())).Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void TestContainsReturnsTrueWhenTheResultingSequenceContainsTheItemProvided()
+        {
+            var item = new object();
+            Assert.That(MoreEnumerable.Return(item).Contains(item), Is.True);
+        }
+
+        [Test]
+        public void TestContainsDoesNotThrowWhenTheItemContainedIsNull()
+        {
+            Assert.That(() => MoreEnumerable.Return(new object()).Contains(null), Throws.Nothing);
         }
     }
 }
