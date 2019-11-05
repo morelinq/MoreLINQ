@@ -33,7 +33,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> Return<T>(T item) => new SingleElementList<T>(item);
 
-        internal sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
+        sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
         {
             private readonly T _item;
 
