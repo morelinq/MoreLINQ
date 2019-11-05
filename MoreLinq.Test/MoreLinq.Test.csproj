@@ -67,6 +67,7 @@
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
       <Compile Include="WatchableEnumerator.cs" />
+      <Compile Include="ZipWhile.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">

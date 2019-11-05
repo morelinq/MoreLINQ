@@ -727,6 +727,13 @@ is as short as the shortest input sequence.
 
 This method has 14 overloads.
 
+### ZipWhile
+
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. The resulting sequence
+final length is user defined.
+
+This method has 14 overloads.
 
 ## Experimental Operators
 

@@ -22,45 +22,33 @@
 #endregion
 
 <#
+    var ordinals = new[] {null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth"};
+    var arities = new[] {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight"};
+
     var overloads =
-        from args in new[]
-        {
-            new[]
-            {
-                new { Ordinal = "first"  , Arity = "one"   },
-                new { Ordinal = "second" , Arity = "two"   },
-                new { Ordinal = "third"  , Arity = "three" },
-                new { Ordinal = "fourth" , Arity = "four"  },
-                new { Ordinal = "fifth"  , Arity = "five"  },
-                new { Ordinal = "sixth"  , Arity = "six"   },
-                new { Ordinal = "seventh", Arity = "seven" },
-                new { Ordinal = "eighth" , Arity = "eight" },
-            }
-        }
-        select args.Select((a, i) => new
-        {
-            a.Ordinal,
-            a.Arity,
-            Count = i + 1,
-            Number = (i + 1).ToString(CultureInfo.InvariantCulture),
-        })
-        into args
-        select args.ToList() into args
-        from a in args.Skip(1)
+        from i in Enumerable.Range(2, 7)
         select new
         {
-            a.Arity,
-            a.Count,
-            Arguments = args.Take(a.Count)
-                            .Select(aa => new { aa.Number, Num = aa.Count, aa.Ordinal })
-                            .ToList(),
-            Types = string.Join(", ", Enumerable.Range(1, a.Count).Select(i => $"T{i}")),
+            Arity = arities[i],
+            Arguments = Enumerable.Range(1, i)
+                .Select(j => new
+                {
+                    Num = j,
+                    Number = j.ToString(CultureInfo.InvariantCulture),
+                    Ordinal = ordinals[j]
+                }).ToList(),
+            Count = i,
+            Number = i.ToString(CultureInfo.InvariantCulture),
+            Ordinal = ordinals[i],
+            Types = string.Join(", ", Enumerable.Range(1, i).Select(i => $"T{i}")),
         };
 #>
 namespace MoreLinq
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -220,7 +208,7 @@ namespace MoreLinq
 
                     while (
 <# foreach (var arg in o.Arguments) { #>
-                        ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " |" : ")" #>
+                        ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " +" : " > 0)" #>
 <#}#>
                     {
                         yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? "," : "" #><#}#>);
@@ -353,26 +341,170 @@ namespace MoreLinq
                 ValueTuple.Create);
         }
 
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most <#= arities[o.Count-1] #> times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<<#= o.Types#>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source,
+<#}#>
+            Func<<#= o.Types#>, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #>Source == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>Source));
+<#} #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+<# foreach (var arg in o.Arguments) { #>
+                IEnumerator<T<#= arg.Number #>> e<#= arg.Number #> = null;
+<#} #>
+
+                try
+                {
+<# foreach (var arg in o.Arguments) { #>
+                    e<#= arg.Number #> = <#= arg.Ordinal #>Source.GetEnumerator();
+<#} #>
+
+<# foreach (var arg in o.Arguments) { #>
+                    var v<#= arg.Number #> = default(T<#= arg.Number #>);
+<#} #>
+
+                    var activeSourceCount = <#= o.Count #>;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+<# foreach (var arg in o.Arguments) { #>
+                            ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " +" : ";" #>
+<#}#>
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, <# foreach (var arg in o.Arguments) { #>e<#= arg.Number #><#= arg.Num < o.Count ? ", " : "))" #><#} #>
+
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? ", " : "" #><#}#>);
+                    }
+                }
+                finally
+                {
+<# foreach (var arg in o.Arguments) { #>
+                    e<#= arg.Number #>?.Dispose();
+<#} #>
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+<#} #>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Ordinal #>Source">The <#= arg.Ordinal #> source sequence.</param>
+<#} #>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most <#= arities[o.Count-1] #> times.
+        /// </remarks>
+        public static IEnumerable<(<#= o.Types#>)> ZipWhile<<#= o.Types#>>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Source,
+<#}#>
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+<# foreach (var arg in o.Arguments) { #>
+                <#= arg.Ordinal #>Source,
+<#}#>
+                ValueTuple.Create,
+                predicate);
+        }
+
 <#  } #>
+
         static class ZipHelper
         {
-            public static bool MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
+            public static int MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
             {
                 if (enumerator == null)
                 {
-                    return false;
+                    return 0;
                 }
 
                 if (enumerator.MoveNext())
                 {
                     value = enumerator.Current;
-                    return true;
+                    return 1;
                 }
 
                 enumerator.Dispose();
                 enumerator = null;
                 value = default;
-                return false;
+                return 0;
+            }
+
+            public static bool ShouldContinue(Func<IReadOnlyList<int>, bool> predicate, params IEnumerator[] enumerators)
+            {
+                if (enumerators.All(e => e == null))
+                {
+                    return false;
+                }
+
+                return predicate(
+                    enumerators
+                        .Select((enumerator, index) => new {enumerator, index})
+                        .Where(t => t.enumerator != null)
+                        .Select(t => t.index)
+                        .ToList());
             }
         }
     }

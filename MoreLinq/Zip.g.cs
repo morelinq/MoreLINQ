@@ -18,7 +18,9 @@
 namespace MoreLinq
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -158,8 +160,8 @@ namespace MoreLinq
                     var v2 = default(T2);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) > 0)
                     {
                         yield return resultSelector(v1,v2);
                     }
@@ -275,6 +277,120 @@ namespace MoreLinq
                 firstSource,
                 secondSource,
                 ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most one times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            Func<T1, T2, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+
+                    var activeSourceCount = 2;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most one times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2)> ZipWhile<T1, T2>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                ValueTuple.Create,
+                predicate);
         }
 
         /// <summary>
@@ -429,9 +545,9 @@ namespace MoreLinq
                     var v3 = default(T3);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) > 0)
                     {
                         yield return resultSelector(v1,v2,v3);
                     }
@@ -561,6 +677,133 @@ namespace MoreLinq
                 secondSource,
                 thirdSource,
                 ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most two times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, T3, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            Func<T1, T2, T3, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+
+                    var activeSourceCount = 3;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                            ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2, e3))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2, v3);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most two times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3)> ZipWhile<T1, T2, T3>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                thirdSource,
+                ValueTuple.Create,
+                predicate);
         }
 
         /// <summary>
@@ -731,10 +974,10 @@ namespace MoreLinq
                     var v4 = default(T4);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) > 0)
                     {
                         yield return resultSelector(v1,v2,v3,v4);
                     }
@@ -878,6 +1121,146 @@ namespace MoreLinq
                 thirdSource,
                 fourthSource,
                 ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most three times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, T3, T4, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            Func<T1, T2, T3, T4, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
+            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+
+                    var activeSourceCount = 4;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                            ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                            ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2, e3, e4))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2, v3, v4);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most three times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4)> ZipWhile<T1, T2, T3, T4>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                ValueTuple.Create,
+                predicate);
         }
 
         /// <summary>
@@ -1064,11 +1447,11 @@ namespace MoreLinq
                     var v5 = default(T5);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) > 0)
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5);
                     }
@@ -1226,6 +1609,159 @@ namespace MoreLinq
                 fourthSource,
                 fifthSource,
                 ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most four times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, T3, T4, T5, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            Func<T1, T2, T3, T4, T5, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
+            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
+            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+
+                    var activeSourceCount = 5;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                            ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                            ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                            ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2, e3, e4, e5))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2, v3, v4, v5);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most four times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5)> ZipWhile<T1, T2, T3, T4, T5>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                ValueTuple.Create,
+                predicate);
         }
 
         /// <summary>
@@ -1428,12 +1964,12 @@ namespace MoreLinq
                     var v6 = default(T6);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
-                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) > 0)
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5,v6);
                     }
@@ -1605,6 +2141,172 @@ namespace MoreLinq
                 fifthSource,
                 sixthSource,
                 ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most five times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, T3, T4, T5, T6, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
+            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
+            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
+            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+                IEnumerator<T6> e6 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+                    e6 = sixthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+                    var v6 = default(T6);
+
+                    var activeSourceCount = 6;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                            ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                            ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                            ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
+                            ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2, e3, e4, e5, e6))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2, v3, v4, v5, v6);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                    e6?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most five times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6)> ZipWhile<T1, T2, T3, T4, T5, T6>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                ValueTuple.Create,
+                predicate);
         }
 
         /// <summary>
@@ -1823,13 +2525,13 @@ namespace MoreLinq
                     var v7 = default(T7);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
-                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) |
-                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) +
+                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) > 0)
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5,v6,v7);
                     }
@@ -2015,6 +2717,185 @@ namespace MoreLinq
                 sixthSource,
                 seventhSource,
                 ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most six times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, T3, T4, T5, T6, T7, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
+            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
+            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
+            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
+            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+                IEnumerator<T6> e6 = null;
+                IEnumerator<T7> e7 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+                    e6 = sixthSource.GetEnumerator();
+                    e7 = seventhSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+                    var v6 = default(T6);
+                    var v7 = default(T7);
+
+                    var activeSourceCount = 7;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                            ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                            ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                            ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
+                            ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) +
+                            ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2, e3, e4, e5, e6, e7))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2, v3, v4, v5, v6, v7);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                    e6?.Dispose();
+                    e7?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most six times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> ZipWhile<T1, T2, T3, T4, T5, T6, T7>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
+                ValueTuple.Create,
+                predicate);
         }
 
         /// <summary>
@@ -2249,14 +3130,14 @@ namespace MoreLinq
                     var v8 = default(T8);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
-                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) |
-                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) |
-                        ZipHelper.MoveNextOrDefault<T8>(ref e8, ref v8))
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) +
+                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) +
+                        ZipHelper.MoveNextOrDefault<T8>(ref e8, ref v8) > 0)
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5,v6,v7,v8);
                     }
@@ -2458,25 +3339,233 @@ namespace MoreLinq
                 ValueTuple.Create);
         }
 
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most seven times.
+        /// </remarks>
+        public static IEnumerable<TResult> ZipWhile<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource,
+            Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
+            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
+            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
+            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
+            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
+            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
+            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
+            if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+                IEnumerator<T6> e6 = null;
+                IEnumerator<T7> e7 = null;
+                IEnumerator<T8> e8 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+                    e6 = sixthSource.GetEnumerator();
+                    e7 = seventhSource.GetEnumerator();
+                    e8 = eighthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+                    var v6 = default(T6);
+                    var v7 = default(T7);
+                    var v8 = default(T8);
+
+                    var activeSourceCount = 8;
+                    for(;;)
+                    {
+                        var newActiveSourceCount =
+                            ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
+                            ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
+                            ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
+                            ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
+                            ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
+                            ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) +
+                            ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) +
+                            ZipHelper.MoveNextOrDefault<T8>(ref e8, ref v8);
+
+                        if (activeSourceCount != newActiveSourceCount)
+                        {
+                            if (!ZipHelper.ShouldContinue(predicate, e1, e2, e3, e4, e5, e6, e7, e8))
+                            {
+                                yield break;
+                            }
+                            activeSourceCount = newActiveSourceCount;
+                        }
+
+                        yield return resultSelector(v1, v2, v3, v4, v5, v6, v7, v8);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                    e6?.Dispose();
+                    e7?.Dispose();
+                    e8?.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences.
+        /// When the end of one or more input sequence is reached, on the next iteration, the given <paramref name="predicate"/>
+        /// is called with in parameter the list of the 1-based indices of the source parameters that have not reached their end.
+        /// If the call to the <paramref name="predicate"/> return <c>false</c> the zip enumeration stop.
+        /// If the enumeration continues, the default value of each of the shorter sequence element types
+        /// is used for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
+        /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
+        /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
+        /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
+        /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
+        /// <param name="firstSource">The first source sequence.</param>
+        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="predicate">
+        /// A function to test the end of the zip sequence.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// The <paramref name="predicate"/> is not called when all the input sequence have reached their end.
+        /// The <paramref name="predicate"/> is called at most seven times.
+        /// </remarks>
+        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> ZipWhile<T1, T2, T3, T4, T5, T6, T7, T8>(
+            this IEnumerable<T1> firstSource,
+            IEnumerable<T2> secondSource,
+            IEnumerable<T3> thirdSource,
+            IEnumerable<T4> fourthSource,
+            IEnumerable<T5> fifthSource,
+            IEnumerable<T6> sixthSource,
+            IEnumerable<T7> seventhSource,
+            IEnumerable<T8> eighthSource,
+            Func<IReadOnlyList<int>, bool> predicate)
+        {
+            return ZipWhile(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
+                eighthSource,
+                ValueTuple.Create,
+                predicate);
+        }
+
+
         static class ZipHelper
         {
-            public static bool MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
+            public static int MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
             {
                 if (enumerator == null)
                 {
-                    return false;
+                    return 0;
                 }
 
                 if (enumerator.MoveNext())
                 {
                     value = enumerator.Current;
-                    return true;
+                    return 1;
                 }
 
                 enumerator.Dispose();
                 enumerator = null;
                 value = default;
-                return false;
+                return 0;
+            }
+
+            public static bool ShouldContinue(Func<IReadOnlyList<int>, bool> predicate, params IEnumerator[] enumerators)
+            {
+                if (enumerators.All(e => e == null))
+                {
+                    return false;
+                }
+
+                return predicate(
+                    enumerators
+                        .Select((enumerator, index) => new {enumerator, index})
+                        .Where(t => t.enumerator != null)
+                        .Select(t => t.index)
+                        .ToList());
             }
         }
     }
