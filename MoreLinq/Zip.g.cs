@@ -3564,7 +3564,7 @@ namespace MoreLinq
                     enumerators
                         .Select((enumerator, index) => new {enumerator, index})
                         .Where(t => t.enumerator != null)
-                        .Select(t => t.index)
+                        .Select(t => t.index + 1)
                         .ToList());
             }
         }
