@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -101,6 +103,23 @@ namespace MoreLinq.Test
         public void TestIndexOfAnItemNotContainedIsNegativeOne()
         {
             Assert.That(((IList<object>)MoreEnumerable.Return(new object())).IndexOf(new object()), Is.EqualTo(-1));
+        }
+
+        private static readonly IEnumerable<Action> UnsupportedActions =
+            new Action[]
+            {
+                () => ((IList<object>) MoreEnumerable.Return(new object())).Add(new object()),
+                () => ((IList<object>) MoreEnumerable.Return(new object())).Clear(),
+                () => ((ICollection<object>) MoreEnumerable.Return(new object())).Remove(new object()),
+                () => ((IList<object>) MoreEnumerable.Return(new object())).RemoveAt(0),
+                () => ((IList<object>) MoreEnumerable.Return(new object())).Insert(0, new object()),
+                () => ((IList<object>) MoreEnumerable.Return(new object()))[0] = new object(),
+            };
+
+        [TestCaseSource(nameof(UnsupportedActions))]
+        public void TestUnsupportedMethodsShouldThrow(Action unsupportedAction)
+        {
+            Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());
         }
     }
 }
