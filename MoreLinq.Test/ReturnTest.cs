@@ -96,5 +96,11 @@ namespace MoreLinq.Test
             var item = new object();
             Assert.That(((IList<object>)MoreEnumerable.Return(item)).IndexOf(item), Is.EqualTo(0));
         }
+
+        [Test]
+        public void TestIndexOfAnItemNotContainedIsNegativeOne()
+        {
+            Assert.That(((IList<object>)MoreEnumerable.Return(new object())).IndexOf(new object()), Is.EqualTo(-1));
+        }
     }
 }
