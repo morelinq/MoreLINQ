@@ -53,5 +53,11 @@ namespace MoreLinq.Test
         {
             Assert.That(() => MoreEnumerable.Return(new object()).Contains(null), Throws.Nothing);
         }
+
+        [Test]
+        public void TestContainsDoesNotThrowWhenTheItemProvidedIsNull()
+        {
+            Assert.That(() => MoreEnumerable.Return<object>(null).Contains(new object()), Throws.Nothing);
+        }
     }
 }

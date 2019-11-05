@@ -52,7 +52,7 @@ namespace MoreLinq
 
             public void Clear() => throw ReadOnlyException;
 
-            public bool Contains(T item) => _item.Equals(item);
+            public bool Contains(T item) => EqualityComparer<T>.Default.Equals(_item, item);
 
             public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
 
