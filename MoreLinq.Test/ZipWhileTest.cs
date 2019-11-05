@@ -15,9 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System.Collections;
-using NUnit.Framework.Internal;
-
 namespace MoreLinq.Test
 {
     using System;
