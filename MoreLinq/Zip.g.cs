@@ -52,10 +52,39 @@ namespace MoreLinq
             if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -80,12 +109,9 @@ namespace MoreLinq
             this IEnumerable<T1> firstSource,
             IEnumerable<T2> secondSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
                 ValueTuple.Create);
         }
 
@@ -118,10 +144,32 @@ namespace MoreLinq
             if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2))
+                    {
+                        yield return resultSelector(v1,v2);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -145,12 +193,9 @@ namespace MoreLinq
             this IEnumerable<T1> firstSource,
             IEnumerable<T2> secondSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
                 ValueTuple.Create);
         }
 
@@ -188,10 +233,16 @@ namespace MoreLinq
             if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -220,12 +271,9 @@ namespace MoreLinq
             this IEnumerable<T1> firstSource,
             IEnumerable<T2> secondSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
                 ValueTuple.Create);
         }
 
@@ -263,11 +311,40 @@ namespace MoreLinq
             if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext() && e3.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current,e3.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext() || e3.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -295,14 +372,10 @@ namespace MoreLinq
             IEnumerable<T2> secondSource,
             IEnumerable<T3> thirdSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
+                thirdSource,
                 ValueTuple.Create);
         }
 
@@ -339,11 +412,37 @@ namespace MoreLinq
             if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3))
+                    {
+                        yield return resultSelector(v1,v2,v3);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -370,14 +469,10 @@ namespace MoreLinq
             IEnumerable<T2> secondSource,
             IEnumerable<T3> thirdSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
+                thirdSource,
                 ValueTuple.Create);
         }
 
@@ -419,11 +514,17 @@ namespace MoreLinq
             if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current,e3.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -455,14 +556,10 @@ namespace MoreLinq
             IEnumerable<T2> secondSource,
             IEnumerable<T3> thirdSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
+                thirdSource,
                 ValueTuple.Create);
         }
 
@@ -504,12 +601,41 @@ namespace MoreLinq
             if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext() || e3.MoveNext() || e4.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -540,16 +666,11 @@ namespace MoreLinq
             IEnumerable<T3> thirdSource,
             IEnumerable<T4> fourthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
                 ValueTuple.Create);
         }
 
@@ -590,12 +711,42 @@ namespace MoreLinq
             if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4))
+                    {
+                        yield return resultSelector(v1,v2,v3,v4);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -625,16 +776,11 @@ namespace MoreLinq
             IEnumerable<T3> thirdSource,
             IEnumerable<T4> fourthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
                 ValueTuple.Create);
         }
 
@@ -680,12 +826,18 @@ namespace MoreLinq
             if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -720,16 +872,11 @@ namespace MoreLinq
             IEnumerable<T3> thirdSource,
             IEnumerable<T4> fourthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
                 ValueTuple.Create);
         }
 
@@ -775,13 +922,42 @@ namespace MoreLinq
             if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext() || e3.MoveNext() || e4.MoveNext() || e5.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -815,18 +991,12 @@ namespace MoreLinq
             IEnumerable<T4> fourthSource,
             IEnumerable<T5> fifthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
                 ValueTuple.Create);
         }
 
@@ -871,13 +1041,47 @@ namespace MoreLinq
             if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5))
+                    {
+                        yield return resultSelector(v1,v2,v3,v4,v5);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -910,18 +1114,12 @@ namespace MoreLinq
             IEnumerable<T4> fourthSource,
             IEnumerable<T5> fifthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
                 ValueTuple.Create);
         }
 
@@ -971,13 +1169,19 @@ namespace MoreLinq
             if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -1015,18 +1219,12 @@ namespace MoreLinq
             IEnumerable<T4> fourthSource,
             IEnumerable<T5> fifthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
                 ValueTuple.Create);
         }
 
@@ -1076,14 +1274,43 @@ namespace MoreLinq
             if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+                using var e6 = sixthSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext() || e3.MoveNext() || e4.MoveNext() || e5.MoveNext() || e6.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -1120,20 +1347,13 @@ namespace MoreLinq
             IEnumerable<T5> fifthSource,
             IEnumerable<T6> sixthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
                 ValueTuple.Create);
         }
 
@@ -1182,14 +1402,52 @@ namespace MoreLinq
             if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                sixthSource, ZipSourceConfiguration<T6>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+                IEnumerator<T6> e6 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+                    e6 = sixthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+                    var v6 = default(T6);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) | 
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6))
+                    {
+                        yield return resultSelector(v1,v2,v3,v4,v5,v6);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                    e6?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -1225,20 +1483,13 @@ namespace MoreLinq
             IEnumerable<T5> fifthSource,
             IEnumerable<T6> sixthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                sixthSource, ZipSourceConfiguration<T6>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
                 ValueTuple.Create);
         }
 
@@ -1292,14 +1543,20 @@ namespace MoreLinq
             if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+                using var e6 = sixthSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -1340,20 +1597,13 @@ namespace MoreLinq
             IEnumerable<T5> fifthSource,
             IEnumerable<T6> sixthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
                 ValueTuple.Create);
         }
 
@@ -1407,15 +1657,44 @@ namespace MoreLinq
             if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.ThrowOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+                using var e6 = sixthSource.GetEnumerator();
+                using var e7 = seventhSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext() || e3.MoveNext() || e4.MoveNext() || e5.MoveNext() || e6.MoveNext() || e7.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -1455,22 +1734,14 @@ namespace MoreLinq
             IEnumerable<T6> sixthSource,
             IEnumerable<T7> seventhSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.ThrowOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
                 ValueTuple.Create);
         }
 
@@ -1523,15 +1794,57 @@ namespace MoreLinq
             if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                sixthSource, ZipSourceConfiguration<T6>.PaddingWith(default),
-                seventhSource, ZipSourceConfiguration<T7>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+                IEnumerator<T6> e6 = null;
+                IEnumerator<T7> e7 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+                    e6 = sixthSource.GetEnumerator();
+                    e7 = seventhSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+                    var v6 = default(T6);
+                    var v7 = default(T7);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) | 
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) | 
+                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7))
+                    {
+                        yield return resultSelector(v1,v2,v3,v4,v5,v6,v7);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                    e6?.Dispose();
+                    e7?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -1570,22 +1883,14 @@ namespace MoreLinq
             IEnumerable<T6> sixthSource,
             IEnumerable<T7> seventhSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                sixthSource, ZipSourceConfiguration<T6>.PaddingWith(default),
-                seventhSource, ZipSourceConfiguration<T7>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
                 ValueTuple.Create);
         }
 
@@ -1643,15 +1948,21 @@ namespace MoreLinq
             if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.StopOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+                using var e6 = sixthSource.GetEnumerator();
+                using var e7 = seventhSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -1695,22 +2006,14 @@ namespace MoreLinq
             IEnumerable<T6> sixthSource,
             IEnumerable<T7> seventhSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.StopOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
                 ValueTuple.Create);
         }
 
@@ -1768,16 +2071,45 @@ namespace MoreLinq
             if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.ThrowOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.ThrowOnShort,
-                eighthSource, ZipSourceConfiguration<T8>.ThrowOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+                using var e6 = sixthSource.GetEnumerator();
+                using var e7 = seventhSource.GetEnumerator();
+                using var e8 = eighthSource.GetEnumerator();
+
+                for (;;)
+                {
+                    if (e1.MoveNext())
+                    {
+                        if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext() && e8.MoveNext())
+                        {
+                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current,e8.Current);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (e2.MoveNext() || e3.MoveNext() || e4.MoveNext() || e5.MoveNext() || e6.MoveNext() || e7.MoveNext() || e8.MoveNext())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Sequences differ in length.");
+            }
         }
 
         /// <summary>
@@ -1820,24 +2152,15 @@ namespace MoreLinq
             IEnumerable<T7> seventhSource,
             IEnumerable<T8> eighthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
-            if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.ThrowOnShort,
-                secondSource, ZipSourceConfiguration<T2>.ThrowOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.ThrowOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.ThrowOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.ThrowOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.ThrowOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.ThrowOnShort,
-                eighthSource, ZipSourceConfiguration<T8>.ThrowOnShort,
+            return EquiZip(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
+                eighthSource,
                 ValueTuple.Create);
         }
 
@@ -1894,16 +2217,62 @@ namespace MoreLinq
             if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                sixthSource, ZipSourceConfiguration<T6>.PaddingWith(default),
-                seventhSource, ZipSourceConfiguration<T7>.PaddingWith(default),
-                eighthSource, ZipSourceConfiguration<T8>.PaddingWith(default),
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                IEnumerator<T1> e1 = null;
+                IEnumerator<T2> e2 = null;
+                IEnumerator<T3> e3 = null;
+                IEnumerator<T4> e4 = null;
+                IEnumerator<T5> e5 = null;
+                IEnumerator<T6> e6 = null;
+                IEnumerator<T7> e7 = null;
+                IEnumerator<T8> e8 = null;
+
+                try
+                {
+                    e1 = firstSource.GetEnumerator();
+                    e2 = secondSource.GetEnumerator();
+                    e3 = thirdSource.GetEnumerator();
+                    e4 = fourthSource.GetEnumerator();
+                    e5 = fifthSource.GetEnumerator();
+                    e6 = sixthSource.GetEnumerator();
+                    e7 = seventhSource.GetEnumerator();
+                    e8 = eighthSource.GetEnumerator();
+
+                    var v1 = default(T1);
+                    var v2 = default(T2);
+                    var v3 = default(T3);
+                    var v4 = default(T4);
+                    var v5 = default(T5);
+                    var v6 = default(T6);
+                    var v7 = default(T7);
+                    var v8 = default(T8);
+
+                    while (
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) | 
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) | 
+                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) | 
+                        ZipHelper.MoveNextOrDefault<T8>(ref e8, ref v8))
+                    {
+                        yield return resultSelector(v1,v2,v3,v4,v5,v6,v7,v8);
+                    }
+                }
+                finally
+                {
+                    e1?.Dispose();
+                    e2?.Dispose();
+                    e3?.Dispose();
+                    e4?.Dispose();
+                    e5?.Dispose();
+                    e6?.Dispose();
+                    e7?.Dispose();
+                    e8?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -1945,24 +2314,15 @@ namespace MoreLinq
             IEnumerable<T7> seventhSource,
             IEnumerable<T8> eighthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
-            if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.PaddingWith(default),
-                secondSource, ZipSourceConfiguration<T2>.PaddingWith(default),
-                thirdSource, ZipSourceConfiguration<T3>.PaddingWith(default),
-                fourthSource, ZipSourceConfiguration<T4>.PaddingWith(default),
-                fifthSource, ZipSourceConfiguration<T5>.PaddingWith(default),
-                sixthSource, ZipSourceConfiguration<T6>.PaddingWith(default),
-                seventhSource, ZipSourceConfiguration<T7>.PaddingWith(default),
-                eighthSource, ZipSourceConfiguration<T8>.PaddingWith(default),
+            return ZipLongest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
+                eighthSource,
                 ValueTuple.Create);
         }
 
@@ -2024,16 +2384,22 @@ namespace MoreLinq
             if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.StopOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.StopOnShort,
-                eighthSource, ZipSourceConfiguration<T8>.StopOnShort,
-                resultSelector);
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e1 = firstSource.GetEnumerator();
+                using var e2 = secondSource.GetEnumerator();
+                using var e3 = thirdSource.GetEnumerator();
+                using var e4 = fourthSource.GetEnumerator();
+                using var e5 = fifthSource.GetEnumerator();
+                using var e6 = sixthSource.GetEnumerator();
+                using var e7 = seventhSource.GetEnumerator();
+                using var e8 = eighthSource.GetEnumerator();
+
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext() && e8.MoveNext())
+                {
+                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current,e8.Current);
+                }
+            }
         }
 
         /// <summary>
@@ -2080,354 +2446,38 @@ namespace MoreLinq
             IEnumerable<T7> seventhSource,
             IEnumerable<T8> eighthSource)
         {
-            if (firstSource == null) throw new ArgumentNullException(nameof(firstSource));
-            if (secondSource == null) throw new ArgumentNullException(nameof(secondSource));
-            if (thirdSource == null) throw new ArgumentNullException(nameof(thirdSource));
-            if (fourthSource == null) throw new ArgumentNullException(nameof(fourthSource));
-            if (fifthSource == null) throw new ArgumentNullException(nameof(fifthSource));
-            if (sixthSource == null) throw new ArgumentNullException(nameof(sixthSource));
-            if (seventhSource == null) throw new ArgumentNullException(nameof(seventhSource));
-            if (eighthSource == null) throw new ArgumentNullException(nameof(eighthSource));
-
-            return CustomZip(
-                firstSource, ZipSourceConfiguration<T1>.StopOnShort,
-                secondSource, ZipSourceConfiguration<T2>.StopOnShort,
-                thirdSource, ZipSourceConfiguration<T3>.StopOnShort,
-                fourthSource, ZipSourceConfiguration<T4>.StopOnShort,
-                fifthSource, ZipSourceConfiguration<T5>.StopOnShort,
-                sixthSource, ZipSourceConfiguration<T6>.StopOnShort,
-                seventhSource, ZipSourceConfiguration<T7>.StopOnShort,
-                eighthSource, ZipSourceConfiguration<T8>.StopOnShort,
+            return ZipShortest(
+                firstSource,
+                secondSource,
+                thirdSource,
+                fourthSource,
+                fifthSource,
+                sixthSource,
+                seventhSource,
+                eighthSource,
                 ValueTuple.Create);
         }
 
-
-        internal static IEnumerable<TResult> CustomZip<T1, T2, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            Func<T1, T2, TResult> resultSelector)
+        static class ZipHelper
         {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator))
+            public static bool MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
             {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current
-                );
-            }
-        }
-        internal static IEnumerable<TResult> CustomZip<T1, T2, T3, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            IEnumerable<T3> thirdSource, ZipSourceConfiguration<T3> thirdSourceConfiguration,
-            Func<T1, T2, T3, TResult> resultSelector)
-        {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-            using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator,
-                thirdEnumerator))
-            {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current,
-                    thirdEnumerator.Current
-                );
-            }
-        }
-        internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            IEnumerable<T3> thirdSource, ZipSourceConfiguration<T3> thirdSourceConfiguration,
-            IEnumerable<T4> fourthSource, ZipSourceConfiguration<T4> fourthSourceConfiguration,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
-        {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-            using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
-            using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator,
-                thirdEnumerator,
-                fourthEnumerator))
-            {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current,
-                    thirdEnumerator.Current,
-                    fourthEnumerator.Current
-                );
-            }
-        }
-        internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            IEnumerable<T3> thirdSource, ZipSourceConfiguration<T3> thirdSourceConfiguration,
-            IEnumerable<T4> fourthSource, ZipSourceConfiguration<T4> fourthSourceConfiguration,
-            IEnumerable<T5> fifthSource, ZipSourceConfiguration<T5> fifthSourceConfiguration,
-            Func<T1, T2, T3, T4, T5, TResult> resultSelector)
-        {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-            using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
-            using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
-            using var fifthEnumerator = new ZipEnumerator<T5>(fifthSource.GetEnumerator(), nameof(fifthSource), fifthSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator,
-                thirdEnumerator,
-                fourthEnumerator,
-                fifthEnumerator))
-            {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current,
-                    thirdEnumerator.Current,
-                    fourthEnumerator.Current,
-                    fifthEnumerator.Current
-                );
-            }
-        }
-        internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, T6, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            IEnumerable<T3> thirdSource, ZipSourceConfiguration<T3> thirdSourceConfiguration,
-            IEnumerable<T4> fourthSource, ZipSourceConfiguration<T4> fourthSourceConfiguration,
-            IEnumerable<T5> fifthSource, ZipSourceConfiguration<T5> fifthSourceConfiguration,
-            IEnumerable<T6> sixthSource, ZipSourceConfiguration<T6> sixthSourceConfiguration,
-            Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
-        {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-            using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
-            using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
-            using var fifthEnumerator = new ZipEnumerator<T5>(fifthSource.GetEnumerator(), nameof(fifthSource), fifthSourceConfiguration);
-            using var sixthEnumerator = new ZipEnumerator<T6>(sixthSource.GetEnumerator(), nameof(sixthSource), sixthSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator,
-                thirdEnumerator,
-                fourthEnumerator,
-                fifthEnumerator,
-                sixthEnumerator))
-            {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current,
-                    thirdEnumerator.Current,
-                    fourthEnumerator.Current,
-                    fifthEnumerator.Current,
-                    sixthEnumerator.Current
-                );
-            }
-        }
-        internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, T6, T7, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            IEnumerable<T3> thirdSource, ZipSourceConfiguration<T3> thirdSourceConfiguration,
-            IEnumerable<T4> fourthSource, ZipSourceConfiguration<T4> fourthSourceConfiguration,
-            IEnumerable<T5> fifthSource, ZipSourceConfiguration<T5> fifthSourceConfiguration,
-            IEnumerable<T6> sixthSource, ZipSourceConfiguration<T6> sixthSourceConfiguration,
-            IEnumerable<T7> seventhSource, ZipSourceConfiguration<T7> seventhSourceConfiguration,
-            Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
-        {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-            using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
-            using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
-            using var fifthEnumerator = new ZipEnumerator<T5>(fifthSource.GetEnumerator(), nameof(fifthSource), fifthSourceConfiguration);
-            using var sixthEnumerator = new ZipEnumerator<T6>(sixthSource.GetEnumerator(), nameof(sixthSource), sixthSourceConfiguration);
-            using var seventhEnumerator = new ZipEnumerator<T7>(seventhSource.GetEnumerator(), nameof(seventhSource), seventhSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator,
-                thirdEnumerator,
-                fourthEnumerator,
-                fifthEnumerator,
-                sixthEnumerator,
-                seventhEnumerator))
-            {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current,
-                    thirdEnumerator.Current,
-                    fourthEnumerator.Current,
-                    fifthEnumerator.Current,
-                    sixthEnumerator.Current,
-                    seventhEnumerator.Current
-                );
-            }
-        }
-        internal static IEnumerable<TResult> CustomZip<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
-            this IEnumerable<T1> firstSource, ZipSourceConfiguration<T1> firstSourceConfiguration,
-            IEnumerable<T2> secondSource, ZipSourceConfiguration<T2> secondSourceConfiguration,
-            IEnumerable<T3> thirdSource, ZipSourceConfiguration<T3> thirdSourceConfiguration,
-            IEnumerable<T4> fourthSource, ZipSourceConfiguration<T4> fourthSourceConfiguration,
-            IEnumerable<T5> fifthSource, ZipSourceConfiguration<T5> fifthSourceConfiguration,
-            IEnumerable<T6> sixthSource, ZipSourceConfiguration<T6> sixthSourceConfiguration,
-            IEnumerable<T7> seventhSource, ZipSourceConfiguration<T7> seventhSourceConfiguration,
-            IEnumerable<T8> eighthSource, ZipSourceConfiguration<T8> eighthSourceConfiguration,
-            Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
-        {
-            using var firstEnumerator = new ZipEnumerator<T1>(firstSource.GetEnumerator(), nameof(firstSource), firstSourceConfiguration);
-            using var secondEnumerator = new ZipEnumerator<T2>(secondSource.GetEnumerator(), nameof(secondSource), secondSourceConfiguration);
-            using var thirdEnumerator = new ZipEnumerator<T3>(thirdSource.GetEnumerator(), nameof(thirdSource), thirdSourceConfiguration);
-            using var fourthEnumerator = new ZipEnumerator<T4>(fourthSource.GetEnumerator(), nameof(fourthSource), fourthSourceConfiguration);
-            using var fifthEnumerator = new ZipEnumerator<T5>(fifthSource.GetEnumerator(), nameof(fifthSource), fifthSourceConfiguration);
-            using var sixthEnumerator = new ZipEnumerator<T6>(sixthSource.GetEnumerator(), nameof(sixthSource), sixthSourceConfiguration);
-            using var seventhEnumerator = new ZipEnumerator<T7>(seventhSource.GetEnumerator(), nameof(seventhSource), seventhSourceConfiguration);
-            using var eighthEnumerator = new ZipEnumerator<T8>(eighthSource.GetEnumerator(), nameof(eighthSource), eighthSourceConfiguration);
-
-            while (MoveNext(
-                firstEnumerator,
-                secondEnumerator,
-                thirdEnumerator,
-                fourthEnumerator,
-                fifthEnumerator,
-                sixthEnumerator,
-                seventhEnumerator,
-                eighthEnumerator))
-            {
-                yield return resultSelector(
-                    firstEnumerator.Current,
-                    secondEnumerator.Current,
-                    thirdEnumerator.Current,
-                    fourthEnumerator.Current,
-                    fifthEnumerator.Current,
-                    sixthEnumerator.Current,
-                    seventhEnumerator.Current,
-                    eighthEnumerator.Current
-                );
-            }
-        }
-
-        private static bool MoveNext(params IZipEnumerator[] enumerators)
-        {
-            var hasNext = false;
-            IZipEnumerator equiStopper = null;
-
-            foreach (var enumerator in enumerators)
-            {
-                switch (enumerator.MoveNext())
+                if (enumerator == null)
                 {
-                    case ZipEnumeratorStatus.AskForStop:
-                        return false;
-                    case ZipEnumeratorStatus.AskForEquiStop:
-                        if (hasNext) // there is some sequences ahead
-                        {
-                            enumerator.ThrowToShort();
-                        }
-                        equiStopper = enumerator;
-                        break;
-                    case ZipEnumeratorStatus.Continue:
-                        equiStopper?.ThrowToShort();
-                        hasNext = true;
-                        break;
-                    case ZipEnumeratorStatus.EndOfStream:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    return false;
                 }
-            }
 
-            return hasNext;
-        }
-    }
+                if (enumerator.MoveNext())
+                {
+                    value = enumerator.Current;
+                    return true;
+                }
 
-    internal interface IZipEnumerator
-    {
-        ZipEnumeratorStatus MoveNext();
-        void ThrowToShort();
-    }
-
-    internal class ZipEnumerator<T> : IZipEnumerator, IDisposable
-    {
-        private readonly ZipSourceConfiguration<T> _configuration;
-        private readonly string _name;
-        private IEnumerator<T> _source;
-
-        public ZipEnumerator(IEnumerator<T> source, string name, ZipSourceConfiguration<T> configuration)
-        {
-            _source = source;
-            _name = name;
-            _configuration = configuration;
-        }
-
-        public T Current => _source == null ? _configuration.PaddingValue : _source.Current;
-
-        public void Dispose() => _source?.Dispose();
-
-        public ZipEnumeratorStatus MoveNext()
-        {
-            if (_source?.MoveNext() == false)
-            {
-                _source.Dispose();
-                _source = null;
-            }
-
-            if (_source != null)
-            {
-                return ZipEnumeratorStatus.Continue;
-            }
-
-            switch (_configuration.Behavior)
-            {
-                case ZipEnumeratorBehavior.StopOnShort:
-                    return ZipEnumeratorStatus.AskForStop;
-                case ZipEnumeratorBehavior.Padding:
-                    return ZipEnumeratorStatus.EndOfStream;
-                case ZipEnumeratorBehavior.ThrowOnShort:
-                    return ZipEnumeratorStatus.AskForEquiStop;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                enumerator.Dispose();
+                enumerator = null;
+                value = default;
+                return false;
             }
         }
-
-        public void Reset() => _source.Reset();
-
-        public void ThrowToShort() => throw new InvalidOperationException($"{_name} sequence too short.");
-    }
-
-    internal enum ZipEnumeratorBehavior
-    {
-        StopOnShort,
-        ThrowOnShort,
-        Padding
-    }
-
-    internal enum ZipEnumeratorStatus
-    {
-        AskForStop,
-        AskForEquiStop,
-        Continue,
-        EndOfStream
-    }
-
-    internal class ZipSourceConfiguration<T>
-    {
-        public static ZipSourceConfiguration<T> StopOnShort { get; } = new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.StopOnShort, default);
-        public static ZipSourceConfiguration<T> ThrowOnShort { get; } = new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.ThrowOnShort, default);
-        public static ZipSourceConfiguration<T> PaddingWith(T paddingValue) => new ZipSourceConfiguration<T>(ZipEnumeratorBehavior.Padding, paddingValue);
-
-        ZipSourceConfiguration(ZipEnumeratorBehavior behavior, T paddingValue)
-        {
-            Behavior = behavior;
-            PaddingValue = paddingValue;
-        }
-
-        public ZipEnumeratorBehavior Behavior { get; }
-        public T PaddingValue { get; }
     }
 }
