@@ -165,6 +165,13 @@ sequence of result elements for source elements where the function returns a
 couple (2-tuple) having a `true` as its first element and result as the
 second.
 
+### Combinations
+
+Returns a sequence of all of the combinations of any (or given) size that are
+part of the input sequence.
+
+This method has 2 overloads.
+
 ### CompareCount
 
 Compares two sequences and returns an integer that indicates whether the
