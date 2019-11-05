@@ -1343,8 +1343,8 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1355,9 +1355,9 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2)> EquiZip<T1, T2>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second)
+            => MoreEnumerable.EquiZip(first, second);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -1367,9 +1367,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1380,10 +1380,10 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3)> EquiZip<T1, T2, T3>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+            => MoreEnumerable.EquiZip(first, second, third);
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the input sequences. An exception is thrown
@@ -1392,8 +1392,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1405,11 +1405,12 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
             Func<T1, T2, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -1420,10 +1421,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1434,11 +1435,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4)> EquiZip<T1, T2, T3, T4>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+            => MoreEnumerable.EquiZip(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -1449,9 +1450,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1463,12 +1464,13 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -1480,11 +1482,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1495,12 +1497,12 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5)> EquiZip<T1, T2, T3, T4, T5>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth)
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -1512,10 +1514,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1527,13 +1529,14 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, fourth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -1546,12 +1549,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1562,13 +1565,13 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5, T6)> EquiZip<T1, T2, T3, T4, T5, T6>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth)
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, sixth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -1581,11 +1584,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1597,14 +1600,15 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
             Func<T1, T2, T3, T4, T5, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -1618,13 +1622,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1635,14 +1639,14 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> EquiZip<T1, T2, T3, T4, T5, T6, T7>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh)
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, sixth, seventh);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -1656,12 +1660,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1673,15 +1677,16 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, T6, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
             Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, sixth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -1696,14 +1701,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
-        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
+        /// <param name="eighth">The eighth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -1714,15 +1719,15 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> EquiZip<T1, T2, T3, T4, T5, T6, T7, T8>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
-            IEnumerable<T8> eighthSource)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth)
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, sixth, seventh, eighth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -1737,13 +1742,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1755,16 +1760,17 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, T6, T7, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
             Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, sixth, seventh, resultSelector);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -1780,14 +1786,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
-        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
+        /// <param name="eighth">The eighth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -1799,17 +1805,18 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
-            IEnumerable<T8> eighthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
-            => MoreEnumerable.EquiZip(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource, resultSelector);
+            => MoreEnumerable.EquiZip(first, second, third, fourth, fifth, sixth, seventh, eighth, resultSelector);
 
     }
 
@@ -7082,8 +7089,8 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7091,9 +7098,9 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2)> ZipLongest<T1, T2>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second)
+            => MoreEnumerable.ZipLongest(first, second);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7105,9 +7112,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7115,10 +7122,10 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3)> ZipLongest<T1, T2, T3>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+            => MoreEnumerable.ZipLongest(first, second, third);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7130,8 +7137,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7141,10 +7148,10 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
             Func<T1, T2, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7157,10 +7164,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7168,11 +7175,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4)> ZipLongest<T1, T2, T3, T4>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+            => MoreEnumerable.ZipLongest(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7185,9 +7192,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7197,11 +7204,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, third, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7215,11 +7222,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7227,12 +7234,12 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5)> ZipLongest<T1, T2, T3, T4, T5>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth)
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7246,10 +7253,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7259,12 +7266,12 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7279,12 +7286,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7292,13 +7299,13 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5, T6)> ZipLongest<T1, T2, T3, T4, T5, T6>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth)
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, sixth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7313,11 +7320,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7327,13 +7334,13 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
             Func<T1, T2, T3, T4, T5, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7349,13 +7356,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7363,14 +7370,14 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> ZipLongest<T1, T2, T3, T4, T5, T6, T7>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh)
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, sixth, seventh);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7386,12 +7393,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7401,14 +7408,14 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
             Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, sixth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7425,14 +7432,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
-        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
+        /// <param name="eighth">The eighth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7440,15 +7447,15 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> ZipLongest<T1, T2, T3, T4, T5, T6, T7, T8>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
-            IEnumerable<T8> eighthSource)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth)
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, sixth, seventh, eighth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7465,13 +7472,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7481,15 +7488,15 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, T7, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
             Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, sixth, seventh, resultSelector);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7507,14 +7514,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
-        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
+        /// <param name="eighth">The eighth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7524,16 +7531,16 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
-            IEnumerable<T8> eighthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
-            => MoreEnumerable.ZipLongest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource, resultSelector);
+            => MoreEnumerable.ZipLongest(first, second, third, fourth, fifth, sixth, seventh, eighth, resultSelector);
 
     }
 
@@ -7550,8 +7557,8 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7566,9 +7573,9 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2)> ZipShortest<T1, T2>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second)
+            => MoreEnumerable.ZipShortest(first, second);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7578,9 +7585,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7595,10 +7602,10 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2, T3)> ZipShortest<T1, T2, T3>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+            => MoreEnumerable.ZipShortest(first, second, third);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7608,8 +7615,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7626,10 +7633,10 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
             Func<T1, T2, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7640,10 +7647,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7658,11 +7665,11 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2, T3, T4)> ZipShortest<T1, T2, T3, T4>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7673,9 +7680,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7692,11 +7699,11 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7708,11 +7715,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7727,12 +7734,12 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2, T3, T4, T5)> ZipShortest<T1, T2, T3, T4, T5>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7744,10 +7751,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7764,12 +7771,12 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7782,12 +7789,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7802,13 +7809,13 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2, T3, T4, T5, T6)> ZipShortest<T1, T2, T3, T4, T5, T6>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, sixth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7821,11 +7828,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7842,13 +7849,13 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
             Func<T1, T2, T3, T4, T5, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7862,13 +7869,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7883,14 +7890,14 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> ZipShortest<T1, T2, T3, T4, T5, T6, T7>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, sixth, seventh);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7904,12 +7911,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T5">Type of elements in fifth input sequence.</typeparam>
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -7926,14 +7933,14 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, T6, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
             Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, sixth, resultSelector);
 
         /// <summary>
         /// Returns a sequence of tuples, where each tuple contains the N-th
@@ -7948,14 +7955,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
-        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
+        /// <param name="eighth">The eighth source sequence.</param>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
@@ -7970,15 +7977,15 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> ZipShortest<T1, T2, T3, T4, T5, T6, T7, T8>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
-            IEnumerable<T8> eighthSource)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource);
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, sixth, seventh, eighth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7993,13 +8000,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T6">Type of elements in sixth input sequence.</typeparam>
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -8016,15 +8023,15 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, T6, T7, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
             Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, sixth, seventh, resultSelector);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -8040,14 +8047,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T7">Type of elements in seventh input sequence.</typeparam>
         /// <typeparam name="T8">Type of elements in eighth input sequence.</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="firstSource">The first source sequence.</param>
-        /// <param name="secondSource">The second source sequence.</param>
-        /// <param name="thirdSource">The third source sequence.</param>
-        /// <param name="fourthSource">The fourth source sequence.</param>
-        /// <param name="fifthSource">The fifth source sequence.</param>
-        /// <param name="sixthSource">The sixth source sequence.</param>
-        /// <param name="seventhSource">The seventh source sequence.</param>
-        /// <param name="eighthSource">The eighth source sequence.</param>
+        /// <param name="first">The first source sequence.</param>
+        /// <param name="second">The second source sequence.</param>
+        /// <param name="third">The third source sequence.</param>
+        /// <param name="fourth">The fourth source sequence.</param>
+        /// <param name="fifth">The fifth source sequence.</param>
+        /// <param name="sixth">The sixth source sequence.</param>
+        /// <param name="seventh">The seventh source sequence.</param>
+        /// <param name="eighth">The eighth source sequence.</param>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
         /// <returns>
@@ -8064,16 +8071,16 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
-            this IEnumerable<T1> firstSource,
-            IEnumerable<T2> secondSource,
-            IEnumerable<T3> thirdSource,
-            IEnumerable<T4> fourthSource,
-            IEnumerable<T5> fifthSource,
-            IEnumerable<T6> sixthSource,
-            IEnumerable<T7> seventhSource,
-            IEnumerable<T8> eighthSource,
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth,
+            IEnumerable<T5> fifth,
+            IEnumerable<T6> sixth,
+            IEnumerable<T7> seventh,
+            IEnumerable<T8> eighth,
             Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
-            => MoreEnumerable.ZipShortest(firstSource, secondSource, thirdSource, fourthSource, fifthSource, sixthSource, seventhSource, eighthSource, resultSelector);
+            => MoreEnumerable.ZipShortest(first, second, third, fourth, fifth, sixth, seventh, eighth, resultSelector);
 
     }
 }
