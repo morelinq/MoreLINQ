@@ -39,7 +39,10 @@ namespace MoreLinq
 
             public SingleElementList(T item) => _item = item;
 
-            public IEnumerator<T> GetEnumerator() => new SingleElementEnumerator(_item);
+            public IEnumerator<T> GetEnumerator()
+            {
+                yield return _item;
+            }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -70,37 +73,6 @@ namespace MoreLinq
             }
 
             int IReadOnlyCollection<T>.Count => 1;
-
-            internal sealed class SingleElementEnumerator : IEnumerator<T>
-            {
-                private readonly T _item;
-
-                private int _count = -1;
-
-                public SingleElementEnumerator(T item)
-                {
-                    _item = item;
-                }
-
-                public void Dispose()
-                {
-                }
-
-                public bool MoveNext()
-                {
-                    _count++;
-                    return _count > 0;
-                }
-
-                public void Reset()
-                {
-                    _count = -1;
-                }
-
-                public T Current => _count == 0 ? _item : throw new InvalidOperationException();
-
-                object IEnumerator.Current => Current;
-            }
         }
     }
 }
