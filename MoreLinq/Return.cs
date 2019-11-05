@@ -35,7 +35,7 @@ namespace MoreLinq
 
         sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
         {
-            private readonly T _item;
+            readonly T _item;
 
             public SingleElementList(T item) => _item = item;
 
