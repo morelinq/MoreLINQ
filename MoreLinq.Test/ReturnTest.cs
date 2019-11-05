@@ -121,5 +121,11 @@ namespace MoreLinq.Test
         {
             Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());
         }
+
+        [Test]
+        public void TestIndexingPastZeroShouldThrow()
+        {
+            Assert.That(() => ((IList<object>)MoreEnumerable.Return(new object()))[1], Throws.InstanceOf<ArgumentOutOfRangeException>());
+        }
     }
 }
