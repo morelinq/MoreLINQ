@@ -113,7 +113,7 @@ namespace MoreLinq
                     {
                         if (<# foreach (var arg in o.Arguments.Skip(1)) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " && " : "" #><#}#>)
                         {
-                            yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? "," : "" #><#}#>);
+                            yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? ", " : "" #><#}#>);
                         }
                         else
                         {
@@ -223,7 +223,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " |" : ")" #>
 <#}#>
                     {
-                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? "," : "" #><#}#>);
+                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? ", " : "" #><#}#>);
                     }
                 }
                 finally
@@ -312,7 +312,7 @@ namespace MoreLinq
 
                 while (<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " && " : "" #><#}#>)
                 {
-                    yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? "," : "" #><#}#>);
+                    yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? ", " : "" #><#}#>);
                 }
             }
         }
