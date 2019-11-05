@@ -24,14 +24,14 @@ namespace MoreLinq.Test
         [Test]
         public void TestResultingSequenceContainsSingle()
         {
-            MoreEnumerable.Return(new object()).AssertCount(1);
+            Assert.That(MoreEnumerable.Return(new object()).Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void TestResultingSequenceContainsItemProvided()
         {
             var item = new object();
-            MoreEnumerable.Return(item).Assert(containedItem => containedItem == item);
+            Assert.That(MoreEnumerable.Return(item), Has.Member(item));
         }
     }
 }
