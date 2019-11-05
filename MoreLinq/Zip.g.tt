@@ -220,7 +220,7 @@ namespace MoreLinq
 
                     while (
 <# foreach (var arg in o.Arguments) { #>
-                        ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " | " : ")" #>
+                        ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " |" : ")" #>
 <#}#>
                     {
                         yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? "," : "" #><#}#>);

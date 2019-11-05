@@ -158,7 +158,7 @@ namespace MoreLinq
                     var v2 = default(T2);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
                         ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2))
                     {
                         yield return resultSelector(v1,v2);
@@ -429,8 +429,8 @@ namespace MoreLinq
                     var v3 = default(T3);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
                         ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3))
                     {
                         yield return resultSelector(v1,v2,v3);
@@ -731,9 +731,9 @@ namespace MoreLinq
                     var v4 = default(T4);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
                         ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4))
                     {
                         yield return resultSelector(v1,v2,v3,v4);
@@ -1064,10 +1064,10 @@ namespace MoreLinq
                     var v5 = default(T5);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
                         ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5))
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5);
@@ -1428,11 +1428,11 @@ namespace MoreLinq
                     var v6 = default(T6);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
                         ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6))
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5,v6);
@@ -1823,12 +1823,12 @@ namespace MoreLinq
                     var v7 = default(T7);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) | 
-                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) |
                         ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7))
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5,v6,v7);
@@ -2249,13 +2249,13 @@ namespace MoreLinq
                     var v8 = default(T8);
 
                     while (
-                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) | 
-                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) | 
-                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) | 
-                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) | 
-                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) | 
-                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) | 
-                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) | 
+                        ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
+                        ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
+                        ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
+                        ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
+                        ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
+                        ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) |
+                        ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) |
                         ZipHelper.MoveNextOrDefault<T8>(ref e8, ref v8))
                     {
                         yield return resultSelector(v1,v2,v3,v4,v5,v6,v7,v8);
