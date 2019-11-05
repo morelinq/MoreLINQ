@@ -29,7 +29,7 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="T">The type of the item provided.</typeparam>
         /// <param name="item">The item to wrap in a sequence.</param>
-        /// <returns>A sequence containing only the <paramref name="item"/>.</returns>
+        /// <returns>A sequence containing only <paramref name="item"/>.</returns>
 
         public static IEnumerable<T> Return<T>(T item) => new SingleElementList<T>(item);
 
