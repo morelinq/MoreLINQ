@@ -36,6 +36,9 @@ namespace MoreLinq
         {
             readonly T _item;
 
+            static NotSupportedException ReadOnlyException =>
+                new NotSupportedException("Single element list is immutable.");
+
             public SingleElementList(T item) => _item = item;
 
             public IEnumerator<T> GetEnumerator()
@@ -45,15 +48,15 @@ namespace MoreLinq
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            public void Add(T item) => throw new NotSupportedException("Single element list is immutable");
+            public void Add(T item) => throw ReadOnlyException;
 
-            public void Clear() => throw new NotSupportedException("Single element list is immutable");
+            public void Clear() => throw ReadOnlyException;
 
             public bool Contains(T item) => _item.Equals(item);
 
             public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
 
-            bool ICollection<T>.Remove(T item) => throw new NotSupportedException("Single element list is immutable");
+            bool ICollection<T>.Remove(T item) => throw ReadOnlyException;
 
             int ICollection<T>.Count => 1;
 
@@ -61,14 +64,14 @@ namespace MoreLinq
 
             public int IndexOf(T item) => _item.Equals(item) ? 0 : -1;
 
-            void IList<T>.Insert(int index, T item) => throw new NotSupportedException("Single element list is immutable");
+            void IList<T>.Insert(int index, T item) => throw ReadOnlyException;
 
-            void IList<T>.RemoveAt(int index) => throw new NotSupportedException("Single element list is immutable");
+            void IList<T>.RemoveAt(int index) => throw ReadOnlyException;
 
             public T this[int index]
             {
                 get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
-                set => throw new NotSupportedException("Single element list is immutable");
+                set => throw ReadOnlyException;
             }
 
             int IReadOnlyCollection<T>.Count => 1;
