@@ -15,11 +15,10 @@
 // limitations under the License.
 #endregion
 
-using System.Collections;
-
 namespace MoreLinq
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
 
     partial class MoreEnumerable
