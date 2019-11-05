@@ -62,7 +62,7 @@ namespace MoreLinq
 
             public bool IsReadOnly => true;
 
-            public int IndexOf(T item) => _item.Equals(item) ? 0 : -1;
+            public int IndexOf(T item) => EqualityComparer<T>.Default.Equals(_item, item) ? 0 : -1;
 
             void IList<T>.Insert(int index, T item) => throw ReadOnlyException();
 

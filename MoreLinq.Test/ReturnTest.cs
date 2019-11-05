@@ -63,6 +63,20 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void TestIndexOfDoesNotThrowWhenTheItemProvidedIsNull()
+        {
+            Assert.That(() => ((IList<object>) MoreEnumerable.Return<object>(null)).IndexOf(new object()),
+                Throws.Nothing);
+        }
+
+        [Test]
+        public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
+        {
+            Assert.That(() => ((IList<object>)MoreEnumerable.Return<object>(new object())).IndexOf(null),
+                Throws.Nothing);
+        }
+
+        [Test]
         public void TestCopyToSetsTheValueAtTheIndexToTheItemContained()
         {
             var array = new object[1];
