@@ -58,7 +58,7 @@ namespace MoreLinq
 
             bool ICollection<T>.Remove(T item) => throw ReadOnlyException;
 
-            int ICollection<T>.Count => 1;
+            public int Count => 1;
 
             public bool IsReadOnly => true;
 
@@ -74,7 +74,7 @@ namespace MoreLinq
                 set => throw ReadOnlyException;
             }
 
-            int IReadOnlyCollection<T>.Count => 1;
+            int IReadOnlyCollection<T>.Count => Count;
         }
     }
 }

@@ -76,5 +76,11 @@ namespace MoreLinq.Test
         {
             Assert.That(((ICollection<object>)MoreEnumerable.Return(new object())).IsReadOnly, Is.True);
         }
+
+        [Test]
+        public void TestResultingCollectionHasCountOne()
+        {
+            Assert.That(((ICollection<object>)MoreEnumerable.Return(new object())).Count, Is.EqualTo(1));
+        }
     }
 }
