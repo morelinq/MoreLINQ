@@ -65,7 +65,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current);
+                            yield return resultSelector(e1.Current, e2.Current);
                         }
                         else
                         {
@@ -163,7 +163,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T1>(ref e1, ref v1) +
                         ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) > 0)
                     {
-                        yield return resultSelector(v1,v2);
+                        yield return resultSelector(v1, v2);
                     }
                 }
                 finally
@@ -242,7 +242,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current);
+                    yield return resultSelector(e1.Current, e2.Current);
                 }
             }
         }
@@ -439,7 +439,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext() && e3.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current,e3.Current);
+                            yield return resultSelector(e1.Current, e2.Current, e3.Current);
                         }
                         else
                         {
@@ -549,7 +549,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T2>(ref e2, ref v2) +
                         ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) > 0)
                     {
-                        yield return resultSelector(v1,v2,v3);
+                        yield return resultSelector(v1, v2, v3);
                     }
                 }
                 finally
@@ -638,7 +638,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current,e3.Current);
+                    yield return resultSelector(e1.Current, e2.Current, e3.Current);
                 }
             }
         }
@@ -857,7 +857,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current);
+                            yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current);
                         }
                         else
                         {
@@ -979,7 +979,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T3>(ref e3, ref v3) +
                         ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) > 0)
                     {
-                        yield return resultSelector(v1,v2,v3,v4);
+                        yield return resultSelector(v1, v2, v3, v4);
                     }
                 }
                 finally
@@ -1078,7 +1078,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current);
+                    yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current);
                 }
             }
         }
@@ -1319,7 +1319,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current);
+                            yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current);
                         }
                         else
                         {
@@ -1453,7 +1453,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T4>(ref e4, ref v4) +
                         ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) > 0)
                     {
-                        yield return resultSelector(v1,v2,v3,v4,v5);
+                        yield return resultSelector(v1, v2, v3, v4, v5);
                     }
                 }
                 finally
@@ -1562,7 +1562,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current);
+                    yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current);
                 }
             }
         }
@@ -1825,7 +1825,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current);
+                            yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current, e6.Current);
                         }
                         else
                         {
@@ -1971,7 +1971,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T5>(ref e5, ref v5) +
                         ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) > 0)
                     {
-                        yield return resultSelector(v1,v2,v3,v4,v5,v6);
+                        yield return resultSelector(v1, v2, v3, v4, v5, v6);
                     }
                 }
                 finally
@@ -2090,7 +2090,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current);
+                    yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current, e6.Current);
                 }
             }
         }
@@ -2375,7 +2375,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current);
+                            yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current, e6.Current, e7.Current);
                         }
                         else
                         {
@@ -2533,7 +2533,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T6>(ref e6, ref v6) +
                         ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) > 0)
                     {
-                        yield return resultSelector(v1,v2,v3,v4,v5,v6,v7);
+                        yield return resultSelector(v1, v2, v3, v4, v5, v6, v7);
                     }
                 }
                 finally
@@ -2662,7 +2662,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current);
+                    yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current, e6.Current, e7.Current);
                 }
             }
         }
@@ -2969,7 +2969,7 @@ namespace MoreLinq
                     {
                         if (e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext() && e8.MoveNext())
                         {
-                            yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current,e8.Current);
+                            yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current, e6.Current, e7.Current, e8.Current);
                         }
                         else
                         {
@@ -3139,7 +3139,7 @@ namespace MoreLinq
                         ZipHelper.MoveNextOrDefault<T7>(ref e7, ref v7) +
                         ZipHelper.MoveNextOrDefault<T8>(ref e8, ref v8) > 0)
                     {
-                        yield return resultSelector(v1,v2,v3,v4,v5,v6,v7,v8);
+                        yield return resultSelector(v1, v2, v3, v4, v5, v6, v7, v8);
                     }
                 }
                 finally
@@ -3278,7 +3278,7 @@ namespace MoreLinq
 
                 while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext() && e4.MoveNext() && e5.MoveNext() && e6.MoveNext() && e7.MoveNext() && e8.MoveNext())
                 {
-                    yield return resultSelector(e1.Current,e2.Current,e3.Current,e4.Current,e5.Current,e6.Current,e7.Current,e8.Current);
+                    yield return resultSelector(e1.Current, e2.Current, e3.Current, e4.Current, e5.Current, e6.Current, e7.Current, e8.Current);
                 }
             }
         }
