@@ -59,5 +59,16 @@ namespace MoreLinq.Test
         {
             Assert.That(() => MoreEnumerable.Return<object>(null).Contains(new object()), Throws.Nothing);
         }
+
+        [Test]
+        public void TestCopyToSetsTheValueAtTheIndexToTheItemContained()
+        {
+            var array = new object[1];
+            var item = new object();
+
+            ((IList<object>)MoreEnumerable.Return(item)).CopyTo(array, 0);
+
+            Assert.That(array[0], Is.EqualTo(item));
+        }
     }
 }
