@@ -38,6 +38,16 @@ namespace MoreLinq
 
             public SingleElementList(T item) => _item = item;
 
+            public int Count => 1;
+
+            public bool IsReadOnly => true;
+
+            public T this[int index]
+            {
+                get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
+                set => throw ReadOnlyException();
+            }
+
             public IEnumerator<T> GetEnumerator()
             {
                 yield return _item;
@@ -49,17 +59,7 @@ namespace MoreLinq
 
             public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
 
-            public int Count => 1;
-
-            public bool IsReadOnly => true;
-
             public int IndexOf(T item) => Contains(item) ? 0 : -1;
-
-            public T this[int index]
-            {
-                get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
-                set => throw ReadOnlyException();
-            }
 
             // Following methods are unsupported as this is a read-only list.
 
