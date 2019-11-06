@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NUnit.Framework.Interfaces;
 
@@ -22,19 +21,18 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Window doesn't return it's internal buffer
+        /// Verify that elements returned by Window are isolated.
+        /// Modification on one window should not be visible from the next window.
         /// </summary>
         [Test]
-        public void TestWindowDoNotExposeItsBuffer()
+        public void TestWindowReturnIsolatedList()
         {
             var sequence = Enumerable.Repeat(0, 3);
-            var expected = new[] {0, 0};
-            var actual = sequence.Window(2).Select(l =>
+            foreach (var window in sequence.Window(2))
             {
-                l[1] = 1;
-                return l[0];
-            }).ToList();
-            CollectionAssert.AreEqual(expected, actual);
+                window[window.Count - 1] = 1; // modify last item of the window
+                Assert.That(window[0], Is.EqualTo(0));
+            }
         }
 
         /// <summary>

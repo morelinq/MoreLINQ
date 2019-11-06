@@ -13,20 +13,18 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Window doesn't return it's internal buffer
+        /// Verify that elements returned by Window are isolated.
+        /// Modification on one window should not be visible from the next window.
         /// </summary>
         [Test]
-        public void WindowLeftDoNotExposeItsBuffer()
+        public void TestWindowLeftReturnIsolatedList()
         {
             var sequence = Enumerable.Repeat(0, 3);
-            var expected = new[] { 0, 0, 0 };
-            var actual = sequence.WindowLeft(2).Select(l =>
+            foreach (var window in sequence.WindowLeft(2))
             {
-                if (l.Count > 1)
-                    l[1] = 1;
-                return l[0];
-            }).ToList();
-            CollectionAssert.AreEqual(expected, actual);
+                window[window.Count - 1] = 1; // modify last item of the window
+                Assert.That(window[0], Is.EqualTo(0));
+            }
         }
 
         [Test]
