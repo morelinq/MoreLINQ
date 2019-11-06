@@ -19,7 +19,7 @@ namespace MoreLinq
 {
     using System.Collections.Generic;
 
-    static class ZipHelper
+    static class ZipLongestHelper
     {
         public static bool MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
         {

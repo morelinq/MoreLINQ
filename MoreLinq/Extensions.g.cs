@@ -1354,6 +1354,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2)> EquiZip<T1, T2>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second)
@@ -1379,6 +1380,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3)> EquiZip<T1, T2, T3>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -1434,6 +1436,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4)> EquiZip<T1, T2, T3, T4>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -1496,6 +1499,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5)> EquiZip<T1, T2, T3, T4, T5>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -1564,6 +1568,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5, T6)> EquiZip<T1, T2, T3, T4, T5, T6>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -1638,6 +1643,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> EquiZip<T1, T2, T3, T4, T5, T6, T7>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -1718,6 +1724,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> EquiZip<T1, T2, T3, T4, T5, T6, T7, T8>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7097,6 +7104,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2)> ZipLongest<T1, T2>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second)
@@ -7121,12 +7129,12 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3)> ZipLongest<T1, T2, T3>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
             IEnumerable<T3> third)
             => MoreEnumerable.ZipLongest(first, second, third);
-
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the input sequences. The resulting sequence
@@ -7147,6 +7155,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7174,6 +7183,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4)> ZipLongest<T1, T2, T3, T4>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7203,6 +7213,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7233,6 +7244,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5)> ZipLongest<T1, T2, T3, T4, T5>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7265,6 +7277,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7298,6 +7311,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5, T6)> ZipLongest<T1, T2, T3, T4, T5, T6>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7333,6 +7347,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7369,6 +7384,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> ZipLongest<T1, T2, T3, T4, T5, T6, T7>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7407,6 +7423,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7446,6 +7463,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> ZipLongest<T1, T2, T3, T4, T5, T6, T7, T8>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7487,6 +7505,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, T7, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7530,6 +7549,7 @@ namespace MoreLinq.Extensions
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -7606,7 +7626,6 @@ namespace MoreLinq.Extensions
             IEnumerable<T2> second,
             IEnumerable<T3> third)
             => MoreEnumerable.ZipShortest(first, second, third);
-
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the input sequences. The resulting sequence
