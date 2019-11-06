@@ -62,7 +62,7 @@ namespace MoreLinq
 
             public bool IsReadOnly => true;
 
-            public int IndexOf(T item) => EqualityComparer<T>.Default.Equals(_item, item) ? 0 : -1;
+            public int IndexOf(T item) => Contains(item) ? 0 : -1;
 
             public void Insert(int index, T item) => throw ReadOnlyException();
 
@@ -73,8 +73,6 @@ namespace MoreLinq
                 get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
                 set => throw ReadOnlyException();
             }
-
-            int IReadOnlyCollection<T>.Count => Count;
         }
     }
 }
