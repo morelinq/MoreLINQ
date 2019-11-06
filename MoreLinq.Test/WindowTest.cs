@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -41,7 +45,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertThrowsArgument.OutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size", () =>
                 sequence.Window(-5));
         }
 
@@ -129,6 +133,25 @@ namespace MoreLinq.Test
                 reader.Read().AssertSequenceEqual(4, 5);
                 reader.ReadEnd();
             }
+        }
+
+        static IEnumerable<T> Seq<T>(params T[] values) => values;
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new {Source = Enumerable.Range(0, 4), Size = 1, Result = new[] {Seq(0), Seq(1), Seq(2), Seq(3)}},
+                new {Source = Enumerable.Range(0, 4), Size = 2, Result = new[] {Seq(0, 1), Seq(1, 2), Seq(2, 3)}},
+                new {Source = Enumerable.Range(0, 4), Size = 3, Result = new[] {Seq(0, 1, 2), Seq(1, 2, 3)}},
+                new {Source = Enumerable.Range(0, 4), Size = 4, Result = new[] {Seq(0, 1, 2, 3)}}
+            }
+            select new TestCaseData(e.Source, e.Size).Returns(e.Result);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public IEnumerable<IEnumerable<int>> TestWindowOnKnownResults(IEnumerable<int> sequence, int sizes)
+        {
+            using var testingSequence = sequence.AsTestingSequence();
+            return testingSequence.Window(sizes).ToList();
         }
     }
 }
