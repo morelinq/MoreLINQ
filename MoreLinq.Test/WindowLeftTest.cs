@@ -22,7 +22,8 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(0, 3);
             foreach (var window in sequence.WindowLeft(2))
             {
-                window[window.Count - 1] = 1; // modify last item of the window
+                if (window.Count > 1)
+                    window[1] = 1;
                 Assert.That(window[0], Is.EqualTo(0));
             }
         }
