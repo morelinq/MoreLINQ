@@ -131,15 +131,21 @@ namespace MoreLinq.Test
             Assert.That(SomeSingleton.List.IndexOf(new object()), Is.EqualTo(-1));
         }
 
-        private static readonly IEnumerable<Action> UnsupportedActions =
-            new Action[]
+        static readonly IEnumerable<TestCaseData> UnsupportedActions =
+            new[]
             {
-                () => ((IList<object>) MoreEnumerable.Return(new object())).Add(new object()),
-                () => ((IList<object>) MoreEnumerable.Return(new object())).Clear(),
-                () => ((ICollection<object>) MoreEnumerable.Return(new object())).Remove(new object()),
-                () => ((IList<object>) MoreEnumerable.Return(new object())).RemoveAt(0),
-                () => ((IList<object>) MoreEnumerable.Return(new object())).Insert(0, new object()),
-                () => ((IList<object>) MoreEnumerable.Return(new object()))[0] = new object(),
+                new TestCaseData((Action) (() => SomeSingleton.List.Add(new object())))
+                    .SetName("Add should throw NotSupportedException"),
+                new TestCaseData((Action) (() => SomeSingleton.Collection.Clear()))
+                    .SetName("Clear should throw NotSupportedException"),
+                new TestCaseData((Action) (() => SomeSingleton.Collection.Remove(SomeSingleton.Item)))
+                    .SetName("Remove should throw NotSupportedException"),
+                new TestCaseData((Action) (() => SomeSingleton.List.RemoveAt(0)))
+                    .SetName("RemoveAt should throw NotSupportedException"),
+                new TestCaseData((Action) (() => SomeSingleton.List.Insert(0, new object())))
+                    .SetName("Insert should throw NotSupportedException"),
+                new TestCaseData((Action) (() => SomeSingleton.List[0] = new object()))
+                    .SetName("Index setter should throw NotSupportedException")
             };
 
         [TestCaseSource(nameof(UnsupportedActions))]
