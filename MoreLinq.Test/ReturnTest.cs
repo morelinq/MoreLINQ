@@ -15,13 +15,12 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework.Interfaces;
-
 namespace MoreLinq.Test
 {
     using System;
-    using NUnit.Framework;
     using System.Collections.Generic;
+    using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
 
     class ReturnTest
     {
