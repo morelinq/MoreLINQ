@@ -12,6 +12,23 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().WindowLeft(1);
         }
 
+        /// <summary>
+        /// Verify that Window doesn't return it's internal buffer
+        /// </summary>
+        [Test]
+        public void WindowLeftDoNotExposeItsBuffer()
+        {
+            var sequence = Enumerable.Repeat(0, 3);
+            var expected = new[] { 0, 0, 0 };
+            var actual = sequence.WindowLeft(2).Select(l =>
+            {
+                if (l.Count > 1)
+                    l[1] = 1;
+                return l[0];
+            }).ToList();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void WindowLeftWithNegativeWindowSize()
         {

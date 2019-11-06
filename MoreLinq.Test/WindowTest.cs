@@ -18,6 +18,22 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that Window doesn't return it's internal buffer
+        /// </summary>
+        [Test]
+        public void TestWindowDoNotExposeItsBuffer()
+        {
+            var sequence = Enumerable.Repeat(0, 3);
+            var expected = new[] {0, 0};
+            var actual = sequence.Window(2).Select(l =>
+            {
+                l[1] = 1;
+                return l[0];
+            }).ToList();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
         [Test]
