@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using NUnit.Framework.Interfaces;
+
 namespace MoreLinq.Test
 {
     using System;
@@ -23,99 +25,110 @@ namespace MoreLinq.Test
 
     class ReturnTest
     {
+        static class SomeSingleton
+        {
+            public static readonly object Item = new object();
+
+            public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return(Item);
+
+            public static IList<object> List => (IList<object>)Sequence;
+
+            public static ICollection<object> Collection => (ICollection<object>)Sequence;
+        }
+
+        static class NullSingleton
+        {
+            public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return<object>(null);
+
+            public static IList<object> List => (IList<object>)Sequence;
+        }
+
         [Test]
         public void TestResultingSequenceContainsSingle()
         {
-            Assert.That(MoreEnumerable.Return(new object()).Count(), Is.EqualTo(1));
+            Assert.That(SomeSingleton.Sequence.Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void TestResultingSequenceContainsTheItemProvided()
         {
-            var item = new object();
-            Assert.That(MoreEnumerable.Return(item), Has.Member(item));
+            Assert.That(SomeSingleton.Sequence, Has.Member(SomeSingleton.Item));
         }
 
         [Test]
         public void TestResultingListHasCountOne()
         {
-            Assert.That(((IList<object>) MoreEnumerable.Return(new object())).Count, Is.EqualTo(1));
+            Assert.That(SomeSingleton.List.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void TestContainsReturnsTrueWhenTheResultingSequenceContainsTheItemProvided()
         {
-            var item = new object();
-            Assert.That(MoreEnumerable.Return(item).Contains(item), Is.True);
+            Assert.That(SomeSingleton.Sequence.Contains(SomeSingleton.Item), Is.True);
         }
 
         [Test]
         public void TestContainsDoesNotThrowWhenTheItemContainedIsNull()
         {
-            Assert.That(() => MoreEnumerable.Return(new object()).Contains(null), Throws.Nothing);
+            Assert.That(() => SomeSingleton.Sequence.Contains(null), Throws.Nothing);
         }
 
         [Test]
         public void TestContainsDoesNotThrowWhenTheItemProvidedIsNull()
         {
-            Assert.That(() => MoreEnumerable.Return<object>(null).Contains(new object()), Throws.Nothing);
+            Assert.That(() => NullSingleton.Sequence.Contains(new object()), Throws.Nothing);
         }
 
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemProvidedIsNull()
         {
-            Assert.That(() => ((IList<object>) MoreEnumerable.Return<object>(null)).IndexOf(new object()),
-                Throws.Nothing);
+            Assert.That(() => NullSingleton.List.IndexOf(new object()), Throws.Nothing);
         }
 
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
         {
-            Assert.That(() => ((IList<object>)MoreEnumerable.Return(new object())).IndexOf(null),
-                Throws.Nothing);
+            Assert.That(() => SomeSingleton.List.IndexOf(null), Throws.Nothing);
         }
 
         [Test]
         public void TestCopyToSetsTheValueAtTheIndexToTheItemContained()
         {
             var array = new object[1];
-            var item = new object();
 
-            ((IList<object>)MoreEnumerable.Return(item)).CopyTo(array, 0);
+            SomeSingleton.List.CopyTo(array, 0);
 
-            Assert.That(array[0], Is.EqualTo(item));
+            Assert.That(array[0], Is.EqualTo(SomeSingleton.Item));
         }
 
         [Test]
         public void TestResultingCollectionIsReadOnly()
         {
-            Assert.That(((ICollection<object>)MoreEnumerable.Return(new object())).IsReadOnly, Is.True);
+            Assert.That(SomeSingleton.Collection.IsReadOnly, Is.True);
         }
 
         [Test]
         public void TestResultingCollectionHasCountOne()
         {
-            Assert.That(((ICollection<object>)MoreEnumerable.Return(new object())).Count, Is.EqualTo(1));
+            Assert.That(SomeSingleton.Collection.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void TestIndexZeroContainsTheItemProvided()
         {
-            var item = new object();
-            Assert.That(((IList<object>) MoreEnumerable.Return(item))[0], Is.EqualTo(item));
+            Assert.That(SomeSingleton.List[0], Is.EqualTo(SomeSingleton.Item));
         }
 
         [Test]
         public void TestIndexOfTheItemProvidedIsZero()
         {
-            var item = new object();
-            Assert.That(((IList<object>)MoreEnumerable.Return(item)).IndexOf(item), Is.EqualTo(0));
+            Assert.That(SomeSingleton.List.IndexOf(SomeSingleton.Item), Is.EqualTo(0));
         }
 
         [Test]
         public void TestIndexOfAnItemNotContainedIsNegativeOne()
         {
-            Assert.That(((IList<object>)MoreEnumerable.Return(new object())).IndexOf(new object()), Is.EqualTo(-1));
+            Assert.That(SomeSingleton.List.IndexOf(new object()), Is.EqualTo(-1));
         }
 
         private static readonly IEnumerable<Action> UnsupportedActions =
@@ -138,7 +151,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestIndexingPastZeroShouldThrow()
         {
-            Assert.That(() => ((IList<object>)MoreEnumerable.Return(new object()))[1], Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => SomeSingleton.List[1], Throws.InstanceOf<ArgumentOutOfRangeException>());
         }
     }
 }
