@@ -24,10 +24,10 @@ namespace MoreLinq
         /// <summary>
         /// Move the <paramref name="enumerator"/> to the next position and put the
         /// new current value into <paramref name="value"/>.
-        /// 
+        ///
         /// If the <paramref name="enumerator"/> has no more element it's disposed and
         /// set to <c>null</c>, and <paramref name="value"/> is set to <c>default</c>.
-        /// 
+        ///
         /// If the <paramref name="enumerator"/> is <c>null</c> the method return immediately
         /// and <paramref name="value"/> is not modified.
         /// </summary>
