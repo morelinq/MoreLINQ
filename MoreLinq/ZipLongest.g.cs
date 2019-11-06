@@ -65,9 +65,10 @@ namespace MoreLinq
                     var v1 = default(T1);
                     var v2 = default(T2);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2))
                     {
                         yield return resultSelector(v1, v2);
                     }
@@ -158,10 +159,11 @@ namespace MoreLinq
                     var v2 = default(T2);
                     var v3 = default(T3);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDefault<T3>(ref e3, ref v3))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
+                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3))
                     {
                         yield return resultSelector(v1, v2, v3);
                     }
@@ -264,11 +266,12 @@ namespace MoreLinq
                     var v3 = default(T3);
                     var v4 = default(T4);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipLongestHelper.MoveNextOrDefault<T4>(ref e4, ref v4))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
+                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3) |
+                        ZipLongestHelper.MoveNextOrDispose<T4>(ref e4, ref v4))
                     {
                         yield return resultSelector(v1, v2, v3, v4);
                     }
@@ -383,12 +386,13 @@ namespace MoreLinq
                     var v4 = default(T4);
                     var v5 = default(T5);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipLongestHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipLongestHelper.MoveNextOrDefault<T5>(ref e5, ref v5))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
+                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3) |
+                        ZipLongestHelper.MoveNextOrDispose<T4>(ref e4, ref v4) |
+                        ZipLongestHelper.MoveNextOrDispose<T5>(ref e5, ref v5))
                     {
                         yield return resultSelector(v1, v2, v3, v4, v5);
                     }
@@ -515,13 +519,14 @@ namespace MoreLinq
                     var v5 = default(T5);
                     var v6 = default(T6);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipLongestHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipLongestHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
-                        ZipLongestHelper.MoveNextOrDefault<T6>(ref e6, ref v6))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
+                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3) |
+                        ZipLongestHelper.MoveNextOrDispose<T4>(ref e4, ref v4) |
+                        ZipLongestHelper.MoveNextOrDispose<T5>(ref e5, ref v5) |
+                        ZipLongestHelper.MoveNextOrDispose<T6>(ref e6, ref v6))
                     {
                         yield return resultSelector(v1, v2, v3, v4, v5, v6);
                     }
@@ -660,14 +665,15 @@ namespace MoreLinq
                     var v6 = default(T6);
                     var v7 = default(T7);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipLongestHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipLongestHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
-                        ZipLongestHelper.MoveNextOrDefault<T6>(ref e6, ref v6) |
-                        ZipLongestHelper.MoveNextOrDefault<T7>(ref e7, ref v7))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
+                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3) |
+                        ZipLongestHelper.MoveNextOrDispose<T4>(ref e4, ref v4) |
+                        ZipLongestHelper.MoveNextOrDispose<T5>(ref e5, ref v5) |
+                        ZipLongestHelper.MoveNextOrDispose<T6>(ref e6, ref v6) |
+                        ZipLongestHelper.MoveNextOrDispose<T7>(ref e7, ref v7))
                     {
                         yield return resultSelector(v1, v2, v3, v4, v5, v6, v7);
                     }
@@ -818,15 +824,16 @@ namespace MoreLinq
                     var v7 = default(T7);
                     var v8 = default(T8);
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDefault<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDefault<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDefault<T3>(ref e3, ref v3) |
-                        ZipLongestHelper.MoveNextOrDefault<T4>(ref e4, ref v4) |
-                        ZipLongestHelper.MoveNextOrDefault<T5>(ref e5, ref v5) |
-                        ZipLongestHelper.MoveNextOrDefault<T6>(ref e6, ref v6) |
-                        ZipLongestHelper.MoveNextOrDefault<T7>(ref e7, ref v7) |
-                        ZipLongestHelper.MoveNextOrDefault<T8>(ref e8, ref v8))
+                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
+                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
+                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3) |
+                        ZipLongestHelper.MoveNextOrDispose<T4>(ref e4, ref v4) |
+                        ZipLongestHelper.MoveNextOrDispose<T5>(ref e5, ref v5) |
+                        ZipLongestHelper.MoveNextOrDispose<T6>(ref e6, ref v6) |
+                        ZipLongestHelper.MoveNextOrDispose<T7>(ref e7, ref v7) |
+                        ZipLongestHelper.MoveNextOrDispose<T8>(ref e8, ref v8))
                     {
                         yield return resultSelector(v1, v2, v3, v4, v5, v6, v7, v8);
                     }

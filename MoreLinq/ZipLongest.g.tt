@@ -112,6 +112,7 @@ namespace MoreLinq
                     var <#=arg.Value#> = default(<#=arg.Type#>);
 <#} #>
 
+                    // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
 <# foreach (var arg in o.Arguments) { #>
                         ZipLongestHelper.MoveNextOrDefault<<#=arg.Type#>>(ref <#=arg.Enumerator#>, ref <#=arg.Value#>)<#= arg.IsLast ? ")" : " |" #>

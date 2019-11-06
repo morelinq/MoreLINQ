@@ -21,7 +21,27 @@ namespace MoreLinq
 
     static class ZipLongestHelper
     {
-        public static bool MoveNextOrDefault<T>(ref IEnumerator<T> enumerator, ref T value)
+        /// <summary>
+        /// Move the <paramref name="enumerator"/> to the next position and put the
+        /// new current value into <paramref name="value"/>.
+        /// 
+        /// If the <paramref name="enumerator"/> has no more element it's disposed and
+        /// set to <c>null</c>, and <paramref name="value"/> is set to <c>default</c>.
+        /// 
+        /// If the <paramref name="enumerator"/> is <c>null</c> the method return immediately
+        /// and <paramref name="value"/> is not modified.
+        /// </summary>
+        /// <typeparam name="T">The type of element that are enumerated.</typeparam>
+        /// <param name="enumerator">The enumerator to iterate or dispose.</param>
+        /// <param name="value">The new current value of <paramref name="enumerator"/> or
+        /// <c>default</c> if <paramref name="enumerator"/> has no more element.
+        /// </param>
+        /// <remarks>
+        /// Because <paramref name="enumerator"/> and <paramref name="value"/> may both be modified
+        /// they are both passed by reference.
+        /// </remarks>
+        /// <returns>A <c>bool</c> value indicating if the enumerator has moved to the next element.</returns>
+        public static bool MoveNextOrDispose<T>(ref IEnumerator<T> enumerator, ref T value)
         {
             if (enumerator == null)
             {
