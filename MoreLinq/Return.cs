@@ -36,9 +36,6 @@ namespace MoreLinq
         {
             readonly T _item;
 
-            static NotSupportedException ReadOnlyException() =>
-                new NotSupportedException("Single element list is immutable.");
-
             public SingleElementList(T item) => _item = item;
 
             public IEnumerator<T> GetEnumerator()
@@ -48,15 +45,9 @@ namespace MoreLinq
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            public void Add(T item) => throw ReadOnlyException();
-
-            public void Clear() => throw ReadOnlyException();
-
             public bool Contains(T item) => EqualityComparer<T>.Default.Equals(_item, item);
 
             public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
-
-            public bool Remove(T item) => throw ReadOnlyException();
 
             public int Count => 1;
 
@@ -64,15 +55,22 @@ namespace MoreLinq
 
             public int IndexOf(T item) => Contains(item) ? 0 : -1;
 
-            public void Insert(int index, T item) => throw ReadOnlyException();
-
-            public void RemoveAt(int index) => throw ReadOnlyException();
-
             public T this[int index]
             {
                 get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
                 set => throw ReadOnlyException();
             }
+
+            // Following methods are unsupported as this is a read-only list.
+
+            public void Add(T item)               => throw ReadOnlyException();
+            public void Clear()                   => throw ReadOnlyException();
+            public bool Remove(T item)            => throw ReadOnlyException();
+            public void Insert(int index, T item) => throw ReadOnlyException();
+            public void RemoveAt(int index)       => throw ReadOnlyException();
+
+            static NotSupportedException ReadOnlyException() =>
+                new NotSupportedException("Single element list is immutable.");
         }
     }
 }
