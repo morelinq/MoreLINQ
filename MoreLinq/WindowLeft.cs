@@ -63,28 +63,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            return _(); IEnumerable<IList<TSource>> _()
-            {
-                var window = new List<TSource>();
-                foreach (var item in source)
-                {
-                    window.Add(item);
-                    if (window.Count < size)
-                        continue;
-
-                    // prepare next window before exposing data
-                    var nextWindow = new List<TSource>(window.Skip(1));
-                    yield return window;
-                    window = nextWindow;
-                }
-                while (window.Count > 0)
-                {
-                    // prepare next window before exposing data
-                    var nextWindow = new List<TSource>(window.Skip(1));
-                    yield return window;
-                    window = nextWindow;
-                }
-            }
+            return Window(source, size, false, true);
         }
     }
 }
