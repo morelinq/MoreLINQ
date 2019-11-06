@@ -1,0 +1,166 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Collections" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2019 Pierre Lando. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+<#
+    var ordinals = new[]
+    {
+        "",
+        "first", "second", "third", "fourth",
+        "fifth", "sixth", "seventh", "eighth"
+    };
+
+    var overloads =
+        Enumerable.Range(2, 7)
+            .Select(argCount =>
+                Enumerable.Range(1, argCount).Select(argPosition =>
+                    new
+                    {
+                        IsFirst = argPosition == 1,
+                        IsLast = argPosition == argCount,
+                        Name = ordinals[argPosition],
+                        Ordinal = ordinals[argPosition],
+                        Type = $"T{argPosition}",
+                        // Objects associated with the argument
+                        Enumerator = $"e{argPosition}",
+                        Value = $"v{argPosition}"
+                    }))
+            .Select(args => args.ToList())
+            .Select(args =>
+                new
+                {
+                    Arguments = args,
+                    TParams = string.Join(", ", args.Select(arg => arg.Type))
+                });
+#>
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    static partial class MoreEnumerable
+    {
+<#  foreach (var o in overloads)
+    {
+#>
+        /// <summary>
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
+<#} #>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
+<#} #>
+        /// <param name="resultSelector">
+        /// Function to apply to each tuple of elements.</param>
+        /// <returns>
+        /// A projection of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipLongest<<#=o.TParams#>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#>,
+<#}#>
+            Func<<#=o.TParams#>, TResult> resultSelector)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#=arg.Name#> == null) throw new ArgumentNullException(nameof(<#=arg.Name#>));
+<#} #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _(); IEnumerable<TResult> _()
+            {
+<# foreach (var arg in o.Arguments) { #>
+                IEnumerator<<#=arg.Type#>> <#=arg.Enumerator#> = null;
+<#} #>
+
+                try
+                {
+<# foreach (var arg in o.Arguments) { #>
+                    <#=arg.Enumerator#> = <#=arg.Name#>.GetEnumerator();
+<#} #>
+
+<# foreach (var arg in o.Arguments) { #>
+                    var <#=arg.Value#> = default(<#=arg.Type#>);
+<#} #>
+
+                    while (
+<# foreach (var arg in o.Arguments) { #>
+                        ZipLongestHelper.MoveNextOrDefault<<#=arg.Type#>>(ref <#=arg.Enumerator#>, ref <#=arg.Value#>)<#= arg.IsLast ? ")" : " |" #>
+<#}#>
+                    {
+                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#=arg.Value#><#= arg.IsLast ? "" : ", " #><#}#>);
+                    }
+                }
+                finally
+                {
+<# foreach (var arg in o.Arguments) { #>
+                    <#=arg.Enumerator#>?.Dispose();
+<#} #>
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the input sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
+<#} #>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
+<#} #>
+        /// <returns>
+        /// A sequence of tuples, where each tuple contains the N-th element
+        /// from each of the argument sequences.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(<#=o.TParams#>)> ZipLongest<<#=o.TParams#>>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
+<#}#>
+        {
+            return ZipLongest(
+<# foreach (var arg in o.Arguments) { #>
+                <#=arg.Name#>,
+<#}#>
+                ValueTuple.Create);
+        }
+
+<#  } #>
+    }
+}
