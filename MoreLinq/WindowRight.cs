@@ -84,8 +84,11 @@ namespace MoreLinq
                 foreach (var item in source)
                 {
                     window.Add(item);
+
+                    // prepare next window before exposing data
+                    var nextWindow = new List<TSource>(predicate(item, window.Count) ? window : window.Skip(1));
                     yield return window;
-                    window = new List<TSource>(predicate(item, window.Count) ? window : window.Skip(1));
+                    window = nextWindow;
                 }
             }
         }

@@ -52,19 +52,22 @@ namespace MoreLinq
                 if (i < size)
                     yield break;
 
-                // return the first window (whatever size it may be)
-                yield return window;
-
-                // generate the next window by shifting forward by one item
-                while (iter.MoveNext())
+                for(;;)
                 {
-                    // NOTE: If we used a circular queue rather than a list,
-                    //       we could make this quite a bit more efficient.
-                    //       Sadly the BCL does not offer such a collection.
+                    if (!iter.MoveNext())
+                    {
+                        // return the last window.
+                        yield return window;
+                        yield break;
+                    }
+
+                    // generate the next window by shifting forward by one item
+                    // and do that before exposing the data
                     var newWindow = new TSource[size];
                     Array.Copy(window, 1, newWindow, 0, size - 1);
                     newWindow[size - 1] = iter.Current;
-                    yield return newWindow;
+
+                    yield return window;
                     window = newWindow;
                 }
             }
