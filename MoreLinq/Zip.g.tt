@@ -22,40 +22,35 @@
 #endregion
 
 <#
+    var ordinals = new[]
+    {
+        "",
+        "first", "second", "third", "fourth",
+        "fifth", "sixth", "seventh", "eighth"
+    };
+
     var overloads =
-        from args in new[]
-        {
-            new[]
-            {
-                new { Ordinal = "first"  , Arity = "one"   },
-                new { Ordinal = "second" , Arity = "two"   },
-                new { Ordinal = "third"  , Arity = "three" },
-                new { Ordinal = "fourth" , Arity = "four"  },
-                new { Ordinal = "fifth"  , Arity = "five"  },
-                new { Ordinal = "sixth"  , Arity = "six"   },
-                new { Ordinal = "seventh", Arity = "seven" },
-                new { Ordinal = "eighth" , Arity = "eight" },
-            }
-        }
-        select args.Select((a, i) => new
-        {
-            a.Ordinal,
-            a.Arity,
-            Count = i + 1,
-            Number = (i + 1).ToString(CultureInfo.InvariantCulture),
-        })
-        into args
-        select args.ToList() into args
-        from a in args.Skip(1)
-        select new
-        {
-            a.Arity,
-            a.Count,
-            Arguments = args.Take(a.Count)
-                            .Select(aa => new { aa.Number, Num = aa.Count, aa.Ordinal })
-                            .ToList(),
-            Types = string.Join(", ", Enumerable.Range(1, a.Count).Select(i => $"T{i}")),
-        };
+        Enumerable.Range(2, 7)
+            .Select(argCount =>
+                Enumerable.Range(1, argCount).Select(argPosition =>
+                    new
+                    {
+                        IsFirst = argPosition == 1,
+                        IsLast = argPosition == argCount,
+                        Name = ordinals[argPosition],
+                        Ordinal = ordinals[argPosition],
+                        Type = $"T{argPosition}",
+                        // Objects associated with the argument
+                        Enumerator = $"e{argPosition}",
+                        Value = $"v{argPosition}"
+                    }))
+            .Select(args => args.ToList())
+            .Select(args =>
+                new
+                {
+                    Arguments = args,
+                    TParams = string.Join(", ", args.Select(arg => arg.Type))
+                });
 #>
 namespace MoreLinq
 {
@@ -73,11 +68,11 @@ namespace MoreLinq
         /// if the input sequences are of different lengths.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
 <#} #>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
 <#} #>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
@@ -91,35 +86,35 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<TResult> EquiZip<<#= o.Types#>, TResult>(
+        public static IEnumerable<TResult> EquiZip<<#=o.TParams#>, TResult>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
-<#}#>
-            Func<<#= o.Types#>, TResult> resultSelector)
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#>,
+<#} #>
+            Func<<#=o.TParams#>, TResult> resultSelector)
         {
 <# foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
+            if (<#=arg.Name#> == null) throw new ArgumentNullException(nameof(<#=arg.Name#>));
 <#} #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
 <# foreach (var arg in o.Arguments) { #>
-                using var e<#= arg.Number #> = <#= arg.Ordinal #>.GetEnumerator();
+                using var <#=arg.Enumerator#> = <#=arg.Name#>.GetEnumerator();
 <#} #>
 
                 for (;;)
                 {
-                    if (e<#= o.Arguments.First().Number #>.MoveNext())
+                    if (<#=o.Arguments.First().Enumerator#>.MoveNext())
                     {
-                        if (<# foreach (var arg in o.Arguments.Skip(1)) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " && " : "" #><#}#>)
-                            yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? ", " : "" #><#}#>);
+                        if (<# foreach (var arg in o.Arguments.Skip(1)) { #><#=arg.Enumerator#>.MoveNext()<#= arg.IsLast ? "" : " && " #><#}#>)
+                            yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#=arg.Enumerator#>.Current<#= arg.IsLast ? "" : ", " #><#}#>);
                         else
                             break;
                     }
                     else
                     {
-                        if (<# foreach (var arg in o.Arguments.Skip(1)) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " || " : "" #><#}#>)
+                        if (<# foreach (var arg in o.Arguments.Skip(1)) { #><#=arg.Enumerator#>.MoveNext()<#= arg.IsLast ? "" : " || " #><#}#>)
                             break;
                         else
                             yield break;
@@ -136,10 +131,10 @@ namespace MoreLinq
         /// if the input sequences are of different lengths.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
 <#} #>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
 <#} #>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
@@ -150,14 +145,14 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        public static IEnumerable<(<#= o.Types#>)> EquiZip<<#= o.Types#>>(
+        public static IEnumerable<(<#=o.TParams#>)> EquiZip<<#=o.TParams#>>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #><#= arg.Num < o.Count ? "," : ")" #>
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
 <#}#>
         {
             return EquiZip(
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>,
+                <#=arg.Name#>,
 <#}#>
                 ValueTuple.Create);
         }
@@ -170,11 +165,11 @@ namespace MoreLinq
         /// for padding.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
 <#} #>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
 <#} #>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
@@ -184,45 +179,45 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        public static IEnumerable<TResult> ZipLongest<<#= o.Types#>, TResult>(
+        public static IEnumerable<TResult> ZipLongest<<#=o.TParams#>, TResult>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#>,
 <#}#>
-            Func<<#= o.Types#>, TResult> resultSelector)
+            Func<<#=o.TParams#>, TResult> resultSelector)
         {
 <# foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
+            if (<#=arg.Name#> == null) throw new ArgumentNullException(nameof(<#=arg.Name#>));
 <#} #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
 <# foreach (var arg in o.Arguments) { #>
-                IEnumerator<T<#= arg.Number #>> e<#= arg.Number #> = null;
+                IEnumerator<<#=arg.Type#>> <#=arg.Enumerator#> = null;
 <#} #>
 
                 try
                 {
 <# foreach (var arg in o.Arguments) { #>
-                    e<#= arg.Number #> = <#= arg.Ordinal #>.GetEnumerator();
+                    <#=arg.Enumerator#> = <#=arg.Name#>.GetEnumerator();
 <#} #>
 
 <# foreach (var arg in o.Arguments) { #>
-                    var v<#= arg.Number #> = default(T<#= arg.Number #>);
+                    var <#=arg.Value#> = default(<#=arg.Type#>);
 <#} #>
 
                     while (
 <# foreach (var arg in o.Arguments) { #>
-                        ZipHelper.MoveNextOrDefault<T<#= arg.Number #>>(ref e<#= arg.Number #>, ref v<#= arg.Number #>)<#= arg.Num < o.Count ? " |" : ")" #>
+                        ZipHelper.MoveNextOrDefault<<#=arg.Type#>>(ref <#=arg.Enumerator#>, ref <#=arg.Value#>)<#= arg.IsLast ? ")" : " |" #>
 <#}#>
                     {
-                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #>v<#= arg.Number #><#= arg.Num < o.Count ? ", " : "" #><#}#>);
+                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#=arg.Value#><#= arg.IsLast ? "" : ", " #><#}#>);
                     }
                 }
                 finally
                 {
 <# foreach (var arg in o.Arguments) { #>
-                    e<#= arg.Number #>?.Dispose();
+                    <#=arg.Enumerator#>?.Dispose();
 <#} #>
                 }
             }
@@ -236,10 +231,10 @@ namespace MoreLinq
         /// for padding.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
 <#} #>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
 <#} #>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
@@ -247,14 +242,14 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-        public static IEnumerable<(<#= o.Types#>)> ZipLongest<<#= o.Types#>>(
+        public static IEnumerable<(<#=o.TParams#>)> ZipLongest<<#=o.TParams#>>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #><#= arg.Num < o.Count ? "," : ")" #>
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
 <#}#>
         {
             return ZipLongest(
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>,
+                <#=arg.Name#>,
 <#}#>
                 ValueTuple.Create);
         }
@@ -265,11 +260,11 @@ namespace MoreLinq
         /// is as short as the shortest input sequence.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
 <#} #>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
 <#} #>
         /// <param name="resultSelector">
         /// Function to apply to each tuple of elements.</param>
@@ -286,26 +281,26 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipShortest<<#= o.Types#>, TResult>(
+        public static IEnumerable<TResult> ZipShortest<<#=o.TParams#>, TResult>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#>,
 <#}#>
-            Func<<#= o.Types#>, TResult> resultSelector)
+            Func<<#=o.TParams#>, TResult> resultSelector)
         {
 <# foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
+            if (<#=arg.Name#> == null) throw new ArgumentNullException(nameof(<#=arg.Name#>));
 <#} #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
 <# foreach (var arg in o.Arguments) { #>
-                using var e<#= arg.Number #> = <#= arg.Ordinal #>.GetEnumerator();
+                using var <#=arg.Enumerator#> = <#=arg.Name#>.GetEnumerator();
 <#} #>
 
-                while (<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.MoveNext()<#= arg.Num < o.Count ? " && " : "" #><#}#>)
+                while (<# foreach (var arg in o.Arguments) { #><#=arg.Enumerator#>.MoveNext()<#= arg.IsLast ? "" : " && " #><#}#>)
                 {
-                    yield return resultSelector(<# foreach (var arg in o.Arguments) { #>e<#= arg.Number #>.Current<#= arg.Num < o.Count ? ", " : "" #><#}#>);
+                    yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#=arg.Enumerator#>.Current<#= arg.IsLast ? "" : ", " #><#}#>);
                 }
             }
         }
@@ -316,10 +311,10 @@ namespace MoreLinq
         /// is as short as the shortest input sequence.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="T<#= arg.Number #>">Type of elements in <#= arg.Ordinal #> input sequence.</typeparam>
+        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
 <#} #>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
 <#} #>
         /// <returns>
         /// A sequence of tuples, where each tuple contains the N-th element
@@ -334,14 +329,14 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(<#= o.Types#>)> ZipShortest<<#= o.Types#>>(
+        public static IEnumerable<(<#=o.TParams#>)> ZipShortest<<#=o.TParams#>>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.Num == 1 ? "this " : "" #>IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #><#= arg.Num < o.Count ? "," : ")" #>
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
 <#}#>
         {
             return ZipShortest(
 <# foreach (var arg in o.Arguments) { #>
-                <#= arg.Ordinal #>,
+                <#=arg.Name#>,
 <#}#>
                 ValueTuple.Create);
         }
