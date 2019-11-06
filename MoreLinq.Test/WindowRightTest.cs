@@ -12,20 +12,49 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().WindowRight(1);
         }
 
-        /// <summary>
-        /// Verify that elements returned by Window are isolated.
-        /// Modification on one window should not be visible from the next window.
-        /// </summary>
         [Test]
-        public void TestWindowRightReturnIsolatedList()
+        public void ModifyWindowBeforeMoveNextDoNotAffectNextWindow()
         {
-            var sequence = Enumerable.Repeat(0, 3);
-            foreach (var window in sequence.WindowRight(2))
-            {
-                if (window.Count > 1)
-                    window[1] = 1;
-                Assert.That(window[0], Is.EqualTo(0));
-            }
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.WindowRight(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            window1[0] = -1;
+            e.MoveNext();
+            var window2 = e.Current;
+
+            Assert.That(window2[0], Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ModifyWindowAfterMoveNextDoNotAffectNextWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.WindowRight(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            e.MoveNext();
+            window1[0] = -1;
+            var window2 = e.Current;
+
+            Assert.That(window2[0], Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ModifyWindowBeforeMoveNextDoNotAffectPrevWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.WindowRight(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            e.MoveNext();
+            var window2 = e.Current;
+            window2[0] = -1;
+
+            Assert.That(window1[0], Is.EqualTo(0));
         }
 
         [Test]
