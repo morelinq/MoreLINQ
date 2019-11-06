@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-using System.ComponentModel;
-
 namespace MoreLinq
 {
     using System;
