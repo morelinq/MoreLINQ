@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ModifyWindowBeforeMoveNextDoNotAffectPrevWindow()
+        public void ModifyWindowDoNotAffectPrevWindow()
         {
             var sequence = Enumerable.Range(0, 3);
             using var e = sequence.WindowLeft(2).GetEnumerator();
