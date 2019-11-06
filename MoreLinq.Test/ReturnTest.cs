@@ -94,11 +94,21 @@ namespace MoreLinq.Test
         [Test]
         public void TestCopyToSetsTheValueAtTheIndexToTheItemContained()
         {
-            var array = new object[1];
+            var first = new object();
+            var third = new object();
 
-            SomeSingleton.List.CopyTo(array, 0);
+            var array = new[]
+            {
+                first,
+                new object(),
+                third
+            };
 
-            Assert.That(array[0], Is.EqualTo(SomeSingleton.Item));
+            SomeSingleton.List.CopyTo(array, 1);
+
+            Assert.That(array[0], Is.EqualTo(first));
+            Assert.That(array[1], Is.EqualTo(SomeSingleton.Item));
+            Assert.That(array[2], Is.EqualTo(third));
         }
 
         [Test]
