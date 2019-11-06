@@ -52,15 +52,8 @@ namespace MoreLinq
                 if (i < size)
                     yield break;
 
-                for(;;)
+                while(iter.MoveNext())
                 {
-                    if (!iter.MoveNext())
-                    {
-                        // return the last window.
-                        yield return window;
-                        yield break;
-                    }
-
                     // generate the next window by shifting forward by one item
                     // and do that before exposing the data
                     var newWindow = new TSource[size];
@@ -70,6 +63,9 @@ namespace MoreLinq
                     yield return window;
                     window = newWindow;
                 }
+
+                // return the last window.
+                yield return window;
             }
         }
 
