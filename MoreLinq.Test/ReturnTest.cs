@@ -141,25 +141,20 @@ namespace MoreLinq.Test
             Assert.That(SomeSingleton.List.IndexOf(new object()), Is.EqualTo(-1));
         }
 
-        static readonly IEnumerable<TestCaseData> UnsupportedActions =
-            new[]
+        static IEnumerable<ITestCaseData> UnsupportedActions(string testName) =>
+            from ma in new (string MethodName, Action Action)[]
             {
-                new TestCaseData((Action) (() => SomeSingleton.List.Add(new object())))
-                    .SetName("Add should throw NotSupportedException"),
-                new TestCaseData((Action) (() => SomeSingleton.Collection.Clear()))
-                    .SetName("Clear should throw NotSupportedException"),
-                new TestCaseData((Action) (() => SomeSingleton.Collection.Remove(SomeSingleton.Item)))
-                    .SetName("Remove should throw NotSupportedException"),
-                new TestCaseData((Action) (() => SomeSingleton.List.RemoveAt(0)))
-                    .SetName("RemoveAt should throw NotSupportedException"),
-                new TestCaseData((Action) (() => SomeSingleton.List.Insert(0, new object())))
-                    .SetName("Insert should throw NotSupportedException"),
-                new TestCaseData((Action) (() => SomeSingleton.List[0] = new object()))
-                    .SetName("Index setter should throw NotSupportedException")
-            };
+                ("Add"     , () => SomeSingleton.List.Add(new object())),
+                ("Clear"   , () => SomeSingleton.Collection.Clear()),
+                ("Remove"  , () => SomeSingleton.Collection.Remove(SomeSingleton.Item)),
+                ("RemoveAt", () => SomeSingleton.List.RemoveAt(0)),
+                ("Insert"  , () => SomeSingleton.List.Insert(0, new object())),
+                ("Index"   , () => SomeSingleton.List[0] = new object()),
+            }
+            select new TestCaseData(ma.Action).SetName($"{testName}({ma.MethodName})");
 
-        [TestCaseSource(nameof(UnsupportedActions))]
-        public void TestUnsupportedMethodsShouldThrow(Action unsupportedAction)
+        [TestCaseSource(nameof(UnsupportedActions), new object[] { nameof(TestUnsupportedMethodShouldThrow) })]
+        public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
         {
             Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());
         }
