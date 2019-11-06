@@ -72,7 +72,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
         {
-            Assert.That(() => ((IList<object>)MoreEnumerable.Return<object>(new object())).IndexOf(null),
+            Assert.That(() => ((IList<object>)MoreEnumerable.Return(new object())).IndexOf(null),
                 Throws.Nothing);
         }
 
