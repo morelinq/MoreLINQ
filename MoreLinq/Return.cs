@@ -36,7 +36,7 @@ namespace MoreLinq
         {
             readonly T _item;
 
-            private static NotSupportedException ReadOnlyException() =>
+            static NotSupportedException ReadOnlyException() =>
                 new NotSupportedException("Single element list is immutable.");
 
             public SingleElementList(T item) => _item = item;
