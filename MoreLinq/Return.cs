@@ -56,7 +56,7 @@ namespace MoreLinq
 
             public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
 
-            bool ICollection<T>.Remove(T item) => throw ReadOnlyException();
+            public bool Remove(T item) => throw ReadOnlyException();
 
             public int Count => 1;
 
@@ -64,9 +64,9 @@ namespace MoreLinq
 
             public int IndexOf(T item) => EqualityComparer<T>.Default.Equals(_item, item) ? 0 : -1;
 
-            void IList<T>.Insert(int index, T item) => throw ReadOnlyException();
+            public void Insert(int index, T item) => throw ReadOnlyException();
 
-            void IList<T>.RemoveAt(int index) => throw ReadOnlyException();
+            public void RemoveAt(int index) => throw ReadOnlyException();
 
             public T this[int index]
             {
