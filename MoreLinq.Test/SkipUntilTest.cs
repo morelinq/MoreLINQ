@@ -15,6 +15,9 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -56,6 +59,21 @@ namespace MoreLinq.Test
             // started returning items after -1.
             var sequence = Enumerable.Range(-2, 5).SkipUntil(x => 1 / x == -1);
             sequence.AssertSequenceEqual(0, 1, 2);
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new {s = new[] {1, 2, 3}, o = 1, r = new[] {2, 3}},
+                new {s = new[] {1, 2, 3}, o = 2, r = new[] {3}},
+                new {s = new[] {1, 2, 3}, o = 3, r = new int[0]}
+            }
+            select new TestCaseData(e.s, e.o).Returns(e.r);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public int[] TestSkipUntilOnKnownInput(int[] source, int min)
+        {
+            return source.AsTestingSequence().SkipUntil(v => v < min).ToArray();
         }
     }
 }

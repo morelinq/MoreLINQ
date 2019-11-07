@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -142,6 +144,15 @@ namespace MoreLinq.Test
             var result = sequence.Exclude(count + 5, count);
 
             Assert.That(result, Is.EqualTo(sequence));
+        }
+
+        [TestCase(new[] { 0, 1, 2, 3, 4, 5 }, 0, 6, ExpectedResult = new int[0])]
+        [TestCase(new[] { 0, 1, 2, 3, 4, 5 }, 2, 6, ExpectedResult = new[] { 0, 1 })]
+        [TestCase(new[] { 0, 1, 2, 3, 4, 5 }, 0, 3, ExpectedResult = new[] { 3, 4, 5 })]
+        [TestCase(new[] { 0, 1, 2, 3, 4, 5 }, 2, 3, ExpectedResult = new[] { 0, 1, 5 })]
+        public int[] TestExcludeOnKnownInput(int[] source, int startIndex, int count)
+        {
+            return source.AsTestingSequence().Exclude(startIndex, count).ToArray();
         }
     }
 }

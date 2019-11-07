@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -113,6 +116,21 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 2)));
             Assert.IsTrue(result.Take(2).All(x => (x.A - x.B) == x.A));
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new {s = new[] {1, 2, 3}, o = 1, r = new[] {(1, 0), (2, 1), (3, 2)}},
+                new {s = new[] {1, 2, 3}, o = 2, r = new[] {(1, 0), (2, 0), (3, 1)}},
+                new {s = new[] {1, 2, 3}, o = 3, r = new[] {(1, 0), (2, 0), (3, 0)}}
+            }                                                        
+            select new TestCaseData(e.s, e.o).Returns(e.r);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public (int e, int l)[] TestLagOnKnownInput(int[] source, int offset)
+        {
+            return source.AsTestingSequence().Lag(offset, (e, l) => (e, l)).ToArray();
         }
     }
 }

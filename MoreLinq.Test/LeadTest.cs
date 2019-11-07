@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -115,6 +118,21 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
             Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new {s = new[] {0, 1, 2}, o = 1, r = new[] {(0, 1), (1, 2), (2, 0)}},
+                new {s = new[] {0, 1, 2}, o = 2, r = new[] {(0, 2), (1, 0), (2, 0)}},
+                new {s = new[] {0, 1, 2}, o = 3, r = new[] {(0, 0), (1, 0), (2, 0)}}
+            }
+            select new TestCaseData(e.s, e.o).Returns(e.r);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public (int e, int l)[] TestLeadOnKnownInput(int[] source, int offset)
+        {
+            return source.AsTestingSequence().Lead(offset, (e, l) => (e, l)).ToArray();
         }
     }
 }
