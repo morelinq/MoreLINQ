@@ -701,6 +701,1327 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>BatchBy</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class BatchByExtension
+    {
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Each buckets contains all <paramref name="acceptedKeys"/> keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        /// 
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        /// 
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the default equality comparer.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the returned buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="acceptedKeys">Sequence of accepted keys.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// 
+        /// The <paramref name="acceptedKeys"/> sequence is fully consumed on first iteration.
+        /// If <paramref name="acceptedKeys"/> is empty, <paramref name="source"/> is not enumerated.
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="acceptedKeys"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys.</exception>
+        public static IEnumerable<IDictionary<TKey, TSource>> BatchBy<TKey, TSource>(this IEnumerable<TSource> source,
+            IEnumerable<TKey> acceptedKeys,
+            Func<TSource, TKey> keySelector)
+            => MoreEnumerable.BatchBy(source, acceptedKeys, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, keySelector);
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Each buckets contains all <paramref name="acceptedKeys"/> keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        /// 
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        /// 
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the returned buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="acceptedKeys">Sequence of accepted keys.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// 
+        /// The <paramref name="acceptedKeys"/> sequence is fully consumed on first iteration.
+        /// If <paramref name="acceptedKeys"/> is empty, <paramref name="source"/> is not enumerated.
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="acceptedKeys"/>,
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys relatively to
+        /// <paramref name="keyComparer"/>.</exception>
+        public static IEnumerable<IDictionary<TKey, TSource>> BatchBy<TKey, TSource>(this IEnumerable<TSource> source,
+            IEnumerable<TKey> acceptedKeys,
+            Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, acceptedKeys, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, third, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, third, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                TKey sixth,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                TKey sixth,
+                TKey seventh,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                TKey sixth,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="eighth">eighth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh, TSource eighth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                TKey sixth,
+                TKey seventh,
+                TKey eighth,
+                Func<TSource, TKey> keySelector)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                TKey sixth,
+                TKey seventh,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values returned as <c>ValueTuple</c>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="eighth">eighth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
+
+        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh, TSource eighth)>
+            BatchBy<TKey, TSource>(
+                this IEnumerable<TSource> source,
+                TKey first,
+                TKey second,
+                TKey third,
+                TKey fourth,
+                TKey fifth,
+                TKey sixth,
+                TKey seventh,
+                TKey eighth,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, keySelector, resultSelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, third, keySelector, resultSelector);
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, keySelector, resultSelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, keySelector, resultSelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, third, keySelector, resultSelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, keySelector, resultSelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, keySelector, resultSelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            TKey sixth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector, resultSelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, keySelector, resultSelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            TKey sixth,
+            TKey seventh,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector, resultSelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            TKey sixth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector, resultSelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="eighth">eighth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>, 
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            TKey sixth,
+            TKey seventh,
+            TKey eighth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector, resultSelector);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            TKey sixth,
+            TKey seventh,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector, resultSelector, keyComparer);
+
+        /// <summary>
+        /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
+        /// Then the buckets values are projected with <paramref name="resultSelector"/>.
+        /// Each buckets contains all of the given keys and for each of this
+        /// keys a matching value from the <paramref name="source"/> sequence.
+        /// The matching is done by the <paramref name="keySelector"/>.
+        ///
+        /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
+        ///
+        /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
+        /// relatively to the <paramref name="keyComparer"/>.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the projected value.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="first">first key.</param>
+        /// <param name="second">second key.</param>
+        /// <param name="third">third key.</param>
+        /// <param name="fourth">fourth key.</param>
+        /// <param name="fifth">fifth key.</param>
+        /// <param name="sixth">sixth key.</param>
+        /// <param name="seventh">seventh key.</param>
+        /// <param name="eighth">eighth key.</param>
+        /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
+        /// <param name="resultSelector">The function used to project the buckets.</param>
+        /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
+        /// <returns>The build up sequence of projected buckets.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        ///
+        /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>,
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>, 
+        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
+
+        public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
+            this IEnumerable<TSource> source,
+            TKey first,
+            TKey second,
+            TKey third,
+            TKey fourth,
+            TKey fifth,
+            TKey sixth,
+            TKey seventh,
+            TKey eighth,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
+            IEqualityComparer<TKey> keyComparer)
+            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector, resultSelector, keyComparer);
+
+    }
+
     /// <summary><c>Cartesian</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
