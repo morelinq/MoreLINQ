@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2019 Pierre Lando. All rights reserved.
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,29 +19,31 @@ namespace MoreLinq
 {
     using System.Collections.Generic;
 
-    static class ZipLongestHelper
+    static class Enumerator
     {
         /// <summary>
+        /// <para>
         /// Move the <paramref name="enumerator"/> to the next position and put the
-        /// new current value into <paramref name="value"/>.
-        ///
+        /// new current value into <paramref name="item"/>.</para>
+        /// <para>
         /// If the <paramref name="enumerator"/> has no more element it's disposed and
-        /// set to <c>null</c>, and <paramref name="value"/> is set to <c>default</c>.
-        ///
+        /// set to <c>null</c>, and <paramref name="item"/> is set to <c>default</c>.</para>
+        /// <para>
         /// If the <paramref name="enumerator"/> is <c>null</c> the method return immediately
-        /// and <paramref name="value"/> is not modified.
+        /// and <paramref name="item"/> is not modified.</para>
         /// </summary>
         /// <typeparam name="T">The type of element that are enumerated.</typeparam>
         /// <param name="enumerator">The enumerator to iterate or dispose.</param>
-        /// <param name="value">The new current value of <paramref name="enumerator"/> or
+        /// <param name="item">The new current value of <paramref name="enumerator"/> or
         /// <c>default</c> if <paramref name="enumerator"/> has no more element.
         /// </param>
         /// <remarks>
-        /// Because <paramref name="enumerator"/> and <paramref name="value"/> may both be modified
+        /// Because <paramref name="enumerator"/> and <paramref name="item"/> may both be modified
         /// they are both passed by reference.
         /// </remarks>
         /// <returns>A <c>bool</c> value indicating if the enumerator has moved to the next element.</returns>
-        public static bool MoveNextOrDispose<T>(ref IEnumerator<T> enumerator, ref T value)
+
+        public static bool Read<T>(ref IEnumerator<T> enumerator, ref T item)
         {
             if (enumerator == null)
             {
@@ -50,13 +52,13 @@ namespace MoreLinq
 
             if (enumerator.MoveNext())
             {
-                value = enumerator.Current;
+                item = enumerator.Current;
                 return true;
             }
 
             enumerator.Dispose();
             enumerator = null;
-            value = default;
+            item = default;
             return false;
         }
     }

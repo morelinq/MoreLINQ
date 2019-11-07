@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2019 Pierre Lando. All rights reserved.
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
@@ -35,9 +35,9 @@ namespace MoreLinq
         /// <param name="first">The first source sequence.</param>
         /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
@@ -67,8 +67,8 @@ namespace MoreLinq
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2))
+                        Enumerator.Read(ref e1, ref v1) |
+                        Enumerator.Read(ref e2, ref v2))
                     {
                         yield return resultSelector(v1, v2);
                     }
@@ -82,7 +82,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
@@ -96,9 +96,9 @@ namespace MoreLinq
         /// <param name="second">The second source sequence.</param>
         /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
@@ -133,9 +133,9 @@ namespace MoreLinq
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3))
+                        Enumerator.Read(ref e1, ref v1) |
+                        Enumerator.Read(ref e2, ref v2) |
+                        Enumerator.Read(ref e3, ref v3))
                     {
                         yield return resultSelector(v1, v2, v3);
                     }
@@ -150,7 +150,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
@@ -166,9 +166,9 @@ namespace MoreLinq
         /// <param name="third">The third source sequence.</param>
         /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
@@ -208,10 +208,10 @@ namespace MoreLinq
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        ZipLongestHelper.MoveNextOrDispose<T1>(ref e1, ref v1) |
-                        ZipLongestHelper.MoveNextOrDispose<T2>(ref e2, ref v2) |
-                        ZipLongestHelper.MoveNextOrDispose<T3>(ref e3, ref v3) |
-                        ZipLongestHelper.MoveNextOrDispose<T4>(ref e4, ref v4))
+                        Enumerator.Read(ref e1, ref v1) |
+                        Enumerator.Read(ref e2, ref v2) |
+                        Enumerator.Read(ref e3, ref v3) |
+                        Enumerator.Read(ref e4, ref v4))
                     {
                         yield return resultSelector(v1, v2, v3, v4);
                     }

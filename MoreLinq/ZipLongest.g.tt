@@ -6,7 +6,7 @@
 <#@ import namespace="System.Linq" #>
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2019 Pierre Lando. All rights reserved.
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,33 +24,34 @@
 <#
     var ordinals = new[]
     {
-        "",
+        string.Empty,
         "first", "second", "third", "fourth",
         "fifth", "sixth", "seventh", "eighth"
     };
 
     var overloads =
-        Enumerable.Range(2, 3)
-            .Select(argCount =>
-                Enumerable.Range(1, argCount).Select(argPosition =>
-                    new
-                    {
-                        IsFirst = argPosition == 1,
-                        IsLast = argPosition == argCount,
-                        Name = ordinals[argPosition],
-                        Ordinal = ordinals[argPosition],
-                        Type = $"T{argPosition}",
-                        // Objects associated with the argument
-                        Enumerator = $"e{argPosition}",
-                        Value = $"v{argPosition}"
-                    }))
-            .Select(args => args.ToList())
-            .Select(args =>
-                new
-                {
-                    Arguments = args,
-                    TParams = string.Join(", ", args.Select(arg => arg.Type))
-                });
+        from argCount in Enumerable.Range(2, 3)
+        from args in new[]
+        {
+            from argPosition in Enumerable.Range(1, argCount)
+            select new
+            {
+                IsFirst    = argPosition == 1,
+                IsLast     = argPosition == argCount,
+                Name       = ordinals[argPosition],
+                Ordinal    = ordinals[argPosition],
+                Type       = $"T{argPosition}",
+                // Objects associated with the argument
+                Enumerator = $"e{argPosition}",
+                Value      = $"v{argPosition}"
+            }
+        }
+        select args.ToList() into args
+        select new
+        {
+            Arguments = args,
+            TParams = string.Join(", ", from arg in args select arg.Type)
+        };
 #>
 namespace MoreLinq
 {
@@ -63,69 +64,69 @@ namespace MoreLinq
     {
 #>
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. The resulting sequence
         /// will always be as long as the longest of input sequences where the
         /// default value of each of the shorter sequence element types is used
         /// for padding.
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
-<#} #>
+        /// <typeparam name="<#= arg.Type #>">Type of elements in <#= arg.Name #> input sequence.</typeparam>
+<# } #>
         /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
-<#} #>
+        /// <param name="<#= arg.Name #>">The <#= arg.Ordinal #> source sequence.</param>
+<# } #>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipLongest<<#=o.TParams#>, TResult>(
+        public static IEnumerable<TResult> ZipLongest<<#= o.TParams #>, TResult>(
 <# foreach (var arg in o.Arguments) { #>
-            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#>,
-<#}#>
-            Func<<#=o.TParams#>, TResult> resultSelector)
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#= arg.Type #>> <#= arg.Name #>,
+<# } #>
+            Func<<#= o.TParams #>, TResult> resultSelector)
         {
 <# foreach (var arg in o.Arguments) { #>
-            if (<#=arg.Name#> == null) throw new ArgumentNullException(nameof(<#=arg.Name#>));
-<#} #>
+            if (<#= arg.Name #> == null) throw new ArgumentNullException(nameof(<#= arg.Name #>));
+<# } #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
 <# foreach (var arg in o.Arguments) { #>
-                IEnumerator<<#=arg.Type#>> <#=arg.Enumerator#> = null;
-<#} #>
+                IEnumerator<<#= arg.Type #>> <#= arg.Enumerator #> = null;
+<# } #>
 
                 try
                 {
 <# foreach (var arg in o.Arguments) { #>
-                    <#=arg.Enumerator#> = <#=arg.Name#>.GetEnumerator();
-<#} #>
+                    <#= arg.Enumerator #> = <#= arg.Name #>.GetEnumerator();
+<# } #>
 
 <# foreach (var arg in o.Arguments) { #>
-                    var <#=arg.Value#> = default(<#=arg.Type#>);
-<#} #>
+                    var <#= arg.Value #> = default(<#= arg.Type #>);
+<# } #>
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
 <# foreach (var arg in o.Arguments) { #>
-                        ZipLongestHelper.MoveNextOrDispose<<#=arg.Type#>>(ref <#=arg.Enumerator#>, ref <#=arg.Value#>)<#= arg.IsLast ? ")" : " |" #>
-<#}#>
+                        Enumerator.Read(ref <#= arg.Enumerator #>, ref <#= arg.Value #>)<#= arg.IsLast ? ")" : " |" #>
+<# } #>
                     {
-                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#=arg.Value#><#= arg.IsLast ? "" : ", " #><#}#>);
+                        yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#= arg.Value #><#= arg.IsLast ? "" : ", " #><# } #>);
                     }
                 }
                 finally
                 {
 <# foreach (var arg in o.Arguments) { #>
-                    <#=arg.Enumerator#>?.Dispose();
-<#} #>
+                    <#= arg.Enumerator #>?.Dispose();
+<# } #>
                 }
             }
         }
