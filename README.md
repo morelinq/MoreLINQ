@@ -222,7 +222,7 @@ Returns a projection of tuples, where each tuple contains the N-th
 element from each of the argument sequences. An exception is thrown
 if the input sequences are of different lengths.
 
-This method has 14 overloads.
+This method has 3 overloads.
 
 ### Exactly
 
@@ -715,7 +715,7 @@ will always be as long as the longest of input sequences where the
 default value of each of the shorter sequence element types is used
 for padding.
 
-This method has 14 overloads.
+This method has 3 overloads.
 
 ### ZipShortest
 
@@ -723,7 +723,7 @@ Returns a projection of tuples, where each tuple contains the N-th
 element from each of the argument sequences. The resulting sequence
 is as short as the shortest input sequence.
 
-This method has 14 overloads.
+This method has 3 overloads.
 
 
 ## Experimental Operators

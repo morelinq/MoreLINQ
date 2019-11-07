@@ -30,7 +30,7 @@
     };
 
     var overloads =
-        Enumerable.Range(2, 7)
+        Enumerable.Range(2, 3)
             .Select(argCount =>
                 Enumerable.Range(1, argCount).Select(argPosition =>
                     new
@@ -111,42 +111,6 @@ namespace MoreLinq
                     yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#=arg.Enumerator#>.Current<#= arg.IsLast ? "" : ", " #><#}#>);
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns a sequence of tuples, where each tuple contains the N-th
-        /// element from each of the input sequences. The resulting sequence
-        /// is as short as the shortest input sequence.
-        /// </summary>
-<# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
-<#} #>
-<# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
-<#} #>
-        /// <returns>
-        /// A sequence of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
-        /// <remarks>
-        /// <para>
-        /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted
-        /// and remainder elements from the longer sequences are never consumed.
-        /// </para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
-        /// </remarks>
-
-        public static IEnumerable<(<#=o.TParams#>)> ZipShortest<<#=o.TParams#>>(
-<# foreach (var arg in o.Arguments) { #>
-            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
-<#}#>
-        {
-            return ZipShortest(
-<# foreach (var arg in o.Arguments) { #>
-                <#=arg.Name#>,
-<#}#>
-                ValueTuple.Create);
         }
 
 <#  } #>
