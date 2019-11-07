@@ -36,14 +36,14 @@ namespace MoreLinq
         /// <param name="first">The first source sequence.</param>
         /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
-        /// The function used to make the projections of two elements.</param>
+        /// The function that make projections of two elements.</param>
         /// <returns>
         /// A sequence of projections built from two elements,
         /// each element coming from one of the two input sequences.</returns>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default value of the type
-        /// of the elements in the shortest sequences is used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the element
+        /// types of the shortest sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
@@ -102,14 +102,14 @@ namespace MoreLinq
         /// <param name="second">The second source sequence.</param>
         /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
-        /// The function used to make the projections of three elements.</param>
+        /// The function that make projections of three elements.</param>
         /// <returns>
         /// A sequence of projections built from three elements,
         /// each element coming from one of the three input sequences.</returns>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default value of the type
-        /// of the elements in the shortest sequences is used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the element
+        /// types of the shortest sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
@@ -177,14 +177,14 @@ namespace MoreLinq
         /// <param name="third">The third source sequence.</param>
         /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
-        /// The function used to make the projections of four elements.</param>
+        /// The function that make projections of four elements.</param>
         /// <returns>
         /// A sequence of projections built from four elements,
         /// each element coming from one of the four input sequences.</returns>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default value of the type
-        /// of the elements in the shortest sequences is used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the element
+        /// types of the shortest sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>

@@ -86,7 +86,7 @@ namespace MoreLinq
         /// <param name="<#= arg.Name #>">The <#= arg.Ordinal #> source sequence.</param>
 <# } #>
         /// <param name="resultSelector">
-        /// The function used to make the projections of <#= o.Cardinal #> elements.</param>
+        /// The function that make projections of <#= o.Cardinal #> elements.</param>
         /// <returns>
         /// A sequence of projections built from <#= o.Cardinal #> elements,
         /// each element coming from one of the <#= o.Cardinal #> input sequences.</returns>

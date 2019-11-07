@@ -86,14 +86,14 @@ namespace MoreLinq
         /// <param name="<#= arg.Name #>">The <#= arg.Ordinal #> source sequence.</param>
 <# } #>
         /// <param name="resultSelector">
-        /// The function used to make the projections of <#= o.Cardinal #> elements.</param>
+        /// The function that make projections of <#= o.Cardinal #> elements.</param>
         /// <returns>
         /// A sequence of projections built from <#= o.Cardinal #> elements,
         /// each element coming from one of the <#= o.Cardinal #> input sequences.</returns>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default value of the type
-        /// of the elements in the shortest sequences is used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the element
+        /// types of the shortest sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
