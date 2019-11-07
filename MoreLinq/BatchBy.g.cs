@@ -51,7 +51,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -103,7 +103,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -154,7 +154,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
@@ -242,7 +242,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -298,7 +298,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -353,7 +353,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
@@ -447,7 +447,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -507,7 +507,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -566,7 +566,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
@@ -666,7 +666,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -730,7 +730,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -793,7 +793,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
@@ -899,7 +899,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -967,7 +967,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -1034,7 +1034,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
@@ -1146,7 +1146,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -1218,7 +1218,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -1289,7 +1289,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
@@ -1407,7 +1407,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
@@ -1483,7 +1483,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
@@ -1558,7 +1558,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>, 
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
