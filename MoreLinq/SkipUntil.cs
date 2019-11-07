@@ -61,14 +61,19 @@ namespace MoreLinq
             {
                 using var iterator = source.GetEnumerator();
 
-                while (iterator.MoveNext())
+                for(;;)
                 {
+                    if (!iterator.MoveNext())
+                        yield break;
+
                     if (predicate(iterator.Current))
                         break;
                 }
 
                 while (iterator.MoveNext())
+                {
                     yield return iterator.Current;
+                }
             }
         }
     }
