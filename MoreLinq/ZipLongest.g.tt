@@ -29,6 +29,13 @@
         "fifth", "sixth", "seventh", "eighth"
     };
 
+    var cardinals = new[]
+    {
+        "zero",
+        "one", "two", "three", "four",
+        "five", "six", "seven", "eight"
+    };
+
     var overloads =
         from argCount in Enumerable.Range(2, 3)
         from args in new[]
@@ -46,10 +53,10 @@
                 Value      = $"v{argPosition}"
             }
         }
-        select args.ToList() into args
         select new
         {
-            Arguments = args,
+            Arguments = args.ToList(),
+            Cardinal = cardinals[argCount],
             TParams = string.Join(", ", from arg in args select arg.Type)
         };
 #>
@@ -64,26 +71,31 @@ namespace MoreLinq
     {
 #>
         /// <summary>
-        /// Returns a projection of tuples, where the N-th tuple contains the N-th
-        /// element from each of the input sequences. The resulting sequence
-        /// will always be as long as the longest of input sequences where the
-        /// default value of each of the shorter sequence element types is used
-        /// for padding.
+        /// <para>
+        /// Returns a sequence of projections, each projection is build from <#= o.Cardinal #> elements.
+        /// For the N-th projection, these <#= o.Cardinal #> elements are those located
+        /// at the N-th position of the <#= o.Cardinal #> input sequences.</para>
+        /// <para>
+        /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="<#= arg.Type #>">Type of elements in <#= arg.Name #> input sequence.</typeparam>
+        /// <typeparam name="<#= arg.Type #>">Type of elements in the <#= arg.Name #> input sequence.</typeparam>
 <# } #>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
 <# foreach (var arg in o.Arguments) { #>
         /// <param name="<#= arg.Name #>">The <#= arg.Ordinal #> source sequence.</param>
 <# } #>
         /// <param name="resultSelector">
-        /// Function to apply to elements combined from each sequence.</param>
+        /// The function used to make the projections of <#= o.Cardinal #> elements.</param>
         /// <returns>
-        /// A projection of tuples, where the N-th tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
+        /// A sequence of projections built from <#= o.Cardinal #> elements,
+        /// each element coming from one of the <#= o.Cardinal #> input sequences.</returns>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
+        /// <para>
+        /// If the input sequences are of different lengths, the default value of the type
+        /// of the elements in the shortest sequences is used for padding.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<<#= o.TParams #>, TResult>(
@@ -131,6 +143,6 @@ namespace MoreLinq
             }
         }
 
-<#  } #>
+<# } #>
     }
 }
