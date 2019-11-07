@@ -140,7 +140,7 @@ namespace MoreLinq.Test
                 new {s = new[] {1, 2, 3}, o = 1, r = new[] {(1, 0), (2, 1), (3, 2)}},
                 new {s = new[] {1, 2, 3}, o = 2, r = new[] {(1, 0), (2, 0), (3, 1)}},
                 new {s = new[] {1, 2, 3}, o = 3, r = new[] {(1, 0), (2, 0), (3, 0)}}
-            }                                                        
+            }
             select new TestCaseData(e.s, e.o).Returns(e.r);
 
         [Test, TestCaseSource(nameof(TestData))]
