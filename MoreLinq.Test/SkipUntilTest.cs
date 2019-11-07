@@ -15,12 +15,11 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using NUnit.Framework.Interfaces;
-
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class SkipUntilTest
