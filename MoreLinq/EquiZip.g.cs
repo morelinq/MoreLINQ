@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2019 Pierre Lando. All rights reserved.
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
@@ -33,9 +33,9 @@ namespace MoreLinq
         /// <param name="first">The first source sequence.</param>
         /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
@@ -76,12 +76,12 @@ namespace MoreLinq
                     }
                 }
 
-                throw new InvalidOperationException($"Sequences differ in length.");
+                throw new InvalidOperationException("Sequences differ in length.");
             }
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
@@ -93,9 +93,9 @@ namespace MoreLinq
         /// <param name="second">The second source sequence.</param>
         /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
@@ -139,12 +139,12 @@ namespace MoreLinq
                     }
                 }
 
-                throw new InvalidOperationException($"Sequences differ in length.");
+                throw new InvalidOperationException("Sequences differ in length.");
             }
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// Returns a projection of tuples, where the N-th tuple contains the N-th
         /// element from each of the input sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
@@ -158,9 +158,9 @@ namespace MoreLinq
         /// <param name="third">The third source sequence.</param>
         /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each tuple of elements.</param>
+        /// Function to apply to elements combined from each sequence.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
+        /// A projection of tuples, where the N-th tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
@@ -207,7 +207,7 @@ namespace MoreLinq
                     }
                 }
 
-                throw new InvalidOperationException($"Sequences differ in length.");
+                throw new InvalidOperationException("Sequences differ in length.");
             }
         }
 
