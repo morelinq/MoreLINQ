@@ -39,8 +39,8 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -92,8 +92,8 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -143,8 +143,8 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -158,7 +158,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second)>
+        public static IEnumerable<(TSource First, TSource Second)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -186,8 +186,8 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -200,7 +200,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second)>
+        public static IEnumerable<(TSource First, TSource Second)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -229,9 +229,9 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -286,9 +286,9 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -341,9 +341,9 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -357,7 +357,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -387,9 +387,9 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -402,7 +402,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -433,10 +433,10 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -494,10 +494,10 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -553,10 +553,10 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -570,7 +570,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -602,10 +602,10 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -618,7 +618,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -651,11 +651,11 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -716,11 +716,11 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -779,11 +779,11 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -797,7 +797,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -831,11 +831,11 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -848,7 +848,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -883,12 +883,12 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -952,12 +952,12 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1019,12 +1019,12 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1038,7 +1038,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -1074,12 +1074,12 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -1092,7 +1092,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -1129,13 +1129,13 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1202,13 +1202,13 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1273,13 +1273,13 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1293,7 +1293,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -1331,13 +1331,13 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -1350,7 +1350,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -1389,14 +1389,14 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
-        /// <param name="eighth">eighth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
+        /// <param name="eighth">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1466,14 +1466,14 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
-        /// <param name="eighth">eighth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
+        /// <param name="eighth">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1541,14 +1541,14 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
-        /// <param name="eighth">eighth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
+        /// <param name="eighth">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1562,7 +1562,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh, TSource eighth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh, TSource Eighth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,
@@ -1602,14 +1602,14 @@ namespace MoreLinq
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">first key.</param>
-        /// <param name="second">second key.</param>
-        /// <param name="third">third key.</param>
-        /// <param name="fourth">fourth key.</param>
-        /// <param name="fifth">fifth key.</param>
-        /// <param name="sixth">sixth key.</param>
-        /// <param name="seventh">seventh key.</param>
-        /// <param name="eighth">eighth key.</param>
+        /// <param name="first">First key.</param>
+        /// <param name="second">Second key.</param>
+        /// <param name="third">Third key.</param>
+        /// <param name="fourth">Fourth key.</param>
+        /// <param name="fifth">Fifth key.</param>
+        /// <param name="sixth">Sixth key.</param>
+        /// <param name="seventh">Seventh key.</param>
+        /// <param name="eighth">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -1622,7 +1622,7 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
-        public static IEnumerable<(TSource first, TSource second, TSource third, TSource fourth, TSource fifth, TSource sixth, TSource seventh, TSource eighth)>
+        public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh, TSource Eighth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
                 TKey first,

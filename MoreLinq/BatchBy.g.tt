@@ -25,8 +25,8 @@
     var ordinals = new[]
     {
         "",
-        "first", "second", "third", "fourth",
-        "fifth", "sixth", "seventh", "eighth"
+        "First", "Second", "Third", "Fourth",
+        "Fifth", "Sixth", "Seventh", "Eighth"
     };
 
     var overloads =
@@ -38,6 +38,7 @@
                         IsFirst = argPosition == 1,
                         IsLast = argPosition == argCount,
                         Name = ordinals[argPosition],
+                        name = ordinals[argPosition].ToLower(),
                         Ordinal = ordinals[argPosition],
                         // Objects associated with the argument
                         Enumerator = $"e{argPosition}",
@@ -74,7 +75,7 @@ namespace MoreLinq
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>"><#=arg.Ordinal#> key.</param>
+        /// <param name="<#=arg.name#>"><#=arg.Ordinal#> key.</param>
 <#  } #>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
@@ -86,7 +87,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.Name#>"/>, <#  } #>
+        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/>, <#  } #>
 
         /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
@@ -94,7 +95,7 @@ namespace MoreLinq
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
 <# foreach (var arg in o.Arguments) { #>
-            TKey <#=arg.Name#>,
+            TKey <#=arg.name#>,
 <#  } #>
             Func<TSource, TKey> keySelector,
             Func<<# foreach (var arg in o.Arguments) { #>TSource, <#}#>TResult> resultSelector,
@@ -105,14 +106,14 @@ namespace MoreLinq
             var keys = new []
             {
 <# foreach (var arg in o.Arguments) { #>
-                <#=arg.Name#><#= arg.IsLast ? "" : "," #>
+                <#=arg.name#><#= arg.IsLast ? "" : "," #>
 <#  } #>
             };
 
             return BatchBy(source, keys, keySelector, keyComparer)
                 .Select(d => resultSelector(
 <# foreach (var arg in o.Arguments) { #>
-                    d[<#=arg.Name#>]<#= arg.IsLast ? "));" : "," #>
+                    d[<#=arg.name#>]<#= arg.IsLast ? "));" : "," #>
 <#  } #>
         }
 
@@ -132,7 +133,7 @@ namespace MoreLinq
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>"><#=arg.Ordinal#> key.</param>
+        /// <param name="<#=arg.name#>"><#=arg.Ordinal#> key.</param>
 <#  } #>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
@@ -143,7 +144,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.Name#>"/>, <#  } #>
+        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/>, <#  } #>
 
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
@@ -151,7 +152,7 @@ namespace MoreLinq
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
 <# foreach (var arg in o.Arguments) { #>
-            TKey <#=arg.Name#>,
+            TKey <#=arg.name#>,
 <#  } #>
             Func<TSource, TKey> keySelector,
             Func<<# foreach (var arg in o.Arguments) { #>TSource, <#}#>TResult> resultSelector)
@@ -161,14 +162,14 @@ namespace MoreLinq
             var keys = new []
             {
 <# foreach (var arg in o.Arguments) { #>
-                <#=arg.Name#><#= arg.IsLast ? "" : "," #>
+                <#=arg.name#><#= arg.IsLast ? "" : "," #>
 <#  } #>
             };
 
             return BatchBy(source, keys, keySelector)
                 .Select(d => resultSelector(
 <# foreach (var arg in o.Arguments) { #>
-                    d[<#=arg.Name#>]<#= arg.IsLast ? "));" : "," #>
+                    d[<#=arg.name#>]<#= arg.IsLast ? "));" : "," #>
 <#  } #>
         }
 
@@ -188,7 +189,7 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>"><#=arg.Ordinal#> key.</param>
+        /// <param name="<#=arg.name#>"><#=arg.Ordinal#> key.</param>
 <#  } #>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -199,7 +200,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.Name#>"/>, <#  } #>
+        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/>, <#  } #>
 
         /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
@@ -208,14 +209,14 @@ namespace MoreLinq
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
 <# foreach (var arg in o.Arguments) { #>
-                TKey <#=arg.Name#>,
+                TKey <#=arg.name#>,
 <#  } #>
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
         {
             return BatchBy(source,
 <# foreach (var arg in o.Arguments) { #>
-                           <#=arg.Name#>,
+                           <#=arg.name#>,
 <#  } #>
                            keySelector, ValueTuple.Create, keyComparer);
         }
@@ -235,7 +236,7 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>"><#=arg.Ordinal#> key.</param>
+        /// <param name="<#=arg.name#>"><#=arg.Ordinal#> key.</param>
 <#  } #>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -245,7 +246,7 @@ namespace MoreLinq
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.Name#>"/><#=arg.IsLast?" or":", "#><#  } #>
+        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/><#=arg.IsLast?" or":", "#><#  } #>
 
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
@@ -254,13 +255,13 @@ namespace MoreLinq
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
 <# foreach (var arg in o.Arguments) { #>
-                TKey <#=arg.Name#>,
+                TKey <#=arg.name#>,
 <#  } #>
                 Func<TSource, TKey> keySelector)
         {
             return BatchBy(source,
 <# foreach (var arg in o.Arguments) { #>
-                           <#=arg.Name#>,
+                           <#=arg.name#>,
 <#  } #>
                            keySelector, ValueTuple.Create);
         }
