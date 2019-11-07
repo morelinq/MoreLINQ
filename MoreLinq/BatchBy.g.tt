@@ -85,11 +85,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/><#=arg.IsLast?",":", "#><#  } #>
 
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -198,11 +199,12 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/><#=arg.IsLast?",":", "#><#  } #>
+        /// <# foreach (var arg in o.Arguments) { #><paramref name="<#=arg.name#>"/><#=arg.IsLast?" or":", "#><#  } #>
 
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(<# foreach (var arg in o.Arguments) { #>TSource <#=arg.Name#><#=arg.IsLast?"":", "#><#}#>)>

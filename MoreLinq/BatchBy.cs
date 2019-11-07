@@ -48,9 +48,10 @@ namespace MoreLinq
         /// The <paramref name="acceptedKeys"/> sequence is fully consumed on first iteration.
         /// If <paramref name="acceptedKeys"/> is empty, <paramref name="source"/> is not enumerated.
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="acceptedKeys"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="acceptedKeys"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
         /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys relatively to
         /// <paramref name="keyComparer"/>.</exception>
@@ -62,7 +63,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             if (acceptedKeys == null) throw new ArgumentNullException(nameof(acceptedKeys));
-            if (keyComparer == null) throw new ArgumentNullException(nameof(keyComparer));
+            keyComparer ??= EqualityComparer<TKey>.Default;
 
             return _(); IEnumerable<IDictionary<TKey, TSource>> _()
             {

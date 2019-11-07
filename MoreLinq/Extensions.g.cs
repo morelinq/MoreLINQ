@@ -799,9 +799,10 @@ namespace MoreLinq.Extensions
         /// The <paramref name="acceptedKeys"/> sequence is fully consumed on first iteration.
         /// If <paramref name="acceptedKeys"/> is empty, <paramref name="source"/> is not enumerated.
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="acceptedKeys"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="acceptedKeys"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
         /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys relatively to
         /// <paramref name="keyComparer"/>.</exception>
@@ -873,10 +874,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second)>
@@ -953,10 +955,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third)>
@@ -1037,10 +1040,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth)>
@@ -1125,10 +1129,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth)>
@@ -1217,10 +1222,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth)>
@@ -1313,10 +1319,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh)>
@@ -1363,10 +1370,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
-        /// <paramref name="keySelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/> or
+        /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh, TSource Eighth)>
@@ -1487,10 +1495,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -1571,10 +1580,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -1659,10 +1669,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -1751,10 +1762,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -1847,10 +1859,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -1947,10 +1960,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
@@ -1999,10 +2013,11 @@ namespace MoreLinq.Extensions
         /// This operator uses deferred execution and streams its results.
         ///
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
+        /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
         /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
-        /// <paramref name="keySelector"/>, <paramref name="resultSelector"/> or <paramref name="keyComparer"/> is <c>null</c></exception>
+        /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
