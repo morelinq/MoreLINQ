@@ -23,26 +23,28 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where the N-th tuple contains the N-th
-        /// element from each of the input sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
+        /// <para>
+        /// Returns a sequence of projections, each projection is build from two elements.
+        /// For the N-th projection, these two elements are those located
+        /// at the N-th position of the two input sequences.</para>
+        /// <para>
+        /// The resulting sequence has the same length as the input sequences.
+        /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <typeparam name="T1">Type of elements in the first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in the second input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
         /// <param name="first">The first source sequence.</param>
         /// <param name="second">The second source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to elements combined from each sequence.</param>
+        /// The function used to make the projections of two elements.</param>
         /// <returns>
-        /// A projection of tuples, where the N-th tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
+        /// A sequence of projections built from two elements,
+        /// each element coming from one of the two input sequences.</returns>
         /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
+        /// The input sequences are of different lengths.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// This operator uses deferred execution and streams its results.</remarks>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, TResult>(
             this IEnumerable<T1> first,
@@ -81,28 +83,30 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where the N-th tuple contains the N-th
-        /// element from each of the input sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
+        /// <para>
+        /// Returns a sequence of projections, each projection is build from three elements.
+        /// For the N-th projection, these three elements are those located
+        /// at the N-th position of the three input sequences.</para>
+        /// <para>
+        /// The resulting sequence has the same length as the input sequences.
+        /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <typeparam name="T1">Type of elements in the first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in the second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in the third input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
         /// <param name="first">The first source sequence.</param>
         /// <param name="second">The second source sequence.</param>
         /// <param name="third">The third source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to elements combined from each sequence.</param>
+        /// The function used to make the projections of three elements.</param>
         /// <returns>
-        /// A projection of tuples, where the N-th tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
+        /// A sequence of projections built from three elements,
+        /// each element coming from one of the three input sequences.</returns>
         /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
+        /// The input sequences are of different lengths.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// This operator uses deferred execution and streams its results.</remarks>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
@@ -144,30 +148,32 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where the N-th tuple contains the N-th
-        /// element from each of the input sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
+        /// <para>
+        /// Returns a sequence of projections, each projection is build from four elements.
+        /// For the N-th projection, these four elements are those located
+        /// at the N-th position of the four input sequences.</para>
+        /// <para>
+        /// The resulting sequence has the same length as the input sequences.
+        /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first input sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second input sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third input sequence.</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth input sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <typeparam name="T1">Type of elements in the first input sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in the second input sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in the third input sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in the fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
         /// <param name="first">The first source sequence.</param>
         /// <param name="second">The second source sequence.</param>
         /// <param name="third">The third source sequence.</param>
         /// <param name="fourth">The fourth source sequence.</param>
         /// <param name="resultSelector">
-        /// Function to apply to elements combined from each sequence.</param>
+        /// The function used to make the projections of four elements.</param>
         /// <returns>
-        /// A projection of tuples, where the N-th tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
+        /// A sequence of projections built from four elements,
+        /// each element coming from one of the four input sequences.</returns>
         /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
+        /// The input sequences are of different lengths.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// This operator uses deferred execution and streams its results.</remarks>
 
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> first,

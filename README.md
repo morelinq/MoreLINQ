@@ -218,9 +218,11 @@ This method has 2 overloads.
 
 ### EquiZip
 
-Returns a projection of tuples, where the N-th tuple contains the N-th
-element from each of the argument sequences. An exception is thrown
-if the input sequences are of different lengths.
+Returns a sequence of projections, each projection is build from K elements.
+For the N-th projection, these K elements are those located at the N-th
+position of the K input sequences.
+The resulting sequence has the same length as the input sequences.
+If the input sequences are of different lengths, an exception is thrown.
 
 This method has 3 overloads.
 
@@ -709,19 +711,19 @@ Creates a right-aligned sliding window over the source sequence of a given size.
 
 ### ZipLongest
 
-Returns a projection of tuples, where the N-th tuple contains the N-th
-element from each of the argument sequences. The resulting sequence
-will always be as long as the longest of input sequences where the
-default value of each of the shorter sequence element types is used
-for padding.
+Returns a sequence of projections, each projection is build from K elements.
+For the N-th projection, these K elements are those located at the N-th
+position of the K input sequences.
+The resulting sequence is as long as the longest of the input sequences.
 
 This method has 3 overloads.
 
 ### ZipShortest
 
-Returns a projection of tuples, where the N-th tuple contains the N-th
-element from each of the argument sequences. The resulting sequence
-is as short as the shortest input sequence.
+Returns a sequence of projections, each projection is build from K elements.
+For the N-th projection, these K elements are those located at the N-th
+position of the K input sequences.
+The resulting sequence is as short as the shortest of the input sequences.
 
 This method has 3 overloads.
 
