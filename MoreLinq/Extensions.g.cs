@@ -712,9 +712,9 @@ namespace MoreLinq.Extensions
         /// Each buckets contains all <paramref name="acceptedKeys"/> keys and for each of this
         /// keys a matching value from the <paramref name="source"/> sequence.
         /// The matching is done by the <paramref name="keySelector"/>.
-        /// 
+        ///
         /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
-        /// 
+        ///
         /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
         /// relatively to the default equality comparer.
         /// </summary>
@@ -726,7 +726,7 @@ namespace MoreLinq.Extensions
         /// <returns>The build up sequence of buckets.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
-        /// 
+        ///
         /// The <paramref name="acceptedKeys"/> sequence is fully consumed on first iteration.
         /// If <paramref name="acceptedKeys"/> is empty, <paramref name="source"/> is not enumerated.
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
@@ -780,9 +780,9 @@ namespace MoreLinq.Extensions
         /// Each buckets contains all <paramref name="acceptedKeys"/> keys and for each of this
         /// keys a matching value from the <paramref name="source"/> sequence.
         /// The matching is done by the <paramref name="keySelector"/>.
-        /// 
+        ///
         /// Values from <paramref name="source"/> sequence that doesn't have a matching key are discarded.
-        /// 
+        ///
         /// For each key/value pair in a buckets, <c>key</c> and <c>keySelector(value)</c> are equals
         /// relatively to the <paramref name="keyComparer"/>.
         /// </summary>
@@ -795,7 +795,7 @@ namespace MoreLinq.Extensions
         /// <returns>The build up sequence of buckets.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
-        /// 
+        ///
         /// The <paramref name="acceptedKeys"/> sequence is fully consumed on first iteration.
         /// If <paramref name="acceptedKeys"/> is empty, <paramref name="source"/> is not enumerated.
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
