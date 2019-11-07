@@ -72,7 +72,7 @@ namespace MoreLinq.Test
         [Test, TestCaseSource(nameof(TestData))]
         public int[] TestSkipUntilOnKnownInput(int[] source, int min)
         {
-            return source.AsTestingSequence().SkipUntil(v => v < min).ToArray();
+            return source.AsTestingSequence().SkipUntil(v => v >= min).ToArray();
         }
     }
 }
