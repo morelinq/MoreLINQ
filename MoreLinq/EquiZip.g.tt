@@ -30,7 +30,7 @@
     };
 
     var overloads =
-        Enumerable.Range(2, 7)
+        Enumerable.Range(2, 3)
             .Select(argCount =>
                 Enumerable.Range(1, argCount).Select(argPosition =>
                     new
@@ -123,39 +123,6 @@ namespace MoreLinq
 
                 throw new InvalidOperationException($"Sequences differ in length.");
             }
-        }
-
-        /// <summary>
-        /// Returns a sequence of tuples, where each tuple contains the N-th
-        /// element from each of the input sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
-        /// </summary>
-<# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
-<#  } #>
-<# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
-<#  } #>
-        /// <returns>
-        /// A sequence of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
-        /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
-
-        public static IEnumerable<(<#=o.TParams#>)> EquiZip<<#=o.TParams#>>(
-<# foreach (var arg in o.Arguments) { #>
-            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
-<#  } #>
-        {
-            return EquiZip(
-<# foreach (var arg in o.Arguments) { #>
-                <#=arg.Name#>,
-<#  } #>
-                ValueTuple.Create);
         }
 
 <#  } #>

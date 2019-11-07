@@ -30,7 +30,7 @@
     };
 
     var overloads =
-        Enumerable.Range(2, 7)
+        Enumerable.Range(2, 3)
             .Select(argCount =>
                 Enumerable.Range(1, argCount).Select(argPosition =>
                     new
@@ -128,38 +128,6 @@ namespace MoreLinq
 <#} #>
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns a sequence of tuples, where each tuple contains the N-th
-        /// element from each of the input sequences. The resulting sequence
-        /// will always be as long as the longest of input sequences where the
-        /// default value of each of the shorter sequence element types is used
-        /// for padding.
-        /// </summary>
-<# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="<#=arg.Type#>">Type of elements in <#=arg.Name#> input sequence.</typeparam>
-<#} #>
-<# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#=arg.Name#>">The <#=arg.Ordinal#> source sequence.</param>
-<#} #>
-        /// <returns>
-        /// A sequence of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
-        /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
-
-        public static IEnumerable<(<#=o.TParams#>)> ZipLongest<<#=o.TParams#>>(
-<# foreach (var arg in o.Arguments) { #>
-            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#=arg.Type#>> <#=arg.Name#><#= arg.IsLast ? ")" : "," #>
-<#}#>
-        {
-            return ZipLongest(
-<# foreach (var arg in o.Arguments) { #>
-                <#=arg.Name#>,
-<#}#>
-                ValueTuple.Create);
         }
 
 <#  } #>
