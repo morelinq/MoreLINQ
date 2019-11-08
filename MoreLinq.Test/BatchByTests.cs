@@ -86,6 +86,24 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void BatchByDoNotReEnumerateSourceOnMultipleEnumeration()
+        {
+            var source = Enumerable.Range(0, 5);
+            static string KeySelector(int i) => $"{i}";
+            var acceptedKeys = TestingSequence.Of("0", "1", "2", "3");
+            var equalityComparer = EqualityComparer<string>.Default;
+
+            void Code()
+            {
+                var enumerable = source.BatchBy(acceptedKeys, KeySelector, equalityComparer);
+                enumerable.Consume();
+                enumerable.Consume();
+            }
+
+            Assert.DoesNotThrow(Code);
+        }
+
+        [Test]
         public void BatchByDoNotThrowOnDuplicateAcceptedKeyAtCreation()
         {
             using var source = TestingSequence.Of(0, 1, 2, 3);
