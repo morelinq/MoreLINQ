@@ -1,6 +1,25 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Verify the behavior of the Lead operator.
@@ -115,6 +134,21 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
             Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new {s = new[] {0, 1, 2}, o = 1, r = new[] {(0, 1), (1, 2), (2, 0)}},
+                new {s = new[] {0, 1, 2}, o = 2, r = new[] {(0, 2), (1, 0), (2, 0)}},
+                new {s = new[] {0, 1, 2}, o = 3, r = new[] {(0, 0), (1, 0), (2, 0)}}
+            }
+            select new TestCaseData(e.s, e.o).Returns(e.r);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public (int e, int l)[] TestLeadOnKnownInput(int[] source, int offset)
+        {
+            return source.AsTestingSequence().Lead(offset, (e, l) => (e, l)).ToArray();
         }
     }
 }
