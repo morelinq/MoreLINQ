@@ -115,7 +115,6 @@ namespace MoreLinq
                     else
                         yield break;
                 }
-                    Array.Resize(ref window, i);
             }
 
             // Main loop
