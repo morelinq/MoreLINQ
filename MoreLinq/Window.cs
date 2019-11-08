@@ -108,7 +108,13 @@ namespace MoreLinq
                 }
 
                 // Ensure correct size on partial window cases
-                if (window.Length != i)
+                if (i != size)
+                {
+                    if (hasPartialEnd)
+                        Array.Resize(ref window, i);
+                    else
+                        yield break;
+                }
                     Array.Resize(ref window, i);
             }
 
