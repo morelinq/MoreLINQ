@@ -735,6 +735,7 @@ namespace MoreLinq.Extensions
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
         /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys.</exception>
+
         public static IEnumerable<IDictionary<TKey, TSource>> BatchBy<TKey, TSource>(this IEnumerable<TSource> source,
             IEnumerable<TKey> acceptedKeys,
             Func<TSource, TKey> keySelector)
@@ -754,8 +755,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -764,17 +765,17 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
+                TKey firstKey,
+                TKey secondKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, keySelector);
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
         /// Each buckets contains all <paramref name="acceptedKeys"/> keys and for each of this
@@ -806,6 +807,7 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
         /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys relatively to
         /// <paramref name="keyComparer"/>.</exception>
+
         public static IEnumerable<IDictionary<TKey, TSource>> BatchBy<TKey, TSource>(this IEnumerable<TSource> source,
             IEnumerable<TKey> acceptedKeys,
             Func<TSource, TKey> keySelector,
@@ -826,9 +828,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -837,18 +839,18 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, third, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, keySelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -865,8 +867,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -877,18 +879,18 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
+                TKey firstKey,
+                TKey secondKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -904,10 +906,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -916,19 +918,19 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, keySelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -945,9 +947,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -958,19 +960,19 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, third, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -986,11 +988,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -999,20 +1001,20 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, keySelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1029,10 +1031,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1043,20 +1045,20 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1072,12 +1074,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -1086,21 +1088,21 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
-                TKey sixth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
+                TKey sixthKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, keySelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1117,11 +1119,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1132,21 +1134,21 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1162,13 +1164,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -1177,22 +1179,22 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
-                TKey sixth,
-                TKey seventh,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
+                TKey sixthKey,
+                TKey seventhKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, keySelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1209,12 +1211,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1225,22 +1227,22 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
-                TKey sixth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
+                TKey sixthKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1256,14 +1258,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
-        /// <param name="eighth">Eighth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
+        /// <param name="eighthKey">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
         /// <remarks>
@@ -1272,23 +1274,23 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/>, <paramref name="eighthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh, TSource Eighth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
-                TKey sixth,
-                TKey seventh,
-                TKey eighth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
+                TKey sixthKey,
+                TKey seventhKey,
+                TKey eighthKey,
                 Func<TSource, TKey> keySelector)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, eighthKey, keySelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1305,13 +1307,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1322,23 +1324,23 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
-                TKey sixth,
-                TKey seventh,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
+                TKey sixthKey,
+                TKey seventhKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1355,14 +1357,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TKey">The type of the keys of the buckets.</typeparam>
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
-        /// <param name="eighth">Eighth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
+        /// <param name="eighthKey">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1373,24 +1375,24 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/> or
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/>, <paramref name="eighthKey"/> or
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/></exception>
 
         public static IEnumerable<(TSource First, TSource Second, TSource Third, TSource Fourth, TSource Fifth, TSource Sixth, TSource Seventh, TSource Eighth)>
             BatchBy<TKey, TSource>(
                 this IEnumerable<TSource> source,
-                TKey first,
-                TKey second,
-                TKey third,
-                TKey fourth,
-                TKey fifth,
-                TKey sixth,
-                TKey seventh,
-                TKey eighth,
+                TKey firstKey,
+                TKey secondKey,
+                TKey thirdKey,
+                TKey fourthKey,
+                TKey fifthKey,
+                TKey sixthKey,
+                TKey seventhKey,
+                TKey eighthKey,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.            BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector, keyComparer);
+            => MoreEnumerable.            BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, eighthKey, keySelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1407,8 +1409,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1418,17 +1420,17 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
+            TKey firstKey,
+            TKey secondKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, keySelector, resultSelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1445,9 +1447,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1457,18 +1459,18 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, third, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, keySelector, resultSelector);
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
         /// Then the buckets values are projected with <paramref name="resultSelector"/>.
@@ -1485,8 +1487,8 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1498,18 +1500,18 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
+            TKey firstKey,
+            TKey secondKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, keySelector, resultSelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1526,10 +1528,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1539,19 +1541,19 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, keySelector, resultSelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1569,9 +1571,9 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1583,19 +1585,19 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, third, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, keySelector, resultSelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1612,11 +1614,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1626,20 +1628,20 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, keySelector, resultSelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1657,10 +1659,10 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1672,20 +1674,20 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, keySelector, resultSelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1702,12 +1704,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1717,21 +1719,21 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
-            TKey sixth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
+            TKey sixthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, keySelector, resultSelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1749,11 +1751,11 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1765,21 +1767,21 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, keySelector, resultSelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1796,13 +1798,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1812,22 +1814,22 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
-            TKey sixth,
-            TKey seventh,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
+            TKey sixthKey,
+            TKey seventhKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, keySelector, resultSelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1845,12 +1847,12 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1862,22 +1864,22 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
-            TKey sixth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
+            TKey sixthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, keySelector, resultSelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1894,14 +1896,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
-        /// <param name="eighth">Eighth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
+        /// <param name="eighthKey">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <returns>The build up sequence of projected buckets.</returns>
@@ -1911,23 +1913,23 @@ namespace MoreLinq.Extensions
         /// Values from <paramref name="source"/> that correspond to a <c>null</c> key are discarded.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/>, <paramref name="eighthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
-            TKey sixth,
-            TKey seventh,
-            TKey eighth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
+            TKey sixthKey,
+            TKey seventhKey,
+            TKey eighthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector, resultSelector);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, eighthKey, keySelector, resultSelector);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1945,13 +1947,13 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -1963,23 +1965,23 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
-            TKey sixth,
-            TKey seventh,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
+            TKey sixthKey,
+            TKey seventhKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, keySelector, resultSelector, keyComparer);
 
         /// <summary>
         /// Batch the <paramref name="source"/> sequence into buckets that are <c>IDictionary</c>.
@@ -1997,14 +1999,14 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TResult">Type of the projected value.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="first">First key.</param>
-        /// <param name="second">Second key.</param>
-        /// <param name="third">Third key.</param>
-        /// <param name="fourth">Fourth key.</param>
-        /// <param name="fifth">Fifth key.</param>
-        /// <param name="sixth">Sixth key.</param>
-        /// <param name="seventh">Seventh key.</param>
-        /// <param name="eighth">Eighth key.</param>
+        /// <param name="firstKey">First key.</param>
+        /// <param name="secondKey">Second key.</param>
+        /// <param name="thirdKey">Third key.</param>
+        /// <param name="fourthKey">Fourth key.</param>
+        /// <param name="fifthKey">Fifth key.</param>
+        /// <param name="sixthKey">Sixth key.</param>
+        /// <param name="seventhKey">Seventh key.</param>
+        /// <param name="eighthKey">Eighth key.</param>
         /// <param name="keySelector">Build the key for elements from the <paramref name="source"/> sequence.</param>
         /// <param name="resultSelector">The function used to project the buckets.</param>
         /// <param name="keyComparer">The comparer used to evaluate keys equality.</param>
@@ -2016,24 +2018,24 @@ namespace MoreLinq.Extensions
         /// If <paramref name="keyComparer"/> is null, <c>EqualityComparer.Default</c> is used.
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>,
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref name="third"/>, <paramref name="fourth"/>, <paramref name="fifth"/>, <paramref name="sixth"/>, <paramref name="seventh"/>, <paramref name="eighth"/>,
+        /// <paramref name="firstKey"/>, <paramref name="secondKey"/>, <paramref name="thirdKey"/>, <paramref name="fourthKey"/>, <paramref name="fifthKey"/>, <paramref name="sixthKey"/>, <paramref name="seventhKey"/>, <paramref name="eighthKey"/>,
         /// <paramref name="keySelector"/> or <paramref name="resultSelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentException">There is some duplicate keys relatively to <paramref name="keyComparer"/>.</exception>
 
         public static IEnumerable<TResult> BatchBy<TKey, TSource, TResult>(
             this IEnumerable<TSource> source,
-            TKey first,
-            TKey second,
-            TKey third,
-            TKey fourth,
-            TKey fifth,
-            TKey sixth,
-            TKey seventh,
-            TKey eighth,
+            TKey firstKey,
+            TKey secondKey,
+            TKey thirdKey,
+            TKey fourthKey,
+            TKey fifthKey,
+            TKey sixthKey,
+            TKey seventhKey,
+            TKey eighthKey,
             Func<TSource, TKey> keySelector,
             Func<TSource, TSource, TSource, TSource, TSource, TSource, TSource, TSource, TResult> resultSelector,
             IEqualityComparer<TKey> keyComparer)
-            => MoreEnumerable.BatchBy(source, first, second, third, fourth, fifth, sixth, seventh, eighth, keySelector, resultSelector, keyComparer);
+            => MoreEnumerable.BatchBy(source, firstKey, secondKey, thirdKey, fourthKey, fifthKey, sixthKey, seventhKey, eighthKey, keySelector, resultSelector, keyComparer);
 
     }
 

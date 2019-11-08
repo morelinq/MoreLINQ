@@ -171,13 +171,13 @@ namespace MoreLinq.Test
         public void BatchByIsLazy()
         {
             var source = new BreakingSequence<int>();
-            static string KeySelector(int i) => $"{i}";
-            var acceptedKeys = TestingSequence.Of("0", "1", "2", "3");
+            var keySelector = BreakingFunc.Of<int, string>();
+            var acceptedKeys = new BreakingSequence<string>();
             var equalityComparer = EqualityComparer<string>.Default;
 
             void Code()
             {
-                source.BatchBy(acceptedKeys, KeySelector, equalityComparer);
+                source.BatchBy(acceptedKeys, keySelector, equalityComparer);
             }
 
             Assert.DoesNotThrow(Code);

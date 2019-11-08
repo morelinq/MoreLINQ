@@ -55,6 +55,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
         /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys relatively to
         /// <paramref name="keyComparer"/>.</exception>
+
         public static IEnumerable<IDictionary<TKey, TSource>> BatchBy<TKey, TSource>(this IEnumerable<TSource> source,
             IEnumerable<TKey> acceptedKeys,
             Func<TSource, TKey> keySelector,
@@ -65,32 +66,34 @@ namespace MoreLinq
             if (acceptedKeys == null) throw new ArgumentNullException(nameof(acceptedKeys));
             keyComparer ??= EqualityComparer<TKey>.Default;
 
+            (IList<TKey> Keys, IDictionary<TKey, int> IndexByKey) BuildContext()
+            {
+                var keys = acceptedKeys.ToList();
+                var indexByKey = new Dictionary<TKey, int>(keyComparer);
+                var index = 0;
+                foreach (var key in keys)
+                {
+                    indexByKey.Add(key, index);
+                    index++;
+                }
+
+                return (keys, indexByKey);
+            }
+            var lazyContext = new Lazy<(IList<TKey> Keys, IDictionary<TKey, int> IndexByKey)>(BuildContext);
+
             return _(); IEnumerable<IDictionary<TKey, TSource>> _()
             {
-                var queues = acceptedKeys.ToDictionary(k => k, k => new Queue<TSource>(), keyComparer);
-
-                // early break
-                if (queues.Count == 0)
-                    yield break;
-
-                var emptyQueueCount = queues.Count;
-                foreach (var value in source)
+                // Lazy creation of the index table and enumeration of acceptedKeys
+                var (keys, indexByKey) = lazyContext.Value;
+                foreach (var batch in BatchByImplementation(source, indexByKey, keySelector))
                 {
-                    var key = keySelector(value);
-
-                    if (key != null && queues.TryGetValue(key, out var queue))
+                    var nextResult = new Dictionary<TKey, TSource>(keys.Count, keyComparer);
+                    for (var i = 0; i < keys.Count; i++)
                     {
-                        queue.Enqueue(value);
-                        if (queue.Count == 1)
-                            emptyQueueCount--;
+                        nextResult.Add(keys[i], batch[i]);
                     }
 
-                    // We need more elements
-                    if (emptyQueueCount > 0)
-                        continue;
-
-                    yield return queues.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Dequeue());
-                    emptyQueueCount = queues.Values.Count(q => q.Count == 0);
+                    yield return nextResult;
                 }
             }
         }
@@ -123,11 +126,117 @@ namespace MoreLinq
         /// <paramref name="keySelector"/> is <c>null</c></exception>
         /// <exception cref="ArgumentNullException"><paramref name="acceptedKeys"/> contains <c>null</c></exception>
         /// <exception cref="ArgumentException"><paramref name="acceptedKeys"/> contains duplicate keys.</exception>
+
         public static IEnumerable<IDictionary<TKey, TSource>> BatchBy<TKey, TSource>(this IEnumerable<TSource> source,
             IEnumerable<TKey> acceptedKeys,
             Func<TSource, TKey> keySelector)
         {
             return BatchBy(source, acceptedKeys, keySelector, EqualityComparer<TKey>.Default);
+        }
+
+        private static IEnumerable<IList<TSource>> BatchByImplementation<TKey, TSource>(this IEnumerable<TSource> source,
+            IEnumerable<TKey> acceptedKeys,
+            Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey> keyComparer)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            if (acceptedKeys == null) throw new ArgumentNullException(nameof(acceptedKeys));
+            keyComparer ??= EqualityComparer<TKey>.Default;
+
+            IDictionary<TKey, int> BuildIndexByKey()
+            {
+                var indexByKey = new Dictionary<TKey, int>(keyComparer);
+                var index = 0;
+                foreach (var key in acceptedKeys)
+                {
+                    indexByKey.Add(key, index);
+                    index++;
+                }
+
+                return indexByKey;
+            }
+            var lazyIndexByKey = new Lazy<IDictionary<TKey, int>>(BuildIndexByKey);
+
+            return _(); IEnumerable<IList<TSource>> _()
+            {
+                // Lazy creation of the index table
+                var indexByKey = lazyIndexByKey.Value;
+                foreach (var batch in BatchByImplementation(source, indexByKey, keySelector))
+                {
+                    yield return batch;
+                }
+            }
+        }
+
+        private static IEnumerable<IList<TSource>> BatchByImplementation<TKey, TSource>(IEnumerable<TSource> source,
+            IDictionary<TKey, int> indexByKey, Func<TSource, TKey> keySelector)
+        {
+            var batchSize = indexByKey.Count;
+
+            // acceptedKeys was empty.
+            if (batchSize == 0)
+                yield break;
+
+            var queues = new Queue<TSource>[batchSize];
+            for (var i = 0; i < batchSize; i++)
+            {
+                queues[i] = new Queue<TSource>();
+            }
+
+            var batch = new TSource[batchSize];
+            var takenSlots = new bool[batchSize];
+            var emptySlotCount = batchSize;
+            foreach (var value in source)
+            {
+                var key = keySelector(value);
+
+                // reject null key
+                if (key == null)
+                    continue;
+
+                // reject unknown keys
+                if (!indexByKey.TryGetValue(key, out var index))
+                    continue;
+
+                // the slot is already taken, enqueue the value
+                if (takenSlots[index])
+                {
+                    var targetQueue = queues[index];
+                    targetQueue.Enqueue(value);
+                    continue;
+                }
+
+                // fill the slot
+                batch[index] = value;
+                takenSlots[index] = true;
+                emptySlotCount--;
+
+                // there are empty slots left, can't yield yet
+                if (emptySlotCount > 0)
+                    continue;
+
+                // finally can yield a batch
+                yield return batch;
+
+                // prepare next batch
+                batch = new TSource[batchSize];
+                for (var i = 0; i < batchSize; i++)
+                {
+                    var queue = queues[i];
+                    if (queue.Count == 0)
+                    {
+                        takenSlots[i] = false;
+                        emptySlotCount++;
+                    }
+                    else
+                    {
+                        batch[i] = queue.Dequeue();
+                        takenSlots[i] = true;
+                    }
+                }
+
+            }
         }
     }
 }
