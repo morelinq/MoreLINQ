@@ -87,11 +87,12 @@ namespace MoreLinq
                     // Prepare next window, bigger than the previous one
                     var nextWindow = new TSource[window.Length + 1];
                     Array.Copy(window, nextWindow, window.Length);
-                    nextWindow[nextWindow.Length - 1] = iter.Current;
-                    hasNext = iter.MoveNext();
 
                     // window ready to ship, we forget it immediately
                     yield return window;
+
+                    nextWindow[nextWindow.Length - 1] = iter.Current;
+                    hasNext = iter.MoveNext();
                     window = nextWindow;
                 }
             }
@@ -120,11 +121,12 @@ namespace MoreLinq
                     // Prepare next window, same size as the previous one
                     var nextWindow = new TSource[size];
                     Array.Copy(window, 1, nextWindow, 0, size - 1);
-                    nextWindow[size - 1] = iter.Current;
-                    hasNext = iter.MoveNext();
 
                     // window ready to ship, we forget it immediately
                     yield return window;
+
+                    nextWindow[size - 1] = iter.Current;
+                    hasNext = iter.MoveNext();
                     window = nextWindow;
                 }
             }
