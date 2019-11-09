@@ -358,7 +358,7 @@ This method has 4 overloads.
 Produces a projection of a sequence by evaluating pairs of elements separated
 by a positive offset.
 
-This method has 2 overloads.
+This method has 4 overloads.
 
 ### LeftJoin
 
