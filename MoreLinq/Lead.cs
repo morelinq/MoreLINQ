@@ -65,7 +65,7 @@ namespace MoreLinq
             return _(); IEnumerable<TResult> _()
             {
                 var leadQueue = new Queue<TSource>(offset);
-                var iter = source.GetEnumerator();
+                using var iter = source.GetEnumerator();
 
                 bool hasMore;
                 // first, prefetch and populate the lead queue with the next step of
