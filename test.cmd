@@ -7,10 +7,6 @@ goto :EOF
 :main
 setlocal
 call build ^
-  && call :test netcoreapp1.0 Debug ^
-  && call :test netcoreapp1.0 Release ^
-  && call :test netcoreapp2.0 Debug ^
-  && call :test netcoreapp2.0 Release ^
   && call :test netcoreapp2.1 Debug ^
   && call :test netcoreapp2.1 Release ^
   && call :test netcoreapp3.0 Debug ^
