@@ -46,12 +46,6 @@ build_script:
     }
 test_script:
 - cmd: test.cmd
-- sh: ./test.sh
-- sh: # revert to following post merge of PR codecov/codecov-bash#138
-- sh: # curl -s https://codecov.io/bash > codecov
-- sh: curl -sSL https://raw.githubusercontent.com/codecov/codecov-bash/14662d32a4862918c31efafe4b450de1305a38e1/codecov > codecov
-- sh: chmod +x codecov
-- sh: ./codecov -f ./tests/coverage.opencover.xml
 artifacts:
 - path: dist\*.nupkg
 deploy:
