@@ -4,7 +4,14 @@ cd "$(dirname "$0")"
 ./build.sh
 for v in 2.1 3.0; do
     for c in Debug Release; do
-        dotnet exec MoreLinq.Test/bin/$c/netcoreapp$v/MoreLinq.Test.dll
+        if [[ "$c" == "Debug" ]]; then
+            coverage_args="-p:CollectCoverage=true
+                           -p:CoverletOutputFormat=opencover
+                           -p:Exclude=[NUnit*]*"
+        else
+            unset coverage_args
+        fi
+        dotnet test --no-build -c $c -f netcoreapp$v MoreLinq.Test $coverage_args
     done
 done
 if [[ -z `which mono 2>/dev/null` ]]; then

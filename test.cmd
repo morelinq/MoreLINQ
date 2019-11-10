@@ -21,6 +21,9 @@ echo Testing %1 (%2)...
 if %1==net451 (
     MoreLinq.Test\bin\%2\net451\MoreLinq.Test.exe
 ) else (
-    dotnet exec MoreLinq.Test\bin\%2\%1\MoreLinq.Test.dll
+    if %2==Debug set COVERAGE_ARGS=-p:CollectCoverage=true ^
+                                   -p:CoverletOutputFormat=opencover ^
+                                   -p:Exclude=[NUnit*]*
+    dotnet test --no-build MoreLinq.Test -c %2 %COVERAGE_ARGS%
 )
 goto :EOF
