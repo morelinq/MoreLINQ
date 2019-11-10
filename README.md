@@ -490,6 +490,10 @@ Repeats the sequence indefinitely or a specific number of times.
 
 This method has 2 overloads.
 
+### Return
+
+Returns a single-element sequence containing the item provided.
+
 ### RightJoin
 
 Performs a right outer join between two sequences.

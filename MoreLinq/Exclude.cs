@@ -45,7 +45,7 @@ namespace MoreLinq
             {
                 var index = -1;
                 var endIndex = startIndex + count;
-                var iter = sequence.GetEnumerator();
+                using var iter = sequence.GetEnumerator();
                 // yield the first part of the sequence
                 while (iter.MoveNext() && ++index < startIndex)
                     yield return iter.Current;
