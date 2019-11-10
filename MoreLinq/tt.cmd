@@ -6,4 +6,3 @@ for /f "tokens=*" %%f in ('dir /s /b *.tt') do (
 )
 :end
 popd
-exit /b %ERRORLEVEL%
