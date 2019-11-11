@@ -46,8 +46,12 @@ build_script:
     }
 test_script:
 - cmd: test.cmd
+- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: Get-ChildItem tmp/cover | Compress-Archive -DestinationPath coverage-report.zip
+- cmd: tar -cvz -f coverage-report.tar.gz -C tmp/cover *
 artifacts:
 - path: dist\*.nupkg
+- path: coverage-report.*
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/morelinq/api/v2/package

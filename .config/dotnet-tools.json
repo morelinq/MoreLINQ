@@ -7,6 +7,12 @@
       "commands": [
         "t4"
       ]
+    },
+    "dotnet-reportgenerator-globaltool": {
+      "version": "4.3.6",
+      "commands": [
+        "reportgenerator"
+      ]
     }
   }
 }
