@@ -49,9 +49,8 @@ test_script:
 - ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: Get-ChildItem tmp/cover | Compress-Archive -DestinationPath coverage-report.zip
 - cmd: |
-    pushd tmp\cover
+    cd tmp\cover
     tar -cvz -f coverage-report.tar.gz *
-    popd
 artifacts:
 - path: dist\*.nupkg
 - path: coverage-report.*
