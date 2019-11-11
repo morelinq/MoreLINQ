@@ -53,7 +53,8 @@ test_script:
     tar -cvz -f coverage-report.tar.gz *
 artifacts:
 - path: dist\*.nupkg
-- path: coverage-report.*
+- path: coverage-report.zip
+- path: coverage-report.tar.gz
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/morelinq/api/v2/package
