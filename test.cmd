@@ -20,7 +20,7 @@ setlocal
 echo Testing %1 (%2)...
 if %2==Debug set COVERAGE_ARGS=-p:CollectCoverage=true ^
                                -p:CoverletOutputFormat=opencover ^
-                               -p:Exclude=[NUnit*]*
+                               -p:Exclude=\"[NUnit*]*,[MoreLinq]MoreLinq.Extensions.*,[MoreLinq]MoreLinq.Experimental.*\"
 if %1==net451 (
     MoreLinq.Test\bin\%2\net451\MoreLinq.Test.exe
 ) else (

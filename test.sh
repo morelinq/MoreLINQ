@@ -12,7 +12,7 @@ for v in 2.1 3.0; do
         if [[ "$c" == "Debug" ]]; then
             coverage_args="-p:CollectCoverage=true
                            -p:CoverletOutputFormat=opencover
-                           -p:Exclude=[NUnit*]*"
+                           -p:Exclude=\"[NUnit*]*,[MoreLinq]MoreLinq.Extensions.*,[MoreLinq]MoreLinq.Experimental.*\""
         else
             unset coverage_args
         fi
