@@ -50,11 +50,10 @@ test_script:
 - ps: Get-ChildItem tmp/cover | Compress-Archive -DestinationPath coverage-report.zip
 - cmd: |
     cd tmp\cover
-    tar -cvz -f coverage-report.tar.gz *
+    tar -cvz -f ../../coverage-report.tar.gz *
 artifacts:
 - path: dist\*.nupkg
-- path: coverage-report.zip
-- path: coverage-report.tar.gz
+- path: coverage-report.*
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/morelinq/api/v2/package
