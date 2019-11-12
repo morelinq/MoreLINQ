@@ -63,9 +63,14 @@ namespace MoreLinq.Test
         public static readonly IEnumerable<ITestCaseData> TestData =
             from e in new[]
             {
+                new {s = new int[0]     , o = 0, r = new int[0]},   // empty sequence
+                new {s = new[] {0}      , o = 0, r = new int[0]},   // one-item sequence, predicate succeed
+                new {s = new[] {0}      , o = 1, r = new int[0]},   // one-item sequence, predicate don't succeed
+                new {s = new[] {1, 2, 3}, o = 0, r = new[] {2, 3}}, // predicate succeed on first item
                 new {s = new[] {1, 2, 3}, o = 1, r = new[] {2, 3}},
                 new {s = new[] {1, 2, 3}, o = 2, r = new[] {3}},
-                new {s = new[] {1, 2, 3}, o = 3, r = new int[0]}
+                new {s = new[] {1, 2, 3}, o = 3, r = new int[0]},   // predicate succeed on last item
+                new {s = new[] {1, 2, 3}, o = 4, r = new int[0]}    // predicate never succeed
             }
             select new TestCaseData(e.s, e.o).Returns(e.r);
 
