@@ -74,9 +74,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
 
-            return _();
-
-            IEnumerable<IEnumerable<T>> _()
+            return _(); IEnumerable<IEnumerable<T>> _()
             {
                 using var iter = source.GetEnumerator();
 
