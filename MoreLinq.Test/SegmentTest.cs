@@ -139,17 +139,17 @@ namespace MoreLinq.Test
             from e in new[]
             {
                 // input sequence is empty
-                new {s = Enumerable.Empty<int>(), r = Enumerable.Empty<IEnumerable<int>>()},
+                new { Source = Enumerable.Empty<int>(), Expected = Enumerable.Empty<IEnumerable<int>>() },
                 // input sequence contains only new segment start
-                new {s = Seq(0, 3, 6), r = Seq(Seq(0), Seq(3), Seq(6))},
+                new { Source = Seq(0, 3, 6),            Expected = Seq(Seq(0), Seq(3), Seq(6)) },
                 // input sequence do not contains new segment start
-                new {s = Seq(1, 2, 4, 5), r = Seq(Seq(1, 2, 4, 5))},
+                new { Source = Seq(1, 2, 4, 5),         Expected = Seq(Seq(1, 2, 4, 5)) },
                 // input sequence start with a segment start
-                new {s = Seq(0, 1, 2, 3, 4, 5), r = Seq(Seq(0, 1, 2), Seq(3, 4, 5))},
+                new { Source = Seq(0, 1, 2, 3, 4, 5),   Expected = Seq(Seq(0, 1, 2), Seq(3, 4, 5)) },
                 // input sequence do not start with a segment start
-                new {s = Seq(1, 2, 3, 4, 5), r = Seq(Seq(1, 2), Seq(3, 4, 5))}
+                new { Source = Seq(1, 2, 3, 4, 5),      Expected = Seq(Seq(1, 2), Seq(3, 4, 5)) }
             }
-            select new TestCaseData(e.s).Returns(e.r);
+            select new TestCaseData(e.Source).Returns(e.Expected);
 
         [Test, TestCaseSource(nameof(TestData))]
         public IEnumerable<IEnumerable<int>> TestSegmentOnKnownInput(IEnumerable<int> source)
