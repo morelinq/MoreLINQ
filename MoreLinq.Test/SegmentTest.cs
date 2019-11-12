@@ -89,7 +89,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestSegmentationStartsWithSecondItem()
         {
-            var sequence = new[] {0};
+            var sequence = new[] { 0 };
             var resultA = sequence.Segment(BreakingFunc.Of<int, bool>());
             var resultB = sequence.Segment(BreakingFunc.Of<int, int, bool>());
             var resultC = sequence.Segment(BreakingFunc.Of<int, int, int, bool>());
@@ -126,7 +126,7 @@ namespace MoreLinq.Test
         {
             const int repCount = 5;
             var sequence = Enumerable.Range(1, 3)
-                .SelectMany(x => Enumerable.Repeat(x, repCount));
+                                     .SelectMany(x => Enumerable.Repeat(x, repCount));
             var result = sequence.Segment((curr, prev, i) => curr != prev);
 
             Assert.AreEqual(sequence.Distinct().Count(), result.Count());
