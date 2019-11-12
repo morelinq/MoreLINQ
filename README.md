@@ -218,9 +218,9 @@ This method has 2 overloads.
 
 ### EquiZip
 
-Returns a sequence of projections, each projection is build from K elements.
-For the N-th projection, these K elements are those located at the N-th
-position of the K input sequences.
+Returns a sequence of projections, each projection is build from multiple elements.
+For the N-th projection, these multiple elements are those located at the N-th
+position of the multiple input sequences.
 The resulting sequence has the same length as the input sequences.
 If the input sequences are of different lengths, an exception is thrown.
 
@@ -711,18 +711,18 @@ Creates a right-aligned sliding window over the source sequence of a given size.
 
 ### ZipLongest
 
-Returns a sequence of projections, each projection is build from K elements.
-For the N-th projection, these K elements are those located at the N-th
-position of the K input sequences.
+Returns a sequence of projections, each projection is build from multiple elements.
+For the N-th projection, these multiple elements are those located at the N-th
+position of the multiple input sequences.
 The resulting sequence is as long as the longest of the input sequences.
 
 This method has 3 overloads.
 
 ### ZipShortest
 
-Returns a sequence of projections, each projection is build from K elements.
-For the N-th projection, these K elements are those located at the N-th
-position of the K input sequences.
+Returns a sequence of projections, each projection is build from multiple elements.
+For the N-th projection, these multiple elements are those located at the N-th
+position of the multiple input sequences.
 The resulting sequence is as short as the shortest of the input sequences.
 
 This method has 3 overloads.

@@ -72,8 +72,8 @@ namespace MoreLinq
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        Enumerator.Read(ref e1, ref v1) |
-                        Enumerator.Read(ref e2, ref v2))
+                        Enumerator.TryRead(ref e1, out v1) |
+                        Enumerator.TryRead(ref e2, out v2))
                     {
                         yield return resultSelector(v1, v2);
                     }
@@ -143,9 +143,9 @@ namespace MoreLinq
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        Enumerator.Read(ref e1, ref v1) |
-                        Enumerator.Read(ref e2, ref v2) |
-                        Enumerator.Read(ref e3, ref v3))
+                        Enumerator.TryRead(ref e1, out v1) |
+                        Enumerator.TryRead(ref e2, out v2) |
+                        Enumerator.TryRead(ref e3, out v3))
                     {
                         yield return resultSelector(v1, v2, v3);
                     }
@@ -223,10 +223,10 @@ namespace MoreLinq
 
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        Enumerator.Read(ref e1, ref v1) |
-                        Enumerator.Read(ref e2, ref v2) |
-                        Enumerator.Read(ref e3, ref v3) |
-                        Enumerator.Read(ref e4, ref v4))
+                        Enumerator.TryRead(ref e1, out v1) |
+                        Enumerator.TryRead(ref e2, out v2) |
+                        Enumerator.TryRead(ref e3, out v3) |
+                        Enumerator.TryRead(ref e4, out v4))
                     {
                         yield return resultSelector(v1, v2, v3, v4);
                     }

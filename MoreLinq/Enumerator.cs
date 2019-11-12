@@ -30,7 +30,7 @@ namespace MoreLinq
         /// set to <c>null</c>, and <paramref name="item"/> is set to <c>default</c>.</para>
         /// <para>
         /// If the <paramref name="enumerator"/> is <c>null</c> the method return immediately
-        /// and <paramref name="item"/> is not modified.</para>
+        /// and <paramref name="item"/> is set to <c>null</c>.</para>
         /// </summary>
         /// <typeparam name="T">The type of element that are enumerated.</typeparam>
         /// <param name="enumerator">The enumerator to iterate or dispose.</param>
@@ -43,10 +43,11 @@ namespace MoreLinq
         /// </remarks>
         /// <returns>A <c>bool</c> value indicating if the enumerator has moved to the next element.</returns>
 
-        public static bool Read<T>(ref IEnumerator<T> enumerator, ref T item)
+        public static bool TryRead<T>(ref IEnumerator<T> enumerator, out T item)
         {
             if (enumerator == null)
             {
+                item = default;
                 return false;
             }
 

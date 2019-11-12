@@ -128,7 +128,7 @@ namespace MoreLinq
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
 <# foreach (var arg in o.Arguments) { #>
-                        Enumerator.Read(ref <#= arg.Enumerator #>, ref <#= arg.Value #>)<#= arg.IsLast ? ")" : " |" #>
+                        Enumerator.TryRead(ref <#= arg.Enumerator #>, out <#= arg.Value #>)<#= arg.IsLast ? ")" : " |" #>
 <# } #>
                     {
                         yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#= arg.Value #><#= arg.IsLast ? "" : ", " #><# } #>);
