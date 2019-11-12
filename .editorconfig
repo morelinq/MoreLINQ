@@ -3,11 +3,18 @@
 root = true
 
 [*]
+indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.xml]
-indent_style = space
+[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+[*.{sln}]
+indent_style = tab
+
+[*.{json,yml}]
+indent_size = 2
 
 [*.{cs,tt}]
 charset = utf-8
