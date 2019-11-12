@@ -1,6 +1,25 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Verify the behavior of the Lag operator
@@ -113,6 +132,21 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 2)));
             Assert.IsTrue(result.Take(2).All(x => (x.A - x.B) == x.A));
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new {s = new[] {1, 2, 3}, o = 1, r = new[] {(1, 0), (2, 1), (3, 2)}},
+                new {s = new[] {1, 2, 3}, o = 2, r = new[] {(1, 0), (2, 0), (3, 1)}},
+                new {s = new[] {1, 2, 3}, o = 3, r = new[] {(1, 0), (2, 0), (3, 0)}}
+            }
+            select new TestCaseData(e.s, e.o).Returns(e.r);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public (int e, int l)[] TestLagOnKnownInput(int[] source, int offset)
+        {
+            return source.AsTestingSequence().Lag(offset, (e, l) => (e, l)).ToArray();
         }
     }
 }
