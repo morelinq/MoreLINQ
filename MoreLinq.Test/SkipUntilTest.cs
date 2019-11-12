@@ -72,7 +72,7 @@ namespace MoreLinq.Test
                 new { Source = new[] {1, 2, 3}, Min = 3, Expected = new int[0] },   // predicate succeed on last item
                 new { Source = new[] {1, 2, 3}, Min = 4, Expected = new int[0] }    // predicate never succeed
             }
-            select new TestCaseData(e.Source, e.Min).Returns(e.r);
+            select new TestCaseData(e.Source, e.Min).Returns(e.Expected);
 
         [Test, TestCaseSource(nameof(TestData))]
         public int[] TestSkipUntil(int[] source, int min)
