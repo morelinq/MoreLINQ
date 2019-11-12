@@ -43,15 +43,25 @@ namespace MoreLinq
 
             return _(); IEnumerable<T> _()
             {
-                var index = -1;
+                var index = 0;
                 var endIndex = startIndex + count;
                 using var iter = sequence.GetEnumerator();
+
                 // yield the first part of the sequence
-                while (iter.MoveNext() && ++index < startIndex)
+                for (; index < startIndex; index++)
+                {
+                    if (!iter.MoveNext())
+                        yield break;
                     yield return iter.Current;
+                }
+
                 // skip the next part (up to count items)
-                while (++index < endIndex && iter.MoveNext())
-                    continue;
+                for (; index < endIndex; index++)
+                {
+                    if (!iter.MoveNext())
+                        yield break;
+                }
+
                 // yield the remainder of the sequence
                 while (iter.MoveNext())
                     yield return iter.Current;
