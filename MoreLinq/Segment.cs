@@ -92,15 +92,12 @@ namespace MoreLinq
                 for (var index = 1; iter.MoveNext(); index++)
                 {
                     // check if the item represents the start of a new segment
-                    var isNewSegment = newSegmentPredicate(iter.Current, prevItem, index);
-                    prevItem = iter.Current;
-
-                    if (isNewSegment)
+                    if (newSegmentPredicate(iter.Current, prevItem, index))
                     {
                         // yield the completed segment
                         yield return segment;
 
-                        // start a new segment...
+                        // start a new segment
                         segment = new List<T> { iter.Current };
                     }
                     else
@@ -108,6 +105,8 @@ namespace MoreLinq
                         // if not a new segment, append and continue
                         segment.Add(iter.Current);
                     }
+
+                    prevItem = iter.Current;
                 }
 
                 yield return segment;
