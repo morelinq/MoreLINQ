@@ -65,7 +65,8 @@ namespace MoreLinq
                 {
                     if (!enumerator.MoveNext())
                         yield break;
-                } while(!predicate(enumerator.Current));
+                }
+                while (!predicate(enumerator.Current));
 
                 while (enumerator.MoveNext())
                     yield return enumerator.Current;
