@@ -75,8 +75,8 @@ namespace MoreLinq
 
                 foreach (var item in source)
                 {
-                    var isBlank = predicate(item);
-                    if (isBlank)
+                    // Check if the item is ‘missing’
+                    if (predicate(item))
                     {
                         blanks.Add(item);
                     }
@@ -136,8 +136,8 @@ namespace MoreLinq
 
                 foreach (var item in source)
                 {
-                    var isBlank = predicate(item);
-                    if (isBlank)
+                    // Check if the item is ‘missing’
+                    if (predicate(item))
                     {
                         blanks.Add(item);
                     }
