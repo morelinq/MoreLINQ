@@ -68,32 +68,35 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            // We need to store the blanks in case of the source sequence ends with missing values
-            var blanks = new List<T>();
-
-            foreach (var item in source)
+            return _(); IEnumerable<T> _()
             {
-                var isBlank = predicate(item);
-                if (isBlank)
+                // We need to store the blanks in case of the source sequence ends with missing values
+                var blanks = new List<T>();
+
+                foreach (var item in source)
                 {
-                    blanks.Add(item);
-                }
-                else
-                {
-                    if (blanks.Count > 0)
+                    var isBlank = predicate(item);
+                    if (isBlank)
                     {
-                        for (var i = 0; i < blanks.Count; i++)
-                            yield return item;
-
-                        blanks.Clear();
+                        blanks.Add(item);
                     }
+                    else
+                    {
+                        if (blanks.Count > 0)
+                        {
+                            for (var i = 0; i < blanks.Count; i++)
+                                yield return item;
 
-                    yield return item;
+                            blanks.Clear();
+                        }
+
+                        yield return item;
+                    }
                 }
-            }
 
-            foreach (var blank in blanks)
-                yield return blank;
+                foreach (var blank in blanks)
+                    yield return blank;
+            }
         }
 
         /// <summary>
@@ -127,31 +130,34 @@ namespace MoreLinq
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
             if (fillSelector == null) throw new ArgumentNullException(nameof(fillSelector));
 
-            var blanks = new List<T>();
-
-            foreach (var item in source)
+            return _(); IEnumerable<T> _()
             {
-                var isBlank = predicate(item);
-                if (isBlank)
+                var blanks = new List<T>();
+
+                foreach (var item in source)
                 {
-                    blanks.Add(item);
-                }
-                else
-                {
-                    if (blanks.Count > 0)
+                    var isBlank = predicate(item);
+                    if (isBlank)
                     {
-                        foreach (var blank in blanks)
-                            yield return fillSelector(blank, item);
-
-                        blanks.Clear();
+                        blanks.Add(item);
                     }
+                    else
+                    {
+                        if (blanks.Count > 0)
+                        {
+                            foreach (var blank in blanks)
+                                yield return fillSelector(blank, item);
 
-                    yield return item;
+                            blanks.Clear();
+                        }
+
+                        yield return item;
+                    }
                 }
-            }
 
-            foreach (var blank in blanks)
-                yield return blank;
+                foreach (var blank in blanks)
+                    yield return blank;
+            }
         }
     }
 }
