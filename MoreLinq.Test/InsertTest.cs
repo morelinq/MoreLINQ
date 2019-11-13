@@ -17,7 +17,10 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class InsertTest
@@ -87,6 +90,88 @@ namespace MoreLinq.Test
         public void InsertIsLazy()
         {
             new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
+        }
+
+        private static IEnumerable<T> Seq<T>(params T[] values) => values;
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new
+                {
+                    Name = "Insert: first and second sequences empty",
+                    First = Enumerable.Empty<int>(),
+                    Second = Enumerable.Empty<int>(),
+                    Index = 0,
+                    Expected = Enumerable.Empty<int>()
+                },
+                new
+                {
+                    Name = "Insert: first sequence empty",
+                    First = Enumerable.Empty<int>(),
+                    Second = Seq(1, 2, 3, 4),
+                    Index = 0,
+                    Expected = Seq(1, 2, 3, 4)
+                },
+                new
+                {
+                    Name = "Insert: second sequence is empty and inserted at the beginning",
+                    First = Seq(1, 2, 3, 4),
+                    Second = Enumerable.Empty<int>(),
+                    Index = 0,
+                    Expected = Seq(1, 2, 3, 4)
+                },
+                new
+                {
+                    Name = "Insert: second sequence is empty and inserted at the end",
+                    First = Seq(1, 2, 3, 4),
+                    Second = Enumerable.Empty<int>(),
+                    Index = 4,
+                    Expected = Seq(1, 2, 3, 4)
+                },
+                new
+                {
+                    Name = "Insert: second sequence is empty and inserted at the middle",
+                    First = Seq(1, 2, 3, 4),
+                    Second = Enumerable.Empty<int>(),
+                    Index = 2,
+                    Expected = Seq(1, 2, 3, 4)
+                },
+                new
+                {
+                    Name = "Insert: second sequence is inserted at the beginning",
+                    First = Seq(1, 2, 3, 4),
+                    Second = Seq(5, 6, 7, 8),
+                    Index = 0,
+                    Expected = Seq(5, 6, 7, 8, 1, 2, 3, 4)
+                },
+                new
+                {
+                    Name = "Insert: second sequence is inserted at the end",
+                    First = Seq(1, 2, 3, 4),
+                    Second = Seq(5, 6, 7, 8),
+                    Index = 4,
+                    Expected = Seq(1, 2, 3, 4, 5, 6, 7, 8)
+                },
+                new
+                {
+                    Name = "Insert: second sequence is inserted at the middle",
+                    First = Seq(1, 2, 3, 4),
+                    Second = Seq(5, 6, 7, 8),
+                    Index = 2,
+                    Expected = Seq(1, 2, 5, 6, 7, 8, 3, 4)
+                }
+            }
+            select new TestCaseData(e.First, e.Second, e.Index)
+            {
+                ExpectedResult = e.Expected,
+                TestName = e.Name
+            };
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public IEnumerable<int> InsertWithKnownCases(IEnumerable<int> first, IEnumerable<int> second, int index)
+        {
+            return first.AsTestingSequence().Insert(second.AsTestingSequence(), index);
         }
     }
 }
