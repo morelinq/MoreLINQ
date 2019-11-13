@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using NUnit.Framework.Interfaces;
-
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework.Interfaces;
     using NUnit.Framework;
 
     /// <summary>

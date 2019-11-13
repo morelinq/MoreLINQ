@@ -87,7 +87,7 @@ namespace MoreLinq
                 // behavior. Segmentation always begins with
                 // the second element in the sequence.
                 var prevItem = iter.Current;
-                var segment = new List<T> {iter.Current};
+                var segment = new List<T> { iter.Current };
 
                 for (var index = 1; iter.MoveNext(); index++)
                 {
@@ -101,7 +101,7 @@ namespace MoreLinq
                         yield return segment;
 
                         // start a new segment...
-                        segment = new List<T> {iter.Current};
+                        segment = new List<T> { iter.Current };
                     }
                     else
                     {
