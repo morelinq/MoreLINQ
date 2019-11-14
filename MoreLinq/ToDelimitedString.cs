@@ -53,10 +53,6 @@ namespace MoreLinq
 
         static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(delimiter != null);
-            Debug.Assert(append != null);
-
             var sb = new StringBuilder();
             var i = 0;
 

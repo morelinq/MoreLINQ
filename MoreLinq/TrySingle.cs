@@ -104,7 +104,7 @@ namespace MoreLinq
             switch (source.TryGetCollectionCount())
             {
                 case 0:
-                    return resultSelector(zero, default);
+                    return resultSelector(zero, default!);
                 case 1:
                 {
                     var item = source switch
@@ -116,15 +116,15 @@ namespace MoreLinq
                     return resultSelector(one, item);
                 }
                 case int _:
-                    return resultSelector(many, default);
+                    return resultSelector(many, default!);
                 default:
                 {
                     using var e = source.GetEnumerator();
                     if (!e.MoveNext())
-                        return resultSelector(zero, default);
+                        return resultSelector(zero, default!);
                     var current = e.Current;
                     return !e.MoveNext() ? resultSelector(one, current)
-                                         : resultSelector(many, default);
+                                         : resultSelector(many, default!);
                 }
             }
         }

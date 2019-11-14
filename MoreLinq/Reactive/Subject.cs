@@ -21,17 +21,27 @@ namespace MoreLinq.Reactive
     using System.Collections.Generic;
     using Delegate = Delegating.Delegate;
 
-    sealed class Subject<T> : IObservable<T>, IObserver<T>
+    /// <summary>
+    /// Subject
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed class Subject<T> : IObservable<T>, IObserver<T>
     {
-        List<IObserver<T>> _observers;
+        List<IObserver<T>>? _observers;
         bool _completed;
-        Exception _error;
+        Exception? _error;
 
         bool HasObservers => (_observers?.Count ?? 0) > 0;
         List<IObserver<T>> Observers => _observers ??= new List<IObserver<T>>();
 
         bool IsMuted => _completed || _error != null;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="observer"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public IDisposable Subscribe(IObserver<T> observer)
         {
             if (observer == null) throw new ArgumentNullException(nameof(observer));
@@ -66,7 +76,7 @@ namespace MoreLinq.Reactive
                     if (observers[i] == observer)
                     {
                         if (_shouldDeleteObserver)
-                            observers[i] = null;
+                            observers[i] = null!;
                         else
                             observers.RemoveAt(i);
                         break;
@@ -77,6 +87,10 @@ namespace MoreLinq.Reactive
 
         bool _shouldDeleteObserver; // delete (null) or remove an observer?
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public void OnNext(T value)
         {
             if (!HasObservers)
@@ -113,9 +127,16 @@ namespace MoreLinq.Reactive
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="error"></param>
         public void OnError(Exception error) =>
             OnFinality(ref _error, error, (observer, err) => observer.OnError(err));
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void OnCompleted() =>
             OnFinality(ref _completed, true, (observer, _) => observer.OnCompleted());
 

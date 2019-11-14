@@ -117,9 +117,6 @@ namespace MoreLinq
         static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T>? paddingSelector)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(width >= 0);
-
             var count = 0;
             foreach (var item in source)
             {

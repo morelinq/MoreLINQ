@@ -142,7 +142,6 @@ namespace MoreLinq
                 }
                 finally
                 {
-                    Debug.Assert(iteratorList != null || iterators != null);
                     foreach (var iter in iteratorList ?? (IList<IEnumerator<T>>) iterators!)
                         iter.Dispose();
                 }

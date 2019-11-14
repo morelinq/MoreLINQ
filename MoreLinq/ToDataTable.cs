@@ -215,7 +215,7 @@ namespace MoreLinq
 
             if (columns.Count == 0)
             {
-                columns.AddRange(schemas.Select(m => new DataColumn(m.Member!.Name /* TODO(nullable): should not be needed */, m.Type)).ToArray());
+                columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
             }
             else
             {
@@ -225,8 +225,6 @@ namespace MoreLinq
                 {
                     var member = info.Member;
                     var column = info.Column;
-
-                    Debug.Assert(member != null); // TODO(nullable): should not be needed
 
                     if (column == null)
                         throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));

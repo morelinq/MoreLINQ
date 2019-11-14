@@ -78,7 +78,7 @@ namespace MoreLinq
                             else
                             {
                                 enumerators[i].Dispose();
-                                enumerators[i] = null;
+                                enumerators[i] = null!;
                             }
                         }
 

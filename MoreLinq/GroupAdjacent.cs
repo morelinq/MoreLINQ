@@ -268,7 +268,7 @@ namespace MoreLinq
 
             using var iterator = source.GetEnumerator();
 
-            var group = default(TKey);
+            var group = default(TKey)!;
             var members = (List<TElement>?) null;
 
             while (iterator.MoveNext())
@@ -294,7 +294,6 @@ namespace MoreLinq
 
         static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members)
         {
-            Debug.Assert(members != null);
             return Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
         }
 
@@ -313,7 +312,6 @@ namespace MoreLinq
 
             public Grouping(TKey key, IEnumerable<TElement> members)
             {
-                Debug.Assert(members != null);
                 Key = key;
                 _members = members;
             }

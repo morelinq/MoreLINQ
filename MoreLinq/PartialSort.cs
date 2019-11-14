@@ -225,19 +225,16 @@ namespace MoreLinq
             IComparer<TKey>? keyComparer,
             IComparer<TSource>? comparer)
         {
-            Debug.Assert(source != null);
-
-            var keys = keySelector != null ? new List<TKey>(count) : null;
+            var keys = keySelector == null ? null : new List<TKey>(count);
             var top = new List<TSource>(count);
 
             foreach (var item in source)
             {
                 int i;
-                var key = default(TKey);
+                var key = default(TKey)!;
                 if (keys != null)
                 {
-                    Debug.Assert(keySelector != null);
-                    key = keySelector(item);
+                    key = keySelector!(item);
                     i = keys.BinarySearch(key, keyComparer);
                 }
                 else

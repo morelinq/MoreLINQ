@@ -63,10 +63,10 @@ namespace MoreLinq
         {
             var i = 0;
             T[]? concats = null;      // Array for > 4 concatenations
-            var concat1 = default(T); // Slots for up to 4 concatenations
-            var concat2 = default(T);
-            var concat3 = default(T);
-            var concat4 = default(T);
+            var concat1 = default(T)!; // Slots for up to 4 concatenations
+            var concat2 = default(T)!;
+            var concat3 = default(T)!;
+            var concat4 = default(T)!;
 
             var current = this;
             for (; current is Item item; current = item.Next)

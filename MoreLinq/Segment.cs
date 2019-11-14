@@ -80,7 +80,7 @@ namespace MoreLinq
                 using var iter = source.GetEnumerator();
 
                 var segment = new List<T>();
-                var prevItem = default(T);
+                var prevItem = default(T)!;
 
                 // ensure that the first item is always part
                 // of the first segment. This is an intentional
