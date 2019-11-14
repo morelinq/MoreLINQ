@@ -118,7 +118,7 @@
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
     <LangVersion>8</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
