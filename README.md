@@ -216,6 +216,11 @@ sequence.
 
 This method has 2 overloads.
 
+### EquiInterleave
+
+Interleaves the elements of two or more sequences into a single sequence.
+If the input sequences are of different lengths, an exception is thrown.
+
 ### EquiZip
 
 Returns a projection of tuples, where each tuple contains the N-th

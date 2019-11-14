@@ -1319,6 +1319,39 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>EquiInterleave</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class EquiInterleaveExtension
+    {
+        /// <summary>
+        /// Interleaves the elements of two or more sequences into a single sequence.
+        /// If the input sequences are of different lengths, an exception is thrown.
+        /// </summary>
+        /// <remarks>
+        /// Interleave combines sequences by visiting each in turn, and returning the first element of each, followed
+        /// by the second, then the third, and so on. So, for example:<br/>
+        /// <code><![CDATA[
+        /// {1,1,1}.Interleave( {2,2,2}, {3,3,3} ) => { 1,2,3,1,2,3,1,2,3 }
+        /// ]]></code>
+        /// This operator behaves in a deferred and streaming manner.<br/>
+        /// As soon as a sequence shorter than the other is detected, an exception is thrown.<br/>
+        /// The sequences are interleaved in the order that they appear in the <paramref name="otherSequences"/>
+        /// collection, with <paramref name="sequence"/> as the first sequence.
+        /// </remarks>
+        /// <typeparam name="T">The type of the elements of the source sequences</typeparam>
+        /// <param name="sequence">The first sequence in the interleave group</param>
+        /// <param name="otherSequences">The other sequences in the interleave group</param>
+        /// <returns>
+        /// A sequence of interleaved elements from all of the source sequences</returns>
+        /// <exception cref="InvalidOperationException">
+        /// The source sequences are of different lengths.</exception>
+
+        public static IEnumerable<T> EquiInterleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
+            => MoreEnumerable.EquiInterleave(sequence, otherSequences);
+
+    }
+
     /// <summary><c>EquiZip</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
