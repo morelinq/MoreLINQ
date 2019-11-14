@@ -75,7 +75,7 @@ namespace MoreLinq
                     var (isHomogeneous, hasNext) = enumerators.Select(e => e.MoveNext()).IsHomogeneous();
 
                     if (isHomogeneous == false)
-                        throw new InvalidOperationException("Input sequences are of different length.");
+                        throw new InvalidOperationException("Input sequences are of different lengths.");
 
                     if (!hasNext)
                         break;
