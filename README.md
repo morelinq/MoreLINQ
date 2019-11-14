@@ -674,6 +674,12 @@ Traces the elements of a source sequence for diagnostics.
 
 This method has 3 overloads.
 
+### Triplewise
+
+Returns a sequence resulting from applying a function to each element in the
+source sequence and its two predecessors, with the exception of the first and
+second elements which are only returned as the predecessors of the third element.
+
 ### TrySingle
 
 Returns the only element of a sequence that has just one element. If the

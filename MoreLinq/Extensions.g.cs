@@ -6588,6 +6588,42 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Triplewise</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class TriplewiseExtension
+    {
+        /// <summary>
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence and its row
+        /// predecessors, with the exception of the first and second elements which are
+        /// only returned as the predecessors of the third element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the element of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">A transform function to apply to
+        /// each triplet of sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var source = new[] { "a", "b", "c", "d", "e" };
+        /// var result = source.Pairwise((a, b, c) => a + b + c);
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// "abc", "bcd" and "cde", in turn.
+        /// </example>
+
+        public static IEnumerable<TResult> Triplewise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.Triplewise(source, resultSelector);
+
+    }
+
     /// <summary><c>TrySingle</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
