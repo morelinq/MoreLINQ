@@ -342,8 +342,6 @@ Inserts the elements of a sequence into another sequence at a specified index.
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
 
-This method has 2 overloads.
-
 ### Lag
 
 Produces a projection of a sequence by evaluating pairs of elements separated
