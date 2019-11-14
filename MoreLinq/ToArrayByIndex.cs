@@ -121,7 +121,7 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var lastIndex = -1;
-            var indexed = (List<KeyValuePair<int, T>>?) null;
+            var indexed = (List<KeyValuePair<int, T>>) null;
             List<KeyValuePair<int, T>> Indexed() => indexed ??= new List<KeyValuePair<int, T>>();
 
             foreach (var e in source)

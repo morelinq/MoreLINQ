@@ -239,18 +239,17 @@ namespace MoreLinq
                     var key = firstKeySelector(fe);
                     firstKeys.Add(key);
 
-                    using (var se = secondLookup[key].GetEnumerator())
+                    using var se = secondLookup[key].GetEnumerator();
+
+                    if (se.MoveNext())
                     {
-                        if (se.MoveNext())
-                        {
-                            do { yield return bothSelector(fe, se.Current); }
-                            while (se.MoveNext());
-                        }
-                        else
-                        {
-                            se.Dispose();
-                            yield return firstSelector(fe);
-                        }
+                        do { yield return bothSelector(fe, se.Current); }
+                        while (se.MoveNext());
+                    }
+                    else
+                    {
+                        se.Dispose();
+                        yield return firstSelector(fe);
                     }
                 }
 

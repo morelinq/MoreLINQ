@@ -204,11 +204,10 @@ namespace MoreLinq
 
             return _(); IEnumerable<IList<T>> _()
             {
-                using (var iter = new PermutationEnumerator<T>(sequence))
-                {
-                    while (iter.MoveNext())
-                        yield return iter.Current;
-                }
+                using var iter = new PermutationEnumerator<T>(sequence);
+
+                while (iter.MoveNext())
+                    yield return iter.Current;
             }
         }
     }

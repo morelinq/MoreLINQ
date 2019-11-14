@@ -45,18 +45,16 @@ namespace MoreLinq
             {
                 var index = -1;
                 var endIndex = startIndex + count;
-                using (var iter = sequence.GetEnumerator())
-                {
-                    // yield the first part of the sequence
-                    while (iter.MoveNext() && ++index < startIndex)
-                        yield return iter.Current;
-                    // skip the next part (up to count items)
-                    while (++index < endIndex && iter.MoveNext())
-                        continue;
-                    // yield the remainder of the sequence
-                    while (iter.MoveNext())
-                        yield return iter.Current;
-                }
+                using var iter = sequence.GetEnumerator();
+                // yield the first part of the sequence
+                while (iter.MoveNext() && ++index < startIndex)
+                    yield return iter.Current;
+                // skip the next part (up to count items)
+                while (++index < endIndex && iter.MoveNext())
+                    continue;
+                // yield the remainder of the sequence
+                while (iter.MoveNext())
+                    yield return iter.Current;
             }
         }
     }

@@ -151,9 +151,12 @@ namespace MoreLinq
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
             if (rand == null) throw new ArgumentNullException(nameof(rand));
+
             if (minValue > maxValue)
-                throw new ArgumentOutOfRangeException( nameof(minValue),
-                    string.Format("The argument minValue ({0}) is greater than maxValue ({1})", minValue, maxValue) );
+            {
+                throw new ArgumentOutOfRangeException(nameof(minValue),
+                    $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
+            }
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
         }
@@ -228,7 +231,7 @@ namespace MoreLinq
 
             static int _seed = Environment.TickCount;
             [ThreadStatic] static Random _threadRandom;
-            static Random ThreadRandom => _threadRandom ?? (_threadRandom = new Random(Interlocked.Increment(ref _seed)));
+            static Random ThreadRandom => _threadRandom ??= new Random(Interlocked.Increment(ref _seed));
 
             GlobalRandom() { }
 

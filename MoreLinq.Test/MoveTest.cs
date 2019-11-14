@@ -103,6 +103,15 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void MoveIsRepeatable()
+        {
+            var source = Enumerable.Range(0, 10);
+            var result = source.Move(0, 5, 10);
+
+            Assert.That(result.ToArray(), Is.EqualTo(result));
+        }
+
+        [Test]
         public void MoveWithFromIndexEqualsToIndex()
         {
             var source = Enumerable.Range(0, 10);
