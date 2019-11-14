@@ -28,6 +28,7 @@
         - Consume
         - DistinctBy
         - EndsWith
+        - EquiInterleave
         - EquiZip
         - Exactly
         - ExceptBy
