@@ -309,7 +309,7 @@ Returns a sequence of values based on indexes
 Groups the adjacent elements of a sequence according to a specified key
 selector function.
 
-This method has 4 overloads.
+This method has 6 overloads.
 
 ### ~~Incremental~~
 
