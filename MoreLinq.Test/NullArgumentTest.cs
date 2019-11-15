@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2015 Julian Lettner. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -120,9 +120,7 @@ namespace MoreLinq.Test
                 nameof(MoreEnumerable.From) + ".function1",
                 nameof(MoreEnumerable.From) + ".function2",
                 nameof(MoreEnumerable.From) + ".function3",
-                #if !NETCOREAPP1_0
                 nameof(MoreEnumerable.ToDataTable) + ".expressions",
-                #endif
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 
@@ -215,16 +213,12 @@ namespace MoreLinq.Test
                 }
             }
 
-            #if !NO_ASYNC
-
             public class AwaitQuery<T> : Enumerable<T>,
                                          Experimental.IAwaitQuery<T>
             {
                 public Experimental.AwaitQueryOptions Options => Experimental.AwaitQueryOptions.Default;
                 public Experimental.IAwaitQuery<T> WithOptions(Experimental.AwaitQueryOptions options) => this;
             }
-
-            #endif
 
             public class Comparer<T> : IComparer<T>
             {

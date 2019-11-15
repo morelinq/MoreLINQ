@@ -342,8 +342,6 @@ Inserts the elements of a sequence into another sequence at a specified index.
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
 
-This method has 2 overloads.
-
 ### Lag
 
 Produces a projection of a sequence by evaluating pairs of elements separated
@@ -489,6 +487,10 @@ This method has 2 overloads.
 Repeats the sequence indefinitely or a specific number of times.
 
 This method has 2 overloads.
+
+### Return
+
+Returns a single-element sequence containing the item provided.
 
 ### RightJoin
 
