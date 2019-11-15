@@ -631,7 +631,7 @@ This method has 4 overloads.
 Creates a delimited string from a sequence of values. The delimiter used
 depends on the current culture of the executing thread.
 
-This method has 30 overloads.
+This method has 15 overloads.
 
 ### ToDictionary
 
