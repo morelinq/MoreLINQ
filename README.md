@@ -420,9 +420,13 @@ which is only returned as the predecessor of the second element
 
 Combines `OrderBy` (where element is key) and `Take` in a single operation.
 
+This method has 4 overloads.
+
 ### PartialSortBy
 
 Combines `OrderBy` and `Take` in a single operation.
+
+This method has 4 overloads.
 
 ### Partition
 
