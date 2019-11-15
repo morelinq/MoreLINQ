@@ -70,16 +70,20 @@ namespace MoreLinq
                 if (enumerators.Count == 0)
                     yield break;
 
-                for (;;)
+                bool MoveNext()
                 {
-                    var (isHomogeneous, hasNext) = enumerators.Select(e => e.MoveNext()).IsHomogeneous();
+                    var hasNext = enumerators[0].MoveNext();
+                    for (var i = 1; i < enumerators.Count; i++)
+                    {
+                        if (enumerators[i].MoveNext() != hasNext)
+                            throw new InvalidOperationException("Input sequences are of different lengths.");
+                    }
 
-                    if (isHomogeneous == false)
-                        throw new InvalidOperationException("Input sequences are of different lengths.");
+                    return hasNext;
+                }
 
-                    if (!hasNext)
-                        break;
-
+                while (MoveNext())
+                {
                     foreach (var enumerator in enumerators)
                         yield return enumerator.Current;
                 }
@@ -89,24 +93,6 @@ namespace MoreLinq
                 foreach (var enumerator in enumerators)
                     enumerator.Dispose();
             }
-        }
-
-        private static (bool? isHomogeneous, T value) IsHomogeneous<T>(this IEnumerable<T> source)
-        {
-            var comparer = EqualityComparer<T>.Default;
-            using var e = source.GetEnumerator();
-
-            if (!e.MoveNext())
-                return (null, default);
-
-            var first = e.Current;
-            while (e.MoveNext())
-            {
-                if (!comparer.Equals(first, e.Current))
-                    return (false, default);
-            }
-
-            return (true, first);
         }
     }
 }
