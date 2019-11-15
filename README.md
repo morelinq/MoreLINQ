@@ -101,7 +101,7 @@ acquired till that point are disposed.
 
 Applies multiple accumulators sequentially in a single pass over a sequence.
 
-This method has 8 overloads.
+This method has 7 overloads.
 
 ### AggregateRight
 
