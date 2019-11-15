@@ -60,6 +60,11 @@
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
+      <Compile Include="TuplewiseTest.g.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TuplewiseTest.g.tt</DependentUpon>
+      </Compile>
       <Compile Include="WatchableEnumerator.cs" />
   </ItemGroup>
 
@@ -78,7 +83,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TuplewiseTest.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TuplewiseTest.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

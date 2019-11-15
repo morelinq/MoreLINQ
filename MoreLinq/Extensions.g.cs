@@ -3893,13 +3893,12 @@ namespace MoreLinq.Extensions
         /// only returned as the predecessor of the second element.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TResult">The type of the element of the returned sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the returned sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="resultSelector">A transform function to apply to
-        /// each pair of sequence.</param>
-        /// <returns>
-        /// Returns the resulting sequence.
-        /// </returns>
+        /// <param name="resultSelector">A transform function to apply to each pair of <paramref name="source"/>.</param>
+        /// <returns>Returns the resulting sequence.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -6667,6 +6666,73 @@ namespace MoreLinq.Extensions
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T, TResult> resultSelector)
             => MoreEnumerable.TrySingle(source, zero, one, many, resultSelector);
+
+    }
+
+    /// <summary><c>Tuplewise</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class TuplewiseExtension
+    {
+        /// <summary>
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence and its
+        /// predecessor, with the exception of the first element which is
+        /// only returned as the predecessor of the second element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">A transform function to apply to each pair of <paramref name="source"/>.</param>
+        /// <returns>Returns the resulting sequence.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<TResult> Tuplewise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.Tuplewise(source, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence and its
+        /// 2 predecessors, with the exception of the first and second elements which are
+        /// only returned as the predecessors of the third element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">A transform function to apply to each triplet of <paramref name="source"/>.</param>
+        /// <returns>Returns the resulting sequence.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<TResult> Tuplewise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.Tuplewise(source, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence and its
+        /// 3 predecessors, with the exception of the first 3 elements which are
+        /// only returned as the predecessors of the 4th element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">A transform function to apply to each 4-tuple of <paramref name="source"/>.</param>
+        /// <returns>Returns the resulting sequence.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<TResult> Tuplewise<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource, TSource, TResult> resultSelector)
+            => MoreEnumerable.Tuplewise(source, resultSelector);
 
     }
 
