@@ -29,6 +29,7 @@
         - DistinctBy
         - EndsWith
         - EquiZip
+        - Evaluate
         - Exactly
         - ExceptBy
         - Exclude
@@ -45,13 +46,14 @@
         - GenerateByIndex
         - GroupAdjacent
         - Index
+        - IndexBy
         - Insert
         - Interleave
         - Lag
         - Lead
         - LeftJoin
         - MaxBy
-        - Memoize
+        - Memoize (EXPERIMENTAL)
         - MinBy
         - Move
         - OrderBy
@@ -76,6 +78,7 @@
         - RightJoin
         - RunLengthEncode
         - Scan
+        - ScanBy
         - ScanRight
         - Segment
         - Sequence
