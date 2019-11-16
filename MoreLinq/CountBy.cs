@@ -94,7 +94,7 @@ namespace MoreLinq
 
                     keys = new List<TKey>();
                     counts = new List<int>();
-                    var prevKey = (false, default(TKey)!);
+                    (bool, TKey) prevKey = (false, default);
                     var index = 0;
 
                     foreach (var item in source)

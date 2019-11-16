@@ -90,8 +90,8 @@ namespace MoreLinq
             IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
                 var stateByKey = new Dictionary<TKey, TState>(comparer);
-                var prevKey = (false, default(TKey)!);
-                var nullKeyState = (false, default(TState)!);
+                (bool, TKey) prevKey = (false, default);
+                (bool, TState) nullKeyState = (false, default);
                 var state = default(TState)!;
 
                 bool TryGetState(TKey key, out TState value)

@@ -117,7 +117,7 @@ namespace MoreLinq.Experimental
                         {
                             if (index == _errorIndex)
                             {
-                                _error!.Throw();
+                                _error?.Throw();
                             }
 
                             if (_sourceEnumerator == null)

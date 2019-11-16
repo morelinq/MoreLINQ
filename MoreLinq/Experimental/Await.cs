@@ -533,11 +533,11 @@ namespace MoreLinq.Experimental
                                                : new AggregateException(error1));
                         }
 
-                        var (kind, result, error) = notice.Current;
+                        (Notice kind, (int, T, Task<TTaskResult>) result, ExceptionDispatchInfo? error) = notice.Current;
 
                         if (kind == Notice.Error)
                         {
-                            error!.Throw();
+                            error?.Throw();
                         }
 
                         if (kind == Notice.End)

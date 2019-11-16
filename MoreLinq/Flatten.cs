@@ -95,7 +95,7 @@ namespace MoreLinq
 
             return _(); IEnumerable<object> _()
             {
-                var e = source.GetEnumerator();
+                IEnumerator? e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
 
                 stack.Push(e);
@@ -123,7 +123,7 @@ namespace MoreLinq
                         }
 
                         (e as IDisposable)?.Dispose();
-                        e = null!;
+                        e = null;
                     }
                 }
                 finally
