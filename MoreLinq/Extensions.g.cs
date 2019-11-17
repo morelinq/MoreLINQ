@@ -2925,7 +2925,7 @@ namespace MoreLinq.Extensions
             IndexBy<TSource, TKey>(
                 this IEnumerable<TSource> source,
                 Func<TSource, TKey> keySelector,
-                IEqualityComparer<TKey> comparer)             => MoreEnumerable.            IndexBy(source, keySelector, comparer);
+                IEqualityComparer<TKey>? comparer)             => MoreEnumerable.            IndexBy(source, keySelector, comparer);
 
     }
 
