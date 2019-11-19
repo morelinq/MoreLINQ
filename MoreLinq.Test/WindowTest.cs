@@ -17,9 +17,7 @@
 
 namespace MoreLinq.Test
 {
-    using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
 
     /// <summary>
     /// Verify the behavior of the Window operator

@@ -19,7 +19,6 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class WindowLeftTest

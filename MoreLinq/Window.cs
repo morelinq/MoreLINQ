@@ -52,7 +52,7 @@ namespace MoreLinq
                 if (i < size)
                     yield break;
 
-                while(iter.MoveNext())
+                while (iter.MoveNext())
                 {
                     // generate the next window by shifting forward by one item
                     // and do that before exposing the data
