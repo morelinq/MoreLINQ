@@ -76,44 +76,40 @@ namespace MoreLinq
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {
-                var index = -1;
                 using var iter = source.GetEnumerator();
 
-                var segment = new List<T>();
-                var prevItem = default(T);
+                // early break
+                if (!iter.MoveNext())
+                    yield break;
 
                 // ensure that the first item is always part
                 // of the first segment. This is an intentional
                 // behavior. Segmentation always begins with
                 // the second element in the sequence.
-                if (iter.MoveNext())
-                {
-                    ++index;
-                    segment.Add(iter.Current);
-                    prevItem = iter.Current;
-                }
+                var prevItem = iter.Current;
+                var segment = new List<T> { iter.Current };
 
-                while (iter.MoveNext())
+                for (var index = 1; iter.MoveNext(); index++)
                 {
-                    ++index;
                     // check if the item represents the start of a new segment
-                    var isNewSegment = newSegmentPredicate(iter.Current, prevItem, index);
-                    prevItem = iter.Current;
+                    if (newSegmentPredicate(iter.Current, prevItem, index))
+                    {
+                        // yield the completed segment
+                        yield return segment;
 
-                    if (!isNewSegment)
+                        // start a new segment
+                        segment = new List<T> { iter.Current };
+                    }
+                    else
                     {
                         // if not a new segment, append and continue
                         segment.Add(iter.Current);
-                        continue;
                     }
-                    yield return segment; // yield the completed segment
 
-                    // start a new segment...
-                    segment = new List<T> { iter.Current };
+                    prevItem = iter.Current;
                 }
-                // handle the case of the sequence ending before new segment is detected
-                if (segment.Count > 0)
-                    yield return segment;
+
+                yield return segment;
             }
         }
     }
