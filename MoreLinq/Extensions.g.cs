@@ -2837,6 +2837,37 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>If</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class IfExtension
+    {
+        /// <summary>
+        /// Applies a conditional mapping of the sequence.
+        /// </summary>
+        /// <typeparam name="T">Type of elements in sequence</typeparam>
+        /// <param name="sequence">The sequence to repeat</param>
+        /// <param name="condition">The condition of when to apply the map</param>
+        /// <param name="then">Mapping function</param>
+        /// <returns>The mapped sequence or the same based on the condition</returns>
+
+        public static IEnumerable<T> If<T>(this IEnumerable<T> sequence, bool condition, Func<IEnumerable<T>, IEnumerable<T>> then)
+            => MoreEnumerable.If(sequence, condition, then);
+
+        /// <summary>
+        /// Applies a conditional mapping of the sequence.
+        /// </summary>
+        /// <typeparam name="T">Type of elements in sequence</typeparam>
+        /// <param name="sequence">The sequence to repeat</param>
+        /// <param name="predicate">The condition of when to apply the map</param>
+        /// <param name="then">Mapping function</param>
+        /// <returns>The mapped sequence or the same based on the predicate</returns>
+
+        public static IEnumerable<T> If<T>(this IEnumerable<T> sequence, Func<IEnumerable<T>, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>> then)
+            => MoreEnumerable.If(sequence, predicate, then);
+
+    }
+
     /// <summary><c>Index</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
