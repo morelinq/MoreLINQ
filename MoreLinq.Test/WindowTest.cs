@@ -34,6 +34,51 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().Window(1);
         }
 
+        [Test]
+        public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.Window(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            window1[1] = -1;
+            e.MoveNext();
+            var window2 = e.Current;
+
+            Assert.That(window2[0], Is.EqualTo(1));
+        }
+
+        [Test]
+        public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.Window(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            e.MoveNext();
+            window1[1] = -1;
+            var window2 = e.Current;
+
+            Assert.That(window2[0], Is.EqualTo(1));
+        }
+
+        [Test]
+        public void WindowModifiedDoesNotAffectPreviousWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.Window(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            e.MoveNext();
+            var window2 = e.Current;
+            window2[0] = -1;
+
+            Assert.That(window1[1], Is.EqualTo(1));
+        }
+
         /// <summary>
         /// Verify that a negative window size results in an exception
         /// </summary>
@@ -42,7 +87,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertThrowsArgument.OutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size", () =>
                 sequence.Window(-5));
         }
 
