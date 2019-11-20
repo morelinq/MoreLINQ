@@ -26,7 +26,7 @@ namespace MoreLinq
         /// Applies a conditional mapping of the sequence.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
-        /// <param name="sequence">The sequence to repeat</param>
+        /// <param name="sequence">The sequence to conditionally map</param>
         /// <param name="condition">The condition of when to apply the map</param>
         /// <param name="then">Mapping function</param>
         /// <returns>The mapped sequence or the same based on the condition</returns>
@@ -43,7 +43,7 @@ namespace MoreLinq
         /// Applies a conditional mapping of the sequence based on a predicate.
         /// </summary>
         /// <typeparam name="T">Type of elements in sequence</typeparam>
-        /// <param name="sequence">The sequence to repeat</param>
+        /// <param name="sequence">The sequence to conditionally map</param>
         /// <param name="predicate">The condition of when to apply the map</param>
         /// <param name="then">Mapping function</param>
         /// <returns>The mapped sequence or the same based on the predicate</returns>
