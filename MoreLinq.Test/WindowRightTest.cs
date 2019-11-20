@@ -30,7 +30,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ModifyWindowBeforeMoveNextDoNotAffectNextWindow()
+        public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
         {
             var sequence = Enumerable.Range(0, 3);
             using var e = sequence.WindowRight(2).GetEnumerator();
@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ModifyWindowAfterMoveNextDoNotAffectNextWindow()
+        public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
         {
             var sequence = Enumerable.Range(0, 3);
             using var e = sequence.WindowRight(2).GetEnumerator();
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void ModifyWindowDoNotAffectPrevWindow()
+        public void WindowModifiedDoesNotAffectPreviousWindow()
         {
             var sequence = Enumerable.Range(0, 3);
             using var e = sequence.WindowRight(2).GetEnumerator();
