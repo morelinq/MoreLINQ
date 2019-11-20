@@ -313,6 +313,11 @@ selector function.
 
 This method has 6 overloads.
 
+### If
+
+Applies a conditional mapping of a sequence based on a given condition or
+predicate.
+
 ### ~~Incremental~~
 
 `Incremental` was redundant with `Pairwise` and so deprecated since version
