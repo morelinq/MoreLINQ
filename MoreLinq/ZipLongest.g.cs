@@ -24,34 +24,36 @@ namespace MoreLinq
     {
         /// <summary>
         /// <para>
-        /// Returns a sequence of projections, each projection is build from two elements.
-        /// For the N-th projection, these two elements are those located
-        /// at the N-th position of the two input sequences.</para>
+        /// Applies a specified function to the corresponding elements of two sequences,
+        /// producing a sequence of the results.</para>
         /// <para>
         /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in the first input sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in the second input sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
-        /// <param name="first">The first source sequence.</param>
-        /// <param name="second">The second source sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
         /// <param name="resultSelector">
-        /// The function that make projections of two elements.</param>
+        /// A function that specifies how to merge the elements from the two sequences.</param>
         /// <returns>
-        /// A sequence of projections built from two elements,
-        /// each element coming from one of the two input sequences.</returns>
+        /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, 
+        /// <paramref name="second"/> or 
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default values of the element
-        /// types of the shortest sequences are used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the types
+        /// of the elements of the shortests sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipLongest<T1, T2, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            Func<T1, T2, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -59,21 +61,18 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                IEnumerator<T1> e1 = null;
-                IEnumerator<T2> e2 = null;
+                IEnumerator<TFirst> e1 = null;
+                IEnumerator<TSecond> e2 = null;
 
                 try
                 {
                     e1 = first.GetEnumerator();
                     e2 = second.GetEnumerator();
 
-                    var v1 = default(T1);
-                    var v2 = default(T2);
-
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        Enumerator.TryRead(ref e1, out v1) |
-                        Enumerator.TryRead(ref e2, out v2))
+                        Enumerator.TryRead(ref e1, out var v1) |
+                        Enumerator.TryRead(ref e2, out var v2))
                     {
                         yield return resultSelector(v1, v2);
                     }
@@ -88,37 +87,40 @@ namespace MoreLinq
 
         /// <summary>
         /// <para>
-        /// Returns a sequence of projections, each projection is build from three elements.
-        /// For the N-th projection, these three elements are those located
-        /// at the N-th position of the three input sequences.</para>
+        /// Applies a specified function to the corresponding elements of three sequences,
+        /// producing a sequence of the results.</para>
         /// <para>
         /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in the first input sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in the second input sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in the third input sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
-        /// <param name="first">The first source sequence.</param>
-        /// <param name="second">The second source sequence.</param>
-        /// <param name="third">The third source sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
         /// <param name="resultSelector">
-        /// The function that make projections of three elements.</param>
+        /// A function that specifies how to merge the elements from the three sequences.</param>
         /// <returns>
-        /// A sequence of projections built from three elements,
-        /// each element coming from one of the three input sequences.</returns>
+        /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, 
+        /// <paramref name="second"/>, 
+        /// <paramref name="third"/> or 
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default values of the element
-        /// types of the shortest sequences are used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the types
+        /// of the elements of the shortests sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -127,9 +129,9 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                IEnumerator<T1> e1 = null;
-                IEnumerator<T2> e2 = null;
-                IEnumerator<T3> e3 = null;
+                IEnumerator<TFirst> e1 = null;
+                IEnumerator<TSecond> e2 = null;
+                IEnumerator<TThird> e3 = null;
 
                 try
                 {
@@ -137,15 +139,11 @@ namespace MoreLinq
                     e2 = second.GetEnumerator();
                     e3 = third.GetEnumerator();
 
-                    var v1 = default(T1);
-                    var v2 = default(T2);
-                    var v3 = default(T3);
-
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        Enumerator.TryRead(ref e1, out v1) |
-                        Enumerator.TryRead(ref e2, out v2) |
-                        Enumerator.TryRead(ref e3, out v3))
+                        Enumerator.TryRead(ref e1, out var v1) |
+                        Enumerator.TryRead(ref e2, out var v2) |
+                        Enumerator.TryRead(ref e3, out var v3))
                     {
                         yield return resultSelector(v1, v2, v3);
                     }
@@ -161,40 +159,44 @@ namespace MoreLinq
 
         /// <summary>
         /// <para>
-        /// Returns a sequence of projections, each projection is build from four elements.
-        /// For the N-th projection, these four elements are those located
-        /// at the N-th position of the four input sequences.</para>
+        /// Applies a specified function to the corresponding elements of four sequences,
+        /// producing a sequence of the results.</para>
         /// <para>
         /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in the first input sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in the second input sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in the third input sequence.</typeparam>
-        /// <typeparam name="T4">Type of elements in the fourth input sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
-        /// <param name="first">The first source sequence.</param>
-        /// <param name="second">The second source sequence.</param>
-        /// <param name="third">The third source sequence.</param>
-        /// <param name="fourth">The fourth source sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TFourth">The type of the elements of the fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
+        /// <param name="fourth">The fourth sequence to merge.</param>
         /// <param name="resultSelector">
-        /// The function that make projections of four elements.</param>
+        /// A function that specifies how to merge the elements from the four sequences.</param>
         /// <returns>
-        /// A sequence of projections built from four elements,
-        /// each element coming from one of the four input sequences.</returns>
+        /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, 
+        /// <paramref name="second"/>, 
+        /// <paramref name="third"/>, 
+        /// <paramref name="fourth"/> or 
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the default values of the element
-        /// types of the shortest sequences are used for padding.</para>
+        /// If the input sequences are of different lengths, the default values of the types
+        /// of the elements of the shortests sequences are used for padding.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TFourth, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            IEnumerable<TFourth> fourth,
+            Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -204,10 +206,10 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                IEnumerator<T1> e1 = null;
-                IEnumerator<T2> e2 = null;
-                IEnumerator<T3> e3 = null;
-                IEnumerator<T4> e4 = null;
+                IEnumerator<TFirst> e1 = null;
+                IEnumerator<TSecond> e2 = null;
+                IEnumerator<TThird> e3 = null;
+                IEnumerator<TFourth> e4 = null;
 
                 try
                 {
@@ -216,17 +218,12 @@ namespace MoreLinq
                     e3 = third.GetEnumerator();
                     e4 = fourth.GetEnumerator();
 
-                    var v1 = default(T1);
-                    var v2 = default(T2);
-                    var v3 = default(T3);
-                    var v4 = default(T4);
-
                     // | is used instead of || in purpose. All operands have to be evaluated.
                     while (
-                        Enumerator.TryRead(ref e1, out v1) |
-                        Enumerator.TryRead(ref e2, out v2) |
-                        Enumerator.TryRead(ref e3, out v3) |
-                        Enumerator.TryRead(ref e4, out v4))
+                        Enumerator.TryRead(ref e1, out var v1) |
+                        Enumerator.TryRead(ref e2, out var v2) |
+                        Enumerator.TryRead(ref e3, out var v3) |
+                        Enumerator.TryRead(ref e4, out var v4))
                     {
                         yield return resultSelector(v1, v2, v3, v4);
                     }

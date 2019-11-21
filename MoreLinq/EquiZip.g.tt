@@ -25,8 +25,8 @@
     var ordinals = new[]
     {
         string.Empty,
-        "first", "second", "third", "fourth",
-        "fifth", "sixth", "seventh", "eighth"
+        "First", "Second", "Third", "Fourth",
+        "Fifth", "Sixth", "Seventh", "Eighth"
     };
 
     var cardinals = new[]
@@ -45,9 +45,9 @@
             {
                 IsFirst    = argPosition == 1,
                 IsLast     = argPosition == argCount,
-                Name       = ordinals[argPosition],
-                Ordinal    = ordinals[argPosition],
-                Type       = $"T{argPosition}",
+                Name       = ordinals[argPosition].ToLower(),
+                ordinal    = ordinals[argPosition].ToLower(),
+                Type       = $"T{ordinals[argPosition]}",
                 // Objects associated with the argument
                 Enumerator = $"e{argPosition}",
                 Value      = $"v{argPosition}"
@@ -56,7 +56,7 @@
         select new
         {
             Arguments = args.ToList(),
-            Cardinal = cardinals[argCount],
+            cardinal = cardinals[argCount],
             TParams = string.Join(", ", from arg in args select arg.Type)
         };
 #>
@@ -72,25 +72,28 @@ namespace MoreLinq
 #>
         /// <summary>
         /// <para>
-        /// Returns a sequence of projections, each projection is build from <#= o.Cardinal #> elements.
-        /// For the N-th projection, these <#= o.Cardinal #> elements are those located
-        /// at the N-th position of the <#= o.Cardinal #> input sequences.</para>
+        /// Applies a specified function to the corresponding elements of <#= o.cardinal #> sequences,
+        /// producing a sequence of the results.</para>
         /// <para>
         /// The resulting sequence has the same length as the input sequences.
         /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
 <# foreach (var arg in o.Arguments) { #>
-        /// <typeparam name="<#= arg.Type #>">Type of elements in the <#= arg.Name #> input sequence.</typeparam>
+        /// <typeparam name="<#= arg.Type #>">The type of the elements of the <#= arg.ordinal #> input sequence.</typeparam>
 <# } #>
-        /// <typeparam name="TResult">Type of elements in the returned sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
 <# foreach (var arg in o.Arguments) { #>
-        /// <param name="<#= arg.Name #>">The <#= arg.Ordinal #> source sequence.</param>
+        /// <param name="<#= arg.Name #>">The <#= arg.ordinal #> sequence to merge.</param>
 <# } #>
         /// <param name="resultSelector">
-        /// The function that make projections of <#= o.Cardinal #> elements.</param>
+        /// A function that specifies how to merge the elements from the <#= o.cardinal #> sequences.</param>
         /// <returns>
-        /// A sequence of projections built from <#= o.Cardinal #> elements,
-        /// each element coming from one of the <#= o.Cardinal #> input sequences.</returns>
+        /// An <code>IEnumerable</code> that contains merged elements of <#= o.cardinal #> input sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+<# foreach (var arg in o.Arguments) { #>
+        /// <paramref name="<#= arg.Name #>"/><#= arg.IsLast ? " or " : ", " #>
+<# } #>
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.</exception>
         /// <remarks>
@@ -131,7 +134,7 @@ namespace MoreLinq
                     }
                 }
 
-                throw new InvalidOperationException("Sequences differ in length.");
+                throw new InvalidOperationException("The input sequences are of different lengths.");
             }
         }
 
