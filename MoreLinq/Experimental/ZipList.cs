@@ -32,7 +32,7 @@ namespace MoreLinq.Experimental
         /// <summary>
         /// TODO
         /// </summary>
-        /// <param name="second"></param>
+        /// <param name="inner"></param>
         /// <param name="outerKeySelector"></param>
         /// <param name="innerKeySelector"></param>
         /// <param name="resultSelector"></param>
@@ -43,10 +43,10 @@ namespace MoreLinq.Experimental
 
         IZipList<TResult>
             Join<TInner, TKey, TResult>(
-                IEnumerable<TInner> second,
-                Func<T, TKey> outerKeySelector,          // unused!
-                Func<TInner, TKey> innerKeySelector,     // unused!
-                Func<T, TInner, TResult> resultSelector);
+                 IEnumerable<TInner> inner,
+                 Func<T, TKey> outerKeySelector,      // unused!
+                 Func<TInner, TKey> innerKeySelector, // unused!
+                 Func<T, TInner, TResult> resultSelector);
     }
 
     /// <summary>
@@ -62,26 +62,76 @@ namespace MoreLinq.Experimental
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
 
-        public static IZipList<T> ToZipList<T>(this IEnumerable<T> source) =>
+        public static ZipList<T> AsZipList<T>(this IEnumerable<T> source) =>
             new ZipList<T>(source);
     }
 
-    sealed class ZipList<T> : IZipList<T>
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+
+    public readonly struct ZipList<T> : IZipList<T>
     {
         readonly IEnumerable<T> _source;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="source"></param>
 
         public ZipList(IEnumerable<T> source) =>
             _source = source ?? throw new ArgumentNullException(nameof(source));
 
-        public IEnumerator<T> GetEnumerator() => _source.GetEnumerator();
+        /// <summary>
+        ///
+        /// </summary>
+
+        public IEnumerator<T> GetEnumerator() =>
+            _source switch
+            {
+                null => Enumerable.Empty<T>().GetEnumerator(),
+                var source => source.GetEnumerator()
+            };
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IZipList<TResult>
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="inner"></param>
+        /// <param name="outerKeySelector"></param>
+        /// <param name="innerKeySelector"></param>
+        /// <param name="resultSelector"></param>
+        /// <typeparam name="TInner"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+
+        public ZipList<TResult>
             Join<TInner, TKey, TResult>(
-                IEnumerable<TInner> second,
-                Func<T, TKey> outerKeySelector, // unused!
+                 IEnumerable<TInner> inner,
+                 Func<T, TKey> outerKeySelector,      // unused!
+                 Func<TInner, TKey> innerKeySelector, // unused!
+                 Func<T, TInner, TResult> resultSelector)
+        {
+            if (inner == null) throw new ArgumentNullException(nameof(inner));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _source switch
+            {
+                null => default,
+                var source => source.Zip(inner, resultSelector).AsZipList()
+            };
+        }
+
+        IZipList<TResult>
+            IZipList<T>.Join<TInner, TKey, TResult>(
+                IEnumerable<TInner> inner,
+                Func<T, TKey> outerKeySelector,      // unused!
                 Func<TInner, TKey> innerKeySelector, // unused!
                 Func<T, TInner, TResult> resultSelector) =>
-            _source.Zip(second, resultSelector).ToZipList();
+            Join(inner, outerKeySelector, innerKeySelector, resultSelector);
     }
 }
