@@ -1353,8 +1353,8 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.</exception>
@@ -1387,9 +1387,9 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/>, 
-        /// <paramref name="third"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.</exception>
@@ -1425,10 +1425,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/>, 
-        /// <paramref name="third"/>, 
-        /// <paramref name="fourth"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/>,
+        /// <paramref name="fourth"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.</exception>
@@ -6721,8 +6721,8 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
@@ -6757,9 +6757,9 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/>, 
-        /// <paramref name="third"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
@@ -6797,10 +6797,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/>, 
-        /// <paramref name="third"/>, 
-        /// <paramref name="fourth"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/>,
+        /// <paramref name="fourth"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
@@ -6842,8 +6842,8 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
@@ -6879,9 +6879,9 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/>, 
-        /// <paramref name="third"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
@@ -6920,10 +6920,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, 
-        /// <paramref name="second"/>, 
-        /// <paramref name="third"/>, 
-        /// <paramref name="fourth"/> or 
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/>,
+        /// <paramref name="fourth"/> or
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>

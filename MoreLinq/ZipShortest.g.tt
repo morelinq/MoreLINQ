@@ -90,7 +90,7 @@ namespace MoreLinq
         /// An <code>IEnumerable</code> that contains merged elements of <#= o.cardinal #> input sequences.</returns>
         /// <exception cref="ArgumentNullException">
 <# foreach (var arg in o.Arguments) { #>
-        /// <paramref name="<#= arg.Name #>"/><#= arg.IsLast ? " or " : ", " #>
+        /// <paramref name="<#= arg.Name #>"/><#= arg.IsLast ? " or" : "," #>
 <# } #>
         /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
