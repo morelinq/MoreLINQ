@@ -133,10 +133,8 @@ namespace MoreLinq
                         if (shouldContinue) // only if all iterators could be advanced
                         {
                             // yield the values of each iterator's current position
-                            for (var index = 0; index < iterCount; index++)
-                            {
-                                yield return iteratorList[index].Current;
-                            }
+                            foreach (var iterator in iteratorList)
+                                yield return iterator.Current;
                         }
                     }
                 }

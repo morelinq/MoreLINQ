@@ -30,6 +30,51 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.WindowRight(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            window1[0] = -1;
+            e.MoveNext();
+            var window2 = e.Current;
+
+            Assert.That(window2[0], Is.EqualTo(0));
+        }
+
+        [Test]
+        public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.WindowRight(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            e.MoveNext();
+            window1[0] = -1;
+            var window2 = e.Current;
+
+            Assert.That(window2[0], Is.EqualTo(0));
+        }
+
+        [Test]
+        public void WindowModifiedDoesNotAffectPreviousWindow()
+        {
+            var sequence = Enumerable.Range(0, 3);
+            using var e = sequence.WindowRight(2).GetEnumerator();
+
+            e.MoveNext();
+            var window1 = e.Current;
+            e.MoveNext();
+            var window2 = e.Current;
+            window2[0] = -1;
+
+            Assert.That(window1[0], Is.EqualTo(0));
+        }
+
+        [Test]
         public void WindowRightWithNegativeWindowSize()
         {
             AssertThrowsArgument.OutOfRangeException("size", () =>
