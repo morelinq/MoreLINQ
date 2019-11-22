@@ -40,6 +40,24 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that SortedMerge early throw ArgumentNullException when an element
+        /// of otherSequences is null.
+        /// </summary>
+        [Test]
+        public void TestSortedMergeEarlyThrowOnNullElementInOtherSequences()
+        {
+            void Code()
+            {
+                var sequenceA = Enumerable.Range(1, 1);
+                var otherSequences = new IEnumerable<int>[] { null };
+
+                sequenceA.SortedMerge(OrderByDirection.Ascending, otherSequences);
+            }
+
+            Assert.Throws<ArgumentNullException>(Code);
+        }
+
+        /// <summary>
         /// Verify that SortedMerge disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
