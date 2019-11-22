@@ -33,6 +33,62 @@ namespace MoreLinq.Test
             MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
         }
 
+        /// <summary>
+        /// Verify that From with one parameter early throw ArgumentNullException.
+        /// </summary>
+        [Test]
+        public void TestFromWithOneParameterEarlyThrowOnNullParameter()
+        {
+            void Code()
+            {
+                MoreEnumerable.From((Func<int>)null);
+            }
+
+            Assert.Throws<ArgumentNullException>(Code);
+        }
+
+        /// <summary>
+        /// Verify that From with two parameters early throw ArgumentNullException.
+        /// </summary>
+        [Test]
+        public void TestFromWithTwoParametersEarlyThrowOnNullParameter()
+        {
+            void Code()
+            {
+                MoreEnumerable.From(() => 1, null);
+            }
+
+            Assert.Throws<ArgumentNullException>(Code);
+        }
+
+        /// <summary>
+        /// Verify that From with three parameters early throw ArgumentNullException.
+        /// </summary>
+        [Test]
+        public void TestFromWithThreeParametersEarlyThrowOnNullParameter()
+        {
+            void Code()
+            {
+                MoreEnumerable.From(() => 1, () => 1, null);
+            }
+
+            Assert.Throws<ArgumentNullException>(Code);
+        }
+
+        /// <summary>
+        /// Verify that From with many parameters early throw ArgumentNullException.
+        /// </summary>
+        [Test]
+        public void TestFromWithManyParametersEarlyThrowOnNullParameter()
+        {
+            void Code()
+            {
+                MoreEnumerable.From(() => 1, () => 1, () => 1, null);
+            }
+
+            Assert.Throws<ArgumentNullException>(Code);
+        }
+
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(3)]
