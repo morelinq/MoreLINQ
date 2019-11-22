@@ -116,7 +116,7 @@ namespace MoreLinq
             if (functions == null) throw new ArgumentNullException(nameof(functions));
             if (functions.Any(f => f == null)) throw new ArgumentNullException(nameof(functions), "At least one of the provided functions is null.");
 
-            return Evaluate(functions);
+            return functions.Select(f => f());
         }
     }
 }
