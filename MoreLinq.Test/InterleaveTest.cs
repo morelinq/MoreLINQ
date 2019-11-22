@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -33,6 +34,24 @@ namespace MoreLinq.Test
         public void TestInterleaveIsLazy()
         {
             new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
+        }
+
+        /// <summary>
+        /// Verify that Interleave early throw ArgumentNullException when an element
+        /// of otherSequences is null.
+        /// </summary>
+        [Test]
+        public void TestInterleaveEarlyThrowOnNullElementInOtherSequences()
+        {
+            void Code()
+            {
+                var sequenceA = Enumerable.Range(1, 1);
+                var otherSequences = new IEnumerable<int>[] {null};
+
+                sequenceA.Interleave(otherSequences);
+            }
+
+            Assert.Throws<ArgumentNullException>(Code);
         }
 
         /// <summary>
