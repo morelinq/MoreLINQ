@@ -44,7 +44,7 @@ namespace MoreLinq.Test
             void Code()
             {
                 var sequenceA = Enumerable.Range(1, 1);
-                var sequenceB = MoreEnumerable.From(() => 2, () => throw new TestException());
+                var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
 
                 sequenceA.Interleave(sequenceB).Take(1).Consume();
             }
