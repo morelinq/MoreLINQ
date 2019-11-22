@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     partial class MoreEnumerable
     {
@@ -36,6 +37,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(Func<T> function)
         {
+            if (function == null) throw new ArgumentNullException(nameof(function));
+
             return _(); IEnumerable<T> _()
             {
                 yield return function();
@@ -57,6 +60,9 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2)
         {
+            if (function1 == null) throw new ArgumentNullException(nameof(function1));
+            if (function2 == null) throw new ArgumentNullException(nameof(function2));
+
             return _(); IEnumerable<T> _()
             {
                 yield return function1();
@@ -80,6 +86,10 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2, Func<T> function3)
         {
+            if (function1 == null) throw new ArgumentNullException(nameof(function1));
+            if (function2 == null) throw new ArgumentNullException(nameof(function2));
+            if (function3 == null) throw new ArgumentNullException(nameof(function3));
+
             return _(); IEnumerable<T> _()
             {
                 yield return function1();
@@ -104,6 +114,8 @@ namespace MoreLinq
         public static IEnumerable<T> From<T>(params Func<T>[] functions)
         {
             if (functions == null) throw new ArgumentNullException(nameof(functions));
+            if (functions.Any(f => f == null)) throw new ArgumentNullException(nameof(functions), "At least one of the provided functions is null.");
+
             return Evaluate(functions);
         }
     }
