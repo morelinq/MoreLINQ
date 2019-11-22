@@ -53,7 +53,7 @@ namespace MoreLinq
             return InterleaveSkip(otherSequences.Prepend(sequence));
         }
 
-        private static IEnumerable<T> InterleaveSkip<T>(this IEnumerable<IEnumerable<T>> sequences)
+        private static IEnumerable<T> InterleaveSkip<T>(IEnumerable<IEnumerable<T>> sequences)
         {
             var enumerators = new LinkedList<IEnumerator<T>>();
 
