@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public static partial class MoreEnumerable
     {
@@ -46,6 +47,8 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
+            if (otherSequences.Any(s => s == null))
+                throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
             return InterleaveSkip(otherSequences.Prepend(sequence));
         }
@@ -59,20 +62,18 @@ namespace MoreLinq
                 // First pass. create enumerators.
                 foreach (var sequence in sequences)
                 {
-                    if (sequence == null)
-                        throw new ArgumentException("An item is null.", nameof(sequences));
-
                     var enumerator = sequence.GetEnumerator();
 
                     // Immediately dispose enumerators of empty sequences.
-                    if (!enumerator.MoveNext())
+                    if (enumerator.MoveNext())
+                    {
+                        yield return enumerator.Current;
+                        enumerators.AddLast(enumerator);
+                    }
+                    else
                     {
                         enumerator.Dispose();
-                        continue;
                     }
-
-                    yield return enumerator.Current;
-                    enumerators.AddLast(enumerator);
                 }
 
                 var node = enumerators.First;
