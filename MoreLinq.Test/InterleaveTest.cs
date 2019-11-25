@@ -100,7 +100,6 @@ namespace MoreLinq.Test
             using var sequenceC = TestingSequence.Of<int>(3);
 
             sequenceA.Interleave(sequenceB, sequenceC).Take(count).Consume();
-            
         }
 
         /// <summary>
