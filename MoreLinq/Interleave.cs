@@ -50,56 +50,42 @@ namespace MoreLinq
             if (otherSequences.Any(s => s == null))
                 throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
-            return InterleaveSkip(otherSequences.Prepend(sequence));
-        }
-
-        private static IEnumerable<T> InterleaveSkip<T>(IEnumerable<IEnumerable<T>> sequences)
-        {
-            var enumerators = new LinkedList<IEnumerator<T>>();
-
-            try
+            return _(); IEnumerable<T> _()
             {
-                // First pass. create enumerators.
-                foreach (var sequence in sequences)
-                {
-                    var enumerator = sequence.GetEnumerator();
+                var sequences = new[] {sequence}.Concat(otherSequences);
 
-                    if (enumerator.MoveNext())
+                // produce an enumerators collection for all IEnumerable<T> instances passed to us
+                var enumerators = sequences.Select(e => e.GetEnumerator()).Acquire();
+
+                try
+                {
+                    var allNull = false;
+                    while (!allNull)
                     {
-                        enumerators.AddLast(enumerator);
-                        yield return enumerator.Current;
-                    }
-                    else
-                    {
-                        // Immediately dispose enumerators of empty sequences.
-                        enumerator.Dispose();
+                        allNull = true;
+                        for (var i = 0; i < enumerators.Length; i++)
+                        {
+                            var enumerator = enumerators[i];
+                            if (enumerator == null)
+                                continue;
+
+                            if (!enumerator.MoveNext())
+                            {
+                                enumerator.Dispose();
+                                enumerators[i] = null;
+                                continue;
+                            }
+
+                            allNull = false;
+                            yield return enumerator.Current;
+                        }
                     }
                 }
-
-                var node = enumerators.First;
-                while (node != null)
+                finally
                 {
-                    var nextNode = node.Next;
-
-                    var enumerator = node.Value;
-                    if (enumerator.MoveNext())
-                    {
-                        yield return enumerator.Current;
-                    }
-                    else
-                    {
-                        enumerator.Dispose();
-                        enumerators.Remove(node);
-                    }
-
-                    // Work on next node or restart from first one.
-                    node = nextNode ?? enumerators.First;
+                    foreach (var enumerator in enumerators)
+                        enumerator?.Dispose();
                 }
-            }
-            finally
-            {
-                foreach (var enumerator in enumerators)
-                    enumerator.Dispose();
             }
         }
     }
