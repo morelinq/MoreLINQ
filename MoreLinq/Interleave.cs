@@ -64,14 +64,14 @@ namespace MoreLinq
                 {
                     var enumerator = sequence.GetEnumerator();
 
-                    // Immediately dispose enumerators of empty sequences.
                     if (enumerator.MoveNext())
                     {
-                        yield return enumerator.Current;
                         enumerators.AddLast(enumerator);
+                        yield return enumerator.Current;
                     }
                     else
                     {
+                        // Immediately dispose enumerators of empty sequences.
                         enumerator.Dispose();
                     }
                 }
