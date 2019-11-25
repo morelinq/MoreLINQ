@@ -86,6 +86,24 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that, in case of partial enumeration, interleaving disposes those
+        /// enumerators that it managed to open successfully
+        /// </summary>
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void TestInterleaveDisposesOnPartialEnumeration(int count)
+        {
+            using var sequenceA = TestingSequence.Of<int>(1);
+            using var sequenceB = TestingSequence.Of<int>(2);
+            using var sequenceC = TestingSequence.Of<int>(3);
+
+            sequenceA.Interleave(sequenceB, sequenceC).Take(count).Consume();
+            
+        }
+
+        /// <summary>
         /// Verify that two balanced sequences will interleave all of their elements
         /// </summary>
         [Test]
