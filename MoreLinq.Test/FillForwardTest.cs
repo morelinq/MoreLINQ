@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2017 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ namespace MoreLinq.Test
             int? na = null;
             var input = new[] { na, na, 1, 2, na, na, na, 3, 4, na, na };
             var result = input.FillForward();
-            Assert.That(result, Is.EquivalentTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
+            Assert.That(result, Is.EqualTo(new[] { na, na, 1, 2, 2, 2, 2, 3, 4, 4, 4 }));
         }
 
         [Test]
@@ -66,10 +66,10 @@ namespace MoreLinq.Test
                 });
 
             data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
-                        .FillForward(e => e.Country   == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
+                       .FillForward(e => e.Country   == "-", (e, f) => new { e.Continent, f.Country, e.City, e.Value });
 
 
-            Assert.That(data, Is.EquivalentTo(new[]
+            Assert.That(data, Is.EqualTo(new[]
             {
                 new { Continent = "Europe", Country = "UK",      City = "London",     Value = 123 },
                 new { Continent = "Europe", Country = "UK",      City = "Manchester", Value = 234 },

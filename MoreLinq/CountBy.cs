@@ -31,6 +31,7 @@ namespace MoreLinq
         /// <param name="source">Source sequence.</param>
         /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             return source.CountBy(keySelector, null);
@@ -48,6 +49,7 @@ namespace MoreLinq
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
         /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
+
         public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -77,6 +79,19 @@ namespace MoreLinq
                 void Loop(IEqualityComparer<TKey> cmp)
                 {
                     var dic = new Dictionary<TKey, int>(cmp);
+                    var nullIndex = (int?) null;
+
+                    bool TryGetIndex(TKey key, out int i)
+                    {
+                        if (key == null)
+                        {
+                            i = nullIndex.GetValueOrDefault();
+                            return nullIndex.HasValue;
+                        }
+
+                        return dic.TryGetValue(key, out i);
+                    }
+
                     keys = new List<TKey>();
                     counts = new List<int>();
                     var havePrevKey = false;
@@ -88,17 +103,20 @@ namespace MoreLinq
                         var key = keySelector(item);
 
                         if (// key same as the previous? then re-use the index
-                            (havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
-                                          && cmp.Equals(prevKey, key))
+                            havePrevKey && cmp.GetHashCode(prevKey) == cmp.GetHashCode(key)
+                                         && cmp.Equals(prevKey, key)
                             // otherwise try & find index of the key
-                            || dic.TryGetValue(key, out index))
+                            || TryGetIndex(key, out index))
                         {
                             counts[index]++;
                         }
                         else
                         {
-                            dic[key] = keys.Count;
                             index = keys.Count;
+                            if (key != null)
+                                dic[key] = index;
+                            else
+                                nullIndex = index;
                             keys.Add(key);
                             counts.Add(1);
                         }

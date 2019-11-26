@@ -25,10 +25,10 @@ namespace MoreLinq.Test
     public enum SourceKind
     {
         Sequence,
-        List,
-        ReadOnlyList,
-        Collection,
-        ReadOnlyCollection
+        BreakingList,
+        BreakingReadOnlyList,
+        BreakingCollection,
+        BreakingReadOnlyCollection
     }
 
     static partial class TestExtensions
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
         /// </summary>
 
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
+            Assert.That(actual, Is.EqualTo(expected));
 
         /// <summary>
         /// Make testing even easier - a params array makes for readable tests :)
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         /// </summary>
 
         internal static void AssertSequenceEqual<T>(this IEnumerable<T> actual, params T[] expected) =>
-            Assert.That(actual, Is.EquivalentTo(expected));
+            Assert.That(actual, Is.EqualTo(expected));
 
         internal static void AssertSequence<T>(this IEnumerable<T> actual, params IResolveConstraint[] expectations)
         {
@@ -69,9 +69,9 @@ namespace MoreLinq.Test
 
         internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
         {
-            yield return input.Select(x => x);
-            yield return input.ToBreakingCollection(true);
-            yield return input.ToBreakingCollection(false);
+            yield return input.ToSourceKind(SourceKind.Sequence);
+            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
+            yield return input.ToSourceKind(SourceKind.BreakingCollection);
         }
 
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
@@ -80,14 +80,14 @@ namespace MoreLinq.Test
             {
                 case SourceKind.Sequence:
                     return input.Select(x => x);
-                case SourceKind.List:
-                    return input.ToBreakingList(false);
-                case SourceKind.ReadOnlyList:
-                    return input.ToBreakingList(true);
-                case SourceKind.Collection:
-                    return input.ToBreakingCollection(false);
-                case SourceKind.ReadOnlyCollection:
-                    return input.ToBreakingCollection(true);
+                case SourceKind.BreakingList:
+                    return new BreakingList<T>(input.ToList());
+                case SourceKind.BreakingReadOnlyList:
+                    return new BreakingReadOnlyList<T>(input.ToList());
+                case SourceKind.BreakingCollection:
+                    return new BreakingCollection<T>(input.ToList());
+                case SourceKind.BreakingReadOnlyCollection:
+                    return new BreakingReadOnlyCollection<T>(input.ToList());
                 default:
                     throw new ArgumentException(nameof(sourceKind));
             }

@@ -39,7 +39,7 @@ namespace MoreLinq.Test
         [Test]
         public void PipeIsLazy()
         {
-            new BreakingSequence<int>().Pipe(x => { });
+            new BreakingSequence<int>().Pipe(BreakingAction.Of<int>());
         }
 
         [Test]

@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -14,8 +31,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadIsLazy()
         {
-            new BreakingSequence<int>().Lead(5, (a, b) => a);
-            new BreakingSequence<int>().Lead(5, -1, (a, b) => a);
+            new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
+            new BreakingSequence<int>().Lead(5, -1, BreakingFunc.Of<int, int, int>());
         }
 
         /// <summary>
@@ -51,7 +68,7 @@ namespace MoreLinq.Test
             var result = sequence.Lead(leadBy, leadDefault, (val, leadVal) => leadVal);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Skip(count - leadBy).SequenceEqual(Enumerable.Repeat(leadDefault, leadBy)));
+            Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(leadDefault, leadBy)));
         }
 
         /// <summary>
@@ -66,7 +83,7 @@ namespace MoreLinq.Test
             var result = sequence.Lead(leadBy, (val, leadVal) => leadVal);
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Skip(count - leadBy).SequenceEqual(Enumerable.Repeat(default(int), leadBy)));
+            Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(default(int), leadBy)));
         }
 
         /// <summary>
@@ -82,7 +99,7 @@ namespace MoreLinq.Test
             var result = sequence.Lead(count + 1, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
             Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.SequenceEqual(sequence.Select(x => new { A = x, B = leadDefault })));
+            Assert.That(result, Is.EqualTo(sequence.Select(x => new { A = x, B = leadDefault })));
         }
 
         /// <summary>

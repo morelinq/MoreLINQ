@@ -122,7 +122,7 @@ namespace MoreLinq
 
             var lastIndex = -1;
             var indexed = (List<KeyValuePair<int, T>>) null;
-            List<KeyValuePair<int, T>> Indexed() => indexed ?? (indexed = new List<KeyValuePair<int, T>>());
+            List<KeyValuePair<int, T>> Indexed() => indexed ??= new List<KeyValuePair<int, T>>();
 
             foreach (var e in source)
             {

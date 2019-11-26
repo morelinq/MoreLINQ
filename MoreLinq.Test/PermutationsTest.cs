@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
@@ -19,7 +36,7 @@ namespace MoreLinq.Test
             var permutations = emptySet.Permutations();
 
             // should contain a single result: the empty set itself
-            Assert.IsTrue(permutations.Single().SequenceEqual(emptySet));
+            Assert.That(permutations.Single(), Is.EqualTo(emptySet));
         }
 
         /// <summary>
@@ -32,7 +49,7 @@ namespace MoreLinq.Test
             var permutations = set.Permutations();
 
             // should contain a single result: the set itself
-            Assert.IsTrue(permutations.Single().SequenceEqual(set));
+            Assert.That(permutations.Single(), Is.EqualTo(set));
         }
 
         /// <summary>
@@ -47,8 +64,8 @@ namespace MoreLinq.Test
 
             // should contain two results: the set itself and its reverse
             Assert.IsTrue(permutations.Count() == 2);
-            Assert.IsTrue(permutations.First().SequenceEqual(set));
-            Assert.IsTrue(permutations.Last().SequenceEqual(set.Reverse()));
+            Assert.That(permutations.First(), Is.EqualTo(set));
+            Assert.That(permutations.Last(), Is.EqualTo(set.Reverse()));
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
         /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
         /// in a single operation.
         /// An additional parameter specifies the direction of the sort
@@ -89,7 +89,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
         /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
         /// in a single operation.
         /// Additional parameters specify how the elements compare to each other and
@@ -109,10 +109,9 @@ namespace MoreLinq
         public static IEnumerable<T> PartialSort<T>(this IEnumerable<T> source,
             int count, IComparer<T> comparer, OrderByDirection direction)
         {
-            comparer = comparer ?? Comparer<T>.Default;
-            if (direction == OrderByDirection.Descending) {
+            comparer ??= Comparer<T>.Default;
+            if (direction == OrderByDirection.Descending)
                 comparer = new ReverseComparer<T>(comparer);
-            }
             return source.PartialSort(count, comparer);
         }
 
@@ -139,7 +138,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
         /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
@@ -190,7 +189,7 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Combines <see cref="OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
+        /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
         /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
@@ -214,10 +213,9 @@ namespace MoreLinq
             IComparer<TKey> comparer,
             OrderByDirection direction)
         {
-            comparer = comparer ?? Comparer<TKey>.Default;
-            if (direction == OrderByDirection.Descending) {
+            comparer ??= Comparer<TKey>.Default;
+            if (direction == OrderByDirection.Descending)
                 comparer = new ReverseComparer<TKey>(comparer);
-            }
             return source.PartialSortBy(count, keySelector, comparer);
         }
 

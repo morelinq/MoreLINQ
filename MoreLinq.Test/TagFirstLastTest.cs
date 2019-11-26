@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2013 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastIsLazy()
         {
-            new BreakingSequence<object>().TagFirstLast(delegate { return 0; });
+            new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
         }
 
         [Test]
-        public void TagFirstLastWideSourceSequenceOfOne()
+        public void TagFirstLastWithSourceSequenceOfOne()
         {
             var source = new[] { 123 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TagFirstLastWideSourceSequenceOfTwo()
+        public void TagFirstLastWithSourceSequenceOfTwo()
         {
             var source = new[] { 123, 456 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void TagFirstLastWideSourceSequenceOfThree()
+        public void TagFirstLastWithSourceSequenceOfThree()
         {
             var source = new[] { 123, 456, 789 };
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })

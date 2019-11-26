@@ -85,7 +85,23 @@ namespace MoreLinq.Test
         [Test]
         public void CountByIsLazy()
         {
-            new BreakingSequence<string>().CountBy(x => x.Length);
+            new BreakingSequence<string>().CountBy(BreakingFunc.Of<string, int>());
+        }
+
+        [Test]
+        public void CountByWithSomeNullKeys()
+        {
+            var ss = new[]
+            {
+                "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
+            };
+            var result = ss.CountBy(s => s);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create("foo", 2),
+                KeyValuePair.Create((string) null, 4),
+                KeyValuePair.Create("bar", 2),
+                KeyValuePair.Create("baz", 2));
         }
     }
 }

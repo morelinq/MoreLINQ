@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2016 Andreas Gullberg Larsen. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,12 +92,12 @@ namespace MoreLinq.Test
             Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(bool readOnly)
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
         {
-            var first = new[] { 1, 2 }.ToBreakingCollection(readOnly);
-            var second = new[] { 1, 2, 3 }.ToBreakingCollection(readOnly);
+            var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
+            var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
 
             Assert.False(first.EndsWith(second));
         }

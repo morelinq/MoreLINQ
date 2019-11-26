@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -59,9 +76,9 @@ namespace MoreLinq.Test
             var resultA = sequence.Exclude(0, 0);
             var resultB = sequence.Exclude(0, 10); // shouldn't matter how many we ask for past end
             var resultC = sequence.Exclude(5, 5);  // shouldn't matter where we start
-            Assert.IsTrue(resultA.SequenceEqual(sequence));
-            Assert.IsTrue(resultB.SequenceEqual(sequence));
-            Assert.IsTrue(resultC.SequenceEqual(sequence));
+            Assert.That(resultA, Is.EqualTo(sequence));
+            Assert.That(resultB, Is.EqualTo(sequence));
+            Assert.That(resultC, Is.EqualTo(sequence));
         }
 
         /// <summary>
@@ -74,7 +91,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(0, count / 2);
 
-            Assert.IsTrue(result.SequenceEqual(sequence.Skip(count / 2)));
+            Assert.That(result, Is.EqualTo(sequence.Skip(count / 2)));
         }
 
         /// <summary>
@@ -87,7 +104,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(count / 2, count);
 
-            Assert.IsTrue(result.SequenceEqual(sequence.Take(count / 2)));
+            Assert.That(result, Is.EqualTo(sequence.Take(count / 2)));
         }
 
         /// <summary>
@@ -102,7 +119,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(startIndex, excludeCount);
 
-            Assert.IsTrue(result.SequenceEqual(sequence.Take(startIndex).Concat(sequence.Skip(startIndex + excludeCount))));
+            Assert.That(result, Is.EqualTo(sequence.Take(startIndex).Concat(sequence.Skip(startIndex + excludeCount))));
         }
 
         /// <summary>
@@ -115,7 +132,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(0, count);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -128,7 +145,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(1, count * 10);
 
-            Assert.IsTrue(result.SequenceEqual(sequence.Take(1)));
+            Assert.That(result, Is.EqualTo(sequence.Take(1)));
         }
 
         /// <summary>
@@ -141,7 +158,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Exclude(count + 5, count);
 
-            Assert.IsTrue(result.SequenceEqual(sequence));
+            Assert.That(result, Is.EqualTo(sequence));
         }
     }
 }

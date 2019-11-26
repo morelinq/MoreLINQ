@@ -82,8 +82,9 @@ namespace MoreLinq
         /// <param name="predicate">The function used to determine if
         /// an element in the sequence is considered missing.</param>
         /// <param name="fillSelector">The function used to produce the element
-        /// that will replace the missing one. It receives the next non-missing
-        /// element as well as the current element considered missing.</param>
+        /// that will replace the missing one. Its first argument receives the
+        /// current element considered missing while the second argument
+        /// receives the next non-missing element.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
         /// An <see cref="IEnumerable{T}"/> with missing values replaced.
         /// <returns>
@@ -113,7 +114,7 @@ namespace MoreLinq
                 var isBlank = predicate(item);
                 if (isBlank)
                 {
-                    (blanks ?? (blanks = new List<T>())).Add(item);
+                    (blanks ??= new List<T>()).Add(item);
                 }
                 else
                 {

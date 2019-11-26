@@ -1,9 +1,5 @@
 {
-    "projects": [
-        "MoreLinq",
-        "MoreLinq.Test"
-    ],
-    "sdk": {
-        "version": "2.1.2"
-    }
+  "sdk": {
+    "version": "3.0.100"
+  }
 }

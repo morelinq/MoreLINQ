@@ -70,6 +70,7 @@ namespace MoreLinq
         /// <param name="imbalanceStrategy">Defines the behavior of the operator when sequences are of unequal length</param>
         /// <param name="otherSequences">The other sequences in the interleave group</param>
         /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
+
         static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, ImbalancedInterleaveStrategy imbalanceStrategy, params IEnumerable<T>[] otherSequences)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -132,10 +133,8 @@ namespace MoreLinq
                         if (shouldContinue) // only if all iterators could be advanced
                         {
                             // yield the values of each iterator's current position
-                            for (var index = 0; index < iterCount; index++)
-                            {
-                                yield return iteratorList[index].Current;
-                            }
+                            foreach (var iterator in iteratorList)
+                                yield return iterator.Current;
                         }
                     }
                 }

@@ -37,9 +37,8 @@ namespace MoreLinq
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <returns>The minimal element, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
             return source.MinBy(selector, null);
@@ -61,16 +60,15 @@ namespace MoreLinq
         /// <returns>The minimal element, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> is empty</exception>
 
-        public static IEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            comparer = comparer ?? Comparer<TKey>.Default;
-            return ExtremaBy(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
+            comparer ??= Comparer<TKey>.Default;
+            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
         }
     }
 }

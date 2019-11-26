@@ -1,0 +1,129 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Collections" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+    using Experimental;
+
+    static partial class MoreEnumerable
+    {<#
+    var overloads =
+        from args in new[]
+        {
+            new[]
+            {
+                new { Ordinal = "first"  , Arity = "one"   },
+                new { Ordinal = "second" , Arity = "two"   },
+                new { Ordinal = "third"  , Arity = "three" },
+                new { Ordinal = "fourth" , Arity = "four"  },
+                new { Ordinal = "fifth"  , Arity = "five"  },
+                new { Ordinal = "sixth"  , Arity = "six"   },
+                new { Ordinal = "seventh", Arity = "seven" },
+                new { Ordinal = "eighth" , Arity = "eight" },
+            }
+        }
+        select args.Select((a, i) => new
+        {
+            a.Ordinal,
+            a.Arity,
+            Count  = i + 1,
+            Number = (i + 1).ToString(CultureInfo.InvariantCulture),
+        })
+        into args
+        select args.ToList() into args
+        from a in args.Skip(1)
+        select new
+        {
+            a.Arity,
+            Arguments = args.Take(a.Count)
+                            .Select(aa => new { aa.Number, aa.Ordinal })
+                            .ToList(),
+        };
+
+    foreach (var o in overloads)
+    { #>
+
+        /// <summary>
+        /// Returns the Cartesian product of <#= o.Arity #> sequences by enumerating all
+        /// possible combinations of one item from each sequence, and applying
+        /// a user-defined projection to the items in a given combination.
+        /// </summary>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">
+        /// The type of the elements of <paramref name="<#= arg.Ordinal #>"/>.</typeparam>
+<#      } #>
+        /// <typeparam name="TResult">
+        /// The type of the elements of the result sequence.</typeparam>
+<#      foreach (var arg in o.Arguments) {#>
+        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> sequence of elements.</param>
+<#      } #>
+        /// <param name="resultSelector">A projection function that combines
+        /// elements from all of the sequences.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> Cartesian<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult>(
+            this <#
+        foreach (var arg in o.Arguments) { #>
+IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
+            <#
+        } #>
+Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult> resultSelector)
+        {
+<#      foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
+<#      } #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _(); IEnumerable<TResult> _()
+            {
+<#      foreach (var arg in o.Arguments.Skip(1)) { #>
+                IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Memo;
+<#      } #>
+
+<#      foreach (var arg in o.Arguments.Skip(1)) { #>
+                using ((<#= arg.Ordinal #>Memo = <#= arg.Ordinal #>.Memoize()) as IDisposable)
+<#      } #>
+                {
+                    foreach (var item1 in first)
+<#      foreach (var arg in o.Arguments.Skip(1)) { #>
+                    foreach (var item<#= arg.Number #> in <#= arg.Ordinal #>Memo)
+<#      } #>
+                        yield return resultSelector(<#= string.Join(", ", from x in o.Arguments select "item" + x.Number) #>);
+                }
+            }
+        }
+<#  } #>
+    }
+}

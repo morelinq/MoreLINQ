@@ -89,7 +89,9 @@ namespace MoreLinq
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <param name="source">The sequence to pad.</param>
         /// <param name="width">The width/length below which to pad.</param>
-        /// <param name="paddingSelector">Function to calculate padding.</param>
+        /// <param name="paddingSelector">
+        /// Function to calculate padding given the index of the missing element.
+        /// </param>
         /// <returns>
         /// Returns a sequence that is at least as wide/long as the width/length
         /// specified by the <paramref name="width"/> parameter.

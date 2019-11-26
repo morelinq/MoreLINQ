@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2013 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,21 +27,21 @@ namespace MoreLinq.Test
         public void FoldWithTooFewItems()
         {
             Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Fold((a, b, c, d) => a + b + c + d));
+                Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()));
         }
 
         [Test]
         public void FoldWithEmptySequence()
         {
             Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Empty<int>().Fold(a => a));
+                Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()));
         }
 
         [Test]
         public void FoldWithTooManyItems()
         {
             Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Fold((a, b) => a + b));
+                Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()));
         }
 
         [Test]

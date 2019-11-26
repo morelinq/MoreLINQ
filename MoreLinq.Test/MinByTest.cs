@@ -17,6 +17,8 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void MinByIsLazy()
         {
-            new BreakingSequence<int>().MinBy(x => x);
+            new BreakingSequence<int>().MinBy(BreakingFunc.Of<int, int>());
         }
 
         [Test]
@@ -45,7 +47,7 @@ namespace MoreLinq.Test
         [Test]
         public void MinByEmptySequence()
         {
-            Assert.IsEmpty(new string[0].MinBy(x => x.Length));
+            Assert.That(new string[0].MinBy(x => x.Length), Is.Empty);
         }
 
         [Test]
@@ -58,6 +60,56 @@ namespace MoreLinq.Test
         public void MinByWithComparer()
         {
             Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinBy(x => x[1], SampleData.ReverseCharComparer));
+        }
+
+        [TestCase(0, ExpectedResult = new string[0]                         )]
+        [TestCase(1, ExpectedResult = new[] { "ax"                         })]
+        [TestCase(2, ExpectedResult = new[] { "ax", "aa"                   })]
+        [TestCase(3, ExpectedResult = new[] { "ax", "aa", "ab"             })]
+        [TestCase(4, ExpectedResult = new[] { "ax", "aa", "ab", "ay"       })]
+        [TestCase(5, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        [TestCase(6, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        public string[] MinByTakeReturnsMinima(int count)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MinBy(s => s.Length).Take(count).ToArray();
+        }
+
+        [TestCase(0, ExpectedResult = new string[0]                         )]
+        [TestCase(1, ExpectedResult = new[] { "az"                         })]
+        [TestCase(2, ExpectedResult = new[] { "ay", "az"                   })]
+        [TestCase(3, ExpectedResult = new[] { "ab", "ay", "az"             })]
+        [TestCase(4, ExpectedResult = new[] { "aa", "ab", "ay", "az"       })]
+        [TestCase(5, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        [TestCase(6, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+        public string[] MinByTakeLastReturnsMinima(int count)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MinBy(s => s.Length).TakeLast(count).ToArray();
+        }
+
+        [TestCase(0, ExpectedResult = new string[0]             )]
+        [TestCase(1, ExpectedResult = new[] { "hello",         })]
+        [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
+        [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
+        public string[] MinByTakeWithComparerReturnsMinima(int count)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MinBy(s => s.Length, Comparer<int>.Create((x, y) => -Math.Sign(x.CompareTo(y))))
+                              .Take(count)
+                              .ToArray();
+        }
+
+        [TestCase(0, ExpectedResult = new string[0]             )]
+        [TestCase(1, ExpectedResult = new[] { "world",         })]
+        [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
+        [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
+        public string[] MinByTakeLastWithComparerReturnsMinima(int count)
+        {
+            using (var strings = SampleData.Strings.AsTestingSequence())
+                return strings.MinBy(s => s.Length, Comparer<int>.Create((x, y) => -Math.Sign(x.CompareTo(y))))
+                              .TakeLast(count)
+                              .ToArray();
         }
     }
 }

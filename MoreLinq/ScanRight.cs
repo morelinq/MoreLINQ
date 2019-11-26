@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -53,7 +52,7 @@ namespace MoreLinq
 
             return ScanRightImpl(source, func,
                                  list => list.Count > 0
-                                       ? (list.Last(), list.Count - 1)
+                                       ? (list[list.Count - 1], list.Count - 1)
                                        : ((TSource, int)?) null);
         }
 
@@ -88,9 +87,9 @@ namespace MoreLinq
             return ScanRightImpl(source, func, list => (seed, list.Count));
         }
 
-        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IList<TSource>, (TResult Seed, int Count)?> seeder)
+        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IListLike<TSource>, (TResult Seed, int Count)?> seeder)
         {
-            var list = (source as IList<TSource>) ?? source.ToList();
+            var list = source.ToListLike();
 
             var r = seeder(list);
             if (!r.HasValue)

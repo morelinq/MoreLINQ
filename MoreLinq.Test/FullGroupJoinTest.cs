@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2015 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2015 Felipe Sateler. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ namespace MoreLinq.Test
 
         public void FullGroupIsLazy()
         {
-            var listA = new BreakingSequence<int>();
-            var listB = new BreakingSequence<int>();
+            var bs = new BreakingSequence<int>();
+            var bf = BreakingFunc.Of<int, int>();
+            var bfg = BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>();
 
-            listA.FullGroupJoin(listB, x => x, x => x, BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>());
-            Assert.True(true);
+            bs.FullGroupJoin(bs, bf, bf, bfg);
         }
 
         [TestCase(CustomResult)]

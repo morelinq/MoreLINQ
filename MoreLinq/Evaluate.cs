@@ -36,11 +36,8 @@ namespace MoreLinq
         /// <returns>A sequence with results from invoking <paramref name="functions"/>.</returns>
         /// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions)
-        {
-            if (functions == null) throw new ArgumentNullException(nameof(functions));
-
-            return from f in functions select f();
-        }
+        public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions) =>
+            from f in functions ?? throw new ArgumentNullException(nameof(functions))
+            select f();
     }
 }

@@ -42,11 +42,28 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(new[] { value }));
         }
 
-        [Test]
-        public void ScanRight()
+        //
+        // The first two cases are commented out intentionally for the
+        // following reason:
+        //
+        // ScanRight internally skips ToList materialization if the source is
+        // already list-like. Any test to make sure that is occurring would
+        // have to fail if and only if the optimization is removed and ToList
+        // is called. Such detection is tricky, hack-ish and brittle at best;
+        // it would mean relying on current and internal implementation
+        // details of Enumerable.ToList that can and have changed.
+        // For further discussion, see:
+        //
+        // https://github.com/morelinq/MoreLINQ/pull/476#discussion_r185191063
+        //
+        // [TestCase(SourceKind.BreakingList)]
+        // [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.Sequence)]
+        public void ScanRight(SourceKind sourceKind)
         {
             var result = Enumerable.Range(1, 5)
                                    .Select(x => x.ToString())
+                                   .ToSourceKind(sourceKind)
                                    .ScanRight((a, b) => string.Format("({0}+{1})", a, b));
 
             var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };

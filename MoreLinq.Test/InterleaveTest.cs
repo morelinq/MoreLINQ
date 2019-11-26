@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using System;
@@ -43,7 +60,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Range(1, count);
             var result = sequenceA.Interleave(sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Range(1, count).Select(x => new[] { x, x }).SelectMany(z => z)));
+            Assert.That(result, Is.EqualTo(Enumerable.Range(1, count).Select(x => new[] { x, x }).SelectMany(z => z)));
         }
 
         /// <summary>
@@ -56,7 +73,7 @@ namespace MoreLinq.Test
             var sequenceB = Enumerable.Empty<int>();
             var result = sequenceA.Interleave(sequenceB);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.EqualTo(Enumerable.Empty<int>()));
         }
 
         /// <summary>
@@ -72,7 +89,7 @@ namespace MoreLinq.Test
 
             var expectedResult = new[] { 0, 1, 0, 1, 0, 1, 0, 1, 0, 0 };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>
@@ -88,7 +105,7 @@ namespace MoreLinq.Test
             var sequenceE = Enumerable.Empty<int>();
             var result = sequenceA.Interleave(sequenceB, sequenceC, sequenceD, sequenceE);
 
-            Assert.IsTrue(result.SequenceEqual(Enumerable.Empty<int>()));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -107,7 +124,7 @@ namespace MoreLinq.Test
 
             var expectedResult = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
 
-            Assert.IsTrue(result.SequenceEqual(expectedResult));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
         /// <summary>

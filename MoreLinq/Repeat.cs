@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using Experimental;
 
     public static partial class MoreEnumerable
     {
@@ -53,11 +54,14 @@ namespace MoreLinq
 
         static IEnumerable<T> RepeatImpl<T>(IEnumerable<T> sequence, int? count)
         {
-            while (count == null || count-- > 0)
+            var memo = sequence.Memoize();
+            using (memo as IDisposable)
             {
-                // TODO buffer to avoid multiple enumerations
-                foreach (var item in sequence)
-                    yield return item;
+                while (count == null || count-- > 0)
+                {
+                    foreach (var item in memo)
+                        yield return item;
+                }
             }
         }
     }

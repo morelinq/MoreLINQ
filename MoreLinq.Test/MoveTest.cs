@@ -63,7 +63,7 @@ namespace MoreLinq.Test
             using (var test = source.AsTestingSequence())
             {
                 var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EquivalentTo(expectations));
+                Assert.That(result, Is.EqualTo(expectations));
             }
         }
 
@@ -90,7 +90,7 @@ namespace MoreLinq.Test
             using (var test = source.AsTestingSequence())
             {
                 var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EquivalentTo(expectations));
+                Assert.That(result, Is.EqualTo(expectations));
             }
         }
 
@@ -100,6 +100,15 @@ namespace MoreLinq.Test
 
             return Enumerable.Range(length, length + 5)
                              .Select(toIndex => new TestCaseData(length, 5, 2, toIndex));
+        }
+
+        [Test]
+        public void MoveIsRepeatable()
+        {
+            var source = Enumerable.Range(0, 10);
+            var result = source.Move(0, 5, 10);
+
+            Assert.That(result.ToArray(), Is.EqualTo(result));
         }
 
         [Test]

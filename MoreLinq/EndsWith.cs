@@ -41,6 +41,7 @@ namespace MoreLinq
         /// <see cref="EqualityComparer{T}.Default" /> on pairs of elements at
         /// the same index.
         /// </remarks>
+
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
             return EndsWith(first, second, null);
@@ -64,12 +65,13 @@ namespace MoreLinq
         /// <see cref="IEqualityComparer{T}.Equals(T,T)" /> on pairs of
         /// elements at the same index.
         /// </remarks>
+
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            comparer ??= EqualityComparer<T>.Default;
 
             List<T> secondList;
             return second.TryGetCollectionCount() is int secondCount
@@ -80,8 +82,8 @@ namespace MoreLinq
 
             bool Impl(IEnumerable<T> snd, int count)
             {
-                using (var firstIter = first.TakeLast(count).GetEnumerator())
-                    return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                using var firstIter = first.TakeLast(count).GetEnumerator();
+                return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
             }
         }
     }

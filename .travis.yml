@@ -2,37 +2,35 @@ language: csharp
 os:
   - linux
   - osx
-osx_image: xcode8.3
+osx_image: xcode9.4
 solution: MoreLinq.sln
 mono: 5.0.1
-dist: trusty
+dist: xenial
 sudo: required
-dotnet: 2.1.2
+dotnet: 3.0.100
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
 addons:
   apt:
     sources:
-    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
+    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main'
       key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
     packages:
-    - dotnet-hostfxr-1.0.1
-    - dotnet-sharedframework-microsoft.netcore.app-1.0.5
+    - dotnet-runtime-2.1
 
 before_install:
-  - msbuild /version
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ] || [ `uname` == "Darwin" ]; then
       # Handle too many files on OS X
       ulimit -n 4096
-      # Install dotnet core 1 sdk
-      wget --retry-connrefused --waitretry=1 -O /tmp/dn1.pkg 'https://download.microsoft.com/download/B/9/F/B9F1AF57-C14A-4670-9973-CDF47209B5BF/dotnet-dev-osx-x64.1.0.4.pkg'
-      sudo installer -pkg /tmp/dn1.pkg -target /
+      # Install dotnet core 2.1 runtime
+      wget --retry-connrefused --waitretry=1 -O /tmp/dn21.pkg 'https://download.visualstudio.microsoft.com/download/pr/9314da31-774c-4d2b-8743-998f2a21f5ab/bc918ca05ab6b650f2991b205c04f623/dotnet-runtime-2.1.13-osx-x64.pkg'
+      sudo installer -pkg /tmp/dn21.pkg -target /
     fi
+  - dotnet --info
 
 install:
-  - dotnet restore
   - npm install -g eclint
 
 before_script:
@@ -47,7 +45,7 @@ script:
         echo "System.Linq import found, failing the build!" >&2
         exit 1
     fi
-  - ./build.sh /v:m /p:Configuration=$CONFIGURATION
-  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp1.0/MoreLinq.Test.dll
-  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.0/MoreLinq.Test.dll
+  - ./build.sh $CONFIGURATION
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.1/MoreLinq.Test.dll
+  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp3.0/MoreLinq.Test.dll
   - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe

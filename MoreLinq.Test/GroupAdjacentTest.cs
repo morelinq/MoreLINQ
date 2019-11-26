@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2012 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,12 +28,16 @@ namespace MoreLinq.Test
         public void GroupAdjacentIsLazy()
         {
             var bs = new BreakingSequence<object>();
-            bs.GroupAdjacent(delegate { return 0; });
-            bs.GroupAdjacent(delegate { return 0; }, o => o);
-            bs.GroupAdjacent(delegate { return 0; }, o => o, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(delegate { return 0; }, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g);
-            bs.GroupAdjacent(delegate { return 0; }, (k, g) => g, EqualityComparer<int>.Default);
+            var bf = BreakingFunc.Of<object, int>();
+            var bfo = BreakingFunc.Of<object, object>();
+            var bfg = BreakingFunc.Of<int, IEnumerable<object>, IEnumerable<object>>();
+
+            bs.GroupAdjacent(bf);
+            bs.GroupAdjacent(bf, bfo);
+            bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
+            bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
+            bs.GroupAdjacent(bf, bfg);
+            bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
         }
 
         [Test]
@@ -163,7 +167,8 @@ namespace MoreLinq.Test
 
             var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
 
-            using (var reader = groupings.Read()) {
+            using (var reader = groupings.Read())
+            {
                 AssertResult(reader, 123 + 456 + 789);
                 AssertResult(reader, 987 + 654 + 321);
                 AssertResult(reader, 789 + 456 + 123);
@@ -193,7 +198,8 @@ namespace MoreLinq.Test
 
             var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
 
-            using (var reader = groupings.Read()) {
+            using (var reader = groupings.Read())
+            {
                 AssertResult(reader, 123 + 456 + 789);
                 AssertResult(reader, 987 + 654 + 321);
                 AssertResult(reader, 789 + 456 + 123);

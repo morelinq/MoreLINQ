@@ -76,45 +76,36 @@ namespace MoreLinq
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {
-                var index = -1;
-                using (var iter = source.GetEnumerator())
+                using var e = source.GetEnumerator();
+
+                if (!e.MoveNext()) // break early (it's empty)
+                    yield break;
+
+                // Ensure that the first item is always part of the first
+                // segment. This is an intentional behavior. Segmentation always
+                // begins with the second element in the sequence.
+
+                var previous = e.Current;
+                var segment = new List<T> { previous };
+
+                for (var index = 1; e.MoveNext(); index++)
                 {
-                    var segment = new List<T>();
-                    var prevItem = default(T);
+                    var current = e.Current;
 
-                    // ensure that the first item is always part
-                    // of the first segment. This is an intentional
-                    // behavior. Segmentation always begins with
-                    // the second element in the sequence.
-                    if (iter.MoveNext())
+                    if (newSegmentPredicate(current, previous, index))
                     {
-                        ++index;
-                        segment.Add(iter.Current);
-                        prevItem = iter.Current;
+                         yield return segment;              // yield the completed segment
+                         segment = new List<T> { current }; // start a new segment
+                    }
+                    else // not a new segment, append and continue
+                    {
+                        segment.Add(current);
                     }
 
-                    while (iter.MoveNext())
-                    {
-                        ++index;
-                        // check if the item represents the start of a new segment
-                        var isNewSegment = newSegmentPredicate(iter.Current, prevItem, index);
-                        prevItem = iter.Current;
-
-                        if (!isNewSegment)
-                        {
-                            // if not a new segment, append and continue
-                            segment.Add(iter.Current);
-                            continue;
-                        }
-                        yield return segment; // yield the completed segment
-
-                        // start a new segment...
-                        segment = new List<T> { iter.Current };
-                    }
-                    // handle the case of the sequence ending before new segment is detected
-                    if (segment.Count > 0)
-                        yield return segment;
+                    previous = current;
                 }
+
+                yield return segment;
             }
         }
     }
