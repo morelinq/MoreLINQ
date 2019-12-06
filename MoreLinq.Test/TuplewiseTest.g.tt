@@ -26,44 +26,8 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using NUnit.Framework;
 
-    [TestFixture]
-    public class TuplewiseTest
+    public partial class TuplewiseTest
     {
-        void TuplewiseNWide<TSource, TResult, TFunc>(Func<IEnumerable<TSource>, TFunc, IEnumerable<TResult>> tuplewise, TFunc resultSelector, IEnumerable<TSource> source, params TResult[] fullResult)
-        {
-            var arity = resultSelector.GetType().GetGenericArguments().Length - 1;
-
-            for (var i = 0; i < fullResult.Length; ++i)
-                using (var ts = source.Take(i).AsTestingSequence())
-                    Assert.That(tuplewise(ts, resultSelector), Is.EqualTo(fullResult.Take(i - arity + 1)));
-        }
-
-        void TuplewiseNWideInt<TFunc>(Func<IEnumerable<int>, TFunc, IEnumerable<int>> tuplewise, TFunc resultSelector)
-        {
-            const int rangeLen = 100;
-            var arity = resultSelector.GetType().GetGenericArguments().Length - 1;
-
-            TuplewiseNWide(
-                tuplewise,
-                resultSelector,
-                Enumerable.Range(1, rangeLen),
-                Enumerable.Range(1, rangeLen - (arity - 1)).Select(x => x * arity + Enumerable.Range(1, arity - 1).Sum()).ToArray()
-            );
-        }
-
-        void TuplewiseNWideString<TFunc>(Func<IEnumerable<char>, TFunc, IEnumerable<string>> tuplewise, TFunc resultSelector)
-        {
-            const string alphabet = "abcdefghijklmnopqrstuvwxyz";
-            var arity = resultSelector.GetType().GetGenericArguments().Length - 1;
-
-            TuplewiseNWide(
-                tuplewise,
-                resultSelector,
-                alphabet,
-                Enumerable.Range(0, alphabet.Length - (arity - 1)).Select(i => alphabet.Skip(i).Take(arity)).ToArray()
-            );
-        }
-
 <#      const int max = 4;
         const string alphabet = "abcdefghijklmnopqrstuvwxyz";
 #>
