@@ -37,24 +37,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Interleave early throw ArgumentNullException when an element
-        /// of otherSequences is null.
-        /// </summary>
-        [Test]
-        public void TestInterleaveEarlyThrowOnNullElementInOtherSequences()
-        {
-            void Code()
-            {
-                var sequenceA = Enumerable.Range(1, 1);
-                var otherSequences = new IEnumerable<int>[] {null};
-
-                sequenceA.Interleave(otherSequences);
-            }
-
-            Assert.Throws<ArgumentNullException>(Code);
-        }
-
-        /// <summary>
         /// Verify that interleaving do not call enumerators MoveNext method eagerly
         /// </summary>
         [Test]
