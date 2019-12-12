@@ -167,13 +167,14 @@ namespace MoreLinq.Test
         {
             const int count = 10;
 
-            using var sequenceA = Enumerable.Range(1, count).AsTestingSequence();
-            using var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence();
-            using var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence();
-            using var sequenceD = Enumerable.Range(1, 0).AsTestingSequence();
-
-            sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
-                .Consume();
+            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
+            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
+            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
+            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
+            {
+                sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
+                         .Consume();
+            }
         }
 
         /// <summary>
@@ -186,9 +187,9 @@ namespace MoreLinq.Test
         [TestCase(3)]
         public void TestInterleaveDisposesAllIteratorsOnPartialEnumeration(int count)
         {
-            using var sequenceA = TestingSequence.Of<int>(1);
-            using var sequenceB = TestingSequence.Of<int>(2);
-            using var sequenceC = TestingSequence.Of<int>(3);
+            using var sequenceA = TestingSequence.Of(1);
+            using var sequenceB = TestingSequence.Of(2);
+            using var sequenceC = TestingSequence.Of(3);
 
             sequenceA.Interleave(sequenceB, sequenceC).Take(count).Consume();
         }
