@@ -181,6 +181,26 @@ namespace MoreLinq.Test
                 result.ElementAt(1));
         }
 
+        /// <summary>
+        /// Verify that Transpose do not call enumerators MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TransposeDoNotCallMoveNextEagerly()
+        {
+            static void Code()
+            {
+                var sequences = new[]
+                {
+                    TestingSequence.Of(1),
+                    MoreEnumerable.From<int>(() => throw new TestException())
+                };
+
+                sequences.Transpose().Take(1).Consume();
+            }
+
+            Assert.DoesNotThrow(Code);
+        }
+
         [Test]
         public void TransposeWithErroneousRowDisposesRowIterators()
         {
