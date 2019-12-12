@@ -187,18 +187,13 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeDoNotCallGetEnumeratorEagerly()
         {
-            static void Code()
+            var sequences = new IEnumerable<int>[]
             {
-                var sequences = new IEnumerable<int>[]
-                {
-                    TestingSequence.Of(1),
-                    new BreakingSequence<int>()
-                };
+                TestingSequence.Of(1),
+                new BreakingSequence<int>()
+            };
 
-                sequences.Transpose().Take(1).Consume();
-            }
-
-            Assert.DoesNotThrow(Code);
+            sequences.Transpose().Take(1).Consume();
         }
 
         [Test]
