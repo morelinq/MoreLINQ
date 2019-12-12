@@ -41,15 +41,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveDoNoCallMoveNextEagerly()
         {
-            void Code()
-            {
-                var sequenceA = Enumerable.Range(1, 1);
-                var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+            var sequenceA = Enumerable.Range(1, 1);
+            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
 
-                sequenceA.Interleave(sequenceB).Take(1).Consume();
-            }
-
-            Assert.DoesNotThrow(Code);
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
         }
 
         /// <summary>
