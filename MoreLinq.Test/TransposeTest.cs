@@ -181,6 +181,26 @@ namespace MoreLinq.Test
                 result.ElementAt(1));
         }
 
+        /// <summary>
+        /// Verify that Transpose do not call enumerable GetEnumerator method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNotCallGetEnumeratorEagerly()
+        {
+            static void Code()
+            {
+                var sequences = new IEnumerable<int>[]
+                {
+                    TestingSequence.Of(1),
+                    new BreakingSequence<int>()
+                };
+
+                sequences.Transpose().Take(1).Consume();
+            }
+
+            Assert.DoesNotThrow(Code);
+        }
+
         [Test]
         public void TransposeWithErroneousRowDisposesRowIterators()
         {
