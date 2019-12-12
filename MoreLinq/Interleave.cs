@@ -59,10 +59,10 @@ namespace MoreLinq
 
                 try
                 {
-                    var allNull = false;
-                    while (!allNull)
+                    var hasNext = true;
+                    while (hasNext)
                     {
-                        allNull = true;
+                        hasNext = false;
                         for (var i = 0; i < enumerators.Length; i++)
                         {
                             var enumerator = enumerators[i];
@@ -71,7 +71,7 @@ namespace MoreLinq
 
                             if (enumerator.MoveNext())
                             {
-                                allNull = false;
+                                hasNext = true;
                                 yield return enumerator.Current;
                             }
                             else
