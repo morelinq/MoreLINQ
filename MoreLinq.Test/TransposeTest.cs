@@ -187,18 +187,13 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeDoNotCallMoveNextEagerly()
         {
-            static void Code()
+            var sequences = new[]
             {
-                var sequences = new[]
-                {
-                    TestingSequence.Of(1),
-                    MoreEnumerable.From<int>(() => throw new TestException())
-                };
+                TestingSequence.Of(1),
+                MoreEnumerable.From<int>(() => throw new TestException())
+            };
 
-                sequences.Transpose().Take(1).Consume();
-            }
-
-            Assert.DoesNotThrow(Code);
+            sequences.Transpose().Take(1).Consume();
         }
 
         [Test]
