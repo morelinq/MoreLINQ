@@ -36,6 +36,18 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that interleaving do not call enumerators MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNoCallMoveNextEagerly()
+        {
+            var sequenceA = Enumerable.Range(1, 1);
+            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
+        }
+
+        /// <summary>
         /// Verify that interleaving disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
