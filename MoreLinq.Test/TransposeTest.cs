@@ -185,7 +185,7 @@ namespace MoreLinq.Test
         /// Verify that Transpose do not call enumerable GetEnumerator method eagerly
         /// </summary>
         [Test]
-        public void TestInterleaveDoNotCallGetEnumeratorEagerly()
+        public void TransposeDoNotCallGetEnumeratorEagerly()
         {
             static void Code()
             {
