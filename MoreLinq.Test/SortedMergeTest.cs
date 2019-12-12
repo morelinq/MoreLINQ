@@ -55,6 +55,17 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that SortedMerge do not call MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TestSortedMergeDoNotCallMoveNextEagerly()
+        {
+            var sequenceA = TestingSequence.Of(1, 3);
+            var sequenceB = MoreEnumerable.From(() => 2, () => throw new TestException());
+            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB).Take(2).Consume();
+        }
+
+        /// <summary>
         /// Verify that SortedMerge throws an exception if invoked on a <c>null</c> sequence.
         /// </summary>
         [Test]
