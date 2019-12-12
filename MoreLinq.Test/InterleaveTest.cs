@@ -36,18 +36,6 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that interleaving do not call enumerators MoveNext method eagerly
-        /// </summary>
-        [Test]
-        public void TestInterleaveDoNoCallMoveNextEagerly()
-        {
-            var sequenceA = Enumerable.Range(1, 1);
-            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
-
-            sequenceA.Interleave(sequenceB).Take(1).Consume();
-        }
-
-        /// <summary>
         /// Verify that interleaving disposes those enumerators that it managed
         /// to open successfully
         /// </summary>
@@ -73,6 +61,30 @@ namespace MoreLinq.Test
 
             // Expected and thrown by sequenceB
             Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
+        }
+
+        /// <summary>
+        /// Verify that interleaving do not call enumerable GetEnumerator method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNotCallGetEnumeratorEagerly()
+        {
+            var sequenceA = TestingSequence.Of(1);
+            var sequenceB = new BreakingSequence<int>();
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
+        }
+
+        /// <summary>
+        /// Verify that interleaving do not call enumerators MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNoCallMoveNextEagerly()
+        {
+            var sequenceA = Enumerable.Range(1, 1);
+            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
         }
 
         /// <summary>
