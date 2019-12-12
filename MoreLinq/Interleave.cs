@@ -52,7 +52,7 @@ namespace MoreLinq
 
             return _(); IEnumerable<T> _()
             {
-                var sequences = new[] {sequence}.Concat(otherSequences);
+                var sequences = new[] { sequence }.Concat(otherSequences);
 
                 // produce an enumerators collection for all IEnumerable<T> instances passed to us
                 var enumerators = sequences.Select(e => e.GetEnumerator()).Acquire();
@@ -69,15 +69,16 @@ namespace MoreLinq
                             if (enumerator == null)
                                 continue;
 
-                            if (!enumerator.MoveNext())
+                            if (enumerator.MoveNext())
+                            {
+                                allNull = false;
+                                yield return enumerator.Current;
+                            }
+                            else
                             {
                                 enumerator.Dispose();
                                 enumerators[i] = null;
-                                continue;
                             }
-
-                            allNull = false;
-                            yield return enumerator.Current;
                         }
                     }
                 }
