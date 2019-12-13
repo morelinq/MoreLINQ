@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq
+namespace MoreLinq.Experimental
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    partial class MoreEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Returns a tuple with the cardinality of the sequence and the
