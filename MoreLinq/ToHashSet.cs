@@ -15,7 +15,7 @@
 // limitations under the License.
 #endregion
 
-#if !NET471
+#if !NET472
 namespace MoreLinq
 {
     using System;

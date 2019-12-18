@@ -6377,7 +6377,7 @@ namespace MoreLinq.Extensions
 
     }
 
-#if !NET471
+#if !NET472
     /// <summary><c>ToHashSet</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
