@@ -108,9 +108,7 @@ namespace MoreLinq
             // preconditions. This however, needs to be carefully considered - and perhaps
             // may change after further thought and review.
 
-            return subsetSize == 0
-                ? (IEnumerable<IList<T>>) new[] {new List<T>()}
-                : new SubsetGenerator<T>(sequence, subsetSize);
+            return new SubsetGenerator<T>(sequence, subsetSize);
         }
 
         /// <summary>
@@ -161,7 +159,7 @@ namespace MoreLinq
                     _k = _subset.Length;
                     _n = _set.Count;
                     _z = _n - _k + 1;
-                    _continue = _subset.Length > 0;
+                    _continue = true;
                 }
 
                 public IList<T> Current => (IList<T>)_subset.Clone();
@@ -193,7 +191,7 @@ namespace MoreLinq
 
                     ExtractSubset();
 
-                    _continue = (_indices[0] != _z);
+                    _continue = _indices.Length > 0 && _indices[0] != _z;
                     return true;
                 }
 
