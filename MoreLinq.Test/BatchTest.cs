@@ -117,5 +117,15 @@ namespace MoreLinq.Test
             reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
             reader.ReadEnd();
         }
+
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        public void BatchEmptySource(SourceKind kind)
+        {
+            var batches = Enumerable.Empty<int>().ToSourceKind(kind).Batch(100);
+            Assert.That(batches, Is.Empty);
+        }
     }
 }
