@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace MoreLinq.Test
 {
     using System;
@@ -126,6 +124,8 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 4);
             var actual = sequence.Subsets(0);
+
+            // For any set there is always 1 subset of size 0: the empty set.
             var expected = new[] {new int[0]};
 
             CollectionAssert.AreEquivalent(expected, actual);
