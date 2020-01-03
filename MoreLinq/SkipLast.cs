@@ -40,12 +40,28 @@ namespace MoreLinq
             if (count < 1)
                 return source;
 
-            return
-                source.TryGetCollectionCount() is int collectionCount
-                ? source.Take(collectionCount - count)
-                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd ))
-                        .TakeWhile(e => e.Countdown == null)
-                        .Select(e => e.Element);
+            var collectionCount = source.TryGetCollectionCount();
+            if (collectionCount.HasValue)
+            {
+                return source.Take(collectionCount.Value - count);
+            }
+
+            return _(); IEnumerable<T> _()
+            {
+                var queue = new Queue<T>(count);
+                using var enumerator = source.GetEnumerator();
+
+                while (count-- > 0 && enumerator.MoveNext())
+                {
+                    queue.Enqueue(enumerator.Current);
+                }
+
+                while (enumerator.MoveNext())
+                {
+                    yield return queue.Dequeue();
+                    queue.Enqueue(enumerator.Current);
+                }
+            }
         }
     }
 }

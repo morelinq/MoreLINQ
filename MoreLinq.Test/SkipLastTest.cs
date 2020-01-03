@@ -32,12 +32,25 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLast()
+        public void SkipLastEnumerable()
         {
             const int take = 100;
             const int skip = 20;
 
             var sequence = Enumerable.Range(1, take);
+
+            var expectations = sequence.Take(take - skip);
+
+            Assert.That(expectations, Is.EqualTo(sequence.SkipLast(skip)));
+        }
+
+        [Test]
+        public void SkipLastCollection()
+        {
+            const int take = 100;
+            const int skip = 20;
+
+            var sequence = Enumerable.Range(1, take).ToArray();
 
             var expectations = sequence.Take(take - skip);
 
