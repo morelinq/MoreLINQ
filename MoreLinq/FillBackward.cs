@@ -68,13 +68,41 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return FillBackwardImpl(source, predicate, null);
+            return _(); IEnumerable<T> _()
+            {
+                // We need to store the blanks in case of the source sequence ends with missing values
+                var blanks = new List<T>();
+
+                foreach (var item in source)
+                {
+                    // Check if the item is ‘missing’
+                    if (predicate(item))
+                    {
+                        blanks.Add(item);
+                    }
+                    else
+                    {
+                        if (blanks.Count > 0)
+                        {
+                            for (var i = 0; i < blanks.Count; i++)
+                                yield return item;
+
+                            blanks.Clear();
+                        }
+
+                        yield return item;
+                    }
+                }
+
+                foreach (var blank in blanks)
+                    yield return blank;
+            }
         }
 
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the following non-missing element in that sequence. Additional
-        /// parameters specifiy two functions, one used to determine if an
+        /// parameters specify two functions, one used to determine if an
         /// element is considered missing or not and another to provide the
         /// replacement for the missing element.
         /// </summary>
@@ -102,39 +130,31 @@ namespace MoreLinq
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
             if (fillSelector == null) throw new ArgumentNullException(nameof(fillSelector));
 
-            return FillBackwardImpl(source, predicate, fillSelector);
-        }
-
-        static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
-        {
-            List<T> blanks = null;
-
-            foreach (var item in source)
+            return _(); IEnumerable<T> _()
             {
-                var isBlank = predicate(item);
-                if (isBlank)
+                var blanks = new List<T>();
+
+                foreach (var item in source)
                 {
-                    (blanks ??= new List<T>()).Add(item);
-                }
-                else
-                {
-                    if (blanks != null)
+                    // Check if the item is ‘missing’
+                    if (predicate(item))
                     {
-                        foreach (var blank in blanks)
+                        blanks.Add(item);
+                    }
+                    else
+                    {
+                        if (blanks.Count > 0)
                         {
-                            yield return fillSelector != null
-                                       ? fillSelector(blank, item)
-                                       : item;
+                            foreach (var blank in blanks)
+                                yield return fillSelector(blank, item);
+
+                            blanks.Clear();
                         }
 
-                        blanks.Clear();
+                        yield return item;
                     }
-                    yield return item;
                 }
-            }
 
-            if (blanks?.Count > 0)
-            {
                 foreach (var blank in blanks)
                     yield return blank;
             }
