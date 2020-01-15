@@ -29,6 +29,7 @@
         - DistinctBy
         - EndsWith
         - EquiZip
+        - Evaluate
         - Exactly
         - ExceptBy
         - Exclude
@@ -45,13 +46,14 @@
         - GenerateByIndex
         - GroupAdjacent
         - Index
+        - IndexBy
         - Insert
         - Interleave
         - Lag
         - Lead
         - LeftJoin
         - MaxBy
-        - Memoize
+        - Memoize (EXPERIMENTAL)
         - MinBy
         - Move
         - OrderBy
@@ -76,6 +78,7 @@
         - RightJoin
         - RunLengthEncode
         - Scan
+        - ScanBy
         - ScanRight
         - Segment
         - Sequence
@@ -102,7 +105,7 @@
         - Transpose
         - TraverseBreadthFirst
         - TraverseDepthFirst
-        - TrySingle
+        - TrySingle (EXPERIMENTAL)
         - Tuplewise
         - Unfold
         - Window
@@ -115,7 +118,7 @@
     <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>3.3.0</VersionPrefix>
+    <VersionPrefix>3.3.2</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
     <LangVersion>8</LangVersion>

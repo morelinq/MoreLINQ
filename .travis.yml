@@ -45,7 +45,9 @@ script:
         echo "System.Linq import found, failing the build!" >&2
         exit 1
     fi
-  - ./build.sh $CONFIGURATION
-  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp2.1/MoreLinq.Test.dll
-  - dotnet exec MoreLinq.Test/bin/$CONFIGURATION/netcoreapp3.0/MoreLinq.Test.dll
-  - mono MoreLinq.Test/bin/$CONFIGURATION/net451/MoreLinq.Test.exe
+  - ./test.sh $CONFIGURATION
+  - # revert to following post merge of PR codecov/codecov-bash#138
+  - # curl -s https://codecov.io/bash > codecov
+  - curl -sSL https://raw.githubusercontent.com/codecov/codecov-bash/14662d32a4862918c31efafe4b450de1305a38e1/codecov > codecov
+  - chmod +x codecov
+  - ./codecov -f ./MoreLinq.Test/coverage.opencover.xml
