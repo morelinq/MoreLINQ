@@ -150,6 +150,12 @@ Batches the source sequence into sized buckets.
 
 This method has 2 overloads.
 
+### BatchWhile
+
+Batches the source sequence into independent buckets according to a user predicate.
+
+This method has 4 overloads.
+
 ### Cartesian
 
 Returns the Cartesian product of two or more sequences by combining each
