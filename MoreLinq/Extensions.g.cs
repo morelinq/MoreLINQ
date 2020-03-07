@@ -701,6 +701,49 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>BatchWhile</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class BatchWhileExtension
+    {
+        /// <inheritdoc cref="BatchWhile{TSource, TElement, TResult}(IEnumerable{TSource}, Func{TSource, TElement}, Func{TElement, IBucket{TElement}, bool}, Func{IBucket{TElement}, TResult})"/>
+
+        public static IEnumerable<IBucket<TSource>> BatchWhile<TSource>(this IEnumerable<TSource> source, Func<TSource, IBucket<TSource>, bool> predicate)             => MoreEnumerable.BatchWhile(source, predicate);
+
+        /// <inheritdoc cref="BatchWhile{TSource, TElement, TResult}(IEnumerable{TSource}, Func{TSource, TElement}, Func{TElement, IBucket{TElement}, bool}, Func{IBucket{TElement}, TResult})"/>
+
+        public static IEnumerable<IBucket<TElement>> BatchWhile<TSource, TElement>(this IEnumerable<TSource> source, Func<TSource, TElement> elementSelector, Func<TElement, IBucket<TElement>, bool> predicate)             => MoreEnumerable.BatchWhile(source, elementSelector, predicate);
+
+        /// <inheritdoc cref="BatchWhile{TSource, TElement, TResult}(IEnumerable{TSource}, Func{TSource, TElement}, Func{TElement, IBucket{TElement}, bool}, Func{IBucket{TElement}, TResult})"/>
+
+        public static IEnumerable<TResult> BatchWhile<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, IBucket<TSource>, bool> predicate, Func<IBucket<TSource>, TResult> resultSelector)             => MoreEnumerable.BatchWhile(source, predicate, resultSelector);
+
+        /// <summary>
+        /// Batches the <paramref name="source"/> sequence into independent buckets according to a user predicate.
+        /// </summary>
+        /// <typeparam name="TSource">The type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TElement">The type of the elements in each <see cref="IBucket{TElement}"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the result value returned by <paramref name="resultSelector"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="elementSelector">A function to map each source element to an element in an <see cref="IBucket{TElement}"/>.</param>
+        /// <param name="predicate">A function to test each element for a condition. If the function returns <see langword="false"/>, a new subsequence begins.</param>
+        /// <param name="resultSelector">A function to create a result value from each bucket.</param>
+        /// <returns>A sequence of independent buckets containing elements of the source collection.</returns>
+        /// <remarks>
+        /// <para>
+        /// This operator uses deferred execution and streams its results
+        /// (buckets are streamed but their content buffered).
+        /// </para>
+        /// <para>
+        /// All buckets are guaranteed to have at least <see langword="1" /> element.
+        /// </para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> BatchWhile<TSource, TElement, TResult>(this IEnumerable<TSource> source, Func<TSource, TElement> elementSelector, Func<TElement, IBucket<TElement>, bool> predicate, Func<IBucket<TElement>, TResult> resultSelector)
+            => MoreEnumerable.BatchWhile(source, elementSelector, predicate, resultSelector);
+
+    }
+
     /// <summary><c>Cartesian</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
