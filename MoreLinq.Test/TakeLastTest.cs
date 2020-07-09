@@ -17,9 +17,11 @@
 
 namespace MoreLinq.Test
 {
-    using NUnit.Framework;
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
+    using static MoreLinq.Extensions.TakeLastExtension;
 
     [TestFixture]
     public class TakeLastTest

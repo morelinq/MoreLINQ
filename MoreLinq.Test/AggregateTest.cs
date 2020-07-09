@@ -28,6 +28,8 @@ namespace MoreLinq.Test
     using NUnit.Framework.Interfaces;
     using static FuncModule;
 
+    using static MoreLinq.Extensions.AppendExtension;
+
     [TestFixture]
     public class AggregateTest
     {

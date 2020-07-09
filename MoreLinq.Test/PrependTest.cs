@@ -21,6 +21,8 @@ namespace MoreLinq.Test
     using NUnit.Framework;
     using NUnit.Framework.Interfaces;
 
+    using static MoreLinq.Extensions.PrependExtension;
+
     [TestFixture]
     public class PrependTest
     {

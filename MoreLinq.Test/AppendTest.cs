@@ -20,6 +20,8 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using NUnit.Framework;
 
+    using static MoreLinq.Extensions.AppendExtension;
+
     [TestFixture]
     public class AppendTest
     {

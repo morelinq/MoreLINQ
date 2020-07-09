@@ -19,6 +19,8 @@ namespace MoreLinq.Test
 {
     using NUnit.Framework;
 
+    using static MoreLinq.Extensions.SkipLastExtension;
+
     [TestFixture]
     public class SkipLastTest
     {
