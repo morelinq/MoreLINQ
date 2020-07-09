@@ -33,7 +33,11 @@ namespace MoreLinq
         /// An <see cref="IEnumerable{T}"/> containing the source sequence elements except for the bypassed ones at the end.
         /// </returns>
 
+#if NETSTANDARD2_1
+        public static IEnumerable<T> SkipLast<T>(IEnumerable<T> source, int count)
+#else
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
+#endif
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 

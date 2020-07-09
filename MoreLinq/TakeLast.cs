@@ -46,7 +46,11 @@ namespace MoreLinq
         /// 56 and 78 in turn.
         /// </example>
 
+#if NETSTANDARD2_1
+        public static IEnumerable<TSource> TakeLast<TSource>(IEnumerable<TSource> source, int count)
+#else
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
+#endif
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 

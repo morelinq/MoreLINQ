@@ -41,7 +41,11 @@ namespace MoreLinq
         /// The <c>result</c> variable, when iterated over, will yield
         /// 0, 1, 2 and 3, in turn.
 
+#if NET471 || NET472 || NETSTANDARD1_6 || NETSTANDARD2_0 || NETSTANDARD2_1
+        public static IEnumerable<TSource> Prepend<TSource>(IEnumerable<TSource> source, TSource value)
+#else
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
+#endif
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source is PendNode<TSource> node
