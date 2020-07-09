@@ -253,7 +253,17 @@ namespace MoreLinq.ExtensionsGenerator
                         select
                             MethodDeclaration(md.ReturnType, md.Identifier)
                                 .WithAttributeLists(md.AttributeLists)
-                                .WithModifiers(md.Modifiers)
+                                .WithModifiers(
+                                    new SyntaxTokenList(
+                                        md.Modifiers[0]
+                                            .WithLeadingTrivia(
+                                                from lt in md.Modifiers[0].LeadingTrivia
+                                                where lt.Kind() != SyntaxKind.DisabledTextTrivia
+                                                where lt.Kind() != SyntaxKind.IfDirectiveTrivia
+                                                where lt.Kind() != SyntaxKind.ElseDirectiveTrivia
+                                                where lt.Kind() != SyntaxKind.EndIfDirectiveTrivia
+                                                select lt),
+                                        md.Modifiers[1]))
                                 .WithTypeParameterList(md.TypeParameterList)
                                 .WithConstraintClauses(md.ConstraintClauses)
                                 .WithParameterList(md.ParameterList)
