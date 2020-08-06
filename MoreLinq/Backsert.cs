@@ -72,7 +72,7 @@ namespace MoreLinq
                 if (e.MoveNext())
                 {
                     var (_, countdown) = e.Current;
-                    if (countdown is int n && n != index - 1)
+                    if (countdown is {} n && n != index - 1)
                         throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
 
                     do

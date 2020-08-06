@@ -119,7 +119,7 @@ namespace MoreLinq
             int width, T padding, Func<int, T> paddingSelector)
         {
             return
-                source.TryGetCollectionCount() is int collectionCount
+                source.TryGetCollectionCount() is {} collectionCount
                 ? collectionCount >= width
                   ? source
                   : Enumerable.Range(0, width - collectionCount)

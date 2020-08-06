@@ -110,8 +110,8 @@ namespace MoreLinq.Test
                         0, (s, e) => s + e.Num,
                         0, (s, e) => e.Num % 2 == 0 ? s + e.Num : s,
                         0, (s, _) => s + 1,
-                        (int?)null, (s, e) => s is int n ? Math.Min(n, e.Num) : e.Num,
-                        (int?)null, (s, e) => s is int n ? Math.Max(n, e.Num) : e.Num,
+                        (int?)null, (s, e) => s is {} n ? Math.Min(n, e.Num) : e.Num,
+                        (int?)null, (s, e) => s is {} n ? Math.Max(n, e.Num) : e.Num,
                         new HashSet<int>(), (s, e) => { s.Add(e.Str.Length); return s; },
                         new List<(int Num, string Str)>(), (s, e) => { s.Add((e.Num, e.Str)); return s; },
                         (sum, esum, count, min, max, lengths, items) => new
@@ -120,8 +120,8 @@ namespace MoreLinq.Test
                             EvenSum       = esum,
                             Count         = count,
                             Average       = (double)sum / count,
-                            Min           = min is int mn ? mn : throw new InvalidOperationException(),
-                            Max           = max is int mx ? mx : throw new InvalidOperationException(),
+                            Min           = min is {} mn ? mn : throw new InvalidOperationException(),
+                            Max           = max is {} mx ? mx : throw new InvalidOperationException(),
                             UniqueLengths = lengths,
                             Items         = items,
                         }

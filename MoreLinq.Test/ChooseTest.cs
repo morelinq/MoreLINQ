@@ -75,7 +75,7 @@ namespace MoreLinq.Test
         public void ThoseThatAreIntegers()
         {
             new int?[] { 0, 1, 2, null, 4, null, 6, null, null, 9 }
-                .Choose(e => e is int n ? Option.Some(n) : Option<int>.None)
+                .Choose(e => e is {} n ? Option.Some(n) : Option<int>.None)
                 .AssertSequenceEqual(0, 1, 2, 4, 6, 9);
         }
 
