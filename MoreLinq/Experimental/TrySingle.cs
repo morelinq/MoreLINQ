@@ -115,7 +115,7 @@ namespace MoreLinq.Experimental
                     };
                     return resultSelector(one, item);
                 }
-                case int _:
+                case {}:
                     return resultSelector(many, default);
                 default:
                 {

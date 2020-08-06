@@ -41,7 +41,7 @@ namespace MoreLinq
                 return source;
 
             return
-                source.TryGetCollectionCount() is int collectionCount
+                source.TryGetCollectionCount() is {} collectionCount
                 ? source.Take(collectionCount - count)
                 : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd ))
                         .TakeWhile(e => e.Countdown == null)
