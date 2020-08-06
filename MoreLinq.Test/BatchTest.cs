@@ -51,7 +51,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchUnevenlyDivisbleSequence()
+        public void BatchUnevenlyDivisibleSequence()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4);
             using (var reader = result.Read())
