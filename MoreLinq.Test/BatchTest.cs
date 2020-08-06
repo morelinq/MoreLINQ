@@ -106,10 +106,8 @@ namespace MoreLinq.Test
             reader.ReadEnd();
         }
 
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        public void BatchReadOnlyCollectionSmallerThanSize(int oversize)
+        [Test]
+        public void BatchReadOnlyCollectionSmallerThanSize()
         {
             var collection = ReadOnlyCollection.From(1, 2, 3, 4, 5);
             var result = collection.Batch(collection.Count * 2);
