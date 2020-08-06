@@ -58,6 +58,7 @@
       <Compile Include="CurrentThreadCultureScope.cs" />
       <Compile Include="Enumerable.cs" />
       <Compile Include="EqualityComparer.cs" />
+      <Compile Include="FuncModule.cs" />
       <Compile Include="KeyValuePair.cs" />
       <Compile Include="Program.cs" />
       <Compile Include="ReadOnlyCollection.cs" />

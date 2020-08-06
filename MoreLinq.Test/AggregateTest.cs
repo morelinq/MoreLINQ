@@ -26,6 +26,7 @@ namespace MoreLinq.Test
     using System.Reactive.Linq;
     using System.Reflection;
     using NUnit.Framework.Interfaces;
+    using static FuncModule;
 
     [TestFixture]
     public class AggregateTest
@@ -75,7 +76,7 @@ namespace MoreLinq.Test
                                   Expression.NewArrayInit(typeof(int), m.Parameters),
                                   m.Parameters)
                           .Compile()
-            let accumulator = new Func<int, int, int>((s, n) => s + n)
+            let accumulator = Func((int s, int n) => s + n)
             select new
             {
                 Name = $"{name}({m.AccumulatorCount})",
