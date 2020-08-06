@@ -20,7 +20,6 @@ namespace MoreLinq.Test
     using System;
     using System.Globalization;
     using System.Text.RegularExpressions;
-    using Kons;
     using NUnit.Framework;
     using Experimental;
 
@@ -83,11 +82,10 @@ namespace MoreLinq.Test
                     Regex.Split(csv.Trim(), @"\r?\n")
                          .Select(line => line.Trim())
                          .SpillSpan(h => Regex.Match(h, @"^;\s*(\w+)") is var m & m.Success ? (true, m.Groups[1].Value) : default,
-                                    ConsList<string>.Empty,
-                                    ConsList.Cons,
-                                    (a, h) => a.Prepend(h),
-                                    h => MoreEnumerable.Return(h.Reverse()
-                                                                .Index()
+                                    Enumerable.Empty<string>(),
+                                    MoreEnumerable.Return,
+                                    (a, h) => a.Append(h),
+                                    h => MoreEnumerable.Return(h.Index()
                                                                 .ToDictionary(e => e.Value, e => e.Key))
                                                        .SelectMany(d => new[] { "a", "b", "c" },
                                                                    (d, n) => d[n])
