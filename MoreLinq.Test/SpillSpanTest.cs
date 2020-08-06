@@ -22,6 +22,7 @@ namespace MoreLinq.Test
     using System.Text.RegularExpressions;
     using NUnit.Framework;
     using Experimental;
+    using static FuncModule;
 
     [TestFixture]
     public class SpillSpanTest
@@ -52,7 +53,7 @@ namespace MoreLinq.Test
                                                         .ToDictionary(e => e.Value, e => e.Key))
                                                .SelectMany(d => new[] { "a", "b", "c" },
                                                            (d, n) => d[n])
-                                               .Select(i => new Func<string[], string>(s => s[i]))
+                                               .Select(i => Func((string[] s) => s[i]))
                                                .ToArray(),
                             (bs, r) => bs.Select(b => int.Parse(b(r.Value), CultureInfo.InvariantCulture))
                                          .Fold((a, b, c) => new { A = a, B = b, C = c }))
@@ -89,7 +90,7 @@ namespace MoreLinq.Test
                                                                 .ToDictionary(e => e.Value, e => e.Key))
                                                        .SelectMany(d => new[] { "a", "b", "c" },
                                                                    (d, n) => d[n])
-                                                       .Select(i => new Func<string[], string>(s => s[i]))
+                                                       .Select(i => Func((string[] s) => s[i]))
                                                        .ToArray(),
                                     (bs, r) => new { Bindings = bs, Fields = r.Split(',') })
                 select e.Bindings
