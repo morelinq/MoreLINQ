@@ -121,6 +121,7 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.Sequence)]
         [TestCase(SourceKind.BreakingList)]
         [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         [TestCase(SourceKind.BreakingCollection)]
         public void BatchEmptySource(SourceKind kind)
         {
