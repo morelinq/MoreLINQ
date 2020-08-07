@@ -130,17 +130,12 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.Index()
-                         .SpillSpan(e => predicate(e.Value, e.Key),
+            return source.SpillSpan(predicate,
                                     null,
                                     Return,
                                     (a, h) => a.Append(h),
-                                    hs =>
-                                    {
-                                        var list = hs?.Select(h => h.Value).ToList() ?? new List<T>();
-                                        return (Item: headerSelector(list), list.Count);
-                                    },
-                                    (h, r) => resultSelector(h.Item, r.Value, r.Key - h.Count));
+                                    hs => headerSelector(hs?.ToList() ?? new List<T>()),
+                                    resultSelector);
         }
 
         /// <summary>
@@ -164,7 +159,33 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan(e => predicate(e) ? (true, e) : default,
+            return source.SpillSpan((e, _) => predicate(e),
+                                    empty, seeder, accumulator, headerSelector,
+                                    (h, e, _) => resultSelector(h, e));
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, A, H, R>(
+                this IEnumerable<T> source,
+                Func<T, int, bool> predicate,
+                A empty,
+                Func<T, A> seeder,
+                Func<A, T, A> accumulator,
+                Func<A, H> headerSelector,
+                Func<H, T, int, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (seeder == null) throw new ArgumentNullException(nameof(seeder));
+            if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillSpan((e, i) => predicate(e, i) ? (true, e) : default,
                                     empty, seeder, accumulator, headerSelector, resultSelector);
         }
 
@@ -189,23 +210,51 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
+            return source.SpillSpan((e, _) => chooser(e),
+                                    empty, seeder, accumulator, headerSelector,
+                                    (h, e, i) => resultSelector(h, e));
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, M, A, H, R>(
+                this IEnumerable<T> source,
+                Func<T, int, (bool, M)> chooser,
+                A empty,
+                Func<M, A> seeder,
+                Func<A, M, A> accumulator,
+                Func<A, H> headerSelector,
+                Func<H, T, int, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (seeder == null) throw new ArgumentNullException(nameof(seeder));
+            if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             return _(); IEnumerable<R> _()
             {
                 using var e = source.GetEnumerator();
                 if (!e.MoveNext())
                     yield break;
-                var (span, fm) = chooser(e.Current);
+                var i = 0;
+                var (span, fm) = chooser(e.Current, i);
                 var state = span ? seeder(fm) : empty;
                 if (span)
                 {
                     if (!e.MoveNext())
                         yield break;
-                    for (; chooser(e.Current) is (true, var m); e.MoveNext())
+                    for (; chooser(e.Current, ++i) is (true, var m); e.MoveNext())
                         state = accumulator(state, m);
                 }
                 var header = headerSelector(state);
                 state = default; // available for collection by GC
-                do { yield return resultSelector(header, e.Current); }
+                i = 0;
+                do { yield return resultSelector(header, e.Current, i++); }
                 while (e.MoveNext());
             }
         }

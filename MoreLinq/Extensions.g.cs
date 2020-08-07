@@ -5379,6 +5379,21 @@ namespace MoreLinq.Extensions
         /// </summary>
 
         public static IEnumerable<R>
+            SpillSpan<T, A, H, R>(
+                this IEnumerable<T> source,
+                Func<T, int, bool> predicate,
+                A empty,
+                Func<T, A> seeder,
+                Func<A, T, A> accumulator,
+                Func<A, H> headerSelector,
+                Func<H, T, int, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
             SpillSpan<T, M, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, (bool, M)> chooser,
@@ -5387,6 +5402,21 @@ namespace MoreLinq.Extensions
                 Func<A, M, A> accumulator,
                 Func<A, H> headerSelector,
                 Func<H, T, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, M, A, H, R>(
+                this IEnumerable<T> source,
+                Func<T, int, (bool, M)> chooser,
+                A empty,
+                Func<M, A> seeder,
+                Func<A, M, A> accumulator,
+                Func<A, H> headerSelector,
+                Func<H, T, int, R> resultSelector)
             => MoreEnumerable.            SpillSpan(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
 
     }
