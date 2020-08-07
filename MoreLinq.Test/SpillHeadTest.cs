@@ -23,7 +23,7 @@ namespace MoreLinq.Test
     using static FuncModule;
 
     [TestFixture]
-    public class SpillSpanTest
+    public class SpillHeadTest
     {
         [Test]
         public void Csv()
@@ -41,7 +41,7 @@ namespace MoreLinq.Test
                     select line.Split(',').Select(f => f.Trim()).ToArray()
                 }
                 from row in
-                    rows.SpillSpan(
+                    rows.SpillHead(
                             h => MoreEnumerable.Return(h.Index()
                                                         .ToDictionary(e => e.Value, e => e.Key))
                                                .SelectMany(d => new[] { "a", "b", "c" },
@@ -75,7 +75,7 @@ namespace MoreLinq.Test
                 from e in
                     Regex.Split(csv.Trim(), @"\r?\n")
                          .Select(line => line.Trim())
-                         .SpillSpan(h => Regex.Match(h, @"^;\s*(\w+)") is var m & m.Success ? (true, m.Groups[1].Value) : default,
+                         .SpillHead(h => Regex.Match(h, @"^;\s*(\w+)") is var m & m.Success ? (true, m.Groups[1].Value) : default,
                                     Enumerable.Empty<string>(),
                                     MoreEnumerable.Return,
                                     (a, h) => a.Append(h),

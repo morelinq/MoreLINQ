@@ -5280,91 +5280,91 @@ namespace MoreLinq.Extensions
 
     }
 
-    /// <summary><c>SpillSpan</c> extension.</summary>
+    /// <summary><c>SpillHead</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class SpillSpanExtension
+    public static partial class SpillHeadExtension
     {
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<(T Head, T Item)>
-            SpillSpan<T>(this IEnumerable<T> source)             => MoreEnumerable.            SpillSpan(source);
+            SpillHead<T>(this IEnumerable<T> source)             => MoreEnumerable.            SpillHead(source);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, R>(
+            SpillHead<T, R>(
                 this IEnumerable<T> source,
-                Func<T, T, R> resultSelector)             => MoreEnumerable.            SpillSpan(source, resultSelector);
+                Func<T, T, R> resultSelector)             => MoreEnumerable.            SpillHead(source, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, H> headerSelector,
                 Func<H, T, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 int count,
                 Func<List<T>, H> headerSelector,
                 Func<H, T, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, count, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, count, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 int count,
                 Func<List<T>, H> headerSelector,
-                Func<H, T, int, R> resultSelector)             => MoreEnumerable.            SpillSpan(source, count, headerSelector, resultSelector);
+                Func<H, T, int, R> resultSelector)             => MoreEnumerable.            SpillHead(source, count, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
                 Func<List<T>, H> headerSelector,
                 Func<H, T, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, predicate, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, predicate, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
                 Func<List<T>, H> headerSelector,
                 Func<H, T, int, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, predicate, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, predicate, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, A, H, R>(
+            SpillHead<T, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
                 A empty,
@@ -5372,14 +5372,14 @@ namespace MoreLinq.Extensions
                 Func<A, T, A> accumulator,
                 Func<A, H> headerSelector,
                 Func<H, T, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, A, H, R>(
+            SpillHead<T, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
                 A empty,
@@ -5387,14 +5387,14 @@ namespace MoreLinq.Extensions
                 Func<A, T, A> accumulator,
                 Func<A, H> headerSelector,
                 Func<H, T, int, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, M, A, H, R>(
+            SpillHead<T, M, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, (bool, M)> chooser,
                 A empty,
@@ -5402,14 +5402,14 @@ namespace MoreLinq.Extensions
                 Func<A, M, A> accumulator,
                 Func<A, H> headerSelector,
                 Func<H, T, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, M, A, H, R>(
+            SpillHead<T, M, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, int, (bool, M)> chooser,
                 A empty,
@@ -5417,7 +5417,7 @@ namespace MoreLinq.Extensions
                 Func<A, M, A> accumulator,
                 Func<A, H> headerSelector,
                 Func<H, T, int, R> resultSelector)
-            => MoreEnumerable.            SpillSpan(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
+            => MoreEnumerable.            SpillHead(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
 
     }
 

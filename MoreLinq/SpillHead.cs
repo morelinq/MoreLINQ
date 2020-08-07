@@ -28,25 +28,25 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<(T Head, T Item)>
-            SpillSpan<T>(this IEnumerable<T> source) =>
-            source.SpillSpan(h => h, ValueTuple.Create);
+            SpillHead<T>(this IEnumerable<T> source) =>
+            source.SpillHead(h => h, ValueTuple.Create);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, R>(
+            SpillHead<T, R>(
                 this IEnumerable<T> source,
                 Func<T, T, R> resultSelector) =>
-            source.SpillSpan(h => h, resultSelector);
+            source.SpillHead(h => h, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, H> headerSelector,
                 Func<H, T, R> resultSelector)
@@ -55,7 +55,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((_, i) => i == 0,
+            return source.SpillHead((_, i) => i == 0,
                                     default, h => h, (a, _) => a,
                                     headerSelector,
                                     (h, e, _) => resultSelector(h, e));
@@ -66,7 +66,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 int count,
                 Func<List<T>, H> headerSelector,
@@ -77,7 +77,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan(count, headerSelector,
+            return source.SpillHead(count, headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
 
@@ -86,12 +86,12 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 int count,
                 Func<List<T>, H> headerSelector,
                 Func<H, T, int, R> resultSelector) =>
-            source.SpillSpan((e, i) => i < count,
+            source.SpillHead((e, i) => i < count,
                              headerSelector,
                              resultSelector);
 
@@ -100,7 +100,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
                 Func<List<T>, H> headerSelector,
@@ -111,7 +111,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((e, _) => predicate(e),
+            return source.SpillHead((e, _) => predicate(e),
                                     headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
@@ -121,7 +121,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, H, R>(
+            SpillHead<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
                 Func<List<T>, H> headerSelector,
@@ -132,7 +132,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan(predicate,
+            return source.SpillHead(predicate,
                                     null,
                                     Return,
                                     (a, h) => a.Append(h),
@@ -145,7 +145,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, A, H, R>(
+            SpillHead<T, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
                 A empty,
@@ -161,7 +161,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((e, _) => predicate(e),
+            return source.SpillHead((e, _) => predicate(e),
                                     empty, seeder, accumulator, headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
@@ -171,7 +171,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, A, H, R>(
+            SpillHead<T, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
                 A empty,
@@ -187,7 +187,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((e, i) => predicate(e, i) ? (true, e) : default,
+            return source.SpillHead((e, i) => predicate(e, i) ? (true, e) : default,
                                     empty, seeder, accumulator, headerSelector, resultSelector);
         }
 
@@ -196,7 +196,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, M, A, H, R>(
+            SpillHead<T, M, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, (bool, M)> chooser,
                 A empty,
@@ -212,7 +212,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((e, _) => chooser(e),
+            return source.SpillHead((e, _) => chooser(e),
                                     empty, seeder, accumulator, headerSelector,
                                     (h, e, i) => resultSelector(h, e));
         }
@@ -222,7 +222,7 @@ namespace MoreLinq
         /// </summary>
 
         public static IEnumerable<R>
-            SpillSpan<T, M, A, H, R>(
+            SpillHead<T, M, A, H, R>(
                 this IEnumerable<T> source,
                 Func<T, int, (bool, M)> chooser,
                 A empty,
