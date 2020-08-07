@@ -15,12 +15,12 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq.Experimental
+namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
 
-    partial class ExperimentalEnumerable
+    partial class MoreEnumerable
     {
         /// <summary>
         /// TODO
@@ -48,9 +48,15 @@ namespace MoreLinq.Experimental
             SpillSpan<T, H, R>(
                 this IEnumerable<T> source,
                 Func<T, H> headerSelector,
-                Func<H, T, R> resultSelector) =>
-            source.SpillSpan(1, h => headerSelector(h[0]),
-                             (h, e, _) => resultSelector(h, e));
+                Func<H, T, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillSpan(1, h => headerSelector(h[0]),
+                                    (h, e, _) => resultSelector(h, e));
+        }
 
         /// <summary>
         /// TODO
@@ -61,9 +67,16 @@ namespace MoreLinq.Experimental
                 this IEnumerable<T> source,
                 int count,
                 Func<List<T>, H> headerSelector,
-                Func<H, T, R> resultSelector) =>
-            source.SpillSpan(count, headerSelector,
-                             (h, e, _) => resultSelector(h, e));
+                Func<H, T, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            // TODO validate count < 1?
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillSpan(count, headerSelector,
+                                    (h, e, _) => resultSelector(h, e));
+        }
 
         /// <summary>
         /// TODO
@@ -88,10 +101,17 @@ namespace MoreLinq.Experimental
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
                 Func<List<T>, H> headerSelector,
-                Func<H, T, R> resultSelector) =>
-            source.SpillSpan((e, _) => predicate(e),
-                             headerSelector,
-                             (h, e, _) => resultSelector(h, e));
+                Func<H, T, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillSpan((e, _) => predicate(e),
+                                    headerSelector,
+                                    (h, e, _) => resultSelector(h, e));
+        }
 
         /// <summary>
         /// TODO
@@ -104,6 +124,11 @@ namespace MoreLinq.Experimental
                 Func<List<T>, H> headerSelector,
                 Func<H, T, int, R> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             return _(); IEnumerable<R> _()
             {
                 using var e = source.GetEnumerator();
@@ -133,9 +158,18 @@ namespace MoreLinq.Experimental
                 Func<T, A> seeder,
                 Func<A, T, A> accumulator,
                 Func<A, H> headerSelector,
-                Func<H, T, R> resultSelector) =>
-            source.SpillSpan(e => predicate(e) ? (true, e) : default,
-                             empty, seeder, accumulator, headerSelector, resultSelector);
+                Func<H, T, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (seeder == null) throw new ArgumentNullException(nameof(seeder));
+            if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillSpan(e => predicate(e) ? (true, e) : default,
+                                    empty, seeder, accumulator, headerSelector, resultSelector);
+        }
 
         /// <summary>
         /// TODO
@@ -151,6 +185,13 @@ namespace MoreLinq.Experimental
                 Func<A, H> headerSelector,
                 Func<H, T, R> resultSelector)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (seeder == null) throw new ArgumentNullException(nameof(seeder));
+            if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             return _(); IEnumerable<R> _()
             {
                 using var e = source.GetEnumerator();

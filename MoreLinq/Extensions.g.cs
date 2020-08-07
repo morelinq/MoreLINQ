@@ -5280,6 +5280,117 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>SpillSpan</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class SpillSpanExtension
+    {
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<(T Head, T Item)>
+            SpillSpan<T>(this IEnumerable<T> source)             => MoreEnumerable.            SpillSpan(source);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, R>(
+                this IEnumerable<T> source,
+                Func<T, T, R> resultSelector)             => MoreEnumerable.            SpillSpan(source, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, H, R>(
+                this IEnumerable<T> source,
+                Func<T, H> headerSelector,
+                Func<H, T, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, H, R>(
+                this IEnumerable<T> source,
+                int count,
+                Func<List<T>, H> headerSelector,
+                Func<H, T, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, count, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, H, R>(
+                this IEnumerable<T> source,
+                int count,
+                Func<List<T>, H> headerSelector,
+                Func<H, T, int, R> resultSelector)             => MoreEnumerable.            SpillSpan(source, count, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, H, R>(
+                this IEnumerable<T> source,
+                Func<T, bool> predicate,
+                Func<List<T>, H> headerSelector,
+                Func<H, T, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, predicate, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, H, R>(
+                this IEnumerable<T> source,
+                Func<T, int, bool> predicate,
+                Func<List<T>, H> headerSelector,
+                Func<H, T, int, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, predicate, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, A, H, R>(
+                this IEnumerable<T> source,
+                Func<T, bool> predicate,
+                A empty,
+                Func<T, A> seeder,
+                Func<A, T, A> accumulator,
+                Func<A, H> headerSelector,
+                Func<H, T, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillSpan<T, M, A, H, R>(
+                this IEnumerable<T> source,
+                Func<T, (bool, M)> chooser,
+                A empty,
+                Func<M, A> seeder,
+                Func<A, M, A> accumulator,
+                Func<A, H> headerSelector,
+                Func<H, T, R> resultSelector)
+            => MoreEnumerable.            SpillSpan(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
+
+    }
+
     /// <summary><c>Split</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]

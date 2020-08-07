@@ -17,11 +17,9 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using System.Globalization;
     using System.Text.RegularExpressions;
     using NUnit.Framework;
-    using Experimental;
     using static FuncModule;
 
     [TestFixture]
