@@ -26,7 +26,7 @@ namespace MoreLinq.Test
     public class SpillSpanTest
     {
         [Test]
-        public void Csv1()
+        public void Csv()
         {
             const string csv = @"
                 a,c,b
