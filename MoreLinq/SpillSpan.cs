@@ -20,7 +20,6 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using static Optuple;
 
     partial class MoreEnumerable
     {
@@ -56,10 +55,9 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((h, i) => i == 0 ? Some(h) : default,
-                                    default, Some, (a, _) => a,
-                                    h => h is (true, var v) ? headerSelector(v)
-                                                            : throw new InvalidOperationException(),
+            return source.SpillSpan((_, i) => i == 0,
+                                    default, h => h, (a, _) => a,
+                                    headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
 
@@ -189,7 +187,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan((e, i) => predicate(e, i) ? Some(e) : default,
+            return source.SpillSpan((e, i) => predicate(e, i) ? (true, e) : default,
                                     empty, seeder, accumulator, headerSelector, resultSelector);
         }
 
