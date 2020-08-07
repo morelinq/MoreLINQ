@@ -41,19 +41,14 @@ namespace MoreLinq.Test
                     select line.Split(',').Select(f => f.Trim()).ToArray()
                 }
                 from row in
-                    rows.Index()
-                        .SpillSpan(
-                            r => r.Key == 0,
-                            null,
-                            r => r.Value,
-                            (r, _) => r,
+                    rows.SpillSpan(
                             h => MoreEnumerable.Return(h.Index()
                                                         .ToDictionary(e => e.Value, e => e.Key))
                                                .SelectMany(d => new[] { "a", "b", "c" },
                                                            (d, n) => d[n])
                                                .Select(i => Func((string[] s) => s[i]))
                                                .ToArray(),
-                            (bs, r) => bs.Select(b => int.Parse(b(r.Value), CultureInfo.InvariantCulture))
+                            (bs, r) => bs.Select(b => int.Parse(b(r), CultureInfo.InvariantCulture))
                                          .Fold((a, b, c) => new { A = a, B = b, C = c }))
                 select row;
 
