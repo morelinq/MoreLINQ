@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     partial class MoreEnumerable
     {
@@ -129,21 +130,17 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<R> _()
-            {
-                using var e = source.GetEnumerator();
-                if (!e.MoveNext())
-                    yield break;
-                var i = 0;
-                var items = new List<T>();
-                for (; predicate(e.Current, i); e.MoveNext(), i++)
-                    items.Add(e.Current);
-                var header = headerSelector(items);
-                items = null; // available for collection by GC
-                i = 0;
-                do { yield return resultSelector(header, e.Current, i++); }
-                while (e.MoveNext());
-            }
+            return source.Index()
+                         .SpillSpan(e => predicate(e.Value, e.Key),
+                                    null,
+                                    Return,
+                                    (a, h) => a.Append(h),
+                                    hs =>
+                                    {
+                                        var list = hs?.Select(h => h.Value).ToList() ?? new List<T>();
+                                        return (Item: headerSelector(list), list.Count);
+                                    },
+                                    (h, r) => resultSelector(h.Item, r.Value, r.Key - h.Count));
         }
 
         /// <summary>
