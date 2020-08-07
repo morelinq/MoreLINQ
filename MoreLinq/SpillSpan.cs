@@ -55,7 +55,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillSpan(1, h => headerSelector(h[0]),
+            return source.SpillSpan(1, h => headerSelector(h.Single()),
                                     (h, e, _) => resultSelector(h, e));
         }
 
