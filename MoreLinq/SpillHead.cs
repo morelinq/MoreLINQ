@@ -34,21 +34,21 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TResult>(
                 this IEnumerable<T> source,
-                Func<T, T, R> resultSelector) =>
+                Func<T, T, TResult> resultSelector) =>
             source.SpillHead(h => h, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<T, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
@@ -64,12 +64,12 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 int count,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             // TODO validate count < 1?
@@ -84,12 +84,12 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 int count,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, int, R> resultSelector) =>
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector) =>
             source.SpillHead((e, i) => i < count,
                              headerSelector,
                              resultSelector);
@@ -98,12 +98,12 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
@@ -119,12 +119,12 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
@@ -140,12 +140,12 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, M, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, (bool, M)> chooser,
-                Func<List<M>, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<T, (bool, TMatch)> chooser,
+                Func<List<TMatch>, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (chooser == null) throw new ArgumentNullException(nameof(chooser));
@@ -161,12 +161,12 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, M, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, int, (bool, M)> chooser,
-                Func<List<M>, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                Func<T, int, (bool, TMatch)> chooser,
+                Func<List<TMatch>, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (chooser == null) throw new ArgumentNullException(nameof(chooser));
@@ -175,9 +175,9 @@ namespace MoreLinq
 
             return source.SpillHead(chooser,
                                     null,
-                                    h => new List<M>(),
+                                    h => new List<TMatch>(),
                                     (a, h) => { a.Add(h); return a; },
-                                    hs => headerSelector(hs ?? new List<M>()),
+                                    hs => headerSelector(hs ?? new List<TMatch>()),
                                     resultSelector);
         }
 
@@ -185,15 +185,15 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
-                A empty,
-                Func<T, A> seeder,
-                Func<A, T, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                TState empty,
+                Func<T, TState> seeder,
+                Func<TState, T, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
@@ -211,15 +211,15 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
-                A empty,
-                Func<T, A> seeder,
-                Func<A, T, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                TState empty,
+                Func<T, TState> seeder,
+                Func<TState, T, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
@@ -236,15 +236,15 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, M, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, (bool, M)> chooser,
-                A empty,
-                Func<M, A> seeder,
-                Func<A, M, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<T, (bool, TMatch)> chooser,
+                TState empty,
+                Func<TMatch, TState> seeder,
+                Func<TState, TMatch, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (chooser == null) throw new ArgumentNullException(nameof(chooser));
@@ -262,15 +262,15 @@ namespace MoreLinq
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, M, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, int, (bool, M)> chooser,
-                A empty,
-                Func<M, A> seeder,
-                Func<A, M, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                Func<T, int, (bool, TMatch)> chooser,
+                TState empty,
+                Func<TMatch, TState> seeder,
+                Func<TState, TMatch, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (chooser == null) throw new ArgumentNullException(nameof(chooser));
@@ -279,7 +279,7 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<R> _()
+            return _(); IEnumerable<TResult> _()
             {
                 using var e = source.GetEnumerator();
                 if (!e.MoveNext())

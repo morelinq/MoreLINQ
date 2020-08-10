@@ -5296,127 +5296,151 @@ namespace MoreLinq.Extensions
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TResult>(
                 this IEnumerable<T> source,
-                Func<T, T, R> resultSelector)             => MoreEnumerable.            SpillHead(source, resultSelector);
+                Func<T, T, TResult> resultSelector)             => MoreEnumerable.            SpillHead(source, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<T, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 int count,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, count, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 int count,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, int, R> resultSelector)             => MoreEnumerable.            SpillHead(source, count, headerSelector, resultSelector);
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)             => MoreEnumerable.            SpillHead(source, count, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, predicate, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
-                Func<List<T>, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                Func<List<T>, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, predicate, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, THead, TResult>(
+                this IEnumerable<T> source,
+                Func<T, (bool, TMatch)> chooser,
+                Func<List<TMatch>, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
+            => MoreEnumerable.            SpillHead(source, chooser, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, THead, TResult>(
+                this IEnumerable<T> source,
+                Func<T, int, (bool, TMatch)> chooser,
+                Func<List<TMatch>, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
+            => MoreEnumerable.            SpillHead(source, chooser, headerSelector, resultSelector);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<TResult>
+            SpillHead<T, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
-                A empty,
-                Func<T, A> seeder,
-                Func<A, T, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                TState empty,
+                Func<T, TState> seeder,
+                Func<TState, T, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
-                A empty,
-                Func<T, A> seeder,
-                Func<A, T, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                TState empty,
+                Func<T, TState> seeder,
+                Func<TState, T, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, predicate, empty, seeder, accumulator, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, M, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, (bool, M)> chooser,
-                A empty,
-                Func<M, A> seeder,
-                Func<A, M, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, R> resultSelector)
+                Func<T, (bool, TMatch)> chooser,
+                TState empty,
+                Func<TMatch, TState> seeder,
+                Func<TState, TMatch, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
         /// </summary>
 
-        public static IEnumerable<R>
-            SpillHead<T, M, A, H, R>(
+        public static IEnumerable<TResult>
+            SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, int, (bool, M)> chooser,
-                A empty,
-                Func<M, A> seeder,
-                Func<A, M, A> accumulator,
-                Func<A, H> headerSelector,
-                Func<H, T, int, R> resultSelector)
+                Func<T, int, (bool, TMatch)> chooser,
+                TState empty,
+                Func<TMatch, TState> seeder,
+                Func<TState, TMatch, TState> accumulator,
+                Func<TState, THead> headerSelector,
+                Func<THead, T, int, TResult> resultSelector)
             => MoreEnumerable.            SpillHead(source, chooser, empty, seeder, accumulator, headerSelector, resultSelector);
 
     }
