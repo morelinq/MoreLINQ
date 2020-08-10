@@ -87,6 +87,7 @@
         - SkipUntil
         - Slice
         - SortedMerge
+        - SpillHead
         - Split
         - StartsWith
         - Subsets
