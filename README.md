@@ -571,6 +571,13 @@ descending) into a single sequence that preserves that order.
 
 This method has 2 overloads.
 
+### SpillHead
+
+TODO
+
+This method has 13 overloads.
+
+
 ### Split
 
 Splits the source sequence by a separator.
