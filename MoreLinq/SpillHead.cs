@@ -90,7 +90,7 @@ namespace MoreLinq
                 int count,
                 Func<List<T>, THead> headerSelector,
                 Func<THead, T, int, TResult> resultSelector) =>
-            source.SpillHead((e, i) => i < count,
+            source.SpillHead((_, i) => i < count,
                              headerSelector, resultSelector);
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace MoreLinq
 
             return source.SpillHead((e, _) => chooser(e),
                                     empty, seeder, accumulator, headerSelector,
-                                    (h, e, i) => resultSelector(h, e));
+                                    (h, e, _) => resultSelector(h, e));
         }
 
         /// <summary>
