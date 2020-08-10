@@ -173,7 +173,7 @@ namespace MoreLinq
 
             return source.SpillHead(chooser,
                                     null,
-                                    h => new List<TMatch>(),
+                                    h => new List<TMatch> { h },
                                     (a, h) => { a.Add(h); return a; },
                                     hs => headerSelector(hs ?? new List<TMatch>()),
                                     resultSelector);

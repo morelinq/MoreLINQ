@@ -37,6 +37,19 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void RepeatHeadElementsWithRest()
+        {
+            var result =
+                Enumerable.Range(5, 6)
+                          .SpillHead(2, hs => hs, (h, d) => (h[0], h[1], d));
+
+            Assert.That(result, Is.EqualTo(new[]
+            {
+                (5, 6, 7), (5, 6, 8), (5, 6, 9), (5, 6, 10)
+            }));
+        }
+
+        [Test]
         public void Csv()
         {
             const string csv = @"
