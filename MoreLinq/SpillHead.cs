@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     partial class MoreEnumerable
     {
@@ -134,9 +133,9 @@ namespace MoreLinq
 
             return source.SpillHead(predicate,
                                     null,
-                                    Return,
-                                    (a, h) => a.Append(h),
-                                    hs => headerSelector(hs?.ToList() ?? new List<T>()),
+                                    h => new List<T>(),
+                                    (a, h) => { a.Add(h); return a; },
+                                    hs => headerSelector(hs ?? new List<T>()),
                                     resultSelector);
         }
 
