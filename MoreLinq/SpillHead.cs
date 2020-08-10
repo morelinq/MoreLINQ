@@ -91,8 +91,7 @@ namespace MoreLinq
                 Func<List<T>, THead> headerSelector,
                 Func<THead, T, int, TResult> resultSelector) =>
             source.SpillHead((e, i) => i < count,
-                             headerSelector,
-                             resultSelector);
+                             headerSelector, resultSelector);
 
         /// <summary>
         /// TODO
@@ -132,8 +131,7 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.SpillHead((e, i) => predicate(e, i) ? (true, e) : default,
-                                    headerSelector,
-                                    resultSelector);
+                                    headerSelector, resultSelector);
         }
 
         /// <summary>
