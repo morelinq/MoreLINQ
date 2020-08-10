@@ -26,6 +26,17 @@ namespace MoreLinq.Test
     public class SpillHeadTest
     {
         [Test]
+        public void RepeatHeadElementWithRest()
+        {
+            var result = Enumerable.Range(5, 6).SpillHead();
+
+            Assert.That(result, Is.EqualTo(new[]
+            {
+                (5, 6), (5, 7), (5, 8), (5, 9), (5, 10)
+            }));
+        }
+
+        [Test]
         public void Csv()
         {
             const string csv = @"
