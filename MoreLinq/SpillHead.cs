@@ -131,11 +131,53 @@ namespace MoreLinq
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillHead(predicate,
+            return source.SpillHead((e, i) => predicate(e, i) ? (true, e) : default,
+                                    headerSelector,
+                                    resultSelector);
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillHead<T, M, H, R>(
+                this IEnumerable<T> source,
+                Func<T, (bool, M)> chooser,
+                Func<List<M>, H> headerSelector,
+                Func<H, T, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillHead((e, _) => chooser(e),
+                                    headerSelector,
+                                    (h, e, _) => resultSelector(h, e));
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+
+        public static IEnumerable<R>
+            SpillHead<T, M, H, R>(
+                this IEnumerable<T> source,
+                Func<T, int, (bool, M)> chooser,
+                Func<List<M>, H> headerSelector,
+                Func<H, T, int, R> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.SpillHead(chooser,
                                     null,
-                                    h => new List<T>(),
+                                    h => new List<M>(),
                                     (a, h) => { a.Add(h); return a; },
-                                    hs => headerSelector(hs ?? new List<T>()),
+                                    hs => headerSelector(hs ?? new List<M>()),
                                     resultSelector);
         }
 
