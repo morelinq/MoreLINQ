@@ -46,7 +46,7 @@ build_script:
     }
 test_script:
 - cmd: test.cmd
-- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.netcoreapp3.1.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: Get-ChildItem tmp/cover | Compress-Archive -DestinationPath coverage-report.zip
 - cmd: |
     cd tmp\cover
