@@ -100,7 +100,7 @@ namespace MoreLinq
                         yield return resultSelector(bucket);
                     }
                 }
-                case IReadOnlyList<TSource> list when list.Count == 0:
+                case IReadOnlyCollection<TSource> collection when collection.Count == 0:
                 {
                     return Enumerable.Empty<TResult>();
                 }

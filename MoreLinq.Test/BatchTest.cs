@@ -51,7 +51,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchUnevenlyDivisbleSequence()
+        public void BatchUnevenlyDivisibleSequence()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4);
             using (var reader = result.Read())
@@ -106,10 +106,8 @@ namespace MoreLinq.Test
             reader.ReadEnd();
         }
 
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        public void BatchReadOnlyCollectionSmallerThanSize(int oversize)
+        [Test]
+        public void BatchReadOnlyCollectionSmallerThanSize()
         {
             var collection = ReadOnlyCollection.From(1, 2, 3, 4, 5);
             var result = collection.Batch(collection.Count * 2);
@@ -121,6 +119,7 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.Sequence)]
         [TestCase(SourceKind.BreakingList)]
         [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
         [TestCase(SourceKind.BreakingCollection)]
         public void BatchEmptySource(SourceKind kind)
         {

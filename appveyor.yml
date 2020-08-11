@@ -16,7 +16,7 @@ install:
 - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
 - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
 - git reset --hard
-- ps: tools\dotnet-install.ps1 -Version ((type .\global.json | ConvertFrom-Json).sdk.version)
+- ps: tools\dotnet-install.ps1 -JSonFile global.json
 before_build:
 - dotnet --info
 build_script:
@@ -46,7 +46,7 @@ build_script:
     }
 test_script:
 - cmd: test.cmd
-- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.netcoreapp3.1.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: Get-ChildItem tmp/cover | Compress-Archive -DestinationPath coverage-report.zip
 - cmd: |
     cd tmp\cover
