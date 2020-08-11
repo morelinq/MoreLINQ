@@ -37,6 +37,13 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void HeadElementOnly()
+        {
+            var result = new[] { "head" }.SpillHead();
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
         public void RepeatHeadElementsWithRest()
         {
             var result =
