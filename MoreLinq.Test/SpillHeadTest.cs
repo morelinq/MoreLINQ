@@ -72,6 +72,45 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void PredicatedHeads()
+        {
+            var heads = new[] { "head1", "head2", "head3" };
+            var data = new[] { "foo", "bar", "baz" };
+            var result =  heads.Concat(data)
+                               .SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
+                                          hs => string.Join("|", hs),
+                                          (h, e) => new { Head = h, Data = e });
+
+            Assert.That(result, Is.EqualTo(new[]
+            {
+                new { Head = "head1|head2|head3", Data = "foo" },
+                new { Head = "head1|head2|head3", Data = "bar" },
+                new { Head = "head1|head2|head3", Data = "baz" },
+            }));
+        }
+
+        [Test]
+        public void CustomAccumulation()
+        {
+            var heads = new[] { "head1", "head2", "head3" };
+            var data = new[] { "foo", "bar", "baz" };
+            var result =  heads.Concat(data)
+                               .SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
+                                          Enumerable.Empty<string>(),
+                                          MoreEnumerable.Return,
+                                          (hs, h) => hs.Append(h),
+                                          hs => string.Join("|", hs),
+                                          (h, e) => new { Head = h, Data = e });
+
+            Assert.That(result, Is.EqualTo(new[]
+            {
+                new { Head = "head1|head2|head3", Data = "foo" },
+                new { Head = "head1|head2|head3", Data = "bar" },
+                new { Head = "head1|head2|head3", Data = "baz" },
+            }));
+        }
+
+        [Test]
         public void NoneSatisfyHeadPredicate()
         {
             var words = new[] { "foo", "bar", "baz" };
