@@ -50,4 +50,4 @@ script:
   - # curl -s https://codecov.io/bash > codecov
   - curl -sSL https://raw.githubusercontent.com/codecov/codecov-bash/14662d32a4862918c31efafe4b450de1305a38e1/codecov > codecov
   - chmod +x codecov
-  - ./codecov -f ./MoreLinq.Test/coverage.opencover.xml
+  - ./codecov -f ./MoreLinq.Test/coverage.netcoreapp3.1.opencover.xml
