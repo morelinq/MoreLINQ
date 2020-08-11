@@ -72,6 +72,22 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void NoneSatisfyHeadPredicate()
+        {
+            var words = new[] { "foo", "bar", "baz" };
+            var result = words.SpillHead(e => e == "head",
+                                         hs => hs.Count,
+                                         (hc, e) => new { HeadCount = 0, Data = e });
+
+            Assert.That(result, Is.EqualTo(new[]
+            {
+                new { HeadCount = 0, Data = "foo" },
+                new { HeadCount = 0, Data = "bar" },
+                new { HeadCount = 0, Data = "baz" },
+            }));
+        }
+
+        [Test]
         public void Csv()
         {
             const string csv = @"
