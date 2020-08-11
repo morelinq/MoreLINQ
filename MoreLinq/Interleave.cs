@@ -53,17 +53,29 @@ namespace MoreLinq
             return _(); IEnumerable<T> _()
             {
                 var sequences = new[] { sequence }.Concat(otherSequences);
-
-                // produce an enumerators collection for all IEnumerable<T> instances passed to us
-                var enumerators = sequences.Select(e => e.GetEnumerator()).Acquire();
+                var enumerators = new List<IEnumerator<T>>();
 
                 try
                 {
+                    foreach (var enumerator in sequences.Select(s => s.GetEnumerator()))
+                    {
+                        enumerators.Add(enumerator);
+                        if (enumerator.MoveNext())
+                        {
+                            yield return enumerator.Current;
+                        }
+                        else
+                        {
+                            enumerators.Remove(enumerator);
+                            enumerator.Dispose();
+                        }
+                    }
+
                     var hasNext = true;
                     while (hasNext)
                     {
                         hasNext = false;
-                        for (var i = 0; i < enumerators.Length; i++)
+                        for (var i = 0; i < enumerators.Count; i++)
                         {
                             var enumerator = enumerators[i];
                             if (enumerator == null)
