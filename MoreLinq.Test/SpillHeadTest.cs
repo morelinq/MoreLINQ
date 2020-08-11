@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         [Test]
         public void RepeatHeadElementWithRest()
         {
-            using var ts = Enumerable.Range(5, 6).AsTestingSequence();
+            using var ts = TestingSequence.Of(5, 6, 7, 8, 9, 10);
             var result = ts.SpillHead();
 
             Assert.That(result, Is.EqualTo(new[]
@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         [Test]
         public void HeadElementOnly()
         {
-            using var ts = new[] { "head" }.AsTestingSequence();
+            using var ts = TestingSequence.Of("head");
             var result = ts.SpillHead();
             Assert.That(result, Is.Empty);
         }
@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         [Test]
         public void RepeatHeadElementsWithRest()
         {
-            using var ts = Enumerable.Range(5, 6).AsTestingSequence();
+            using var ts = TestingSequence.Of(5, 6, 7, 8, 9, 10);
             var result = ts.SpillHead(2, hs => hs, (h, d) => (h[0], h[1], d));
 
             Assert.That(result, Is.EqualTo(new[]
@@ -75,9 +75,9 @@ namespace MoreLinq.Test
         [Test]
         public void PredicatedHeads()
         {
-            var heads = new[] { "head1", "head2", "head3" };
-            var data = new[] { "foo", "bar", "baz" };
-            using var ts = heads.Concat(data).AsTestingSequence();
+            using var ts = TestingSequence.Of("head1", "head2", "head3",
+                                              "foo", "bar", "baz");
+
             var result =  ts.SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
                                        hs => string.Join("|", hs),
                                        (h, e) => new { Head = h, Data = e });
@@ -93,9 +93,9 @@ namespace MoreLinq.Test
         [Test]
         public void CustomAccumulation()
         {
-            var heads = new[] { "head1", "head2", "head3" };
-            var data = new[] { "foo", "bar", "baz" };
-            using var ts = heads.Concat(data).AsTestingSequence();
+            using var ts = TestingSequence.Of("head1", "head2", "head3",
+                                              "foo", "bar", "baz");
+
             var result =  ts.SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
                                        Enumerable.Empty<string>(),
                                        MoreEnumerable.Return,
@@ -114,7 +114,7 @@ namespace MoreLinq.Test
         [Test]
         public void NoneSatisfyHeadPredicate()
         {
-            using var words = new[] { "foo", "bar", "baz" }.AsTestingSequence();
+            using var words = TestingSequence.Of("foo", "bar", "baz");
             var result = words.SpillHead(e => e == "head",
                                          hs => hs.Count,
                                          (hc, e) => new { HeadCount = 0, Data = e });
