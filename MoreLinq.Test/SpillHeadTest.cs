@@ -29,7 +29,8 @@ namespace MoreLinq.Test
         [Test]
         public void RepeatHeadElementWithRest()
         {
-            var result = Enumerable.Range(5, 6).SpillHead();
+            using var ts = Enumerable.Range(5, 6).AsTestingSequence();
+            var result = ts.SpillHead();
 
             Assert.That(result, Is.EqualTo(new[]
             {
@@ -40,16 +41,16 @@ namespace MoreLinq.Test
         [Test]
         public void HeadElementOnly()
         {
-            var result = new[] { "head" }.SpillHead();
+            using var ts = new[] { "head" }.AsTestingSequence();
+            var result = ts.SpillHead();
             Assert.That(result, Is.Empty);
         }
 
         [Test]
         public void RepeatHeadElementsWithRest()
         {
-            var result =
-                Enumerable.Range(5, 6)
-                          .SpillHead(2, hs => hs, (h, d) => (h[0], h[1], d));
+            using var ts = Enumerable.Range(5, 6).AsTestingSequence();
+            var result = ts.SpillHead(2, hs => hs, (h, d) => (h[0], h[1], d));
 
             Assert.That(result, Is.EqualTo(new[]
             {
@@ -63,10 +64,10 @@ namespace MoreLinq.Test
         [TestCase(3)]
         public void InsufficientElementsPerHeadCount(int count)
         {
-            var result = Enumerable.Repeat("head", count)
-                                   .SpillHead(3,
-                                              BreakingFunc.Of<List<string>, object>(),
-                                              BreakingFunc.Of<object, string, object>());
+            using var ts = Enumerable.Repeat("head", count).AsTestingSequence();
+            var result = ts.SpillHead(3,
+                                      BreakingFunc.Of<List<string>, object>(),
+                                      BreakingFunc.Of<object, string, object>());
 
             Assert.That(result, Is.Empty);
         }
@@ -76,10 +77,10 @@ namespace MoreLinq.Test
         {
             var heads = new[] { "head1", "head2", "head3" };
             var data = new[] { "foo", "bar", "baz" };
-            var result =  heads.Concat(data)
-                               .SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
-                                          hs => string.Join("|", hs),
-                                          (h, e) => new { Head = h, Data = e });
+            using var ts = heads.Concat(data).AsTestingSequence();
+            var result =  ts.SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
+                                       hs => string.Join("|", hs),
+                                       (h, e) => new { Head = h, Data = e });
 
             Assert.That(result, Is.EqualTo(new[]
             {
@@ -94,13 +95,13 @@ namespace MoreLinq.Test
         {
             var heads = new[] { "head1", "head2", "head3" };
             var data = new[] { "foo", "bar", "baz" };
-            var result =  heads.Concat(data)
-                               .SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
-                                          Enumerable.Empty<string>(),
-                                          MoreEnumerable.Return,
-                                          (hs, h) => hs.Append(h),
-                                          hs => string.Join("|", hs),
-                                          (h, e) => new { Head = h, Data = e });
+            using var ts = heads.Concat(data).AsTestingSequence();
+            var result =  ts.SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
+                                       Enumerable.Empty<string>(),
+                                       MoreEnumerable.Return,
+                                       (hs, h) => hs.Append(h),
+                                       hs => string.Join("|", hs),
+                                       (h, e) => new { Head = h, Data = e });
 
             Assert.That(result, Is.EqualTo(new[]
             {
@@ -113,7 +114,7 @@ namespace MoreLinq.Test
         [Test]
         public void NoneSatisfyHeadPredicate()
         {
-            var words = new[] { "foo", "bar", "baz" };
+            using var words = new[] { "foo", "bar", "baz" }.AsTestingSequence();
             var result = words.SpillHead(e => e == "head",
                                          hs => hs.Count,
                                          (hc, e) => new { HeadCount = 0, Data = e });
@@ -135,23 +136,21 @@ namespace MoreLinq.Test
                 4,6,5
                 7,9,8";
 
+            var rows =
+                from line in Regex.Split(csv.Trim(), @"\r?\n")
+                select line.Split(',').Select(f => f.Trim()).ToArray();
+
+            using var ts = rows.AsTestingSequence();
             var result =
-                from rows in new[]
-                {
-                    from line in Regex.Split(csv.Trim(), @"\r?\n")
-                    select line.Split(',').Select(f => f.Trim()).ToArray()
-                }
-                from row in
-                    rows.SpillHead(
-                            h => MoreEnumerable.Return(h.Index()
-                                                        .ToDictionary(e => e.Value, e => e.Key))
-                                               .SelectMany(d => new[] { "a", "b", "c" },
-                                                           (d, n) => d[n])
-                                               .Select(i => Func((string[] s) => s[i]))
-                                               .ToArray(),
-                            (bs, r) => bs.Select(b => int.Parse(b(r), CultureInfo.InvariantCulture))
-                                         .Fold((a, b, c) => new { A = a, B = b, C = c }))
-                select row;
+                    ts.SpillHead(
+                          h => MoreEnumerable.Return(h.Index()
+                                                      .ToDictionary(e => e.Value, e => e.Key))
+                                             .SelectMany(d => new[] { "a", "b", "c" },
+                                                         (d, n) => d[n])
+                                             .Select(i => Func((string[] s) => s[i]))
+                                             .ToArray(),
+                          (bs, r) => bs.Select(b => int.Parse(b(r), CultureInfo.InvariantCulture))
+                                       .Fold((a, b, c) => new { A = a, B = b, C = c }));
 
             Assert.That(result, Is.EqualTo(new[]
             {
@@ -172,18 +171,20 @@ namespace MoreLinq.Test
                 4,5,6
                 7,8,9";
 
+            using var ts = Regex.Split(csv.Trim(), @"\r?\n")
+                                .Select(line => line.Trim())
+                                .AsTestingSequence();
+
             var result =
                 from e in
-                    Regex.Split(csv.Trim(), @"\r?\n")
-                         .Select(line => line.Trim())
-                         .SpillHead(h => Regex.Match(h, @"^;\s*(\w+)") is var m & m.Success ? (true, m.Groups[1].Value) : default,
-                                    h => MoreEnumerable.Return(h.Index()
-                                                                .ToDictionary(e => e.Value, e => e.Key))
-                                                       .SelectMany(d => new[] { "a", "b", "c" },
-                                                                   (d, n) => d[n])
-                                                       .Select(i => Func((string[] s) => s[i]))
-                                                       .ToArray(),
-                                    (bs, r) => new { Bindings = bs, Fields = r.Split(',') })
+                    ts.SpillHead(h => Regex.Match(h, @"^;\s*(\w+)") is var m & m.Success ? (true, m.Groups[1].Value) : default,
+                                 h => MoreEnumerable.Return(h.Index()
+                                                             .ToDictionary(e => e.Value, e => e.Key))
+                                                    .SelectMany(d => new[] { "a", "b", "c" },
+                                                                (d, n) => d[n])
+                                                    .Select(i => Func((string[] s) => s[i]))
+                                                    .ToArray(),
+                                 (bs, r) => new { Bindings = bs, Fields = r.Split(',') })
                 select e.Bindings
                         .Select(b => int.Parse(b(e.Fields), CultureInfo.InvariantCulture))
                         .Fold((a, b, c) => new { A = a, B = b, C = c });
