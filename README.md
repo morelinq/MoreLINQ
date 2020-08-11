@@ -573,10 +573,16 @@ This method has 2 overloads.
 
 ### SpillHead
 
-TODO
+Projects the head elements of a sequence exclusively with the remainder
+elements of the sequence. Arguments of various overloads specify functions to
+choose and delineate header elements (possibly based on their index), fold and
+project the header elements as well as project elements of the resulting
+sequence.
 
 This method has 13 overloads.
 
+Some of the simpler overloads enable pairing the one or more head elements
+with the remainder elements of a sequence.
 
 ### Split
 

@@ -23,16 +23,39 @@ namespace MoreLinq
     partial class MoreEnumerable
     {
         /// <summary>
-        /// TODO
+        /// Couples the first/head element of the sequence exclusively with
+        /// the remainder elements of the sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// A sequence with the head element coupled together with the
+        /// remainder elements of the source sequence.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<(T Head, T Item)>
             SpillHead<T>(this IEnumerable<T> source) =>
             source.SpillHead(h => h, ValueTuple.Create);
 
         /// <summary>
-        /// TODO
+        /// Projects the first/head element of the sequence exclusively with
+        /// the remainder elements of the sequence. An additional argument
+        /// specifies a function that receives an element of sequence
+        /// together with the first/head element and returns a projection.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head and one of the remainder elements.</param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TResult>(
@@ -41,8 +64,28 @@ namespace MoreLinq
             source.SpillHead(h => h, resultSelector);
 
         /// <summary>
-        /// TODO
+        /// Projects the first/head element of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to project the head as well as the elements
+        /// of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, THead, TResult>(
@@ -61,8 +104,30 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with the
+        /// remainder elements of the sequence. Additional arguments specify
+        /// functions to project the head as well as the elements of the
+        /// resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="count">Count head elements to collect.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation given a list of exactly
+        /// <paramref name="count"/> head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, THead, TResult>(
@@ -81,8 +146,31 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with the
+        /// remainder elements of the sequence. Additional arguments specify
+        /// functions to project the head as well as the elements (along with
+        /// their index) of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="count">Count head elements to collect.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation given a list of exactly
+        /// <paramref name="count"/> head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result given
+        /// the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements along with its zero-based index
+        /// (where zero is the first non-head element).
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, THead, TResult>(
@@ -94,8 +182,30 @@ namespace MoreLinq
                              headerSelector, resultSelector);
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with the
+        /// remainder elements of the sequence. Additional arguments specify
+        /// functions to delineate header elements, project the header
+        /// elements as well as the elements of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">Function that determines whether an
+        /// element of the source sequence is at the head.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation given a list of head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, THead, TResult>(
@@ -115,8 +225,32 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to delineate header elements (possibly based
+        /// on their index), project the header elements as well as the
+        /// elements of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">Function that determines whether an
+        /// element of the source sequence (along with its zero-based index)
+        /// is at the head.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation given a list of head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements along with its zero-based index.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, THead, TResult>(
@@ -135,43 +269,92 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to choose and delineate header elements,
+        /// project the header elements as well as the elements of the
+        /// resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TMatch">Type of head match.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="matcher">Function that determines whether an
+        /// element of the source sequence is a match for a head.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation given a list of head matches.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TMatch, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, (bool, TMatch)> chooser,
+                Func<T, (bool, TMatch)> matcher,
                 Func<List<TMatch>, THead> headerSelector,
                 Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (matcher == null) throw new ArgumentNullException(nameof(matcher));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillHead((e, _) => chooser(e),
+            return source.SpillHead((e, _) => matcher(e),
                                     headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to choose and delineate header elements
+        /// (possibly based on their index), project the header elements
+        /// as well as the elements of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TMatch">Type of head match.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="matcher">Function that determines whether an
+        /// element of the source sequence (along with its zero-based index)
+        /// is a match for a head.</param>
+        /// <param name="headerSelector">Function that projects an
+        /// intermediate head representation given a list of head matches.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements along with its zero-based index.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TMatch, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, int, (bool, TMatch)> chooser,
+                Func<T, int, (bool, TMatch)> matcher,
                 Func<List<TMatch>, THead> headerSelector,
                 Func<THead, T, int, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (matcher == null) throw new ArgumentNullException(nameof(matcher));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillHead(chooser,
+            return source.SpillHead(matcher,
                                     null,
                                     h => new List<TMatch> { h },
                                     (a, h) => { a.Add(h); return a; },
@@ -180,8 +363,37 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to delineate header elements, fold and
+        /// project the header elements as well as project elements of
+        /// the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TState">Type of head accumulator state.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">Function that determines whether an
+        /// element of the source sequence is at the head.</param>
+        /// <param name="empty">The empty state when head is absent.</param>
+        /// <param name="seeder">Function that seeds the accumulation state
+        /// with the initial head element.</param>
+        /// <param name="accumulator">Function that folds subsequent head
+        /// elements into the state.</param>
+        /// <param name="headerSelector">Function that projects a single
+        /// head representation given the accumulated state of head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TState, THead, TResult>(
@@ -206,8 +418,38 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to delineate header elements (possibly based on
+        /// their index), fold and project the header elements as well as
+        /// project elements of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TState">Type of head accumulator state.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="predicate">Function that determines whether an
+        /// element of the source sequence (along with its zero-based index)
+        /// is at the head.</param>
+        /// <param name="empty">The empty state when head is absent.</param>
+        /// <param name="seeder">Function that seeds the accumulation state
+        /// with the initial head element.</param>
+        /// <param name="accumulator">Function that folds subsequent head
+        /// elements into the state.</param>
+        /// <param name="headerSelector">Function that projects a single
+        /// head representation given the accumulated state of head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements along with its zero-based index.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TState, THead, TResult>(
@@ -231,13 +473,43 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to choose and delineate header elements,
+        /// fold and project the header elements as well as project
+        /// elements of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TMatch">Type of head match.</typeparam>
+        /// <typeparam name="TState">Type of head accumulator state.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="matcher">Function that determines whether an
+        /// element of the source sequence is a match for a head.</param>
+        /// <param name="empty">The empty state when head is absent.</param>
+        /// <param name="seeder">Function that seeds the accumulation state
+        /// with the initial head element.</param>
+        /// <param name="accumulator">Function that folds subsequent head
+        /// elements into the state.</param>
+        /// <param name="headerSelector">Function that projects a single
+        /// head representation given the accumulated state of head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, (bool, TMatch)> chooser,
+                Func<T, (bool, TMatch)> matcher,
                 TState empty,
                 Func<TMatch, TState> seeder,
                 Func<TState, TMatch, TState> accumulator,
@@ -245,25 +517,56 @@ namespace MoreLinq
                 Func<THead, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (matcher == null) throw new ArgumentNullException(nameof(matcher));
             if (seeder == null) throw new ArgumentNullException(nameof(seeder));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.SpillHead((e, _) => chooser(e),
+            return source.SpillHead((e, _) => matcher(e),
                                     empty, seeder, accumulator, headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
 
         /// <summary>
-        /// TODO
+        /// Projects the head elements of the sequence exclusively with
+        /// the remainder elements of the sequence. Additional arguments
+        /// specify functions to choose and delineate header elements
+        /// (possibly based on their index), fold and project the header
+        /// elements as well as project elements of the resulting sequence.
         /// </summary>
+        /// <typeparam name="T"> Type of source sequence elements.</typeparam>
+        /// <typeparam name="TMatch">Type of head match.</typeparam>
+        /// <typeparam name="TState">Type of head accumulator state.</typeparam>
+        /// <typeparam name="THead">Type of head projection.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="matcher">Function that determines whether an
+        /// element of the source sequence (along with its zero-based index)
+        /// is a match for a head.</param>
+        /// <param name="empty">The empty state when head is absent.</param>
+        /// <param name="seeder">Function that seeds the accumulation state
+        /// with the initial head element.</param>
+        /// <param name="accumulator">Function that folds subsequent head
+        /// elements into the state.</param>
+        /// <param name="headerSelector">Function that projects a single
+        /// head representation given the accumulated state of head elements.
+        /// </param>
+        /// <param name="resultSelector">Function that projects a result
+        /// given the head projection returned by <paramref name="headerSelector"/>
+        /// and one of the remainder elements along with its zero-based index.
+        /// </param>
+        /// <returns>A sequence of elements returned by
+        /// <paramref name="resultSelector"/>.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
         public static IEnumerable<TResult>
             SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
-                Func<T, int, (bool, TMatch)> chooser,
+                Func<T, int, (bool, TMatch)> matcher,
                 TState empty,
                 Func<TMatch, TState> seeder,
                 Func<TState, TMatch, TState> accumulator,
@@ -271,7 +574,7 @@ namespace MoreLinq
                 Func<THead, T, int, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            if (matcher == null) throw new ArgumentNullException(nameof(matcher));
             if (seeder == null) throw new ArgumentNullException(nameof(seeder));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
@@ -283,7 +586,7 @@ namespace MoreLinq
                 if (!e.MoveNext())
                     yield break;
                 var i = 0;
-                var (span, fm) = chooser(e.Current, i);
+                var (span, fm) = matcher(e.Current, i);
                 var state = span ? seeder(fm) : empty;
                 if (span)
                 {
@@ -291,7 +594,7 @@ namespace MoreLinq
                     {
                         if (!e.MoveNext())
                             yield break;
-                        if (chooser(e.Current, ++i) is (true, var m))
+                        if (matcher(e.Current, ++i) is (true, var m))
                             state = accumulator(state, m);
                         else
                             break;
