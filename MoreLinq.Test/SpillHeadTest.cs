@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Text.RegularExpressions;
     using NUnit.Framework;
@@ -54,6 +55,20 @@ namespace MoreLinq.Test
             {
                 (5, 6, 7), (5, 6, 8), (5, 6, 9), (5, 6, 10)
             }));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void InsufficientElementsPerHeadCount(int count)
+        {
+            var result = Enumerable.Repeat("head", count)
+                                   .SpillHead(3,
+                                              BreakingFunc.Of<List<string>, object>(),
+                                              BreakingFunc.Of<object, string, object>());
+
+            Assert.That(result, Is.Empty);
         }
 
         [Test]

@@ -287,10 +287,15 @@ namespace MoreLinq
                 var state = span ? seeder(fm) : empty;
                 if (span)
                 {
-                    if (!e.MoveNext())
-                        yield break;
-                    for (; chooser(e.Current, ++i) is (true, var m); e.MoveNext())
-                        state = accumulator(state, m);
+                    for (;;)
+                    {
+                        if (!e.MoveNext())
+                            yield break;
+                        if (chooser(e.Current, ++i) is (true, var m))
+                            state = accumulator(state, m);
+                        else
+                            break;
+                    }
                 }
                 var header = headerSelector(state);
                 state = default; // available for collection by GC
