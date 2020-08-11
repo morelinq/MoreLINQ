@@ -7,7 +7,7 @@ if [[ -z "$1" ]]; then
 else
     configs="$1"
 fi
-for v in 2.1 3.0; do
+for v in 2.1 3.1; do
     for c in $configs; do
         if [[ "$c" == "Debug" ]]; then
             coverage_args="-p:CollectCoverage=true
