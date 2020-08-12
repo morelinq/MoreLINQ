@@ -94,7 +94,7 @@ namespace MoreLinq
 
                     keys = new List<TKey>();
                     counts = new List<int>();
-                    (bool, TKey) prevKey = (false, default);
+                    var prevKey = (false, default(TKey));
                     var index = 0;
 
                     foreach (var item in source)
@@ -102,7 +102,7 @@ namespace MoreLinq
                         var key = keySelector(item);
 
                         if (// key same as the previous? then re-use the index
-                            prevKey is (true, var pk)
+                            prevKey is (true, {} pk)
                                 && cmp.GetHashCode(pk) == cmp.GetHashCode(key)
                                 && cmp.Equals(pk, key)
                             // otherwise try & find index of the key

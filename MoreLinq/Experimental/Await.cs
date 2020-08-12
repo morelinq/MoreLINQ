@@ -442,39 +442,6 @@ namespace MoreLinq.Experimental
                 var consumerCancellationTokenSource = new CancellationTokenSource();
                 (Exception?, Exception?) lastCriticalErrors = default;
 
-                void PostNotice(Notice notice,
-                                (int, T, Task<TTaskResult>) item,
-                                Exception? error)
-                {
-                    // If a notice fails to post then assume critical error
-                    // conditions (like low memory), capture the error without
-                    // further allocation of resources and trip the cancellation
-                    // token source used by the main loop waiting on notices.
-                    // Note that only the "last" critical error is reported
-                    // as maintaining a list would incur allocations. The idea
-                    // here is to make a best effort attempt to report any of
-                    // the error conditions that may be occuring, which is still
-                    // better than nothing.
-
-                    try
-                    {
-                        var edi = error != null
-                                ? ExceptionDispatchInfo.Capture(error)
-                                : null;
-                        notices.Add((notice, item, edi));
-                    }
-                    catch (Exception e)
-                    {
-                        // Don't use ExceptionDispatchInfo.Capture here to avoid
-                        // inducing allocations if already under low memory
-                        // conditions.
-
-                        lastCriticalErrors = (e, error);
-                        consumerCancellationTokenSource.Cancel();
-                        throw;
-                    }
-                }
-
                 var completed = false;
                 var cancellationTokenSource = new CancellationTokenSource();
 
@@ -505,6 +472,39 @@ namespace MoreLinq.Experimental
                             {
                                 PostNotice(Notice.Error, default, e);
                             }
+
+                            void PostNotice(Notice notice,
+                                            (int, T, Task<TTaskResult>) item,
+                                            Exception? error)
+                            {
+                                // If a notice fails to post then assume critical error
+                                // conditions (like low memory), capture the error without
+                                // further allocation of resources and trip the cancellation
+                                // token source used by the main loop waiting on notices.
+                                // Note that only the "last" critical error is reported
+                                // as maintaining a list would incur allocations. The idea
+                                // here is to make a best effort attempt to report any of
+                                // the error conditions that may be occuring, which is still
+                                // better than nothing.
+
+                                try
+                                {
+                                    var edi = error != null
+                                            ? ExceptionDispatchInfo.Capture(error)
+                                            : null;
+                                    notices.Add((notice, item, edi));
+                                }
+                                catch (Exception e)
+                                {
+                                    // Don't use ExceptionDispatchInfo.Capture here to avoid
+                                    // inducing allocations if already under low memory
+                                    // conditions.
+
+                                    lastCriticalErrors = (e, error);
+                                    consumerCancellationTokenSource.Cancel();
+                                    throw;
+                                }
+                            }
                         },
                         CancellationToken.None,
                         TaskCreationOptions.DenyChildAttach,
@@ -533,7 +533,7 @@ namespace MoreLinq.Experimental
                                                : new AggregateException(error1));
                         }
 
-                        (Notice kind, (int, T, Task<TTaskResult>) result, ExceptionDispatchInfo? error) = notice.Current;
+                        var (kind, result, error) = notice.Current;
 
                         if (kind == Notice.Error)
                         {

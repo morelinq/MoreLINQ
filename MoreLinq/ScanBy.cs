@@ -90,8 +90,8 @@ namespace MoreLinq
             IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
                 var stateByKey = new Dictionary<TKey, TState>(comparer);
-                (bool, TKey) prevKey = (false, default);
-                (bool, TState) nullKeyState = (false, default);
+                var prevKey = (false, default(TKey));
+                var nullKeyState = (false, default(TState));
                 var state = default(TState)!;
 
                 bool TryGetState(TKey key, out TState value)
@@ -100,7 +100,7 @@ namespace MoreLinq
                     {
                         switch (nullKeyState)
                         {
-                            case (true, var v):
+                            case (true, {} v):
                                 value = v;
                                 return true;
                             case (false, _):
@@ -118,7 +118,7 @@ namespace MoreLinq
 
                     var haveState =
                         // key same as the previous? then re-use the state
-                        prevKey is (true, var pk) && comparer.GetHashCode(pk) == comparer.GetHashCode(key) && comparer.Equals(pk, key)
+                        prevKey is (true, {} pk) && comparer.GetHashCode(pk) == comparer.GetHashCode(key) && comparer.Equals(pk, key)
                         // otherwise try & find state of the key
                         || TryGetState(key, out state);
 
