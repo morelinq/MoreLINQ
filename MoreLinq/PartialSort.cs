@@ -225,7 +225,7 @@ namespace MoreLinq
             IComparer<TKey>? keyComparer,
             IComparer<TSource>? comparer)
         {
-            var keys = keySelector == null ? null : new List<TKey>(count);
+            var keys = keySelector != null ? new List<TKey>(count) : null;
             var top = new List<TSource>(count);
 
             foreach (var item in source)
