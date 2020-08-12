@@ -96,6 +96,10 @@ namespace MoreLinq.Experimental
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
+            // TODO review second argument of resultSelector
+            // ...that can be defaulted to null for nullable references
+            // so the signature is not quite accurate, but can we do
+            // something about that?
             Func<TCardinality, T, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
