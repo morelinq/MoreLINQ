@@ -537,7 +537,7 @@ namespace MoreLinq.Experimental
 
                         if (kind == Notice.Error)
                         {
-                            error?.Throw();
+                            error!.Throw();
                         }
 
                         if (kind == Notice.End)

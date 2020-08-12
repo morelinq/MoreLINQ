@@ -95,7 +95,7 @@ namespace MoreLinq
 
             return _(); IEnumerable<object> _()
             {
-                IEnumerator? e = source.GetEnumerator();
+                var e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
 
                 stack.Push(e);
