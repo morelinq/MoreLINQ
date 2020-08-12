@@ -23,77 +23,48 @@ namespace MoreLinq.Test
     public class AtLeastTest
     {
         [Test]
-        public void AtLeastWithNegativeCount()
+        public void WithNegativeCount()
         {
             AssertThrowsArgument.OutOfRangeException("count", () =>
                 new[] { 1 }.AtLeast(-1));
         }
 
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
+        [TestCase(0, 0, SourceKind.Sequence                   , ExpectedResult = true )]
+        [TestCase(0, 0, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
+        [TestCase(0, 0, SourceKind.BreakingCollection         , ExpectedResult = true )]
+        [TestCase(0, 1, SourceKind.Sequence                   , ExpectedResult = false)]
+        [TestCase(0, 1, SourceKind.BreakingReadOnlyCollection , ExpectedResult = false)]
+        [TestCase(0, 1, SourceKind.BreakingCollection         , ExpectedResult = false)]
+        [TestCase(0, 2, SourceKind.Sequence                   , ExpectedResult = false)]
+        [TestCase(0, 2, SourceKind.BreakingReadOnlyCollection , ExpectedResult = false)]
+        [TestCase(0, 2, SourceKind.BreakingCollection         , ExpectedResult = false)]
+        [TestCase(1, 0, SourceKind.Sequence                   , ExpectedResult = true )]
+        [TestCase(1, 0, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
+        [TestCase(1, 0, SourceKind.BreakingCollection         , ExpectedResult = true )]
+        [TestCase(1, 1, SourceKind.Sequence                   , ExpectedResult = true )]
+        [TestCase(1, 1, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
+        [TestCase(1, 1, SourceKind.BreakingCollection         , ExpectedResult = true )]
+        [TestCase(1, 2, SourceKind.Sequence                   , ExpectedResult = false)]
+        [TestCase(1, 2, SourceKind.BreakingReadOnlyCollection , ExpectedResult = false)]
+        [TestCase(1, 2, SourceKind.BreakingCollection         , ExpectedResult = false)]
+        [TestCase(3, 0, SourceKind.Sequence                   , ExpectedResult = true )]
+        [TestCase(3, 0, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
+        [TestCase(3, 0, SourceKind.BreakingCollection         , ExpectedResult = true )]
+        [TestCase(3, 1, SourceKind.Sequence                   , ExpectedResult = true )]
+        [TestCase(3, 1, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
+        [TestCase(3, 1, SourceKind.BreakingCollection         , ExpectedResult = true )]
+        [TestCase(3, 2, SourceKind.Sequence                   , ExpectedResult = true )]
+        [TestCase(3, 2, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
+        [TestCase(3, 2, SourceKind.BreakingCollection         , ExpectedResult = true )]
+        public bool Case(int count, int atLeast, SourceKind kind)
         {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
+            var xs = Enumerable.Range(1, count).ToSourceKind(kind);
+            using var _ = xs as TestingSequence<int>;
+            return xs.AtLeast(atLeast);
         }
 
         [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastManyElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastZeroElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastOneElement()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastManyElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastZeroElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastOneElement()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastManyElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastDoesNotIterateUnnecessaryElements()
+        public void DoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,

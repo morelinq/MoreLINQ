@@ -79,7 +79,7 @@ namespace MoreLinq.Test
             switch (sourceKind)
             {
                 case SourceKind.Sequence:
-                    return input.Select(x => x);
+                    return input.AsTestingSequence();
                 case SourceKind.BreakingList:
                     return new BreakingList<T>(input.ToList());
                 case SourceKind.BreakingReadOnlyList:
