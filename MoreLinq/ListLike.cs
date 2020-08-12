@@ -36,11 +36,14 @@ namespace MoreLinq
         public static IListLike<T> ToListLike<T>(this IEnumerable<T> source)
             => source.TryAsListLike() ?? new List<T>(source.ToList());
 
-        public static IListLike<T>? TryAsListLike<T>(this IEnumerable<T> source)
-            => source is null ? throw new ArgumentNullException(nameof(source))
-             : source is IList<T> list ? new List<T>(list)
-             : source is IReadOnlyList<T> readOnlyList ? new ReadOnlyList<T>(readOnlyList)
-             : (IListLike<T>?) null;
+        public static IListLike<T>? TryAsListLike<T>(this IEnumerable<T> source) =>
+            source switch
+            {
+                null => throw new ArgumentNullException(nameof(source)),
+                IList<T> list => new List<T>(list),
+                IReadOnlyList<T> list => new ReadOnlyList<T>(list),
+                _ => null
+            };
 
         sealed class List<T> : IListLike<T>
         {

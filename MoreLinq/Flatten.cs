@@ -110,7 +110,7 @@ namespace MoreLinq
 
                         while (e.MoveNext())
                         {
-                            if (selector(e.Current) is IEnumerable inner)
+                            if (selector(e.Current) is {} inner)
                             {
                                 stack.Push(e);
                                 e = inner.GetEnumerator();

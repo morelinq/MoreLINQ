@@ -235,15 +235,21 @@ namespace MoreLinq
             IEnumerator IEnumerable.GetEnumerator() =>
                 GetEnumerator();
 
-            public IEnumerable<T> Take(int count)
-                => count == 0 ? Enumerable.Empty<T>()
-                 : count == 1 ? ExtremaBy(_source, Extremum.First, 1    , _selector, _comparer)
-                              : ExtremaBy(_source, Extrema.First , count, _selector, _comparer);
+            public IEnumerable<T> Take(int count) =>
+                count switch
+                {
+                    0 => Enumerable.Empty<T>(),
+                    1 => ExtremaBy(_source, Extremum.First, 1    , _selector, _comparer),
+                    _ => ExtremaBy(_source, Extrema.First , count, _selector, _comparer)
+                };
 
-            public IEnumerable<T> TakeLast(int count)
-                => count == 0 ? Enumerable.Empty<T>()
-                 : count == 1 ? ExtremaBy(_source, Extremum.Last, 1    , _selector, _comparer)
-                              : ExtremaBy(_source, Extrema.Last , count, _selector, _comparer);
+            public IEnumerable<T> TakeLast(int count) =>
+                count switch
+                {
+                    0 => Enumerable.Empty<T>(),
+                    1 => ExtremaBy(_source, Extremum.Last, 1    , _selector, _comparer),
+                    _ => ExtremaBy(_source, Extrema.Last , count, _selector, _comparer)
+                };
 
             static class Extrema
             {

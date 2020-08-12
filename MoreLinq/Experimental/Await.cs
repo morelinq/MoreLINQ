@@ -639,7 +639,7 @@ namespace MoreLinq.Experimental
                         onEnd();
                 }
 
-                var concurrencyGate = maxConcurrency is int count
+                var concurrencyGate = maxConcurrency is {} count
                                     ? new ConcurrencyGate(count)
                                     : ConcurrencyGate.Unbounded;
 

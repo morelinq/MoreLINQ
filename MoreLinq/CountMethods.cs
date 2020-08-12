@@ -167,11 +167,11 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            if (first.TryGetCollectionCount() is int firstCount)
+            if (first.TryGetCollectionCount() is {} firstCount)
             {
                 return firstCount.CompareTo(second.TryGetCollectionCount() ?? second.CountUpTo(firstCount + 1));
             }
-            else if (second.TryGetCollectionCount() is int secondCount)
+            else if (second.TryGetCollectionCount() is {} secondCount)
             {
                 return first.CountUpTo(secondCount + 1).CompareTo(secondCount);
             }
