@@ -33,30 +33,33 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithValidAllElements()
         {
-            var source = new[] {2, 4, 6, 8};
-            source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
+            var xs = new[] { 2, 4, 6, 8 };
+            using var source = TestingSequence.Of(xs);
+            source.Assert(n => n % 2 == 0).AssertSequenceEqual(xs);
         }
 
         [Test]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
+            using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
+            var q = source.Assert(n => n % 2 == 0);
+            Assert.Throws<InvalidOperationException>(() => q.Consume());
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
+            using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
+            var q = source.Assert(n => n % 2 == 0, _ => null);
+            Assert.Throws<InvalidOperationException>(() => q.Consume());
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomError()
         {
-            var e =
-                Assert.Throws<ValueException>(() =>
-                    new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
+            using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
+            var q = source.Assert(n => n % 2 == 0, n => new ValueException(n));
+            var e = Assert.Throws<ValueException>(() => q.Consume());
             Assert.AreEqual(7, e.Value);
         }
 
