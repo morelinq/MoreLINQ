@@ -15,17 +15,15 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Reactive
 {
     using System;
     using System.Collections.Generic;
     using Delegate = Delegating.Delegate;
 
-    /// <summary>
-    /// Subject
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public sealed class Subject<T> : IObservable<T>, IObserver<T>
+    sealed class Subject<T> : IObservable<T>, IObserver<T>
     {
         List<IObserver<T>>? _observers;
         bool _completed;
@@ -36,12 +34,6 @@ namespace MoreLinq.Reactive
 
         bool IsMuted => _completed || _error != null;
 
-        /// <summary>
-        /// Notifies the provider that an observer is to receive notifications.
-        /// </summary>
-        /// <param name="observer"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public IDisposable Subscribe(IObserver<T> observer)
         {
             if (observer == null) throw new ArgumentNullException(nameof(observer));
@@ -87,10 +79,6 @@ namespace MoreLinq.Reactive
 
         bool _shouldDeleteObserver; // delete (null) or remove an observer?
 
-        /// <summary>
-        /// Action OnNext
-        /// </summary>
-        /// <param name="value"></param>
         public void OnNext(T value)
         {
             if (!HasObservers)
@@ -127,16 +115,9 @@ namespace MoreLinq.Reactive
             }
         }
 
-        /// <summary>
-        /// Action for Exception handling
-        /// </summary>
-        /// <param name="error"></param>
         public void OnError(Exception error) =>
-            OnFinality(ref _error, error, (observer, err) => observer.OnError(err));
+            OnFinality(ref _error, error, (observer, err) => observer.OnError(err!));
 
-        /// <summary>
-        /// Action OnCompleted
-        /// </summary>
         public void OnCompleted() =>
             OnFinality(ref _completed, true, (observer, _) => observer.OnCompleted());
 
