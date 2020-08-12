@@ -1,3 +1,4 @@
+if: NOT branch = deploy
 language: csharp
 os:
   - linux
