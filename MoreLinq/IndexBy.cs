@@ -70,7 +70,7 @@ namespace MoreLinq
                 this IEnumerable<TSource> source,
                 Func<TSource, TKey> keySelector,
                 IEqualityComparer<TKey>? comparer) =>
-            from e in source.ScanBy(keySelector, k => (Index: -1, Item: default(TSource)!), (s, k, e) => (s.Index + 1, e), comparer)
+            from e in source.ScanBy(keySelector, k => (Index: -1, Item: default(TSource)), (s, k, e) => (s.Index + 1, e), comparer)
             select new KeyValuePair<int, TSource>(e.Value.Index, e.Value.Item);
     }
 }

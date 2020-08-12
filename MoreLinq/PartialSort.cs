@@ -231,7 +231,7 @@ namespace MoreLinq
             foreach (var item in source)
             {
                 int i;
-                var key = default(TKey)!;
+                var key = default(TKey);
                 if (keys != null)
                 {
                     key = keySelector!(item);

@@ -268,7 +268,7 @@ namespace MoreLinq
 
             using var iterator = source.GetEnumerator();
 
-            var group = default(TKey)!;
+            var group = default(TKey);
             var members = (List<TElement>?) null;
 
             while (iterator.MoveNext())
