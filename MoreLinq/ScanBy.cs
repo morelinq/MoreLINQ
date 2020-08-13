@@ -90,8 +90,7 @@ namespace MoreLinq
 
             IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
-                var stateByKey = new Dictionary<TKey, TState>(comparer);
-                var nullKeyState = (false, default(TState));
+                var stateByKey = new Dict<TKey, TState>(comparer);
 
                 (bool, TKey, TState) prev = default;
 
@@ -104,15 +103,12 @@ namespace MoreLinq
                                 && comparer.GetHashCode(pk) == comparer.GetHashCode(key)
                                 && comparer.Equals(pk, key) ? ps
                               : // otherwise try & find state of the key
-                                TryGetState(stateByKey, nullKeyState, key, out var ns) ? ns
+                                stateByKey.TryGetValue(key, out var ns) ? ns
                               : seedSelector(key);
 
                     state = accumulator(state, key, item);
 
-                    if (key is null)
-                        nullKeyState = (true, state);
-                    else
-                        stateByKey[key] = state;
+                    stateByKey[key] = state;
 
                     yield return new KeyValuePair<TKey, TState>(key, state);
 
@@ -121,29 +117,63 @@ namespace MoreLinq
             }
         }
 
-        // Move this back to a local function of the iterator block once
-        // attributes on local functions become legal with C# 9:
-        // https://github.com/dotnet/csharplang/issues/1888
+        /// <summary>
+        /// A minimal <see cref="Dictionary{TKey,TValue}"/> wrapper that
+        /// allows null keys when <typeparamref name="TKey"/> is a
+        /// reference type.
+        /// </summary>
 
-        static bool TryGetState<TKey, TState>(Dictionary<TKey, TState> stateByKey,
-                                              (bool, TState) nullKeyState,
-                                              TKey key,
-                                              [MaybeNullWhen(false)] out TState value)
+        // Add members if and when needed to keep coverage.
+
+        struct Dict<TKey, TValue>
         {
-            if (key is null)
+            readonly Dictionary<TKey, TValue> _dict;
+            (bool, TValue) _null;
+
+            public Dict(IEqualityComparer<TKey> comparer) : this()
             {
-                switch (nullKeyState)
+                _dict = new Dictionary<TKey, TValue>(comparer);
+                _null = default;
+            }
+
+            public TValue this[TKey key]
+            {
+                set
                 {
-                    case (true, {} v):
-                        value = v;
-                        return true;
-                    case (false, _):
-                        value = default!;
-                        return false;
+                    DefaultGuard();
+
+                    if (key is null)
+                        _null = (true, value);
+                    else
+                        _dict[key] = value;
                 }
             }
 
-            return stateByKey.TryGetValue(key, out value);
+            public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+            {
+                DefaultGuard();
+
+                if (key is null)
+                {
+                    switch (_null)
+                    {
+                        case (true, {} v):
+                            value = v;
+                            return true;
+                        case (false, _):
+                            value = default!;
+                            return false;
+                    }
+                }
+
+                return _dict.TryGetValue(key, out value);
+            }
+
+            void DefaultGuard()
+            {
+                if (_dict is null)
+                    throw new InvalidOperationException();
+            }
         }
     }
 }
