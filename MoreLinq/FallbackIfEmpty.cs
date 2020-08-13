@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     static partial class MoreEnumerable
     {
@@ -183,15 +184,12 @@ namespace MoreLinq
 
             IEnumerable<T> Fallback()
             {
-                switch (count)
-                {
-                    case null: return fallback!;
-                    case int n when n >= 1 && n <= 4: return FallbackOnArgs();
-                    default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
-                }
+                return fallback is {} seq ? seq : FallbackOnArgs();
 
                 IEnumerable<T> FallbackOnArgs()
                 {
+                    Debug.Assert(count >= 1 && count <= 4);
+
                     yield return fallback1;
                     if (count > 1) yield return fallback2;
                     if (count > 2) yield return fallback3;
