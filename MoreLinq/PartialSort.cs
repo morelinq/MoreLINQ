@@ -227,33 +227,35 @@ namespace MoreLinq
             var keys = keySelector != null ? new List<TKey>(count) : null;
             var top = new List<TSource>(count);
 
+            int? Insert<T>(List<T> list, T item, IComparer<T>? comparer)
+            {
+                var i = list.BinarySearch(item, comparer);
+                if (i < 0 && (i = ~i) >= count)
+                    return null;
+                if (list.Count == count)
+                    list.RemoveAt(count - 1);
+                list.Insert(i, item);
+                return i;
+            }
+
             foreach (var item in source)
             {
-                int i;
-                var key = default(TKey);
                 if (keys != null)
                 {
-                    key = keySelector!(item);
-                    i = keys.BinarySearch(key, keyComparer);
+                    var key = keySelector!(item);
+                    if (Insert(keys, key, keyComparer) is {} i)
+                    {
+                        if (top.Count == count)
+                            top.RemoveAt(count - 1);
+                        top.Insert(i, item);
+                    }
                 }
                 else
                 {
-                    i = top.BinarySearch(item, comparer);
-                }
-
-                if (i < 0 && (i = ~i) >= count)
-                    continue;
-
-                if (top.Count == count)
-                {
-                    keys?.RemoveAt(top.Count - 1);
-                    top.RemoveAt(top.Count - 1);
+                    _ = Insert(top, item, comparer);
                 }
 
                 // TODO Stable sorting
-
-                keys?.Insert(i, key!);
-                top.Insert(i, item);
             }
 
             // ReSharper disable once LoopCanBeConvertedToQuery
