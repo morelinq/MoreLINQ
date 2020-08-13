@@ -77,13 +77,13 @@ namespace MoreLinq
             return second.TryGetCollectionCount() is {} secondCount
                    ? first.TryGetCollectionCount() is {} firstCount && secondCount > firstCount
                      ? false
-                     : Impl(second, secondCount, comparer)
-                   : Impl(secondList = second.ToList(), secondList.Count, comparer);
+                     : Impl(second, secondCount)
+                   : Impl(secondList = second.ToList(), secondList.Count);
 
-            bool Impl(IEnumerable<T> snd, int count, IEqualityComparer<T> cmp)
+            bool Impl(IEnumerable<T> snd, int count)
             {
                 using var firstIter = first.TakeLast(count).GetEnumerator();
-                return snd.All(item => firstIter.MoveNext() && cmp.Equals(firstIter.Current, item));
+                return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
             }
         }
     }
