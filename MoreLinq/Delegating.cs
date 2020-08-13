@@ -40,7 +40,7 @@ namespace Delegating
 
     sealed class DelegatingDisposable : IDisposable
     {
-        Action _delegatee;
+        Action? _delegatee;
 
         public DelegatingDisposable(Action delegatee) =>
             _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
@@ -48,7 +48,7 @@ namespace Delegating
         public void Dispose()
         {
             var delegatee = _delegatee;
-            if (delegatee == null || Interlocked.CompareExchange(ref _delegatee, null!, delegatee) != delegatee)
+            if (delegatee == null || Interlocked.CompareExchange(ref _delegatee, null, delegatee) != delegatee)
                 return;
             delegatee();
         }
