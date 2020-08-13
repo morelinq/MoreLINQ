@@ -98,6 +98,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (table == null) throw new ArgumentNullException(nameof(table));
 
+            // TODO disallow null for "expressions" in next major update
+
+            expressions ??= EmptyArray<Expression<Func<T, object>>>.Value;
+
             var members = PrepareMemberInfos(expressions).ToArray();
             members = BuildOrBindSchema(table, members);
             var shredder = CreateShredder<T>(members);
@@ -132,7 +136,7 @@ namespace MoreLinq
             // If no lambda expressions supplied then reflect them off the source element type.
             //
 
-            if (expressions == null || expressions.Count == 0)
+            if (expressions.Count == 0)
             {
                 return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
