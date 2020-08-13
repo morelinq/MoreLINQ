@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     static partial class MoreEnumerable
     {
@@ -90,53 +91,59 @@ namespace MoreLinq
             IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
                 var stateByKey = new Dictionary<TKey, TState>(comparer);
-                var prevKey = (false, default(TKey));
                 var nullKeyState = (false, default(TState));
-                var state = default(TState)!;
 
-                bool TryGetState(TKey key, out TState value)
-                {
-                    if (key == null)
-                    {
-                        switch (nullKeyState)
-                        {
-                            case (true, {} v):
-                                value = v;
-                                return true;
-                            case (false, _):
-                                value = default!;
-                                return false;
-                        }
-                    }
-
-                    return stateByKey.TryGetValue(key, out value);
-                }
+                (bool, TKey, TState) prev = default;
 
                 foreach (var item in source)
                 {
                     var key = keySelector(item);
 
-                    var haveState =
-                        // key same as the previous? then re-use the state
-                        prevKey is (true, {} pk) && comparer.GetHashCode(pk) == comparer.GetHashCode(key) && comparer.Equals(pk, key)
-                        // otherwise try & find state of the key
-                        || TryGetState(key, out state);
+                    var state = // key same as the previous? then re-use the state
+                                prev is (true, {} pk, {} ps)
+                                && comparer.GetHashCode(pk) == comparer.GetHashCode(key)
+                                && comparer.Equals(pk, key) ? ps
+                              : // otherwise try & find state of the key
+                                TryGetState(stateByKey, nullKeyState, key, out var ns) ? ns
+                              : seedSelector(key);
 
-                    if (!haveState)
-                        state = seedSelector(key);
+                    state = accumulator(state, key, item);
 
-                    state = accumulator(state!, key, item);
-
-                    if (key != null)
-                        stateByKey[key] = state;
-                    else
+                    if (key is null)
                         nullKeyState = (true, state);
+                    else
+                        stateByKey[key] = state;
 
                     yield return new KeyValuePair<TKey, TState>(key, state);
 
-                    prevKey = (true, key);
+                    prev = (true, key, state);
                 }
             }
+        }
+
+        // Move this back to a local function of the iterator block once
+        // attributes on local functions become legal with C# 9:
+        // https://github.com/dotnet/csharplang/issues/1888
+
+        static bool TryGetState<TKey, TState>(Dictionary<TKey, TState> stateByKey,
+                                              (bool, TState) nullKeyState,
+                                              TKey key,
+                                              [MaybeNullWhen(false)] out TState value)
+        {
+            if (key is null)
+            {
+                switch (nullKeyState)
+                {
+                    case (true, {} v):
+                        value = v;
+                        return true;
+                    case (false, _):
+                        value = default!;
+                        return false;
+                }
+            }
+
+            return stateByKey.TryGetValue(key, out value);
         }
     }
 }
