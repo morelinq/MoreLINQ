@@ -313,7 +313,6 @@ namespace MoreLinq.ExtensionsGenerator
 //
 // Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
 
-
 namespace MoreLinq.Extensions
 {{
 {string.Join("\n", imports)}
