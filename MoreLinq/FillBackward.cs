@@ -133,7 +133,7 @@ namespace MoreLinq
                 }
             }
 
-            if (blanks != null && blanks.Count > 0)
+            if (blanks?.Count > 0)
             {
                 foreach (var blank in blanks)
                     yield return blank;
