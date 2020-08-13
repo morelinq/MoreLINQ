@@ -24,11 +24,6 @@ namespace MoreLinq
     using System.Linq.Expressions;
     using System.Reflection;
 
-    static class Array<T>
-    {
-        public static readonly T[] Empty = new T[0];
-    }
-
     static partial class MoreEnumerable
     {
         /// <summary>
@@ -46,7 +41,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, Array<Expression<Func<T, object>>>.Empty);
+            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object>>>.Value);
         }
 
         /// <summary>
