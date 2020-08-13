@@ -264,37 +264,39 @@ namespace MoreLinq
             Func<TKey, IList<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
-
             using var iterator = source.GetEnumerator();
 
-            var group = default(TKey);
-            var members = (List<TElement>?) null;
+            (TKey, List<TElement>) group = default;
 
             while (iterator.MoveNext())
             {
                 var key = keySelector(iterator.Current);
                 var element = elementSelector(iterator.Current);
-                if (members != null && comparer.Equals(group!, key))
+
+                if (group is ({} k, {} members))
                 {
-                    members.Add(element);
+                    if (comparer.Equals(k, key))
+                    {
+                        members.Add(element);
+                        continue;
+                    }
+                    else
+                    {
+                        yield return resultSelector(k, members);
+                    }
                 }
-                else
-                {
-                    if (members != null)
-                        yield return resultSelector(group!, members);
-                    group = key;
-                    members = new List<TElement> { element };
-                }
+
+                group = (key, new List<TElement> { element });
             }
 
-            if (members != null)
-                yield return resultSelector(group!, members);
+            {
+                if (group is ({} k, {} members))
+                    yield return resultSelector(k, members);
+            }
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members)
-        {
-            return Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
-        }
+        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
+            Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
 
         static class Grouping
         {
