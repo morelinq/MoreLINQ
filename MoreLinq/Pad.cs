@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     static partial class MoreEnumerable
     {
@@ -116,6 +117,8 @@ namespace MoreLinq
         static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
             int width, T padding, Func<int, T>? paddingSelector)
         {
+            Debug.Assert(width >= 0);
+
             var count = 0;
             foreach (var item in source)
             {
