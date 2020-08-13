@@ -50,10 +50,10 @@ namespace MoreLinq
                 while (true)
                 {
                     var n = 0;
-                    var v1 = Read(ref e1, ++n);
-                    var v2 = Read(ref e2, ++n);
-                    var v3 = Read(ref e3, ++n);
-                    var v4 = Read(ref e4, ++n);
+                    var (_, v1) = Read(ref e1, ++n);
+                    var (_, v2) = Read(ref e2, ++n);
+                    var (_, v3) = Read(ref e3, ++n);
+                    var (_, v4) = Read(ref e4, ++n);
 
                     if (terminations <= limit)
                         yield return resultSelector(v1, v2, v3, v4);
@@ -69,28 +69,28 @@ namespace MoreLinq
                 e4?.Dispose();
             }
 
-            T Read<T>(ref IEnumerator<T>? e, int n)
+            (bool, T) Read<T>(ref IEnumerator<T>? e, int n)
             {
                 if (e == null || terminations > limit)
-                    return default!;
+                    return default;
 
-                T value;
+                (bool, T) result;
                 if (e.MoveNext())
                 {
-                    value = e.Current;
+                    result = (true, e.Current);
                 }
                 else
                 {
                     e.Dispose();
                     e = null;
                     terminations++;
-                    value = default!;
+                    result = default;
                 }
 
                 if (errorSelector != null && terminations > 0 && terminations < n)
                     throw errorSelector(e1, e2, e3, e4);
 
-                return value;
+                return result;
             }
         }
     }
