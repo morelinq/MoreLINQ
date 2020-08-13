@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
 
     static partial class MoreEnumerable
     {
@@ -90,7 +89,7 @@ namespace MoreLinq
 
             IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
-                var stateByKey = new Dict<TKey, TState>(comparer);
+                var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
                 (bool, TKey, TState) prev = default;
 
@@ -114,65 +113,6 @@ namespace MoreLinq
 
                     prev = (true, key, state);
                 }
-            }
-        }
-
-        /// <summary>
-        /// A minimal <see cref="Dictionary{TKey,TValue}"/> wrapper that
-        /// allows null keys when <typeparamref name="TKey"/> is a
-        /// reference type.
-        /// </summary>
-
-        // Add members if and when needed to keep coverage.
-
-        struct Dict<TKey, TValue>
-        {
-            readonly Dictionary<TKey, TValue> _dict;
-            (bool, TValue) _null;
-
-            public Dict(IEqualityComparer<TKey> comparer) : this()
-            {
-                _dict = new Dictionary<TKey, TValue>(comparer);
-                _null = default;
-            }
-
-            public TValue this[TKey key]
-            {
-                set
-                {
-                    DefaultGuard();
-
-                    if (key is null)
-                        _null = (true, value);
-                    else
-                        _dict[key] = value;
-                }
-            }
-
-            public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
-            {
-                DefaultGuard();
-
-                if (key is null)
-                {
-                    switch (_null)
-                    {
-                        case (true, {} v):
-                            value = v;
-                            return true;
-                        case (false, _):
-                            value = default!;
-                            return false;
-                    }
-                }
-
-                return _dict.TryGetValue(key, out value);
-            }
-
-            void DefaultGuard()
-            {
-                if (_dict is null)
-                    throw new InvalidOperationException();
             }
         }
     }

@@ -78,19 +78,7 @@ namespace MoreLinq
 
                 void Loop(IEqualityComparer<TKey> cmp)
                 {
-                    var dic = new Dictionary<TKey, int>(cmp);
-                    var nullIndex = (int?) null;
-
-                    bool TryGetIndex(TKey key, out int i)
-                    {
-                        if (key == null)
-                        {
-                            i = nullIndex.GetValueOrDefault();
-                            return nullIndex.HasValue;
-                        }
-
-                        return dic.TryGetValue(key, out i);
-                    }
+                    var dic = new Collections.Dictionary<TKey, int>(cmp);
 
                     keys = new List<TKey>();
                     counts = new List<int>();
@@ -106,17 +94,14 @@ namespace MoreLinq
                                 && cmp.GetHashCode(pk) == cmp.GetHashCode(key)
                                 && cmp.Equals(pk, key)
                             // otherwise try & find index of the key
-                            || TryGetIndex(key, out index))
+                            || dic.TryGetValue(key, out index))
                         {
                             counts[index]++;
                         }
                         else
                         {
                             index = keys.Count;
-                            if (key != null)
-                                dic[key] = index;
-                            else
-                                nullIndex = index;
+                            dic[key] = index;
                             keys.Add(key);
                             counts.Add(1);
                         }
