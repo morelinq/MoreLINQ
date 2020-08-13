@@ -62,11 +62,11 @@ namespace MoreLinq
         public IEnumerator<T> GetEnumerator()
         {
             var i = 0;
-            T[]? concats = null;               // Array for > 4 concatenations
-            (bool, T Value) concat1 = default; // Slots for up to 4 concatenations
-            (bool, T Value) concat2 = default;
-            (bool, T Value) concat3 = default;
-            (bool, T Value) concat4 = default;
+            T[]? concats = null;      // Array for > 4 concatenations
+            var concat1 = default(T); // Slots for up to 4 concatenations
+            var concat2 = default(T);
+            var concat3 = default(T);
+            var concat4 = default(T);
 
             var current = this;
             for (; current is Item item; current = item.Next)
@@ -87,10 +87,10 @@ namespace MoreLinq
                         {
                             switch (i++)
                             {
-                                case 0: concat1 = (true, item.Value); break;
-                                case 1: concat2 = (true, item.Value); break;
-                                case 2: concat3 = (true, item.Value); break;
-                                case 3: concat4 = (true, item.Value); break;
+                                case 0: concat1 = item.Value; break;
+                                case 1: concat2 = item.Value; break;
+                                case 2: concat3 = item.Value; break;
+                                case 3: concat4 = item.Value; break;
                                 default: throw new IndexOutOfRangeException();
                             }
                             continue;
@@ -108,10 +108,10 @@ namespace MoreLinq
 
             if (concats == null)
             {
-                if (i == 4) { yield return concat4.Value; i--; }
-                if (i == 3) { yield return concat3.Value; i--; }
-                if (i == 2) { yield return concat2.Value; i--; }
-                if (i == 1) { yield return concat1.Value; i--; }
+                if (i == 4) { yield return concat4!; i--; }
+                if (i == 3) { yield return concat3!; i--; }
+                if (i == 2) { yield return concat2!; i--; }
+                if (i == 1) { yield return concat1!; i--; }
                 yield break;
             }
 
