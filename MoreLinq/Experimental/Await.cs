@@ -587,7 +587,7 @@ namespace MoreLinq.Experimental
                         }
                     }
 
-                    if (holds != null && holds.Count > 0) // yield any withheld, which should be in order...
+                    if (holds?.Count > 0) // yield any withheld, which should be in order...
                     {
                         foreach (var (key, x, value) in holds)
                         {
