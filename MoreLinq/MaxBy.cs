@@ -126,7 +126,7 @@ namespace MoreLinq
         public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.Take(1).AsEnumerable().LastOrDefault();
+            return source.TakeLast(1).AsEnumerable().LastOrDefault();
         }
 
         /// <summary>
