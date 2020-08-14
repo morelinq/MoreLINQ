@@ -234,6 +234,7 @@ namespace MoreLinq.ExtensionsGenerator
                 "System",
                 "System.CodeDom.Compiler",
                 "System.Collections.Generic",
+                "System.Diagnostics.CodeAnalysis",
             };
 
             var imports =

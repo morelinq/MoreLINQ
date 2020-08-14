@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     /// <summary>
@@ -87,6 +88,7 @@ namespace MoreLinq
         /// otherwise, the first element in source.
         /// </returns>
 
+        [return: MaybeNull]
         public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -123,6 +125,7 @@ namespace MoreLinq
         /// otherwise, the last element in source.
         /// </returns>
 
+        [return: MaybeNull]
         public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -161,6 +164,7 @@ namespace MoreLinq
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
+        [return: MaybeNull]
         public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
