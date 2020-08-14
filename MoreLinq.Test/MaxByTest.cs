@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -60,56 +61,202 @@ namespace MoreLinq.Test
             Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], SampleData.ReverseCharComparer));
         }
 
-        [TestCase(0, ExpectedResult = new string[0]             )]
-        [TestCase(1, ExpectedResult = new[] { "hello"          })]
-        [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
-        [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
-        public string[] MaxByTakeReturnsMaxima(int count)
+        public class First
         {
-            using (var strings = SampleData.Strings.AsTestingSequence())
+            [Test]
+            public void ReturnsMaxima()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length).First(), Is.EqualTo("hello"));
+            }
+
+            [Test]
+            public void WithComparerReturnsMaxima()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                   .First(),
+                            Is.EqualTo("ax"));
+            }
+
+            [Test]
+            public void WithEmptySourceThrows()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.Throws<InvalidOperationException>(() =>
+                    strings.MaxBy(s => s.Length).First());
+            }
+
+            [Test]
+            public void WithEmptySourceWithComparerThrows()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.Throws<InvalidOperationException>(() =>
+                    strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer).First());
+            }
+        }
+
+        public class FirstOrDefault
+        {
+            [Test]
+            public void ReturnsMaxima()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length).FirstOrDefault(), Is.EqualTo("hello"));
+            }
+
+            [Test]
+            public void WithComparerReturnsMaxima()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                   .FirstOrDefault(),
+                            Is.EqualTo("ax"));
+            }
+
+            [Test]
+            public void WithEmptySourceReturnDefault()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length).FirstOrDefault(), Is.Null);
+            }
+
+            [Test]
+            public void WithEmptySourceWithComparerReturnsDefault()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                   .FirstOrDefault(),
+                            Is.Null);
+            }
+        }
+
+        public class Last
+        {
+            [Test]
+            public void ReturnsMaximum()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length).Last(), Is.EqualTo("world"));
+            }
+
+            [Test]
+            public void WithComparerReturnsMaximumPerComparer()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                   .Last(),
+                            Is.EqualTo("az"));
+            }
+
+            [Test]
+            public void WithEmptySourceThrows()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.Throws<InvalidOperationException>(() =>
+                    strings.MaxBy(s => s.Length).Last());
+            }
+
+            [Test]
+            public void WithEmptySourceWithComparerThrows()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.Throws<InvalidOperationException>(() =>
+                    strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer).Last());
+            }
+        }
+
+        public class LastOrDefault
+        {
+            [Test]
+            public void ReturnsMaximum()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length).LastOrDefault(), Is.EqualTo("world"));
+            }
+
+            [Test]
+            public void WithComparerReturnsMaximumPerComparer()
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                   .LastOrDefault(),
+                            Is.EqualTo("az"));
+            }
+
+            [Test]
+            public void WithEmptySourceReturnDefault()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length).LastOrDefault(), Is.Null);
+            }
+
+            [Test]
+            public void WithEmptySourceWithComparerReturnsDefault()
+            {
+                using var strings = Enumerable.Empty<string>().AsTestingSequence();
+                Assert.That(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                   .LastOrDefault(),
+                            Is.Null);
+            }
+        }
+
+        public class Take
+        {
+            [TestCase(0, ExpectedResult = new string[0]             )]
+            [TestCase(1, ExpectedResult = new[] { "hello"          })]
+            [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
+            [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
+            public string[] ReturnsMaxima(int count)
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
                 return strings.MaxBy(s => s.Length).Take(count).ToArray();
-        }
+            }
 
-        [TestCase(0, ExpectedResult = new string[0]             )]
-        [TestCase(1, ExpectedResult = new[] { "world"          })]
-        [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
-        [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
-        public string[] MaxByTakeLastReturnsMaxima(int count)
-        {
-            using (var strings = SampleData.Strings.AsTestingSequence())
-                return strings.MaxBy(s => s.Length).TakeLast(count).ToArray();
-        }
-
-        [TestCase(0, 0, ExpectedResult = new string[0]                         )]
-        [TestCase(3, 1, ExpectedResult = new[] { "aa"                         })]
-        [TestCase(1, 0, ExpectedResult = new[] { "ax"                         })]
-        [TestCase(2, 0, ExpectedResult = new[] { "ax", "aa"                   })]
-        [TestCase(3, 0, ExpectedResult = new[] { "ax", "aa", "ab"             })]
-        [TestCase(4, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay"       })]
-        [TestCase(5, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
-        [TestCase(6, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
-        public string[] MaxByTakeWithComparerReturnsMaxima(int count, int index)
-        {
-            using (var strings = SampleData.Strings.AsTestingSequence())
+            [TestCase(0, 0, ExpectedResult = new string[0]                         )]
+            [TestCase(3, 1, ExpectedResult = new[] { "aa"                         })]
+            [TestCase(1, 0, ExpectedResult = new[] { "ax"                         })]
+            [TestCase(2, 0, ExpectedResult = new[] { "ax", "aa"                   })]
+            [TestCase(3, 0, ExpectedResult = new[] { "ax", "aa", "ab"             })]
+            [TestCase(4, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay"       })]
+            [TestCase(5, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+            [TestCase(6, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+            public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
                 return strings.MaxBy(s => s[index], SampleData.ReverseCharComparer)
                               .Take(count)
                               .ToArray();
+            }
         }
 
-        [TestCase(0, 0, ExpectedResult = new string[0]                         )]
-        [TestCase(3, 1, ExpectedResult = new[] { "aa"                         })]
-        [TestCase(1, 0, ExpectedResult = new[] { "az"                         })]
-        [TestCase(2, 0, ExpectedResult = new[] { "ay", "az"                   })]
-        [TestCase(3, 0, ExpectedResult = new[] { "ab", "ay", "az"             })]
-        [TestCase(4, 0, ExpectedResult = new[] { "aa", "ab", "ay", "az"       })]
-        [TestCase(5, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
-        [TestCase(6, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
-        public string[] MaxByTakeLastWithComparerReturnsMaxima(int count, int index)
+        public class TakeLast
         {
-            using (var strings = SampleData.Strings.AsTestingSequence())
+            [TestCase(0, ExpectedResult = new string[0]             )]
+            [TestCase(1, ExpectedResult = new[] { "world"          })]
+            [TestCase(2, ExpectedResult = new[] { "hello", "world" })]
+            [TestCase(3, ExpectedResult = new[] { "hello", "world" })]
+            public string[] TakeLastReturnsMaxima(int count)
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
+                return strings.MaxBy(s => s.Length).TakeLast(count).ToArray();
+            }
+
+            [TestCase(0, 0, ExpectedResult = new string[0]                         )]
+            [TestCase(3, 1, ExpectedResult = new[] { "aa"                         })]
+            [TestCase(1, 0, ExpectedResult = new[] { "az"                         })]
+            [TestCase(2, 0, ExpectedResult = new[] { "ay", "az"                   })]
+            [TestCase(3, 0, ExpectedResult = new[] { "ab", "ay", "az"             })]
+            [TestCase(4, 0, ExpectedResult = new[] { "aa", "ab", "ay", "az"       })]
+            [TestCase(5, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+            [TestCase(6, 0, ExpectedResult = new[] { "ax", "aa", "ab", "ay", "az" })]
+            public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
+            {
+                using var strings = SampleData.Strings.AsTestingSequence();
                 return strings.MaxBy(s => s[index], SampleData.ReverseCharComparer)
                               .TakeLast(count)
                               .ToArray();
+            }
         }
     }
 }

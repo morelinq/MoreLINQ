@@ -54,6 +54,7 @@
       <Compile Include="BreakingReadOnlyList.cs" />
       <Compile Include="BreakingSequence.cs" />
       <Compile Include="Combinatorics.cs" />
+      <Compile Include="Comparable.cs" />
       <Compile Include="Comparer.cs" />
       <Compile Include="CurrentThreadCultureScope.cs" />
       <Compile Include="Enumerable.cs" />
