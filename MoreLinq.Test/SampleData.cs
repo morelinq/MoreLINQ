@@ -34,12 +34,5 @@ namespace MoreLinq.Test
 
         internal static readonly Func<int, int, int> Plus = (a, b) => a + b;
         internal static readonly Func<int, int, int> Mul = (a, b) => a * b;
-
-        internal static readonly IComparer<char> ReverseCharComparer = new ReverseCharComparerImpl();
-
-        class ReverseCharComparerImpl : IComparer<char>
-        {
-            public int Compare(char x, char y) => y.CompareTo(x);
-        }
     }
 }

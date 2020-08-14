@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -58,7 +59,7 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByWithComparer()
         {
-            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], SampleData.ReverseCharComparer));
+            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer));
         }
 
         public class First
@@ -224,7 +225,7 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MaxBy(s => s[index], SampleData.ReverseCharComparer)
+                return strings.MaxBy(s => s[index], Comparable<char>.DescendingOrderComparer)
                               .Take(count)
                               .ToArray();
             }
@@ -253,7 +254,7 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MaxBy(s => s[index], SampleData.ReverseCharComparer)
+                return strings.MaxBy(s => s[index], Comparable<char>.DescendingOrderComparer)
                               .TakeLast(count)
                               .ToArray();
             }

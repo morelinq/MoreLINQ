@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -58,7 +59,7 @@ namespace MoreLinq.Test
         [Test]
         public void MinByWithComparer()
         {
-            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinBy(x => x[1], SampleData.ReverseCharComparer));
+            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinBy(x => x[1], Comparable<char>.DescendingOrderComparer));
         }
 
         public class First
