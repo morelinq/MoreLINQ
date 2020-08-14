@@ -64,14 +64,14 @@ namespace MoreLinq.Test
         public class First
         {
             [Test]
-            public void ReturnsMinima()
+            public void ReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
                 Assert.That(strings.MinBy(s => s.Length).First(), Is.EqualTo("ax"));
             }
 
             [Test]
-            public void WithComparerReturnsMinima()
+            public void WithComparerReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
                 Assert.That(strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
@@ -99,14 +99,14 @@ namespace MoreLinq.Test
         public class FirstOrDefault
         {
             [Test]
-            public void ReturnsMinima()
+            public void ReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
                 Assert.That(strings.MinBy(s => s.Length).FirstOrDefault(), Is.EqualTo("ax"));
             }
 
             [Test]
-            public void WithComparerReturnsMinima()
+            public void WithComparerReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
                 Assert.That(strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
@@ -115,7 +115,7 @@ namespace MoreLinq.Test
             }
 
             [Test]
-            public void WithEmptySourceReturnDefault()
+            public void WithEmptySourceReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.That(strings.MinBy(s => s.Length).FirstOrDefault(), Is.Null);
@@ -185,7 +185,7 @@ namespace MoreLinq.Test
             }
 
             [Test]
-            public void WithEmptySourceReturnDefault()
+            public void WithEmptySourceReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.That(strings.MinBy(s => s.Length).LastOrDefault(), Is.Null);
