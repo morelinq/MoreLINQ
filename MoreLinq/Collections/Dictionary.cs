@@ -29,12 +29,12 @@ namespace MoreLinq.Collections
 
     // Add members if and when needed to keep coverage.
 
-    struct Dictionary<TKey, TValue>
+    sealed class Dictionary<TKey, TValue>
     {
         readonly System.Collections.Generic.Dictionary<TKey, TValue> _dict;
         (bool, TValue) _null;
 
-        public Dictionary(IEqualityComparer<TKey> comparer) : this()
+        public Dictionary(IEqualityComparer<TKey> comparer)
         {
             _dict = new System.Collections.Generic.Dictionary<TKey, TValue>(comparer);
             _null = default;
@@ -44,8 +44,6 @@ namespace MoreLinq.Collections
         {
             set
             {
-                DefaultGuard();
-
                 if (key is null)
                     _null = (true, value);
                 else
@@ -55,8 +53,6 @@ namespace MoreLinq.Collections
 
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            DefaultGuard();
-
             if (key is null)
             {
                 switch (_null)
@@ -71,12 +67,6 @@ namespace MoreLinq.Collections
             }
 
             return _dict.TryGetValue(key, out value);
-        }
-
-        void DefaultGuard()
-        {
-            if (_dict is null)
-                throw new InvalidOperationException();
         }
     }
 }
