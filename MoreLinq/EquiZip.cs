@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     static partial class MoreEnumerable
@@ -169,15 +168,12 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1,
-            IEnumerable<T2> s2,
-            IEnumerable<T3> s3,
-            IEnumerable<T4> s4,
+            IEnumerable<T1>  s1,
+            IEnumerable<T2>  s2,
+            IEnumerable<T3>? s3,
+            IEnumerable<T4>? s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            Debug.Assert(s1 != null);
-            Debug.Assert(s2 != null);
-
             const int zero = 0, one = 1;
 
             var limit = 1 + (s3 != null ? one : zero)

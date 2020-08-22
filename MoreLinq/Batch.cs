@@ -125,7 +125,7 @@ namespace MoreLinq
 
                 IEnumerable<TResult> Batch(int size)
                 {
-                    TSource[] bucket = null;
+                    TSource[]? bucket = null;
                     var count = 0;
 
                     foreach (var item in source)

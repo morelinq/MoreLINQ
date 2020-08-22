@@ -53,7 +53,7 @@ namespace MoreLinq
             return _(); IEnumerable<T> _()
             {
                 var sequences = new[] { sequence }.Concat(otherSequences);
-                var enumerators = new List<IEnumerator<T>>();
+                var enumerators = new List<IEnumerator<T>?>();
 
                 try
                 {

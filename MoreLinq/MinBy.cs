@@ -62,7 +62,7 @@ namespace MoreLinq
         /// or <paramref name="comparer"/> is null</exception>
 
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
-            Func<TSource, TKey> selector, IComparer<TKey> comparer)
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));

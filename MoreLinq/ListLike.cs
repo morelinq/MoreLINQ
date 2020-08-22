@@ -36,7 +36,7 @@ namespace MoreLinq
         public static IListLike<T> ToListLike<T>(this IEnumerable<T> source)
             => source.TryAsListLike() ?? new List<T>(source.ToList());
 
-        public static IListLike<T> TryAsListLike<T>(this IEnumerable<T> source) =>
+        public static IListLike<T>? TryAsListLike<T>(this IEnumerable<T> source) =>
             source switch
             {
                 null => throw new ArgumentNullException(nameof(source)),

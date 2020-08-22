@@ -58,7 +58,7 @@ namespace MoreLinq
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {
-                var enumerators = source.Select(e => e.GetEnumerator()).Acquire();
+                IEnumerator<T>?[] enumerators = source.Select(e => e.GetEnumerator()).Acquire();
 
                 try
                 {
@@ -68,16 +68,17 @@ namespace MoreLinq
                         var count = 0;
                         for (var i = 0; i < enumerators.Length; i++)
                         {
-                            if (enumerators[i] == null)
+                            var enumerator = enumerators[i];
+                            if (enumerator == null)
                                 continue;
 
-                            if (enumerators[i].MoveNext())
+                            if (enumerator.MoveNext())
                             {
-                                column[count++] = enumerators[i].Current;
+                                column[count++] = enumerator.Current;
                             }
                             else
                             {
-                                enumerators[i].Dispose();
+                                enumerator.Dispose();
                                 enumerators[i] = null;
                             }
                         }
