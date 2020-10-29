@@ -35,7 +35,7 @@ namespace MoreLinq
         /// <typeparam name="TKey">Type of the projected element</typeparam>
         /// <param name="source">Source sequence</param>
         /// <param name="selector">Selector to use to pick the results to compare</param>
-        /// <returns>The minimal element, according to the projection.</returns>
+        /// <returns>The sequence of minimal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <param name="comparer">Comparer to use to compare projected values</param>
-        /// <returns>The minimal element, according to the projection.</returns>
+        /// <returns>The sequence of minimal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
