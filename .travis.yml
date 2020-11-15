@@ -29,6 +29,9 @@ before_install:
       # Install dotnet core 2.1 runtime
       wget --retry-connrefused --waitretry=1 -O /tmp/dn21.pkg 'https://download.visualstudio.microsoft.com/download/pr/9314da31-774c-4d2b-8743-998f2a21f5ab/bc918ca05ab6b650f2991b205c04f623/dotnet-runtime-2.1.13-osx-x64.pkg'
       sudo installer -pkg /tmp/dn21.pkg -target /
+      # Install dotnet core 3.1 runtime
+      wget --retry-connrefused --waitretry=1 -O /tmp/dn31.pkg 'https://download.visualstudio.microsoft.com/download/pr/cf89f4c1-b56a-4250-a927-461f17a828ac/3522d5d7cf26727e416d781533d07b65/dotnet-runtime-3.1.10-osx-x64.pkg'
+      sudo installer -pkg /tmp/dn31.pkg -target /
     fi
   - dotnet --info
 
