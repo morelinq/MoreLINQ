@@ -8,7 +8,7 @@ solution: MoreLinq.sln
 mono: 5.0.1
 dist: xenial
 sudo: required
-dotnet: 3.1.300
+dotnet: 5.0.100
 env:
   - CONFIGURATION=Debug
   - CONFIGURATION=Release
@@ -19,6 +19,7 @@ addons:
       key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
     packages:
     - dotnet-runtime-2.1
+    - dotnet-runtime-3.1
 
 before_install:
   - |
