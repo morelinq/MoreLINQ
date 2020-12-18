@@ -53,7 +53,7 @@ namespace MoreLinq.Experimental.Async
         /// and their corresponding source element to a result element.
         /// </returns>
 
-        public static IAsyncEnumerable<TResult>
+        public static IAsyncQuery<TResult>
             SelectMany<TSource, TCollection, TResult>(
                 IEnumerable<TSource> source,
                 Func<TSource, IAsyncEnumerable<TCollection>> collectionSelector,
@@ -63,7 +63,8 @@ namespace MoreLinq.Experimental.Async
             if (collectionSelector is null) throw new ArgumentNullException(nameof(collectionSelector));
             if (resultSelector is null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return SelectMany(source, collectionSelector, resultSelector, default);
+            return AsyncQuery.Create(options =>
+                SelectMany(source, collectionSelector, resultSelector, options, default));
         }
 
         // TODO Convert to local function when moving to C# 9 or later
@@ -73,6 +74,7 @@ namespace MoreLinq.Experimental.Async
                 IEnumerable<TSource> source,
                 Func<TSource, IAsyncEnumerable<TCollection>> collectionSelector,
                 Func<TSource, TCollection, TResult> resultSelector,
+                AsyncQueryOptions options,
                 [EnumeratorCancellation]CancellationToken cancellationToken)
         {
             var enumeratorList = new List<(TSource, IAsyncEnumerator<TCollection>)>();
@@ -110,27 +112,15 @@ namespace MoreLinq.Experimental.Async
                     return default;
                 }
 
-                while (pendingTaskList.Count < enumeratorList.Count)
+                var maxConcurrency = options.MaxConcurrency;
+
+                while (enumeratorList.Count > 0)
                 {
-                    var i = pendingTaskList.Count;
-                    var (item, enumerator) = enumeratorList[i];
-
-                    while (await ReadAsync(item, enumerator).ConfigureAwait(false)
-                           is (some, var resultItem))
+                    while (pendingTaskList.Count < enumeratorList.Count &&
+                           (maxConcurrency is null || pendingTaskList.Count < maxConcurrency))
                     {
-                        yield return resultItem;
-                    }
-                }
-
-                while (pendingTaskList.Count > 0)
-                {
-                    var completedTask = await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
-                    var (moved, item, enumerator) = await completedTask.ConfigureAwait(false);
-                    pendingTaskList.Remove(completedTask);
-
-                    if (moved)
-                    {
-                        yield return resultSelector(item, enumerator.Current);
+                        var i = pendingTaskList.Count;
+                        var (item, enumerator) = enumeratorList[i];
 
                         while (await ReadAsync(item, enumerator).ConfigureAwait(false)
                                is (some, var resultItem))
@@ -138,10 +128,29 @@ namespace MoreLinq.Experimental.Async
                             yield return resultItem;
                         }
                     }
-                    else
+
+                    while (pendingTaskList.Count > 0)
                     {
-                        await enumerator.DisposeAsync().ConfigureAwait(false);
-                        enumeratorList.Remove((item, enumerator));
+                        var completedTask = await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
+                        var (moved, item, enumerator) = await completedTask.ConfigureAwait(false);
+                        pendingTaskList.Remove(completedTask);
+
+                        if (moved)
+                        {
+                            yield return resultSelector(item, enumerator.Current);
+
+                            while (await ReadAsync(item, enumerator).ConfigureAwait(false)
+                                   is (some, var resultItem))
+                            {
+                                yield return resultItem;
+                            }
+                        }
+                        else
+                        {
+                            await enumerator.DisposeAsync().ConfigureAwait(false);
+                            enumeratorList.Remove((item, enumerator));
+                            break;
+                        }
                     }
                 }
             }
