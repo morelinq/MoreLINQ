@@ -156,8 +156,23 @@ namespace MoreLinq.Experimental.Async
             }
             finally
             {
+                List<Task>? disposalTasks = null;
                 foreach (var (_, enumerator) in enumeratorList)
-                    await enumerator.DisposeAsync().ConfigureAwait(false);
+                {
+                    var task = enumerator.DisposeAsync();
+                    if (task.IsCompleted)
+                    {
+                        await task.ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        disposalTasks ??= new List<Task>();
+                        disposalTasks.Add(task.AsTask());
+                    }
+                }
+
+                if (disposalTasks is {} && disposalTasks.Count > 0)
+                    await Task.WhenAll(disposalTasks).ConfigureAwait(false);
             }
         }
 
