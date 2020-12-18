@@ -55,7 +55,7 @@ namespace MoreLinq.Experimental.Async
 
         public static IAsyncQuery<TResult>
             SelectMany<TSource, TCollection, TResult>(
-                IEnumerable<TSource> source,
+                this IEnumerable<TSource> source,
                 Func<TSource, IAsyncEnumerable<TCollection>> collectionSelector,
                 Func<TSource, TCollection, TResult> resultSelector)
         {
