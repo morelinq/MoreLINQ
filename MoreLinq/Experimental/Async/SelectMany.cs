@@ -177,7 +177,7 @@ namespace MoreLinq.Experimental.Async
         }
 
         static async ValueTask<(T1, T2, T3)> And<T1, T2, T3>(this ValueTask<T1> task, T2 second, T3 third) =>
-            (await task, second, third);
+            (await task.ConfigureAwait(false), second, third);
     }
 }
 
