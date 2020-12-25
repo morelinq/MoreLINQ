@@ -25,8 +25,6 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
 
-    // This is a test
-
     partial class MoreEnumerable
     {
 <#      const int max = 16;
