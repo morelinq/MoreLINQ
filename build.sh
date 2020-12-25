@@ -12,7 +12,6 @@ codegen() {
 }
 codegen MoreLinq/Extensions.g.cs -x "[/\\\\]ToDataTable\.cs$" -u System.Linq -u System.Collections MoreLinq
 codegen MoreLinq/Extensions.ToDataTable.g.cs -i "[/\\\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq
-MoreLinq/tt.sh
 if [[ -z "$1" ]]; then
     configs="Debug Release"
 else

@@ -253,4 +253,23 @@
     </PackageReference>
   </ItemGroup>
 
+  <Target Name="_CollectTextTemplates">
+    <ItemGroup>
+      <TextTemplate Include="%(None.Identity)" Condition="%(None.Generator) == 'TextTemplatingFileGenerator'">
+        <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
+      </TextTemplate>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="TransformTextTemplate"
+          AfterTargets="BeforeBuild" DependsOnTargets="_CollectTextTemplates"
+          Inputs="@(TextTemplate -> '%(Identity)')"
+          Outputs="@(TextTemplate -> '%(LastGenOutput)')">
+    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
+    <Exec Command="dotnet t4 %(TextTemplate.Identity)" />
+  </Target>
+
 </Project>
