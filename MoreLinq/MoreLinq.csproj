@@ -156,6 +156,7 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -262,14 +263,18 @@
   </Target>
 
   <Target Name="TransformTextTemplate"
-          AfterTargets="BeforeBuild" DependsOnTargets="_CollectTextTemplates"
+          DependsOnTargets="_CollectTextTemplates"
           Inputs="@(TextTemplate -> '%(Identity)')"
           Outputs="@(TextTemplate -> '%(LastGenOutput)')">
+    <Error Condition="'$(BuildInParallel)' == 'true'" Text="Parallel build is unsupported for T4 code generation. Re-build with the switch &#34;/p:BuildInParallel&#34;." />
     <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True">
       <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
     </Exec>
     <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
     <Exec Command="dotnet t4 %(TextTemplate.Identity)" />
   </Target>
+
+  <Target Name="_TransformTextTemplate"
+          AfterTargets="BeforeBuild" DependsOnTargets="TransformTextTemplate" />
 
 </Project>
