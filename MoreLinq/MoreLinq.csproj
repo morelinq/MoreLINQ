@@ -256,7 +256,7 @@
 
   <Target Name="_CollectTextTemplates">
     <ItemGroup>
-      <TextTemplate Include="%(None.Identity)" Condition="%(None.Generator) == 'TextTemplatingFileGenerator'">
+      <TextTemplate Include="%(None.Identity)" Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'">
         <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
       </TextTemplate>
     </ItemGroup>
