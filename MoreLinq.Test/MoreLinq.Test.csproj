@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>netcoreapp3.1;netcoreapp2.1;net451</TargetFrameworks>
+    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;net451</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
