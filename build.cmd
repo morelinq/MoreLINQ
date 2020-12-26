@@ -13,7 +13,7 @@ if "%1"=="docs" shift & goto :docs
 dotnet restore && dotnet tool restore ^
   && call :codegen MoreLinq\Extensions.g.cs -x "[/\\]ToDataTable\.cs$" -u System.Linq -u System.Collections MoreLinq ^
   && call :codegen MoreLinq\Extensions.ToDataTable.g.cs -i "[/\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq ^
-  && dotnet build MoreLinq /t:TransformTextTemplate /p:BuildInParallel=false ^
+  && dotnet build MoreLinq -t:TransformTextTemplates -p:BuildInParallel=false ^
   && for %%i in (debug release) do dotnet build -c %%i --no-restore %* || exit /b 1
 goto :EOF
 
