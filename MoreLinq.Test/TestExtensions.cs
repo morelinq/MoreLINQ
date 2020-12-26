@@ -89,7 +89,7 @@ namespace MoreLinq.Test
                 case SourceKind.BreakingReadOnlyCollection:
                     return new BreakingReadOnlyCollection<T>(input.ToList());
                 default:
-                    throw new ArgumentException(nameof(sourceKind));
+                    throw new ArgumentException(null, nameof(sourceKind));
             }
         }
     }
