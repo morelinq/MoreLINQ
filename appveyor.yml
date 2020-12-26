@@ -52,9 +52,9 @@ install:
 - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
 - eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
 - git reset --hard
-- cmd: tools\dotnet-install.ps1 -Verbose -JSonFile global.json
-- cmd: tools\dotnet-install.ps1 -Verbose -Runtime dotnet -Version 3.1.10 -SkipNonVersionedFiles
-- cmd: tools\dotnet-install.ps1 -Verbose -Runtime dotnet -Version 2.1.23 -SkipNonVersionedFiles
+- cmd: tools\dotnet-install.ps1 -JSonFile global.json
+- cmd: tools\dotnet-install.ps1 -Runtime dotnet -Version 3.1.10 -SkipNonVersionedFiles
+- cmd: tools\dotnet-install.ps1 -Runtime dotnet -Version 2.1.23 -SkipNonVersionedFiles
 - sh: tools/dotnet-install.sh --jsonfile global.json
 - sh: tools/dotnet-install.sh --runtime dotnet --version 3.1.10 --skip-non-versioned-files
 - sh: tools/dotnet-install.sh --runtime dotnet --version 2.1.23 --skip-non-versioned-files
