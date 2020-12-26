@@ -156,6 +156,7 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -252,5 +253,35 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <Target Name="_CollectTextTemplates">
+    <ItemGroup>
+      <TextTemplate Include="%(None.Identity)" Condition="%(None.Generator) == 'TextTemplatingFileGenerator'">
+        <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
+      </TextTemplate>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_TransformTextTemplate" Inputs="$(TextTemplate)" Outputs="$(TextTemplateOutput)">
+    <!-- Parallel build is unsupported here to avoid file locking issues.
+         See also: https://github.com/dotnet/msbuild/issues/2781 -->
+    <Error Condition="'$(BuildInParallel)' == 'true'"
+           Text="Parallel build is unsupported for T4 code generation. Re-build with the switch &#34;-p:BuildInParallel=false&#34;." />
+    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
+    <Exec Command="dotnet t4 $(TextTemplate)" />
+  </Target>
+
+  <Target Name="TransformTextTemplates"
+          DependsOnTargets="_CollectTextTemplates">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             Targets="_TransformTextTemplate"
+             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
+  </Target>
+
+  <Target Name="_TransformTextTemplates"
+          AfterTargets="BeforeBuild" DependsOnTargets="TransformTextTemplates" />
 
 </Project>
