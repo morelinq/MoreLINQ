@@ -167,7 +167,7 @@ namespace MoreLinq.Test
             var sequenceB = new[] { "b", "E", "k", "q", "r", "u", "V", "x", "Y" };
             var sequenceC = new[] { "C", "F", "l", "m", "N", "P", "s", "w" };
             var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC)
-                                          .OrderBy(a => a, StringComparer.CurrentCultureIgnoreCase);
+                                          .OrderBy(a => a, StringComparer.InvariantCultureIgnoreCase);
             var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
 
             Assert.That(result, Is.EqualTo(expectedResult));
