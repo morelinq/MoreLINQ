@@ -58,7 +58,7 @@ install:
 - sh: ./tools/dotnet-install.sh --jsonfile global.json
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 3.1.10 --skip-non-versioned-files
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 2.1.23 --skip-non-versioned-files
-- sh: export "PATH=/.dotnet:$PATH"
+- sh: export PATH="~/.dotnet:$PATH"
 before_build:
 - dotnet --info
 build_script:
