@@ -46,7 +46,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.RunLengthEncode();
 
-            Assert.That(result, Is.EqualTo(sequence.Select(x => KeyValuePair.Create(x, x))));
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
