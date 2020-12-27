@@ -57,8 +57,8 @@ namespace MoreLinq.Test
         {
             var sequence = new[] { "a", "A", "a", "b", "b", "B", "B" };
 
-            var result = sequence.RunLengthEncode(StringComparer.CurrentCultureIgnoreCase)
-                                 .Select(kvp => KeyValuePair.Create(kvp.Key.ToLower(), kvp.Value));
+            var result = sequence.RunLengthEncode(StringComparer.InvariantCultureIgnoreCase)
+                                 .Select(kvp => KeyValuePair.Create(kvp.Key.ToLowerInvariant(), kvp.Value));
             var expectedResult = new[]
             {
                 KeyValuePair.Create("a", 3),
