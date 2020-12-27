@@ -123,6 +123,9 @@
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
+         See also: https://github.com/dotnet/msbuild/issues/2781 -->
+    <BuildInParallel>false</BuildInParallel>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>MoreLinq</AssemblyName>
@@ -263,10 +266,6 @@
   </Target>
 
   <Target Name="_TransformTextTemplate" Inputs="$(TextTemplate)" Outputs="$(TextTemplateOutput)">
-    <!-- Parallel build is unsupported here to avoid file locking issues.
-         See also: https://github.com/dotnet/msbuild/issues/2781 -->
-    <Error Condition="'$(BuildInParallel)' == 'true'"
-           Text="Parallel build is unsupported for T4 code generation. Re-build with the switch &#34;-p:BuildInParallel=false&#34;." />
     <Exec Command="dotnet t4 -h > /dev/null" IgnoreExitCode="True" Condition="'$(WINDIR)' == ''">
       <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
     </Exec>
