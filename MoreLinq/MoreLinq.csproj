@@ -267,7 +267,10 @@
          See also: https://github.com/dotnet/msbuild/issues/2781 -->
     <Error Condition="'$(BuildInParallel)' == 'true'"
            Text="Parallel build is unsupported for T4 code generation. Re-build with the switch &#34;-p:BuildInParallel=false&#34;." />
-    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True">
+    <Exec Command="dotnet t4 -h > /dev/null" IgnoreExitCode="True" Condition="'$(WINDIR)' == ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True" Condition="'$(WINDIR)' != ''">
       <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
     </Exec>
     <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
