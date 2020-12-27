@@ -91,7 +91,7 @@ test_script:
 - ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.net5.0.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: |
     cd tmp/cover
-    tar -cvz -f ../../coverage-report-${IMAGE_NAME}.tar.gz *
+    tar -cvz -f ../../coverage-report-${IMAGE_NAME}.tar.gz * 2>&1
 - sh: curl -sSL https://codecov.io/bash > codecov
 - sh: chmod +x codecov
 - sh: if [ "$CI_LINUX" = "true" ]; then ./codecov -f ./MoreLinq.Test/coverage.net5.0.opencover.xml; fi
