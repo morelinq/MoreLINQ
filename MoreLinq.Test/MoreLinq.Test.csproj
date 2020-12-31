@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="3.0.0">
+    <PackageReference Include="coverlet.collector" Version="1.3.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -47,9 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+      <None Remove="TestResult.xml" />
+      <None Remove="TestResults\**" />
       <Compile Include="*Test.cs" />
       <Compile Include="Test*.cs" />
-      <None Remove="TestResult.xml" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
       <Compile Include="AssertThrowsArgument.cs" />
