@@ -7,7 +7,7 @@ if [[ -z "$1" ]]; then
 else
     configs="$1"
 fi
-for v in 2.1 3.1; do
+for f in netcoreapp2.1 netcoreapp3.1 net5.0; do
     for c in $configs; do
         if [[ "$c" == "Debug" ]]; then
             coverage_args="-p:CollectCoverage=true
@@ -16,7 +16,7 @@ for v in 2.1 3.1; do
         else
             unset coverage_args
         fi
-        dotnet test --no-build -c $c -f netcoreapp$v MoreLinq.Test $coverage_args
+        dotnet test --no-build -c $c -f $f MoreLinq.Test $coverage_args
     done
 done
 if [[ -z `which mono 2>/dev/null` ]]; then

@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public static partial class MoreEnumerable
@@ -83,25 +84,23 @@ namespace MoreLinq
                 // 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
                 // 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
                 _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
-                Reset(ref _current, ref _generatorIterator, ref _hasMoreResults);
+                Reset();
             }
 
-            public void Reset() =>
-                Reset(ref _current, ref _generatorIterator, ref _hasMoreResults);
-
-            void Reset(ref IList<T>? current, ref IEnumerator<Action> generatorIterator, ref bool hasMoreResults)
+            [MemberNotNull(nameof(_generatorIterator))]
+            public void Reset()
             {
-                current = null;
-                generatorIterator?.Dispose();
+                _current = null;
+                _generatorIterator?.Dispose();
                 // restore lexographic ordering of the permutation indexes
                 for (var i = 0; i < _permutation.Length; i++)
                     _permutation[i] = i;
                 // start a newiteration over the nested loop generator
-                generatorIterator = _generator.GetEnumerator();
+                _generatorIterator = _generator.GetEnumerator();
                 // we must advance the nestedloop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
-                generatorIterator.MoveNext();
-                hasMoreResults = true; // there's always at least one permutation: the original set itself
+                _generatorIterator.MoveNext();
+                _hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
             public IList<T> Current => _current!;

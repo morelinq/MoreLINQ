@@ -31,7 +31,7 @@ namespace MoreLinq
         /// <param name="predicate">The predicate function.</param>
         /// <typeparam name="T">Type of source elements.</typeparam>
         /// <returns>
-        /// A tuple of elements staisfying the predicate and those that do not,
+        /// A tuple of elements satisfying the predicate and those that do not,
         /// respectively.
         /// </returns>
         /// <example>
