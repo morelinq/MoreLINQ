@@ -38,12 +38,7 @@ namespace MoreLinq.Test
             public decimal? ANullableDecimal { get; }
             public object Unreadable { set => throw new NotImplementedException(); }
 
-            public object this[int index]
-            {
-                get => new object();
-                set { }
-            }
-
+            public object this[int index] { get => new(); set { } }
 
             public TestObject(int key)
             {
@@ -192,8 +187,9 @@ namespace MoreLinq.Test
 
         struct Point
         {
+
 #pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
-            public static Point Empty = new Point();
+            public static Point Empty = new();
 #pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
             public int X { get; }

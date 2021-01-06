@@ -64,8 +64,7 @@ namespace MoreLinq.Test
 
         static class Tree
         {
-            public static Tree<T> New<T>(T value, params Tree<T>[] children) =>
-                new Tree<T>(value, children);
+            public static Tree<T> New<T>(T value, params Tree<T>[] children) => new(value, children);
         }
 
         [Test]

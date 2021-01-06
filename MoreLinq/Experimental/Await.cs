@@ -40,10 +40,9 @@ namespace MoreLinq.Experimental
         /// asynchronously.
         /// </summary>
 
-        public static readonly AwaitQueryOptions Default =
-            new AwaitQueryOptions(null /* = unbounded concurrency */,
-                                  TaskScheduler.Default,
-                                  preserveOrder: false);
+        public static readonly AwaitQueryOptions Default = new(null /* = unbounded concurrency */,
+                                                               TaskScheduler.Default,
+                                                               preserveOrder: false);
 
         /// <summary>
         /// Gets a positive (non-zero) integer that specifies the maximum
@@ -766,7 +765,7 @@ namespace MoreLinq.Experimental
 
         sealed class ConcurrencyGate
         {
-            public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
+            public static readonly ConcurrencyGate Unbounded = new();
 
             readonly SemaphoreSlim? _semaphore;
 

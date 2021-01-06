@@ -301,7 +301,7 @@ namespace MoreLinq
         static class Grouping
         {
             public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members) =>
-                new Grouping<TKey, TElement>(key, members);
+                new(key, members);
         }
 
         #if !NO_SERIALIZATION_ATTRIBUTES

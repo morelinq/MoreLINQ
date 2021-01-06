@@ -63,8 +63,7 @@ namespace MoreLinq
             public void Insert(int index, T item) => throw ReadOnlyException();
             public void RemoveAt(int index)       => throw ReadOnlyException();
 
-            static NotSupportedException ReadOnlyException() =>
-                new NotSupportedException("Single element list is immutable.");
+            static NotSupportedException ReadOnlyException() => new("Single element list is immutable.");
         }
     }
 }

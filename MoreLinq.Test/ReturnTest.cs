@@ -26,7 +26,7 @@ namespace MoreLinq.Test
     {
         static class SomeSingleton
         {
-            public static readonly object Item = new object();
+            public static readonly object Item = new();
             public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return(Item);
             public static IList<object> List => (IList<object>)Sequence;
             public static ICollection<object> Collection => (ICollection<object>)Sequence;
