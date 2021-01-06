@@ -393,8 +393,8 @@ namespace MoreLinq.Extensions
         public virtual int CompareTo(TypeKey other)
             => ReferenceEquals(this, other) ? 0
              : other == null ? 1
-             : Parameters.Count.CompareTo(other.Parameters.Count) is int lc && lc != 0 ? lc
-             : string.Compare(Name, other.Name, StringComparison.Ordinal) is int nc && nc != 0 ? nc
+             : Parameters.Count.CompareTo(other.Parameters.Count) is {} lc and not 0 ? lc
+             : string.Compare(Name, other.Name, StringComparison.Ordinal) is {} nc and not 0 ? nc
              : CompareParameters(other);
 
         protected virtual int CompareParameters(TypeKey other) =>
@@ -463,10 +463,10 @@ namespace MoreLinq.Extensions
         {
             if (other is ArrayTypeKey a)
             {
-                if (Ranks.Count.CompareTo(a.Ranks.Count) is int rlc && rlc != 0)
+                if (Ranks.Count.CompareTo(a.Ranks.Count) is {} rlc and not 0)
                     return rlc;
                 if (Ranks.Zip(a.Ranks, (us, them) => (Us: us, Them: them))
-                         .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is int rc && rc != 0)
+                         .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is {} rc and not 0)
                     return rc;
             }
 
