@@ -40,13 +40,12 @@ namespace MoreLinq.Test
         [TestCase(new[] { 1, 2, 3 }, 4, new[] { 9 })]
         public void BacksertWithIndexGreaterThanSourceLength(int[] seq1, int index, int[] seq2)
         {
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                var result = test1.Backsert(test2, index);
+            using var test1 = seq1.AsTestingSequence();
+            using var test2 = seq2.AsTestingSequence();
 
-                Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
-            }
+            var result = test1.Backsert(test2, index);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
         }
 
         [TestCase(new[] { 1, 2, 3 }, 0, new[] { 8, 9 }, ExpectedResult = new[] { 1, 2, 3, 8, 9 })]
@@ -55,11 +54,10 @@ namespace MoreLinq.Test
         [TestCase(new[] { 1, 2, 3 }, 3, new[] { 8, 9 }, ExpectedResult = new[] { 8, 9, 1, 2, 3 })]
         public IEnumerable<int> Backsert(int[] seq1, int index, int[] seq2)
         {
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                return test1.Backsert(test2, index).ToArray();
-            }
+            using var test1 = seq1.AsTestingSequence();
+            using var test2 = seq2.AsTestingSequence();
+
+            return test1.Backsert(test2, index).ToArray();
         }
     }
 }

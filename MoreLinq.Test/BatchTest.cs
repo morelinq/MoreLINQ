@@ -41,26 +41,24 @@ namespace MoreLinq.Test
         public void BatchEvenlyDivisibleSequence()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(3);
-            using (var reader = result.Read())
-            {
-                reader.Read().AssertSequenceEqual(1, 2, 3);
-                reader.Read().AssertSequenceEqual(4, 5, 6);
-                reader.Read().AssertSequenceEqual(7, 8, 9);
-                reader.ReadEnd();
-            }
+
+            using var reader = result.Read();
+            reader.Read().AssertSequenceEqual(1, 2, 3);
+            reader.Read().AssertSequenceEqual(4, 5, 6);
+            reader.Read().AssertSequenceEqual(7, 8, 9);
+            reader.ReadEnd();
         }
 
         [Test]
         public void BatchUnevenlyDivisibleSequence()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4);
-            using (var reader = result.Read())
-            {
-                reader.Read().AssertSequenceEqual(1, 2, 3, 4);
-                reader.Read().AssertSequenceEqual(5, 6, 7, 8);
-                reader.Read().AssertSequenceEqual(9);
-                reader.ReadEnd();
-            }
+
+            using var reader = result.Read();
+            reader.Read().AssertSequenceEqual(1, 2, 3, 4);
+            reader.Read().AssertSequenceEqual(5, 6, 7, 8);
+            reader.Read().AssertSequenceEqual(9);
+            reader.ReadEnd();
         }
 
         [Test]
@@ -74,12 +72,11 @@ namespace MoreLinq.Test
         public void BatchSequenceYieldsListsOfBatches()
         {
             var result = new[] { 1, 2, 3 }.Batch(2);
-            using (var reader = result.Read())
-            {
-                Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-                Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-                reader.ReadEnd();
-            }
+
+            using var reader = result.Read();
+            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
+            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
+            reader.ReadEnd();
         }
 
         [Test]

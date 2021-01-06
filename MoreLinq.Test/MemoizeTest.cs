@@ -113,14 +113,14 @@ namespace MoreLinq.Test
         public void MemoizeEnumeratesOnlyOnce()
         {
             const int count = 10;
-            using (var ts = Enumerable.Range(1, count).AsTestingSequence())
+            using var ts = Enumerable.Range(1, count).AsTestingSequence();
+
+            var memoized = ts.Memoize();
+
+            using ((IDisposable)memoized)
             {
-                var memoized = ts.Memoize();
-                using ((IDisposable) memoized)
-                {
-                    Assert.That(memoized.ToList().Count, Is.EqualTo(count));
-                    Assert.That(memoized.ToList().Count, Is.EqualTo(count));
-                }
+                Assert.That(memoized.ToList().Count, Is.EqualTo(count));
+                Assert.That(memoized.ToList().Count, Is.EqualTo(count));
             }
         }
 
@@ -129,30 +129,29 @@ namespace MoreLinq.Test
         {
             Assert.Throws<AssertionException>(() =>
             {
-                using (var xs = new[] { 1, 2 }.AsTestingSequence())
-                {
-                    xs.Memoize().Take(1).Consume();
-                    xs.Memoize().Take(1).Consume();
-                }
+                using var xs = new[] { 1, 2 }.AsTestingSequence();
+
+                xs.Memoize().Take(1).Consume();
+                xs.Memoize().Take(1).Consume();
             });
         }
 
         [Test]
         public void MemoizeWithDisposeOnEarlyExitTrue()
         {
-            using (var xs = new[] { 1, 2 }.AsTestingSequence())
-            {
-                var memoized = xs.Memoize();
-                using ((IDisposable) memoized)
-                    memoized.Take(1).Consume();
-            }
+            using var xs = new[] { 1, 2 }.AsTestingSequence();
+
+            var memoized = xs.Memoize();
+
+            using ((IDisposable) memoized)
+                memoized.Take(1).Consume();
         }
 
         [Test]
         public void MemoizeDisposesAfterSourceIsIteratedEntirely()
         {
-            using (var xs = new[] { 1, 2 }.AsTestingSequence())
-                xs.Memoize().Consume();
+            using var xs = new[] { 1, 2 }.AsTestingSequence();
+            xs.Memoize().Consume();
         }
 
         [Test, Explicit]
@@ -216,15 +215,13 @@ namespace MoreLinq.Test
             var memoized = sequence.Memoize();
             var disposable = (IDisposable) memoized;
 
-            using (var reader = memoized.Read())
-            {
-                Assert.That(reader.Read(), Is.EqualTo(1));
+            using var reader = memoized.Read();
+            Assert.That(reader.Read(), Is.EqualTo(1));
 
-                disposable.Dispose();
+            disposable.Dispose();
 
-                var e = Assert.Throws<ObjectDisposedException>(() => reader.Read());
-                Assert.That(e.ObjectName, Is.EqualTo("MemoizedEnumerable"));
-            }
+            var e = Assert.Throws<ObjectDisposedException>(() => reader.Read());
+            Assert.That(e.ObjectName, Is.EqualTo("MemoizedEnumerable"));
         }
 
         [Test]

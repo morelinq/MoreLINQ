@@ -27,25 +27,23 @@ namespace MoreLinq.Test
         [Test]
         public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
         {
-            using (var longer = TestingSequence.Of(1, 2, 3))
-            using (var shorter = TestingSequence.Of(1, 2))
-            {
-                // Yes, this will throw... but then we should still have disposed both sequences
-                Assert.Throws<InvalidOperationException>(() =>
-                    longer.EquiZip(shorter, (x, y) => x + y).Consume());
-            }
+            using var longer = TestingSequence.Of(1, 2, 3);
+            using var shorter = TestingSequence.Of(1, 2);
+
+            // Yes, this will throw... but then we should still have disposed both sequences
+            Assert.Throws<InvalidOperationException>(() =>
+                longer.EquiZip(shorter, (x, y) => x + y).Consume());
         }
 
         [Test]
         public void BothSequencesDisposedWithUnequalLengthsAndShorterFirst()
         {
-            using (var longer = TestingSequence.Of(1, 2, 3))
-            using (var shorter = TestingSequence.Of(1, 2))
-            {
-                // Yes, this will throw... but then we should still have disposed both sequences
-                Assert.Throws<InvalidOperationException>(() =>
-                    shorter.EquiZip(longer, (x, y) => x + y).Consume());
-            }
+            using var longer = TestingSequence.Of(1, 2, 3);
+            using var shorter = TestingSequence.Of(1, 2);
+
+            // Yes, this will throw... but then we should still have disposed both sequences
+            Assert.Throws<InvalidOperationException>(() =>
+                shorter.EquiZip(longer, (x, y) => x + y).Consume());
         }
 
         [Test]
@@ -84,26 +82,24 @@ namespace MoreLinq.Test
         [Test]
         public void MoveNextIsNotCalledUnnecessarily()
         {
-            using (var s1 = TestingSequence.Of(1, 2))
-            using (var s2 = TestingSequence.Of(1, 2, 3))
-            using (var s3 = MoreEnumerable.From(() => 1,
-                                                () => 2,
-                                                () => throw new TestException())
-                                          .AsTestingSequence())
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                    s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume());
-            }
+            using var s1 = TestingSequence.Of(1, 2);
+            using var s2 = TestingSequence.Of(1, 2, 3);
+            using var s3 = MoreEnumerable.From(() => 1,
+                                               () => 2,
+                                               () => throw new TestException())
+                                         .AsTestingSequence();
+
+            Assert.Throws<InvalidOperationException>(() =>
+                s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume());
         }
 
         [Test]
         public void ZipDisposesInnerSequencesCaseGetEnumeratorThrows()
         {
-            using (var s1 = TestingSequence.Of(1, 2))
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                    s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
-            }
+            using var s1 = TestingSequence.Of(1, 2);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
         }
     }
 }
