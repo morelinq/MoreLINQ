@@ -121,7 +121,6 @@
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
     <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
          See also: https://github.com/dotnet/msbuild/issues/2781 -->
     <BuildInParallel>false</BuildInParallel>
