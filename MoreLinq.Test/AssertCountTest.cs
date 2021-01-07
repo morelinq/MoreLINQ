@@ -120,7 +120,7 @@ namespace MoreLinq.Test
         public void AssertCountWithMismatchingCollectionCount(int sourceCount, int count, string message)
         {
             var xs = new int[sourceCount];
-            var enumerator = xs.AssertCount(count).GetEnumerator();
+            using var enumerator = xs.AssertCount(count).GetEnumerator();
             var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
             Assert.AreEqual(e.Message, message);
         }
