@@ -103,7 +103,7 @@ namespace MoreLinq.Test
             {
                 moves = 0;
                 disposed = false;
-                var te = e.AsWatchtable();
+                var te = e.AsWatchable();
                 te.Disposed += delegate { disposed = true; };
                 te.MoveNextCalled += delegate { moves++; };
                 return te;

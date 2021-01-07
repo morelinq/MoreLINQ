@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -86,6 +87,10 @@ namespace MoreLinq
 
             switch (source)
             {
+                case ICollection<TSource> { Count: 0 }:
+                {
+                    return Enumerable.Empty<TResult>();
+                }
                 case ICollection<TSource> collection when collection.Count <= size:
                 {
                     return _(); IEnumerable<TResult> _()
@@ -94,6 +99,10 @@ namespace MoreLinq
                         collection.CopyTo(bucket, 0);
                         yield return resultSelector(bucket);
                     }
+                }
+                case IReadOnlyCollection<TSource> { Count: 0 }:
+                {
+                    return Enumerable.Empty<TResult>();
                 }
                 case IReadOnlyList<TSource> list when list.Count <= size:
                 {
@@ -116,7 +125,7 @@ namespace MoreLinq
 
                 IEnumerable<TResult> Batch(int size)
                 {
-                    TSource[] bucket = null;
+                    TSource[]? bucket = null;
                     var count = 0;
 
                     foreach (var item in source)

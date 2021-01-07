@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Reactive
 {
     using System;
@@ -23,9 +25,9 @@ namespace MoreLinq.Reactive
 
     sealed class Subject<T> : IObservable<T>, IObserver<T>
     {
-        List<IObserver<T>> _observers;
+        List<IObserver<T>>? _observers;
         bool _completed;
-        Exception _error;
+        Exception? _error;
 
         bool HasObservers => (_observers?.Count ?? 0) > 0;
         List<IObserver<T>> Observers => _observers ??= new List<IObserver<T>>();
@@ -66,7 +68,7 @@ namespace MoreLinq.Reactive
                     if (observers[i] == observer)
                     {
                         if (_shouldDeleteObserver)
-                            observers[i] = null;
+                            observers[i] = null!;
                         else
                             observers.RemoveAt(i);
                         break;
@@ -114,7 +116,7 @@ namespace MoreLinq.Reactive
         }
 
         public void OnError(Exception error) =>
-            OnFinality(ref _error, error, (observer, err) => observer.OnError(err));
+            OnFinality(ref _error, error, (observer, err) => observer.OnError(err!));
 
         public void OnCompleted() =>
             OnFinality(ref _completed, true, (observer, _) => observer.OnCompleted());

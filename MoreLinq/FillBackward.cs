@@ -105,9 +105,9 @@ namespace MoreLinq
             return FillBackwardImpl(source, predicate, fillSelector);
         }
 
-        static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
+        static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
         {
-            List<T> blanks = null;
+            List<T>? blanks = null;
 
             foreach (var item in source)
             {

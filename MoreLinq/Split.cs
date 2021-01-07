@@ -108,7 +108,7 @@ namespace MoreLinq
         /// <returns>A sequence of splits of elements.</returns>
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer)
+            TSource separator, IEqualityComparer<TSource>? comparer)
         {
             return Split(source, separator, comparer, int.MaxValue);
         }
@@ -127,7 +127,7 @@ namespace MoreLinq
         /// <returns>A sequence of splits of elements.</returns>
 
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer, int count)
+            TSource separator, IEqualityComparer<TSource>? comparer, int count)
         {
             return Split(source, separator, comparer, count, s => s);
         }
@@ -175,7 +175,7 @@ namespace MoreLinq
         /// </returns>
 
         public static IEnumerable<TResult> Split<TSource, TResult>(this IEnumerable<TSource> source,
-            TSource separator, IEqualityComparer<TSource> comparer, int count,
+            TSource separator, IEqualityComparer<TSource>? comparer, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -275,7 +275,7 @@ namespace MoreLinq
                 }
                 else
                 {
-                    List<TSource> items = null;
+                    List<TSource>? items = null;
 
                     foreach (var item in source)
                     {

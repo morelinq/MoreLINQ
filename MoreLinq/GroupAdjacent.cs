@@ -21,7 +21,6 @@ namespace MoreLinq
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Linq;
 
     static partial class MoreEnumerable
@@ -83,7 +82,7 @@ namespace MoreLinq
         public static IEnumerable<IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -160,7 +159,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -246,7 +245,7 @@ namespace MoreLinq
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -265,43 +264,39 @@ namespace MoreLinq
             Func<TKey, IList<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(keySelector != null);
-            Debug.Assert(elementSelector != null);
-            Debug.Assert(resultSelector != null);
-            Debug.Assert(comparer != null);
-
             using var iterator = source.GetEnumerator();
 
-            var group = default(TKey);
-            var members = (List<TElement>) null;
+            (TKey, List<TElement>) group = default;
 
             while (iterator.MoveNext())
             {
                 var key = keySelector(iterator.Current);
                 var element = elementSelector(iterator.Current);
-                if (members != null && comparer.Equals(group, key))
+
+                if (group is ({} k, {} members))
                 {
-                    members.Add(element);
+                    if (comparer.Equals(k, key))
+                    {
+                        members.Add(element);
+                        continue;
+                    }
+                    else
+                    {
+                        yield return resultSelector(k, members);
+                    }
                 }
-                else
-                {
-                    if (members != null)
-                        yield return resultSelector(group, members);
-                    group = key;
-                    members = new List<TElement> { element };
-                }
+
+                group = (key, new List<TElement> { element });
             }
 
-            if (members != null)
-                yield return resultSelector(group, members);
+            {
+                if (group is ({} k, {} members))
+                    yield return resultSelector(k, members);
+            }
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members)
-        {
-            Debug.Assert(members != null);
-            return Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
-        }
+        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
+            Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
 
         static class Grouping
         {
@@ -318,7 +313,6 @@ namespace MoreLinq
 
             public Grouping(TKey key, IEnumerable<TElement> members)
             {
-                Debug.Assert(members != null);
                 Key = key;
                 _members = members;
             }

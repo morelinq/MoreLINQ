@@ -72,7 +72,7 @@ namespace MoreLinq
         /// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
+        public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));

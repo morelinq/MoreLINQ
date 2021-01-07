@@ -104,24 +104,23 @@ namespace MoreLinq
             return FillForwardImpl(source, predicate, fillSelector);
         }
 
-        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
+        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
         {
-            var seeded = false;
-            var seed = default(T);
+            (bool, T) seed = default;
+
             foreach (var item in source)
             {
                 if (predicate(item))
                 {
-                    yield return seeded
+                    yield return seed is (true, {} someSeed)
                                ? fillSelector != null
-                                 ? fillSelector(item, seed)
-                                 : seed
+                                 ? fillSelector(item, someSeed)
+                                 : someSeed
                                : item;
                 }
                 else
                 {
-                    seeded = true;
-                    seed = item;
+                    seed = (true, item);
                     yield return item;
                 }
             }

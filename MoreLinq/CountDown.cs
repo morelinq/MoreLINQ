@@ -57,9 +57,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.TryAsListLike() is IListLike<T> listLike
+            return source.TryAsListLike() is {} listLike
                    ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is int collectionCount
+                   : source.TryGetCollectionCount() is {} collectionCount
                      ? IterateCollection(collectionCount)
                      : IterateSequence();
 

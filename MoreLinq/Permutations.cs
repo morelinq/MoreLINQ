@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public static partial class MoreEnumerable
@@ -73,6 +74,8 @@ namespace MoreLinq
             IEnumerator<Action> _generatorIterator;
             bool _hasMoreResults;
 
+            IList<T>? _current;
+
             public PermutationEnumerator(IEnumerable<T> valueSet)
             {
                 _valueSet = valueSet.ToArray();
@@ -84,8 +87,10 @@ namespace MoreLinq
                 Reset();
             }
 
+            [MemberNotNull(nameof(_generatorIterator))]
             public void Reset()
             {
+                _current = null;
                 _generatorIterator?.Dispose();
                 // restore lexographic ordering of the permutation indexes
                 for (var i = 0; i < _permutation.Length; i++)
@@ -98,13 +103,13 @@ namespace MoreLinq
                 _hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
-            public IList<T> Current { get; private set; }
+            public IList<T> Current => _current!;
 
             object IEnumerator.Current => Current;
 
             public bool MoveNext()
             {
-                Current = PermuteValueSet();
+                _current = PermuteValueSet();
                 // check if more permutation left to enumerate
                 var prevResult = _hasMoreResults;
                 _hasMoreResults = _generatorIterator.MoveNext();

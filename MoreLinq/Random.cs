@@ -230,7 +230,7 @@ namespace MoreLinq
             public static readonly Random Instance = new GlobalRandom();
 
             static int _seed = Environment.TickCount;
-            [ThreadStatic] static Random _threadRandom;
+            [ThreadStatic] static Random? _threadRandom;
             static Random ThreadRandom => _threadRandom ??= new Random(Interlocked.Increment(ref _seed));
 
             GlobalRandom() { }

@@ -89,7 +89,7 @@ namespace MoreLinq
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
             return
-                source.TryGetCollectionCount() is int collectionCount
+                source.TryGetCollectionCount() is {} collectionCount
                 ? collectionCount == count
                   ? source
                   : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))

@@ -28,6 +28,7 @@ namespace MoreLinq.Experimental
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
+    using Unit = System.ValueTuple;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.
@@ -436,43 +437,10 @@ namespace MoreLinq.Experimental
                 // BlockingCollection.Add throws if called after CompleteAdding
                 // and we want to deliberately tolerate the race condition.
 
-                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo)>();
+                var notices = new BlockingCollection<(Notice, (int, T, Task<TTaskResult>), ExceptionDispatchInfo?)>();
 
                 var consumerCancellationTokenSource = new CancellationTokenSource();
-                (Exception, Exception) lastCriticalErrors = default;
-
-                void PostNotice(Notice notice,
-                                (int, T, Task<TTaskResult>) item,
-                                Exception error)
-                {
-                    // If a notice fails to post then assume critical error
-                    // conditions (like low memory), capture the error without
-                    // further allocation of resources and trip the cancellation
-                    // token source used by the main loop waiting on notices.
-                    // Note that only the "last" critical error is reported
-                    // as maintaining a list would incur allocations. The idea
-                    // here is to make a best effort attempt to report any of
-                    // the error conditions that may be occuring, which is still
-                    // better than nothing.
-
-                    try
-                    {
-                        var edi = error != null
-                                ? ExceptionDispatchInfo.Capture(error)
-                                : null;
-                        notices.Add((notice, item, edi));
-                    }
-                    catch (Exception e)
-                    {
-                        // Don't use ExceptionDispatchInfo.Capture here to avoid
-                        // inducing allocations if already under low memory
-                        // conditions.
-
-                        lastCriticalErrors = (e, error);
-                        consumerCancellationTokenSource.Cancel();
-                        throw;
-                    }
-                }
+                (Exception?, Exception?) lastCriticalErrors = default;
 
                 var completed = false;
                 var cancellationTokenSource = new CancellationTokenSource();
@@ -503,6 +471,39 @@ namespace MoreLinq.Experimental
                             catch (Exception e)
                             {
                                 PostNotice(Notice.Error, default, e);
+                            }
+
+                            void PostNotice(Notice notice,
+                                            (int, T, Task<TTaskResult>) item,
+                                            Exception? error)
+                            {
+                                // If a notice fails to post then assume critical error
+                                // conditions (like low memory), capture the error without
+                                // further allocation of resources and trip the cancellation
+                                // token source used by the main loop waiting on notices.
+                                // Note that only the "last" critical error is reported
+                                // as maintaining a list would incur allocations. The idea
+                                // here is to make a best effort attempt to report any of
+                                // the error conditions that may be occuring, which is still
+                                // better than nothing.
+
+                                try
+                                {
+                                    var edi = error != null
+                                            ? ExceptionDispatchInfo.Capture(error)
+                                            : null;
+                                    notices.Add((notice, item, edi));
+                                }
+                                catch (Exception e)
+                                {
+                                    // Don't use ExceptionDispatchInfo.Capture here to avoid
+                                    // inducing allocations if already under low memory
+                                    // conditions.
+
+                                    lastCriticalErrors = (e, error);
+                                    consumerCancellationTokenSource.Cancel();
+                                    throw;
+                                }
                             }
                         },
                         CancellationToken.None,
@@ -535,7 +536,9 @@ namespace MoreLinq.Experimental
                         var (kind, result, error) = notice.Current;
 
                         if (kind == Notice.Error)
-                            error.Throw();
+                        {
+                            error!.Throw();
+                        }
 
                         if (kind == Notice.End)
                             break;
@@ -636,7 +639,7 @@ namespace MoreLinq.Experimental
                         onEnd();
                 }
 
-                var concurrencyGate = maxConcurrency is int count
+                var concurrencyGate = maxConcurrency is {} count
                                     ? new ConcurrencyGate(count)
                                     : ConcurrencyGate.Unbounded;
 
@@ -688,7 +691,7 @@ namespace MoreLinq.Experimental
             public static IAwaitQuery<T>
                 Create<T>(
                     Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                    AwaitQueryOptions options = null) =>
+                    AwaitQueryOptions? options = null) =>
                 new AwaitQuery<T>(impl, options);
         }
 
@@ -697,7 +700,7 @@ namespace MoreLinq.Experimental
             readonly Func<AwaitQueryOptions, IEnumerable<T>> _impl;
 
             public AwaitQuery(Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                AwaitQueryOptions options = null)
+                AwaitQueryOptions? options = null)
             {
                 _impl = impl;
                 Options = options ?? AwaitQueryOptions.Default;
@@ -735,8 +738,8 @@ namespace MoreLinq.Experimental
 
             static CompletedTask()
             {
-                var tcs = new TaskCompletionSource<object>();
-                tcs.SetResult(null);
+                var tcs = new TaskCompletionSource<Unit>();
+                tcs.SetResult(default);
                 Instance = tcs.Task;
             }
 
@@ -751,9 +754,9 @@ namespace MoreLinq.Experimental
         {
             public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
 
-            readonly SemaphoreSlim _semaphore;
+            readonly SemaphoreSlim? _semaphore;
 
-            ConcurrencyGate(SemaphoreSlim semaphore = null) =>
+            ConcurrencyGate(SemaphoreSlim? semaphore = null) =>
                 _semaphore = semaphore;
 
             public ConcurrencyGate(int max) :

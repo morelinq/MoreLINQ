@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2020 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,20 +18,11 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// Data and functions to use throughout tests.
-    /// </summary>
-    static class SampleData
+    static class Comparable<T> where T : IComparable<T>
     {
-        internal static readonly ReadOnlyCollection<string> Strings = new ReadOnlyCollection<string>(
-            new[] { "ax", "hello", "world", "aa", "ab", "ay", "az" });
-
-        internal static readonly ReadOnlyCollection<int> Values =
-            new ReadOnlyCollection<int>(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
-
-        internal static readonly Func<int, int, int> Plus = (a, b) => a + b;
-        internal static readonly Func<int, int, int> Mul = (a, b) => a * b;
+        public static readonly IComparer<T> DescendingOrderComparer =
+            Comparer<T>.Create((x, y) => -Math.Sign(x.CompareTo(y)));
     }
 }

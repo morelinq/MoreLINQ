@@ -40,13 +40,51 @@ namespace MoreLinq.Test
         /// to open successfully
         /// </summary>
         [Test]
-        public void TestInterleaveDisposesOnError()
+        public void TestInterleaveDisposesOnErrorAtGetEnumerator()
         {
-            using (var sequenceA = TestingSequence.Of<int>())
-            {
-                Assert.Throws<InvalidOperationException>(() => // Expected and thrown by BreakingSequence
-                    sequenceA.Interleave(new BreakingSequence<int>()).Consume());
-            }
+            using var sequenceA = TestingSequence.Of<int>();
+            var sequenceB = new BreakingSequence<int>();
+
+            // Expected and thrown by BreakingSequence
+            Assert.Throws<InvalidOperationException>(() => sequenceA.Interleave(sequenceB).Consume());
+        }
+
+        /// <summary>
+        /// Verify that interleaving disposes those enumerators that it managed
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestInterleaveDisposesOnErrorAtMoveNext()
+        {
+            using var sequenceA = TestingSequence.Of<int>();
+            using var sequenceB = MoreEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
+
+            // Expected and thrown by sequenceB
+            Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
+        }
+
+        /// <summary>
+        /// Verify that interleaving do not call enumerable GetEnumerator method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNotCallGetEnumeratorEagerly()
+        {
+            var sequenceA = TestingSequence.Of(1);
+            var sequenceB = new BreakingSequence<int>();
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
+        }
+
+        /// <summary>
+        /// Verify that interleaving do not call enumerators MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNoCallMoveNextEagerly()
+        {
+            var sequenceA = Enumerable.Range(1, 1);
+            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
         }
 
         /// <summary>

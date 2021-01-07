@@ -84,7 +84,7 @@ namespace MoreLinq.Test
         public IEnumerator<T> GetEnumerator()
         {
             Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = _sequence.GetEnumerator().AsWatchtable();
+            var enumerator = _sequence.GetEnumerator().AsWatchable();
             _disposed = false;
             enumerator.Disposed += delegate
             {
