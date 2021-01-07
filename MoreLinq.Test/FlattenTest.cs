@@ -236,29 +236,27 @@ namespace MoreLinq.Test
                 7,
             };
 
-            using (var inner1 = TestingSequence.Of(4, 5))
-            using (var inner2 = TestingSequence.Of(true, false))
-            using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
-            using (var source = TestingSequence.Of<object>(inner1, inner3))
-            {
-                Assert.That(source.Flatten(), Is.EqualTo(expectations));
-            }
+            using var inner1 = TestingSequence.Of(4, 5);
+            using var inner2 = TestingSequence.Of(true, false);
+            using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
+            using var source = TestingSequence.Of<object>(inner1, inner3);
+
+            Assert.That(source.Flatten(), Is.EqualTo(expectations));
         }
 
         [Test]
         public void FlattenInterruptedIterationDisposesInnerSequences()
         {
-            using (var inner1 = TestingSequence.Of(4, 5))
-            using (var inner2 = MoreEnumerable.From(() => true,
-                                                    () => false,
-                                                    () => throw new TestException())
-                                              .AsTestingSequence())
-            using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
-            using (var source = TestingSequence.Of<object>(inner1, inner3))
-            {
-                Assert.Throws<TestException>(() =>
-                    source.Flatten().Consume());
-            }
+            using var inner1 = TestingSequence.Of(4, 5);
+            using var inner2 = MoreEnumerable.From(() => true,
+                                                   () => false,
+                                                   () => throw new TestException())
+                                             .AsTestingSequence();
+            using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
+            using var source = TestingSequence.Of<object>(inner1, inner3);
+
+            Assert.Throws<TestException>(() =>
+                source.Flatten().Consume());
         }
 
         [Test]

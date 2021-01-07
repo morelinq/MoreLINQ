@@ -174,14 +174,13 @@ namespace MoreLinq.Test
         {
             const int count = 10;
 
-            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
-            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
-            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
-            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
-            {
-                sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
-                         .Consume();
-            }
+            using var sequenceA = Enumerable.Range(1, count).AsTestingSequence();
+            using var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence();
+            using var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence();
+            using var sequenceD = Enumerable.Range(1, 0).AsTestingSequence();
+
+            sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
+                     .Consume();
         }
     }
 }

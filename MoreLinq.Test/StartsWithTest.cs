@@ -72,11 +72,10 @@ namespace MoreLinq.Test
         [Test]
         public void StartsWithDisposesBothSequenceEnumerators()
         {
-            using (var first = TestingSequence.Of(1,2,3))
-            using (var second = TestingSequence.Of(1))
-            {
-                first.StartsWith(second);
-            }
+            using var first = TestingSequence.Of(1,2,3);
+            using var second = TestingSequence.Of(1);
+
+            first.StartsWith(second);
         }
 
         [Test]

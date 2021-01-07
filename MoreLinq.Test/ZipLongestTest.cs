@@ -46,9 +46,9 @@ namespace MoreLinq.Test
         [Test, TestCaseSource(nameof(TestData))]
         public IEnumerable<(int, string)> ZipLongest(int[] first, string[] second)
         {
-            using (var ts1 = TestingSequence.Of(first))
-            using (var ts2 = TestingSequence.Of(second))
-                return ts1.ZipLongest(ts2, Tuple.Create).ToArray();
+            using var ts1 = TestingSequence.Of(first);
+            using var ts2 = TestingSequence.Of(second);
+            return ts1.ZipLongest(ts2, Tuple.Create).ToArray();
         }
 
         [Test]
@@ -76,11 +76,10 @@ namespace MoreLinq.Test
         [Test]
         public void ZipLongestDisposesInnerSequencesCaseGetEnumeratorThrows()
         {
-            using (var s1 = TestingSequence.Of(1, 2))
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                    s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
-            }
+            using var s1 = TestingSequence.Of(1, 2);
+
+            Assert.Throws<InvalidOperationException>(() =>
+                s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
         }
     }
 }

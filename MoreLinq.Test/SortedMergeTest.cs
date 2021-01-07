@@ -46,12 +46,11 @@ namespace MoreLinq.Test
         [Test]
         public void TestSortedMergeDisposesOnError()
         {
-            using (var sequenceA = TestingSequence.Of<int>())
-            {
-                // Expected and thrown by BreakingSequence
-                Assert.Throws<InvalidOperationException>(() =>
-                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
-            }
+            using var sequenceA = TestingSequence.Of<int>();
+
+            // Expected and thrown by BreakingSequence
+            Assert.Throws<InvalidOperationException>(() =>
+                sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
         }
 
         /// <summary>
@@ -181,14 +180,14 @@ namespace MoreLinq.Test
         public void TestSortedMergeAllSequencesDisposed()
         {
             const int count = 10;
-            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
-            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
-            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
-            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
-            {
-                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
-                         .Consume(); // ensures the sequences are actually merged and iterators are obtained
-            }
+
+            using var sequenceA = Enumerable.Range(1, count).AsTestingSequence();
+            using var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence();
+            using var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence();
+            using var sequenceD = Enumerable.Range(1, 0).AsTestingSequence();
+
+            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
+                     .Consume(); // ensures the sequences are actually merged and iterators are obtained
         }
     }
 }

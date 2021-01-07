@@ -93,18 +93,16 @@ namespace MoreLinq.Test
 
             Assert.That(m3, Is.EqualTo(new[] { 0, 3, 6, 9 }));
 
-            using (var r = etc.Read())
-            {
-                var r1 = r.Read();
-                Assert.That(r1.Key, Is.EqualTo(1));
-                Assert.That(r1, Is.EqualTo(new[] { 1, 4, 7 }));
+            using var r = etc.Read();
+            var r1 = r.Read();
+            Assert.That(r1.Key, Is.EqualTo(1));
+            Assert.That(r1, Is.EqualTo(new[] { 1, 4, 7 }));
 
-                var r2 = r.Read();
-                Assert.That(r2.Key, Is.EqualTo(2));
-                Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
+            var r2 = r.Read();
+            Assert.That(r2.Key, Is.EqualTo(2));
+            Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
 
-                r.ReadEnd();
-            }
+            r.ReadEnd();
         }
 
         [Test]
@@ -118,13 +116,11 @@ namespace MoreLinq.Test
             Assert.That(ms, Is.EqualTo(new[] { 0, 3, 6, 9 }));
             Assert.That(r1, Is.EqualTo(new[] { 1, 4, 7 }));
 
-            using (var r = etc.Read())
-            {
-                var r2 = r.Read();
-                Assert.That(r2.Key, Is.EqualTo(2));
-                Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
-                r.ReadEnd();
-            }
+            using var r = etc.Read();
+            var r2 = r.Read();
+            Assert.That(r2.Key, Is.EqualTo(2));
+            Assert.That(r2, Is.EqualTo(new[] { 2, 5, 8 }));
+            r.ReadEnd();
         }
 
         [Test]
@@ -153,12 +149,10 @@ namespace MoreLinq.Test
 
             Assert.That(foo, Is.EqualTo(new[] { "foo", "FOO" }));
 
-            using (var r = etc.Read())
-            {
-                var bar = r.Read();
-                Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
-                r.ReadEnd();
-            }
+            using var r = etc.Read();
+            var bar = r.Read();
+            Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
+            r.ReadEnd();
         }
 
         [Test]
@@ -174,18 +168,16 @@ namespace MoreLinq.Test
             Assert.That(foos, Is.EqualTo(new[] { "foo", "FOO" }));
             Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
 
-            using (var r = etc.Read())
-            {
-                var baz = r.Read();
-                Assert.That(baz.Key, Is.EqualTo("baz"));
-                Assert.That(baz, Is.EqualTo(new[] { "baz", "bAz" }));
+            using var r = etc.Read();
+            var baz = r.Read();
+            Assert.That(baz.Key, Is.EqualTo("baz"));
+            Assert.That(baz, Is.EqualTo(new[] { "baz", "bAz" }));
 
-                var qux = r.Read();
-                Assert.That(qux.Key, Is.EqualTo("QUx"));
-                Assert.That(qux, Is.EqualTo(new[] { "QUx", "QuX" }));
+            var qux = r.Read();
+            Assert.That(qux.Key, Is.EqualTo("QUx"));
+            Assert.That(qux, Is.EqualTo(new[] { "QUx", "QuX" }));
 
-                r.ReadEnd();
-            }
+            r.ReadEnd();
         }
 
         [Test]
@@ -202,13 +194,11 @@ namespace MoreLinq.Test
             Assert.That(bar, Is.EqualTo(new[] { "bar", "Bar" }));
             Assert.That(baz, Is.EqualTo(new[] { "baz", "bAz" }));
 
-            using (var r = etc.Read())
-            {
-                var qux = r.Read();
-                Assert.That(qux.Key, Is.EqualTo("QUx"));
-                Assert.That(qux, Is.EqualTo(new[] { "QUx", "QuX" }));
-                r.ReadEnd();
-            }
+            using var r = etc.Read();
+            var qux = r.Read();
+            Assert.That(qux.Key, Is.EqualTo("QUx"));
+            Assert.That(qux, Is.EqualTo(new[] { "QUx", "QuX" }));
+            r.ReadEnd();
         }
     }
 }
