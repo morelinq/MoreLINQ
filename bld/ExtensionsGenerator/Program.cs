@@ -283,13 +283,13 @@ static void Run(IEnumerable<string> args)
         }
         into m
         select (!noClassLead ? $@"
-/// <summary><c>{m.Name}</c> extension.</summary>
+    /// <summary><c>{m.Name}</c> extension.</summary>
 
-[GeneratedCode(""{thisAssemblyName.Name}"", ""{thisAssemblyName.Version}"")]" : null) + $@"
-public static partial class {m.Name}Extension
-{{
+    [GeneratedCode(""{thisAssemblyName.Name}"", ""{thisAssemblyName.Version}"")]" : null) + $@"
+    public static partial class {m.Name}Extension
+    {{
 {string.Join(null, from mo in m.Overloads select mo.ToFullString())}
-}}";
+    }}";
 
     var template = $@"
 #region License and Terms
