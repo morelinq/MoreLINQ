@@ -5567,6 +5567,31 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Step</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class StepExtension
+    {
+        /// <summary>
+        /// Iterates through a sequence based on another sequence of Boolean
+        /// values indicating when to step to the next element.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="steps">Sequence of Boolean values.</param>
+        /// <returns>
+        /// A sequence of elements from <paramref name="source"/> where
+        /// each element is duplicated while the Boolean from
+        /// <paramref name="steps"/> is <c>false</c>.
+        /// </returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+
+        public static IEnumerable<(bool Moved, T Item)>
+            Step<T>(this IEnumerable<T> source, IEnumerable<bool> steps)
+            => MoreEnumerable.            Step(source, steps);
+
+    }
+
     /// <summary><c>Subsets</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
