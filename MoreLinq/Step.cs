@@ -23,44 +23,49 @@ namespace MoreLinq
     partial class MoreEnumerable
     {
         /// <summary>
-        /// Iterates through a sequence based on another sequence of Boolean
-        /// values indicating when to step to the next element.
+        /// Steps through a sequence based on another sequence of zero or
+        /// positive steps to take between elements.
         /// </summary>
         /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
         /// <param name="source">The source sequence.</param>
-        /// <param name="steps">Sequence of Boolean values.</param>
+        /// <param name="steps">
+        /// Sequence of zero or positive steps to take where a negative step is
+        /// treated the same as zero.</param>
         /// <returns>
-        /// A sequence of elements from <paramref name="source"/> where
-        /// each element is duplicated while the Boolean from
-        /// <paramref name="steps"/> is <c>false</c>.
+        /// A sequence of items from <paramref name="source"/> paired with
+        /// steps from <paramref name="steps"/>.
         /// </returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
-        public static IEnumerable<(bool Moved, T Item)>
-            Step<T>(this IEnumerable<T> source, IEnumerable<bool> steps)
+        public static IEnumerable<(T Item, int Step)>
+            Step<T>(this IEnumerable<T> source, IEnumerable<int> steps)
         {
             if (source is null) throw new ArgumentNullException(nameof(source));
             if (steps is null) throw new ArgumentNullException(nameof(steps));
 
-            return _(); IEnumerable<(bool, T)> _()
+            return _(); IEnumerable<(T, int)> _()
             {
                 using var item = source.GetEnumerator();
 
                 if (!item.MoveNext())
                     yield break;
-                yield return (true, item.Current);
+                yield return (item.Current, 1);
 
                 foreach (var step in steps)
                 {
-                    if (step)
+                    if (step > 0)
                     {
-                        if (!item.MoveNext())
-                            break;
-                        yield return (true, item.Current);
+                        for (var i = 0; i < step; i++)
+                        {
+                            if (!item.MoveNext())
+                                yield break;
+                        }
+
+                        yield return (item.Current, step);
                     }
                     else
                     {
-                        yield return (false, item.Current);
+                        yield return (item.Current, 0);
                     }
                 }
             }
