@@ -166,15 +166,14 @@ namespace MoreLinq.Test
         [Test]
         public void TestWindowWindowsImmutability()
         {
-            using (var windows = Enumerable.Range(1, 5).Window(2).AsTestingSequence())
-            using (var reader = windows.ToArray().Read())
-            {
-                reader.Read().AssertSequenceEqual(1, 2);
-                reader.Read().AssertSequenceEqual(2, 3);
-                reader.Read().AssertSequenceEqual(3, 4);
-                reader.Read().AssertSequenceEqual(4, 5);
-                reader.ReadEnd();
-            }
+            using var windows = Enumerable.Range(1, 5).Window(2).AsTestingSequence();
+
+            using var reader = windows.ToArray().Read();
+            reader.Read().AssertSequenceEqual(1, 2);
+            reader.Read().AssertSequenceEqual(2, 3);
+            reader.Read().AssertSequenceEqual(3, 4);
+            reader.Read().AssertSequenceEqual(4, 5);
+            reader.ReadEnd();
         }
     }
 }

@@ -67,11 +67,9 @@ namespace MoreLinq.Test
         [TestCaseSource(nameof(SequenceData))]
         public IEnumerable<(int, int?)> WithSequence(int[] xs, int count)
         {
-            using (var ts = xs.Select(x => x).AsTestingSequence())
-            {
-                foreach (var e in ts.CountDown(count, ValueTuple.Create))
-                    yield return e;
-            }
+            using var ts = xs.Select(x => x).AsTestingSequence();
+            foreach (var e in ts.CountDown(count, ValueTuple.Create))
+                yield return e;
         }
 
         static readonly IEnumerable<TestCaseData> ListData =

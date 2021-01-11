@@ -14,8 +14,6 @@
 //
 #endregion
 
-namespace MoreLinq.ExtensionsGenerator
-{
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
@@ -29,8 +27,17 @@ namespace MoreLinq.ExtensionsGenerator
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-    static class Program
+try
     {
+    Run(args);
+    return 0;
+}
+catch (Exception e)
+{
+    Console.Error.WriteLine(e.ToString());
+    return 0xbad;
+}
+
         static void Run(IEnumerable<string> args)
         {
             var dir = Directory.GetCurrentDirectory();
@@ -89,7 +96,7 @@ namespace MoreLinq.ExtensionsGenerator
             var includePredicate = PredicateFromPattern(includePattern, true);
             var excludePredicate = PredicateFromPattern(excludePattern, false);
 
-            var thisAssemblyName = typeof(Program).GetTypeInfo().Assembly.GetName();
+    var thisAssemblyName = typeof(TypeKey).GetTypeInfo().Assembly.GetName();
 
             //
             // Type abbreviations are used to abbreviate all generic type
@@ -337,7 +344,7 @@ namespace MoreLinq.Extensions
                                       .Replace("\n", Environment.NewLine));
         }
 
-        public static TypeKey CreateTypeKey(TypeSyntax root,
+static TypeKey CreateTypeKey(TypeSyntax root,
                                             Func<string, TypeKey> abbreviator = null)
         {
             return Walk(root ?? throw new ArgumentNullException(nameof(root)));
@@ -369,21 +376,6 @@ namespace MoreLinq.Extensions
             return e.Current;
         }
 
-        static int Main(string[] args)
-        {
-            try
-            {
-                Run(args);
-                return 0;
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e.ToString());
-                return 0xbad;
-            }
-        }
-    }
-
     //
     // Logical type nodes designed to be structurally sortable based on:
     //
@@ -403,8 +395,8 @@ namespace MoreLinq.Extensions
         public virtual int CompareTo(TypeKey other)
             => ReferenceEquals(this, other) ? 0
              : other == null ? 1
-             : Parameters.Count.CompareTo(other.Parameters.Count) is int lc && lc != 0 ? lc
-             : string.Compare(Name, other.Name, StringComparison.Ordinal) is int nc && nc != 0 ? nc
+         : Parameters.Count.CompareTo(other.Parameters.Count) is {} lc and not 0 ? lc
+         : string.Compare(Name, other.Name, StringComparison.Ordinal) is {} nc and not 0 ? nc
              : CompareParameters(other);
 
         protected virtual int CompareParameters(TypeKey other) =>
@@ -473,14 +465,13 @@ namespace MoreLinq.Extensions
         {
             if (other is ArrayTypeKey a)
             {
-                if (Ranks.Count.CompareTo(a.Ranks.Count) is int rlc && rlc != 0)
+            if (Ranks.Count.CompareTo(a.Ranks.Count) is {} rlc and not 0)
                     return rlc;
                 if (Ranks.Zip(a.Ranks, (us, them) => (Us: us, Them: them))
-                         .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is int rc && rc != 0)
+                     .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is {} rc and not 0)
                     return rc;
             }
 
             return base.CompareParameters(other);
         }
     }
-}

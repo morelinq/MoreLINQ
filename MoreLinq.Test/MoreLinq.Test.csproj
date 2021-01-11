@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
     <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;net451;net471;net48</TargetFrameworks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -40,6 +39,11 @@
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.1' And '$(TargetFramework)' != 'net451'">
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <Compile Include="Async\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

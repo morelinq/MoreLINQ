@@ -84,11 +84,11 @@ namespace MoreLinq.Test
         [Test]
         public void WindowRightWithEmptySequence()
         {
-            using (var xs = Enumerable.Empty<int>().AsTestingSequence())
-            {
-                var result = xs.WindowRight(5);
-                Assert.That(result, Is.Empty);
-            }
+            using var xs = Enumerable.Empty<int>().AsTestingSequence();
+
+            var result = xs.WindowRight(5);
+
+            Assert.That(result, Is.Empty);
         }
 
         [Test]
@@ -112,31 +112,29 @@ namespace MoreLinq.Test
         [Test]
         public void WindowRightWithWindowSizeLargerThanSequence()
         {
-            using (var sequence = Enumerable.Range(1, 5).AsTestingSequence())
-            using (var reader = sequence.WindowRight(10).Read())
-            {
-                reader.Read().AssertSequenceEqual(            1);
-                reader.Read().AssertSequenceEqual(         1, 2);
-                reader.Read().AssertSequenceEqual(      1, 2, 3);
-                reader.Read().AssertSequenceEqual(   1, 2, 3, 4);
-                reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
-                reader.ReadEnd();
-            }
+            using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+
+            using var reader = sequence.WindowRight(10).Read();
+            reader.Read().AssertSequenceEqual(            1);
+            reader.Read().AssertSequenceEqual(         1, 2);
+            reader.Read().AssertSequenceEqual(      1, 2, 3);
+            reader.Read().AssertSequenceEqual(   1, 2, 3, 4);
+            reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
+            reader.ReadEnd();
         }
 
         [Test]
         public void WindowRightWithWindowSizeSmallerThanSequence()
         {
-            using (var sequence = Enumerable.Range(1, 5).AsTestingSequence())
-            using (var reader = sequence.WindowRight(3).Read())
-            {
-                reader.Read().AssertSequenceEqual(      1);
-                reader.Read().AssertSequenceEqual(   1, 2);
-                reader.Read().AssertSequenceEqual(1, 2, 3);
-                reader.Read().AssertSequenceEqual(2, 3, 4);
-                reader.Read().AssertSequenceEqual(3, 4, 5);
-                reader.ReadEnd();
-            }
+            using var sequence = Enumerable.Range(1, 5).AsTestingSequence();
+
+            using var reader = sequence.WindowRight(3).Read();
+            reader.Read().AssertSequenceEqual(      1);
+            reader.Read().AssertSequenceEqual(   1, 2);
+            reader.Read().AssertSequenceEqual(1, 2, 3);
+            reader.Read().AssertSequenceEqual(2, 3, 4);
+            reader.Read().AssertSequenceEqual(3, 4, 5);
+            reader.ReadEnd();
         }
     }
 }

@@ -87,7 +87,7 @@ namespace MoreLinq
 
             switch (source)
             {
-                case ICollection<TSource> collection when collection.Count == 0:
+                case ICollection<TSource> { Count: 0 }:
                 {
                     return Enumerable.Empty<TResult>();
                 }
@@ -100,7 +100,7 @@ namespace MoreLinq
                         yield return resultSelector(bucket);
                     }
                 }
-                case IReadOnlyCollection<TSource> collection when collection.Count == 0:
+                case IReadOnlyCollection<TSource> { Count: 0 }:
                 {
                     return Enumerable.Empty<TResult>();
                 }

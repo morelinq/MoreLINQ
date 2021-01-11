@@ -73,11 +73,11 @@ namespace MoreLinq.Test
         public void TestRepeatForeverBehaviorSingleElementList()
         {
             const int value = 3;
-            using (var sequence = new[] { value }.AsTestingSequence())
-            {
-                var result = sequence.Repeat();
-                Assert.IsTrue(result.Take(100).All(x => x == value));
-            }
+            using var sequence = new[] { value }.AsTestingSequence();
+
+            var result = sequence.Repeat();
+
+            Assert.IsTrue(result.Take(100).All(x => x == value));
         }
 
         /// <summary>
