@@ -62,13 +62,12 @@ install:
 before_build:
 - dotnet --info
 build_script:
-- ps: >-
+- pwsh: |
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
-
     if ($LASTEXITCODE -eq 0) {
         throw 'Unit tests should not import System.Linq'
     }
-
+- ps: >-
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
 
     $id = $id.Substring(0, 13)
