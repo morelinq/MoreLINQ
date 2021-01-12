@@ -62,8 +62,9 @@ install:
 before_build:
 - dotnet --info
 build_script:
-- pwsh: |
+- pwsh: >-
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
+
     if ($LASTEXITCODE -eq 0) {
         throw 'Unit tests should not import System.Linq'
     }
