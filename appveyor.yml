@@ -66,6 +66,8 @@ build_script:
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
     if ($LASTEXITCODE -eq 0) {
         throw 'Unit tests should not import System.Linq'
+    } else {
+        exit 0
     }
 - ps: >-
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
