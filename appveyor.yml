@@ -67,7 +67,7 @@ build_script:
     if ($LASTEXITCODE -eq 0) {
         throw 'Unit tests should not import System.Linq'
     } else {
-        exit 0
+        $LASTEXITCODE = 0
     }
 - ps: >-
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
