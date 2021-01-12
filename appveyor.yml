@@ -47,8 +47,6 @@ skip_commits:
     - '.editorconfig'
     - lic/*
 install:
-- pwsh: echo $PSVersionTable
-- ps: echo $PSVersionTable
 - npm install -g eclint
 - git rm .editorconfig
 - eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
