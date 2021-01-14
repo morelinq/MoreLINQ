@@ -55,7 +55,9 @@ namespace MoreLinq.Experimental.Async
 
         /// <summary>
         /// Concurrently merges all the elements of multiple asynchronous
-        /// streams into a single asynchronous stream.
+        /// streams into a single asynchronous stream. An additional parameter
+        /// specifies the maximum concurrent operations that may be in flight
+        /// at any give time.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the elements in <paramref name="sources"/>.</typeparam>
