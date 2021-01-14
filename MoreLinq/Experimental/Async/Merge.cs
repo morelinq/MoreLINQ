@@ -199,7 +199,7 @@ namespace MoreLinq.Experimental.Async
                     // goal is that the iterator is in some defined stat where it is
                     // before disposing it otherwise it could throw "NotSupportedException".
 
-                    if (pendingTaskList is not null)
+                    if (pendingTaskList is { Count: > 0 })
                     {
                         while (await Task.WhenAny(pendingTaskList)
                                          .ConfigureAwait(false) is { } completedTask)
