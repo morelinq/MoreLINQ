@@ -99,6 +99,7 @@ namespace MoreLinq.Experimental.Async
                 cancellationToken = cancellationTokenSource.Token;
 
                 var enumeratorList = new List<IAsyncEnumerator<T>>();
+                var disposalTaskList = (List<Task>?)null;
 
                 List<Task<(bool, IAsyncEnumerator<T>)>>? pendingTaskList = null;
 
@@ -114,6 +115,17 @@ namespace MoreLinq.Experimental.Async
 
                     const bool some = true;
 
+                    ValueTask? DisposeAsync(IAsyncEnumerator<T> enumerator)
+                    {
+                        enumeratorList.Remove(enumerator);
+                        var disposalTask = enumerator.DisposeAsync();
+                        if (disposalTask.IsCompleted)
+                            return disposalTask;
+                        disposalTaskList ??= new List<Task>();
+                        disposalTaskList.Add(disposalTask.AsTask());
+                        return null;
+                    }
+
                     async ValueTask<(bool, T)> ReadAsync(IAsyncEnumerator<T> enumerator)
                     {
                         var task = enumerator.MoveNextAsync();
@@ -123,8 +135,8 @@ namespace MoreLinq.Experimental.Async
                             if (await task.ConfigureAwait(false))
                                 return (some, enumerator.Current);
 
-                            await enumerator.DisposeAsync().ConfigureAwait(false);
-                            enumeratorList.Remove(enumerator);
+                            if (DisposeAsync(enumerator) is { IsCompleted: true } completedDisposalTask)
+                                await completedDisposalTask.ConfigureAwait(false);
                         }
                         else
                         {
@@ -143,11 +155,8 @@ namespace MoreLinq.Experimental.Async
                             var i = pendingTaskList.Count;
                             var enumerator = enumeratorList[i];
 
-                            while (await ReadAsync(enumerator).ConfigureAwait(false)
-                                   is (some, var item))
-                            {
+                            while (await ReadAsync(enumerator).ConfigureAwait(false) is (some, var item))
                                 yield return item;
-                            }
                         }
 
                         while (pendingTaskList.Count > 0)
@@ -160,17 +169,12 @@ namespace MoreLinq.Experimental.Async
                             {
                                 yield return enumerator.Current;
 
-                                while (await ReadAsync(enumerator).ConfigureAwait(false)
-                                       is (some, var item))
-                                {
+                                while (await ReadAsync(enumerator).ConfigureAwait(false) is (some, var item))
                                     yield return item;
-                                }
                             }
-                            else
+                            else if (DisposeAsync(enumerator) is { IsCompleted: true } completedDisposalTask)
                             {
-                                await enumerator.DisposeAsync().ConfigureAwait(false);
-                                enumeratorList.Remove(enumerator);
-                                break;
+                                await completedDisposalTask.ConfigureAwait(false);
                             }
                         }
                     }
@@ -208,8 +212,6 @@ namespace MoreLinq.Experimental.Async
                         }
                     }
 
-                    List<Task>? disposalTasks = null;
-
                     foreach (var enumerator in enumeratorList)
                     {
                         ValueTask task;
@@ -232,13 +234,13 @@ namespace MoreLinq.Experimental.Async
                         }
                         else
                         {
-                            disposalTasks ??= new List<Task>();
-                            disposalTasks.Add(task.AsTask());
+                            disposalTaskList ??= new List<Task>();
+                            disposalTaskList.Add(task.AsTask());
                         }
                     }
 
-                    if (disposalTasks is { Count: > 0 })
-                        await Task.WhenAll(disposalTasks).ConfigureAwait(false);
+                    if (disposalTaskList is { Count: > 0 })
+                        await Task.WhenAll(disposalTaskList).ConfigureAwait(false);
                 }
             }
         }
