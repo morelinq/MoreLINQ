@@ -99,8 +99,7 @@ namespace MoreLinq.Experimental.Async
 
                 var enumeratorList = new List<IAsyncEnumerator<T>>();
                 var disposalTaskList = (List<Task>?)null;
-
-                List<Task<(bool, IAsyncEnumerator<T>)>>? pendingTaskList = null;
+                var pendingTaskList = (List<Task<(bool, IAsyncEnumerator<T>)>>?)null;
 
                 try
                 {
