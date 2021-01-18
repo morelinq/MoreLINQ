@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test.Async
 {
     using System;
@@ -31,8 +33,8 @@ namespace MoreLinq.Test.Async
     {
         readonly IAsyncEnumerator<T> _source;
 
-        public event EventHandler Disposed;
-        public event EventHandler<bool> MoveNextCalled;
+        public event EventHandler? Disposed;
+        public event EventHandler<bool>? MoveNextCalled;
 
         public WatchableEnumerator(IAsyncEnumerator<T> source) =>
             _source = source ?? throw new ArgumentNullException(nameof(source));
