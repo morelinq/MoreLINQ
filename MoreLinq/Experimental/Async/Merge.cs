@@ -237,7 +237,7 @@ namespace MoreLinq.Experimental.Async
                         }
                     }
 
-                    if (disposalTasks is {} && disposalTasks.Count > 0)
+                    if (disposalTasks is { Count: > 0 })
                         await Task.WhenAll(disposalTasks).ConfigureAwait(false);
                 }
             }
