@@ -116,6 +116,21 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void ScanByWithNullSeed()
+        {
+            var nil = (object)null;
+            var source = new[] { "foo", null, "bar", null, "baz" };
+            var result = source.ScanBy(c => c, k => nil, (i, k, e) => nil);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create("foo"       , nil),
+                KeyValuePair.Create((string)null, nil),
+                KeyValuePair.Create("bar"       , nil),
+                KeyValuePair.Create((string)null, nil),
+                KeyValuePair.Create("baz"       , nil));
+        }
+
+        [Test]
         public void ScanByDoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => "ana",
