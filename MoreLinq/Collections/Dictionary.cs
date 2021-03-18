@@ -56,7 +56,7 @@ namespace MoreLinq.Collections
             {
                 switch (_null)
                 {
-                    case (true, {} v):
+                    case (true, var v):
                         value = v;
                         return true;
                     case (false, _):

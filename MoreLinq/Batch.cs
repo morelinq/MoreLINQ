@@ -130,9 +130,7 @@ namespace MoreLinq
 
                     foreach (var item in source)
                     {
-                        if (bucket == null)
-                            bucket = new TSource[size];
-
+                        bucket ??= new TSource[size];
                         bucket[count++] = item;
 
                         // The bucket is fully buffered before it's yielded
