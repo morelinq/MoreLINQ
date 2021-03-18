@@ -46,9 +46,9 @@ namespace MoreLinq
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
         {
-            return Pad(source, width, default(TSource)!);
+            return Pad(source, width, default(TSource));
         }
 
         /// <summary>
@@ -106,12 +106,12 @@ namespace MoreLinq
         /// 0, 1, 2, -3 and -4, in turn.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
+        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource?> paddingSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-            return PadImpl(source, width, default!, paddingSelector);
+            return PadImpl(source, width, default, paddingSelector);
         }
 
         static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
