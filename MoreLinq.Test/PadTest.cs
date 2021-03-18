@@ -87,29 +87,29 @@ namespace MoreLinq.Test
             [Test]
             public void PadWideSourceSequence()
             {
-                var result = new[] { "123", "456", "789" }.Pad(2);
-                result.AssertSequenceEqual("123", "456", "789");
+                var result = new[] { "foo", "bar", "baz" }.Pad(2);
+                result.AssertSequenceEqual("foo", "bar", "baz");
             }
 
             [Test]
             public void PadEqualSourceSequence()
             {
-                var result = new[] { "123", "456", "789" }.Pad(3);
-                result.AssertSequenceEqual("123", "456", "789");
+                var result = new[] { "foo", "bar", "baz" }.Pad(3);
+                result.AssertSequenceEqual("foo", "bar", "baz");
             }
 
             [Test]
             public void PadNarrowSourceSequenceWithDefaultPadding()
             {
-                var result = new[] { "123", "456", "789" }.Pad(5);
-                result.AssertSequenceEqual("123", "456", "789", null, null);
+                var result = new[] { "foo", "bar", "baz" }.Pad(5);
+                result.AssertSequenceEqual("foo", "bar", "baz", null, null);
             }
 
             [Test]
             public void PadNarrowSourceSequenceWithNonDefaultPadding()
             {
-                var result = new[] { "123", "456", "789" }.Pad(5, string.Empty);
-                result.AssertSequenceEqual("123", "456", "789", string.Empty, string.Empty);
+                var result = new[] { "foo", "bar", "baz" }.Pad(5, string.Empty);
+                result.AssertSequenceEqual("foo", "bar", "baz", string.Empty, string.Empty);
             }
         }
     }
