@@ -3833,7 +3833,7 @@ namespace MoreLinq.Extensions
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.PadStart(source, width);
 
         /// <summary>
