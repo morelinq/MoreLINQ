@@ -3011,7 +3011,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class LagExtension
     {
-
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
         /// </summary>
