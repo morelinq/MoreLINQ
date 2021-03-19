@@ -3801,7 +3801,7 @@ namespace MoreLinq.Extensions
         /// 0, 1, 2, -3 and -4, in turn.
         /// </example>
 
-        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource?> paddingSelector)
+        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
             => MoreEnumerable.Pad(source, width, paddingSelector);
 
     }

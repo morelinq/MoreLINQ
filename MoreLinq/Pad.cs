@@ -106,7 +106,7 @@ namespace MoreLinq
         /// 0, 1, 2, -3 and -4, in turn.
         /// </example>
 
-        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource?> paddingSelector)
+        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
@@ -114,8 +114,8 @@ namespace MoreLinq
             return PadImpl(source, width, default, paddingSelector);
         }
 
-        static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
-            int width, T padding, Func<int, T>? paddingSelector)
+        static IEnumerable<T> PadImpl<T>(IEnumerable<T> source, int width,
+                                         Defaultable<T> padding, Func<int, T>? paddingSelector)
         {
             Debug.Assert(width >= 0);
 
