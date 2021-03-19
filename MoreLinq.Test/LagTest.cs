@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -130,6 +132,31 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 2)));
             Assert.IsTrue(result.Take(2).All(x => (x.A - x.B) == x.A));
+        }
+
+        [Test]
+        public void TestLagWithNullableReferences()
+        {
+            var words = new[] { "foo", "bar", "baz", "qux" };
+            var result = words.Lag(2, (a, b) => new { A = a, B = b });
+            result.AssertSequenceEqual(
+                new { A = "foo", B = (string?)null  },
+                new { A = "bar", B = (string?)null  },
+                new { A = "baz", B = (string?)"foo" },
+                new { A = "qux", B = (string?)"bar" });
+        }
+
+        [Test]
+        public void TestLagWithNonNullableReferences()
+        {
+            var words = new[] { "foo", "bar", "baz", "qux" };
+            var empty = string.Empty;
+            var result = words.Lag(2, empty, (a, b) => new { A = a, B = b });
+            result.AssertSequenceEqual(
+                new { A = "foo", B = empty },
+                new { A = "bar", B = empty },
+                new { A = "baz", B = "foo" },
+                new { A = "qux", B = "bar" });
         }
     }
 }

@@ -53,5 +53,9 @@ namespace MoreLinq
 
             return count;
         }
+
+        // See https://github.com/atifaziz/Optuple
+
+        static (bool HasValue, T Value) Some<T>(T value) => (true, value);
     }
 }

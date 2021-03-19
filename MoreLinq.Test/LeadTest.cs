@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -132,6 +134,31 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
             Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
+        }
+
+        [Test]
+        public void TestLagWithNullableReferences()
+        {
+            var words = new[] { "foo", "bar", "baz", "qux" };
+            var result = words.Lead(2, (a, b) => new { A = a, B = b });
+            result.AssertSequenceEqual(
+                new { A = "foo", B = (string?)"baz" },
+                new { A = "bar", B = (string?)"qux" },
+                new { A = "baz", B = (string?)null  },
+                new { A = "qux", B = (string?)null  });
+        }
+
+        [Test]
+        public void TestLagWithNonNullableReferences()
+        {
+            var words = new[] { "foo", "bar", "baz", "qux" };
+            var empty = string.Empty;
+            var result = words.Lead(2, empty, (a, b) => new { A = a, B = b });
+            result.AssertSequenceEqual(
+                new { A = "foo", B = "baz" },
+                new { A = "bar", B = "qux" },
+                new { A = "baz", B = empty },
+                new { A = "qux", B = empty });
         }
     }
 }
