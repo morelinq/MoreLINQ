@@ -27,6 +27,7 @@ namespace MoreLinq.Test
     {
         public enum OverloadCase { CustomResult, TupleResult }
 
+        [Test]
         public void FullGroupIsLazy()
         {
             var bs = new BreakingSequence<int>();
