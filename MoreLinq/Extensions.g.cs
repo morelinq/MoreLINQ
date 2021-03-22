@@ -3025,7 +3025,7 @@ namespace MoreLinq.Extensions
         /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lag(source, offset, resultSelector);
 
         /// <summary>
@@ -3114,7 +3114,7 @@ namespace MoreLinq.Extensions
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
-        public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lead(source, offset, resultSelector);
 
         /// <summary>
