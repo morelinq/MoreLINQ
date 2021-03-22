@@ -115,7 +115,7 @@ namespace MoreLinq
         }
 
         static IEnumerable<T> PadImpl<T>(IEnumerable<T> source, int width,
-                                         Defaultable<T> padding, Func<int, T>? paddingSelector)
+                                         T? padding, Func<int, T>? paddingSelector)
         {
             Debug.Assert(width >= 0);
 
@@ -127,7 +127,7 @@ namespace MoreLinq
             }
             while (count < width)
             {
-                yield return paddingSelector != null ? paddingSelector(count) : padding;
+                yield return paddingSelector != null ? paddingSelector(count) : padding!;
                 count++;
             }
         }

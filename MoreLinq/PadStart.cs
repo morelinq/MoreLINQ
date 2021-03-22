@@ -116,14 +116,14 @@ namespace MoreLinq
         }
 
         static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
-            int width, Defaultable<T> padding, Func<int, T>? paddingSelector)
+            int width, T? padding, Func<int, T>? paddingSelector)
         {
             return
                 source.TryGetCollectionCount() is {} collectionCount
                 ? collectionCount >= width
                   ? source
                   : Enumerable.Range(0, width - collectionCount)
-                              .Select(i => paddingSelector != null ? paddingSelector(i) : padding.Value)
+                              .Select(i => paddingSelector != null ? paddingSelector(i) : padding!)
                               .Concat(source)
                 : _(); IEnumerable<T> _()
                 {
@@ -150,7 +150,7 @@ namespace MoreLinq
                     var len = width - count;
 
                     for (var i = 0; i < len; i++)
-                        yield return paddingSelector != null ? paddingSelector(i) : padding;
+                        yield return paddingSelector != null ? paddingSelector(i) : padding!;
 
                     for (var i = 0; i < count; i++)
                         yield return array[i];
