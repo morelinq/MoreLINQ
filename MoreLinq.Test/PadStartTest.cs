@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -38,13 +40,25 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().PadStart(0);
         }
 
-        [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 4, new[] {        0, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 5, new[] {   0,   0, 123, 456, 789 })]
-        public void PadStart(ICollection<int> source, int width, IEnumerable<int> expected)
+        public class PadStartWithDefaultPadding
         {
-            AssertEqual(source, x => x.PadStart(width), expected);
+            [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 4, new[] {        0, 123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 5, new[] {   0,   0, 123, 456, 789 })]
+            public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+            {
+                AssertEqual(source, x => x.PadStart(width), expected);
+            }
+
+            [TestCase(new[] { "foo", "bar", "baz" }, 2, new[] {             "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 3, new[] {             "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 4, new[] {       null, "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 5, new[] { null, null, "foo", "bar", "baz" })]
+            public void ReferenceTypeElements(ICollection<string?> source, int width, IEnumerable<string?> expected)
+            {
+                AssertEqual(source, x => x.PadStart(width), expected);
+            }
         }
 
         // PadStart(source, width, padding)
@@ -61,13 +75,25 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().PadStart(0, -1);
         }
 
-        [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 4, new[] {       -1, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 5, new[] {  -1,  -1, 123, 456, 789 })]
-        public void PadStartWithPadding(ICollection<int> source, int width, IEnumerable<int> expected)
+        public class PadStartWithPadding
         {
-            AssertEqual(source, x => x.PadStart(width, -1), expected);
+            [TestCase(new[] { 123, 456, 789 }, 2, new[] {           123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 3, new[] {           123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 4, new[] {       -1, 123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 5, new[] {  -1,  -1, 123, 456, 789 })]
+            public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+            {
+                AssertEqual(source, x => x.PadStart(width, -1), expected);
+            }
+
+            [TestCase(new[] { "foo", "bar", "baz" }, 2, new[] {         "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 3, new[] {         "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 4, new[] {     "", "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 5, new[] { "", "", "foo", "bar", "baz" })]
+            public void ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
+            {
+                AssertEqual(source, x => x.PadStart(width, string.Empty), expected);
+            }
         }
 
         // PadStart(source, width, paddingSelector)
@@ -84,16 +110,31 @@ namespace MoreLinq.Test
             new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
         }
 
-        [TestCase(new[] { 123, 456, 789 }, 2, new[] {                    123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 3, new[] {                    123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 4, new[] {                 0, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 5, new[] {            0,  -1, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 6, new[] {        0, -1,  -4, 123, 456, 789 })]
-        [TestCase(new[] { 123, 456, 789 }, 7, new[] {   0,  -1, -4,  -9, 123, 456, 789 })]
-        public void PadStartWithSelector(ICollection<int> source, int width, IEnumerable<int> expected)
+        public class PadStartWithSelector
         {
-            AssertEqual(source, x => x.PadStart(width, y => y * -y), expected);
+            [TestCase(new[] { 123, 456, 789 }, 2, new[] {                    123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 3, new[] {                    123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 4, new[] {                 0, 123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 5, new[] {            0,  -1, 123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 6, new[] {        0, -1,  -4, 123, 456, 789 })]
+            [TestCase(new[] { 123, 456, 789 }, 7, new[] {   0,  -1, -4,  -9, 123, 456, 789 })]
+            public void ValueTypeElements(ICollection<int> source, int width, IEnumerable<int> expected)
+            {
+                AssertEqual(source, x => x.PadStart(width, y => y * -y), expected);
+            }
+
+            [TestCase(new[] { "foo", "bar", "baz" }, 2, new[] {                           "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 3, new[] {                           "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 4, new[] {                      "+", "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 5, new[] {              "+",   "++", "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 6, new[] {       "+",  "++",  "+++", "foo", "bar", "baz" })]
+            [TestCase(new[] { "foo", "bar", "baz" }, 7, new[] { "+", "++", "+++", "++++", "foo", "bar", "baz" })]
+            public void ReferenceTypeElements(ICollection<string> source, int width, IEnumerable<string> expected)
+            {
+                AssertEqual(source, x => x.PadStart(width, y => new string('+', y + 1)), expected);
+            }
         }
+
 
         static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
         {

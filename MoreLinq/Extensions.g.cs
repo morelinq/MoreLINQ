@@ -3747,7 +3747,7 @@ namespace MoreLinq.Extensions
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.Pad(source, width);
 
         /// <summary>
@@ -3833,7 +3833,7 @@ namespace MoreLinq.Extensions
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.PadStart(source, width);
 
         /// <summary>
