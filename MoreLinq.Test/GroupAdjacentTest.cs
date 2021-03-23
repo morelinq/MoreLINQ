@@ -198,6 +198,30 @@ namespace MoreLinq.Test
             reader.ReadEnd();
         }
 
+        [Test]
+        public void GroupAdjacentSourceSequenceWithSomeNullKeys()
+        {
+            var groupings =
+                Enumerable.Range(1, 5)
+                          .SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
+                          .GroupAdjacent(x => x);
+
+            int?[] aNull = { null };
+
+            using var reader = groupings.Read();
+            AssertGrouping(reader, 1, 1);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 2, 2, 2);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 3, 3, 3, 3);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 4, 4, 4, 4, 4);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 5, 5, 5, 5, 5, 5);
+            AssertGrouping(reader, null, aNull);
+            reader.ReadEnd();
+        }
+
         static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader,
             TKey key, params TElement[] elements)
         {

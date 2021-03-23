@@ -273,7 +273,7 @@ namespace MoreLinq
                 var key = keySelector(iterator.Current);
                 var element = elementSelector(iterator.Current);
 
-                if (group is ({} k, {} members))
+                if (group is (var k, {} members))
                 {
                     if (comparer.Equals(k, key))
                     {
@@ -290,7 +290,7 @@ namespace MoreLinq
             }
 
             {
-                if (group is ({} k, {} members))
+                if (group is (var k, {} members))
                     yield return resultSelector(k, members);
             }
         }
