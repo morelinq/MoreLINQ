@@ -151,7 +151,7 @@ namespace MoreLinq
 
             IEnumerable<TResult> _(IEqualityComparer<TKey> comparer)
             {
-                var alookup = Lookup<TKey, TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+                var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
                 var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
                 foreach (var a in alookup)
