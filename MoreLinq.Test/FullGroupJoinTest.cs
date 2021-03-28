@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using System;
@@ -135,7 +137,7 @@ namespace MoreLinq.Test
             switch (overloadCase)
             {
                 case CustomResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create);
+                    return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null);
                 case TupleResult:
                     return listA.FullGroupJoin(listB, getKey, getKey);
                 default:
