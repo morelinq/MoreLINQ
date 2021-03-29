@@ -2391,7 +2391,7 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, comparer);
 
         /// <summary>
@@ -2450,7 +2450,7 @@ namespace MoreLinq.Extensions
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer);
 
     }
