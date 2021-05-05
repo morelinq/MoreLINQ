@@ -60,7 +60,7 @@ namespace MoreLinq.Collections
                         value = v;
                         return true;
                     case (false, _):
-                        value = default!;
+                        value = default;
                         return false;
                 }
             }

@@ -2391,7 +2391,7 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, comparer);
 
         /// <summary>
@@ -2450,7 +2450,7 @@ namespace MoreLinq.Extensions
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer);
 
     }
@@ -3025,7 +3025,7 @@ namespace MoreLinq.Extensions
         /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lag(source, offset, resultSelector);
 
         /// <summary>
@@ -3114,7 +3114,7 @@ namespace MoreLinq.Extensions
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
-        public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lead(source, offset, resultSelector);
 
         /// <summary>
@@ -3747,7 +3747,7 @@ namespace MoreLinq.Extensions
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.Pad(source, width);
 
         /// <summary>
@@ -3833,7 +3833,7 @@ namespace MoreLinq.Extensions
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.PadStart(source, width);
 
         /// <summary>
