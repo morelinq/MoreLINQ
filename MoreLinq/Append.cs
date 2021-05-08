@@ -31,7 +31,7 @@ namespace MoreLinq
         /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
-#if NET471 || NET472 || NETSTANDARD1_6 || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NET471_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP2_0_OR_GREATER
         public static IEnumerable<T> Append<T>(IEnumerable<T> head, T tail)
 #else
         public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
