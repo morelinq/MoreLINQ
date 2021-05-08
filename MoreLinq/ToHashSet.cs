@@ -35,7 +35,7 @@ namespace MoreLinq
         /// This evaluates the input sequence completely.
         /// </remarks>
 
-#if NETSTANDARD2_1 || NET472
+#if NETSTANDARD2_1 || NET472_OR_GREATER || NETCOREAPP2_0_OR_GREATER
         public static HashSet<TSource> ToHashSet<TSource>(IEnumerable<TSource> source)
 #else
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source)
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// This evaluates the input sequence completely.
         /// </remarks>
 
-#if NETSTANDARD2_1 || NET472
+#if NETSTANDARD2_1 || NET472_OR_GREATER || NETCOREAPP2_0_OR_GREATER
         public static HashSet<TSource> ToHashSet<TSource>(IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
 #else
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)

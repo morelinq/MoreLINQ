@@ -73,6 +73,7 @@
       <Compile Include="SampleData.cs" />
       <Compile Include="Scope.cs" />
       <Compile Include="SequenceReader.cs" />
+      <Compile Include="ToHashSet.cs" />
       <Compile Include="WatchableEnumerator.cs" />
   </ItemGroup>
 
