@@ -162,3 +162,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ExcludeCanBuildWithSystemLinq()
+        {
+            new int[0].Exclude(1, 2);
+        }
+    }
+}

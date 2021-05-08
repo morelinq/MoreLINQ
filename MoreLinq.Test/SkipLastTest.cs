@@ -24,7 +24,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class SkipLastTest
     {
-        [TestCase( 0)]
+        [TestCase(0)]
         [TestCase(-1)]
         public void SkipLastWithCountLesserThanOne(int skip)
         {
@@ -57,6 +57,20 @@ namespace MoreLinq.Test
         public void SkipLastIsLazy()
         {
             new BreakingSequence<object>().SkipLast(1);
+        }
+    }
+}
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void SkipLastCanBuildWithSystemLinq()
+        {
+            new int[0].SkipLast(1);
         }
     }
 }

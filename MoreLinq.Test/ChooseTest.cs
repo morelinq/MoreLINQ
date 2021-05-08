@@ -87,3 +87,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ChooseCanBuildWithSystemLinq()
+        {
+            new int[0].Choose(x => (true, x));
+        }
+    }
+}

@@ -72,3 +72,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void PreScanCanBuildWithSystemLinq()
+        {
+            new int[0].PreScan((x, y) => 1, 0);
+        }
+    }
+}

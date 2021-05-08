@@ -82,3 +82,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void TakeLastCanBuildWithSystemLinq()
+        {
+            new int[0].TakeLast(1);
+        }
+    }
+}

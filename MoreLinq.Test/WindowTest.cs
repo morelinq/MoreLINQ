@@ -177,3 +177,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void WindowCanBuildWithSystemLinq()
+        {
+            new int[0].Window(1);
+        }
+    }
+}

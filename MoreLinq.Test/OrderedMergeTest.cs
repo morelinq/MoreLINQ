@@ -70,3 +70,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void OrderedMergeCanBuildWithSystemLinq()
+        {
+            new int[0].OrderedMerge(new int[0]);
+        }
+    }
+}

@@ -183,3 +183,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void RightJoinCanBuildWithSystemLinq()
+        {
+            new int[0].RightJoin(new int[0], x => 1, y => 1, (x, y) => 1);
+        }
+    }
+}

@@ -260,3 +260,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void MaxByCanBuildWithSystemLinq()
+        {
+            new int[0].MaxBy(x => 1);
+        }
+    }
+}

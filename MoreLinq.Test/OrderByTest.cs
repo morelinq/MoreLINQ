@@ -137,3 +137,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void OrderByCanBuildWithSystemLinq()
+        {
+            new int[0].OrderBy(x => 1, OrderByDirection.Ascending);
+        }
+    }
+}

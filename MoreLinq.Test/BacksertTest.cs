@@ -61,3 +61,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void BacksertCanBuildWithSystemLinq()
+        {
+            new int[0].Backsert(new int[0], 0);
+        }
+    }
+}

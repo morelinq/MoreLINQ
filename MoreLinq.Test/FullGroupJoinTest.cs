@@ -147,3 +147,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void FullGroupJoinCanBuildWithSystemLinq()
+        {
+            new int[0].FullGroupJoin(new int[0], x => 1, y => 1, (x, y, z) => 1);
+        }
+    }
+}

@@ -92,3 +92,19 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ToDictionaryCanBuildWithSystemLinq()
+        {
+            new (int, int)[0].ToDictionary();
+            new KeyValuePair<int, int>[0].ToDictionary();
+        }
+    }
+}

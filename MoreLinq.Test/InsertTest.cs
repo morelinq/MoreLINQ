@@ -88,3 +88,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void InsertCanBuildWithSystemLinq()
+        {
+            new int[0].Insert(new int[0], 2);
+        }
+    }
+}

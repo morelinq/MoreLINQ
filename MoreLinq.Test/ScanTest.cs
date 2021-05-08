@@ -83,3 +83,18 @@ namespace MoreLinq.Test
 
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ScanCanBuildWithSystemLinq()
+        {
+            new int[0].Scan((x, y) => 1);
+        }
+    }
+}

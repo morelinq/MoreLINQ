@@ -68,3 +68,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ExactlyCanBuildWithSystemLinq()
+        {
+            new int[0].Exactly(3);
+        }
+    }
+}

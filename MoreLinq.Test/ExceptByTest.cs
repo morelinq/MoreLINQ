@@ -74,3 +74,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ExceptByCanBuildWithSystemLinq()
+        {
+            new int[0].ExceptBy(new int[0], x => 1);
+        }
+    }
+}

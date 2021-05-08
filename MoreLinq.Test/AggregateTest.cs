@@ -216,3 +216,20 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void AggregateCanBuildWithSystemLinq()
+        {
+            new int[0].Aggregate(
+                1, (l, r) => r,
+                1, (l, r) => r,
+                (l, r) => (l, r));
+        }
+    }
+}

@@ -118,3 +118,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void ToArrayByIndexCanBuildWithSystemLinq()
+        {
+            new int[0].ToArrayByIndex(x => 1);
+        }
+    }
+}

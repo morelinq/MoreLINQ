@@ -110,3 +110,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void PartialSortCanBuildWithSystemLinq()
+        {
+            new int[0].PartialSort(3);
+        }
+    }
+}

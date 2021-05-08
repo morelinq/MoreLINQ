@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.AppendExtension;
 
     [TestFixture]
     public class GroupAdjacentTest
@@ -236,6 +237,21 @@ namespace MoreLinq.Test
             var result = reader.Read();
             Assert.That(result, Is.Not.Null);
             Assert.AreEqual(element, result);
+        }
+    }
+}
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void GroupAdjacentCanBuildWithSystemLinq()
+        {
+            new int[0].GroupAdjacent(x => 1);
         }
     }
 }

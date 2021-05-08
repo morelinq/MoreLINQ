@@ -128,3 +128,18 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System;
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void MoveCanBuildWithSystemLinq()
+        {
+            new int[0].Move(1, 1, 1);
+        }
+    }
+}

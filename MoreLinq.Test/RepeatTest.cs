@@ -113,3 +113,17 @@ namespace MoreLinq.Test
         }
     }
 }
+
+namespace Linq
+{
+    using System.Linq;
+    using MoreLinq;
+
+    public static partial class BuildTest
+    {
+        public static void RepeatCanBuildWithSystemLinq()
+        {
+            new int[0].Repeat();
+        }
+    }
+}
