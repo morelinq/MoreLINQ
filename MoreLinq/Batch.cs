@@ -125,7 +125,7 @@ namespace MoreLinq
 
                 IEnumerable<TResult> Batch(int size)
                 {
-                    TSource[]? bucket = new TSource[size];
+                    TSource[]? bucket = null;
                     var count = 0;
 
                     foreach (var item in source)
@@ -139,6 +139,7 @@ namespace MoreLinq
 
                         yield return resultSelector(bucket);
 
+                        bucket = null;
                         count = 0;
                     }
 
