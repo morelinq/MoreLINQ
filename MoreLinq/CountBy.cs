@@ -91,7 +91,6 @@ namespace MoreLinq
 
                         if (// key same as the previous? then re-use the index
                             prevKey is (true, {} pk)
-                                && cmp.GetHashCode(pk) == cmp.GetHashCode(key)
                                 && cmp.Equals(pk, key)
                             // otherwise try & find index of the key
                             || dic.TryGetValue(key, out index))

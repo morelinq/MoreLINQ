@@ -30,6 +30,8 @@ namespace MoreLinq.Collections
 
     sealed class Dictionary<TKey, TValue>
     {
+        // Actual Dictionary<,> class won't allow TKey without notnull
+#pragma warning disable 8714
         readonly System.Collections.Generic.Dictionary<TKey, TValue> _dict;
         (bool, TValue) _null;
 
@@ -38,6 +40,7 @@ namespace MoreLinq.Collections
             _dict = new System.Collections.Generic.Dictionary<TKey, TValue>(comparer);
             _null = default;
         }
+#pragma warning restore 8714
 
         public TValue this[TKey key]
         {
@@ -68,4 +71,5 @@ namespace MoreLinq.Collections
             return _dict.TryGetValue(key, out value);
         }
     }
+
 }

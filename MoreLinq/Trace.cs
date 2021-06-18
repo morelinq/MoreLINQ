@@ -64,7 +64,7 @@ namespace MoreLinq
 
             return TraceImpl(source,
                 string.IsNullOrEmpty(format)
-                ? (Func<TSource, string>) (x => x == null ? string.Empty : x.ToString())
+                ? (Func<TSource, string>) (x => x?.ToString() ?? string.Empty)
                 : (x => string.Format(format, x)));
         }
 

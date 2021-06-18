@@ -28,10 +28,13 @@ namespace MoreLinq
             _underlying = underlying ?? Comparer<T>.Default;
         }
 
-        public int Compare(T x, T y)
+        // Handle the discrepancy between IComparer<T>.Compare(T x, T y) and IComparer<T>.Compare(T? x, T? y) in diff framework versions
+#pragma warning disable 8604
+        public int Compare(T? x, T? y)
         {
             var result = _underlying.Compare(x, y);
             return result < 0 ? 1 : result > 0 ? -1 : 0;
         }
+#pragma warning restore 8604
     }
 }

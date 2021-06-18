@@ -187,10 +187,15 @@ namespace MoreLinq
         /// <returns>The sequence of maximal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
+#if NET6_0_OR_GREATER
+        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(IEnumerable<TSource> source,
+            Func<TSource, TKey> selector)
+#else
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
+#endif
         {
-            return source.MaxBy(selector, null);
+            return MaxBy(source, selector, null);
         }
 
         /// <summary>
@@ -210,8 +215,13 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
+#if NET6_0_OR_GREATER
+        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(IEnumerable<TSource> source,
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
+#else
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
+#endif
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
@@ -243,22 +253,22 @@ namespace MoreLinq
                 count switch
                 {
                     0 => Enumerable.Empty<T>(),
-                    1 => ExtremaBy(_source, Extremum.First, 1    , _selector, _comparer),
-                    _ => ExtremaBy(_source, Extrema.First , count, _selector, _comparer)
+                    1 => ExtremaBy(_source, Extremum.First, 1, _selector, _comparer),
+                    _ => ExtremaBy(_source, Extrema.First, count, _selector, _comparer)
                 };
 
             public IEnumerable<T> TakeLast(int count) =>
                 count switch
                 {
                     0 => Enumerable.Empty<T>(),
-                    1 => ExtremaBy(_source, Extremum.Last, 1    , _selector, _comparer),
-                    _ => ExtremaBy(_source, Extrema.Last , count, _selector, _comparer)
+                    1 => ExtremaBy(_source, Extremum.Last, 1, _selector, _comparer),
+                    _ => ExtremaBy(_source, Extrema.Last, count, _selector, _comparer)
                 };
 
             static class Extrema
             {
-                public static readonly Extrema<List<T>? , T> First = new FirstExtrema();
-                public static readonly Extrema<Queue<T>?, T> Last  = new LastExtrema();
+                public static readonly Extrema<List<T>?, T> First = new FirstExtrema();
+                public static readonly Extrema<Queue<T>?, T> Last = new LastExtrema();
 
                 sealed class FirstExtrema : Extrema<List<T>?, T>
                 {
@@ -281,7 +291,7 @@ namespace MoreLinq
 
                     public override void Add(ref Queue<T>? store, int? limit, T item)
                     {
-                        if (limit is {} n && store is {} queue && queue.Count == n)
+                        if (limit is { } n && store is { } queue && queue.Count == n)
                             queue.Dequeue();
                         (store ??= new Queue<T>()).Enqueue(item);
                     }
@@ -291,7 +301,7 @@ namespace MoreLinq
             sealed class Extremum : Extrema<(bool, T), T>
             {
                 public static readonly Extrema<(bool, T), T> First = new Extremum(false);
-                public static readonly Extrema<(bool, T), T> Last  = new Extremum(true);
+                public static readonly Extrema<(bool, T), T> Last = new Extremum(true);
 
                 readonly bool _poppable;
                 Extremum(bool poppable) => _poppable = poppable;

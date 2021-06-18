@@ -119,7 +119,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>3.3.2</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
-    <TargetFrameworks>net451;net471;net472;netstandard1.0;netstandard1.6;netstandard2.0;netstandard2.1;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net451;net471;net472;netstandard1.0;netstandard1.6;netstandard2.0;netstandard2.1;netcoreapp2.0;net6.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
          See also: https://github.com/dotnet/msbuild/issues/2781 -->
@@ -188,12 +188,12 @@
     <Reference Include="System" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net451' Or '$(TargetFramework)' == 'net471' Or '$(TargetFramework)' == 'net472' Or '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'  Or '$(TargetFramework)' == 'netcoreapp2.0' ">
+  <PropertyGroup>
     <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.6' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.6' ">

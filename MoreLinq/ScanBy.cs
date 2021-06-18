@@ -99,7 +99,6 @@ namespace MoreLinq
 
                     var state = // key same as the previous? then re-use the state
                                 prev is (true, {} pk, {} ps)
-                                && comparer.GetHashCode(pk) == comparer.GetHashCode(key)
                                 && comparer.Equals(pk, key) ? ps
                               : // otherwise try & find state of the key
                                 stateByKey.TryGetValue(key, out var ns) ? ns

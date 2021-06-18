@@ -20,6 +20,8 @@ namespace MoreLinq.Test
     using System;
     using NUnit.Framework;
 
+    using static MoreLinq.Extensions.MinByExtension;
+
     [TestFixture]
     public class MinByTest
     {
