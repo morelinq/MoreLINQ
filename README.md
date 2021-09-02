@@ -9,7 +9,7 @@ MoreLINQ is available for download and installation as
 [NuGet packages](https://www.nuget.org/packages/morelinq/).
 
 Documentation for the stable and beta releases can be found at
-[morelinq.github.io](http://morelinq.github.io/).
+[morelinq.github.io](https://morelinq.github.io/).
 
 
 ## Usage
@@ -54,7 +54,7 @@ extension methods as well as all the regular static methods on
 [lag]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lag.htm
 [lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
 [using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
-[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip--3
+[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip#System_Linq_Enumerable_Zip__3_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEnumerable___1__System_Func___0___1___2__
 [zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
 [unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
 [random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
@@ -83,7 +83,7 @@ locally using any HTTP server of static files, like
 
 
 [mono]: https://www.mono-project.com/
-[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
+[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/main/release-notes/download-archives/2.1.2-sdk-download.md
 [shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
 [http-server]: https://www.npmjs.com/package/http-server
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
