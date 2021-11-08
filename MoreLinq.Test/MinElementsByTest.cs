@@ -20,47 +20,47 @@ namespace MoreLinq.Test
     using System;
     using NUnit.Framework;
 
-    using static MoreLinq.Extensions.MinByExtension;
+    using static MoreLinq.Extensions.MinElementsByExtension;
 
     [TestFixture]
-    public class MinByTest
+    public class MinElementsByTest
     {
         [Test]
-        public void MinByIsLazy()
+        public void MinElementsByIsLazy()
         {
-            new BreakingSequence<int>().MinBy(BreakingFunc.Of<int, int>());
+            new BreakingSequence<int>().MinElementsBy(BreakingFunc.Of<int, int>());
         }
 
         [Test]
-        public void MinByReturnsMinima()
+        public void MinElementsByReturnsMinima()
         {
             Assert.AreEqual(new[] { "ax", "aa", "ab", "ay", "az" },
-                            SampleData.Strings.MinBy(x => x.Length));
+                            SampleData.Strings.MinElementsBy(x => x.Length));
         }
 
         [Test]
-        public void MinByNullComparer()
+        public void MinElementsByNullComparer()
         {
-            Assert.AreEqual(SampleData.Strings.MinBy(x => x.Length),
-                            SampleData.Strings.MinBy(x => x.Length, null));
+            Assert.AreEqual(SampleData.Strings.MinElementsBy(x => x.Length),
+                            SampleData.Strings.MinElementsBy(x => x.Length, null));
         }
 
         [Test]
-        public void MinByEmptySequence()
+        public void MinElementsByEmptySequence()
         {
-            Assert.That(new string[0].MinBy(x => x.Length), Is.Empty);
+            Assert.That(new string[0].MinElementsBy(x => x.Length), Is.Empty);
         }
 
         [Test]
-        public void MinByWithNaturalComparer()
+        public void MinElementsByWithNaturalComparer()
         {
-            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MinBy(x => x[1]));
+            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MinElementsBy(x => x[1]));
         }
 
         [Test]
-        public void MinByWithComparer()
+        public void MinElementsByWithComparer()
         {
-            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinBy(x => x[1], Comparable<char>.DescendingOrderComparer));
+            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinElementsBy(x => x[1], Comparable<char>.DescendingOrderComparer));
         }
 
         public class First
@@ -69,7 +69,7 @@ namespace MoreLinq.Test
             public void ReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = MoreEnumerable.First(strings.MinBy(s => s.Length));
+                var minima = MoreEnumerable.First(strings.MinElementsBy(s => s.Length));
                 Assert.That(minima, Is.EqualTo("ax"));
             }
 
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var minima = strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.First(minima), Is.EqualTo("hello"));
             }
 
@@ -86,7 +86,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.First(strings.MinBy(s => s.Length)));
+                    MoreEnumerable.First(strings.MinElementsBy(s => s.Length)));
             }
 
             [Test]
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.First(strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+                    MoreEnumerable.First(strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
             }
         }
 
@@ -104,7 +104,7 @@ namespace MoreLinq.Test
             public void ReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length);
+                var minima = strings.MinElementsBy(s => s.Length);
                 Assert.That(MoreEnumerable.FirstOrDefault(minima), Is.EqualTo("ax"));
             }
 
@@ -112,7 +112,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var minima = strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.FirstOrDefault(minima), Is.EqualTo("hello"));
             }
 
@@ -120,7 +120,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length);
+                var minima = strings.MinElementsBy(s => s.Length);
                 Assert.That(MoreEnumerable.FirstOrDefault(minima), Is.Null);
             }
 
@@ -128,7 +128,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceWithComparerReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var minima = strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.FirstOrDefault(minima), Is.Null);
             }
         }
@@ -139,7 +139,7 @@ namespace MoreLinq.Test
             public void ReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length);
+                var minima = strings.MinElementsBy(s => s.Length);
                 Assert.That(MoreEnumerable.Last(minima), Is.EqualTo("az"));
             }
 
@@ -147,7 +147,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMinimumPerComparer()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var minima = strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.Last(minima), Is.EqualTo("world"));
             }
 
@@ -156,7 +156,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.Last(strings.MinBy(s => s.Length)));
+                    MoreEnumerable.Last(strings.MinElementsBy(s => s.Length)));
             }
 
             [Test]
@@ -164,7 +164,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.Last(strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+                    MoreEnumerable.Last(strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
             }
         }
 
@@ -174,7 +174,7 @@ namespace MoreLinq.Test
             public void ReturnsMinimum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length);
+                var minima = strings.MinElementsBy(s => s.Length);
                 Assert.That(MoreEnumerable.LastOrDefault(minima), Is.EqualTo("az"));
             }
 
@@ -182,7 +182,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMinimumPerComparer()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var minima = strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.LastOrDefault(minima), Is.EqualTo("world"));
             }
 
@@ -190,7 +190,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length);
+                var minima = strings.MinElementsBy(s => s.Length);
                 Assert.That(MoreEnumerable.LastOrDefault(minima), Is.Null);
             }
 
@@ -198,7 +198,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceWithComparerReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var minima = strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var minima = strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.LastOrDefault(minima), Is.Null);
             }
         }
@@ -215,7 +215,7 @@ namespace MoreLinq.Test
             public string[] ReturnsMinima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MinBy(s => s.Length).Take(count).ToArray();
+                return strings.MinElementsBy(s => s.Length).Take(count).ToArray();
             }
 
             [TestCase(0, ExpectedResult = new string[0]             )]
@@ -225,7 +225,7 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMinimaPerComparer(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                return strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
                               .Take(count)
                               .ToArray();
             }
@@ -243,7 +243,7 @@ namespace MoreLinq.Test
             public string[] ReturnsMinima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MinBy(s => s.Length).TakeLast(count).ToArray();
+                return strings.MinElementsBy(s => s.Length).TakeLast(count).ToArray();
             }
 
             [TestCase(0, ExpectedResult = new string[0]             )]
@@ -253,7 +253,7 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMinimaPerComparer(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MinBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                return strings.MinElementsBy(s => s.Length, Comparable<int>.DescendingOrderComparer)
                               .TakeLast(count)
                               .ToArray();
             }
@@ -268,9 +268,13 @@ namespace Linq
 
     public static partial class BuildTest
     {
-        public static void MinByCanBuildWithSystemLinq()
+        public static void MinElementsByCanBuildWithSystemLinq()
         {
+#pragma warning disable CS0618
             new int[0].MinBy(x => 1);
+            new int[0].MinElementsBy(x => 1);
+#pragma warning restore CS0618
         }
+
     }
 }

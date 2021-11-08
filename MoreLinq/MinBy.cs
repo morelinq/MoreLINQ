@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
 
     static partial class MoreEnumerable
     {
@@ -38,16 +39,17 @@ namespace MoreLinq
         /// <returns>The sequence of minimal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #if NET6_0_OR_GREATER
+        [Obsolete("MinBy() conflicts with new .NET Core method. Use MinElementsBy() instead.")]
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
 #else
+        [Obsolete("MinBy() conflicts with new .NET Core method. Use MinElementsBy() instead.")]
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
 #endif
-        {
-            return MinBy(source, selector, null);
-        }
+             => MinElementsBy(source, selector);
 
         /// <summary>
         /// Returns the minimal elements of the given sequence, based on
@@ -66,19 +68,16 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #if NET6_0_OR_GREATER
+        [Obsolete("MinBy() conflicts with new .NET Core method. Use MinElementsBy() instead.")]
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
 #else
+        [Obsolete("MinBy() conflicts with new .NET Core method. Use MinElementsBy() instead.")]
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
 #endif
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-
-            comparer ??= Comparer<TKey>.Default;
-            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
-        }
+             => MinElementsBy(source, selector, comparer);
     }
 }
