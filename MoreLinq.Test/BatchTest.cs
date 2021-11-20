@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Buffers;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -26,15 +27,15 @@ namespace MoreLinq.Test
         [Test]
         public void BatchZeroSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
-                new object[0].Batch(0));
+            AssertThrowsArgument.OutOfRangeException("size", () =>
+                 new object[0].Batch(0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
-                new object[0].Batch(-1));
+            AssertThrowsArgument.OutOfRangeException("size", () =>
+                 new object[0].Batch(-1));
         }
 
         [Test]
@@ -58,6 +59,42 @@ namespace MoreLinq.Test
             reader.Read().AssertSequenceEqual(1, 2, 3, 4);
             reader.Read().AssertSequenceEqual(5, 6, 7, 8);
             reader.Read().AssertSequenceEqual(9);
+            reader.ReadEnd();
+        }
+
+        [Test]
+        public void BatchFactoryUnevenlyDivisibleSequence()
+        {
+            int size = 4;
+            int requested = 0;
+            int[] temp = null;
+
+            var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(size,
+            x => x.Take(requested),
+            i =>
+            {
+                requested = i;
+
+                return temp ??= new int[size];
+            });
+
+            using var reader = result.Read();
+
+            var first = reader.Read();
+            first.AssertSequenceEqual(1, 2, 3, 4);
+            first.AssertSequenceEqual(temp);
+
+            var second = reader.Read();
+            second.AssertSequenceEqual(5, 6, 7, 8);
+            second.AssertSequenceEqual(temp);
+
+            var third = reader.Read();
+            third.AssertSequenceEqual(9);
+
+            first.AssertSequenceEqual(9, 6, 7, 8);
+            second.AssertSequenceEqual(9, 6, 7, 8);
+            temp.AssertSequenceEqual(9, 6, 7, 8);
+
             reader.ReadEnd();
         }
 
@@ -101,14 +138,14 @@ namespace MoreLinq.Test
             new BreakingSequence<object>().Batch(1);
         }
 
-        [TestCase(SourceKind.BreakingCollection  , 0)]
-        [TestCase(SourceKind.BreakingList        , 0)]
+        [TestCase(SourceKind.BreakingCollection, 0)]
+        [TestCase(SourceKind.BreakingList, 0)]
         [TestCase(SourceKind.BreakingReadOnlyList, 0)]
-        [TestCase(SourceKind.BreakingCollection  , 1)]
-        [TestCase(SourceKind.BreakingList        , 1)]
+        [TestCase(SourceKind.BreakingCollection, 1)]
+        [TestCase(SourceKind.BreakingList, 1)]
         [TestCase(SourceKind.BreakingReadOnlyList, 1)]
-        [TestCase(SourceKind.BreakingCollection  , 2)]
-        [TestCase(SourceKind.BreakingList        , 2)]
+        [TestCase(SourceKind.BreakingCollection, 2)]
+        [TestCase(SourceKind.BreakingList, 2)]
         [TestCase(SourceKind.BreakingReadOnlyList, 2)]
         public void BatchCollectionSmallerThanSize(SourceKind kind, int oversize)
         {
