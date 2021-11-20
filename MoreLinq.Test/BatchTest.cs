@@ -64,15 +64,14 @@ namespace MoreLinq.Test
         [Test]
         public void BatchFactoryUnevenlyDivisibleSequence()
         {
-            int size = 4;
-            int requested = 0;
+            int lastSize = 0;
             int[] temp = null;
 
-            var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(size,
-            x => x.Take(requested),
-            i =>
+            var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4,
+            x => x.Take(lastSize),
+            size =>
             {
-                requested = i;
+                lastSize = size;
 
                 return temp ??= new int[size];
             });
