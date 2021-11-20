@@ -710,6 +710,36 @@ namespace MoreLinq.Extensions
             Func<IEnumerable<TSource>, TResult> resultSelector)
             => MoreEnumerable.Batch(source, size, resultSelector);
 
+        /// <summary>
+        /// Batches the source sequence into sized buckets and applies a projection to each bucket.
+        /// </summary>
+        /// <typeparam name="TSource">Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of result returned by <paramref name="resultSelector"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="size">Size of buckets.</param>
+        /// <param name="resultSelector">The projection to apply to each bucket.</param>
+        /// <param name="bucketFactory">A function that receive the requested size for the next bucket and return the array where elements will be placed.</param>
+        /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
+        /// <para>
+        /// This operator uses deferred execution and streams its results
+        /// (buckets are streamed but their content buffered).</para>
+        /// <para>
+        /// <para>
+        /// When more than one bucket is streamed, all buckets except the last
+        /// is guaranteed to have <paramref name="size"/> elements. The last
+        /// bucket may be smaller depending on the remaining elements in the
+        /// <paramref name="source"/> sequence.</para>
+        /// Each bucket is pre-allocated to <paramref name="size"/> elements.
+        /// If <paramref name="size"/> is set to a very large value, e.g.
+        /// <see cref="int.MaxValue"/> to effectively disable batching by just
+        /// hoping for a single bucket, then it can lead to memory exhaustion
+        /// (<see cref="OutOfMemoryException"/>).
+        /// </para>
+
+        public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
+            Func<IEnumerable<TSource>, TResult> resultSelector, Func<int, TSource[]> bucketFactory)
+            => MoreEnumerable.Batch(source, size, resultSelector, bucketFactory);
+
     }
 
     /// <summary><c>Cartesian</c> extension.</summary>

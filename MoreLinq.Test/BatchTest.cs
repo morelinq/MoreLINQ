@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void BatchZeroSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size", () =>
                 new object[0].Batch(0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
+            AssertThrowsArgument.OutOfRangeException("size", () =>
                 new object[0].Batch(-1));
         }
 
@@ -58,6 +58,42 @@ namespace MoreLinq.Test
             reader.Read().AssertSequenceEqual(1, 2, 3, 4);
             reader.Read().AssertSequenceEqual(5, 6, 7, 8);
             reader.Read().AssertSequenceEqual(9);
+            reader.ReadEnd();
+        }
+
+        [Test]
+        public void BatchFactoryUnevenlyDivisibleSequence()
+        {
+            int size = 4;
+            int requested = 0;
+            int[] temp = null;
+
+            var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(size,
+            x => x.Take(requested),
+            i =>
+            {
+                requested = i;
+
+                return temp ??= new int[size];
+            });
+
+            using var reader = result.Read();
+
+            var first = reader.Read();
+            first.AssertSequenceEqual(1, 2, 3, 4);
+            first.AssertSequenceEqual(temp);
+
+            var second = reader.Read();
+            second.AssertSequenceEqual(5, 6, 7, 8);
+            second.AssertSequenceEqual(temp);
+
+            var third = reader.Read();
+            third.AssertSequenceEqual(9);
+
+            first.AssertSequenceEqual(9, 6, 7, 8);
+            second.AssertSequenceEqual(9, 6, 7, 8);
+            temp.AssertSequenceEqual(9, 6, 7, 8);
+
             reader.ReadEnd();
         }
 
