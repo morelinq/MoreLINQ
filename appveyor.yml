@@ -17,7 +17,7 @@ for:
   - provider: NuGet
     server: https://www.myget.org/F/morelinq/api/v2/package
     api_key:
-      secure: pC316nurUkbqHVmisB9MgK0+n8P2xO+9+fvk9aZ2G7zmr3Vo0hHv05o1w3vwpi0H
+      secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
     symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
     on:
       branch: deploy
