@@ -162,6 +162,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
     </None>
+    <None Update="BatchBy.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BatchBy.g.cs</LastGenOutput>
+    </None>
     <None Update="Cartesian.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
@@ -213,6 +217,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Aggregate.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="BatchBy.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BatchBy.g.tt</DependentUpon>
     </Compile>
     <Compile Update="Cartesian.g.cs">
       <DesignTime>True</DesignTime>

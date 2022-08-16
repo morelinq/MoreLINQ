@@ -150,6 +150,14 @@ Batches the source sequence into sized buckets.
 
 This method has 2 overloads.
 
+### BatchBy
+
+Batch by key the source sequence into buckets that are dictionary.
+Each buckets contains all accepted keys and for each of this
+keys a matching value from the source sequence.
+
+This method has 30 overloads.
+
 ### Cartesian
 
 Returns the Cartesian product of two or more sequences by combining each
