@@ -7,7 +7,7 @@ if [[ -z "$1" ]]; then
 else
     configs="$1"
 fi
-for f in netcoreapp3.1 net5.0; do
+for f in netcoreapp3.1; do
     for c in $configs; do
         if [[ "$c" == "Debug" ]]; then
             coverage_args="-p:CollectCoverage=true

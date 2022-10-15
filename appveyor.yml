@@ -82,7 +82,7 @@ build_script:
 test_script:
 - cmd: test.cmd
 - sh: ./test.sh
-- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.net5.0.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.netcoreapp3.1.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: |
     cd tmp/cover
     tar -cz -f "../../coverage-report-${IMAGE_NAME}.tar.gz" *
