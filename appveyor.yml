@@ -54,10 +54,8 @@ install:
 - git reset --hard
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 3.1.10 -SkipNonVersionedFiles }
-- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 2.1.23 -SkipNonVersionedFiles }
 - sh: ./tools/dotnet-install.sh --jsonfile global.json
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 3.1.10 --skip-non-versioned-files
-- sh: ./tools/dotnet-install.sh --runtime dotnet --version 2.1.23 --skip-non-versioned-files
 - sh: export PATH="~/.dotnet:$PATH"
 before_build:
 - dotnet --info
