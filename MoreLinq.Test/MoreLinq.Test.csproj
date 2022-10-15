@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;net451</TargetFrameworks>
+    <TargetFrameworks>net6.0;netcoreapp3.1;net451</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -33,15 +33,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="NUnit" Version="3.13.0" />
-    <PackageReference Include="NUnitLite" Version="3.13.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnitLite" Version="3.13.3" />
     <PackageReference Include="System.Reactive" Version="3.1.1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.1' And '$(TargetFramework)' != 'net451'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net451'">
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <Compile Include="Async\*.cs" />
   </ItemGroup>
