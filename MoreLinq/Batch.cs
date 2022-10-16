@@ -144,7 +144,7 @@ namespace MoreLinq
                     }
 
                     // Return the last bucket with all remaining elements
-                    if (bucket != null && count > 0)
+                    if (count > 0)
                     {
                         Array.Resize(ref bucket, count);
                         yield return resultSelector(bucket);
