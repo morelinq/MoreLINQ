@@ -63,13 +63,8 @@ extension methods as well as all the regular static methods on
 
 ## Building
 
-To build MoreLINQ from sources, you will need:
-
-- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
-- [Mono][mono] 5.0 if building on other platforms than Windows
-
-Then run either `build.cmd` if building on Windows or `build.sh` if
-building on macOS or a Linux distribution supported by .NET Core.
+Run either `build.cmd` if building on Windows or `build.sh` if building on macOS
+or a [Linux distribution supported by .NET][dotnet-linux].
 
 Some code in the project is generated using [T4][t4] templates. To regenerate
 the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
@@ -81,9 +76,7 @@ generates the documentation in the `docs/api` directory. It can be browsed
 locally using any HTTP server of static files, like
 [http-server][http-server].
 
-
-[mono]: https://www.mono-project.com/
-[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/main/release-notes/download-archives/2.1.2-sdk-download.md
+[dotnet-linux]: https://learn.microsoft.com/en-us/dotnet/core/install/linux
 [shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
 [http-server]: https://www.npmjs.com/package/http-server
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
