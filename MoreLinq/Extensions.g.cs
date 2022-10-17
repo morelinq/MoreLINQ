@@ -1926,7 +1926,13 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source)             => MoreEnumerable.Flatten(source);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source)             => MoreEnumerable.            Flatten(source);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -1950,8 +1956,14 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="predicate"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
-            => MoreEnumerable.Flatten(source, predicate);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+            => MoreEnumerable.            Flatten(source, predicate);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -1975,8 +1987,20 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="selector"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable?> selector)
-            => MoreEnumerable.Flatten(source, selector);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source,
+                    Func<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*....................*/ object,
+#nullable restore
+/*....................*/ IEnumerable?> selector)
+            => MoreEnumerable.            Flatten(source, selector);
 
     }
 
