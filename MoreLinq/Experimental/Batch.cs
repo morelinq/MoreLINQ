@@ -21,8 +21,69 @@ namespace MoreLinq.Experimental
 {
     using System;
     using System.Buffers;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+
+    /// <summary>
+    /// Represents a bucket returned by one of the <c>Batch</c> overloads of
+    /// <see cref="ExperimentalEnumerable"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of elements in the bucket</typeparam>
+
+    public interface IBatchBucket<T> : IDisposable, IList<T>
+    {
+        /// <summary>
+        /// Returns a new span over the bucket elements.
+        /// </summary>
+
+        Span<T> AsSpan();
+
+        /// <summary>
+        /// Update this instance with the next set of elements from the source.
+        /// </summary>
+        /// <returns>
+        /// A Boolean that is <c>true</c> if this instance was updated with
+        /// new elements; otherwise <c>false</c> to indicate that the end of
+        /// the bucket source has been reached.
+        /// </returns>
+
+        bool MoveNext();
+
+        int IList<T>.IndexOf(T item)
+        {
+            var comparer = EqualityComparer<T>.Default;
+
+            for (var i = 0; i < Count; i++)
+            {
+                if (comparer.Equals(this[i], item))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        bool ICollection<T>.Contains(T item) => IndexOf(item) >= 0;
+
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), arrayIndex, null);
+            if (arrayIndex + Count > array.Length) throw new ArgumentException(null, nameof(arrayIndex));
+
+            for (int i = 0, j = arrayIndex; i < Count; i++, j++)
+                array[j] = this[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        void IList<T>.Insert(int index, T item) => throw new NotSupportedException();
+        void IList<T>.RemoveAt(int index) => throw new NotSupportedException();
+        void ICollection<T>.Add(T item) => throw new NotSupportedException();
+        void ICollection<T>.Clear() => throw new NotSupportedException();
+        bool ICollection<T>.Remove(T item) => throw new NotSupportedException();
+        bool ICollection<T>.IsReadOnly => true;
+    }
 
     static partial class ExperimentalEnumerable
     {
@@ -34,7 +95,10 @@ namespace MoreLinq.Experimental
         /// <param name="source">The source sequence.</param>
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The memory pool used to rent memory for each bucket.</param>
-        /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
+        /// <returns>
+        /// A <see cref="IBatchBucket{T}"/> that can be used to enumerate
+        /// equally sized buckets containing elements of the source collection.
+        /// </returns>
         /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
@@ -42,13 +106,7 @@ namespace MoreLinq.Experimental
         /// <para>
         /// <para>
         /// Each bucket is backed by rented memory that may be at least
-        /// <paramref name="size"/> in length. The second element paired with
-        /// each bucket is the actual length of the bucket that is valid to use.
-        /// The rented memory should be disposed to return it to the pool given
-        /// in the <paramref name="pool"/> argument. If it is returned as each
-        /// bucket is retrieved during iteration then there is a good chance that
-        /// the same memory will be reused for subsequent buckets. This can save
-        /// allocations for very large buckets.
+        /// <paramref name="size"/> in length.
         /// </para>
         /// <para>
         /// When more than one bucket is streamed, all buckets except the last
@@ -63,30 +121,41 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IEnumerable<(IMemoryOwner<T> Bucket, int Length)>
+        public static IBatchBucket<T>
             Batch<T>(this IEnumerable<T> source, int size, MemoryPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
+            IBatchBucket<T> Cursor(IEnumerator<(IMemoryOwner<T>, int)> source) =>
+                new RentedMemoryBatchBucket<T>(source);
+
+            IEnumerator<(IMemoryOwner<T>, int)> Empty() { yield break; }
+
             switch (source)
             {
                 case ICollection<T> { Count: 0 }:
                 {
-                    return Enumerable.Empty<(IMemoryOwner<T>, int)>();
+                    return Cursor(Empty());
                 }
-                case ICollection<T> collection when collection.Count <= size:
+                case IList<T> list when list.Count <= size:
                 {
-                    return Batch(collection.Count);
+                    return Cursor(_()); IEnumerator<(IMemoryOwner<T>, int)> _()
+                    {
+                        var bucket = pool.Rent(list.Count);
+                        for (var i = 0; i < list.Count; i++)
+                            bucket.Memory.Span[i] = list[i];
+                        yield return (bucket, list.Count);
+                    }
                 }
                 case IReadOnlyCollection<T> { Count: 0 }:
                 {
-                    return Enumerable.Empty<(IMemoryOwner<T>, int)>();
+                    return Cursor(Empty());
                 }
                 case IReadOnlyList<T> list when list.Count <= size:
                 {
-                    return _(); IEnumerable<(IMemoryOwner<T>, int)> _()
+                    return Cursor(_()); IEnumerator<(IMemoryOwner<T>, int)> _()
                     {
                         var bucket = pool.Rent(list.Count);
                         for (var i = 0; i < list.Count; i++)
@@ -96,14 +165,14 @@ namespace MoreLinq.Experimental
                 }
                 case IReadOnlyCollection<T> collection when collection.Count <= size:
                 {
-                    return Batch(collection.Count);
+                    return Cursor(Batch(collection.Count));
                 }
                 default:
                 {
-                    return Batch(size);
+                    return Cursor(Batch(size));
                 }
 
-                IEnumerable<(IMemoryOwner<T>, int)> Batch(int size)
+                IEnumerator<(IMemoryOwner<T>, int)> Batch(int size)
                 {
                     IMemoryOwner<T>? bucket = null;
                     var count = 0;
@@ -130,6 +199,61 @@ namespace MoreLinq.Experimental
             }
         }
 
+        sealed class RentedMemoryBatchBucket<T> : IBatchBucket<T>
+        {
+            bool _started;
+            IEnumerator<(IMemoryOwner<T> Bucket, int Length)>? _enumerator;
+
+            public RentedMemoryBatchBucket(IEnumerator<(IMemoryOwner<T>, int)> enumerator) =>
+                _enumerator = enumerator;
+
+            public Span<T> AsSpan() => Memory.Span;
+
+            public bool MoveNext()
+            {
+                if (_enumerator is { } enumerator)
+                {
+                    if (_started)
+                        enumerator.Current.Bucket.Dispose();
+                    else
+                        _started = true;
+
+                    if (!enumerator.MoveNext())
+                    {
+                        enumerator.Dispose();
+                        _enumerator = null;
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            Memory<T> Memory => _started && _enumerator?.Current.Bucket is { Memory: var v } ? v : throw new InvalidOperationException();
+
+            public int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
+
+            public T this[int index]
+            {
+                get => index >= 0 && index < Count ? Memory.Span[index] : throw new IndexOutOfRangeException();
+                set => throw new NotSupportedException();
+            }
+
+            public void Dispose()
+            {
+                _enumerator?.Dispose();
+                _enumerator = null;
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                for (var i = 0; i < Count; i++)
+                    yield return this[i];
+            }
+        }
+
         /// <summary>
         /// Batches the source sequence into sized buckets using a array pool
         /// to rent an array to back each bucket.
@@ -138,7 +262,10 @@ namespace MoreLinq.Experimental
         /// <param name="source">The source sequence.</param>
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The pool used to rent the array for each bucket.</param>
-        /// <returns>A sequence of equally sized buckets containing elements of the source collection.</returns>
+        /// <returns>
+        /// A <see cref="IBatchBucket{T}"/> that can be used to enumerate
+        /// equally sized buckets containing elements of the source collection.
+        /// </returns>
         /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
@@ -146,13 +273,7 @@ namespace MoreLinq.Experimental
         /// <para>
         /// <para>
         /// Each bucket is backed by a rented array that may be at least
-        /// <paramref name="size"/> in length. The second element paired with
-        /// each bucket is the actual length of the bucket that is valid to use.
-        /// The rented array should be returned to the pool sent as the
-        /// <paramref name="pool"/> argument. If it is returned as each bucket
-        /// is retrieved during iteration then there is a good chance that the
-        /// same array allocation will be reused for subsequent buckets. This
-        /// can save allocations for very large buckets.
+        /// <paramref name="size"/> in length.
         /// </para>
         /// <para>
         /// When more than one bucket is streamed, all buckets except the last
@@ -167,32 +288,37 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IEnumerable<(T[] Bucket, int Length)>
+        public static IBatchBucket<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
+            IBatchBucket<T> Cursor(IEnumerator<(T[], int)> source) =>
+                new RentedArrayBatchBucket<T>(source, pool);
+
+            IEnumerator<(T[], int)> Empty() { yield break; }
+
             switch (source)
             {
                 case ICollection<T> { Count: 0 }:
                 {
-                    return Enumerable.Empty<(T[], int)>();
+                    return Cursor(Empty());
                 }
                 case ICollection<T> collection when collection.Count <= size:
                 {
                     var bucket = pool.Rent(collection.Count);
                     collection.CopyTo(bucket, 0);
-                    return MoreEnumerable.Return((bucket, collection.Count));
+                    return Cursor(MoreEnumerable.Return((bucket, collection.Count)).GetEnumerator());
                 }
                 case IReadOnlyCollection<T> { Count: 0 }:
                 {
-                    return Enumerable.Empty<(T[], int)>();
+                    return Cursor(Empty());
                 }
                 case IReadOnlyList<T> list when list.Count <= size:
                 {
-                    return _(); IEnumerable<(T[], int)> _()
+                    return Cursor(_()); IEnumerator<(T[], int)> _()
                     {
                         var bucket = pool.Rent(list.Count);
                         for (var i = 0; i < list.Count; i++)
@@ -202,15 +328,15 @@ namespace MoreLinq.Experimental
                 }
                 case IReadOnlyCollection<T> collection when collection.Count <= size:
                 {
-                    return Batch(collection.Count);
+                    return Cursor(Batch(collection.Count));
                 }
                 default:
                 {
-                    return Batch(size);
+                    return Cursor(Batch(size));
                 }
             }
 
-            IEnumerable<(T[], int)> Batch(int size)
+            IEnumerator<(T[], int)> Batch(int size)
             {
                 T[]? bucket = null;
                 var count = 0;
@@ -234,6 +360,62 @@ namespace MoreLinq.Experimental
                 if (bucket is { } someBucket && count > 0)
                     yield return (someBucket, count);
             }
+        }
+
+        sealed class RentedArrayBatchBucket<T> : IBatchBucket<T>
+        {
+            bool _started;
+            IEnumerator<(T[] Bucket, int Length)>? _enumerator;
+            ArrayPool<T>? _pool;
+
+            public RentedArrayBatchBucket(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
+                (_enumerator, _pool) = (enumerator, pool);
+
+            public Span<T> AsSpan() => Array.AsSpan();
+
+            public bool MoveNext()
+            {
+                if (_enumerator is { } enumerator)
+                {
+                    Debug.Assert(_pool is not null);
+                    if (_started)
+                        _pool.Return(enumerator.Current.Bucket);
+                    else
+                        _started = true;
+
+                    if (!enumerator.MoveNext())
+                    {
+                        enumerator.Dispose();
+                        _enumerator = null;
+                        _pool = null;
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            T[] Array => _started && _enumerator?.Current.Bucket is { } v ? v : throw new InvalidOperationException();
+
+            public int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
+
+            public T this[int index]
+            {
+                get => index >= 0 && index < Count ? Array[index] : throw new IndexOutOfRangeException();
+                set => throw new NotSupportedException();
+
+            }
+
+            public void Dispose()
+            {
+                _enumerator?.Dispose();
+                _enumerator = null;
+                _pool = null;
+            }
+
+            public IEnumerator<T> GetEnumerator() => Array.Take(Count).GetEnumerator();
         }
     }
 }
