@@ -91,27 +91,13 @@ namespace MoreLinq
             {
                 var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
-                (bool, TKey, TState) prev = default;
-
                 foreach (var item in source)
                 {
                     var key = keySelector(item);
-
-                    var state = // key same as the previous? then re-use the state
-                                prev is (true, {} pk, {} ps)
-                                && comparer.GetHashCode(pk) == comparer.GetHashCode(key)
-                                && comparer.Equals(pk, key) ? ps
-                              : // otherwise try & find state of the key
-                                stateByKey.TryGetValue(key, out var ns) ? ns
-                              : seedSelector(key);
-
+                    var state = stateByKey.TryGetValue(key, out var s) ? s : seedSelector(key);
                     state = accumulator(state, key, item);
-
                     stateByKey[key] = state;
-
                     yield return new KeyValuePair<TKey, TState>(key, state);
-
-                    prev = (true, key, state);
                 }
             }
         }
