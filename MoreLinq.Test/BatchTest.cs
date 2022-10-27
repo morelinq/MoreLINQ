@@ -155,7 +155,12 @@ namespace MoreLinq.Test
     [TestFixture]
     public abstract class BatchPoolTest
     {
-        protected abstract IListView<T> Batch<T>(IEnumerable<T> source, int size);
+        protected abstract void AssertBatch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter);
+
+        void Batch<T>(IEnumerable<T> source, int size) => Batch(source, size, delegate { });
+
+        void Batch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter) =>
+            AssertBatch(source, size, asserter + (bucket => Assert.That(bucket.MoveNext(), Is.False)));
 
         [Test]
         public void BatchZeroSize()
@@ -169,7 +174,7 @@ namespace MoreLinq.Test
             AssertThrowsArgument.OutOfRangeException("size", () => Batch(new object[0], -1));
         }
 
-        static void AssertNext<T>(IListView<T> bucket, params T[] items)
+        static Action<IListView<T>> AssertNext<T>(params T[] items) => bucket =>
         {
             Assert.That(bucket.MoveNext(), Is.True);
 
@@ -183,28 +188,20 @@ namespace MoreLinq.Test
 
             bucket.AssertSequenceEqual(items);
             bucket.AsSpan().ToArray().SequenceEqual(items);
-        }
+        };
 
         [Test]
         public void BatchEvenlyDivisibleSequence()
         {
-            using var result = Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
-
-            AssertNext(result, 1, 2, 3);
-            AssertNext(result, 4, 5, 6);
-            AssertNext(result, 7, 8, 9);
-            Assert.That(result.MoveNext(), Is.False);
+            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            Batch(input, 3, AssertNext(1, 2, 3) + AssertNext(4, 5, 6) + AssertNext(7, 8, 9));
         }
 
         [Test]
         public void BatchUnevenlyDivisibleSequence()
         {
-            using var result = Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
-
-            AssertNext(result, 1, 2, 3, 4);
-            AssertNext(result, 5, 6, 7, 8);
-            AssertNext(result, 9);
-            Assert.That(result.MoveNext(), Is.False);
+            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            Batch(input, 4, AssertNext(1, 2, 3, 4) + AssertNext(5, 6, 7, 8) + AssertNext(9));
         }
 
         [Test]
@@ -222,21 +219,14 @@ namespace MoreLinq.Test
         public void BatchCollectionSmallerThanSize(SourceKind kind, int oversize)
         {
             var xs = new[] { 1, 2, 3, 4, 5 };
-            using var result = Batch(xs.ToSourceKind(kind), xs.Length + oversize);
-
-            AssertNext(result, 1, 2, 3, 4, 5);
-            Assert.That(result.MoveNext(), Is.False);
+            Batch(xs.ToSourceKind(kind), xs.Length + oversize, AssertNext(1, 2, 3, 4, 5));
         }
 
         [Test]
         public void BatchReadOnlyCollectionSmallerThanSize()
         {
             var collection = ReadOnlyCollection.From(1, 2, 3, 4, 5);
-            using var result = Batch(collection, collection.Count * 2);
-            Assert.That(result.MoveNext(), Is.True);
-            Assert.That(result.Count, Is.EqualTo(5));
-            result.AssertSequenceEqual(1, 2, 3, 4, 5);
-            Assert.That(result.MoveNext(), Is.False);
+            Batch(collection, collection.Count * 2, AssertNext(1, 2, 3, 4, 5));
         }
 
         [TestCase(SourceKind.Sequence)]
@@ -246,51 +236,59 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.BreakingCollection)]
         public void BatchEmptySource(SourceKind kind)
         {
-            using var result = Batch(Enumerable.Empty<int>().ToSourceKind(kind), 100);
-            Assert.That(result.MoveNext(), Is.False);
+            Batch(Enumerable.Empty<int>().ToSourceKind(kind), 100, delegate { });
         }
 
         [Test]
         public void BatchResultUpdatesInPlaceOnEachMoveNext()
         {
-            const int scale = 2;
+            Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3, result =>
+            {
+                const int scale = 2;
 
-            using var result = Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
+                var query =
+                    from n in result
+                    where n % 2 == 0
+                    select n * scale;
 
-            var query =
-                from n in result
-                where n % 2 == 0
-                select n * scale;
+                Assert.That(result.MoveNext(), Is.True);
+                query.AssertSequenceEqual(2 * scale);
 
-            Assert.That(result.MoveNext(), Is.True);
-            query.AssertSequenceEqual(2 * scale);
+                Assert.That(result.MoveNext(), Is.True);
+                query.AssertSequenceEqual(4 * scale, 6 * scale);
 
-            Assert.That(result.MoveNext(), Is.True);
-            query.AssertSequenceEqual(4 * scale, 6 * scale);
+                Assert.That(result.MoveNext(), Is.True);
+                query.AssertSequenceEqual(8 * scale);
 
-            Assert.That(result.MoveNext(), Is.True);
-            query.AssertSequenceEqual(8 * scale);
-
-            Assert.That(result.MoveNext(), Is.False);
+                Assert.That(result.MoveNext(), Is.False);
+            });
         }
     }
 
     public class BatchPooledArrayTest : BatchPoolTest
     {
-        protected override IListView<T> Batch<T>(IEnumerable<T> source, int size) =>
-            source.Batch(size, new TestArrayPool<T>());
+        protected override void AssertBatch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter)
+        {
+            var pool = new TestArrayPool<T>();
+            asserter(source.Batch(size, pool));
+            Assert.That(pool.HasRented, Is.False);
+        }
     }
 
     public class BatchPooledMemoryTest : BatchPoolTest
     {
-        protected override IListView<T> Batch<T>(IEnumerable<T> source, int size) =>
-            source.Batch(size, new TestMemoryPool<T>(new TestArrayPool<T>()));
+        protected override void AssertBatch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter)
+        {
+            var pool = new TestMemoryPool<T>();
+            asserter(source.Batch(size, pool));
+            Assert.That(pool.HasRented, Is.False);
+        }
 
         sealed class TestMemoryPool<T> : MemoryPool<T>
         {
-            readonly ArrayPool<T> _pool;
+            readonly TestArrayPool<T> _pool = new();
 
-            public TestMemoryPool(ArrayPool<T> pool) => _pool = pool;
+            public bool HasRented => _pool.HasRented;
 
             protected override void Dispose(bool disposing) { } // NOP
 
@@ -336,6 +334,8 @@ namespace MoreLinq.Test
     {
         T[] _pooledArray;
         T[] _rentedArray;
+
+        public bool HasRented => _rentedArray is not null;
 
         public override T[] Rent(int minimumLength)
         {
