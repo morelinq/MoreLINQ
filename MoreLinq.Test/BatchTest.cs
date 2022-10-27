@@ -280,13 +280,89 @@ namespace MoreLinq.Test
     public class BatchPooledArrayTest : BatchPoolTest
     {
         protected override IListView<T> Batch<T>(IEnumerable<T> source, int size) =>
-            source.Batch(size, ArrayPool<T>.Create());
+            source.Batch(size, new TestArrayPool<T>());
     }
 
     public class BatchPooledMemoryTest : BatchPoolTest
     {
         protected override IListView<T> Batch<T>(IEnumerable<T> source, int size) =>
-            source.Batch(size, MemoryPool<T>.Shared);
+            source.Batch(size, new TestMemoryPool<T>(new TestArrayPool<T>()));
+
+        sealed class TestMemoryPool<T> : MemoryPool<T>
+        {
+            readonly ArrayPool<T> _pool;
+
+            public TestMemoryPool(ArrayPool<T> pool) => _pool = pool;
+
+            protected override void Dispose(bool disposing) { } // NOP
+
+            public override IMemoryOwner<T> Rent(int minBufferSize = -1) =>
+                minBufferSize >= 0
+                ? new MemoryOwner(_pool, _pool.Rent(minBufferSize))
+                : throw new NotSupportedException();
+
+            public override int MaxBufferSize =>
+                // https://github.com/dotnet/runtime/blob/v7.0.0-rc.2.22472.3/src/libraries/System.Memory/src/System/Buffers/ArrayMemoryPool.cs#L10
+                2_147_483_591;
+
+            sealed class MemoryOwner : IMemoryOwner<T>
+            {
+                ArrayPool<T> _pool;
+                T[] _rental;
+
+                public MemoryOwner(ArrayPool<T> pool, T[] rental) =>
+                    (_pool, _rental) = (pool, rental);
+
+                public Memory<T> Memory => _rental is { } rental ? new Memory<T>(rental)
+                                         : throw new ObjectDisposedException(null);
+
+                public void Dispose()
+                {
+                    if (_rental is { } array && _pool is { } pool)
+                    {
+                        _rental = null;
+                        _pool = null;
+                        pool.Return(array);
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// An <see cref="ArrayPool{T}"/> implementation for testing purposes that holds only
+    /// one array in the pool.
+    /// </summary>
+
+    sealed class TestArrayPool<T> : ArrayPool<T>
+    {
+        T[] _pooledArray;
+        T[] _rentedArray;
+
+        public override T[] Rent(int minimumLength)
+        {
+            if (_pooledArray is null && _rentedArray is null)
+                _pooledArray = new T[minimumLength * 2];
+
+            if (_pooledArray is null)
+                throw new InvalidOperationException("The pool is exhausted.");
+
+            (_pooledArray, _rentedArray) = (null, _pooledArray);
+
+            return _rentedArray;
+        }
+
+        public override void Return(T[] array, bool clearArray = false)
+        {
+            if (_rentedArray is null)
+                throw new InvalidOperationException("Cannot return when nothing has been rented from this pool.");
+
+            if (array != _rentedArray)
+                throw new InvalidOperationException("Cannot return what has not been rented from this pool.");
+
+            _pooledArray = array;
+            _rentedArray = null;
+        }
     }
 }
 
