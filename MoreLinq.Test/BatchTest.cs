@@ -193,21 +193,21 @@ namespace MoreLinq.Test
         [Test]
         public void BatchEvenlyDivisibleSequence()
         {
-            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             Batch(input, 3, AssertNext(1, 2, 3) + AssertNext(4, 5, 6) + AssertNext(7, 8, 9));
         }
 
         [Test]
         public void BatchUnevenlyDivisibleSequence()
         {
-            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             Batch(input, 4, AssertNext(1, 2, 3, 4) + AssertNext(5, 6, 7, 8) + AssertNext(9));
         }
 
         [Test]
         public void BatchDisposeMidway()
         {
-            var input = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             Batch(input, 4, AssertNext(1, 2, 3, 4) + (result => result.Dispose()));
         }
 
@@ -250,7 +250,9 @@ namespace MoreLinq.Test
         [Test]
         public void BatchResultUpdatesInPlaceOnEachMoveNext()
         {
-            Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3, result =>
+            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            Batch(input, 3, result =>
             {
                 const int scale = 2;
 
