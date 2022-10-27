@@ -21,69 +21,9 @@ namespace MoreLinq.Experimental
 {
     using System;
     using System.Buffers;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-
-    /// <summary>
-    /// Represents a bucket returned by one of the <c>Batch</c> overloads of
-    /// <see cref="ExperimentalEnumerable"/>.
-    /// </summary>
-    /// <typeparam name="T">Type of elements in the bucket</typeparam>
-
-    public interface IBatchBucket<T> : IDisposable, IList<T>
-    {
-        /// <summary>
-        /// Returns a new span over the bucket elements.
-        /// </summary>
-
-        Span<T> AsSpan();
-
-        /// <summary>
-        /// Update this instance with the next set of elements from the source.
-        /// </summary>
-        /// <returns>
-        /// A Boolean that is <c>true</c> if this instance was updated with
-        /// new elements; otherwise <c>false</c> to indicate that the end of
-        /// the bucket source has been reached.
-        /// </returns>
-
-        bool MoveNext();
-
-        int IList<T>.IndexOf(T item)
-        {
-            var comparer = EqualityComparer<T>.Default;
-
-            for (var i = 0; i < Count; i++)
-            {
-                if (comparer.Equals(this[i], item))
-                    return i;
-            }
-
-            return -1;
-        }
-
-        bool ICollection<T>.Contains(T item) => IndexOf(item) >= 0;
-
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
-        {
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), arrayIndex, null);
-            if (arrayIndex + Count > array.Length) throw new ArgumentException(null, nameof(arrayIndex));
-
-            for (int i = 0, j = arrayIndex; i < Count; i++, j++)
-                array[j] = this[i];
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        void IList<T>.Insert(int index, T item) => throw new NotSupportedException();
-        void IList<T>.RemoveAt(int index) => throw new NotSupportedException();
-        void ICollection<T>.Add(T item) => throw new NotSupportedException();
-        void ICollection<T>.Clear() => throw new NotSupportedException();
-        bool ICollection<T>.Remove(T item) => throw new NotSupportedException();
-        bool ICollection<T>.IsReadOnly => true;
-    }
 
     static partial class ExperimentalEnumerable
     {
@@ -96,7 +36,7 @@ namespace MoreLinq.Experimental
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The memory pool used to rent memory for each bucket.</param>
         /// <returns>
-        /// A <see cref="IBatchBucket{T}"/> that can be used to enumerate
+        /// A <see cref="IListView{T}"/> that can be used to enumerate
         /// equally sized buckets containing elements of the source collection.
         /// </returns>
         /// <remarks>
@@ -121,15 +61,15 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IBatchBucket<T>
+        public static IListView<T>
             Batch<T>(this IEnumerable<T> source, int size, MemoryPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            IBatchBucket<T> Cursor(IEnumerator<(IMemoryOwner<T>, int)> source) =>
-                new RentedMemoryBatchBucket<T>(source);
+            IListView<T> Cursor(IEnumerator<(IMemoryOwner<T>, int)> source) =>
+                new RentedMemoryView<T>(source);
 
             IEnumerator<(IMemoryOwner<T>, int)> Empty() { yield break; }
 
@@ -199,12 +139,12 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class RentedMemoryBatchBucket<T> : IBatchBucket<T>
+        sealed class RentedMemoryView<T> : IListView<T>
         {
             bool _started;
             IEnumerator<(IMemoryOwner<T> Bucket, int Length)>? _enumerator;
 
-            public RentedMemoryBatchBucket(IEnumerator<(IMemoryOwner<T>, int)> enumerator) =>
+            public RentedMemoryView(IEnumerator<(IMemoryOwner<T>, int)> enumerator) =>
                 _enumerator = enumerator;
 
             public Span<T> AsSpan() => Memory.Span;
@@ -263,7 +203,7 @@ namespace MoreLinq.Experimental
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The pool used to rent the array for each bucket.</param>
         /// <returns>
-        /// A <see cref="IBatchBucket{T}"/> that can be used to enumerate
+        /// A <see cref="IListView{T}"/> that can be used to enumerate
         /// equally sized buckets containing elements of the source collection.
         /// </returns>
         /// <remarks>
@@ -288,15 +228,15 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IBatchBucket<T>
+        public static IListView<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            IBatchBucket<T> Cursor(IEnumerator<(T[], int)> source) =>
-                new RentedArrayBatchBucket<T>(source, pool);
+            IListView<T> Cursor(IEnumerator<(T[], int)> source) =>
+                new RentedArrayView<T>(source, pool);
 
             IEnumerator<(T[], int)> Empty() { yield break; }
 
@@ -362,13 +302,13 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class RentedArrayBatchBucket<T> : IBatchBucket<T>
+        sealed class RentedArrayView<T> : IListView<T>
         {
             bool _started;
             IEnumerator<(T[] Bucket, int Length)>? _enumerator;
             ArrayPool<T>? _pool;
 
-            public RentedArrayBatchBucket(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
+            public RentedArrayView(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
                 (_enumerator, _pool) = (enumerator, pool);
 
             public Span<T> AsSpan() => Array.AsSpan();

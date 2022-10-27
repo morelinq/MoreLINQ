@@ -155,7 +155,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public abstract class BatchPoolTest
     {
-        protected abstract IBatchBucket<T> Batch<T>(IEnumerable<T> source, int size);
+        protected abstract IListView<T> Batch<T>(IEnumerable<T> source, int size);
 
         [Test]
         public void BatchZeroSize()
@@ -171,7 +171,7 @@ namespace MoreLinq.Test
                 Batch(new object[0], -1));
         }
 
-        void AssertNext<T>(IBatchBucket<T> bucket, params T[] items)
+        void AssertNext<T>(IListView<T> bucket, params T[] items)
         {
             Assert.That(bucket.MoveNext(), Is.True);
 
@@ -255,13 +255,13 @@ namespace MoreLinq.Test
 
     public class BatchPooledArrayTest : BatchPoolTest
     {
-        protected override IBatchBucket<T> Batch<T>(IEnumerable<T> source, int size) =>
+        protected override IListView<T> Batch<T>(IEnumerable<T> source, int size) =>
             source.Batch(size, ArrayPool<T>.Create());
     }
 
     public class BatchPooledMemoryTest : BatchPoolTest
     {
-        protected override IBatchBucket<T> Batch<T>(IEnumerable<T> source, int size) =>
+        protected override IListView<T> Batch<T>(IEnumerable<T> source, int size) =>
             source.Batch(size, MemoryPool<T>.Shared);
     }
 }
