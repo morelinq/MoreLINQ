@@ -251,6 +251,30 @@ namespace MoreLinq.Test
             using var result = Batch(Enumerable.Empty<int>().ToSourceKind(kind), 100);
             Assert.That(result.MoveNext(), Is.False);
         }
+
+        [Test]
+        public void BatchResultUpdatesInPlaceOnEachMoveNext()
+        {
+            const int scale = 2;
+
+            using var result = Batch(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
+
+            var query =
+                from n in result
+                where n % 2 == 0
+                select n * scale;
+
+            Assert.That(result.MoveNext(), Is.True);
+            query.AssertSequenceEqual(2 * scale);
+
+            Assert.That(result.MoveNext(), Is.True);
+            query.AssertSequenceEqual(4 * scale, 6 * scale);
+
+            Assert.That(result.MoveNext(), Is.True);
+            query.AssertSequenceEqual(8 * scale);
+
+            Assert.That(result.MoveNext(), Is.False);
+        }
     }
 
     public class BatchPooledArrayTest : BatchPoolTest
