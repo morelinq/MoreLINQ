@@ -183,8 +183,13 @@ namespace MoreLinq.Experimental
 
             public void Dispose()
             {
-                _enumerator?.Dispose();
-                _enumerator = null;
+                if (_enumerator is { } enumerator)
+                {
+                    _enumerator = null;
+                    if (_started)
+                        enumerator.Current.Bucket.Dispose();
+                    enumerator.Dispose();
+                }
             }
 
             public IEnumerator<T> GetEnumerator()
@@ -350,9 +355,14 @@ namespace MoreLinq.Experimental
 
             public void Dispose()
             {
-                _enumerator?.Dispose();
-                _enumerator = null;
-                _pool = null;
+                if (_enumerator is { } enumerator)
+                {
+                    Debug.Assert(_pool is not null);
+                    _pool.Return(enumerator.Current.Bucket);
+                    enumerator.Dispose();
+                    _enumerator = null;
+                    _pool = null;
+                }
             }
 
             public IEnumerator<T> GetEnumerator() => Array.Take(Count).GetEnumerator();
