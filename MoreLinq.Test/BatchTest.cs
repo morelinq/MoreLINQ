@@ -171,7 +171,7 @@ namespace MoreLinq.Test
                 Batch(new object[0], -1));
         }
 
-        void AssertNext<T>(IListView<T> bucket, params T[] items)
+        static void AssertNext<T>(IListView<T> bucket, params T[] items)
         {
             Assert.That(bucket.MoveNext(), Is.True);
 
