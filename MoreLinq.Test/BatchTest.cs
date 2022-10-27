@@ -160,15 +160,13 @@ namespace MoreLinq.Test
         [Test]
         public void BatchZeroSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
-                Batch(new object[0], 0));
+            AssertThrowsArgument.OutOfRangeException("size", () => Batch(new object[0], 0));
         }
 
         [Test]
         public void BatchNegativeSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size",() =>
-                Batch(new object[0], -1));
+            AssertThrowsArgument.OutOfRangeException("size", () => Batch(new object[0], -1));
         }
 
         static void AssertNext<T>(IListView<T> bucket, params T[] items)
