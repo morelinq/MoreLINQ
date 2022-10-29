@@ -155,12 +155,12 @@ namespace MoreLinq.Test
     [TestFixture]
     public abstract class BatchPoolTest
     {
-        protected abstract void AssertBatch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter);
+        protected abstract void AssertBatch<T>(IEnumerable<T> source, int size, Action<ICurrentList<T>> asserter);
 
         void Batch<T>(IEnumerable<T> source, int size) => Batch(source, size, delegate { });
 
-        void Batch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter) =>
-            AssertBatch(source, size, asserter + (bucket => Assert.That(bucket.MoveNext(), Is.False)));
+        void Batch<T>(IEnumerable<T> source, int size, Action<ICurrentList<T>> asserter) =>
+            AssertBatch(source, size, asserter + (bucket => Assert.That(bucket.UpdateWithNext(), Is.False)));
 
         [Test]
         public void BatchZeroSize()
@@ -174,20 +174,20 @@ namespace MoreLinq.Test
             AssertThrowsArgument.OutOfRangeException("size", () => Batch(new object[0], -1));
         }
 
-        static Action<IListView<T>> AssertNext<T>(params T[] items) => bucket =>
+        static Action<ICurrentList<T>> AssertNext<T>(params T[] items) => bucket =>
         {
-            Assert.That(bucket.MoveNext(), Is.True);
+            Assert.That(bucket.UpdateWithNext(), Is.True);
 
-            Assert.That(bucket.Count, Is.EqualTo(items.Length));
+            Assert.That(bucket.CurrentItems.Count, Is.EqualTo(items.Length));
 
             foreach (var (i, item) in items.Index())
             {
-                Assert.That(bucket.Contains(item));
-                Assert.That(bucket.IndexOf(item), Is.EqualTo(i));
+                Assert.That(bucket.CurrentItems.Contains(item));
+                Assert.That(bucket.CurrentItems.IndexOf(item), Is.EqualTo(i));
             }
 
-            bucket.AssertSequenceEqual(items);
-            bucket.AsSpan().ToArray().SequenceEqual(items);
+            bucket.CurrentItems.AssertSequenceEqual(items);
+            bucket.CurrentItemsSpan.ToArray().SequenceEqual(items);
         };
 
         [Test]
@@ -257,27 +257,27 @@ namespace MoreLinq.Test
                 const int scale = 2;
 
                 var query =
-                    from n in result
+                    from n in result.CurrentItems
                     where n % 2 == 0
                     select n * scale;
 
-                Assert.That(result.MoveNext(), Is.True);
+                Assert.That(result.UpdateWithNext(), Is.True);
                 query.AssertSequenceEqual(2 * scale);
 
-                Assert.That(result.MoveNext(), Is.True);
+                Assert.That(result.UpdateWithNext(), Is.True);
                 query.AssertSequenceEqual(4 * scale, 6 * scale);
 
-                Assert.That(result.MoveNext(), Is.True);
+                Assert.That(result.UpdateWithNext(), Is.True);
                 query.AssertSequenceEqual(8 * scale);
 
-                Assert.That(result.MoveNext(), Is.False);
+                Assert.That(result.UpdateWithNext(), Is.False);
             });
         }
     }
 
     public class BatchPooledArrayTest : BatchPoolTest
     {
-        protected override void AssertBatch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter)
+        protected override void AssertBatch<T>(IEnumerable<T> source, int size, Action<ICurrentList<T>> asserter)
         {
             var pool = new TestArrayPool<T>();
             asserter(source.Batch(size, pool));
@@ -287,7 +287,7 @@ namespace MoreLinq.Test
 
     public class BatchPooledMemoryTest : BatchPoolTest
     {
-        protected override void AssertBatch<T>(IEnumerable<T> source, int size, Action<IListView<T>> asserter)
+        protected override void AssertBatch<T>(IEnumerable<T> source, int size, Action<ICurrentList<T>> asserter)
         {
             var pool = new TestMemoryPool<T>();
             asserter(source.Batch(size, pool));

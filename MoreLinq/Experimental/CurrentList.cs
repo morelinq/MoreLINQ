@@ -22,19 +22,32 @@ namespace MoreLinq.Experimental
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
-    /// Represents an updateable list view of a larger result.
+    /// Represents a list that is the current view of a larger result and which
+    /// is updated in-place (thus current) as it is moved through the overall
+    /// result.
     /// </summary>
-    /// <typeparam name="T">Type of elements in the bucket</typeparam>
+    /// <typeparam name="T">Type of elements in the bucket.</typeparam>
 
-    public interface IListView<T> : IDisposable, IList<T>
+    public interface ICurrentList<T> : IDisposable
     {
         /// <summary>
-        /// Returns a new span over the bucket elements.
+        /// Gets the current items of the list.
+        /// </summary>
+        /// <remarks>
+        /// The returned list is updated in-place when <see cref="UpdateWithNext"/>
+        /// is called.
+        /// </remarks>
+
+        IList<T> CurrentItems { get; }
+
+        /// <summary>
+        /// Gets the current items of the list as <see cref="Span{T}"/>.
         /// </summary>
 
-        Span<T> AsSpan();
+        Span<T> CurrentItemsSpan { get; }
 
         /// <summary>
         /// Update this instance with the next set of elements from the source.
@@ -45,9 +58,23 @@ namespace MoreLinq.Experimental
         /// the bucket source has been reached.
         /// </returns>
 
-        bool MoveNext();
+        bool UpdateWithNext();
+    }
 
-        int IList<T>.IndexOf(T item)
+    abstract class CurrentList<T> : ICurrentList<T>, IList<T>
+    {
+        public abstract bool UpdateWithNext();
+        public abstract void Dispose();
+
+        public abstract Span<T> CurrentItemsSpan { get; }
+        public abstract int Count { get; }
+        public abstract T this[int index] { get; set; }
+
+        public virtual IList<T> CurrentItems => this;
+
+        public virtual bool IsReadOnly => false;
+
+        public virtual int IndexOf(T item)
         {
             var comparer = EqualityComparer<T>.Default;
 
@@ -60,9 +87,9 @@ namespace MoreLinq.Experimental
             return -1;
         }
 
-        bool ICollection<T>.Contains(T item) => IndexOf(item) >= 0;
+        public virtual bool Contains(T item) => IndexOf(item) >= 0;
 
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        public virtual void CopyTo(T[] array, int arrayIndex)
         {
             if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), arrayIndex, null);
             if (arrayIndex + Count > array.Length) throw new ArgumentException(null, nameof(arrayIndex));
@@ -71,6 +98,7 @@ namespace MoreLinq.Experimental
                 array[j] = this[i];
         }
 
+        public virtual IEnumerator<T> GetEnumerator() => CurrentItems.Take(Count).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         void IList<T>.Insert(int index, T item) => throw new NotSupportedException();
@@ -78,7 +106,6 @@ namespace MoreLinq.Experimental
         void ICollection<T>.Add(T item) => throw new NotSupportedException();
         void ICollection<T>.Clear() => throw new NotSupportedException();
         bool ICollection<T>.Remove(T item) => throw new NotSupportedException();
-        bool ICollection<T>.IsReadOnly => true;
     }
 }
 

@@ -23,7 +23,6 @@ namespace MoreLinq.Experimental
     using System.Buffers;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
 
     static partial class ExperimentalEnumerable
     {
@@ -36,7 +35,7 @@ namespace MoreLinq.Experimental
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The memory pool used to rent memory for each bucket.</param>
         /// <returns>
-        /// A <see cref="IListView{T}"/> that can be used to enumerate
+        /// A <see cref="ICurrentList{T}"/> that can be used to enumerate
         /// equally sized buckets containing elements of the source collection.
         /// </returns>
         /// <remarks>
@@ -61,15 +60,15 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IListView<T>
+        public static ICurrentList<T>
             Batch<T>(this IEnumerable<T> source, int size, MemoryPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            IListView<T> Cursor(IEnumerator<(IMemoryOwner<T>, int)> source) =>
-                new RentedMemoryView<T>(source);
+            ICurrentList<T> Cursor(IEnumerator<(IMemoryOwner<T>, int)> source) =>
+                new CurrentBucketMemory<T>(source);
 
             IEnumerator<(IMemoryOwner<T>, int)> Empty() { yield break; }
 
@@ -139,17 +138,17 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class RentedMemoryView<T> : IListView<T>
+        sealed class CurrentBucketMemory<T> : CurrentList<T>
         {
             bool _started;
             IEnumerator<(IMemoryOwner<T> Bucket, int Length)>? _enumerator;
 
-            public RentedMemoryView(IEnumerator<(IMemoryOwner<T>, int)> enumerator) =>
+            public CurrentBucketMemory(IEnumerator<(IMemoryOwner<T>, int)> enumerator) =>
                 _enumerator = enumerator;
 
-            public Span<T> AsSpan() => Memory.Span;
+            public override Span<T> CurrentItemsSpan => Memory.Span;
 
-            public bool MoveNext()
+            public override bool UpdateWithNext()
             {
                 if (_enumerator is { } enumerator)
                 {
@@ -173,15 +172,15 @@ namespace MoreLinq.Experimental
 
             Memory<T> Memory => _started && _enumerator?.Current.Bucket is { Memory: var v } ? v : throw new InvalidOperationException();
 
-            public int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
+            public override int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
 
-            public T this[int index]
+            public override T this[int index]
             {
                 get => index >= 0 && index < Count ? Memory.Span[index] : throw new IndexOutOfRangeException();
                 set => throw new NotSupportedException();
             }
 
-            public void Dispose()
+            public override void Dispose()
             {
                 if (_enumerator is { } enumerator)
                 {
@@ -192,7 +191,7 @@ namespace MoreLinq.Experimental
                 }
             }
 
-            public IEnumerator<T> GetEnumerator()
+            public override IEnumerator<T> GetEnumerator()
             {
                 for (var i = 0; i < Count; i++)
                     yield return this[i];
@@ -208,7 +207,7 @@ namespace MoreLinq.Experimental
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The pool used to rent the array for each bucket.</param>
         /// <returns>
-        /// A <see cref="IListView{T}"/> that can be used to enumerate
+        /// A <see cref="ICurrentList{T}"/> that can be used to enumerate
         /// equally sized buckets containing elements of the source collection.
         /// </returns>
         /// <remarks>
@@ -233,15 +232,15 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static IListView<T>
+        public static ICurrentList<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            IListView<T> Cursor(IEnumerator<(T[], int)> source) =>
-                new RentedArrayView<T>(source, pool);
+            ICurrentList<T> Cursor(IEnumerator<(T[], int)> source) =>
+                new CurrentBucketArray<T>(source, pool);
 
             IEnumerator<(T[], int)> Empty() { yield break; }
 
@@ -307,18 +306,18 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class RentedArrayView<T> : IListView<T>
+        sealed class CurrentBucketArray<T> : CurrentList<T>
         {
             bool _started;
             IEnumerator<(T[] Bucket, int Length)>? _enumerator;
             ArrayPool<T>? _pool;
 
-            public RentedArrayView(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
+            public CurrentBucketArray(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
                 (_enumerator, _pool) = (enumerator, pool);
 
-            public Span<T> AsSpan() => Array.AsSpan();
+            public override Span<T> CurrentItemsSpan => Array.AsSpan();
 
-            public bool MoveNext()
+            public override bool UpdateWithNext()
             {
                 if (_enumerator is { } enumerator)
                 {
@@ -344,16 +343,16 @@ namespace MoreLinq.Experimental
 
             T[] Array => _started && _enumerator?.Current.Bucket is { } v ? v : throw new InvalidOperationException();
 
-            public int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
+            public override int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
 
-            public T this[int index]
+            public override T this[int index]
             {
                 get => index >= 0 && index < Count ? Array[index] : throw new IndexOutOfRangeException();
                 set => throw new NotSupportedException();
 
             }
 
-            public void Dispose()
+            public override void Dispose()
             {
                 if (_enumerator is { } enumerator)
                 {
@@ -364,8 +363,6 @@ namespace MoreLinq.Experimental
                     _pool = null;
                 }
             }
-
-            public IEnumerator<T> GetEnumerator() => Array.Take(Count).GetEnumerator();
         }
     }
 }
