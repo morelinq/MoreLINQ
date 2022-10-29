@@ -15,7 +15,7 @@
 // limitations under the License.
 #endregion
 
-#if !NO_MEMORY && !NO_TRAITS && !NO_TRAITS
+#if !NO_BUFFERS
 
 namespace MoreLinq.Experimental
 {
@@ -112,4 +112,4 @@ namespace MoreLinq.Experimental
     }
 }
 
-#endif // !NO_MEMORY && !NO_TRAITS
+#endif // !NO_BUFFERS

@@ -194,11 +194,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net451' ">
-    <DefineConstants>$(DefineConstants);NO_TRAITS;NO_MEMORY</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_BUFFERS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <DefineConstants>$(DefineConstants);MORELINQ;NO_MEMORY;NO_TRAITS;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
+    <DefineConstants>$(DefineConstants);MORELINQ;NO_BUFFERS;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
