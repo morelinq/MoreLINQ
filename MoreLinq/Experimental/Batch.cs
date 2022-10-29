@@ -33,6 +33,61 @@ namespace MoreLinq.Experimental
         /// </summary>
         /// <typeparam name="TSource">
         /// Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the resulting sequence.
+        /// </typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="size">Size of buckets.</param>
+        /// <param name="pool">The pool used to rent the array for each bucket.</param>
+        /// <param name="resultSelector">A function that projects a result from
+        /// the current bucket.</param>
+        /// <returns>
+        /// A sequence whose elements are projected from each bucket (returned by
+        /// <paramref name="resultSelector"/>).
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This operator uses deferred execution and streams its results
+        /// (buckets are streamed but their content buffered).</para>
+        /// <para>
+        /// <para>
+        /// Each bucket is backed by a rented array that may be at least
+        /// <paramref name="size"/> in length.
+        /// </para>
+        /// <para>
+        /// When more than one bucket is streamed, all buckets except the last
+        /// is guaranteed to have <paramref name="size"/> elements. The last
+        /// bucket may be smaller depending on the remaining elements in the
+        /// <paramref name="source"/> sequence.</para>
+        /// Each bucket is pre-allocated to <paramref name="size"/> elements.
+        /// If <paramref name="size"/> is set to a very large value, e.g.
+        /// <see cref="int.MaxValue"/> to effectively disable batching by just
+        /// hoping for a single bucket, then it can lead to memory exhaustion
+        /// (<see cref="OutOfMemoryException"/>).
+        /// </para>
+        /// </remarks>
+
+        public static IEnumerable<TResult>
+            Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
+                                    ArrayPool<TSource> pool,
+                                    Func<ICurrentList<TSource>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (pool == null) throw new ArgumentNullException(nameof(pool));
+            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.Batch(size, pool, current => current,
+                                current => resultSelector((ICurrentList<TSource>)current));
+        }
+
+        /// <summary>
+        /// Batches the source sequence into sized buckets using an array pool
+        /// to rent arrays to back each bucket and returns a sequence of
+        /// elements projected from each bucket.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TQuery">
         /// Type of elements in the sequence returned by <paramref name="querySelector"/>.</typeparam>
         /// <typeparam name="TResult">
