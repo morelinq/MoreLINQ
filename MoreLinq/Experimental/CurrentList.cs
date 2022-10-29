@@ -31,14 +31,7 @@ namespace MoreLinq.Experimental
     /// </summary>
     /// <typeparam name="T">Type of elements in the list.</typeparam>
 
-    public interface ICurrentList<T> : IList<T>
-    {
-        /// <summary>
-        /// Gets the current items of the list as <see cref="Span{T}"/>.
-        /// </summary>
-
-        Span<T> AsSpan { get; }
-    }
+    public interface ICurrentList<T> : IList<T> { }
 
     /// <summary>
     /// A provider of current list that updates it in-place.
