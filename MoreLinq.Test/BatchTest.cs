@@ -166,7 +166,7 @@ namespace MoreLinq.Test
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(3, pool,
-                                     current => current.CurrentItems,
+                                     current => current,
                                      items => items.ToArray());
 
             using var reader = result.Read();
@@ -183,7 +183,7 @@ namespace MoreLinq.Test
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(4, pool,
-                                     current => current.CurrentItems,
+                                     current => current,
                                      items => items.ToArray());
 
             using var reader = result.Read();
@@ -215,7 +215,7 @@ namespace MoreLinq.Test
 
             var result = xs.ToSourceKind(kind)
                            .Batch(xs.Length + oversize, pool,
-                                  current => current.CurrentItems, items => items);
+                                  current => current, items => items);
 
             using var reader = result.Read();
             reader.Read().AssertSequenceEqual(1, 2, 3, 4, 5);
@@ -229,7 +229,7 @@ namespace MoreLinq.Test
             using var pool = new TestArrayPool<int>();
 
             var result = collection.Batch(collection.Count * 2, pool,
-                                          current => current.CurrentItems,
+                                          current => current,
                                           items => items.ToArray());
 
             using var reader = result.Read();
@@ -249,7 +249,7 @@ namespace MoreLinq.Test
             var result = Enumerable.Empty<int>()
                                    .ToSourceKind(kind)
                                    .Batch(100, pool,
-                                          current => current.CurrentItems, items => items);
+                                          current => current, items => items);
 
             Assert.That(result, Is.Empty);
         }
@@ -262,7 +262,7 @@ namespace MoreLinq.Test
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(3, pool,
-                                     current => from n in current.CurrentItems
+                                     current => from n in current
                                                 where n % 2 == 0
                                                 select n * scale,
                                      query => query.ToArray());
@@ -280,7 +280,7 @@ namespace MoreLinq.Test
             var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
-            var result = input.Batch(3, pool, current => current.CurrentItems, q => q.Sum());
+            var result = input.Batch(3, pool, current => current, q => q.Sum());
 
             using var reader = result.Read();
             Assert.That(reader.Read(), Is.EqualTo(1 + 2 + 3));

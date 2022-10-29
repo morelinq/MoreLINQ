@@ -85,16 +85,16 @@ namespace MoreLinq.Experimental
 
             return _(); IEnumerable<TResult> _()
             {
-                using var current = source.Batch(size, pool);
+                using var batch = source.Batch(size, pool);
 
-                if (current.UpdateWithNext())
+                if (batch.UpdateWithNext())
                 {
-                    var query = querySelector(current);
+                    var query = querySelector(batch.CurrentList);
                     do
                     {
                         yield return resultSelector(query);
                     }
-                    while (current.UpdateWithNext());
+                    while (batch.UpdateWithNext());
                 }
             }
         }
@@ -133,14 +133,14 @@ namespace MoreLinq.Experimental
         /// </para>
         /// </remarks>
 
-        public static ICurrentList<T>
+        public static ICurrentListProvider<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            ICurrentList<T> Cursor(IEnumerator<(T[], int)> source) =>
+            ICurrentListProvider<T> Cursor(IEnumerator<(T[], int)> source) =>
                 new CurrentBucketArray<T>(source, pool);
 
             IEnumerator<(T[], int)> Empty() { yield break; }
@@ -207,7 +207,7 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class CurrentBucketArray<T> : CurrentList<T>
+        sealed class CurrentBucketArray<T> : CurrentList<T>, ICurrentListProvider<T>
         {
             bool _started;
             IEnumerator<(T[] Bucket, int Length)>? _enumerator;
@@ -216,9 +216,11 @@ namespace MoreLinq.Experimental
             public CurrentBucketArray(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
                 (_enumerator, _pool) = (enumerator, pool);
 
-            public override Span<T> CurrentItemsSpan => Array.AsSpan();
+            public override Span<T> AsSpan => Array.AsSpan();
 
-            public override bool UpdateWithNext()
+            ICurrentList<T> ICurrentListProvider<T>.CurrentList => this;
+
+            public bool UpdateWithNext()
             {
                 if (_enumerator is { } enumerator)
                 {
@@ -253,7 +255,7 @@ namespace MoreLinq.Experimental
 
             }
 
-            public override void Dispose()
+            public void Dispose()
             {
                 if (_enumerator is { } enumerator)
                 {

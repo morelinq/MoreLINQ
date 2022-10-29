@@ -31,7 +31,21 @@ namespace MoreLinq.Experimental
     /// </summary>
     /// <typeparam name="T">Type of elements in the list.</typeparam>
 
-    public interface ICurrentList<T> : IDisposable
+    public interface ICurrentList<T> : IList<T>
+    {
+        /// <summary>
+        /// Gets the current items of the list as <see cref="Span{T}"/>.
+        /// </summary>
+
+        Span<T> AsSpan { get; }
+    }
+
+    /// <summary>
+    /// A provider of current list that updates it in-place.
+    /// </summary>
+    /// <typeparam name="T">Type of elements in the list.</typeparam>
+
+    public interface ICurrentListProvider<T> : IDisposable
     {
         /// <summary>
         /// Gets the current items of the list.
@@ -41,13 +55,7 @@ namespace MoreLinq.Experimental
         /// is called.
         /// </remarks>
 
-        IList<T> CurrentItems { get; }
-
-        /// <summary>
-        /// Gets the current items of the list as <see cref="Span{T}"/>.
-        /// </summary>
-
-        Span<T> CurrentItemsSpan { get; }
+        ICurrentList<T> CurrentList { get; }
 
         /// <summary>
         /// Update this instance with the next set of elements from the source.
@@ -61,16 +69,11 @@ namespace MoreLinq.Experimental
         bool UpdateWithNext();
     }
 
-    abstract class CurrentList<T> : ICurrentList<T>, IList<T>
+    abstract class CurrentList<T> : ICurrentList<T>
     {
-        public abstract bool UpdateWithNext();
-        public abstract void Dispose();
-
-        public abstract Span<T> CurrentItemsSpan { get; }
+        public abstract Span<T> AsSpan { get; }
         public abstract int Count { get; }
         public abstract T this[int index] { get; set; }
-
-        public virtual IList<T> CurrentItems => this;
 
         public virtual bool IsReadOnly => false;
 
@@ -98,7 +101,7 @@ namespace MoreLinq.Experimental
                 array[j] = this[i];
         }
 
-        public virtual IEnumerator<T> GetEnumerator() => CurrentItems.Take(Count).GetEnumerator();
+        public virtual IEnumerator<T> GetEnumerator() => this.Take(Count).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         void IList<T>.Insert(int index, T item) => throw new NotSupportedException();
