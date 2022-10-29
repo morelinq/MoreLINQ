@@ -162,7 +162,7 @@ namespace MoreLinq.Experimental
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
             ICurrentListProvider<T> Cursor(IEnumerator<(T[], int)> source) =>
-                new CurrentBucketArray<T>(source, pool);
+                new CurrentPoolArrayProvider<T>(source, pool);
 
             IEnumerator<(T[], int)> Empty() { yield break; }
 
@@ -228,13 +228,13 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class CurrentBucketArray<T> : CurrentList<T>, ICurrentListProvider<T>
+        sealed class CurrentPoolArrayProvider<T> : CurrentList<T>, ICurrentListProvider<T>
         {
             bool _started;
-            IEnumerator<(T[] Bucket, int Length)>? _enumerator;
+            IEnumerator<(T[] Array, int Length)>? _enumerator;
             ArrayPool<T>? _pool;
 
-            public CurrentBucketArray(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
+            public CurrentPoolArrayProvider(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
                 (_enumerator, _pool) = (enumerator, pool);
 
             public override Span<T> AsSpan => Array.AsSpan();
@@ -247,7 +247,7 @@ namespace MoreLinq.Experimental
                 {
                     Debug.Assert(_pool is not null);
                     if (_started)
-                        _pool.Return(enumerator.Current.Bucket);
+                        _pool.Return(enumerator.Current.Array);
                     else
                         _started = true;
 
@@ -265,7 +265,7 @@ namespace MoreLinq.Experimental
                 return false;
             }
 
-            T[] Array => _started && _enumerator?.Current.Bucket is { } v ? v : throw new InvalidOperationException();
+            T[] Array => _started && _enumerator?.Current.Array is { } v ? v : throw new InvalidOperationException();
 
             public override int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
 
@@ -281,7 +281,7 @@ namespace MoreLinq.Experimental
                 if (_enumerator is { } enumerator)
                 {
                     Debug.Assert(_pool is not null);
-                    _pool.Return(enumerator.Current.Bucket);
+                    _pool.Return(enumerator.Current.Array);
                     enumerator.Dispose();
                     _enumerator = null;
                     _pool = null;
