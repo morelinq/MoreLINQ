@@ -45,7 +45,7 @@ namespace MoreLinq.Experimental
     /// </summary>
     /// <typeparam name="T">Type of elements in the list.</typeparam>
 
-    public interface ICurrentListProvider<T> : IDisposable
+    interface ICurrentListProvider<T> : IDisposable
     {
         /// <summary>
         /// Gets the current items of the list.

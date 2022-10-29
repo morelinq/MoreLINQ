@@ -99,41 +99,7 @@ namespace MoreLinq.Experimental
             }
         }
 
-        /// <summary>
-        /// Batches the source sequence into sized buckets using a array pool
-        /// to rent an array to back each bucket.
-        /// </summary>
-        /// <typeparam name="T">Type of elements in <paramref name="source"/> sequence.</typeparam>
-        /// <param name="source">The source sequence.</param>
-        /// <param name="size">Size of buckets.</param>
-        /// <param name="pool">The pool used to rent the array for each bucket.</param>
-        /// <returns>
-        /// A <see cref="ICurrentList{T}"/> that can be used to enumerate
-        /// equally sized buckets containing elements of the source collection.
-        /// </returns>
-        /// <remarks>
-        /// <para>
-        /// This operator uses deferred execution and streams its results
-        /// (buckets are streamed but their content buffered).</para>
-        /// <para>
-        /// <para>
-        /// Each bucket is backed by a rented array that may be at least
-        /// <paramref name="size"/> in length.
-        /// </para>
-        /// <para>
-        /// When more than one bucket is streamed, all buckets except the last
-        /// is guaranteed to have <paramref name="size"/> elements. The last
-        /// bucket may be smaller depending on the remaining elements in the
-        /// <paramref name="source"/> sequence.</para>
-        /// Each bucket is pre-allocated to <paramref name="size"/> elements.
-        /// If <paramref name="size"/> is set to a very large value, e.g.
-        /// <see cref="int.MaxValue"/> to effectively disable batching by just
-        /// hoping for a single bucket, then it can lead to memory exhaustion
-        /// (<see cref="OutOfMemoryException"/>).
-        /// </para>
-        /// </remarks>
-
-        public static ICurrentListProvider<T>
+        static ICurrentListProvider<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
