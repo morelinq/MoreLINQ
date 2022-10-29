@@ -29,7 +29,7 @@ namespace MoreLinq.Experimental
     /// is updated in-place (thus current) as it is moved through the overall
     /// result.
     /// </summary>
-    /// <typeparam name="T">Type of elements in the bucket.</typeparam>
+    /// <typeparam name="T">Type of elements in the list.</typeparam>
 
     public interface ICurrentList<T> : IDisposable
     {
