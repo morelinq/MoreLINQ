@@ -89,16 +89,16 @@ namespace MoreLinq.Experimental
         /// <typeparam name="TSource">
         /// Type of elements in <paramref name="source"/> sequence.</typeparam>
         /// <typeparam name="TBucket">
-        /// Type of elements in the sequence returned by <paramref name="bucketSelector"/>.</typeparam>
+        /// Type of elements in the sequence returned by <paramref name="bucketProjectionSelector"/>.</typeparam>
         /// <typeparam name="TResult">
         /// Type of elements of the resulting sequence.
         /// </typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The pool used to rent the array for each bucket.</param>
-        /// <param name="bucketSelector">A function that returns a sequence
-        /// projection to use for each bucket. It is called initially before
-        /// iterating over <paramref name="source"/>, but the resulting
+        /// <param name="bucketProjectionSelector">A function that returns a
+        /// sequence projection to use for each bucket. It is called initially
+        /// before iterating over <paramref name="source"/>, but the resulting
         /// projection is evaluated for each bucket.
         /// </param>
         /// <param name="resultSelector">A function that projects a result from
@@ -132,19 +132,19 @@ namespace MoreLinq.Experimental
         public static IEnumerable<TResult>
             Batch<TSource, TBucket, TResult>(
                 this IEnumerable<TSource> source, int size, ArrayPool<TSource> pool,
-                Func<ICurrentList<TSource>, IEnumerable<TBucket>> bucketSelector,
+                Func<ICurrentList<TSource>, IEnumerable<TBucket>> bucketProjectionSelector,
                 Func<IEnumerable<TBucket>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
-            if (bucketSelector == null) throw new ArgumentNullException(nameof(bucketSelector));
+            if (bucketProjectionSelector == null) throw new ArgumentNullException(nameof(bucketProjectionSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
                 using var batch = source.Batch(size, pool);
-                var bucket = bucketSelector(batch.CurrentList);
+                var bucket = bucketProjectionSelector(batch.CurrentList);
                 while (batch.UpdateWithNext())
                     yield return resultSelector(bucket);
             }
