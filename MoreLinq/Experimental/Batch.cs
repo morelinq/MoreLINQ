@@ -141,16 +141,9 @@ namespace MoreLinq.Experimental
             return _(); IEnumerable<TResult> _()
             {
                 using var batch = source.Batch(size, pool);
-
-                if (batch.UpdateWithNext())
-                {
-                    var query = querySelector(batch.CurrentList);
-                    do
-                    {
-                        yield return resultSelector(query);
-                    }
-                    while (batch.UpdateWithNext());
-                }
+                var query = querySelector(batch.CurrentList);
+                while (batch.UpdateWithNext())
+                    yield return resultSelector(query);
             }
         }
 
@@ -230,60 +223,64 @@ namespace MoreLinq.Experimental
 
         sealed class CurrentPoolArrayProvider<T> : CurrentList<T>, ICurrentListProvider<T>
         {
-            bool _started;
-            IEnumerator<(T[] Array, int Length)>? _enumerator;
+            bool _rented;
+            T[] _array = Array.Empty<T>();
+            int _count;
+            IEnumerator<(T[], int)>? _rental;
             ArrayPool<T>? _pool;
 
-            public CurrentPoolArrayProvider(IEnumerator<(T[], int)> enumerator, ArrayPool<T> pool) =>
-                (_enumerator, _pool) = (enumerator, pool);
+            public CurrentPoolArrayProvider(IEnumerator<(T[], int)> rental, ArrayPool<T> pool) =>
+                (_rental, _pool) = (rental, pool);
 
-            public override Span<T> AsSpan => Array.AsSpan();
+            public override Span<T> AsSpan => _array.AsSpan();
 
             ICurrentList<T> ICurrentListProvider<T>.CurrentList => this;
 
             public bool UpdateWithNext()
             {
-                if (_enumerator is { } enumerator)
+                if (_rental is { Current: var (array, _) } rental)
                 {
                     Debug.Assert(_pool is not null);
-                    if (_started)
-                        _pool.Return(enumerator.Current.Array);
-                    else
-                        _started = true;
-
-                    if (!enumerator.MoveNext())
+                    if (_rented)
                     {
-                        enumerator.Dispose();
-                        _enumerator = null;
-                        _pool = null;
+                        _pool.Return(array);
+                        _rented = false;
+                    }
+
+                    if (!rental.MoveNext())
+                    {
+                        Dispose();
                         return false;
                     }
 
+                    _rented = true;
+                    (_array, _count) = rental.Current;
                     return true;
                 }
 
                 return false;
             }
 
-            T[] Array => _started && _enumerator?.Current.Array is { } v ? v : throw new InvalidOperationException();
-
-            public override int Count => _started && _enumerator?.Current.Length is { } v ? v : throw new InvalidOperationException();
+            public override int Count => _count;
 
             public override T this[int index]
             {
-                get => index >= 0 && index < Count ? Array[index] : throw new IndexOutOfRangeException();
+                get => index >= 0 && index < Count ? _array[index] : throw new IndexOutOfRangeException();
                 set => throw new NotSupportedException();
 
             }
 
             public void Dispose()
             {
-                if (_enumerator is { } enumerator)
+                if (_rental is { Current: var (array, _) } enumerator)
                 {
                     Debug.Assert(_pool is not null);
-                    _pool.Return(enumerator.Current.Array);
+                    if (_rented)
+                        _pool.Return(array);
                     enumerator.Dispose();
-                    _enumerator = null;
+                    _array = Array.Empty<T>();
+                    _count = 0;
+                    _rental = null;
                     _pool = null;
                 }
             }

@@ -303,6 +303,51 @@ namespace MoreLinq.Test
             current.AssertSequenceEqual(9);
 
             reader.ReadEnd();
+
+            Assert.That(current, Is.Empty);
+        }
+
+        [Test]
+        public void BatchCallsQuerySelectorBeforeIteratingSource()
+        {
+            var iterations = 0;
+            IEnumerable<int> Source()
+            {
+                iterations++;
+                yield break;
+            }
+
+            var input = Source();
+            using var pool = new TestArrayPool<int>();
+            var initIterations = -1;
+
+            var result = input.Batch(4, pool,
+                                     current =>
+                                     {
+                                         initIterations = iterations;
+                                         return current;
+                                     },
+                                     _ => 0);
+
+            using var enumerator = result.GetEnumerator();
+            Assert.That(enumerator.MoveNext(), Is.False);
+            Assert.That(initIterations, Is.Zero);
+        }
+
+        [Test]
+        public void BatchQueryCurrentList()
+        {
+            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var pool = new TestArrayPool<int>();
+            int[] queryCurrentList = null;
+
+            var result = input.Batch(4, pool, current => queryCurrentList = current.ToArray(), _ => 0);
+
+            using var reader = result.Read();
+            _ = reader.Read();
+            Assert.That(queryCurrentList, Is.Not.Null);
+            Assert.That(queryCurrentList, Is.Empty);
+
         }
 
         /// <summary>
