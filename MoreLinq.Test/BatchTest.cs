@@ -282,6 +282,29 @@ namespace MoreLinq.Test
             reader.ReadEnd();
         }
 
+        /// <remarks>
+        /// This test does not exercise the intended usage!
+        /// </remarks>
+
+        [Test]
+        public void BatchUpdatesCurrentListInPlace()
+        {
+            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var pool = new TestArrayPool<int>();
+
+            var result = input.Batch(4, pool, current => current, current => (ICurrentList<int>)current);
+
+            using var reader = result.Read();
+            var current = reader.Read();
+            current.AssertSequenceEqual(1, 2, 3, 4);
+            _ = reader.Read();
+            current.AssertSequenceEqual(5, 6, 7, 8);
+            _ = reader.Read();
+            current.AssertSequenceEqual(9);
+
+            reader.ReadEnd();
+        }
+
         /// <summary>
         /// An <see cref="ArrayPool{T}"/> implementation for testing purposes that holds only
         /// one array in the pool and ensures that it is returned when the pool is disposed.
