@@ -347,7 +347,6 @@ namespace MoreLinq.Test
             _ = reader.Read();
             Assert.That(bucketSelectorItems, Is.Not.Null);
             Assert.That(bucketSelectorItems, Is.Empty);
-
         }
 
         /// <summary>
