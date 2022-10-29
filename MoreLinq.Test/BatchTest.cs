@@ -308,7 +308,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchCallsQuerySelectorBeforeIteratingSource()
+        public void BatchCallsBucketSelectorBeforeIteratingSource()
         {
             var iterations = 0;
             IEnumerable<int> Source()
@@ -335,18 +335,18 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchQueryCurrentList()
+        public void BatchBucketSelectorCurrentList()
         {
             var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
-            int[] queryCurrentList = null;
+            int[] bucketSelectorItems = null;
 
-            var result = input.Batch(4, pool, current => queryCurrentList = current.ToArray(), _ => 0);
+            var result = input.Batch(4, pool, current => bucketSelectorItems = current.ToArray(), _ => 0);
 
             using var reader = result.Read();
             _ = reader.Read();
-            Assert.That(queryCurrentList, Is.Not.Null);
-            Assert.That(queryCurrentList, Is.Empty);
+            Assert.That(bucketSelectorItems, Is.Not.Null);
+            Assert.That(bucketSelectorItems, Is.Empty);
 
         }
 

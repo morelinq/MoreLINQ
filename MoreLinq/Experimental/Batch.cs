@@ -88,16 +88,19 @@ namespace MoreLinq.Experimental
         /// </summary>
         /// <typeparam name="TSource">
         /// Type of elements in <paramref name="source"/> sequence.</typeparam>
-        /// <typeparam name="TQuery">
-        /// Type of elements in the sequence returned by <paramref name="querySelector"/>.</typeparam>
+        /// <typeparam name="TBucket">
+        /// Type of elements in the sequence returned by <paramref name="bucketSelector"/>.</typeparam>
         /// <typeparam name="TResult">
         /// Type of elements of the resulting sequence.
         /// </typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="size">Size of buckets.</param>
         /// <param name="pool">The pool used to rent the array for each bucket.</param>
-        /// <param name="querySelector">A function that projects a query over
-        /// all buckets.</param>
+        /// <param name="bucketSelector">A function that returns a sequence
+        /// projection to use for each bucket. It is called initially before
+        /// iterating over <paramref name="source"/>, but the resulting
+        /// projection is evaluated for each bucket.
+        /// </param>
         /// <param name="resultSelector">A function that projects a result from
         /// the input sequence produced over a bucket.</param>
         /// <returns>
@@ -127,23 +130,23 @@ namespace MoreLinq.Experimental
         /// </remarks>
 
         public static IEnumerable<TResult>
-            Batch<TSource, TQuery, TResult>(
+            Batch<TSource, TBucket, TResult>(
                 this IEnumerable<TSource> source, int size, ArrayPool<TSource> pool,
-                Func<ICurrentList<TSource>, IEnumerable<TQuery>> querySelector,
-                Func<IEnumerable<TQuery>, TResult> resultSelector)
+                Func<ICurrentList<TSource>, IEnumerable<TBucket>> bucketSelector,
+                Func<IEnumerable<TBucket>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
-            if (querySelector == null) throw new ArgumentNullException(nameof(querySelector));
+            if (bucketSelector == null) throw new ArgumentNullException(nameof(bucketSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
                 using var batch = source.Batch(size, pool);
-                var query = querySelector(batch.CurrentList);
+                var bucket = bucketSelector(batch.CurrentList);
                 while (batch.UpdateWithNext())
-                    yield return resultSelector(query);
+                    yield return resultSelector(bucket);
             }
         }
 
