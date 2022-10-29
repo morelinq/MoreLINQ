@@ -273,6 +273,39 @@ namespace MoreLinq.Test
                 Assert.That(result.UpdateWithNext(), Is.False);
             });
         }
+
+        [Test]
+        public void BatchFilterBucket()
+        {
+            const int scale = 2;
+            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            var result = input.Batch(3, new TestArrayPool<int>(),
+                                     current => from n in current.CurrentItems
+                                                where n % 2 == 0
+                                                select n * scale,
+                                     query => query.ToArray());
+
+            using var reader = result.Read();
+            reader.Read().AssertSequenceEqual(2 * scale);
+            reader.Read().AssertSequenceEqual(4 * scale, 6 * scale);
+            reader.Read().AssertSequenceEqual(8 * scale);
+            reader.ReadEnd();
+        }
+
+        [Test]
+        public void BatchSumBucket()
+        {
+            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+            var result = input.Batch(3, new TestArrayPool<int>(), current => current.CurrentItems, q => q.Sum());
+
+            using var reader = result.Read();
+            Assert.That(reader.Read(), Is.EqualTo(1 + 2 + 3));
+            Assert.That(reader.Read(), Is.EqualTo(4 + 5 + 6));
+            Assert.That(reader.Read(), Is.EqualTo(7 + 8 + 9));
+            reader.ReadEnd();
+        }
     }
 
     public class BatchPooledArrayTest : BatchPoolTest

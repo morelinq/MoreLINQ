@@ -199,6 +199,72 @@ namespace MoreLinq.Experimental
         }
 
         /// <summary>
+        /// Batches the source sequence into sized buckets using an array pool
+        /// to rent arrays to back each bucket and returns a sequence of
+        /// elements projected from each bucket.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TQuery">
+        /// Type of elements in the sequence returned by <paramref name="querySelector"/>.</typeparam>
+        /// <typeparam name="TResult">
+        /// Type of elements of the resulting sequence.
+        /// </typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="size">Size of buckets.</param>
+        /// <param name="pool">The pool used to rent the array for each bucket.</param>
+        /// <param name="querySelector">A function that projects a query over
+        /// all buckets.</param>
+        /// <param name="resultSelector">A function that projects a result from
+        /// the input sequence produced over a bucket.</param>
+        /// <returns>
+        /// A sequence whose elements are projected from each bucket (returned by
+        /// <paramref name="resultSelector"/>).
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This operator uses deferred execution and streams its results
+        /// (buckets are streamed but their content buffered).</para>
+        /// <para>
+        /// <para>
+        /// Each bucket is backed by a rented array that may be at least
+        /// <paramref name="size"/> in length.
+        /// </para>
+        /// <para>
+        /// When more than one bucket is streamed, all buckets except the last
+        /// is guaranteed to have <paramref name="size"/> elements. The last
+        /// bucket may be smaller depending on the remaining elements in the
+        /// <paramref name="source"/> sequence.</para>
+        /// Each bucket is pre-allocated to <paramref name="size"/> elements.
+        /// If <paramref name="size"/> is set to a very large value, e.g.
+        /// <see cref="int.MaxValue"/> to effectively disable batching by just
+        /// hoping for a single bucket, then it can lead to memory exhaustion
+        /// (<see cref="OutOfMemoryException"/>).
+        /// </para>
+        /// </remarks>
+
+        public static IEnumerable<TResult>
+            Batch<TSource, TQuery, TResult>(
+                this IEnumerable<TSource> source, int size, ArrayPool<TSource> pool,
+                Func<ICurrentList<TSource>, IEnumerable<TQuery>> querySelector,
+                Func<IEnumerable<TQuery>, TResult> resultSelector)
+        {
+            using var current = source.Batch(size, pool);
+            if (current.UpdateWithNext())
+            {
+                var query = querySelector(current);
+                do
+                {
+                    var result = resultSelector(query);
+                    if (result is IEnumerable<TSource> && ReferenceEquals(result, query))
+                        throw new InvalidOperationException();
+                    yield return result;
+                }
+                while (current.UpdateWithNext());
+            }
+        }
+
+        /// <summary>
         /// Batches the source sequence into sized buckets using a array pool
         /// to rent an array to back each bucket.
         /// </summary>
