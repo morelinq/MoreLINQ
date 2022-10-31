@@ -3963,7 +3963,7 @@ namespace MoreLinq.Extensions
     {
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey})"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// </summary>
         /// <typeparam name="T">Type of elements in the sequence.</typeparam>
@@ -3980,7 +3980,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
@@ -4000,7 +4000,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation. An additional parameter specifies how the
         /// elements compare to each other.
         /// </summary>
@@ -4020,7 +4020,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
@@ -4050,7 +4050,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
         /// <typeparam name="TKey">Type of keys.</typeparam>
@@ -4070,7 +4070,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
@@ -4092,7 +4092,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// An additional parameter specifies how the keys compare to each other.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
@@ -4115,7 +4115,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
         /// </summary>

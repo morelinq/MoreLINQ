@@ -17,55 +17,40 @@
 
 namespace MoreLinq.Collections
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// A minimal <see cref="System.Collections.Generic.Dictionary{TKey,TValue}"/> wrapper that
-    /// allows null keys when <typeparamref name="TKey"/> is a
-    /// reference type.
+    /// allows a null key.
     /// </summary>
 
     // Add members if and when needed to keep coverage.
 
     sealed class Dictionary<TKey, TValue>
     {
-        readonly System.Collections.Generic.Dictionary<TKey, TValue> _dict;
-        (bool, TValue) _null;
+        readonly System.Collections.Generic.Dictionary<ValueTuple<TKey>, TValue> _dict;
 
-        public Dictionary(IEqualityComparer<TKey> comparer)
-        {
-            _dict = new System.Collections.Generic.Dictionary<TKey, TValue>(comparer);
-            _null = default;
-        }
+        public Dictionary(IEqualityComparer<TKey> comparer) =>
+            _dict = new System.Collections.Generic.Dictionary<ValueTuple<TKey>, TValue>(new ValueTupleItemComparer<TKey>(comparer));
 
         public TValue this[TKey key]
         {
-            set
-            {
-                if (key is null)
-                    _null = (true, value);
-                else
-                    _dict[key] = value;
-            }
+            get => _dict[ValueTuple.Create(key)];
+            set => _dict[ValueTuple.Create(key)] = value;
         }
 
-        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
-        {
-            if (key is null)
-            {
-                switch (_null)
-                {
-                    case (true, var v):
-                        value = v;
-                        return true;
-                    case (false, _):
-                        value = default;
-                        return false;
-                }
-            }
+        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value) =>
+            _dict.TryGetValue(ValueTuple.Create(key), out value);
 
-            return _dict.TryGetValue(key, out value);
+        sealed class ValueTupleItemComparer<T> : IEqualityComparer<ValueTuple<T>>
+        {
+            readonly IEqualityComparer<T> _comparer;
+
+            public ValueTupleItemComparer(IEqualityComparer<T> comparer) => _comparer = comparer;
+            public bool Equals(ValueTuple<T> x, ValueTuple<T> y) => _comparer.Equals(x.Item1, y.Item1);
+            public int GetHashCode(ValueTuple<T> obj) => obj.Item1 is { } some ? _comparer.GetHashCode(some) : 0;
         }
     }
 }
