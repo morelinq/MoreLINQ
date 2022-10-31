@@ -25,20 +25,20 @@ namespace MoreLinq.Experimental
     using System.Linq;
 
     /// <summary>
-    /// Represents a list that is the current view of a larger result and which
+    /// Represents a current buffered view of a larger result and which
     /// is updated in-place (thus current) as it is moved through the overall
     /// result.
     /// </summary>
     /// <typeparam name="T">Type of elements in the list.</typeparam>
 
-    public interface ICurrentList<T> : IList<T> { }
+    public interface ICurrentBuffer<T> : IList<T> { }
 
     /// <summary>
-    /// A provider of current list that updates it in-place.
+    /// A provider of current buffer that updates it in-place.
     /// </summary>
     /// <typeparam name="T">Type of elements in the list.</typeparam>
 
-    interface ICurrentListProvider<T> : IDisposable
+    interface ICurrentBufferProvider<T> : IDisposable
     {
         /// <summary>
         /// Gets the current items of the list.
@@ -48,7 +48,7 @@ namespace MoreLinq.Experimental
         /// is called.
         /// </remarks>
 
-        ICurrentList<T> CurrentList { get; }
+        ICurrentBuffer<T> CurrentBuffer { get; }
 
         /// <summary>
         /// Update this instance with the next set of elements from the source.
@@ -62,7 +62,7 @@ namespace MoreLinq.Experimental
         bool UpdateWithNext();
     }
 
-    abstract class CurrentList<T> : ICurrentList<T>
+    abstract class CurrentBuffer<T> : ICurrentBuffer<T>
     {
         public abstract int Count { get; }
         public abstract T this[int index] { get; set; }

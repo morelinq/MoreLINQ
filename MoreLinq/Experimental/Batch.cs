@@ -72,7 +72,7 @@ namespace MoreLinq.Experimental
         public static IEnumerable<TResult>
             Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
                                     ArrayPool<TSource> pool,
-                                    Func<ICurrentList<TSource>, TResult> resultSelector)
+                                    Func<ICurrentBuffer<TSource>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
@@ -80,7 +80,7 @@ namespace MoreLinq.Experimental
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.Batch(size, pool, current => current,
-                                current => resultSelector((ICurrentList<TSource>)current));
+                                current => resultSelector((ICurrentBuffer<TSource>)current));
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace MoreLinq.Experimental
         public static IEnumerable<TResult>
             Batch<TSource, TBucket, TResult>(
                 this IEnumerable<TSource> source, int size, ArrayPool<TSource> pool,
-                Func<ICurrentList<TSource>, IEnumerable<TBucket>> bucketProjectionSelector,
+                Func<ICurrentBuffer<TSource>, IEnumerable<TBucket>> bucketProjectionSelector,
                 Func<IEnumerable<TBucket>, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -146,20 +146,20 @@ namespace MoreLinq.Experimental
             return _(); IEnumerable<TResult> _()
             {
                 using var batch = source.Batch(size, pool);
-                var bucket = bucketProjectionSelector(batch.CurrentList);
+                var bucket = bucketProjectionSelector(batch.CurrentBuffer);
                 while (batch.UpdateWithNext())
                     yield return resultSelector(bucket);
             }
         }
 
-        static ICurrentListProvider<T>
+        static ICurrentBufferProvider<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (pool == null) throw new ArgumentNullException(nameof(pool));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            ICurrentListProvider<T> Cursor(IEnumerator<(T[], int)> source) =>
+            ICurrentBufferProvider<T> Cursor(IEnumerator<(T[], int)> source) =>
                 new CurrentPoolArrayProvider<T>(source, pool);
 
             switch (source)
@@ -224,7 +224,7 @@ namespace MoreLinq.Experimental
             }
         }
 
-        sealed class CurrentPoolArrayProvider<T> : CurrentList<T>, ICurrentListProvider<T>
+        sealed class CurrentPoolArrayProvider<T> : CurrentBuffer<T>, ICurrentBufferProvider<T>
         {
             bool _rented;
             T[] _array = Array.Empty<T>();
@@ -235,7 +235,7 @@ namespace MoreLinq.Experimental
             public CurrentPoolArrayProvider(IEnumerator<(T[], int)> rental, ArrayPool<T> pool) =>
                 (_rental, _pool) = (rental, pool);
 
-            ICurrentList<T> ICurrentListProvider<T>.CurrentList => this;
+            ICurrentBuffer<T> ICurrentBufferProvider<T>.CurrentBuffer => this;
 
             public bool UpdateWithNext()
             {

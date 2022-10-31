@@ -155,7 +155,7 @@ namespace MoreLinq.Test
         {
             AssertThrowsArgument.OutOfRangeException("size", () =>
                 new object[0].Batch(size, ArrayPool<object>.Shared,
-                                    BreakingFunc.Of<ICurrentList<object>, IEnumerable<object>>(),
+                                    BreakingFunc.Of<ICurrentBuffer<object>, IEnumerable<object>>(),
                                     BreakingFunc.Of<IEnumerable<object>, object>()));
         }
 
@@ -194,7 +194,7 @@ namespace MoreLinq.Test
         {
             var input = new BreakingSequence<object>();
             _ = input.Batch(1, ArrayPool<object>.Shared,
-                            BreakingFunc.Of<ICurrentList<object>, IEnumerable<object>>(),
+                            BreakingFunc.Of<ICurrentBuffer<object>, IEnumerable<object>>(),
                             BreakingFunc.Of<IEnumerable<object>, object>());
         }
 
@@ -292,7 +292,7 @@ namespace MoreLinq.Test
             var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
-            var result = input.Batch(4, pool, current => current, current => (ICurrentList<int>)current);
+            var result = input.Batch(4, pool, current => current, current => (ICurrentBuffer<int>)current);
 
             using var reader = result.Read();
             var current = reader.Read();
