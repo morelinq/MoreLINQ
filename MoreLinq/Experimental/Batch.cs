@@ -49,14 +49,15 @@ namespace MoreLinq.Experimental
         /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
-        /// (buckets are streamed but their content buffered).</para>
+        /// (each bucket to <paramref name="resultSelector"/> is however
+        /// buffered).</para>
         /// <para>
         /// <para>
         /// Each bucket is backed by a rented array that may be at least
         /// <paramref name="size"/> in length.
         /// </para>
         /// <para>
-        /// When more than one bucket is streamed, all buckets except the last
+        /// When more than one bucket is produced, all buckets except the last
         /// is guaranteed to have <paramref name="size"/> elements. The last
         /// bucket may be smaller depending on the remaining elements in the
         /// <paramref name="source"/> sequence.</para>
@@ -111,14 +112,14 @@ namespace MoreLinq.Experimental
         /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
-        /// (buckets are streamed but their content buffered).</para>
+        /// (each bucket is however buffered).</para>
         /// <para>
         /// <para>
         /// Each bucket is backed by a rented array that may be at least
         /// <paramref name="size"/> in length.
         /// </para>
         /// <para>
-        /// When more than one bucket is streamed, all buckets except the last
+        /// When more than one bucket is produced, all buckets except the last
         /// is guaranteed to have <paramref name="size"/> elements. The last
         /// bucket may be smaller depending on the remaining elements in the
         /// <paramref name="source"/> sequence.</para>
