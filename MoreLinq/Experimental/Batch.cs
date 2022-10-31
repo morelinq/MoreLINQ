@@ -23,6 +23,7 @@ namespace MoreLinq.Experimental
     using System.Buffers;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     static partial class ExperimentalEnumerable
     {
@@ -160,13 +161,11 @@ namespace MoreLinq.Experimental
             ICurrentListProvider<T> Cursor(IEnumerator<(T[], int)> source) =>
                 new CurrentPoolArrayProvider<T>(source, pool);
 
-            IEnumerator<(T[], int)> Empty() { yield break; }
-
             switch (source)
             {
                 case ICollection<T> { Count: 0 }:
                 {
-                    return Cursor(Empty());
+                    return Cursor(Enumerable.Empty <(T[], int)>().GetEnumerator());
                 }
                 case ICollection<T> collection when collection.Count <= size:
                 {
@@ -176,7 +175,7 @@ namespace MoreLinq.Experimental
                 }
                 case IReadOnlyCollection<T> { Count: 0 }:
                 {
-                    return Cursor(Empty());
+                    return Cursor(Enumerable.Empty <(T[], int)>().GetEnumerator());
                 }
                 case IReadOnlyList<T> list when list.Count <= size:
                 {
