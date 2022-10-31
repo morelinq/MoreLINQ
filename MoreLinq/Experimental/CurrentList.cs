@@ -64,7 +64,6 @@ namespace MoreLinq.Experimental
 
     abstract class CurrentList<T> : ICurrentList<T>
     {
-        public abstract Span<T> AsSpan { get; }
         public abstract int Count { get; }
         public abstract T this[int index] { get; set; }
 

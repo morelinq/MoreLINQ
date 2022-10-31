@@ -234,8 +234,6 @@ namespace MoreLinq.Experimental
             public CurrentPoolArrayProvider(IEnumerator<(T[], int)> rental, ArrayPool<T> pool) =>
                 (_rental, _pool) = (rental, pool);
 
-            public override Span<T> AsSpan => _array.AsSpan();
-
             ICurrentList<T> ICurrentListProvider<T>.CurrentList => this;
 
             public bool UpdateWithNext()
