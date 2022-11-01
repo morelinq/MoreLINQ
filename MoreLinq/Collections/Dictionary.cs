@@ -32,8 +32,13 @@ namespace MoreLinq.Collections
     {
         readonly System.Collections.Generic.Dictionary<ValueTuple<TKey>, TValue> _dict;
 
-        public Dictionary(IEqualityComparer<TKey> comparer) =>
-            _dict = new System.Collections.Generic.Dictionary<ValueTuple<TKey>, TValue>(new ValueTupleItemComparer<TKey>(comparer));
+        public Dictionary(IEqualityComparer<TKey> comparer)
+        {
+            var keyComparer = ReferenceEquals(comparer, EqualityComparer<TKey>.Default)
+                            ? null
+                            : new ValueTupleItemComparer<TKey>(comparer);
+            _dict = new System.Collections.Generic.Dictionary<ValueTuple<TKey>, TValue>(keyComparer);
+        }
 
         public TValue this[TKey key]
         {
