@@ -22,6 +22,7 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using System.Data;
     using System.Linq.Expressions;
+    using System.Text.RegularExpressions;
     using NUnit.Framework;
 
     [TestFixture]
@@ -113,6 +114,13 @@ namespace MoreLinq.Test
         {
             AssertThrowsArgument.Exception("lambda",() =>
                 _testObjects.ToDataTable(t => t[0]));
+        }
+
+        [Test]
+        public void ToDataTableMemberExpressionStatic()
+        {
+            AssertThrowsArgument.Exception("lambda", () =>
+                _ = _testObjects.ToDataTable(_ => DateTime.Now));
         }
 
         [Test]
