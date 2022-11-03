@@ -103,5 +103,17 @@ namespace MoreLinq.Test
                 KeyValuePair.Create("bar", 2),
                 KeyValuePair.Create("baz", 2));
         }
+
+        [Test]
+        public void CountByWithSomeNullKeysAndEqualityComparer()
+        {
+            var result = new[] { "a", "B", null, "c", "A", null, "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create("a", 3),
+                KeyValuePair.Create("B", 2),
+                KeyValuePair.Create((string)null, 2),
+                KeyValuePair.Create("c", 1));
+        }
     }
 }
