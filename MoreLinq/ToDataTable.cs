@@ -169,9 +169,8 @@ namespace MoreLinq
 
                 // Check if the member expression is valid and is a "first level"
                 // member access e.g. not a.b.c
-                return body is MemberExpression memberExpression
-                       && memberExpression.Expression.NodeType == ExpressionType.Parameter
-                     ? memberExpression.Member
+                return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
+                     ? member
                      : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
         }
