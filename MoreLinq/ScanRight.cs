@@ -50,10 +50,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return ScanRightImpl(source, func,
-                                 list => list.Count > 0
-                                       ? (list[list.Count - 1], list.Count - 1)
-                                       : ((TSource, int)?) null);
+            return ScanRightImpl(source, func, list => list.Count > 0 ? (list[^1], list.Count - 1) : null);
         }
 
         /// <summary>
@@ -70,7 +67,7 @@ namespace MoreLinq
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => $"({a}+{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>

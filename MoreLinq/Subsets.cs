@@ -209,7 +209,7 @@ namespace MoreLinq
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
-                if (sequence == null)
+                if (sequence is null)
                     throw new ArgumentNullException(nameof(sequence));
                 if (subsetSize < 0)
                     throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");

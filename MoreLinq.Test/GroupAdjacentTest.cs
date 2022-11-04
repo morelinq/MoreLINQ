@@ -159,7 +159,7 @@ namespace MoreLinq.Test
                 new { Month = 1, Value = 781 },
             };
 
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
+            var groupings = source.GroupAdjacent(e => e.Month, (_, group) => group.Sum(v => v.Value));
 
             using var reader = groupings.Read();
             AssertResult(reader, 123 + 456 + 789);
@@ -188,7 +188,7 @@ namespace MoreLinq.Test
                 new { Month = "JAN", Value = 781 },
             };
 
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
+            var groupings = source.GroupAdjacent(e => e.Month, (_, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
 
             using var reader = groupings.Read();
             AssertResult(reader, 123 + 456 + 789);

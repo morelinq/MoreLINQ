@@ -173,8 +173,8 @@ static void Run(IEnumerable<string> args)
                 SortableParameterTypes =
                     from p in md.ParameterList.Parameters
                     select CreateTypeKey(p.Type,
-                                         n => typeParameterAbbreviationByName != null
-                                           && typeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
+                                         n => typeParameterAbbreviationByName is { } someTypeParameterAbbreviationByName
+                                           && someTypeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
             }
         }
         from e in ms.Select((m, i) => (SourceOrder: i + 1, Method: m))
@@ -385,8 +385,8 @@ abstract class TypeKey : IComparable<TypeKey>
     public virtual int CompareTo(TypeKey other)
         => ReferenceEquals(this, other) ? 0
          : other == null ? 1
-         : Parameters.Count.CompareTo(other.Parameters.Count) is {} lc and not 0 ? lc
-         : string.Compare(Name, other.Name, StringComparison.Ordinal) is {} nc and not 0 ? nc
+         : Parameters.Count.CompareTo(other.Parameters.Count) is var lc and not 0 ? lc
+         : string.Compare(Name, other.Name, StringComparison.Ordinal) is var nc and not 0 ? nc
          : CompareParameters(other);
 
     protected virtual int CompareParameters(TypeKey other) =>
@@ -455,10 +455,10 @@ sealed class ArrayTypeKey : ParameterizedTypeKey
     {
         if (other is ArrayTypeKey a)
         {
-            if (Ranks.Count.CompareTo(a.Ranks.Count) is {} rlc and not 0)
+            if (Ranks.Count.CompareTo(a.Ranks.Count) is var rlc and not 0)
                 return rlc;
             if (Ranks.Zip(a.Ranks, (us, them) => (Us: us, Them: them))
-                     .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is {} rc and not 0)
+                     .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is var rc and not 0)
                 return rc;
         }
 

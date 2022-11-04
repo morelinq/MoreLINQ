@@ -41,7 +41,7 @@ namespace MoreLinq
 #nullable restore
 /*...................................*/ >
             Flatten(this IEnumerable source) =>
-            Flatten(source, obj => !(obj is string));
+            Flatten(source, obj => obj is not string);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An

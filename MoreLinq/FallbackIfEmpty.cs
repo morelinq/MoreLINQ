@@ -184,11 +184,11 @@ namespace MoreLinq
 
             IEnumerable<T> Fallback()
             {
-                return fallback is {} seq ? seq : FallbackOnArgs();
+                return fallback ?? FallbackOnArgs();
 
                 IEnumerable<T> FallbackOnArgs()
                 {
-                    Debug.Assert(count >= 1 && count <= 4);
+                    Debug.Assert(count is >= 1 and <= 4);
 
                     yield return fallback1!;
                     if (count > 1) yield return fallback2!;

@@ -86,7 +86,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
-            return ScanImpl(source, transformation, e => (true, seed));
+            return ScanImpl(source, transformation, _ => (true, seed));
         }
 
         static IEnumerable<TState> ScanImpl<TSource, TState>(IEnumerable<TSource> source,

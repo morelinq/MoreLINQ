@@ -340,16 +340,16 @@ namespace MoreLinq
                 {
                     var item = e.Current;
                     var key = selector(item);
-                    var comparison = comparer(key, extremaKey);
-                    if (comparison > 0)
+                    switch (comparer(key, extremaKey))
                     {
-                        extrema.Restart(ref store);
-                        extrema.Add(ref store, limit, item);
-                        extremaKey = key;
-                    }
-                    else if (comparison == 0)
-                    {
-                        extrema.Add(ref store, limit, item);
+                        case > 0:
+                            extrema.Restart(ref store);
+                            extrema.Add(ref store, limit, item);
+                            extremaKey = key;
+                            break;
+                        case 0:
+                            extrema.Add(ref store, limit, item);
+                            break;
                     }
                 }
 

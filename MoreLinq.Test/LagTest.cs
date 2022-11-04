@@ -44,7 +44,7 @@ namespace MoreLinq.Test
         public void TestLagNegativeOffsetException()
         {
             AssertThrowsArgument.OutOfRangeException("offset",() =>
-                Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
+                Enumerable.Repeat(1, 10).Lag(-10, (val, _) => val));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace MoreLinq.Test
             const int lagBy = 10;
             const int lagDefault = -1;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lag(lagBy, lagDefault, (val, lagVal) => lagVal);
+            var result = sequence.Lag(lagBy, lagDefault, (_, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(lagDefault, lagBy)));
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
             const int count = 100;
             const int lagBy = 10;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lag(lagBy, (val, lagVal) => lagVal);
+            var result = sequence.Lag(lagBy, (_, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(default(int), lagBy)));
@@ -97,7 +97,7 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lag(count + 1, (a, b) => a);
+            var result = sequence.Lag(count + 1, (a, _) => a);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result, Is.EqualTo(sequence));

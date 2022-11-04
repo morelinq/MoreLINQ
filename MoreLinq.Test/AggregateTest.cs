@@ -121,8 +121,8 @@ namespace MoreLinq.Test
                             EvenSum       = esum,
                             Count         = count,
                             Average       = (double)sum / count,
-                            Min           = min is {} mn ? mn : throw new InvalidOperationException(),
-                            Max           = max is {} mx ? mx : throw new InvalidOperationException(),
+                            Min           = min ?? throw new InvalidOperationException(),
+                            Max           = max ?? throw new InvalidOperationException(),
                             UniqueLengths = lengths,
                             Items         = items,
                         }
