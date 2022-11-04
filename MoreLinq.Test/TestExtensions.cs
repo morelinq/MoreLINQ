@@ -76,21 +76,15 @@ namespace MoreLinq.Test
 
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
         {
-            switch (sourceKind)
+            return sourceKind switch
             {
-                case SourceKind.Sequence:
-                    return input.Select(x => x);
-                case SourceKind.BreakingList:
-                    return new BreakingList<T>(input.ToList());
-                case SourceKind.BreakingReadOnlyList:
-                    return new BreakingReadOnlyList<T>(input.ToList());
-                case SourceKind.BreakingCollection:
-                    return new BreakingCollection<T>(input.ToList());
-                case SourceKind.BreakingReadOnlyCollection:
-                    return new BreakingReadOnlyCollection<T>(input.ToList());
-                default:
-                    throw new ArgumentException(null, nameof(sourceKind));
-            }
+                SourceKind.Sequence => input.Select(x => x),
+                SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input.ToList()),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(input.ToList()),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input.ToList()),
+                _ => throw new ArgumentException(null, nameof(sourceKind))
+            };
         }
     }
 }
