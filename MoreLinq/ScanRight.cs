@@ -50,10 +50,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            return ScanRightImpl(source, func,
-                                 list => list.Count > 0
-                                       ? (list[list.Count - 1], list.Count - 1)
-                                       : ((TSource, int)?) null);
+            return ScanRightImpl(source, func, list => list.Count > 0 ? (list[^1], list.Count - 1) : null);
         }
 
         /// <summary>
