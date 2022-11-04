@@ -88,9 +88,7 @@ namespace MoreLinq
             while (m < subsetSize)
             {
                 var k = g - rand.Next(w);
-                var tmp = array[k];
-                array[k] = array[m];
-                array[m] = tmp;
+                (array[k], array[m]) = (array[m], array[k]);
                 ++m;
                 --w;
             }
