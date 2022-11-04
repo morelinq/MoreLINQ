@@ -300,7 +300,7 @@ namespace MoreLinq
             int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
-            Debug.Assert(count > 0 && count <= 3);
+            Debug.Assert(count is > 0 and <= 3);
 
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));

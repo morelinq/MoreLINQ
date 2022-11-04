@@ -164,7 +164,7 @@ namespace MoreLinq
                 var body = lambda.Body;
 
                 // If it's a field access, boxing was used, we need the field
-                if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
+                if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
                     body = ((UnaryExpression)body).Operand;
 
                 // Check if the member expression is valid and is a "first level"
