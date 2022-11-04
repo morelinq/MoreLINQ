@@ -34,7 +34,7 @@ namespace MoreLinq
         /// <returns>The final accumulator value.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
@@ -70,7 +70,7 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
@@ -106,7 +106,7 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
+        /// int result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})", str => str.Length);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
