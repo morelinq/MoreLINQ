@@ -61,7 +61,7 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightSeedWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (a, b) => b), Is.EqualTo(defaultValue));
+            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b), Is.EqualTo(defaultValue));
         }
 
         [Test]

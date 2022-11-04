@@ -179,7 +179,7 @@ namespace MoreLinq
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return PartitionImpl(source, 1, key, default!, default!, comparer,
-                                 (a, b, c, rest) => resultSelector(a, rest));
+                                 (a, _, _, rest) => resultSelector(a, rest));
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace MoreLinq
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             return PartitionImpl(source, 2, key1, key2, default!, comparer,
-                                 (a, b, c, rest) => resultSelector(a, b, rest));
+                                 (a, b, _, rest) => resultSelector(a, b, rest));
         }
 
         /// <summary>

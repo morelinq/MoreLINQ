@@ -84,7 +84,7 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void ScanRightSeedWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].ScanRight(defaultValue, (a, b) => b), Is.EqualTo(new[] { defaultValue }));
+            Assert.That(new int[0].ScanRight(defaultValue, (_, b) => b), Is.EqualTo(new[] { defaultValue }));
         }
 
         [Test]

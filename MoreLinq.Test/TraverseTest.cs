@@ -26,13 +26,13 @@ namespace MoreLinq.Test
         [Test]
         public void TraverseDepthFirstFNullGenerator()
         {
-            MoreEnumerable.TraverseDepthFirst(new object(), o => new BreakingSequence<object>());
+            MoreEnumerable.TraverseDepthFirst(new object(), _ => new BreakingSequence<object>());
         }
 
         [Test]
         public void TraverseBreadthFirstIsStreaming()
         {
-            MoreEnumerable.TraverseBreadthFirst(new object(), o => new BreakingSequence<object>());
+            MoreEnumerable.TraverseBreadthFirst(new object(), _ => new BreakingSequence<object>());
         }
 
         [Test]
