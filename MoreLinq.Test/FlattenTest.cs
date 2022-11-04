@@ -136,7 +136,7 @@ namespace MoreLinq.Test
                 7,
             };
 
-            var result = source.Flatten(obj => !(obj is IEnumerable<bool>));
+            var result = source.Flatten(obj => obj is not IEnumerable<bool>);
 
             var expectations = new object[]
             {

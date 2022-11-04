@@ -69,7 +69,7 @@ namespace MoreLinq.Experimental
 
         AwaitQueryOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
         {
-            MaxConcurrency = maxConcurrency == null || maxConcurrency > 0
+            MaxConcurrency = maxConcurrency is null or > 0
                            ? maxConcurrency
                            : throw new ArgumentOutOfRangeException(
                                  nameof(maxConcurrency), maxConcurrency,

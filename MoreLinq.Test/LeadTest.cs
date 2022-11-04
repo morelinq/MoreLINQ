@@ -133,7 +133,7 @@ namespace MoreLinq.Test
 
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
-            Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && (x.A == count || x.A == count - 1)));
+            Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && x.A is count or count - 1));
         }
 
         [Test]

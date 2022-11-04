@@ -85,8 +85,7 @@ namespace MoreLinq.Test
             IEnumerator<string> _(TextReader reader)
             {
                 Debug.Assert(reader != null);
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                while (reader.ReadLine() is { } line)
                     yield return line;
             }
         }
