@@ -117,7 +117,7 @@ namespace MoreLinq
             if (g != null) {
                 do {
                     g = g.next;
-                    if (g.count != g.elements.Length) { Array.Resize<TElement>(ref g.elements, g.count); }
+                    if (g.count != g.elements.Length) { Array.Resize(ref g.elements, g.count); }
                     yield return resultSelector(g.key, g.elements);
                 } while (g != _lastGrouping);
             }

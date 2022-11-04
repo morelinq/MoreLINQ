@@ -25,7 +25,7 @@ namespace MoreLinq
         /// <summary>
         /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
         /// This operator is the right-associative version of the
-        /// <see cref="MoreEnumerable.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
+        /// <see cref="Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in source sequence.</typeparam>
         /// <param name="source">Source sequence.</param>
@@ -60,7 +60,7 @@ namespace MoreLinq
         /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
         /// The specified seed value is used as the initial accumulator value.
         /// This operator is the right-associative version of the
-        /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
+        /// <see cref="Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <typeparam name="TAccumulate">The type of the accumulator value.</typeparam>

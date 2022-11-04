@@ -71,7 +71,7 @@ namespace MoreLinq.Test
             Expression<Func<TestObject, object>> expression = null;
 
             AssertThrowsArgument.Exception("expressions",() =>
-                _testObjects.ToDataTable<TestObject>(expression));
+                _testObjects.ToDataTable(expression));
         }
 
         [Test]
