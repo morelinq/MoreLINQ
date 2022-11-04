@@ -300,23 +300,21 @@ namespace MoreLinq
                         var key1 = firstKeySelector(element1);
                         var element2 = e2.Current;
                         var key2 = secondKeySelector(element2);
-                        var comparison = comparer.Compare(key1, key2);
-
-                        if (comparison < 0)
+                        switch (comparer.Compare(key1, key2))
                         {
-                            yield return firstSelector(element1);
-                            gotFirst = e1.MoveNext();
-                        }
-                        else if (comparison > 0)
-                        {
-                            yield return secondSelector(element2);
-                            gotSecond = e2.MoveNext();
-                        }
-                        else
-                        {
-                            yield return bothSelector(element1, element2);
-                            gotFirst = e1.MoveNext();
-                            gotSecond = e2.MoveNext();
+                            case < 0:
+                                yield return firstSelector(element1);
+                                gotFirst = e1.MoveNext();
+                                break;
+                            case > 0:
+                                yield return secondSelector(element2);
+                                gotSecond = e2.MoveNext();
+                                break;
+                            default:
+                                yield return bothSelector(element1, element2);
+                                gotFirst = e1.MoveNext();
+                                gotSecond = e2.MoveNext();
+                                break;
                         }
                     }
                     else if (gotSecond)
