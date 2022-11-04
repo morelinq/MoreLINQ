@@ -28,15 +28,15 @@ namespace MoreLinq.Test
             () => throw new NotImplementedException();
 
         internal static Func<T, TResult> Of<T, TResult>() =>
-            t => throw new NotImplementedException();
+            _ => throw new NotImplementedException();
 
         internal static Func<T1, T2, TResult> Of<T1, T2, TResult>() =>
-            (t1, t2) => throw new NotImplementedException();
+            (_, _) => throw new NotImplementedException();
 
         internal static Func<T1, T2, T3, TResult> Of<T1, T2, T3, TResult>() =>
-            (t1, t2, t3) => throw new NotImplementedException();
+            (_, _, _) => throw new NotImplementedException();
 
         internal static Func<T1, T2, T3, T4, TResult> Of<T1, T2, T3, T4, TResult>() =>
-            (t1, t2, t3, t4) => throw new NotImplementedException();
+            (_, _, _, _) => throw new NotImplementedException();
     }
 }

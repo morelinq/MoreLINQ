@@ -32,7 +32,7 @@ namespace MoreLinq
         public static void Consume<T>(this IEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            foreach (var element in source)
+            foreach (var _ in source)
             {
             }
         }

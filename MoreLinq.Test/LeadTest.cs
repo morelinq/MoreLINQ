@@ -67,7 +67,7 @@ namespace MoreLinq.Test
             const int leadBy = 10;
             const int leadDefault = -1;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lead(leadBy, leadDefault, (val, leadVal) => leadVal);
+            var result = sequence.Lead(leadBy, leadDefault, (_, leadVal) => leadVal);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(leadDefault, leadBy)));
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
             const int count = 100;
             const int leadBy = 10;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lead(leadBy, (val, leadVal) => leadVal);
+            var result = sequence.Lead(leadBy, (_, leadVal) => leadVal);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(default(int), leadBy)));
