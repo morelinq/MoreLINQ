@@ -1907,8 +1907,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the first element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.FirstOrDefault(source);
 
     }
@@ -3114,8 +3113,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the last element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.LastOrDefault(source);
 
     }
@@ -5178,8 +5176,7 @@ namespace MoreLinq.Extensions
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.SingleOrDefault(source);
 
     }
