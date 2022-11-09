@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>10</LangVersion>
+    <LangVersion>11</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>
