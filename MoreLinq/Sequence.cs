@@ -15,6 +15,75 @@
 // limitations under the License.
 #endregion
 
+#if !NO_STATIC_ABSTRACTS
+
+namespace MoreLinq
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Numerics;
+
+    static partial class MoreEnumerable
+    {
+        /// <summary>
+        /// Generates a sequence of numbers starting within the and in steps of 1.
+        /// </summary>
+        /// <typeparam name="T">
+        /// A type that represents a number and defines its minimum and maximum representable value.
+        /// </typeparam>
+        /// <param name="start">The value of the first number in the sequence.</param>
+        /// <returns>A sequence of sequential numbers starting with <paramref name="start"/> and up
+        /// to the maximum representable value, in increments of 1.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<T> Sequence<T>(T start)
+            where T : INumber<T>, IMinMaxValue<T> =>
+            Sequence(start, T.MaxValue, T.One);
+
+        /// <summary>
+        /// Generates a sequence of numbers within the (inclusive) specified range.
+        /// If sequence is ascending the step is +1, otherwise -1.
+        /// </summary>
+        /// <typeparam name="T">A type that represents a number.</typeparam>
+        /// <param name="start">The value of the first number in the sequence.</param>
+        /// <param name="stop">The value of the last number in the sequence.</param>
+        /// <returns>A sequence of sequential numbers.</returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<T> Sequence<T>(T start, T stop)
+            where T : INumber<T> =>
+            Sequence(start, stop, stop < start ? -T.One : T.One);
+
+        /// <summary>
+        /// Generates a sequence of numbers within the (inclusive) specified range. An additional
+        /// parameter specifies the steps in which the integers of the sequence increase or
+        /// decrease.
+        /// </summary>
+        /// <typeparam name="T">A type that represents a number.</typeparam>
+        /// <param name="start">The value of the first number in the sequence.</param>
+        /// <param name="stop">The value of the last number in the sequence.</param>
+        /// <param name="step">The step to define the next number.</param>
+        /// <returns>A sequence of sequential numbers.</returns>
+        /// <remarks>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// <para>
+        /// When <paramref name="step"/> is equal to zero, this operator returns an infinite
+        /// sequence where all elements are equals to <paramref name="start"/>.</para>
+        /// </remarks>
+
+        public static IEnumerable<T> Sequence<T>(T start, T stop, T step)
+            where T : INumber<T> =>
+            Generate(start, n => n + step).TakeWhile(n => T.IsPositive(step) ? stop >= n : stop <= n);
+    }
+}
+
+#endif // !NO_STATIC_ABSTRACTS
+
 namespace MoreLinq
 {
     using System.Collections.Generic;
