@@ -42,8 +42,8 @@ static void Run(IEnumerable<string> args)
 {
     var dir = Directory.GetCurrentDirectory();
 
-    string includePattern = null;
-    string excludePattern = null;
+    string? includePattern = null;
+    string? excludePattern = null;
     var debug = false;
     var usings = new List<string>();
     var noClassLead = false;
@@ -88,7 +88,7 @@ static void Run(IEnumerable<string> args)
     }
 
     static Func<string, bool>
-        PredicateFromPattern(string pattern, bool @default) =>
+        PredicateFromPattern(string? pattern, bool @default) =>
             string.IsNullOrEmpty(pattern)
             ? delegate { return @default; }
             : new Func<string, bool>(new Regex(pattern).IsMatch);
@@ -132,7 +132,7 @@ static void Run(IEnumerable<string> args)
                     .SyntaxTree
                     .GetCompilationUnitRoot()
                     .DescendantNodes().OfType<ClassDeclarationSyntax>()
-            where (string) cd.Identifier.Value == "MoreEnumerable"
+            where cd.Identifier.Value is "MoreEnumerable"
             //
             // Get all method declarations where method:
             //
@@ -142,10 +142,9 @@ static void Run(IEnumerable<string> args)
             // - isn't marked as being obsolete
             //
             from md in cd.DescendantNodes().OfType<MethodDeclarationSyntax>()
-            let mn = (string) md.Identifier.Value
             where md.ParameterList.Parameters.Count > 0
-               && md.ParameterList.Parameters.First().Modifiers.Any(m => (string)m.Value == "this")
-               && md.Modifiers.Any(m => (string)m.Value == "public")
+               && md.ParameterList.Parameters.First().Modifiers.Any(m => m.Value is "this")
+               && md.Modifiers.Any(m => m.Value is "public")
                && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
             //
             // Build a dictionary of type abbreviations (e.g. TSource -> a,
@@ -172,7 +171,7 @@ static void Run(IEnumerable<string> args)
                 ParameterCount = md.ParameterList.Parameters.Count,
                 SortableParameterTypes =
                     from p in md.ParameterList.Parameters
-                    select CreateTypeKey(p.Type,
+                    select CreateTypeKey(p.Type ?? throw new NullReferenceException(),
                                          n => typeParameterAbbreviationByName is { } someTypeParameterAbbreviationByName
                                            && someTypeParameterAbbreviationByName.TryGetValue(n, out var a) ? a : null),
             }
@@ -251,7 +250,8 @@ static void Run(IEnumerable<string> args)
     var classes =
         from md in q
         select md.Method.Syntax into md
-        group md by (string) md.Identifier.Value into g
+        group md by md.Identifier.Value is string id ? id : throw new NullReferenceException()
+        into g
         select new
         {
             Name = g.Key,
@@ -334,8 +334,7 @@ namespace MoreLinq.Extensions
                               .Replace("\n", Environment.NewLine));
 }
 
-static TypeKey CreateTypeKey(TypeSyntax root,
-                             Func<string, TypeKey> abbreviator = null)
+static TypeKey CreateTypeKey(TypeSyntax root, Func<string, TypeKey?> abbreviator)
 {
     return Walk(root ?? throw new ArgumentNullException(nameof(root)));
 
@@ -359,12 +358,8 @@ static TypeKey CreateTypeKey(TypeSyntax root,
     };
 }
 
-static T Read<T>(IEnumerator<T> e, Func<Exception> errorFactory = null)
-{
-    if (!e.MoveNext())
-        throw errorFactory?.Invoke() ?? new InvalidOperationException();
-    return e.Current;
-}
+static T Read<T>(IEnumerator<T> e, Func<Exception> errorFactory) =>
+    e.MoveNext() ? e.Current : throw errorFactory();
 
 //
 // Logical type nodes designed to be structurally sortable based on:
@@ -382,7 +377,7 @@ abstract class TypeKey : IComparable<TypeKey>
     public string Name { get; }
     public abstract ImmutableList<TypeKey> Parameters { get; }
 
-    public virtual int CompareTo(TypeKey other)
+    public virtual int CompareTo(TypeKey? other)
         => ReferenceEquals(this, other) ? 0
          : other == null ? 1
          : Parameters.Count.CompareTo(other.Parameters.Count) is var lc and not 0 ? lc
