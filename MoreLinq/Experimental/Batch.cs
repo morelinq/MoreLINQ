@@ -49,7 +49,7 @@ namespace MoreLinq.Experimental
         /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
-        /// (each bucket to <paramref name="resultSelector"/> is however
+        /// (however, each bucket provided to <paramref name="resultSelector"/> is
         /// buffered).</para>
         /// <para>
         /// <para>
