@@ -244,26 +244,12 @@ namespace MoreLinq
 
         bool ICollection<TElement>.IsReadOnly => true;
 
-        void ICollection<TElement>.Add(TElement item) => ThrowModificationNotSupportedException();
-
-        void ICollection<TElement>.Clear() => ThrowModificationNotSupportedException();
-
         bool ICollection<TElement>.Contains(TElement item) => Array.IndexOf(_elements, item, 0, _count) >= 0;
 
         void ICollection<TElement>.CopyTo(TElement[] array, int arrayIndex) =>
             Array.Copy(_elements, 0, array, arrayIndex, _count);
 
-        bool ICollection<TElement>.Remove(TElement item)
-        {
-            ThrowModificationNotSupportedException();
-            return false;
-        }
-
         int IList<TElement>.IndexOf(TElement item) => Array.IndexOf(_elements, item, 0, _count);
-
-        void IList<TElement>.Insert(int index, TElement item) => ThrowModificationNotSupportedException();
-
-        void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
 
         TElement IList<TElement>.this[int index]
         {
@@ -273,6 +259,12 @@ namespace MoreLinq
 
             set => ThrowModificationNotSupportedException();
         }
+
+        void ICollection<TElement>.Add(TElement item) => ThrowModificationNotSupportedException();
+        void ICollection<TElement>.Clear() => ThrowModificationNotSupportedException();
+        bool ICollection<TElement>.Remove(TElement item) { ThrowModificationNotSupportedException(); return false; }
+        void IList<TElement>.Insert(int index, TElement item) => ThrowModificationNotSupportedException();
+        void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
 
         [DoesNotReturn]
         static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
