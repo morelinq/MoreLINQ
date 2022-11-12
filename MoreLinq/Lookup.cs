@@ -244,9 +244,9 @@ namespace MoreLinq
 
         bool ICollection<TElement>.IsReadOnly => true;
 
-        void ICollection<TElement>.Add(TElement item) => ThrowHelper.ThrowNotSupportedException();
+        void ICollection<TElement>.Add(TElement item) => ThrowModificationNotSupportedException();
 
-        void ICollection<TElement>.Clear() => ThrowHelper.ThrowNotSupportedException();
+        void ICollection<TElement>.Clear() => ThrowModificationNotSupportedException();
 
         bool ICollection<TElement>.Contains(TElement item) => Array.IndexOf(_elements, item, 0, _count) >= 0;
 
@@ -255,15 +255,15 @@ namespace MoreLinq
 
         bool ICollection<TElement>.Remove(TElement item)
         {
-            ThrowHelper.ThrowNotSupportedException();
+            ThrowModificationNotSupportedException();
             return false;
         }
 
         int IList<TElement>.IndexOf(TElement item) => Array.IndexOf(_elements, item, 0, _count);
 
-        void IList<TElement>.Insert(int index, TElement item) => ThrowHelper.ThrowNotSupportedException();
+        void IList<TElement>.Insert(int index, TElement item) => ThrowModificationNotSupportedException();
 
-        void IList<TElement>.RemoveAt(int index) => ThrowHelper.ThrowNotSupportedException();
+        void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
 
         TElement IList<TElement>.this[int index]
         {
@@ -271,13 +271,10 @@ namespace MoreLinq
                    ? throw new ArgumentOutOfRangeException(nameof(index))
                    : _elements[index];
 
-            set => ThrowHelper.ThrowNotSupportedException();
+            set => ThrowModificationNotSupportedException();
         }
 
-        static class ThrowHelper
-        {
-            [DoesNotReturn]
-            internal static void ThrowNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
-        }
+        [DoesNotReturn]
+        static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
     }
 }
