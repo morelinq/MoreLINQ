@@ -114,7 +114,7 @@ namespace MoreLinq.Experimental
         /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
-        /// (each bucket is however buffered).</para>
+        /// (however, each bucket is buffered).</para>
         /// <para>
         /// <para>
         /// Each bucket is backed by a rented array that may be at least
