@@ -101,7 +101,9 @@ namespace MoreLinq.Experimental
         /// <param name="bucketProjectionSelector">A function that returns a
         /// sequence projection to use for each bucket. It is called initially
         /// before iterating over <paramref name="source"/>, but the resulting
-        /// projection is evaluated for each bucket.
+        /// projection is evaluated for each bucket. This has the same effect as
+        /// calling <paramref name="bucketProjectionSelector"/> for each bucket,
+        /// but allows initialization of the transformation to happen only once.
         /// </param>
         /// <param name="resultSelector">A function that projects a result from
         /// the input sequence produced over a bucket.</param>
