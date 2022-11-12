@@ -292,7 +292,7 @@ namespace MoreLinq
                         }
                     }
 
-                    if (items != null && items.Count > 0)
+                    if (items is { Count: > 0 })
                         yield return resultSelector(items);
                 }
             }

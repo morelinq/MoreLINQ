@@ -133,17 +133,12 @@ namespace MoreLinq.Test
             }
         }
 
-        static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
-        {
-            switch (overloadCase)
+        static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey) =>
+            overloadCase switch
             {
-                case CustomResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null);
-                case TupleResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(overloadCase));
-            }
-        }
+                CustomResult => listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null),
+                TupleResult => listA.FullGroupJoin(listB, getKey, getKey),
+                _ => throw new ArgumentOutOfRangeException(nameof(overloadCase))
+            };
     }
 }

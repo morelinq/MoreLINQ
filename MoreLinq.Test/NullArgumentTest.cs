@@ -98,10 +98,12 @@ namespace MoreLinq.Test
         {
             var constraints = typeParameter.GetGenericParameterConstraints();
 
-            if (constraints.Length == 0) return typeof (int);
-            if (constraints.Length == 1) return constraints.Single();
-
-            throw new NotImplementedException("NullArgumentTest.InstantiateType");
+            return constraints.Length switch
+            {
+                0 => typeof(int),
+                1 => constraints.Single(),
+                _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
+            };
         }
 
         static bool IsReferenceType(ParameterInfo parameter) =>

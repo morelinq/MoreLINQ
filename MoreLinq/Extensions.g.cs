@@ -360,7 +360,7 @@ namespace MoreLinq.Extensions
         /// <returns>The final accumulator value.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
@@ -386,7 +386,7 @@ namespace MoreLinq.Extensions
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
@@ -415,7 +415,7 @@ namespace MoreLinq.Extensions
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
+        /// int result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})", str => str.Length);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
@@ -1907,8 +1907,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the first element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.FirstOrDefault(source);
 
     }
@@ -3114,8 +3113,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the last element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.LastOrDefault(source);
 
     }
@@ -5022,7 +5020,7 @@ namespace MoreLinq.Extensions
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => $"({a}+{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
@@ -5178,8 +5176,7 @@ namespace MoreLinq.Extensions
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.SingleOrDefault(source);
 
     }

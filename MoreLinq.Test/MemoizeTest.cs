@@ -53,7 +53,7 @@ namespace MoreLinq.Test
                 {
                     yield return i;
 
-                    if (i == 3 || i == 7)
+                    if (i is 3 or 7)
                     {
                         //consume 1-3 already cached
                         //add 4-5 to cache (so go to outer loop)

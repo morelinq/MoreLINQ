@@ -70,8 +70,8 @@ namespace MoreLinq.Test
             // NOTE: Unclear what should actually be verified here... some additional thought needed.
             Assert.AreEqual(RandomTrials, resultA.Count());
             Assert.AreEqual(RandomTrials, resultB.Count());
-            Assert.IsTrue(resultA.All(x => x >= 0.0 && x < 1.0));
-            Assert.IsTrue(resultB.All(x => x >= 0.0 && x < 1.0));
+            Assert.IsTrue(resultA.All(x => x is >= 0.0 and < 1.0));
+            Assert.IsTrue(resultB.All(x => x is >= 0.0 and < 1.0));
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace MoreLinq.Test
 
             Assert.AreEqual(RandomTrials, resultA.Count());
             Assert.AreEqual(RandomTrials, resultB.Count());
-            Assert.IsTrue(resultA.All(x => x >= min && x < max));
-            Assert.IsTrue(resultB.All(x => x >= min && x < max));
+            Assert.IsTrue(resultA.All(x => x is >= min and < max));
+            Assert.IsTrue(resultB.All(x => x is >= min and < max));
         }
 
         /// <summary>

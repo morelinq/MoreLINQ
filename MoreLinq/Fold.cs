@@ -67,26 +67,26 @@ namespace MoreLinq
             foreach (var e in AssertCountImpl(source.Index(), count, OnFolderSourceSizeErrorSelector))
                 elements[e.Key] = e.Value;
 
-            switch (count)
+            return count switch
             {
-                case  1: return folder1 !(elements[0]);
-                case  2: return folder2 !(elements[0], elements[1]);
-                case  3: return folder3 !(elements[0], elements[1], elements[2]);
-                case  4: return folder4 !(elements[0], elements[1], elements[2], elements[3]);
-                case  5: return folder5 !(elements[0], elements[1], elements[2], elements[3], elements[4]);
-                case  6: return folder6 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
-                case  7: return folder7 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
-                case  8: return folder8 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
-                case  9: return folder9 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
-                case 10: return folder10!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
-                case 11: return folder11!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
-                case 12: return folder12!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
-                case 13: return folder13!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
-                case 14: return folder14!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
-                case 15: return folder15!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
-                case 16: return folder16!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
-                default: throw new NotSupportedException();
-            }
+                 1 => folder1 !(elements[0]),
+                 2 => folder2 !(elements[0], elements[1]),
+                 3 => folder3 !(elements[0], elements[1], elements[2]),
+                 4 => folder4 !(elements[0], elements[1], elements[2], elements[3]),
+                 5 => folder5 !(elements[0], elements[1], elements[2], elements[3], elements[4]),
+                 6 => folder6 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]),
+                 7 => folder7 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]),
+                 8 => folder8 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]),
+                 9 => folder9 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]),
+                10 => folder10!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]),
+                11 => folder11!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]),
+                12 => folder12!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]),
+                13 => folder13!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]),
+                14 => folder14!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]),
+                15 => folder15!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]),
+                16 => folder16!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]),
+                _ => throw new NotSupportedException()
+            };
         }
 
         static readonly Func<int, int, Exception> OnFolderSourceSizeErrorSelector = OnFolderSourceSizeError;
