@@ -49,58 +49,54 @@ namespace MoreLinq
     /// </remarks>
 
     [DebuggerDisplay("Count = {Count}")]
-    sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
+    internal sealed class Lookup<TKey, TElement> : ILookup<TKey, TElement>
     {
-        private readonly IEqualityComparer<TKey> _comparer;
-        private Grouping<TKey, TElement>[] _groupings;
-        private Grouping<TKey, TElement>? _lastGrouping;
-        private int _count;
+        readonly IEqualityComparer<TKey> _comparer;
+        Grouping<TKey, TElement>[] _groupings;
+        Grouping<TKey, TElement>? _lastGrouping;
+        int _count;
 
         internal static Lookup<TKey, TElement> Create<TSource>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey>? comparer)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(keySelector != null);
-            Debug.Assert(elementSelector != null);
+            Debug.Assert(source is not null);
+            Debug.Assert(keySelector is not null);
+            Debug.Assert(elementSelector is not null);
 
-            Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
-            foreach (TSource item in source)
-            {
+            var lookup = new Lookup<TKey, TElement>(comparer);
+
+            foreach (var item in source)
                 lookup.GetGrouping(keySelector(item), create: true)!.Add(elementSelector(item));
-            }
 
             return lookup;
         }
 
         internal static Lookup<TKey, TElement> Create(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey>? comparer)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(keySelector != null);
+            Debug.Assert(source is not null);
+            Debug.Assert(keySelector is not null);
 
-            Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
-            foreach (TElement item in source)
-            {
+            var lookup = new Lookup<TKey, TElement>(comparer);
+
+            foreach (var item in source)
                 lookup.GetGrouping(keySelector(item), create: true)!.Add(item);
-            }
 
             return lookup;
         }
 
         internal static Lookup<TKey, TElement> CreateForJoin(IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey>? comparer)
         {
-            Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
-            foreach (TElement item in source)
+            var lookup = new Lookup<TKey, TElement>(comparer);
+
+            foreach (var item in source)
             {
-                TKey key = keySelector(item);
-                if (key != null)
-                {
+                if (keySelector(item) is { } key)
                     lookup.GetGrouping(key, create: true)!.Add(item);
-                }
             }
 
             return lookup;
         }
 
-        private Lookup(IEqualityComparer<TKey>? comparer)
+        Lookup(IEqualityComparer<TKey>? comparer)
         {
             _comparer = comparer ?? EqualityComparer<TKey>.Default;
             _groupings = new Grouping<TKey, TElement>[7];
@@ -112,23 +108,23 @@ namespace MoreLinq
         {
             get
             {
-                Grouping<TKey, TElement>? grouping = GetGrouping(key, create: false);
+                var grouping = GetGrouping(key, create: false);
                 return grouping ?? Enumerable.Empty<TElement>();
             }
         }
 
-        public bool Contains(TKey key) => GetGrouping(key, create: false) != null;
+        public bool Contains(TKey key) => GetGrouping(key, create: false) is not null;
 
         public IEnumerator<IGrouping<TKey, TElement>> GetEnumerator()
         {
-            Grouping<TKey, TElement>? g = _lastGrouping;
-            if (g != null)
+            var g = _lastGrouping;
+            if (g is not null)
             {
                 do
                 {
                     g = g._next;
 
-                    Debug.Assert(g != null);
+                    Debug.Assert(g is not null);
                     yield return g;
                 }
                 while (g != _lastGrouping);
@@ -137,21 +133,17 @@ namespace MoreLinq
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private int InternalGetHashCode(TKey key)
-        {
+        int InternalGetHashCode(TKey key) =>
             // Handle comparer implementations that throw when passed null
-            return (key == null) ? 0 : _comparer.GetHashCode(key) & 0x7FFFFFFF;
-        }
+            key is null ? 0 : _comparer.GetHashCode(key) & 0x7FFFFFFF;
 
         internal Grouping<TKey, TElement>? GetGrouping(TKey key, bool create)
         {
-            int hashCode = InternalGetHashCode(key);
-            for (Grouping<TKey, TElement>? g = _groupings[hashCode % _groupings.Length]; g != null; g = g._hashNext)
+            var hashCode = InternalGetHashCode(key);
+            for (var g = _groupings[hashCode % _groupings.Length]; g is not null; g = g._hashNext)
             {
                 if (g._hashCode == hashCode && _comparer.Equals(g._key, key))
-                {
                     return g;
-                }
             }
 
             if (create)
@@ -161,11 +153,11 @@ namespace MoreLinq
                     Resize();
                 }
 
-                int index = hashCode % _groupings.Length;
-                Grouping<TKey, TElement> g = new Grouping<TKey, TElement>(key, hashCode);
+                var index = hashCode % _groupings.Length;
+                var g = new Grouping<TKey, TElement>(key, hashCode);
                 g._hashNext = _groupings[index];
                 _groupings[index] = g;
-                if (_lastGrouping == null)
+                if (_lastGrouping is null)
                 {
                     g._next = g;
                 }
@@ -183,15 +175,15 @@ namespace MoreLinq
             return null;
         }
 
-        private void Resize()
+        void Resize()
         {
-            int newSize = checked((_count * 2) + 1);
-            Grouping<TKey, TElement>[] newGroupings = new Grouping<TKey, TElement>[newSize];
-            Grouping<TKey, TElement> g = _lastGrouping!;
+            var newSize = checked((_count * 2) + 1);
+            var newGroupings = new Grouping<TKey, TElement>[newSize];
+            var g = _lastGrouping!;
             do
             {
                 g = g._next!;
-                int index = g._hashCode % newSize;
+                var index = g._hashCode % newSize;
                 g._hashNext = newGroupings[index];
                 newGroupings[index] = g;
             }
@@ -205,7 +197,7 @@ namespace MoreLinq
     // https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Linq/src/System/Linq/Grouping.cs#L48-L141
 
     [DebuggerDisplay("Key = {Key}")]
-    sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
+    internal sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>, IList<TElement>
     {
         internal readonly TKey _key;
         internal readonly int _hashCode;
@@ -224,9 +216,7 @@ namespace MoreLinq
         internal void Add(TElement element)
         {
             if (_elements.Length == _count)
-            {
                 Array.Resize(ref _elements, checked(_count * 2));
-            }
 
             _elements[_count] = element;
             _count++;
@@ -235,17 +225,13 @@ namespace MoreLinq
         internal void Trim()
         {
             if (_elements.Length != _count)
-            {
                 Array.Resize(ref _elements, _count);
-            }
         }
 
         public IEnumerator<TElement> GetEnumerator()
         {
-            for (int i = 0; i < _count; i++)
-            {
+            for (var i = 0; i < _count; i++)
                 yield return _elements[i];
-            }
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -281,20 +267,11 @@ namespace MoreLinq
 
         TElement IList<TElement>.this[int index]
         {
-            get
-            {
-                if (index < 0 || index >= _count)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
+            get => index < 0 || index >= _count
+                   ? throw new ArgumentOutOfRangeException(nameof(index))
+                   : _elements[index];
 
-                return _elements[index];
-            }
-
-            set
-            {
-                ThrowHelper.ThrowNotSupportedException();
-            }
+            set => ThrowHelper.ThrowNotSupportedException();
         }
 
         static class ThrowHelper
