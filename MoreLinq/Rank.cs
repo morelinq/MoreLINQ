@@ -32,7 +32,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source)
         {
-            return source.RankBy(x => x);
+            return source.RankBy(Identity<TSource>);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
         {
-            return source.RankBy(x => x, comparer);
+            return source.RankBy(Identity<TSource>, comparer);
         }
 
         /// <summary>
