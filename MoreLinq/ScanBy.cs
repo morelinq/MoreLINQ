@@ -40,14 +40,17 @@ namespace MoreLinq
         /// <returns>
         /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
-
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is null</exception>
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TKey, TState> seedSelector,
             Func<TState, TKey, TSource, TState> accumulator)
         {
-            return source.ScanBy(keySelector, seedSelector, accumulator, null);
+            return source.ScanBy(keySelector, seedSelector, accumulator, comparer: null);
         }
 
         /// <summary>
@@ -72,7 +75,10 @@ namespace MoreLinq
         /// <returns>
         /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
-
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is null</exception>
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -85,9 +91,16 @@ namespace MoreLinq
             if (seedSelector == null) throw new ArgumentNullException(nameof(seedSelector));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
 
-            return _(comparer ?? EqualityComparer<TKey>.Default);
+            comparer ??= EqualityComparer<TKey>.Default;
 
-            IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
+            return _(source, keySelector, seedSelector, accumulator, comparer);
+
+            static IEnumerable<KeyValuePair<TKey, TState>> _(
+                IEnumerable<TSource> source,
+                Func<TSource, TKey> keySelector,
+                Func<TKey, TState> seedSelector,
+                Func<TState, TKey, TSource, TState> accumulator,
+                IEqualityComparer<TKey> comparer)
             {
                 var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
