@@ -141,7 +141,7 @@ the third-last element and so on.
 
 Batches the source sequence into sized buckets.
 
-This method has 2 overloads.
+This method has 4 overloads, 2 of which are experimental.
 
 ### Cartesian
 
