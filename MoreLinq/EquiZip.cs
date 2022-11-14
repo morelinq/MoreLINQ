@@ -51,10 +51,12 @@ namespace MoreLinq
         /// The <c>zipped</c> variable, when iterated over, will yield "1A",
         /// "2B", "3C", "4D" in turn.
         /// </example>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
         public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
@@ -64,7 +66,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b));
+            return EquiZipImpl(first, second, Enumerable.Repeat(default(object?), int.MaxValue), Enumerable.Repeat(default(object?), int.MaxValue), (a, b, _, _) => resultSelector(a, b));
         }
 
         /// <summary>
@@ -98,10 +100,13 @@ namespace MoreLinq
         /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
         /// "2Bb", "3Cc", "4Dd" in turn.
         /// </example>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third,
@@ -112,7 +117,7 @@ namespace MoreLinq
             if (third == null) throw new ArgumentNullException(nameof(third));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
+            return EquiZipImpl(first, second, third, Enumerable.Repeat(default(object?), int.MaxValue), (a, b, c, _) => resultSelector(a, b, c));
         }
 
         /// <summary>
@@ -149,10 +154,14 @@ namespace MoreLinq
         /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
         /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
         /// </example>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="fourth"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
-
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
@@ -168,42 +177,34 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1>  s1,
-            IEnumerable<T2>  s2,
-            IEnumerable<T3>? s3,
-            IEnumerable<T4>? s4,
+            IEnumerable<T1> s1,
+            IEnumerable<T2> s2,
+            IEnumerable<T3> s3,
+            IEnumerable<T4> s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            const int zero = 0, one = 1;
+            using var e1 = s1.GetEnumerator();
+            using var e2 = s2.GetEnumerator();
+            using var e3 = s3.GetEnumerator();
+            using var e4 = s4.GetEnumerator();
 
-            var limit = 1 + (s3 != null ? one : zero)
-                          + (s4 != null ? one : zero);
-
-            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
+            while (true)
             {
-                var i = enumerators.Index().First(x => x.Value == null).Key;
-                return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
-            });
-        }
+                if (!e1.MoveNext())
+                    throw new InvalidOperationException("First sequence too short.");
+                if (!e2.MoveNext())
+                    throw new InvalidOperationException("Second sequence too short.");
+                if (!e3.MoveNext())
+                    throw new InvalidOperationException("Third sequence too short.");
+                if (!e4.MoveNext())
+                    throw new InvalidOperationException("Fourth sequence too short.");
 
-        static readonly string[] OrdinalNumbers =
-        {
-            "First",
-            "Second",
-            "Third",
-            "Fourth",
-            // "Fifth",
-            // "Sixth",
-            // "Seventh",
-            // "Eighth",
-            // "Ninth",
-            // "Tenth",
-            // "Eleventh",
-            // "Twelfth",
-            // "Thirteenth",
-            // "Fourteenth",
-            // "Fifteenth",
-            // "Sixteenth",
-        };
+                yield return resultSelector(
+                    e1.Current,
+                    e2.Current,
+                    e3.Current,
+                    e4.Current);
+            }
+        }
     }
 }

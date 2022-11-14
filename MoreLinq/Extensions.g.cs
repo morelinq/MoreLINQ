@@ -6780,7 +6780,7 @@ namespace MoreLinq.Extensions
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
+            Func<TFirst?, TSecond?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, resultSelector);
 
         /// <summary>
@@ -6821,7 +6821,7 @@ namespace MoreLinq.Extensions
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
             IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+            Func<T1?, T2?, T3?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, third, resultSelector);
 
         /// <summary>
@@ -6866,7 +6866,7 @@ namespace MoreLinq.Extensions
             IEnumerable<T2> second,
             IEnumerable<T3> third,
             IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+            Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, third, fourth, resultSelector);
 
     }
