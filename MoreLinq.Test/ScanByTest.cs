@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using System;
@@ -48,10 +50,10 @@ namespace MoreLinq.Test
             };
 
             var result =
-                    source.ScanBy(
-                        item => item.First(),
-                        key => (Element: default(string), Key: key, State: key - 1),
-                        (state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
+                source.ScanBy(
+                    item => item.First(),
+                    key => (Element: string.Empty, Key: key, State: key - 1),
+                    (state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
 
             result.AssertSequenceEqual(
                KeyValuePair.Create('a', ("ana",     'A', 97)),
@@ -103,31 +105,31 @@ namespace MoreLinq.Test
             var result = source.ScanBy(c => c, _ => -1, (i, _, _) => i + 1);
 
             result.AssertSequenceEqual(
-                KeyValuePair.Create("foo"       , 0),
-                KeyValuePair.Create((string)null, 0),
-                KeyValuePair.Create("bar"       , 0),
-                KeyValuePair.Create("baz"       , 0),
-                KeyValuePair.Create((string)null, 1),
-                KeyValuePair.Create((string)null, 2),
-                KeyValuePair.Create("baz"       , 1),
-                KeyValuePair.Create("bar"       , 1),
-                KeyValuePair.Create((string)null, 3),
-                KeyValuePair.Create("foo"       , 1));
+                KeyValuePair.Create<string?, int>("foo", 0),
+                KeyValuePair.Create<string?, int>(null , 0),
+                KeyValuePair.Create<string?, int>("bar", 0),
+                KeyValuePair.Create<string?, int>("baz", 0),
+                KeyValuePair.Create<string?, int>(null , 1),
+                KeyValuePair.Create<string?, int>(null , 2),
+                KeyValuePair.Create<string?, int>("baz", 1),
+                KeyValuePair.Create<string?, int>("bar", 1),
+                KeyValuePair.Create<string?, int>(null , 3),
+                KeyValuePair.Create<string?, int>("foo", 1));
         }
 
         [Test]
         public void ScanByWithNullSeed()
         {
-            var nil = (object)null;
+            var nil = (object?)null;
             var source = new[] { "foo", null, "bar", null, "baz" };
             var result = source.ScanBy(c => c, _ => nil, (_, _, _) => nil);
 
             result.AssertSequenceEqual(
-                KeyValuePair.Create("foo"       , nil),
-                KeyValuePair.Create((string)null, nil),
-                KeyValuePair.Create("bar"       , nil),
-                KeyValuePair.Create((string)null, nil),
-                KeyValuePair.Create("baz"       , nil));
+                KeyValuePair.Create<string?, object?>("foo", nil),
+                KeyValuePair.Create<string?, object?>(null , nil),
+                KeyValuePair.Create<string?, object?>("bar", nil),
+                KeyValuePair.Create<string?, object?>(null , nil),
+                KeyValuePair.Create<string?, object?>("baz", nil));
         }
 
         [Test]
