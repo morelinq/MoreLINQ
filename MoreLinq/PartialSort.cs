@@ -242,7 +242,8 @@ namespace MoreLinq
             {
                 if (keys != null)
                 {
-                    var key = keySelector!(item);
+                    Debug.Assert(keySelector is not null);
+                    var key = keySelector(item);
                     if (Insert(keys, key, keyComparer) is {} i)
                     {
                         if (top.Count == count)

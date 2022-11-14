@@ -23,7 +23,6 @@ namespace MoreLinq.Experimental
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
@@ -538,7 +537,8 @@ namespace MoreLinq.Experimental
 
                         if (kind == Notice.Error)
                         {
-                            error!.Throw();
+                            Debug.Assert(error is not null);
+                            error.Throw();
                         }
 
                         if (kind == Notice.End)

@@ -24,12 +24,6 @@
 // SOFTWARE.
 #endregion
 
-#if !NET6_0_OR_GREATER
-#nullable enable annotations
-#pragma warning disable 8602 // Dereference of a possibly null reference.
-#pragma warning disable 8603 // Possible null reference return.
-#endif
-
 namespace MoreLinq
 {
     using System;
@@ -65,7 +59,11 @@ namespace MoreLinq
             var lookup = new Lookup<TKey, TElement>(comparer);
 
             foreach (var item in source)
-                lookup.GetGrouping(keySelector(item), create: true)!.Add(elementSelector(item));
+            {
+                var grouping = lookup.GetGrouping(keySelector(item), create: true);
+                Debug.Assert(grouping is not null);
+                grouping.Add(elementSelector(item));
+            }
 
             return lookup;
         }
@@ -78,7 +76,11 @@ namespace MoreLinq
             var lookup = new Lookup<TKey, TElement>(comparer);
 
             foreach (var item in source)
-                lookup.GetGrouping(keySelector(item), create: true)!.Add(item);
+            {
+                var grouping = lookup.GetGrouping(keySelector(item), create: true);
+                Debug.Assert(grouping is not null);
+                grouping.Add(item);
+            }
 
             return lookup;
         }
@@ -90,7 +92,11 @@ namespace MoreLinq
             foreach (var item in source)
             {
                 if (keySelector(item) is { } key)
-                    lookup.GetGrouping(key, create: true)!.Add(item);
+                {
+                    var grouping = lookup.GetGrouping(key, create: true);
+                    Debug.Assert(grouping is not null);
+                    grouping.Add(item);
+                }
             }
 
             return lookup;
@@ -179,10 +185,12 @@ namespace MoreLinq
         {
             var newSize = checked((_count * 2) + 1);
             var newGroupings = new Grouping<TKey, TElement>[newSize];
-            var g = _lastGrouping!;
+            var g = _lastGrouping;
+            Debug.Assert(g is not null);
             do
             {
-                g = g._next!;
+                g = g._next;
+                Debug.Assert(g is not null);
                 var index = g._hashCode % newSize;
                 g._hashNext = newGroupings[index];
                 newGroupings[index] = g;
