@@ -4934,7 +4934,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
-
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is null</exception>
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -4964,7 +4967,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
-
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is null</exception>
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
