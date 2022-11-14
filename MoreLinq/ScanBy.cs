@@ -23,8 +23,8 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Applies an accumulator function over sequence element keys,
-        /// returning the keys along with intermediate accumulator states.
+        /// Applies an accumulator function over sequence element keys, returning the keys along with intermediate
+        /// accumulator states.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
         /// <typeparam name="TKey">The type of the key.</typeparam>
@@ -33,17 +33,18 @@ namespace MoreLinq
         /// <param name="keySelector">
         /// A function that returns the key given an element.</param>
         /// <param name="seedSelector">
-        /// A function to determine the initial value for the accumulator that is
-        /// invoked once per key encountered.</param>
+        /// A function to determine the initial value for the accumulator that is invoked once per key
+        /// encountered.</param>
         /// <param name="accumulator">
         /// An accumulator function invoked for each element.</param>
         /// <returns>
         /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is null</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/>, <paramref name="keySelector"/>, <paramref name="seedSelector"/>, or <paramref
+        /// name="accumulator"/> is <see langword="null"/>.
+        /// </exception>
+
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -54,9 +55,8 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Applies an accumulator function over sequence element keys,
-        /// returning the keys along with intermediate accumulator states. An
-        /// additional parameter specifies the comparer to use to compare keys.
+        /// Applies an accumulator function over sequence element keys, returning the keys along with intermediate
+        /// accumulator states. An additional parameter specifies the comparer to use to compare keys.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements of the source sequence.</typeparam>
         /// <typeparam name="TKey">The type of the key.</typeparam>
@@ -65,20 +65,20 @@ namespace MoreLinq
         /// <param name="keySelector">
         /// A function that returns the key given an element.</param>
         /// <param name="seedSelector">
-        /// A function to determine the initial value for the accumulator that is
-        /// invoked once per key encountered.</param>
+        /// A function to determine the initial value for the accumulator that is invoked once per key
+        /// encountered.</param>
         /// <param name="accumulator">
         /// An accumulator function invoked for each element.</param>
-        /// <param name="comparer">The equality comparer to use to determine
-        /// whether or not keys are equal. If <c>null</c>, the default equality
-        /// comparer for <typeparamref name="TSource"/> is used.</param>
+        /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal. If <see
+        /// langword="null"/>, <see cref="EqualityComparer{T}.Default"/> is used.</param>
         /// <returns>
         /// A sequence of keys paired with intermediate accumulator states.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="seedSelector"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="accumulator"/> is null</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/>, <paramref name="keySelector"/>, <paramref name="seedSelector"/>, or <paramref
+        /// name="accumulator"/> is <see langword="null"/>.
+        /// </exception>
+
         public static IEnumerable<KeyValuePair<TKey, TState>> ScanBy<TSource, TKey, TState>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -93,14 +93,9 @@ namespace MoreLinq
 
             comparer ??= EqualityComparer<TKey>.Default;
 
-            return _(source, keySelector, seedSelector, accumulator, comparer);
+            return _(comparer ?? EqualityComparer<TKey>.Default);
 
-            static IEnumerable<KeyValuePair<TKey, TState>> _(
-                IEnumerable<TSource> source,
-                Func<TSource, TKey> keySelector,
-                Func<TKey, TState> seedSelector,
-                Func<TState, TKey, TSource, TState> accumulator,
-                IEqualityComparer<TKey> comparer)
+            IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
                 var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
