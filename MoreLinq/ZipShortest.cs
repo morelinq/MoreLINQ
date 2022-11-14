@@ -55,9 +55,7 @@ namespace MoreLinq
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
+
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
@@ -106,10 +104,7 @@ namespace MoreLinq
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
+
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
@@ -163,11 +158,7 @@ namespace MoreLinq
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="fourth"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
+
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,

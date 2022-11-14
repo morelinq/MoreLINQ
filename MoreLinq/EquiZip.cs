@@ -51,12 +51,10 @@ namespace MoreLinq
         /// The <c>zipped</c> variable, when iterated over, will yield "1A",
         /// "2B", "3C", "4D" in turn.
         /// </example>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
@@ -100,13 +98,10 @@ namespace MoreLinq
         /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
         /// "2Bb", "3Cc", "4Dd" in turn.
         /// </example>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third,
@@ -154,14 +149,10 @@ namespace MoreLinq
         /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
         /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
         /// </example>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="second"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="third"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="fourth"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
+
         public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
