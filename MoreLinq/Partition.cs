@@ -33,6 +33,7 @@ namespace MoreLinq
         /// A tuple of elements satisfying the predicate and those that do not,
         /// respectively.
         /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <example>
         /// <code><![CDATA[
         /// var (evens, odds) =
@@ -63,6 +64,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/>, <paramref name="predicate"/>, or
+        /// <paramref name="resultSelector"/> is null.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var (evens, odds) =
@@ -96,6 +101,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -119,6 +128,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -132,19 +145,24 @@ namespace MoreLinq
         /// matching a key and those groups that do not.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
-        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source
+        /// groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="key">The key to partition.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from sequences of elements
-        /// matching <paramref name="key"/> and those groups that do not (in
-        /// the order in which they appear in <paramref name="source"/>),
-        /// passed as arguments.
+        /// matching <paramref name="key"/> and those groups that do not (in the
+        /// order in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
         /// </param>
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key,
@@ -171,6 +189,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key, IEqualityComparer<TKey>? comparer,
@@ -201,6 +223,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2,
@@ -229,6 +255,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
@@ -260,6 +290,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3,
@@ -289,6 +323,10 @@ namespace MoreLinq
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// null.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
