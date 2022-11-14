@@ -72,12 +72,14 @@ namespace MoreLinq.Test
                 Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
                 _disposed = true;
             };
-            var ended = false;
             enumerator.MoveNextCalled += (_, moved) =>
             {
-                Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
-                ended = !moved;
+                Assert.That(_disposed, Is.False, "LINQ operators should not call MoveNext() on a disposed sequence.");
                 MoveNextCallCount++;
+            };
+            enumerator.GetCurrentCalled += delegate
+            {
+                Assert.That(_disposed, Is.False, "LINQ operators should not call MoveNext() on a disposed sequence.");
             };
             _sequence = null;
             return enumerator;

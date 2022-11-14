@@ -66,7 +66,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl(first, second, Enumerable.Repeat(default(object?), int.MaxValue), Enumerable.Repeat(default(object?), int.MaxValue), (a, b, _, _) => resultSelector(a, b));
+            return EquiZipImpl(first, second, Enumerable.Repeat(default(object?), int.MaxValue), Enumerable.Repeat(default(object?), int.MaxValue), (a, b, _, _) => resultSelector(a, b), 2);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace MoreLinq
             if (third == null) throw new ArgumentNullException(nameof(third));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl(first, second, third, Enumerable.Repeat(default(object?), int.MaxValue), (a, b, c, _) => resultSelector(a, b, c));
+            return EquiZipImpl(first, second, third, Enumerable.Repeat(default(object?), int.MaxValue), (a, b, c, _) => resultSelector(a, b, c), 3);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace MoreLinq
             if (fourth == null) throw new ArgumentNullException(nameof(fourth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl(first, second, third, fourth, resultSelector);
+            return EquiZipImpl(first, second, third, fourth, resultSelector, 4);
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
@@ -181,7 +181,8 @@ namespace MoreLinq
             IEnumerable<T2> s2,
             IEnumerable<T3> s3,
             IEnumerable<T4> s4,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+            Func<T1, T2, T3, T4, TResult> resultSelector,
+            int expectedTerminations)
         {
             using var e1 = s1.GetEnumerator();
             using var e2 = s2.GetEnumerator();
@@ -191,7 +192,15 @@ namespace MoreLinq
             while (true)
             {
                 if (!e1.MoveNext())
-                    throw new InvalidOperationException("First sequence too short.");
+                {
+                    if (e2.MoveNext()
+                        || expectedTerminations >= 3 && e3.MoveNext()
+                        || expectedTerminations >= 4 && e4.MoveNext())
+                        throw new InvalidOperationException("First sequence too short.");
+
+                    yield break;
+                }
+
                 if (!e2.MoveNext())
                     throw new InvalidOperationException("Second sequence too short.");
                 if (!e3.MoveNext())
