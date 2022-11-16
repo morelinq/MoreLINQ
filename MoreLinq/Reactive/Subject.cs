@@ -116,12 +116,12 @@ namespace MoreLinq.Reactive
         }
 
         public void OnError(Exception error) =>
-            OnFinality(ref _error, error, (observer, err) => observer.OnError(err!));
+            OnFinality(ref _error, error, (observer, err) => observer.OnError(err));
 
         public void OnCompleted() =>
             OnFinality(ref _completed, true, (observer, _) => observer.OnCompleted());
 
-        void OnFinality<TState>(ref TState state, TState value, Action<IObserver<T>, TState> action)
+        void OnFinality<TState>(ref TState? state, TState value, Action<IObserver<T>, TState> action)
         {
             if (IsMuted)
                 return;
