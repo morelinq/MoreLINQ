@@ -60,5 +60,13 @@ namespace MoreLinq.Test
             Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
             Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
         }
+
+        [Test]
+        public void FallbackIfEmptyWithEmptyNullableSequence()
+        {
+            var source = Enumerable.Empty<int?>().Select(x => x);
+            var fallback = (int?)null;
+            source.FallbackIfEmpty(fallback).AssertSequenceEqual(fallback);
+        }
     }
 }

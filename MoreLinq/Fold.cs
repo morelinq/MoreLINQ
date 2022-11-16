@@ -69,22 +69,22 @@ namespace MoreLinq
 
             return count switch
             {
-                 1 => folder1 !(elements[0]),
-                 2 => folder2 !(elements[0], elements[1]),
-                 3 => folder3 !(elements[0], elements[1], elements[2]),
-                 4 => folder4 !(elements[0], elements[1], elements[2], elements[3]),
-                 5 => folder5 !(elements[0], elements[1], elements[2], elements[3], elements[4]),
-                 6 => folder6 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]),
-                 7 => folder7 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]),
-                 8 => folder8 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]),
-                 9 => folder9 !(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]),
-                10 => folder10!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]),
-                11 => folder11!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]),
-                12 => folder12!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]),
-                13 => folder13!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]),
-                14 => folder14!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]),
-                15 => folder15!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]),
-                16 => folder16!(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]),
+                 1 => Assume.NotNull(folder1 )(elements[0]),
+                 2 => Assume.NotNull(folder2 )(elements[0], elements[1]),
+                 3 => Assume.NotNull(folder3 )(elements[0], elements[1], elements[2]),
+                 4 => Assume.NotNull(folder4 )(elements[0], elements[1], elements[2], elements[3]),
+                 5 => Assume.NotNull(folder5 )(elements[0], elements[1], elements[2], elements[3], elements[4]),
+                 6 => Assume.NotNull(folder6 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]),
+                 7 => Assume.NotNull(folder7 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]),
+                 8 => Assume.NotNull(folder8 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]),
+                 9 => Assume.NotNull(folder9 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]),
+                10 => Assume.NotNull(folder10)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]),
+                11 => Assume.NotNull(folder11)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]),
+                12 => Assume.NotNull(folder12)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]),
+                13 => Assume.NotNull(folder13)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]),
+                14 => Assume.NotNull(folder14)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]),
+                15 => Assume.NotNull(folder15)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]),
+                16 => Assume.NotNull(folder16)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]),
                 _ => throw new NotSupportedException()
             };
         }
