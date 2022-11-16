@@ -67,59 +67,26 @@ namespace MoreLinq
             foreach (var e in AssertCountImpl(source.Index(), count, OnFolderSourceSizeErrorSelector))
                 elements[e.Key] = e.Value;
 
-            switch (count)
+            return count switch
             {
-                case 1:
-                    Debug.Assert(folder1  is not null);
-                    return folder1(elements[0]);
-                case 2:
-                    Debug.Assert(folder2  is not null);
-                    return folder2(elements[0], elements[1]);
-                case 3:
-                    Debug.Assert(folder3  is not null);
-                    return folder3(elements[0], elements[1], elements[2]);
-                case 4:
-                    Debug.Assert(folder4  is not null);
-                    return folder4(elements[0], elements[1], elements[2], elements[3]);
-                case 5:
-                    Debug.Assert(folder5  is not null);
-                    return folder5(elements[0], elements[1], elements[2], elements[3], elements[4]);
-                case 6:
-                    Debug.Assert(folder6  is not null);
-                    return folder6(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
-                case 7:
-                    Debug.Assert(folder7  is not null);
-                    return folder7(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
-                case 8:
-                    Debug.Assert(folder8  is not null);
-                    return folder8(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
-                case 9:
-                    Debug.Assert(folder9  is not null);
-                    return folder9(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
-                case 10:
-                    Debug.Assert(folder10 is not null);
-                    return folder10(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
-                case 11:
-                    Debug.Assert(folder11 is not null);
-                    return folder11(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
-                case 12:
-                    Debug.Assert(folder12 is not null);
-                    return folder12(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
-                case 13:
-                    Debug.Assert(folder13 is not null);
-                    return folder13(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
-                case 14:
-                    Debug.Assert(folder14 is not null);
-                    return folder14(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
-                case 15:
-                    Debug.Assert(folder15 is not null);
-                    return folder15(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
-                case 16:
-                    Debug.Assert(folder16 is not null);
-                    return folder16(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
-                default:
-                    throw new NotSupportedException();
-            }
+                 1 => Assume.NotNull(folder1 )(elements[0]),
+                 2 => Assume.NotNull(folder2 )(elements[0], elements[1]),
+                 3 => Assume.NotNull(folder3 )(elements[0], elements[1], elements[2]),
+                 4 => Assume.NotNull(folder4 )(elements[0], elements[1], elements[2], elements[3]),
+                 5 => Assume.NotNull(folder5 )(elements[0], elements[1], elements[2], elements[3], elements[4]),
+                 6 => Assume.NotNull(folder6 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]),
+                 7 => Assume.NotNull(folder7 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]),
+                 8 => Assume.NotNull(folder8 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]),
+                 9 => Assume.NotNull(folder9 )(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]),
+                10 => Assume.NotNull(folder10)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]),
+                11 => Assume.NotNull(folder11)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]),
+                12 => Assume.NotNull(folder12)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]),
+                13 => Assume.NotNull(folder13)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]),
+                14 => Assume.NotNull(folder14)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]),
+                15 => Assume.NotNull(folder15)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]),
+                16 => Assume.NotNull(folder16)(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]),
+                _ => throw new NotSupportedException()
+            };
         }
 
         static readonly Func<int, int, Exception> OnFolderSourceSizeErrorSelector = OnFolderSourceSizeError;

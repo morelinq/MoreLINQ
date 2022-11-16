@@ -527,19 +527,15 @@ namespace MoreLinq.Experimental
                         catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
                         {
                             var (error1, error2) = lastCriticalErrors;
-                            Debug.Assert(error1 is not null);
                             throw new Exception("One or more critical errors have occurred.",
-                                error2 != null ? new AggregateException(error1, error2)
-                                               : new AggregateException(error1));
+                                error2 != null ? new AggregateException(Assume.NotNull(error1), error2)
+                                               : new AggregateException(Assume.NotNull(error1)));
                         }
 
                         var (kind, result, error) = notice.Current;
 
                         if (kind == Notice.Error)
-                        {
-                            Debug.Assert(error is not null);
-                            error.Throw();
-                        }
+                            Assume.NotNull(error).Throw();
 
                         if (kind == Notice.End)
                             break;

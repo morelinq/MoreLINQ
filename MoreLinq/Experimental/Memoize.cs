@@ -115,10 +115,7 @@ namespace MoreLinq.Experimental
                         if (index >= _cache.Count)
                         {
                             if (index == _errorIndex)
-                            {
-                                Debug.Assert(_error is not null);
-                                _error.Throw();
-                            }
+                                Assume.NotNull(_error).Throw();
 
                             if (_sourceEnumerator == null)
                                 break;

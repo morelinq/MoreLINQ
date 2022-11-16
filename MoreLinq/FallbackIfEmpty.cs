@@ -189,26 +189,10 @@ namespace MoreLinq
                 {
                     Debug.Assert(count is >= 1 and <= 4);
 
-                    Debug.Assert(fallback1 is not null);
-                    yield return fallback1;
-
-                    if (count > 1)
-                    {
-                        Debug.Assert(fallback2 is not null);
-                        yield return fallback2;
-                    }
-
-                    if (count > 2)
-                    {
-                        Debug.Assert(fallback3 is not null);
-                        yield return fallback3;
-                    }
-
-                    if (count > 3)
-                    {
-                        Debug.Assert(fallback4 is not null);
-                        yield return fallback4;
-                    }
+                    yield return fallback1!;
+                    if (count > 1) yield return fallback2!;
+                    if (count > 2) yield return fallback3!;
+                    if (count > 3) yield return fallback4!;
                 }
             }
         }

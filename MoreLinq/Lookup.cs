@@ -60,8 +60,7 @@ namespace MoreLinq
 
             foreach (var item in source)
             {
-                var grouping = lookup.GetGrouping(keySelector(item), create: true);
-                Debug.Assert(grouping is not null);
+                var grouping = Assume.NotNull(lookup.GetGrouping(keySelector(item), create: true));
                 grouping.Add(elementSelector(item));
             }
 
@@ -77,8 +76,7 @@ namespace MoreLinq
 
             foreach (var item in source)
             {
-                var grouping = lookup.GetGrouping(keySelector(item), create: true);
-                Debug.Assert(grouping is not null);
+                var grouping = Assume.NotNull(lookup.GetGrouping(keySelector(item), create: true));
                 grouping.Add(item);
             }
 
@@ -93,8 +91,7 @@ namespace MoreLinq
             {
                 if (keySelector(item) is { } key)
                 {
-                    var grouping = lookup.GetGrouping(key, create: true);
-                    Debug.Assert(grouping is not null);
+                    var grouping = Assume.NotNull(lookup.GetGrouping(key, create: true));
                     grouping.Add(item);
                 }
             }
@@ -128,9 +125,7 @@ namespace MoreLinq
             {
                 do
                 {
-                    g = g._next;
-
-                    Debug.Assert(g is not null);
+                    g = Assume.NotNull(g._next);
                     yield return g;
                 }
                 while (g != _lastGrouping);
@@ -185,12 +180,10 @@ namespace MoreLinq
         {
             var newSize = checked((_count * 2) + 1);
             var newGroupings = new Grouping<TKey, TElement>[newSize];
-            var g = _lastGrouping;
-            Debug.Assert(g is not null);
+            var g = Assume.NotNull(_lastGrouping);
             do
             {
-                g = g._next;
-                Debug.Assert(g is not null);
+                g = Assume.NotNull(g._next);
                 var index = g._hashCode % newSize;
                 g._hashNext = newGroupings[index];
                 newGroupings[index] = g;
