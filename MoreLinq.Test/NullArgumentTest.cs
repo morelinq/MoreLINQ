@@ -94,17 +94,16 @@ namespace MoreLinq.Test
             return definition.MakeGenericMethod(typeArguments);
         }
 
-        static Type InstantiateType(TypeInfo typeParameter)
-        {
-            var constraints = typeParameter.GetGenericParameterConstraints();
-
-            return constraints.Length switch
+        static Type InstantiateType(TypeInfo typeParameter) =>
+            typeParameter.GetGenericParameterConstraints() switch
             {
-                0 or 2 => typeof(int),
-                1 => constraints.Single(),
+                { Length: 0 } => typeof(int),
+                { Length: 1 } constraints => constraints.Single(),
+#if NET7_0_OR_GREATER
+                var constraints when constraints.Any(t => t.GetGenericTypeDefinition() == typeof(System.Numerics.INumber<>)) => typeof(int),
+#endif
                 _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
             };
-        }
 
         static bool IsReferenceType(ParameterInfo parameter) =>
             !parameter.ParameterType.GetTypeInfo().IsValueType;
