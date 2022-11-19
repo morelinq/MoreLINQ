@@ -70,7 +70,7 @@ namespace MoreLinq
             IEnumerable<T> second,
             IComparer<T>? comparer)
         {
-            return OrderedMerge(first, second, Identity<T>, Identity<T>, Identity<T>, (a, _) => a, comparer);
+            return OrderedMerge(first, second, IdFn, IdFn, IdFn, (a, _) => a, comparer);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace MoreLinq
             IEnumerable<T> second,
             Func<T, TKey> keySelector)
         {
-            return OrderedMerge(first, second, keySelector, Identity<T>, Identity<T>, (a, _) => a, null);
+            return OrderedMerge(first, second, keySelector, IdFn, IdFn, (a, _) => a, null);
         }
 
         /// <summary>
