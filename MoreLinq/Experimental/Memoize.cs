@@ -34,17 +34,21 @@ namespace MoreLinq.Experimental
         /// Type of elements in <paramref name="source"/>.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// Returns a sequence that corresponds to a cached version of the
-        /// input sequence.</returns>
+        /// Returns a sequence that corresponds to a cached version of the input
+        /// sequence.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <see langword="null"/>.
+        /// </exception>
         /// <remarks>
         /// The returned <see cref="IEnumerable{T}"/> will cache items from
         /// <paramref name="source"/> in a thread-safe manner. Each thread can
         /// call its <see cref="IEnumerable{T}.GetEnumerator"/> to acquire an
         /// iterator  but the same iterator should not be used simultanesouly
-        /// from multiple threads. The sequence supplied in
-        /// <paramref name="source"/> is not expected to be thread-safe but it
-        /// is required to be thread-agnostic because different threads
-        /// (though never simultaneously) may iterate over the sequence.
+        /// from multiple threads. The sequence supplied in <paramref
+        /// name="source"/> is not expected to be thread-safe but it is required
+        /// to be thread-agnostic because different threads (though never
+        /// simultaneously) may iterate over the sequence.
         /// </remarks>
 
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
