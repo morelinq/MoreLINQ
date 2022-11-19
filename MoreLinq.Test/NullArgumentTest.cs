@@ -95,10 +95,10 @@ namespace MoreLinq.Test
                 select t.GetGenericParameterConstraints() switch
                 {
                     { Length: 0 } => typeof(int),
-                    { Length: 1 } constraints => constraints.Single(),
 #if NET7_0_OR_GREATER
-                    var constraints when constraints.Any(t1 => t1.GetGenericTypeDefinition() == typeof(System.Numerics.INumber<>)) => typeof(int),
+                    var constraints when constraints.Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(System.Numerics.INumber<>)) => typeof(int),
 #endif
+                    { Length: 1 } constraints => constraints.Single(),
                     _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
                 };
 
