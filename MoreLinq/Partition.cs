@@ -101,7 +101,7 @@ namespace MoreLinq
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return source.Partition(true, false, (t, f, _) => resultSelector(t, f));
+            return source.Partition(key1: true, key2: false, (t, f, _) => resultSelector(t, f));
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace MoreLinq
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return source.Partition(true, false, null, (t, f, n, _) => resultSelector(t, f, n));
+            return source.Partition(key1: true, key2: false, key3: null, (t, f, n, _) => resultSelector(t, f, n));
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace MoreLinq
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key,
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, key, null, resultSelector);
+            Partition(source, key, comparer: null, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from group elements
@@ -177,7 +177,7 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 1, key, default!, default!, comparer,
+            return PartitionImpl(source, 1, key, key2: default!, key3: default!, comparer,
                                  (a, _, _, rest) => resultSelector(a, rest));
         }
 
@@ -205,7 +205,7 @@ namespace MoreLinq
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, key1, key2, null, resultSelector);
+            Partition(source, key1, key2, comparer: null, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from elements of
@@ -235,7 +235,7 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 2, key1, key2, default!, comparer,
+            return PartitionImpl(source, 2, key1, key2, key3: default!, comparer,
                                  (a, b, _, rest) => resultSelector(a, b, rest));
         }
 
@@ -264,7 +264,7 @@ namespace MoreLinq
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector) =>
-            Partition(source, key1, key2, key3, null, resultSelector);
+            Partition(source, key1, key2, key3, comparer: null, resultSelector);
 
         /// <summary>
         /// Partitions a grouping and projects a result from elements groups
