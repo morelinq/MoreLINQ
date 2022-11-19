@@ -19,8 +19,8 @@
 
 namespace MoreLinq
 {
+    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Numerics;
 
     static partial class MoreEnumerable
@@ -77,8 +77,23 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<T> Sequence<T>(T start, T stop, T step)
-            where T : INumber<T> =>
-            Generate(start, n => n + step).TakeWhile(n => T.IsPositive(step) ? stop >= n : stop <= n);
+            where T : INumber<T>
+        {
+            var current = start;
+
+            while (step >= T.Zero ? stop >= current : stop <= current)
+            {
+                yield return current;
+                try
+                {
+                    current = checked(current + step);
+                }
+                catch (OverflowException)
+                {
+                    yield break;
+                }
+            }
+        }
     }
 }
 
@@ -107,10 +122,12 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>{ 6, 5, 4, 3, 2, 1, 0 }</c>.
         /// </example>
 
-        public static IEnumerable<int> Sequence(int start, int stop)
-        {
-            return Sequence(start, stop, start < stop ? 1 : -1);
-        }
+        public static IEnumerable<int> Sequence(int start, int stop) =>
+#if !NO_STATIC_ABSTRACTS
+            Sequence<int>(start, stop);
+#else
+            Sequence(start, stop, start < stop ? 1 : -1);
+#endif
 
         /// <summary>
         /// Generates a sequence of integral numbers within the (inclusive) specified range.
@@ -134,6 +151,9 @@ namespace MoreLinq
 
         public static IEnumerable<int> Sequence(int start, int stop, int step)
         {
+#if !NO_STATIC_ABSTRACTS
+            return Sequence<int>(start, stop, step);
+#else
             long current = start;
 
             while (step >= 0 ? stop >= current
@@ -142,6 +162,7 @@ namespace MoreLinq
                 yield return (int)current;
                 current += step;
             }
+#endif
         }
     }
 }
