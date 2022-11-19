@@ -100,7 +100,7 @@ namespace MoreLinq.Test
 
             return constraints.Length switch
             {
-                0 => typeof(int),
+                0 or 2 => typeof(int),
                 1 => constraints.Single(),
                 _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
             };
