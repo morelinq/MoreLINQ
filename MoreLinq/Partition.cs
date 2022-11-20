@@ -85,6 +85,8 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             return source.GroupBy(predicate).Partition(resultSelector);
         }
 
