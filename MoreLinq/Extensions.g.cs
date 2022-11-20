@@ -4184,7 +4184,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
@@ -4208,7 +4208,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
@@ -4233,7 +4233,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/>, <paramref name="predicate"/>, or
-        /// <paramref name="resultSelector"/> is null.
+        /// <paramref name="resultSelector"/> is <see langword="null"/>.
         /// </exception>
         /// <example>
         /// <code><![CDATA[
@@ -4271,7 +4271,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -4300,7 +4300,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -4329,7 +4329,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -4360,7 +4360,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -4391,7 +4391,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
@@ -4424,7 +4424,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="source"/> or <paramref name="resultSelector"/> is
-        /// null.
+        /// <see langword="null"/>.
         /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
