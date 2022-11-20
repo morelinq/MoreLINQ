@@ -51,17 +51,15 @@ namespace MoreLinq.Experimental
         /// simultaneously) may iterate over the sequence.
         /// </remarks>
 
-        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
-        {
-            switch (source)
+        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source) =>
+            source switch
             {
-                case null: throw new ArgumentNullException(nameof(source));
-                case ICollection<T>        : // ...
-                case IReadOnlyCollection<T>: // ...
-                case MemoizedEnumerable<T> : return source;
-                default: return new MemoizedEnumerable<T>(source);
-            }
-        }
+                null => throw new ArgumentNullException(nameof(source)),
+                ICollection<T> => source,
+                IReadOnlyCollection<T> => source,
+                MemoizedEnumerable<T> => source,
+                _ => new MemoizedEnumerable<T>(source),
+            };
     }
 
     sealed class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
