@@ -183,33 +183,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public static void MemoizeRestartsAfterDisposal()
-        {
-            var starts = 0;
-
-            IEnumerable<int> TestSequence()
-            {
-                starts++;
-                yield return 1;
-                yield return 2;
-            }
-
-            var memoized = TestSequence().Memoize();
-
-            void Run()
-            {
-                using ((IDisposable) memoized)
-                    memoized.Take(1).Consume();
-            }
-
-            Run();
-            Assert.That(starts, Is.EqualTo(1));
-            Run();
-            Assert.That(starts, Is.EqualTo(2));
-        }
-
-        [Test]
-        public static void MemoizeIteratorThrowsWhenCacheDisposedDuringIteration()
+        public static void MemoizeIteratorThrowsWhenDisposedDuringIteration()
         {
             var sequence = Enumerable.Range(1, 10);
             var memoized = sequence.Memoize();
@@ -221,7 +195,7 @@ namespace MoreLinq.Test
             disposable.Dispose();
 
             var e = Assert.Throws<ObjectDisposedException>(() => reader.Read());
-            Assert.That(e.ObjectName, Is.EqualTo("MemoizedEnumerable"));
+            Assert.That(e.ObjectName, Is.EqualTo("MemoizedEnumerable`1"));
         }
 
         [Test]
@@ -259,66 +233,7 @@ namespace MoreLinq.Test
                 var e2 = Assert.Throws<Exception>(() => r2.Read());
                 Assert.That(e2, Is.SameAs(error));
             }
-            using (var r1 = memoized.Read())
-                Assert.That(r1.Read(), Is.EqualTo(123));
         }
-
-        [Test]
-        public void MemoizeRethrowsErrorDuringIterationStartToAllIteratorsUntilDisposed()
-        {
-            var error = new Exception("This is a test exception.");
-
-            var i = 0;
-            IEnumerable<int> TestSequence()
-            {
-                if (0 == i++) // throw at start for first iteration only
-                    throw error;
-                yield return 42;
-            }
-
-            var xs = new DisposalTrackingSequence<int>(TestSequence());
-            var memoized = xs.Memoize();
-            using ((IDisposable) memoized)
-            using (var r1 = memoized.Read())
-            using (var r2 = memoized.Read())
-            {
-                var e1 = Assert.Throws<Exception>(() => r1.Read());
-                Assert.That(e1, Is.SameAs(error));
-
-                Assert.That(xs.IsDisposed, Is.True);
-
-                var e2 = Assert.Throws<Exception>(() => r2.Read());
-                Assert.That(e2, Is.SameAs(error));
-            }
-
-            using (var r1 = memoized.Read())
-            using (var r2 = memoized.Read())
-                Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
-        }
-
-        [Test]
-        public void MemoizeRethrowsErrorDuringFirstIterationStartToAllIterationsUntilDisposed()
-        {
-            var error = new Exception("An error on the first call!");
-            var obj = new object();
-            var calls = 0;
-            var source = Delegate.Enumerable(() => 0 == calls++
-                                                 ? throw error
-                                                 : Enumerable.Repeat(obj, 1).GetEnumerator());
-
-            var memo = source.Memoize();
-
-            for (var i = 0; i < 2; i++)
-            {
-                var e = Assert.Throws<Exception>(() => memo.First());
-                Assert.That(e, Is.SameAs(error));
-            }
-
-            ((IDisposable) memo).Dispose();
-            Assert.That(memo.Single(), Is.EqualTo(obj));
-        }
-
-        // TODO Consolidate with MoreLinq.Test.TestingSequence<T>?
 
         sealed class DisposalTrackingSequence<T> : IEnumerable<T>, IDisposable
         {

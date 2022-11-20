@@ -154,10 +154,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestEmptyCartesianEvaluation()
         {
-            using var sequence = Enumerable.Range(0, 5).AsTestingSequence();
-
-            var resultA = sequence.Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
-            var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
+            var resultA = Enumerable.Range(0, 5).AsTestingSequence().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
+            var resultB = Enumerable.Empty<int>().Cartesian(Enumerable.Range(0, 5).AsTestingSequence(), (a, b) => new { A = a, B = b });
             var resultC = Enumerable.Empty<int>().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
 
             Assert.AreEqual(0, resultA.Count());
