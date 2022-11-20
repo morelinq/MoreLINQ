@@ -33,7 +33,8 @@ namespace MoreLinq
         /// A tuple of elements satisfying the predicate and those that do not,
         /// respectively.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is
+        /// <see langword="null"/>.</exception>
         /// <example>
         /// <code><![CDATA[
         /// var (evens, odds) =
