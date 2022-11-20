@@ -56,9 +56,9 @@ namespace MoreLinq.Experimental
             switch (source)
             {
                 case null: throw new ArgumentNullException(nameof(source));
-                case ICollection<T>: // ...
+                case ICollection<T>        : // ...
                 case IReadOnlyCollection<T>: // ...
-                case MemoizedEnumerable<T>: return source;
+                case MemoizedEnumerable<T> : return source;
                 default: return new MemoizedEnumerable<T>(source);
             }
         }
