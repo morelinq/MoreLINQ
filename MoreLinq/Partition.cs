@@ -202,7 +202,8 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 1, key, key2: default!, key3: default!, comparer,
+
+            return PartitionImpl(source, 1, key, key2: default, key3: default, comparer,
                                  (a, _, _, rest) => resultSelector(a, rest));
         }
 
@@ -268,8 +269,9 @@ namespace MoreLinq
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
-            return PartitionImpl(source, 2, key1, key2, key3: default!, comparer,
-                                 (a, b, _, rest) => resultSelector(a, b, rest));
+
+            return PartitionImpl(source, 2, key1, key2, key3: default, comparer,
+                                 (a, b, c, rest) => resultSelector(a, b, rest));
         }
 
         /// <summary>
@@ -337,7 +339,7 @@ namespace MoreLinq
             PartitionImpl(source, 3, key1, key2, key3, comparer, resultSelector);
 
         static TResult PartitionImpl<TKey, TElement, TResult>(IEnumerable<IGrouping<TKey, TElement>> source,
-            int count, TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
+            int count, TKey? key1, TKey? key2, TKey? key3, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
             Debug.Assert(count is > 0 and <= 3);
@@ -358,9 +360,9 @@ namespace MoreLinq
 
             foreach (var e in source)
             {
-                var i = count > 0 && comparer.Equals(e.Key, key1) ? 0
-                      : count > 1 && comparer.Equals(e.Key, key2) ? 1
-                      : count > 2 && comparer.Equals(e.Key, key3) ? 2
+                var i = count > 0 && comparer.Equals(e.Key, key1!) ? 0
+                      : count > 1 && comparer.Equals(e.Key, key2!) ? 1
+                      : count > 2 && comparer.Equals(e.Key, key3!) ? 2
                       : -1;
 
                 if (i < 0)
