@@ -68,7 +68,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b));
+            return EquiZipImpl(first, second, Enumerable.Repeat(default(object?), int.MaxValue), Enumerable.Repeat(default(object?), int.MaxValue), (a, b, _, _) => resultSelector(a, b), 2);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace MoreLinq
             if (third == null) throw new ArgumentNullException(nameof(third));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c));
+            return EquiZipImpl(first, second, third, Enumerable.Repeat(default(object?), int.MaxValue), (a, b, c, _) => resultSelector(a, b, c), 3);
         }
 
         /// <summary>
@@ -178,46 +178,49 @@ namespace MoreLinq
             if (fourth == null) throw new ArgumentNullException(nameof(fourth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl(first, second, third, fourth, resultSelector);
+            return EquiZipImpl(first, second, third, fourth, resultSelector, 4);
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1>  s1,
-            IEnumerable<T2>  s2,
-            IEnumerable<T3>? s3,
-            IEnumerable<T4>? s4,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+            IEnumerable<T1> s1,
+            IEnumerable<T2> s2,
+            IEnumerable<T3> s3,
+            IEnumerable<T4> s4,
+            Func<T1, T2, T3, T4, TResult> resultSelector,
+            int expectedTerminations)
         {
-            const int zero = 0, one = 1;
+            using var e1 = s1.GetEnumerator();
+            using var e2 = s2.GetEnumerator();
+            using var e3 = s3.GetEnumerator();
+            using var e4 = s4.GetEnumerator();
 
-            var limit = 1 + (s3 != null ? one : zero)
-                          + (s4 != null ? one : zero);
-
-            return ZipImpl(s1, s2, s3, s4, resultSelector, limit, enumerators =>
+            while (true)
             {
-                var i = enumerators.Index().First(x => x.Value == null).Key;
-                return new InvalidOperationException(OrdinalNumbers[i] + " sequence too short.");
-            });
-        }
+                if (!e1.MoveNext())
+                {
+                    if (e2.MoveNext()
+                        || expectedTerminations >= 3 && e3.MoveNext()
+                        || expectedTerminations >= 4 && e4.MoveNext())
+                    {
+                        throw new InvalidOperationException("First sequence too short.");
+                    }
 
-        static readonly string[] OrdinalNumbers =
-        {
-            "First",
-            "Second",
-            "Third",
-            "Fourth",
-            // "Fifth",
-            // "Sixth",
-            // "Seventh",
-            // "Eighth",
-            // "Ninth",
-            // "Tenth",
-            // "Eleventh",
-            // "Twelfth",
-            // "Thirteenth",
-            // "Fourteenth",
-            // "Fifteenth",
-            // "Sixteenth",
-        };
+                    yield break;
+                }
+
+                if (!e2.MoveNext())
+                    throw new InvalidOperationException("Second sequence too short.");
+                if (!e3.MoveNext())
+                    throw new InvalidOperationException("Third sequence too short.");
+                if (!e4.MoveNext())
+                    throw new InvalidOperationException("Fourth sequence too short.");
+
+                yield return resultSelector(
+                    e1.Current,
+                    e2.Current,
+                    e3.Current,
+                    e4.Current);
+            }
+        }
     }
 }
