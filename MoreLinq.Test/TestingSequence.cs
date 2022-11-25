@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         {
             None,
             AllowMultipleEnumerations
-        }
+    }
     }
 
     /// <summary>
@@ -86,15 +86,20 @@ namespace MoreLinq.Test
             _disposed = false;
             enumerator.Disposed += delegate
             {
-                Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
                 _disposed = true;
             };
             var ended = false;
             enumerator.MoveNextCalled += (_, moved) =>
             {
-                Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
+                Assert.That(_disposed, Is.False, "LINQ operators should not call MoveNext() on a disposed sequence.");
                 ended = !moved;
                 MoveNextCallCount++;
+            };
+			
+            enumerator.GetCurrentCalled += delegate
+            {
+                Assert.That(_disposed, Is.False, "LINQ operators should not attempt to get the Current value on a disposed sequence.");
+                Assert.That(ended, Is.False, "LINQ operators should not attempt to get the Current value on a completed sequence.");
             };
 
             if (!IsReiterationAllowed)
