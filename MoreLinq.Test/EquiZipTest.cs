@@ -17,7 +17,10 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
     using Tuple = System.ValueTuple;
 
     [TestFixture]
@@ -74,6 +77,29 @@ namespace MoreLinq.Test
         {
             var bs = new BreakingSequence<int>();
             bs.EquiZip(bs, BreakingFunc.Of<int, int, int>());
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new { A = 1, B = "First", },
+                new { A = 2, B = "Second", },
+                new { A = 3, B = "Third", },
+                new { A = 4, B = "Fourth", },
+            }
+            select new TestCaseData(e.A, e.B);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public void ShortestSequenceIsIdentifiedProperly(int shortSequence, string sequenceName)
+        {
+            using var seq1 = Enumerable.Range(1, shortSequence == 1 ? 2 : 3).AsTestingSequence();
+            using var seq2 = Enumerable.Range(1, shortSequence == 2 ? 2 : 3).AsTestingSequence();
+            using var seq3 = Enumerable.Range(1, shortSequence == 3 ? 2 : 3).AsTestingSequence();
+            using var seq4 = Enumerable.Range(1, shortSequence == 4 ? 2 : 3).AsTestingSequence();
+
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                seq1.EquiZip(seq2, seq3, seq4, (_, _, _, _) => 0).Consume());
+            Assert.That(ex.Message, Is.EqualTo(sequenceName + " sequence too short."));
         }
 
         [Test]
