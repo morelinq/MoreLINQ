@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -56,13 +57,13 @@ namespace MoreLinq
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
+            Func<TFirst?, TSecond?, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b), 1);
+            return ZipLongestImpl(first, second, Enumerable.Repeat(default(object?), int.MaxValue), Enumerable.Repeat(default(object?), int.MaxValue), (a, b, _, _) => resultSelector(a, b), 2);
         }
 
         /// <summary>
@@ -103,14 +104,14 @@ namespace MoreLinq
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
             IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+            Func<T1?, T2?, T3?, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (third == null) throw new ArgumentNullException(nameof(third));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c), 2);
+            return ZipLongestImpl(first, second, third, Enumerable.Repeat(default(object?), int.MaxValue), (a, b, c, _) => resultSelector(a, b, c), 3);
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace MoreLinq
             IEnumerable<T2> second,
             IEnumerable<T3> third,
             IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+            Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -163,7 +164,59 @@ namespace MoreLinq
             if (fourth == null) throw new ArgumentNullException(nameof(fourth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl(first, second, third, fourth, resultSelector, 3);
+            return ZipLongestImpl(first, second, third, fourth, resultSelector, 4);
+        }
+
+        private static IEnumerable<TResult> ZipLongestImpl<T1, T2, T3, T4, TResult>(
+            IEnumerable<T1> s1,
+            IEnumerable<T2> s2,
+            IEnumerable<T3> s3,
+            IEnumerable<T4> s4,
+            Func<T1?, T2?, T3?, T4?, TResult> resultSelector,
+            int limit)
+        {
+            using var e1 = s1.GetEnumerator();
+            using var e2 = s2.GetEnumerator();
+            using var e3 = s3.GetEnumerator();
+            using var e4 = s4.GetEnumerator();
+
+            while (true)
+            {
+                var terms = 4;
+
+                var v1 = default(T1?);
+                if (e1.MoveNext())
+                {
+                    v1 = e1.Current;
+                    terms--;
+                }
+
+                var v2 = default(T2?);
+                if (e2.MoveNext())
+                {
+                    v2 = e2.Current;
+                    terms--;
+                }
+
+                var v3 = default(T3?);
+                if (e3.MoveNext())
+                {
+                    v3 = e3.Current;
+                    terms--;
+                }
+
+                var v4 = default(T4?);
+                if (e4.MoveNext())
+                {
+                    v4 = e4.Current;
+                    terms--;
+                }
+
+                if (terms >= limit)
+                    yield break;
+
+                yield return resultSelector(v1, v2, v3, v4);
+            }
         }
     }
 }
