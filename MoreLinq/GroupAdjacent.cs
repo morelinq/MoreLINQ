@@ -87,7 +87,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return GroupAdjacent(source, keySelector, e => e, comparer);
+            return GroupAdjacent(source, keySelector, IdFn, comparer);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace MoreLinq
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
 
-            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
+            return GroupAdjacentImpl(source, keySelector, IdFn, ResultSelectorWrapper,
                                      EqualityComparer<TKey>.Default);
         }
 
@@ -253,7 +253,7 @@ namespace MoreLinq
 
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
-            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
+            return GroupAdjacentImpl(source, keySelector, IdFn, ResultSelectorWrapper,
                                      comparer ?? EqualityComparer<TKey>.Default);
         }
 
