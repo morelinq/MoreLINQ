@@ -1342,12 +1342,9 @@ namespace MoreLinq.Extensions
         /// element from each of the argument sequences. An exception is thrown
         /// if the input sequences are of different lengths.
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first
-        /// sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second
-        /// sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="resultSelector">
@@ -1388,11 +1385,9 @@ namespace MoreLinq.Extensions
         /// if the input sequences are of different lengths.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second
-        /// sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="third">The third sequence.</param>
@@ -1439,8 +1434,7 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second sequence</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence</typeparam>
         /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="third">The third sequence.</param>
@@ -1467,8 +1461,8 @@ namespace MoreLinq.Extensions
         /// var flags   = new[] { true, false, true, false };
         /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
         /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield
-        /// "1AaTrue", "2BbFalse", "3CcTrue", "4DdFalse" in turn.
+        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
+        /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
         /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
@@ -6773,12 +6767,9 @@ namespace MoreLinq.Extensions
         /// default value of each of the shorter sequence element types is used
         /// for padding.
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first
-        /// sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second
-        /// sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="resultSelector">
@@ -6818,11 +6809,9 @@ namespace MoreLinq.Extensions
         /// for padding.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second
-        /// sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="third">The third sequence.</param>
@@ -6869,8 +6858,7 @@ namespace MoreLinq.Extensions
         /// <typeparam name="T2">Type of elements in second sequence</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence</typeparam>
         /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="third">The third sequence.</param>
@@ -6894,9 +6882,8 @@ namespace MoreLinq.Extensions
         /// var flags   = new[] { true, false, true, false, true, false };
         /// var zipped  = numbers.ZipLongest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
         /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield
-        /// "1AaTrue", "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False"
-        /// in turn.
+        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
+        /// "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False" in turn.
         /// </example>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
@@ -6922,12 +6909,9 @@ namespace MoreLinq.Extensions
         /// element from each of the argument sequences. The resulting sequence
         /// is as short as the shortest input sequence.
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first
-        /// sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second
-        /// sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="resultSelector">
@@ -6945,8 +6929,7 @@ namespace MoreLinq.Extensions
         /// var letters = new[] { "A", "B", "C", "D" };
         /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
         /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
-        /// "2B", "3C", in turn.
+        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
         /// </example>
         /// <remarks>
         /// <para>
@@ -6955,8 +6938,7 @@ namespace MoreLinq.Extensions
         /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
-        /// This operator uses deferred execution and streams its
-        /// results.</para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(
@@ -6971,11 +6953,9 @@ namespace MoreLinq.Extensions
         /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second
-        /// sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">First sequence</param>
         /// <param name="second">Second sequence</param>
         /// <param name="third">Third sequence</param>
@@ -6996,8 +6976,8 @@ namespace MoreLinq.Extensions
         /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
         /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
         /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "98A",
-        /// "100B", "102C", in turn.
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// "98A", "100B", "102C", in turn.
         /// </example>
         /// <remarks>
         /// <para>
@@ -7006,8 +6986,7 @@ namespace MoreLinq.Extensions
         /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
-        /// This operator uses deferred execution and streams its
-        /// results.</para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
         /// <exception cref="ArgumentNullException"><paramref name="first"/> is
         /// <see langword="null"/>.</exception>
@@ -7030,13 +7009,10 @@ namespace MoreLinq.Extensions
         /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second
-        /// sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth
-        /// sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result
-        /// sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The second sequence.</param>
         /// <param name="third">The third sequence.</param>
@@ -7069,8 +7045,7 @@ namespace MoreLinq.Extensions
         /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
-        /// This operator uses deferred execution and streams its
-        /// results.</para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
         public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(
