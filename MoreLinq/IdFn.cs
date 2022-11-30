@@ -17,8 +17,8 @@
 
 namespace MoreLinq
 {
-    public static partial class MoreEnumerable
+    static partial class MoreEnumerable
     {
-        private static T IdFn<T>(T x) => x;
+        static T IdFn<T>(T x) => x;
     }
 }
