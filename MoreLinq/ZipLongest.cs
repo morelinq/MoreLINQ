@@ -40,6 +40,10 @@ namespace MoreLinq
         /// A sequence that contains elements of the two input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = { 1, 2, 3 };
@@ -85,6 +89,11 @@ namespace MoreLinq
         /// A sequence that contains elements of the three input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -135,6 +144,11 @@ namespace MoreLinq
         /// A sequence that contains elements of the four input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
