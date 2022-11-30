@@ -1,6 +1,6 @@
 version: '{build}'
 image:
-- Visual Studio 2019
+- Visual Studio 2022
 - Ubuntu1604
 - macos
 environment:
@@ -10,7 +10,7 @@ for:
 -
   matrix:
     only:
-      - image: Visual Studio 2019
+      - image: Visual Studio 2022
   environment:
     IMAGE_NAME: win
   deploy:
@@ -54,48 +54,43 @@ install:
 - git reset --hard
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 3.1.10 -SkipNonVersionedFiles }
-- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 2.1.23 -SkipNonVersionedFiles }
+- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 6.0.11 -SkipNonVersionedFiles }
 - sh: ./tools/dotnet-install.sh --jsonfile global.json
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 3.1.10 --skip-non-versioned-files
-- sh: ./tools/dotnet-install.sh --runtime dotnet --version 2.1.23 --skip-non-versioned-files
+- sh: ./tools/dotnet-install.sh --runtime dotnet --version 6.0.11 --skip-non-versioned-files
 - sh: export PATH="~/.dotnet:$PATH"
 before_build:
 - dotnet --info
 build_script:
-- ps: >-
+- pwsh: |
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
-
     if ($LASTEXITCODE -eq 0) {
         throw 'Unit tests should not import System.Linq'
+    } else {
+        $LASTEXITCODE = 0
     }
-
+- ps: |
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
-
     $id = $id.Substring(0, 13)
-
     if ($isWindows) { cmd /c call pack.cmd ci-$id } else { ./pack.sh ci-$id }
-
     if ($LASTEXITCODE -ne 0) {
         throw "Building/Packing failed with an exit code of $LASTEXITCODE."
     }
-
     $diff = git diff --ignore-all-space --exit-code 2>&1
-
     $diff | % { if ($_ -is [string]) { $_ } else { [string]$_ } } | echo
-
     if ($LASTEXITCODE -ne 0) {
         throw "New code was generated during build that's not been committed."
     }
 test_script:
 - cmd: test.cmd
 - sh: ./test.sh
-- ps: dotnet reportgenerator -reports:MoreLinq.Test/coverage.net5.0.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: dotnet reportgenerator -reports:MoreLinq.Test/TestResults/coverage-*.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: |
     cd tmp/cover
-    tar -cz -f "../../coverage-report-${IMAGE_NAME}.tar.gz" *
+    tar -cz -f "../../coverage-report-${env:IMAGE_NAME}.tar.gz" *
 - sh: curl -sSL https://codecov.io/bash > codecov
 - sh: chmod +x codecov
-- sh: if [ "$CI_LINUX" = "true" ]; then ./codecov -f ./MoreLinq.Test/coverage.net5.0.opencover.xml; fi
+- sh: if [ "$CI_LINUX" = "true" ]; then ./codecov; fi
 artifacts:
 - path: dist\*.nupkg
 - path: coverage-report-*

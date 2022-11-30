@@ -159,7 +159,7 @@ namespace MoreLinq.Test
                 new { Month = 1, Value = 781 },
             };
 
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
+            var groupings = source.GroupAdjacent(e => e.Month, (_, group) => group.Sum(v => v.Value));
 
             using var reader = groupings.Read();
             AssertResult(reader, 123 + 456 + 789);
@@ -188,13 +188,37 @@ namespace MoreLinq.Test
                 new { Month = "JAN", Value = 781 },
             };
 
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
+            var groupings = source.GroupAdjacent(e => e.Month, (_, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
 
             using var reader = groupings.Read();
             AssertResult(reader, 123 + 456 + 789);
             AssertResult(reader, 987 + 654 + 321);
             AssertResult(reader, 789 + 456 + 123);
             AssertResult(reader, 123 + 456 + 781);
+            reader.ReadEnd();
+        }
+
+        [Test]
+        public void GroupAdjacentSourceSequenceWithSomeNullKeys()
+        {
+            var groupings =
+                Enumerable.Range(1, 5)
+                          .SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
+                          .GroupAdjacent(x => x);
+
+            int?[] aNull = { null };
+
+            using var reader = groupings.Read();
+            AssertGrouping(reader, 1, 1);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 2, 2, 2);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 3, 3, 3, 3);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 4, 4, 4, 4, 4);
+            AssertGrouping(reader, null, aNull);
+            AssertGrouping(reader, 5, 5, 5, 5, 5, 5);
+            AssertGrouping(reader, null, aNull);
             reader.ReadEnd();
         }
 

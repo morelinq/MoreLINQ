@@ -82,19 +82,12 @@ namespace MoreLinq
 
                     keys = new List<TKey>();
                     counts = new List<int>();
-                    (bool, TKey) prevKey = default;
-                    var index = 0;
 
                     foreach (var item in source)
                     {
                         var key = keySelector(item);
 
-                        if (// key same as the previous? then re-use the index
-                            prevKey is (true, {} pk)
-                                && cmp.GetHashCode(pk) == cmp.GetHashCode(key)
-                                && cmp.Equals(pk, key)
-                            // otherwise try & find index of the key
-                            || dic.TryGetValue(key, out index))
+                        if (dic.TryGetValue(key, out var index))
                         {
                             counts[index]++;
                         }
@@ -105,8 +98,6 @@ namespace MoreLinq
                             keys.Add(key);
                             counts.Add(1);
                         }
-
-                        prevKey = (true, key);
                     }
                 }
             }

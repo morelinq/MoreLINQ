@@ -67,7 +67,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanByWithSecondOccurenceImmediatelyAfterFirst()
         {
-            var result = "jaffer".ScanBy(c => c, k => -1, (i, k, e) => i + 1);
+            var result = "jaffer".ScanBy(c => c, _ => -1, (i, _, _) => i + 1);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create('j', 0),
@@ -83,8 +83,8 @@ namespace MoreLinq.Test
         {
             var source = new[] { "a", "B", "c", "A", "b", "A" };
             var result = source.ScanBy(c => c,
-                                       k => -1,
-                                       (i, k, e) => i + 1,
+                                       _ => -1,
+                                       (i, _, _) => i + 1,
                                        StringComparer.OrdinalIgnoreCase);
 
             result.AssertSequenceEqual(
@@ -100,7 +100,7 @@ namespace MoreLinq.Test
         public void ScanByWithSomeNullKeys()
         {
             var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
-            var result = source.ScanBy(c => c, k => -1, (i, k, e) => i + 1);
+            var result = source.ScanBy(c => c, _ => -1, (i, _, _) => i + 1);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create("foo"       , 0),
@@ -116,6 +116,21 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void ScanByWithNullSeed()
+        {
+            var nil = (object)null;
+            var source = new[] { "foo", null, "bar", null, "baz" };
+            var result = source.ScanBy(c => c, _ => nil, (_, _, _) => nil);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create("foo"       , nil),
+                KeyValuePair.Create((string)null, nil),
+                KeyValuePair.Create("bar"       , nil),
+                KeyValuePair.Create((string)null, nil),
+                KeyValuePair.Create("baz"       , nil));
+        }
+
+        [Test]
         public void ScanByDoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => "ana",
@@ -127,7 +142,7 @@ namespace MoreLinq.Test
                                              () => "angelo",
                                              () => "carlos");
 
-            var result = source.ScanBy(c => c.First(), k => -1, (i, k, e) => i + 1);
+            var result = source.ScanBy(c => c.First(), _ => -1, (i, _, _) => i + 1);
 
             result.Take(5).AssertSequenceEqual(
                 KeyValuePair.Create('a', 0),

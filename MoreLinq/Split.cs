@@ -287,14 +287,12 @@ namespace MoreLinq
                         }
                         else
                         {
-                            if (items == null)
-                                items = new List<TSource>();
-
+                            items ??= new List<TSource>();
                             items.Add(item);
                         }
                     }
 
-                    if (items != null && items.Count > 0)
+                    if (items is { Count: > 0 })
                         yield return resultSelector(items);
                 }
             }

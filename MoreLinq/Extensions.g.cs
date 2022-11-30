@@ -360,7 +360,7 @@ namespace MoreLinq.Extensions
         /// <returns>The final accumulator value.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
@@ -386,7 +386,7 @@ namespace MoreLinq.Extensions
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
@@ -415,7 +415,7 @@ namespace MoreLinq.Extensions
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
+        /// int result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})", str => str.Length);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
@@ -690,6 +690,7 @@ namespace MoreLinq.Extensions
         /// <param name="size">Size of buckets.</param>
         /// <param name="resultSelector">The projection to apply to each bucket.</param>
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
+        /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
         /// (buckets are streamed but their content buffered).</para>
@@ -705,6 +706,7 @@ namespace MoreLinq.Extensions
         /// hoping for a single bucket, then it can lead to memory exhaustion
         /// (<see cref="OutOfMemoryException"/>).
         /// </para>
+        /// </remarks>
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
@@ -1905,8 +1907,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the first element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.FirstOrDefault(source);
 
     }
@@ -1926,7 +1927,13 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source)             => MoreEnumerable.Flatten(source);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source)             => MoreEnumerable.            Flatten(source);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -1950,8 +1957,14 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="predicate"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
-            => MoreEnumerable.Flatten(source, predicate);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+            => MoreEnumerable.            Flatten(source, predicate);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -1975,8 +1988,20 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="selector"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable?> selector)
-            => MoreEnumerable.Flatten(source, selector);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source,
+                    Func<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*....................*/ object,
+#nullable restore
+/*....................*/ IEnumerable?> selector)
+            => MoreEnumerable.            Flatten(source, selector);
 
     }
 
@@ -2391,7 +2416,7 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, comparer);
 
         /// <summary>
@@ -2450,7 +2475,7 @@ namespace MoreLinq.Extensions
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.FullGroupJoin(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer);
 
     }
@@ -3025,7 +3050,7 @@ namespace MoreLinq.Extensions
         /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lag(source, offset, resultSelector);
 
         /// <summary>
@@ -3088,8 +3113,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the last element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.LastOrDefault(source);
 
     }
@@ -3114,7 +3138,7 @@ namespace MoreLinq.Extensions
         /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
         /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
-        public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lead(source, offset, resultSelector);
 
         /// <summary>
@@ -3747,7 +3771,7 @@ namespace MoreLinq.Extensions
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.Pad(source, width);
 
         /// <summary>
@@ -3833,7 +3857,7 @@ namespace MoreLinq.Extensions
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
             => MoreEnumerable.PadStart(source, width);
 
         /// <summary>
@@ -3937,7 +3961,7 @@ namespace MoreLinq.Extensions
     {
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey})"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// </summary>
         /// <typeparam name="T">Type of elements in the sequence.</typeparam>
@@ -3954,7 +3978,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
@@ -3974,7 +3998,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation. An additional parameter specifies how the
         /// elements compare to each other.
         /// </summary>
@@ -3994,7 +4018,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
@@ -4024,7 +4048,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
         /// <typeparam name="TKey">Type of keys.</typeparam>
@@ -4044,7 +4068,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
@@ -4066,7 +4090,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// An additional parameter specifies how the keys compare to each other.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
@@ -4089,7 +4113,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
         /// </summary>
@@ -4970,7 +4994,7 @@ namespace MoreLinq.Extensions
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 5).Select(i => i.ToString()).ScanRight((a, b) => $"({a}+{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
@@ -4996,7 +5020,7 @@ namespace MoreLinq.Extensions
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => $"({a}+{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
@@ -5152,8 +5176,7 @@ namespace MoreLinq.Extensions
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.SingleOrDefault(source);
 
     }
@@ -6338,7 +6361,8 @@ namespace MoreLinq.Extensions
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)             => MoreEnumerable.ToDictionary(source);
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)
+            where TKey : notnull             => MoreEnumerable.ToDictionary(source);
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
         /// <see cref="KeyValuePair{TKey,TValue}" /> elements.
@@ -6351,7 +6375,8 @@ namespace MoreLinq.Extensions
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)             => MoreEnumerable.ToDictionary(source);
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
+            where TKey : notnull             => MoreEnumerable.ToDictionary(source);
 
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -6369,6 +6394,7 @@ namespace MoreLinq.Extensions
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
             => MoreEnumerable.ToDictionary(source, comparer);
 
         /// <summary>
@@ -6387,6 +6413,7 @@ namespace MoreLinq.Extensions
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
             => MoreEnumerable.ToDictionary(source, comparer);
 
     }

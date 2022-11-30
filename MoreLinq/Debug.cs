@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2016 Felipe Sateler. All rights reserved.
+// Copyright (c) 2022 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,26 +17,15 @@
 
 namespace MoreLinq
 {
-    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.CompilerServices;
 
-    sealed class ReverseComparer<T> : IComparer<T>
+    static class Debug
     {
-        readonly IComparer<T> _underlying;
-
-        public ReverseComparer(IComparer<T>? underlying)
-        {
-            _underlying = underlying ?? Comparer<T>.Default;
-        }
-
-        public int Compare
-#if NETCOREAPP3_1_OR_GREATER
-            (T? x, T? y)
-#else
-            (T x, T y)
-#endif
-        {
-            var result = _underlying.Compare(x, y);
-            return result < 0 ? 1 : result > 0 ? -1 : 0;
-        }
+        [Conditional("DEBUG")]
+        public static void Assert([DoesNotReturnIf(false)] bool condition,
+                                  [CallerArgumentExpression(nameof(condition))] string? message = null) =>
+            System.Diagnostics.Debug.Assert(condition);
     }
 }

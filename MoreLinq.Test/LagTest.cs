@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -42,7 +44,7 @@ namespace MoreLinq.Test
         public void TestLagNegativeOffsetException()
         {
             AssertThrowsArgument.OutOfRangeException("offset",() =>
-                Enumerable.Repeat(1, 10).Lag(-10, (val, lagVal) => val));
+                Enumerable.Repeat(1, 10).Lag(-10, (val, _) => val));
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace MoreLinq.Test
             const int lagBy = 10;
             const int lagDefault = -1;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lag(lagBy, lagDefault, (val, lagVal) => lagVal);
+            var result = sequence.Lag(lagBy, lagDefault, (_, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(lagDefault, lagBy)));
@@ -80,7 +82,7 @@ namespace MoreLinq.Test
             const int count = 100;
             const int lagBy = 10;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lag(lagBy, (val, lagVal) => lagVal);
+            var result = sequence.Lag(lagBy, (_, lagVal) => lagVal);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result.Take(lagBy), Is.EqualTo(Enumerable.Repeat(default(int), lagBy)));
@@ -95,7 +97,7 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequence = Enumerable.Range(1, count);
-            var result = sequence.Lag(count + 1, (a, b) => a);
+            var result = sequence.Lag(count + 1, (a, _) => a);
 
             Assert.AreEqual(count, result.Count());
             Assert.That(result, Is.EqualTo(sequence));
@@ -130,6 +132,31 @@ namespace MoreLinq.Test
             Assert.AreEqual(count, result.Count());
             Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 2)));
             Assert.IsTrue(result.Take(2).All(x => (x.A - x.B) == x.A));
+        }
+
+        [Test]
+        public void TestLagWithNullableReferences()
+        {
+            var words = new[] { "foo", "bar", "baz", "qux" };
+            var result = words.Lag(2, (a, b) => new { A = a, B = b });
+            result.AssertSequenceEqual(
+                new { A = "foo", B = (string?)null  },
+                new { A = "bar", B = (string?)null  },
+                new { A = "baz", B = (string?)"foo" },
+                new { A = "qux", B = (string?)"bar" });
+        }
+
+        [Test]
+        public void TestLagWithNonNullableReferences()
+        {
+            var words = new[] { "foo", "bar", "baz", "qux" };
+            var empty = string.Empty;
+            var result = words.Lag(2, empty, (a, b) => new { A = a, B = b });
+            result.AssertSequenceEqual(
+                new { A = "foo", B = empty },
+                new { A = "bar", B = empty },
+                new { A = "baz", B = "foo" },
+                new { A = "qux", B = "bar" });
         }
     }
 }

@@ -23,7 +23,6 @@ namespace MoreLinq.Experimental
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
@@ -69,7 +68,7 @@ namespace MoreLinq.Experimental
 
         AwaitQueryOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
         {
-            MaxConcurrency = maxConcurrency == null || maxConcurrency > 0
+            MaxConcurrency = maxConcurrency is null or > 0
                            ? maxConcurrency
                            : throw new ArgumentOutOfRangeException(
                                  nameof(maxConcurrency), maxConcurrency,
@@ -529,16 +528,14 @@ namespace MoreLinq.Experimental
                         {
                             var (error1, error2) = lastCriticalErrors;
                             throw new Exception("One or more critical errors have occurred.",
-                                error2 != null ? new AggregateException(error1, error2)
-                                               : new AggregateException(error1));
+                                error2 != null ? new AggregateException(Assume.NotNull(error1), error2)
+                                               : new AggregateException(Assume.NotNull(error1)));
                         }
 
                         var (kind, result, error) = notice.Current;
 
                         if (kind == Notice.Error)
-                        {
-                            error!.Throw();
-                        }
+                            Assume.NotNull(error).Throw();
 
                         if (kind == Notice.End)
                             break;

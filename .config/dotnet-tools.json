@@ -3,13 +3,13 @@
   "isRoot": true,
   "tools": {
     "dotnet-t4": {
-      "version": "2.2.0",
+      "version": "2.3.0",
       "commands": [
         "t4"
       ]
     },
     "dotnet-reportgenerator-globaltool": {
-      "version": "4.6.4",
+      "version": "5.1.11",
       "commands": [
         "reportgenerator"
       ]

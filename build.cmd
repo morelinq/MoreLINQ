@@ -27,7 +27,7 @@ exit /b 2
 
 :codegen
 echo | set /p=Generating extensions wrappers (%1)...
-dotnet run -p bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
+dotnet run --project bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
   && move "%temp%\%~nx1" "%~dp1" > nul ^
   && echo Done.
 goto :EOF

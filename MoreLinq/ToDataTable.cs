@@ -164,14 +164,13 @@ namespace MoreLinq
                 var body = lambda.Body;
 
                 // If it's a field access, boxing was used, we need the field
-                if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
+                if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
                     body = ((UnaryExpression)body).Operand;
 
                 // Check if the member expression is valid and is a "first level"
                 // member access e.g. not a.b.c
-                return body is MemberExpression memberExpression
-                       && memberExpression.Expression.NodeType == ExpressionType.Parameter
-                     ? memberExpression.Member
+                return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
+                     ? member
                      : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
         }
