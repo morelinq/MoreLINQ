@@ -33,14 +33,12 @@ namespace MoreLinq
         /// random numbers in a thread-safe way</a>.
         /// On .NET 6+, delegates to <c>Random.Shared</c>.
         /// </remarks>
+
+        sealed class GlobalRandom : Random
+        {
 #if NET6_0_OR_GREATER
-        sealed class GlobalRandom : Random
-        {
             public static Random Instance => Shared;
-        }
 #else
-        sealed class GlobalRandom : Random
-        {
             public static Random Instance { get; } = new GlobalRandom();
 
             static int _seed = Environment.TickCount;
@@ -67,7 +65,7 @@ namespace MoreLinq
 
                 throw new NotImplementedException();
             }
-        }
 #endif
+        }
     }
 }
