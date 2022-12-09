@@ -37,7 +37,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize)
         {
-            return RandomSubset(source, subsetSize, new Random());
+            return RandomSubset(source, subsetSize, GlobalRandom.Instance);
         }
 
         /// <summary>
