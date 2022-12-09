@@ -19,7 +19,9 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+#if !NET6_0_OR_GREATER
     using System.Threading;
+#endif
 
     public static partial class MoreEnumerable
     {
@@ -214,6 +216,50 @@ namespace MoreLinq
         {
             while (true)
                 yield return nextValue(rand);
+        }
+
+        /// <remarks>
+        /// <see cref="System.Random"/> is not thread-safe so the following
+        /// implementation uses thread-local <see cref="System.Random"/>
+        /// instances to create the illusion of a global
+        /// <see cref="System.Random"/> implementation. For some background,
+        /// see <a href="https://blogs.msdn.microsoft.com/pfxteam/2009/02/19/getting-random-numbers-in-a-thread-safe-way/">Getting
+        /// random numbers in a thread-safe way</a>.
+        /// On .NET 6+, delegates to <c>Random.Shared</c>.
+        /// </remarks>
+
+        sealed class GlobalRandom : Random
+        {
+#if NET6_0_OR_GREATER
+            public static Random Instance => Shared;
+#else
+            public static Random Instance { get; } = new GlobalRandom();
+
+            static int _seed = Environment.TickCount;
+            [ThreadStatic] static Random? _threadRandom;
+            static Random ThreadRandom => _threadRandom ??= new Random(Interlocked.Increment(ref _seed));
+
+            GlobalRandom() { }
+
+            public override int Next() => ThreadRandom.Next();
+            public override int Next(int minValue, int maxValue) => ThreadRandom.Next(minValue, maxValue);
+            public override int Next(int maxValue) => ThreadRandom.Next(maxValue);
+            public override double NextDouble() => ThreadRandom.NextDouble();
+            public override void NextBytes(byte[] buffer) => ThreadRandom.NextBytes(buffer);
+
+            protected override double Sample()
+            {
+                // All the NextXXX calls are hijacked above to use the Random
+                // instance allocated for the thread so no call from the base
+                // class should ever end up here. If Random introduces new
+                // virtual members in the future that call into Sample and
+                // which end up getting used in the implementation of a
+                // randomizing operator from the outer class then they will
+                // need to be overriden.
+
+                throw new NotImplementedException();
+            }
+#endif
         }
     }
 }
