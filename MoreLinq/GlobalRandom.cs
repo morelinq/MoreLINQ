@@ -30,8 +30,8 @@ namespace MoreLinq
         /// instances to create the illusion of a global
         /// <see cref="System.Random"/> implementation. For some background,
         /// see <a href="https://blogs.msdn.microsoft.com/pfxteam/2009/02/19/getting-random-numbers-in-a-thread-safe-way/">Getting
-        /// random numbers in a thread-safe way.
-        /// On .NET 6+ delegate to Random.Shared.</a>
+        /// random numbers in a thread-safe way</a>.
+        /// On .NET 6+, delegates to <c>Random.Shared</c>.
         /// </remarks>
 #if NET6_0_OR_GREATER
         sealed class GlobalRandom : Random
