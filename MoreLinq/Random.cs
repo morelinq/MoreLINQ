@@ -28,6 +28,7 @@ namespace MoreLinq
         /// </summary>
         /// <returns>An infinite sequence of random integers</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -40,7 +41,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<int> Random()
@@ -70,6 +73,7 @@ namespace MoreLinq
         /// <param name="maxValue">exclusive upper bound for the random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -82,7 +86,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<int> Random(int maxValue)
@@ -117,6 +123,7 @@ namespace MoreLinq
         /// <param name="maxValue">Exclusive upper bound of the values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -129,7 +136,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<int> Random(int minValue, int maxValue)
@@ -165,6 +174,7 @@ namespace MoreLinq
         /// </summary>
         /// <returns>An infinite sequence of random doubles</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -177,7 +187,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<double> RandomDouble()
