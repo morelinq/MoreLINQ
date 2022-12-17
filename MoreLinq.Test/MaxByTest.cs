@@ -34,15 +34,15 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByReturnsMaxima()
         {
-            Assert.AreEqual(new[] { "hello", "world" },
-                            SampleData.Strings.MaxBy(x => x.Length));
+            Assert.That(SampleData.Strings.MaxBy(x => x.Length),
+                        Is.EqualTo(new[] { "hello", "world" }));
         }
 
         [Test]
         public void MaxByNullComparer()
         {
-            Assert.AreEqual(SampleData.Strings.MaxBy(x => x.Length),
-                            SampleData.Strings.MaxBy(x => x.Length, null));
+            Assert.That(SampleData.Strings.MaxBy(x => x.Length, null),
+                        Is.EqualTo(SampleData.Strings.MaxBy(x => x.Length)));
         }
 
         [Test]
@@ -54,13 +54,13 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByWithNaturalComparer()
         {
-            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MaxBy(x => x[1]));
+            Assert.That(SampleData.Strings.MaxBy(x => x[1]), Is.EqualTo(new[] { "az" }));
         }
 
         [Test]
         public void MaxByWithComparer()
         {
-            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer));
+            Assert.That(SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer), Is.EqualTo(new[] { "aa" }));
         }
 
         public class First

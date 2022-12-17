@@ -130,27 +130,27 @@ namespace MoreLinq.Test
 
             // Assert properties first, then fields, then in declaration order
 
-            Assert.AreEqual("AString", dt.Columns[0].Caption);
-            Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
+            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
 
-            Assert.AreEqual("ANullableDecimal", dt.Columns[1].Caption);
-            Assert.AreEqual(typeof(decimal), dt.Columns[1].DataType);
+            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
+            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
 
-            Assert.AreEqual("KeyField", dt.Columns[2].Caption);
-            Assert.AreEqual(typeof(int), dt.Columns[2].DataType);
+            Assert.That(dt.Columns[2].Caption, Is.EqualTo("KeyField"));
+            Assert.That(dt.Columns[2].DataType, Is.EqualTo(typeof(int)));
 
-            Assert.AreEqual("ANullableGuidField", dt.Columns[3].Caption);
-            Assert.AreEqual(typeof(Guid), dt.Columns[3].DataType);
+            Assert.That(dt.Columns[3].Caption, Is.EqualTo("ANullableGuidField"));
+            Assert.That(dt.Columns[3].DataType, Is.EqualTo(typeof(Guid)));
             Assert.IsTrue(dt.Columns[3].AllowDBNull);
 
-            Assert.AreEqual(4, dt.Columns.Count);
+            Assert.That(dt.Columns.Count, Is.EqualTo(4));
         }
 
         [Test]
         public void ToDataTableContainsAllElements()
         {
             var dt = _testObjects.ToDataTable();
-            Assert.AreEqual(_testObjects.Count, dt.Rows.Count);
+            Assert.That(dt.Rows.Count, Is.EqualTo(_testObjects.Count));
         }
 
         [Test]
@@ -158,10 +158,10 @@ namespace MoreLinq.Test
         {
             var dt = _testObjects.ToDataTable(t => t.AString);
 
-            Assert.AreEqual("AString", dt.Columns[0].Caption);
-            Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
+            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
 
-            Assert.AreEqual(1, dt.Columns.Count);
+            Assert.That(dt.Columns.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -201,15 +201,15 @@ namespace MoreLinq.Test
         {
             var points = new[] { new Point(12, 34) }.ToDataTable();
 
-            Assert.AreEqual(3, points.Columns.Count);
+            Assert.That(points.Columns.Count, Is.EqualTo(3));
             DataColumn x, y, empty;
             Assert.NotNull(x = points.Columns["X"]);
             Assert.NotNull(y = points.Columns["Y"]);
             Assert.NotNull(empty = points.Columns["IsEmpty"]);
             var row = points.Rows.Cast<DataRow>().Single();
-            Assert.AreEqual(12, row[x]);
-            Assert.AreEqual(34, row[y]);
-            Assert.AreEqual(false, row[empty]);
+            Assert.That(row[x], Is.EqualTo(12));
+            Assert.That(row[y], Is.EqualTo(34));
+            Assert.That(row[empty], Is.False);
         }
     }
 }

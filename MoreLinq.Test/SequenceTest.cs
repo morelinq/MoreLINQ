@@ -124,7 +124,7 @@ namespace MoreLinq.Test
         {
             var result = MoreEnumerable.Sequence(start, stop, step);
 
-            Assert.AreEqual(result.Count(), count);
+            Assert.That(result.Count(), Is.EqualTo(count));
         }
 
         [TestCase(           5,           10)]

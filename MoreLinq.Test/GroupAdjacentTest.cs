@@ -235,7 +235,7 @@ namespace MoreLinq.Test
         {
             var result = reader.Read();
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(element, result);
+            Assert.That(result, Is.EqualTo(element));
         }
     }
 }

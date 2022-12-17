@@ -89,7 +89,7 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
+            Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
             Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
@@ -132,7 +132,7 @@ namespace MoreLinq.Test
                                            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
+            Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
             Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
         }
 
@@ -159,7 +159,7 @@ namespace MoreLinq.Test
             {
                 var permutedSet = set.Permutations();
                 var permutationCount = permutedSet.Count();
-                Assert.AreEqual(Combinatorics.Factorial(set.Count()), permutationCount);
+                Assert.That(permutationCount, Is.EqualTo(Combinatorics.Factorial(set.Count())));
             }
         }
 
@@ -192,7 +192,7 @@ namespace MoreLinq.Test
                 for (var j = 1; j < listPermutations.Count; j++)
                 {
                     if (j == i) continue;
-                    Assert.AreNotSame(listPermutations[i], listPermutations[j]);
+                    Assert.That(listPermutations[i], Is.Not.SameAs(listPermutations[j]));
                 }
             }
         }

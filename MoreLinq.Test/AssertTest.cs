@@ -57,7 +57,7 @@ namespace MoreLinq.Test
             var e =
                 Assert.Throws<ValueException>(() =>
                     new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
-            Assert.AreEqual(7, e.Value);
+            Assert.That(e.Value, Is.EqualTo(7));
         }
 
         class ValueException : Exception

@@ -68,8 +68,8 @@ namespace MoreLinq.Test
             var resultB = MoreEnumerable.RandomDouble(new Random()).Take(RandomTrials);
 
             // NOTE: Unclear what should actually be verified here... some additional thought needed.
-            Assert.AreEqual(RandomTrials, resultA.Count());
-            Assert.AreEqual(RandomTrials, resultB.Count());
+            Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
             Assert.IsTrue(resultA.All(x => x is >= 0.0 and < 1.0));
             Assert.IsTrue(resultB.All(x => x is >= 0.0 and < 1.0));
         }
@@ -84,8 +84,8 @@ namespace MoreLinq.Test
             var resultA = MoreEnumerable.Random(max).Take(RandomTrials);
             var resultB = MoreEnumerable.Random(new Random(), max).Take(RandomTrials);
 
-            Assert.AreEqual(RandomTrials, resultA.Count());
-            Assert.AreEqual(RandomTrials, resultB.Count());
+            Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
             Assert.IsTrue(resultA.All(x => x < max));
             Assert.IsTrue(resultB.All(x => x < max));
         }
@@ -101,8 +101,8 @@ namespace MoreLinq.Test
             var resultA = MoreEnumerable.Random(min, max).Take(RandomTrials);
             var resultB = MoreEnumerable.Random(new Random(), min, max).Take(RandomTrials);
 
-            Assert.AreEqual(RandomTrials, resultA.Count());
-            Assert.AreEqual(RandomTrials, resultB.Count());
+            Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
             Assert.IsTrue(resultA.All(x => x is >= min and < max));
             Assert.IsTrue(resultB.All(x => x is >= min and < max));
         }

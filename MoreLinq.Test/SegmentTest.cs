@@ -77,7 +77,7 @@ namespace MoreLinq.Test
                 for (var i = 0; i < 2; i++)
                 {
                     Assert.IsTrue(segment.Any());
-                    Assert.AreEqual(value, segment.Single());
+                    Assert.That(segment.Single(), Is.EqualTo(value));
                 }
             }
         }
@@ -127,10 +127,10 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(1, count);
             var result = sequence.Segment((_, i) => i % segmentSize == 0);
 
-            Assert.AreEqual(count / segmentSize, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count / segmentSize));
             foreach (var segment in result)
             {
-                Assert.AreEqual(segmentSize, segment.Count());
+                Assert.That(segment.Count(), Is.EqualTo(segmentSize));
             }
         }
 
@@ -145,7 +145,7 @@ namespace MoreLinq.Test
                                      .SelectMany(x => Enumerable.Repeat(x, repCount));
             var result = sequence.Segment((curr, prev, _) => curr != prev);
 
-            Assert.AreEqual(sequence.Distinct().Count(), result.Count());
+            Assert.That(result.Count(), Is.EqualTo(sequence.Distinct().Count()));
             Assert.IsTrue(result.All(s => s.Count() == repCount));
         }
 
