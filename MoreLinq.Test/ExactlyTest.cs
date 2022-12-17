@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(0));
+                Assert.That(xs.Exactly(0), Is.True);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         public void ExactlyWithSingleElementHasExactlyOneElements()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(1));
+                Assert.That(xs.Exactly(1), Is.True);
         }
 
         [Test]

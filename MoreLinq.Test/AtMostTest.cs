@@ -33,14 +33,14 @@ namespace MoreLinq.Test
         public void AtMostWithEmptySequenceHasAtMostZeroElements()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(0));
+                Assert.That(xs.AtMost(0), Is.True);
         }
 
         [Test]
         public void AtMostWithEmptySequenceHasAtMostOneElement()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(1));
+                Assert.That(xs.AtMost(1), Is.True);
         }
 
         [Test]
@@ -54,14 +54,14 @@ namespace MoreLinq.Test
         public void AtMostWithSingleElementHasAtMostOneElement()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(1));
+                Assert.That(xs.AtMost(1), Is.True);
         }
 
         [Test]
         public void AtMostWithSingleElementHasAtMostManyElements()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtMost(2));
+                Assert.That(xs.AtMost(2), Is.True);
         }
 
         [Test]

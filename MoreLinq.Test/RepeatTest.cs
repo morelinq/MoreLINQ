@@ -77,7 +77,7 @@ namespace MoreLinq.Test
 
             var result = sequence.Repeat();
 
-            Assert.IsTrue(result.Take(100).All(x => x == value));
+            Assert.That(result.Take(100).All(x => x == value), Is.True);
         }
 
         /// <summary>

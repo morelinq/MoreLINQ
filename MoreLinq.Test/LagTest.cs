@@ -115,7 +115,7 @@ namespace MoreLinq.Test
             var result = sequence.Lag(1, (a, b) => new { A = a, B = b });
 
             Assert.That(result.Count(), Is.EqualTo(count));
-            Assert.IsTrue(result.All(x => x.B == (x.A - 1)));
+            Assert.That(result.All(x => x.B == (x.A - 1)), Is.True);
         }
 
         /// <summary>
@@ -130,8 +130,8 @@ namespace MoreLinq.Test
             var result = sequence.Lag(2, (a, b) => new { A = a, B = b });
 
             Assert.That(result.Count(), Is.EqualTo(count));
-            Assert.IsTrue(result.Skip(2).All(x => x.B == (x.A - 2)));
-            Assert.IsTrue(result.Take(2).All(x => (x.A - x.B) == x.A));
+            Assert.That(result.Skip(2).All(x => x.B == (x.A - 2)), Is.True);
+            Assert.That(result.Take(2).All(x => (x.A - x.B) == x.A), Is.True);
         }
 
         [Test]

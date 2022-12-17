@@ -63,7 +63,7 @@ namespace MoreLinq.Test
             var permutations = set.Permutations();
 
             // should contain two results: the set itself and its reverse
-            Assert.IsTrue(permutations.Count() == 2);
+            Assert.That(permutations.Count(), Is.EqualTo(2));
             Assert.That(permutations.First(), Is.EqualTo(set));
             Assert.That(permutations.Last(), Is.EqualTo(set.Reverse()));
         }
@@ -90,7 +90,7 @@ namespace MoreLinq.Test
 
             // should contain six permutations (as defined above)
             Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+            Assert.That(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))), Is.True);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace MoreLinq.Test
 
             // should contain six permutations (as defined above)
             Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+            Assert.That(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))), Is.True);
         }
 
         /// <summary>

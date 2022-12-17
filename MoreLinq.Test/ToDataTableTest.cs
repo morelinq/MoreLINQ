@@ -141,7 +141,7 @@ namespace MoreLinq.Test
 
             Assert.That(dt.Columns[3].Caption, Is.EqualTo("ANullableGuidField"));
             Assert.That(dt.Columns[3].DataType, Is.EqualTo(typeof(Guid)));
-            Assert.IsTrue(dt.Columns[3].AllowDBNull);
+            Assert.That(dt.Columns[3].AllowDBNull, Is.True);
 
             Assert.That(dt.Columns.Count, Is.EqualTo(4));
         }

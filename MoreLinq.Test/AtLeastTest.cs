@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
+                Assert.That(xs.AtLeast(0), Is.True);
         }
 
         [Test]
@@ -54,14 +54,14 @@ namespace MoreLinq.Test
         public void AtLeastWithSingleElementHasAtLeastZeroElements()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
+                Assert.That(xs.AtLeast(0), Is.True);
         }
 
         [Test]
         public void AtLeastWithSingleElementHasAtLeastOneElement()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
+                Assert.That(xs.AtLeast(1), Is.True);
         }
 
         [Test]
@@ -75,21 +75,21 @@ namespace MoreLinq.Test
         public void AtLeastWithManyElementsHasAtLeastZeroElements()
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
+                Assert.That(xs.AtLeast(0), Is.True);
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastOneElement()
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
+                Assert.That(xs.AtLeast(1), Is.True);
         }
 
         [Test]
         public void AtLeastWithManyElementsHasAtLeastManyElements()
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(2));
+                Assert.That(xs.AtLeast(2), Is.True);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace MoreLinq.Test
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => throw new TestException());
-            Assert.IsTrue(source.AtLeast(2));
+            Assert.That(source.AtLeast(2), Is.True);
         }
     }
 }

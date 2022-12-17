@@ -144,7 +144,7 @@ namespace MoreLinq.Test
             // ensure that all "cells" were visited by the cartesian product
             foreach (var coord in result)
                 expectedSet[coord.A][coord.B] = true;
-            Assert.IsTrue(expectedSet.SelectMany(x => x).All(z => z));
+            Assert.That(expectedSet.SelectMany(x => x).All(z => z), Is.True);
         }
 
         /// <summary>

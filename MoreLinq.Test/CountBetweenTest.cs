@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         public void CountBetweenWithMaxEqualsMin()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.CountBetween(1, 1));
+                Assert.That(xs.CountBetween(1, 1), Is.True);
         }
 
         [TestCase(1, 2, 4, false)]
