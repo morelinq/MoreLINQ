@@ -185,7 +185,7 @@ namespace MoreLinq.Test
 
             var listPermutations = new List<IList<int>>();
             listPermutations.AddRange(permutedSets);
-            Assert.IsNotEmpty(listPermutations);
+            Assert.That(listPermutations, Is.Not.Empty);
 
             for (var i = 0; i < listPermutations.Count; i++)
             {
