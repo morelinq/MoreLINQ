@@ -52,7 +52,7 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithReturnsTrueIfBothEmpty()
         {
-            Assert.True(new int[0].EndsWith(new int[0]));
+            Assert.That(new int[0].EndsWith(new int[0]), Is.True);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace MoreLinq.Test
             Assert.That(first.EndsWith(second), Is.False);
             Assert.That(first.EndsWith(second, null), Is.False);
             Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
-            Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
+            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
         }
 
         [TestCase(SourceKind.BreakingCollection)]
