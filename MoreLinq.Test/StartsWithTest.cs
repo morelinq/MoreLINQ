@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         [Test]
         public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.False(new int[0].StartsWith(new[] {1,2,3}));
+            Assert.That(new int[0].StartsWith(new[] {1,2,3}), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -85,9 +85,9 @@ namespace MoreLinq.Test
             var first = new[] {1,2,3};
             var second = new[] {4,5,6};
 
-            Assert.False(first.StartsWith(second));
-            Assert.False(first.StartsWith(second, null));
-            Assert.False(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
+            Assert.That(first.StartsWith(second), Is.False);
+            Assert.That(first.StartsWith(second, null), Is.False);
+            Assert.That(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
             Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
         }
 
@@ -98,7 +98,7 @@ namespace MoreLinq.Test
             var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
             var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
 
-            Assert.False(first.StartsWith(second));
+            Assert.That(first.StartsWith(second), Is.False);
         }
     }
 }
