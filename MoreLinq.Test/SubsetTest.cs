@@ -107,7 +107,7 @@ namespace MoreLinq.Test
 
             var expectedCount = Math.Pow(2, count);
 
-            Assert.AreEqual(expectedCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace MoreLinq.Test
             // number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
             var expectedSubsetCount = Combinatorics.Binomial(count, subsetSize);
 
-            Assert.AreEqual(expectedSubsetCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedSubsetCount));
         }
 
         /// <summary>

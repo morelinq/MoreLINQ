@@ -215,7 +215,7 @@ namespace MoreLinq.Test
             var resultList = result.ToList();
             var expectationList = expectation.ToList();
 
-            Assert.AreEqual(expectationList.Count, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(expectationList.Count));
 
             expectationList.Zip(resultList, ValueTuple.Create)
                            .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));

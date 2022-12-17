@@ -66,7 +66,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.RandomSubset(0); // we can only get subsets <= sequence.Count()
 
-            Assert.AreEqual(0, result.Count());
+            Assert.That(result.Count(), Is.Zero);
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(count, new Random(12345));
 
             // ensure random subset is always a complete reordering of original sequence
-            Assert.AreEqual(count, resultA.Distinct().Count());
-            Assert.AreEqual(count, resultB.Distinct().Count());
+            Assert.That(resultA.Distinct().Count(), Is.EqualTo(count));
+            Assert.That(resultB.Distinct().Count(), Is.EqualTo(count));
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(subsetSize, new Random(12345));
 
             // ensure random subset is always a distinct subset of original sequence
-            Assert.AreEqual(subsetSize, resultA.Distinct().Count());
-            Assert.AreEqual(subsetSize, resultB.Distinct().Count());
+            Assert.That(resultA.Distinct().Count(), Is.EqualTo(subsetSize));
+            Assert.That(resultB.Distinct().Count(), Is.EqualTo(subsetSize));
         }
 
         /// <summary>

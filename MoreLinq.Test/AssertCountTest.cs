@@ -112,7 +112,7 @@ namespace MoreLinq.Test
         public void AssertCountWithMatchingCollectionCount()
         {
             var xs = new[] { 123, 456, 789 };
-            Assert.AreSame(xs, xs.AssertCount(3));
+            Assert.That(xs, Is.SameAs(xs.AssertCount(3)));
         }
 
         [TestCase(3, 2, "Sequence contains too many elements when exactly 2 were expected.")]
@@ -122,7 +122,7 @@ namespace MoreLinq.Test
             var xs = new int[sourceCount];
             using var enumerator = xs.AssertCount(count).GetEnumerator();
             var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
-            Assert.AreEqual(e.Message, message);
+            Assert.That(e.Message, Is.EqualTo(message));
         }
 
         [Test]

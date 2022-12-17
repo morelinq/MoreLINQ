@@ -88,7 +88,7 @@ namespace MoreLinq.Test
 
             var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-            Assert.AreEqual(expectedCount, result.Count() );
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace MoreLinq.Test
             var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
 
             const int expectedCount = countA * countB * countC * countD;
-            Assert.AreEqual(expectedCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace MoreLinq.Test
                             .ToArray();
 
             // verify that the expected number of results is correct
-            Assert.AreEqual(sequenceA.Count() * sequenceB.Count(), result.Count());
+            Assert.That(result.Count(), Is.EqualTo(sequenceA.Count() * sequenceB.Count()));
 
             // ensure that all "cells" were visited by the cartesian product
             foreach (var coord in result)
@@ -160,9 +160,9 @@ namespace MoreLinq.Test
             var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
             var resultC = Enumerable.Empty<int>().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
 
-            Assert.AreEqual(0, resultA.Count());
-            Assert.AreEqual(0, resultB.Count());
-            Assert.AreEqual(0, resultC.Count());
+            Assert.That(resultA.Count(), Is.Zero);
+            Assert.That(resultB.Count(), Is.Zero);
+            Assert.That(resultC.Count(), Is.Zero);
         }
     }
 }

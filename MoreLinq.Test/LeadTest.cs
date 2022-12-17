@@ -69,7 +69,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(leadBy, leadDefault, (_, leadVal) => leadVal);
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(leadDefault, leadBy)));
         }
 
@@ -84,7 +84,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(leadBy, (_, leadVal) => leadVal);
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(default(int), leadBy)));
         }
 
@@ -100,7 +100,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(count + 1, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(sequence.Select(x => new { A = x, B = leadDefault })));
         }
 
@@ -115,7 +115,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(1, count + 1, (val, leadVal) => new { A = val, B = leadVal });
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.IsTrue(result.All(x => x.B == (x.A + 1)));
         }
 
@@ -131,7 +131,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(2, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
             Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && x.A is count or count - 1));
         }

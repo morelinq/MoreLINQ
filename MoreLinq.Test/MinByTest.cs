@@ -34,15 +34,15 @@ namespace MoreLinq.Test
         [Test]
         public void MinByReturnsMinima()
         {
-            Assert.AreEqual(new[] { "ax", "aa", "ab", "ay", "az" },
-                            SampleData.Strings.MinBy(x => x.Length));
+            Assert.That(SampleData.Strings.MinBy(x => x.Length),
+                        Is.EqualTo(new[] { "ax", "aa", "ab", "ay", "az" }));
         }
 
         [Test]
         public void MinByNullComparer()
         {
-            Assert.AreEqual(SampleData.Strings.MinBy(x => x.Length),
-                            SampleData.Strings.MinBy(x => x.Length, null));
+            Assert.That(SampleData.Strings.MinBy(x => x.Length, null),
+                        Is.EqualTo(SampleData.Strings.MinBy(x => x.Length)));
         }
 
         [Test]
@@ -54,13 +54,13 @@ namespace MoreLinq.Test
         [Test]
         public void MinByWithNaturalComparer()
         {
-            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MinBy(x => x[1]));
+            Assert.That(SampleData.Strings.MinBy(x => x[1]), Is.EqualTo(new[] { "aa" }));
         }
 
         [Test]
         public void MinByWithComparer()
         {
-            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MinBy(x => x[1], Comparable<char>.DescendingOrderComparer));
+            Assert.That(SampleData.Strings.MinBy(x => x[1], Comparable<char>.DescendingOrderComparer), Is.EqualTo(new[] { "az" }));
         }
 
         public class First

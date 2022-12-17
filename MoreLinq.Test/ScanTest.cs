@@ -55,7 +55,7 @@ namespace MoreLinq.Test
         [Test]
         public void SeededScanEmpty()
         {
-            Assert.AreEqual(-1, new int[0].Scan(-1, SampleData.Plus).Single());
+            Assert.That(new int[0].Scan(-1, SampleData.Plus).Single(), Is.EqualTo(-1));
         }
 
         [Test]
