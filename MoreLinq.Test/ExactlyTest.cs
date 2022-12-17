@@ -40,7 +40,7 @@ namespace MoreLinq.Test
         public void ExactlyWithEmptySequenceHasExactlyOneElement()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
+                Assert.That(xs.Exactly(1), Is.False);
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace MoreLinq.Test
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
+                Assert.That(xs.Exactly(1), Is.False);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => throw new TestException());
-            Assert.IsFalse(source.Exactly(2));
+            Assert.That(source.Exactly(2), Is.False);
         }
     }
 }

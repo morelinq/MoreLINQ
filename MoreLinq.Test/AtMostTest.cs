@@ -47,7 +47,7 @@ namespace MoreLinq.Test
         public void AtMostWithSingleElementHasAtMostZeroElements()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtMost(0));
+                Assert.That(xs.AtMost(0), Is.False);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         public void AtMostWithManyElementsHasAtMostOneElements()
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtMost(1));
+                Assert.That(xs.AtMost(1), Is.False);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => throw new TestException());
-            Assert.IsFalse(source.AtMost(2));
+            Assert.That(source.AtMost(2), Is.False);
         }
     }
 }

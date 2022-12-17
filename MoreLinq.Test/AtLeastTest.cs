@@ -40,14 +40,14 @@ namespace MoreLinq.Test
         public void AtLeastWithEmptySequenceHasAtLeastOneElement()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(1));
+                Assert.That(xs.AtLeast(1), Is.False);
         }
 
         [Test]
         public void AtLeastWithEmptySequenceHasAtLeastManyElements()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
+                Assert.That(xs.AtLeast(2), Is.False);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         public void AtLeastWithSingleElementHasAtLeastManyElements()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
+                Assert.That(xs.AtLeast(2), Is.False);
         }
 
         [Test]
