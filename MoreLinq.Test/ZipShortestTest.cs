@@ -19,7 +19,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
     using Tuple = System.ValueTuple;
 
@@ -111,8 +110,8 @@ namespace MoreLinq.Test
         {
             using var s1 = TestingSequence.Of(1, 2);
 
-            Assert.Throws<InvalidOperationException>(() =>
-                s1.ZipShortest(new BreakingSequence<int>(), Tuple.Create).Consume());
+            Assert.That(() => s1.ZipShortest(new BreakingSequence<int>(), Tuple.Create).Consume(),
+                        Throws.InvalidOperationException);
         }
     }
 }

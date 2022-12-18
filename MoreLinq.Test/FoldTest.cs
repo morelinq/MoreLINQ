@@ -26,22 +26,22 @@ namespace MoreLinq.Test
         [Test]
         public void FoldWithTooFewItems()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()));
+            Assert.That(() => Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()),
+                        Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
         public void FoldWithEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()));
+            Assert.That(() => Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()),
+                        Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]
         public void FoldWithTooManyItems()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()));
+            Assert.That(() => Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()),
+                        Throws.TypeOf<InvalidOperationException>());
         }
 
         [Test]

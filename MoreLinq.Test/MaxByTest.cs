@@ -19,7 +19,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -85,16 +84,18 @@ namespace MoreLinq.Test
             public void WithEmptySourceThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.First(strings.MaxBy(s => s.Length)));
+                Assert.That(() =>
+                    MoreEnumerable.First(strings.MaxBy(s => s.Length)),
+                    Throws.InvalidOperationException);
             }
 
             [Test]
             public void WithEmptySourceWithComparerThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+                Assert.That(() =>
+                    MoreEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)),
+                    Throws.InvalidOperationException);
             }
         }
 
@@ -155,16 +156,18 @@ namespace MoreLinq.Test
             public void WithEmptySourceThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.Last(strings.MaxBy(s => s.Length)));
+                Assert.That(() =>
+                    MoreEnumerable.Last(strings.MaxBy(s => s.Length)),
+                    Throws.InvalidOperationException);
             }
 
             [Test]
             public void WithEmptySourceWithComparerThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+                Assert.That(() =>
+                    MoreEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)),
+                    Throws.InvalidOperationException);
             }
         }
 

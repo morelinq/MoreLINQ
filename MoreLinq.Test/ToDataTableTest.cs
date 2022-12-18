@@ -70,8 +70,8 @@ namespace MoreLinq.Test
         {
             Expression<Func<TestObject, object>> expression = null;
 
-            AssertThrowsArgument.Exception("expressions",() =>
-                _testObjects.ToDataTable(expression));
+            Assert.That(() => _testObjects.ToDataTable(expression),
+                        Throws.ArgumentException("expressions"));
         }
 
         [Test]
@@ -80,8 +80,8 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("Test");
 
-            AssertThrowsArgument.Exception("table",() =>
-                _testObjects.ToDataTable(dt));
+            Assert.That(() => _testObjects.ToDataTable(dt),
+                        Throws.ArgumentException("table"));
         }
 
         [Test]
@@ -90,37 +90,37 @@ namespace MoreLinq.Test
             var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
-            AssertThrowsArgument.Exception("table",() =>
-                _testObjects.ToDataTable(dt, t=>t.AString));
+            Assert.That(() => _testObjects.ToDataTable(dt, t=>t.AString),
+                        Throws.ArgumentException("table"));
         }
 
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            AssertThrowsArgument.Exception("lambda", () =>
-                _testObjects.ToDataTable(t => t.ToString()));
+            Assert.That(() => _testObjects.ToDataTable(t => t.ToString()),
+                        Throws.ArgumentException("lambda"));
         }
 
 
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            AssertThrowsArgument.Exception("lambda", () =>
-                _testObjects.ToDataTable(t => t.ToString().Length));
+            Assert.That(() => _testObjects.ToDataTable(t => t.ToString().Length),
+                        Throws.ArgumentException("lambda"));
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            AssertThrowsArgument.Exception("lambda",() =>
-                _testObjects.ToDataTable(t => t[0]));
+            Assert.That(() => _testObjects.ToDataTable(t => t[0]),
+                        Throws.ArgumentException("lambda"));
         }
 
         [Test]
         public void ToDataTableMemberExpressionStatic()
         {
-            AssertThrowsArgument.Exception("lambda", () =>
-                _ = _testObjects.ToDataTable(_ => DateTime.Now));
+            Assert.That(() => _ = _testObjects.ToDataTable(_ => DateTime.Now),
+                        Throws.ArgumentException("lambda"));
         }
 
         [Test]

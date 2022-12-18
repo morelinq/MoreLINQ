@@ -58,7 +58,7 @@
       <Compile Include="Test*.cs" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
-      <Compile Include="AssertThrowsArgument.cs" />
+      <Compile Include="Throws.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingAction.cs" />
       <Compile Include="BreakingFunc.cs" />

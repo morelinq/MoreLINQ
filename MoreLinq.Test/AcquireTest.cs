@@ -57,7 +57,7 @@ namespace MoreLinq.Test
                                                  () => throw new TestException(),
                                                  () => c = new Disposable());
 
-            Assert.Throws<TestException>(() => allocators.Acquire());
+            Assert.That(allocators.Acquire, Throws.TypeOf<TestException>());
 
             Assert.That(a, Is.Not.Null);
             Assert.That(a.Disposed, Is.True);
