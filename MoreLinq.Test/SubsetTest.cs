@@ -90,7 +90,7 @@ namespace MoreLinq.Test
             var prevSubset = Enumerable.Empty<int>();
             foreach (var subset in result)
             {
-                Assert.GreaterOrEqual(subset.Count, prevSubset.Count());
+                Assert.That(subset.Count, Is.GreaterThanOrEqualTo(prevSubset.Count()));
                 prevSubset = subset;
             }
         }
