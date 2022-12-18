@@ -203,9 +203,9 @@ namespace MoreLinq.Test
 
             Assert.That(points.Columns.Count, Is.EqualTo(3));
             DataColumn x, y, empty;
-            Assert.NotNull(x = points.Columns["X"]);
-            Assert.NotNull(y = points.Columns["Y"]);
-            Assert.NotNull(empty = points.Columns["IsEmpty"]);
+            Assert.That(x = points.Columns["X"], Is.Not.Null);
+            Assert.That(y = points.Columns["Y"], Is.Not.Null);
+            Assert.That(empty = points.Columns["IsEmpty"], Is.Not.Null);
             var row = points.Rows.Cast<DataRow>().Single();
             Assert.That(row[x], Is.EqualTo(12));
             Assert.That(row[y], Is.EqualTo(34));
