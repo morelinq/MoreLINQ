@@ -60,8 +60,7 @@ namespace MoreLinq.Test
         {
             var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            Assert.That(() => zipped.Consume(),
-                        Throws.InvalidOperationException);
+            Assert.That(zipped.Consume, Throws.InvalidOperationException);
         }
 
         [Test]
@@ -69,8 +68,7 @@ namespace MoreLinq.Test
         {
             var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            Assert.That(() => zipped.Consume(),
-                        Throws.InvalidOperationException);
+            Assert.That(zipped.Consume, Throws.InvalidOperationException);
         }
 
         [Test]

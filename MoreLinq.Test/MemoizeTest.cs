@@ -310,8 +310,7 @@ namespace MoreLinq.Test
             var memo = source.Memoize();
 
             for (var i = 0; i < 2; i++)
-                Assert.That(() => memo.First(),
-                            Throws.TypeOf<Exception>().And.SameAs(error));
+                Assert.That(memo.First, Throws.TypeOf<Exception>().And.SameAs(error));
 
             ((IDisposable) memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));
