@@ -36,7 +36,7 @@ namespace MoreLinq.Test
         public void TestNegativeMaxValueException()
         {
             const int maxValue = -10;
-            Assert.Less(maxValue, 0);
+            Assert.That(maxValue, Is.LessThan(0));
 
             AssertThrowsArgument.OutOfRangeException("maxValue",() =>
                 MoreEnumerable.Random(maxValue));
