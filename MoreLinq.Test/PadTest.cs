@@ -19,7 +19,6 @@
 
 namespace MoreLinq.Test
 {
-    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
