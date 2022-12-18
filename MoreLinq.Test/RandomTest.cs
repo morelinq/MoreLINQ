@@ -52,7 +52,7 @@ namespace MoreLinq.Test
             const int minValue = 100;
             const int maxValue = 10;
 
-            Assert.Greater(minValue, maxValue);
+            Assert.That(minValue, Is.GreaterThan(maxValue));
 
             AssertThrowsArgument.OutOfRangeException("minValue",() =>
                 MoreEnumerable.Random(minValue, maxValue));
