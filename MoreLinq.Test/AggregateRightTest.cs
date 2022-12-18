@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,8 +27,8 @@ namespace MoreLinq.Test
         [Test]
         public void AggregateRightWithEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(
-                () => new int[0].AggregateRight((a, b) => a + b));
+            Assert.That(() => new int[0].AggregateRight((a, b) => a + b),
+                        Throws.InvalidOperationException);
         }
 
         [Test]

@@ -116,8 +116,8 @@ namespace MoreLinq.Test
                 KeyValuePair.Create(1, "bob"    ),
                 KeyValuePair.Create(0, "davi"   ));
 
-            Assert.Throws<TestException>(() =>
-                result.ElementAt(5));
+            Assert.That(() => result.ElementAt(5),
+                        Throws.TypeOf<TestException>());
         }
     }
 }

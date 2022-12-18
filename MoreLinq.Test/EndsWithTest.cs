@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithReturnsTrueIfBothEmpty()
         {
-            Assert.True(new int[0].EndsWith(new int[0]));
+            Assert.That(new int[0].EndsWith(new int[0]), Is.True);
         }
 
         [Test]
         public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.False(new int[0].EndsWith(new[] {1,2,3}));
+            Assert.That(new int[0].EndsWith(new[] {1,2,3}), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -85,10 +85,10 @@ namespace MoreLinq.Test
             var first = new[] {1,2,3};
             var second = new[] {4,5,6};
 
-            Assert.False(first.EndsWith(second));
-            Assert.False(first.EndsWith(second, null));
-            Assert.False(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
-            Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
+            Assert.That(first.EndsWith(second), Is.False);
+            Assert.That(first.EndsWith(second, null), Is.False);
+            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
+            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
         }
 
         [TestCase(SourceKind.BreakingCollection)]
@@ -98,7 +98,7 @@ namespace MoreLinq.Test
             var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
             var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
 
-            Assert.False(first.EndsWith(second));
+            Assert.That(first.EndsWith(second), Is.False);
         }
     }
 }

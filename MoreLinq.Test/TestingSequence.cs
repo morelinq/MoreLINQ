@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         {
             if (_disposed == null)
                 return;
-            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+            Assert.That(_disposed, Is.True, "Expected sequence to be disposed.");
             _disposed = null;
         }
 

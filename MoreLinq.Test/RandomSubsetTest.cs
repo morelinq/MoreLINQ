@@ -43,8 +43,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-                Enumerable.Range(1, 10).RandomSubset(-5));
+            Assert.That(() => Enumerable.Range(1, 10).RandomSubset(-5),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-                Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
+            Assert.That(() => Enumerable.Range(1, 10).RandomSubset(-1, new Random()),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -113,10 +113,8 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-            {
-                sequence.RandomSubset(subsetSize).Consume();
-            });
+            Assert.That(() => sequence.RandomSubset(subsetSize).Consume(),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -130,10 +128,8 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-            {
-                sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
-            });
+            Assert.That(() => sequence.RandomSubset(subsetSize, new Random(1234)).Consume(),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -186,10 +182,10 @@ namespace MoreLinq.Test
 
             // ensure that wth increasing trial size the a RSD% continually decreases
             for (var j = 0; j < rsdResults.Length - 1; j++)
-                Assert.Less(rsdResults[j + 1], rsdResults[j]);
+                Assert.That(rsdResults[j + 1], Is.LessThan(rsdResults[j]));
 
             // ensure that the RSD% for the 5M trial size is < 1.0    (this is somewhat arbitrary)
-            Assert.Less(rsdResults.Last(), 1.0);
+            Assert.That(rsdResults.Last(), Is.LessThan(1.0));
 
             // for sanity, we output the RSD% values as a cross-check, the expected result should be
             // that the RSD% rapidly decreases and eventually drops below 1.0

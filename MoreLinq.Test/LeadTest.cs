@@ -43,8 +43,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadNegativeOffset()
         {
-            AssertThrowsArgument.OutOfRangeException("offset", () =>
-                Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
+            Assert.That(() => Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal),
+                        Throws.ArgumentOutOfRangeException("offset"));
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadZeroOffset()
         {
-            AssertThrowsArgument.OutOfRangeException("offset", () =>
-                Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
+            Assert.That(() => Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal),
+                        Throws.ArgumentOutOfRangeException("offset"));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace MoreLinq.Test
             var result = sequence.Lead(1, count + 1, (val, leadVal) => new { A = val, B = leadVal });
 
             Assert.That(result.Count(), Is.EqualTo(count));
-            Assert.IsTrue(result.All(x => x.B == (x.A + 1)));
+            Assert.That(result.All(x => x.B == (x.A + 1)), Is.True);
         }
 
         /// <summary>
@@ -132,8 +132,8 @@ namespace MoreLinq.Test
             var result = sequence.Lead(2, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
             Assert.That(result.Count(), Is.EqualTo(count));
-            Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
-            Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && x.A is count or count - 1));
+            Assert.That(result.Take(count - 2).All(x => x.B == (x.A + 2)), Is.True);
+            Assert.That(result.Skip(count - 2).All(x => x.B == leadDefault && x.A is count or count - 1), Is.True);
         }
 
         [Test]

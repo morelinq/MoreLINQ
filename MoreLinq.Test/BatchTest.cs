@@ -27,8 +27,8 @@ namespace MoreLinq.Test
         [TestCase(-1)]
         public void BatchBadSize(int size)
         {
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                new object[0].Batch(size));
+            Assert.That(() => new object[0].Batch(size),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         [Test]
@@ -153,10 +153,10 @@ namespace MoreLinq.Test
         [TestCase(-1)]
         public void BatchBadSize(int size)
         {
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                new object[0].Batch(size, ArrayPool<object>.Shared,
-                                    BreakingFunc.Of<ICurrentBuffer<object>, IEnumerable<object>>(),
-                                    BreakingFunc.Of<IEnumerable<object>, object>()));
+            Assert.That(() => new object[0].Batch(size, ArrayPool<object>.Shared,
+                                                  BreakingFunc.Of<ICurrentBuffer<object>, IEnumerable<object>>(),
+                                                  BreakingFunc.Of<IEnumerable<object>, object>()),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         [Test]

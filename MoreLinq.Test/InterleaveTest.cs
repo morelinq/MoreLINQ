@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     /// <summary>
@@ -46,7 +45,8 @@ namespace MoreLinq.Test
             var sequenceB = new BreakingSequence<int>();
 
             // Expected and thrown by BreakingSequence
-            Assert.Throws<InvalidOperationException>(() => sequenceA.Interleave(sequenceB).Consume());
+            Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         /// <summary>
@@ -60,7 +60,8 @@ namespace MoreLinq.Test
             using var sequenceB = MoreEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
 
             // Expected and thrown by sequenceB
-            Assert.Throws<TestException>(() => sequenceA.Interleave(sequenceB).Consume());
+            Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
+                        Throws.TypeOf<TestException>());
         }
 
         /// <summary>

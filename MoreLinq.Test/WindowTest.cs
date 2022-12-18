@@ -87,8 +87,8 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                sequence.Window(-5));
+            Assert.That(() => sequence.Window(-5),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         /// <summary>

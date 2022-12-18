@@ -19,7 +19,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
     using Tuple = System.ValueTuple;
 
@@ -33,8 +32,8 @@ namespace MoreLinq.Test
             using var shorter = TestingSequence.Of(1, 2);
 
             // Yes, this will throw... but then we should still have disposed both sequences
-            Assert.Throws<InvalidOperationException>(() =>
-                longer.EquiZip(shorter, (x, y) => x + y).Consume());
+            Assert.That(() => longer.EquiZip(shorter, (x, y) => x + y).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
@@ -44,8 +43,8 @@ namespace MoreLinq.Test
             using var shorter = TestingSequence.Of(1, 2);
 
             // Yes, this will throw... but then we should still have disposed both sequences
-            Assert.Throws<InvalidOperationException>(() =>
-                shorter.EquiZip(longer, (x, y) => x + y).Consume());
+            Assert.That(() => shorter.EquiZip(longer, (x, y) => x + y).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
@@ -61,8 +60,7 @@ namespace MoreLinq.Test
         {
             var zipped = new[] { 1, 2 }.EquiZip(new[] { 4, 5, 6 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            Assert.Throws<InvalidOperationException>(() =>
-                zipped.Consume());
+            Assert.That(zipped.Consume, Throws.InvalidOperationException);
         }
 
         [Test]
@@ -70,8 +68,7 @@ namespace MoreLinq.Test
         {
             var zipped = new[] { 1, 2, 3 }.EquiZip(new[] { 4, 5 }, Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
-            Assert.Throws<InvalidOperationException>(() =>
-                zipped.Consume());
+            Assert.That(zipped.Consume, Throws.InvalidOperationException);
         }
 
         [Test]
@@ -91,8 +88,8 @@ namespace MoreLinq.Test
                                                () => throw new TestException())
                                          .AsTestingSequence();
 
-            Assert.Throws<InvalidOperationException>(() =>
-                s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume());
+            Assert.That(() => s1.EquiZip(s2, s3, (x, y, z) => x + y + z).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
@@ -100,8 +97,8 @@ namespace MoreLinq.Test
         {
             using var s1 = TestingSequence.Of(1, 2);
 
-            Assert.Throws<InvalidOperationException>(() =>
-                s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume());
+            Assert.That(() => s1.EquiZip(new BreakingSequence<int>(), Tuple.Create).Consume(),
+                        Throws.InvalidOperationException);
         }
     }
 }

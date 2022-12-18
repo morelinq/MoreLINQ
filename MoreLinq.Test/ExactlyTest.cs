@@ -25,36 +25,36 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.Exactly(-1));
+            Assert.That(() => new[] { 1 }.Exactly(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyZeroElements()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(0));
+                Assert.That(xs.Exactly(0), Is.True);
         }
 
         [Test]
         public void ExactlyWithEmptySequenceHasExactlyOneElement()
         {
             foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
+                Assert.That(xs.Exactly(1), Is.False);
         }
 
         [Test]
         public void ExactlyWithSingleElementHasExactlyOneElements()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(1));
+                Assert.That(xs.Exactly(1), Is.True);
         }
 
         [Test]
         public void ExactlyWithManyElementHasExactlyOneElement()
         {
             foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
+                Assert.That(xs.Exactly(1), Is.False);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => throw new TestException());
-            Assert.IsFalse(source.Exactly(2));
+            Assert.That(source.Exactly(2), Is.False);
         }
     }
 }

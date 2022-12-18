@@ -80,8 +80,8 @@ namespace MoreLinq.Test
         {
             using var s1 = TestingSequence.Of(1, 2);
 
-            Assert.Throws<InvalidOperationException>(() =>
-                s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
+            Assert.That(() => s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume(),
+                        Throws.InvalidOperationException);
         }
     }
 }

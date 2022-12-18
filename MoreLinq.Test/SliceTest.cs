@@ -143,7 +143,7 @@ namespace MoreLinq.Test
             var result = sequence.Slice(sliceStart, sliceCount);
 
             Assert.That(result.Count(), Is.EqualTo(sliceCount));
-            CollectionAssert.AreEqual(Enumerable.Range(5, sliceCount), result);
+            Assert.That(Enumerable.Range(5, sliceCount), Is.EqualTo(result));
         }
     }
 }

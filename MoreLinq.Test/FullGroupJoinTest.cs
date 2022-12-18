@@ -50,10 +50,10 @@ namespace MoreLinq.Test
 
             Assert.That(result.Keys.Count, Is.EqualTo(3));
 
-            Assert.IsEmpty(result[1].Second);
+            Assert.That(result[1].Second, Is.Empty);
             result[1].First.AssertSequenceEqual(1);
 
-            Assert.IsEmpty(result[3].First);
+            Assert.That(result[3].First, Is.Empty);
             result[3].Second.AssertSequenceEqual(3);
 
             result[2].First.AssertSequenceEqual(2);
@@ -71,10 +71,10 @@ namespace MoreLinq.Test
 
             Assert.That(result.Keys.Count, Is.EqualTo(2));
 
-            Assert.IsEmpty(result[2].First);
+            Assert.That(result[2].First, Is.Empty);
             Assert.That(result[2].Second.Single(), Is.EqualTo(2));
 
-            Assert.IsEmpty(result[3].First);
+            Assert.That(result[3].First, Is.Empty);
             Assert.That(result[3].Second.Single(), Is.EqualTo(3));
         }
 
@@ -90,10 +90,10 @@ namespace MoreLinq.Test
             Assert.That(result.Keys.Count, Is.EqualTo(2));
 
             Assert.That(result[2].First.Single(), Is.EqualTo(2));
-            Assert.IsEmpty(result[2].Second);
+            Assert.That(result[2].Second, Is.Empty);
 
             Assert.That(result[3].First.Single(), Is.EqualTo(3));
-            Assert.IsEmpty(result[3].Second);
+            Assert.That(result[3].Second, Is.Empty);
         }
 
         [TestCase(CustomResult)]

@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -48,7 +47,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
             var gold = new[] {1, 3, 6};
-            Assert.Throws<InvalidOperationException>(sequence.Consume);
+            Assert.That(sequence.Consume, Throws.InvalidOperationException);
             sequence.Take(3).AssertSequenceEqual(gold);
         }
 
@@ -77,7 +76,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus);
             var gold = new[] { 0, 1, 3, 6 };
-            Assert.Throws<InvalidOperationException>(sequence.Consume);
+            Assert.That(sequence.Consume, Throws.InvalidOperationException);
             sequence.Take(4).AssertSequenceEqual(gold);
         }
 

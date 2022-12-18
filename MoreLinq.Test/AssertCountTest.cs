@@ -27,10 +27,10 @@ namespace MoreLinq.Test
         public void AssertCountNegativeCount()
         {
             var source = new object[0];
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                source.AssertCount(-1));
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()));
+            Assert.That(() => source.AssertCount(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
+            Assert.That(() => source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         [Test]
@@ -42,46 +42,47 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountShortSequence()
         {
-            Assert.Throws<SequenceException>(() =>
-                "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume());
+            Assert.That(() => "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume(),
+                        Throws.TypeOf<SequenceException>());
         }
 
         [Test]
         public void AssertCountLongSequence()
         {
-            Assert.Throws<SequenceException>(() =>
-                "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume());
+            Assert.That(() => "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume(),
+                        Throws.TypeOf<SequenceException>());
         }
 
-        [Test]
-        public void AssertCountDefaultExceptionMessageVariesWithCase()
+        [TestCase(4, "Sequence contains too few elements when exactly 4 were expected.")]
+        [TestCase(2, "Sequence contains too many elements when exactly 2 were expected.")]
+        public void AssertCountDefaultExceptionMessageVariesWithCase(int count, string expectedMessage)
         {
             var tokens = "foo,bar,baz".GenerateSplits(',');
-            var e1 = Assert.Throws<SequenceException>(() => tokens.AssertCount(4).Consume());
-            var e2 = Assert.Throws<SequenceException>(() => tokens.AssertCount(2).Consume());
-            Assert.That(e1.Message, Is.Not.EqualTo(e2.Message));
+
+            Assert.That(() => tokens.AssertCount(count).Consume(),
+                        Throws.TypeOf<SequenceException>().With.Message.EqualTo(expectedMessage));
         }
 
         [Test]
         public void AssertCountLongSequenceWithErrorSelector()
         {
-            var e =
-                Assert.Throws<TestException>(() =>
-                    "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count))
-                                 .Consume());
-            Assert.That(e.Cmp, Is.GreaterThan(0));
-            Assert.That(e.Count, Is.EqualTo(2));
+            Assert.That(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count))
+                             .Consume(),
+                Throws.TypeOf<TestException>()
+                      .With.Property(nameof(TestException.Cmp)).GreaterThan(0)
+                      .And.Count.EqualTo(2));
         }
 
         [Test]
         public void AssertCountShortSequenceWithErrorSelector()
         {
-            var e =
-                Assert.Throws<TestException>(() =>
-                    "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count))
-                                 .Consume());
-            Assert.That(e.Cmp, Is.LessThan(0));
-            Assert.That(e.Count, Is.EqualTo(4));
+            Assert.That(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count))
+                             .Consume(),
+                Throws.TypeOf<TestException>()
+                      .With.Property(nameof(TestException.Cmp)).LessThan(0)
+                      .And.Count.EqualTo(4));
         }
 
         sealed class TestException : Exception
@@ -121,8 +122,8 @@ namespace MoreLinq.Test
         {
             var xs = new int[sourceCount];
             using var enumerator = xs.AssertCount(count).GetEnumerator();
-            var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
-            Assert.That(e.Message, Is.EqualTo(message));
+            Assert.That(enumerator.MoveNext,
+                        Throws.TypeOf<SequenceException>().With.Message.EqualTo(message));
         }
 
         [Test]

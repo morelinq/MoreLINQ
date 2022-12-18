@@ -36,8 +36,8 @@ namespace MoreLinq.Test
         public void SubscribeWithNullObserverThrows()
         {
             var subject = new Subject<int>();
-            var e = Assert.Throws<ArgumentNullException>(() => subject.Subscribe(null));
-            Assert.That(e.ParamName, Is.EqualTo("observer"));
+            Assert.That(() => subject.Subscribe(null),
+                        Throws.ArgumentNullException("observer"));
         }
 
         [Test]

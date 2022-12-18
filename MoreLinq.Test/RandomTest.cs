@@ -36,10 +36,10 @@ namespace MoreLinq.Test
         public void TestNegativeMaxValueException()
         {
             const int maxValue = -10;
-            Assert.Less(maxValue, 0);
+            Assert.That(maxValue, Is.LessThan(0));
 
-            AssertThrowsArgument.OutOfRangeException("maxValue",() =>
-                MoreEnumerable.Random(maxValue));
+            Assert.That(() => MoreEnumerable.Random(maxValue),
+                        Throws.ArgumentOutOfRangeException("maxValue"));
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace MoreLinq.Test
             const int minValue = 100;
             const int maxValue = 10;
 
-            Assert.Greater(minValue, maxValue);
+            Assert.That(minValue, Is.GreaterThan(maxValue));
 
-            AssertThrowsArgument.OutOfRangeException("minValue",() =>
-                MoreEnumerable.Random(minValue, maxValue));
+            Assert.That(() => MoreEnumerable.Random(minValue, maxValue),
+                        Throws.ArgumentOutOfRangeException("minValue"));
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace MoreLinq.Test
             // NOTE: Unclear what should actually be verified here... some additional thought needed.
             Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
             Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
-            Assert.IsTrue(resultA.All(x => x is >= 0.0 and < 1.0));
-            Assert.IsTrue(resultB.All(x => x is >= 0.0 and < 1.0));
+            Assert.That(resultA.All(x => x is >= 0.0 and < 1.0), Is.True);
+            Assert.That(resultB.All(x => x is >= 0.0 and < 1.0), Is.True);
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace MoreLinq.Test
 
             Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
             Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
-            Assert.IsTrue(resultA.All(x => x < max));
-            Assert.IsTrue(resultB.All(x => x < max));
+            Assert.That(resultA.All(x => x < max), Is.True);
+            Assert.That(resultB.All(x => x < max), Is.True);
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace MoreLinq.Test
 
             Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
             Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
-            Assert.IsTrue(resultA.All(x => x is >= min and < max));
-            Assert.IsTrue(resultB.All(x => x is >= min and < max));
+            Assert.That(resultA.All(x => x is >= min and < max), Is.True);
+            Assert.That(resultB.All(x => x is >= min and < max), Is.True);
         }
 
         /// <summary>
