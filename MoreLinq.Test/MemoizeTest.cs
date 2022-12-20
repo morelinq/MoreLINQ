@@ -343,13 +343,13 @@ namespace MoreLinq.Test
             {
                 readonly IEnumerator<T> _sequence;
 
-                public event EventHandler Disposed;
+                public event EventHandler? Disposed;
 
                 public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) =>
                     _sequence = sequence;
 
                 public T Current => _sequence.Current;
-                object IEnumerator.Current => Current;
+                object? IEnumerator.Current => Current;
                 public void Reset() => _sequence.Reset();
                 public bool MoveNext() => _sequence.MoveNext();
 

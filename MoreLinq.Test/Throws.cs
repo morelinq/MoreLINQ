@@ -24,7 +24,8 @@ namespace MoreLinq.Test
     {
         public static ThrowsNothingConstraint Nothing => NUnit.Framework.Throws.Nothing;
         public static ExactTypeConstraint InvalidOperationException => NUnit.Framework.Throws.InvalidOperationException;
-        public static ExactTypeConstraint ObjectDisposedException => NUnit.Framework.Throws.TypeOf<ObjectDisposedException>();
+        public static ExactTypeConstraint ObjectDisposedException => TypeOf<ObjectDisposedException>();
+        public static ExactTypeConstraint BreakException => TypeOf<BreakException>();
 
         public static InstanceOfTypeConstraint InstanceOf<T>()
             where T : Exception =>
@@ -41,7 +42,7 @@ namespace MoreLinq.Test
             NUnit.Framework.Throws.ArgumentNullException.With.ParamName().EqualTo(expectedParamName);
 
         public static ExactTypeConstraint ArgumentOutOfRangeException() =>
-            NUnit.Framework.Throws.TypeOf<ArgumentOutOfRangeException>();
+            TypeOf<ArgumentOutOfRangeException>();
 
         public static EqualConstraint ArgumentOutOfRangeException(string expectedParamName) =>
             ArgumentOutOfRangeException().With.ParamName().EqualTo(expectedParamName);

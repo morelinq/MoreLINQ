@@ -90,7 +90,7 @@ namespace MoreLinq.Test
 
             // should contain six permutations (as defined above)
             Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
-            Assert.That(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))), Is.True);
+            Assert.That(permutations.All(p => expectedPermutations.Contains(p, SequenceEqualityComparer<int>.Instance)), Is.True);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace MoreLinq.Test
 
             // should contain six permutations (as defined above)
             Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
-            Assert.That(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))), Is.True);
+            Assert.That(permutations.All(p => expectedPermutations.Contains(p, SequenceEqualityComparer<int>.Instance)), Is.True);
         }
 
         /// <summary>
@@ -195,6 +195,12 @@ namespace MoreLinq.Test
                     Assert.That(listPermutations[i], Is.Not.SameAs(listPermutations[j]));
                 }
             }
+        }
+
+        static class SequenceEqualityComparer<T>
+        {
+            public static readonly IEqualityComparer<IEnumerable<T>> Instance =
+                EqualityComparer.Create<IEnumerable<T>>((x, y) => x is { } sx && y is { } sy && sx.SequenceEqual(sy));
         }
     }
 }

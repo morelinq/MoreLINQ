@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using System;
@@ -81,7 +79,7 @@ namespace MoreLinq.Test
             using var s1 = TestingSequence.Of(1, 2);
 
             Assert.That(() => s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume(),
-                        Throws.InvalidOperationException);
+                        Throws.BreakException);
         }
     }
 }

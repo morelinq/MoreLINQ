@@ -106,7 +106,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountWithCollectionIsLazy()
         {
-            new BreakingCollection<object>(5).AssertCount(0);
+            new BreakingCollection<int>(new int[5]).AssertCount(0);
         }
 
         [Test]

@@ -51,6 +51,8 @@ namespace MoreLinq.Test
                 ANullableDecimal = key / 3;
                 AString = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
             }
+
+            public override string ToString() => nameof(TestObject);
         }
 
 
@@ -67,9 +69,9 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
         {
-            Expression<Func<TestObject, object>> expression = null;
+            Expression<Func<TestObject, object?>>? expression = null;
 
-            Assert.That(() => _testObjects.ToDataTable(expression),
+            Assert.That(() => _testObjects.ToDataTable(expression!),
                         Throws.ArgumentException("expressions"));
         }
 
@@ -177,7 +179,7 @@ namespace MoreLinq.Test
                                   .Cast<DictionaryEntry>()
                                   .ToArray();
 
-            vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
+            vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value!.ToString() })
                 .ToDataTable(dt, e => e.Name, e => e.Value);
 
             var rows = dt.Rows.Cast<DataRow>().ToArray();
@@ -201,10 +203,12 @@ namespace MoreLinq.Test
             var points = new[] { new Point(12, 34) }.ToDataTable();
 
             Assert.That(points.Columns.Count, Is.EqualTo(3));
-            DataColumn x, y, empty;
-            Assert.That(x = points.Columns["X"], Is.Not.Null);
-            Assert.That(y = points.Columns["Y"], Is.Not.Null);
-            Assert.That(empty = points.Columns["IsEmpty"], Is.Not.Null);
+            var x = points.Columns["X"];
+            var y = points.Columns["Y"];
+            var empty = points.Columns["IsEmpty"];
+            Assert.That(x, Is.Not.Null);
+            Assert.That(y, Is.Not.Null);
+            Assert.That(empty, Is.Not.Null);
             var row = points.Rows.Cast<DataRow>().Single();
             Assert.That(row[x], Is.EqualTo(12));
             Assert.That(row[y], Is.EqualTo(34));

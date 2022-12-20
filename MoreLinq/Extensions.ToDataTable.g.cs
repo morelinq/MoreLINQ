@@ -68,7 +68,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
             => MoreEnumerable.ToDataTable(source, expressions);
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
@@ -101,7 +101,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
             => MoreEnumerable.ToDataTable(source, table, expressions);
 

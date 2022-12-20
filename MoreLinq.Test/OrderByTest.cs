@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -45,6 +46,16 @@ namespace MoreLinq.Test
             Assert.That(resultDes1, Is.EqualTo(resultDes2));
         }
 
+        static readonly IComparer<string> NumericStringComparer =
+            Comparer.Create((string? a, string? b) =>
+                (a, b) switch
+                {
+                    (null, null) => 0,
+                    (null, _) => -1,
+                    (_, null) => 1,
+                    var (sa, sb) => int.Parse(sa).CompareTo(int.Parse(sb))
+                });
+
         /// <summary>
         /// Verify that OrderBy preserves the comparer
         /// </summary>
@@ -55,7 +66,7 @@ namespace MoreLinq.Test
             var sequenceAscending = sequence.Select(x => x.ToString());
             var sequenceDescending = sequenceAscending.Reverse();
 
-            var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            var comparer = NumericStringComparer;
 
             var resultAsc1 = sequenceAscending.OrderBy(x => x, comparer, OrderByDirection.Descending);
             var resultAsc2 = sequenceAscending.OrderByDescending(x => x, comparer);
@@ -119,7 +130,7 @@ namespace MoreLinq.Test
                                    new {A = "2", B = "1"},
                                };
 
-            var comparer = Comparer.Create<string>((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            var comparer = NumericStringComparer;
 
             var resultA1 = sequence.OrderBy(x => x.A, comparer, OrderByDirection.Ascending)
                                      .ThenBy(y => y.B, comparer, OrderByDirection.Ascending);
