@@ -4634,7 +4634,7 @@ namespace MoreLinq.Extensions
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
             => MoreEnumerable.Rank(source, comparer);
 
     }
