@@ -46,7 +46,7 @@ namespace MoreLinq.Test
 
             // Expected and thrown by BreakingSequence
             Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
-                        Throws.InvalidOperationException);
+                        Throws.BreakException);
         }
 
         /// <summary>

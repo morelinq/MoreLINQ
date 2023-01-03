@@ -49,7 +49,7 @@ namespace MoreLinq.Test
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
             var source = new[] { 2, 4, 6, 7, 8, 9 };
-            Assert.That(() => source.Assert(n => n % 2 == 0, _ => null).Consume(),
+            Assert.That(() => source.Assert(n => n % 2 == 0, _ => null!).Consume(),
                         Throws.InvalidOperationException);
         }
 

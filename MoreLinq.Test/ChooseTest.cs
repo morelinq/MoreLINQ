@@ -67,7 +67,7 @@ namespace MoreLinq.Test
 
         static class Option<T>
         {
-            public static readonly (bool IsSome, T Value) None = (false, default);
+            public static readonly (bool IsSome, T Value) None = default;
         }
 
         [Test]

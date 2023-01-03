@@ -339,7 +339,7 @@ namespace MoreLinq.Test
         {
             var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
-            int[] bucketSelectorItems = null;
+            int[]? bucketSelectorItems = null;
 
             var result = input.Batch(4, pool, current => bucketSelectorItems = current.ToArray(), _ => 0);
 
@@ -356,18 +356,16 @@ namespace MoreLinq.Test
 
         sealed class TestArrayPool<T> : ArrayPool<T>, IDisposable
         {
-            T[] _pooledArray;
-            T[] _rentedArray;
+            T[]? _pooledArray;
+            T[]? _rentedArray;
 
             public override T[] Rent(int minimumLength)
             {
                 if (_pooledArray is null && _rentedArray is null)
                     _pooledArray = new T[minimumLength * 2];
 
-                if (_pooledArray is null)
-                    throw new InvalidOperationException("The pool is exhausted.");
-
-                (_pooledArray, _rentedArray) = (null, _pooledArray);
+                (_pooledArray, _rentedArray) =
+                    (null, _pooledArray ?? throw new InvalidOperationException("The pool is exhausted."));
 
                 return _rentedArray;
             }

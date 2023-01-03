@@ -53,7 +53,7 @@ namespace MoreLinq.Test
             int expectedCompareCount,
             int expectedMoveNextCallCount)
         {
-            var collection = new BreakingCollection<int>(collectionCount);
+            var collection = new BreakingCollection<int>(new int[collectionCount]);
 
             using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
@@ -70,7 +70,7 @@ namespace MoreLinq.Test
             int expectedCompareCount,
             int expectedMoveNextCallCount)
         {
-            var collection = new BreakingCollection<int>(collectionCount);
+            var collection = new BreakingCollection<int>(new int[collectionCount]);
 
             using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
 
@@ -107,7 +107,7 @@ namespace MoreLinq.Test
         [Test]
         public void CompareCountDisposesFirstEnumerator()
         {
-            var collection = new BreakingCollection<int>(0);
+            var collection = new BreakingCollection<int>();
 
             using var seq = TestingSequence.Of<int>();
 
@@ -117,7 +117,7 @@ namespace MoreLinq.Test
         [Test]
         public void CompareCountDisposesSecondEnumerator()
         {
-            var collection = new BreakingCollection<int>(0);
+            var collection = new BreakingCollection<int>();
 
             using var seq = TestingSequence.Of<int>();
 

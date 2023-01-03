@@ -36,7 +36,7 @@ namespace MoreLinq.Test
             using var seq1 = TestingSequence.Of(10, 11);
             using var seq2 = TestingSequence.Of<int>();
             using var seq3 = TestingSequence.Of(30, 31, 32);
-            using var matrix = TestingSequence.Of(seq1, seq2, seq3, null);
+            using var matrix = TestingSequence.Of<IEnumerable<int>>(seq1, seq2, seq3, null!);
 
             Assert.That(() => matrix.Transpose().FirstOrDefault(),
                         Throws.TypeOf<NullReferenceException>());
