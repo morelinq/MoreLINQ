@@ -29,7 +29,7 @@ namespace MoreLinq
         /// The private implementation class that produces permutations of a sequence.
         /// </summary>
 
-        class PermutationEnumerator<T> : IEnumerator<IList<T>>
+        sealed class PermutationEnumerator<T> : IEnumerator<IList<T>>
         {
             // NOTE: The algorithm used to generate permutations uses the fact that any set
             //       can be put into 1-to-1 correspondence with the set of ordinals number (0..n).

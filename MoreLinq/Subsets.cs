@@ -123,7 +123,7 @@ namespace MoreLinq
             /// predetermined size less than or equal to the original set size.
             /// </summary>
 
-            class SubsetEnumerator : IEnumerator<IList<T>>
+            sealed class SubsetEnumerator : IEnumerator<IList<T>>
             {
                 readonly IList<T> _set;   // the original set of elements
                 readonly T[] _subset;     // the current subset to return
