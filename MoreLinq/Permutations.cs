@@ -103,7 +103,14 @@ namespace MoreLinq
                 _hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
-            public IList<T> Current => _current!;
+            public IList<T> Current
+            {
+                get
+                {
+                    Debug.Assert(_current is not null);
+                    return _current;
+                }
+            }
 
             object IEnumerator.Current => Current;
 
