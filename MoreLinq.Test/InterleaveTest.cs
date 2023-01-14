@@ -95,9 +95,9 @@ namespace MoreLinq.Test
         [TestCase(3)]
         public void TestInterleaveDisposesOnPartialEnumeration(int count)
         {
-            using var sequenceA = TestingSequence.Of<int>(1);
-            using var sequenceB = TestingSequence.Of<int>(2);
-            using var sequenceC = TestingSequence.Of<int>(3);
+            using var sequenceA = TestingSequence.Of(1);
+            using var sequenceB = TestingSequence.Of(2);
+            using var sequenceC = TestingSequence.Of(3);
 
             sequenceA.Interleave(sequenceB, sequenceC).Take(count).Consume();
         }
