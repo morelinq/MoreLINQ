@@ -586,7 +586,7 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="count">The maximun number of items a sequence must have for this
+        /// <param name="count">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
@@ -1137,7 +1137,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">The source sequence</param>
         /// <param name="min">The minimum number of items a sequence must have for this
         /// function to return true</param>
-        /// <param name="max">The maximun number of items a sequence must have for this
+        /// <param name="max">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
@@ -1214,7 +1214,7 @@ namespace MoreLinq.Extensions
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -1356,6 +1356,10 @@ namespace MoreLinq.Extensions
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
         /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -1395,6 +1399,11 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
         /// </exception>
         /// <example>
         /// <code><![CDATA[
@@ -1438,6 +1447,11 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
         /// </exception>
         /// <example>
         /// <code><![CDATA[
@@ -1764,7 +1778,7 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the following non-missing element in that sequence. Additional
-        /// parameters specifiy two functions, one used to determine if an
+        /// parameters specify two functions, one used to determine if an
         /// element is considered missing or not and another to provide the
         /// replacement for the missing element.
         /// </summary>
@@ -1841,7 +1855,7 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with one based on the previous non-missing element seen in that
-        /// sequence. Additional parameters specifiy two functions, one used to
+        /// sequence. Additional parameters specify two functions, one used to
         /// determine if an element is considered missing or not and another
         /// to provide the replacement for the missing element.
         /// </summary>
@@ -4620,7 +4634,7 @@ namespace MoreLinq.Extensions
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
             => MoreEnumerable.Rank(source, comparer);
 
     }
@@ -5020,7 +5034,7 @@ namespace MoreLinq.Extensions
     public static partial class ScanRightExtension
     {
         /// <summary>
-        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
         /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
@@ -5046,7 +5060,7 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.ScanRight(source, func);
 
         /// <summary>
-        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
         /// The specified seed value is used as the initial accumulator value.
         /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
@@ -6674,11 +6688,11 @@ namespace MoreLinq.Extensions
     public static partial class WindowExtension
     {
         /// <summary>
-        /// Processes a sequence into a series of subsequences representing a windowed subset of the original
+        /// Processes a sequence into a series of sub-sequences representing a windowed subset of the original
         /// </summary>
         /// <remarks>
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
-        /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+        /// Returned sub-sequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
         /// <param name="source">The sequence to evaluate a sliding window over</param>
@@ -6803,6 +6817,10 @@ namespace MoreLinq.Extensions
         /// A sequence that contains elements of the two input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = { 1, 2, 3 };
@@ -6819,7 +6837,7 @@ namespace MoreLinq.Extensions
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
+            Func<TFirst?, TSecond?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, resultSelector);
 
         /// <summary>
@@ -6842,6 +6860,11 @@ namespace MoreLinq.Extensions
         /// A sequence that contains elements of the three input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -6860,7 +6883,7 @@ namespace MoreLinq.Extensions
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
             IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+            Func<T1?, T2?, T3?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, third, resultSelector);
 
         /// <summary>
@@ -6885,6 +6908,11 @@ namespace MoreLinq.Extensions
         /// A sequence that contains elements of the four input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -6905,7 +6933,7 @@ namespace MoreLinq.Extensions
             IEnumerable<T2> second,
             IEnumerable<T3> third,
             IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+            Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, third, fourth, resultSelector);
 
     }
@@ -6931,6 +6959,10 @@ namespace MoreLinq.Extensions
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <example>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
@@ -6971,6 +7003,11 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -7017,6 +7054,11 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };

@@ -15,6 +15,10 @@
 // limitations under the License.
 #endregion
 
+// Following warnings are disabled due to false negatives:
+#pragma warning disable NUnit2040 // Non-reference types for SameAs constraint
+#pragma warning disable NUnit2020 // Incompatible types for SameAs constraint
+
 namespace MoreLinq.Test
 {
     using System;
@@ -127,13 +131,15 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeDoesNotDisposeOnEarlyExitByDefault()
         {
-            Assert.Throws<AssertionException>(() =>
+            static void Act()
             {
                 using var xs = new[] { 1, 2 }.AsTestingSequence();
 
                 xs.Memoize().Take(1).Consume();
                 xs.Memoize().Take(1).Consume();
-            });
+            }
+
+            Assert.That(Act, Throws.TypeOf<AssertionException>());
         }
 
         [Test]
@@ -220,8 +226,9 @@ namespace MoreLinq.Test
 
             disposable.Dispose();
 
-            var e = Assert.Throws<ObjectDisposedException>(() => reader.Read());
-            Assert.That(e.ObjectName, Is.EqualTo("MemoizedEnumerable"));
+            Assert.That(reader.Read,
+                        Throws.ObjectDisposedException
+                              .With.Property(nameof(ObjectDisposedException.ObjectName)).EqualTo("MemoizedEnumerable"));
         }
 
         [Test]
@@ -251,13 +258,11 @@ namespace MoreLinq.Test
             using (var r2 = memoized.Read())
             {
                 Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
-                var e1 = Assert.Throws<Exception>(() => r1.Read());
-                Assert.That(e1, Is.SameAs(error));
+                Assert.That(r1.Read, Throws.TypeOf<Exception>().And.SameAs(error));
 
                 Assert.That(xs.IsDisposed, Is.True);
 
-                var e2 = Assert.Throws<Exception>(() => r2.Read());
-                Assert.That(e2, Is.SameAs(error));
+                Assert.That(r2.Read, Throws.TypeOf<Exception>().And.SameAs(error));
             }
             using (var r1 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(123));
@@ -282,13 +287,9 @@ namespace MoreLinq.Test
             using (var r1 = memoized.Read())
             using (var r2 = memoized.Read())
             {
-                var e1 = Assert.Throws<Exception>(() => r1.Read());
-                Assert.That(e1, Is.SameAs(error));
-
+                Assert.That(r1.Read, Throws.TypeOf<Exception>().And.SameAs(error));
                 Assert.That(xs.IsDisposed, Is.True);
-
-                var e2 = Assert.Throws<Exception>(() => r2.Read());
-                Assert.That(e2, Is.SameAs(error));
+                Assert.That(r2.Read, Throws.TypeOf<Exception>().And.SameAs(error));
             }
 
             using (var r1 = memoized.Read())
@@ -309,10 +310,7 @@ namespace MoreLinq.Test
             var memo = source.Memoize();
 
             for (var i = 0; i < 2; i++)
-            {
-                var e = Assert.Throws<Exception>(() => memo.First());
-                Assert.That(e, Is.SameAs(error));
-            }
+                Assert.That(memo.First, Throws.TypeOf<Exception>().And.SameAs(error));
 
             ((IDisposable) memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));
@@ -345,13 +343,13 @@ namespace MoreLinq.Test
             {
                 readonly IEnumerator<T> _sequence;
 
-                public event EventHandler Disposed;
+                public event EventHandler? Disposed;
 
                 public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) =>
                     _sequence = sequence;
 
                 public T Current => _sequence.Current;
-                object IEnumerator.Current => Current;
+                object? IEnumerator.Current => Current;
                 public void Reset() => _sequence.Reset();
                 public bool MoveNext() => _sequence.MoveNext();
 

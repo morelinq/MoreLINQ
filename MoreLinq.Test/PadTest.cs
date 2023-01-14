@@ -15,11 +15,8 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
-    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,8 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadNegativeWidth()
         {
-            AssertThrowsArgument.Exception("width",() =>
-                new object[0].Pad(-1));
+            Assert.That(() => new object[0].Pad(-1), Throws.ArgumentException("width"));
         }
 
         [Test]

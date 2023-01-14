@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using System;
@@ -48,12 +46,12 @@ namespace MoreLinq.Test
 
             var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-            Assert.AreEqual(3, result.Keys.Count);
+            Assert.That(result.Keys.Count, Is.EqualTo(3));
 
-            Assert.IsEmpty(result[1].Second);
+            Assert.That(result[1].Second, Is.Empty);
             result[1].First.AssertSequenceEqual(1);
 
-            Assert.IsEmpty(result[3].First);
+            Assert.That(result[3].First, Is.Empty);
             result[3].Second.AssertSequenceEqual(3);
 
             result[2].First.AssertSequenceEqual(2);
@@ -69,13 +67,13 @@ namespace MoreLinq.Test
 
             var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-            Assert.AreEqual(2, result.Keys.Count);
+            Assert.That(result.Keys.Count, Is.EqualTo(2));
 
-            Assert.IsEmpty(result[2].First);
-            Assert.AreEqual(2, result[2].Second.Single());
+            Assert.That(result[2].First, Is.Empty);
+            Assert.That(result[2].Second.Single(), Is.EqualTo(2));
 
-            Assert.IsEmpty(result[3].First);
-            Assert.AreEqual(3, result[3].Second.Single());
+            Assert.That(result[3].First, Is.Empty);
+            Assert.That(result[3].Second.Single(), Is.EqualTo(3));
         }
 
         [TestCase(CustomResult)]
@@ -87,13 +85,13 @@ namespace MoreLinq.Test
 
             var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-            Assert.AreEqual(2, result.Keys.Count);
+            Assert.That(result.Keys.Count, Is.EqualTo(2));
 
-            Assert.AreEqual(2, result[2].First.Single());
-            Assert.IsEmpty(result[2].Second);
+            Assert.That(result[2].First.Single(), Is.EqualTo(2));
+            Assert.That(result[2].Second, Is.Empty);
 
-            Assert.AreEqual(3, result[3].First.Single());
-            Assert.IsEmpty(result[3].Second);
+            Assert.That(result[3].First.Single(), Is.EqualTo(3));
+            Assert.That(result[3].Second, Is.Empty);
         }
 
         [TestCase(CustomResult)]

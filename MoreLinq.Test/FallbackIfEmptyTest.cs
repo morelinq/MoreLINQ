@@ -42,12 +42,12 @@ namespace MoreLinq.Test
         {
             var source = new[] { 1 }.ToSourceKind(sourceKind);
             // ReSharper disable PossibleMultipleEnumeration
-            Assert.AreSame(source.FallbackIfEmpty(12), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source);
+            Assert.That(source.FallbackIfEmpty(12), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45, 56), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), Is.SameAs(source));
             // ReSharper restore PossibleMultipleEnumeration
         }
 
@@ -57,8 +57,8 @@ namespace MoreLinq.Test
         {
             var source = new int[0].ToSourceKind(sourceKind);
             var fallback = new[] { 1 };
-            Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
-            Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
+            Assert.That(source.FallbackIfEmpty(fallback), Is.SameAs(fallback));
+            Assert.That(source.FallbackIfEmpty(fallback.AsEnumerable()), Is.SameAs(fallback));
         }
 
         [Test]

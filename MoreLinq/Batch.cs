@@ -50,7 +50,7 @@ namespace MoreLinq
 
         public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
         {
-            return Batch(source, size, x => x);
+            return Batch(source, size, IdFn);
         }
 
         /// <summary>

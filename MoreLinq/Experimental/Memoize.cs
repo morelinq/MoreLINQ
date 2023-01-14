@@ -44,7 +44,7 @@ namespace MoreLinq.Experimental
         /// The returned <see cref="IEnumerable{T}"/> will cache items from
         /// <paramref name="source"/> in a thread-safe manner. Each thread can
         /// call its <see cref="IEnumerable{T}.GetEnumerator"/> to acquire an
-        /// iterator  but the same iterator should not be used simultanesouly
+        /// iterator  but the same iterator should not be used simultaneously
         /// from multiple threads. The sequence supplied in <paramref
         /// name="source"/> is not expected to be thread-safe but it is required
         /// to be thread-agnostic because different threads (though never

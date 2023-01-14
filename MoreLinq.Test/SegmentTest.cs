@@ -76,8 +76,8 @@ namespace MoreLinq.Test
             {
                 for (var i = 0; i < 2; i++)
                 {
-                    Assert.IsTrue(segment.Any());
-                    Assert.AreEqual(value, segment.Single());
+                    Assert.That(segment.Any(), Is.True);
+                    Assert.That(segment.Single(), Is.EqualTo(value));
                 }
             }
         }
@@ -94,9 +94,9 @@ namespace MoreLinq.Test
             var resultB = sequence.Segment((_, _) => true);
             var resultC = sequence.Segment((_, _, _) => true);
 
-            Assert.IsTrue(resultA.First().Any());
-            Assert.IsTrue(resultB.First().Any());
-            Assert.IsTrue(resultC.First().Any());
+            Assert.That(resultA.First().Any(), Is.True);
+            Assert.That(resultB.First().Any(), Is.True);
+            Assert.That(resultC.First().Any(), Is.True);
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace MoreLinq.Test
             var resultB = sequence.Segment(BreakingFunc.Of<int, int, bool>());
             var resultC = sequence.Segment(BreakingFunc.Of<int, int, int, bool>());
 
-            Assert.IsTrue(resultA.Any());
-            Assert.IsTrue(resultB.Any());
-            Assert.IsTrue(resultC.Any());
+            Assert.That(resultA.Any(), Is.True);
+            Assert.That(resultB.Any(), Is.True);
+            Assert.That(resultC.Any(), Is.True);
         }
 
         /// <summary>
@@ -127,10 +127,10 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(1, count);
             var result = sequence.Segment((_, i) => i % segmentSize == 0);
 
-            Assert.AreEqual(count / segmentSize, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count / segmentSize));
             foreach (var segment in result)
             {
-                Assert.AreEqual(segmentSize, segment.Count());
+                Assert.That(segment.Count(), Is.EqualTo(segmentSize));
             }
         }
 
@@ -145,8 +145,8 @@ namespace MoreLinq.Test
                                      .SelectMany(x => Enumerable.Repeat(x, repCount));
             var result = sequence.Segment((curr, prev, _) => curr != prev);
 
-            Assert.AreEqual(sequence.Distinct().Count(), result.Count());
-            Assert.IsTrue(result.All(s => s.Count() == repCount));
+            Assert.That(result.Count(), Is.EqualTo(sequence.Distinct().Count()));
+            Assert.That(result.All(s => s.Count() == repCount), Is.True);
         }
 
         static IEnumerable<T> Seq<T>(params T[] values) => values;

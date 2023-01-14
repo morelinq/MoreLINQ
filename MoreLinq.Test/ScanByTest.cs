@@ -50,7 +50,7 @@ namespace MoreLinq.Test
             var result =
                     source.ScanBy(
                         item => item.First(),
-                        key => (Element: default(string), Key: key, State: key - 1),
+                        key => (Element: string.Empty, Key: key, State: key - 1),
                         (state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
 
             result.AssertSequenceEqual(
@@ -103,31 +103,31 @@ namespace MoreLinq.Test
             var result = source.ScanBy(c => c, _ => -1, (i, _, _) => i + 1);
 
             result.AssertSequenceEqual(
-                KeyValuePair.Create("foo"       , 0),
-                KeyValuePair.Create((string)null, 0),
-                KeyValuePair.Create("bar"       , 0),
-                KeyValuePair.Create("baz"       , 0),
-                KeyValuePair.Create((string)null, 1),
-                KeyValuePair.Create((string)null, 2),
-                KeyValuePair.Create("baz"       , 1),
-                KeyValuePair.Create("bar"       , 1),
-                KeyValuePair.Create((string)null, 3),
-                KeyValuePair.Create("foo"       , 1));
+                KeyValuePair.Create((string?)"foo", 0),
+                KeyValuePair.Create((string?)null , 0),
+                KeyValuePair.Create((string?)"bar", 0),
+                KeyValuePair.Create((string?)"baz", 0),
+                KeyValuePair.Create((string?)null , 1),
+                KeyValuePair.Create((string?)null , 2),
+                KeyValuePair.Create((string?)"baz", 1),
+                KeyValuePair.Create((string?)"bar", 1),
+                KeyValuePair.Create((string?)null , 3),
+                KeyValuePair.Create((string?)"foo", 1));
         }
 
         [Test]
         public void ScanByWithNullSeed()
         {
-            var nil = (object)null;
+            var nil = (object?)null;
             var source = new[] { "foo", null, "bar", null, "baz" };
             var result = source.ScanBy(c => c, _ => nil, (_, _, _) => nil);
 
             result.AssertSequenceEqual(
-                KeyValuePair.Create("foo"       , nil),
-                KeyValuePair.Create((string)null, nil),
-                KeyValuePair.Create("bar"       , nil),
-                KeyValuePair.Create((string)null, nil),
-                KeyValuePair.Create("baz"       , nil));
+                KeyValuePair.Create((string?)"foo", nil),
+                KeyValuePair.Create((string?)null , nil),
+                KeyValuePair.Create((string?)"bar", nil),
+                KeyValuePair.Create((string?)null , nil),
+                KeyValuePair.Create((string?)"baz", nil));
         }
 
         [Test]
@@ -151,8 +151,8 @@ namespace MoreLinq.Test
                 KeyValuePair.Create('b', 1),
                 KeyValuePair.Create('d', 0));
 
-            Assert.Throws<TestException>(() =>
-                result.ElementAt(5));
+            Assert.That(() => result.ElementAt(5),
+                        Throws.TypeOf<TestException>());
         }
     }
 }

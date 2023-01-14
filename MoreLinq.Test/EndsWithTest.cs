@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         {
             using var fts = TestingSequence.Of<int>();
             using var sts = TestingSequence.Of<int>();
-            Assert.True(fts.EndsWith(sts));
+            Assert.That(fts.EndsWith(sts), Is.True);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         {
             using var fts = TestingSequence.Of<int>();
             using var sts = TestingSequence.Of(1, 2, 3);
-            Assert.False(fts.EndsWith(sts));
+            Assert.That(fts.EndsWith(sts), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -93,7 +93,7 @@ namespace MoreLinq.Test
             using var first = TestingSequence.Of(1, 2, 3);
             using var second = TestingSequence.Of(4, 5, 6);
 
-            Assert.False(first.EndsWith(second));
+            Assert.That(first.EndsWith(second), Is.False);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace MoreLinq.Test
             using var first = TestingSequence.Of(1, 2, 3);
             using var second = TestingSequence.Of(4, 5, 6);
 
-            Assert.False(first.EndsWith(second, null));
+            Assert.That(first.EndsWith(second, null), Is.False);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace MoreLinq.Test
             var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
             var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
 
-            Assert.False(first.EndsWith(second));
+            Assert.That(first.EndsWith(second), Is.False);
         }
     }
 }

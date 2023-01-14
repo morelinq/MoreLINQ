@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2022 Turning Code, LLC. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,10 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq.Test
+namespace MoreLinq
 {
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class ConsumeTest
+    static partial class MoreEnumerable
     {
-        [Test]
-        public void ConsumeReallyConsumes()
-        {
-            var counter = 0;
-            var sequence = Enumerable.Range(0, 10).Pipe(_ => counter++);
-            sequence.Consume();
-            Assert.That(counter, Is.EqualTo(10));
-        }
+        static T IdFn<T>(T x) => x;
     }
 }

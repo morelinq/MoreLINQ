@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -43,8 +41,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadNegativeOffset()
         {
-            AssertThrowsArgument.OutOfRangeException("offset", () =>
-                Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal));
+            Assert.That(() => Enumerable.Range(1, 100).Lead(-5, (val, leadVal) => val + leadVal),
+                        Throws.ArgumentOutOfRangeException("offset"));
         }
 
         /// <summary>
@@ -53,8 +51,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadZeroOffset()
         {
-            AssertThrowsArgument.OutOfRangeException("offset", () =>
-                Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal));
+            Assert.That(() => Enumerable.Range(1, 100).Lead(0, (val, leadVal) => val + leadVal),
+                        Throws.ArgumentOutOfRangeException("offset"));
         }
 
         /// <summary>
@@ -69,12 +67,12 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(leadBy, leadDefault, (_, leadVal) => leadVal);
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(leadDefault, leadBy)));
         }
 
         /// <summary>
-        /// Verify that Lead() willuse default(T) if a specific default value is not supplied for the lead value.
+        /// Verify that Lead() will use default(T) if a specific default value is not supplied for the lead value.
         /// </summary>
         [Test]
         public void TestLeadImplicitDefaultValue()
@@ -84,7 +82,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(leadBy, (_, leadVal) => leadVal);
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.That(result.Skip(count - leadBy), Is.EqualTo(Enumerable.Repeat(default(int), leadBy)));
         }
 
@@ -100,7 +98,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(count + 1, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(sequence.Select(x => new { A = x, B = leadDefault })));
         }
 
@@ -115,8 +113,8 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(1, count + 1, (val, leadVal) => new { A = val, B = leadVal });
 
-            Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.All(x => x.B == (x.A + 1)));
+            Assert.That(result.Count(), Is.EqualTo(count));
+            Assert.That(result.All(x => x.B == (x.A + 1)), Is.True);
         }
 
         /// <summary>
@@ -131,9 +129,9 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Lead(2, leadDefault, (val, leadVal) => new { A = val, B = leadVal });
 
-            Assert.AreEqual(count, result.Count());
-            Assert.IsTrue(result.Take(count - 2).All(x => x.B == (x.A + 2)));
-            Assert.IsTrue(result.Skip(count - 2).All(x => x.B == leadDefault && x.A is count or count - 1));
+            Assert.That(result.Count(), Is.EqualTo(count));
+            Assert.That(result.Take(count - 2).All(x => x.B == (x.A + 2)), Is.True);
+            Assert.That(result.Skip(count - 2).All(x => x.B == leadDefault && x.A is count or count - 1), Is.True);
         }
 
         [Test]

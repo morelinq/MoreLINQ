@@ -52,8 +52,8 @@ namespace MoreLinq.Test
                 Source = source,
                 Expectation = sum,
                 Instantiation = m.MakeGenericMethod(Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
-                                                 .Append(typeof(int[])) // TResult
-                                                 .ToArray()),
+                                                              .Append(typeof(int[])) // TResult
+                                                              .ToArray()),
             }
             into m
             let rst = m.Instantiation.GetParameters().Last().ParameterType
@@ -65,10 +65,11 @@ namespace MoreLinq.Test
                 AccumulatorCount   = (m.Instantiation.GetParameters().Length - 2 /* source + resultSelector */) / 2 /* seed + accumulator */,
                 ResultSelectorType = rst,
                 Parameters =
-                    rst.GetMethod("Invoke")
-                       .GetParameters()
-                       .Select(p => Expression.Parameter(p.ParameterType))
-                       .ToArray(),
+                    rst.GetMethod("Invoke") is { } invoke
+                    ? invoke.GetParameters()
+                            .Select(p => Expression.Parameter(p.ParameterType))
+                            .ToArray()
+                    : throw new Exception("""Method "Invoke" not found."""),
             }
             into m
             let resultSelector =
@@ -96,7 +97,7 @@ namespace MoreLinq.Test
             select new TestCaseData(t.Method, t.Args).SetName(t.Name).Returns(t.Expectation);
 
         [TestCaseSource(nameof(AccumulatorsTestSource), new object[] { nameof(Accumulators), 10 })]
-        public object Accumulators(MethodInfo method, object[] args) =>
+        public object? Accumulators(MethodInfo method, object[] args) =>
             method.Invoke(null, args);
 
         [Test]

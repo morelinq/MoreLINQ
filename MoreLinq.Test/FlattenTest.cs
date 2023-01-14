@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
@@ -257,8 +255,8 @@ namespace MoreLinq.Test
             using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
             using var source = TestingSequence.Of<object>(inner1, inner3);
 
-            Assert.Throws<TestException>(() =>
-                source.Flatten().Consume());
+            Assert.That(() => source.Flatten().Consume(),
+                        Throws.TypeOf<TestException>());
         }
 
         [Test]
@@ -291,8 +289,8 @@ namespace MoreLinq.Test
 
             Assert.That(result.Take(10), Is.EqualTo(expectations));
 
-            Assert.Throws<TestException>(() =>
-                source.Flatten().ElementAt(11));
+            Assert.That(() => source.Flatten().ElementAt(11),
+                        Throws.TypeOf<TestException>());
         }
 
         // Flatten(this IEnumerable source, Func<object, IEnumerable> selector)

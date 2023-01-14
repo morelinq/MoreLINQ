@@ -32,10 +32,11 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<int>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.LeftJoin(ys, e => e,
                     BreakingFunc.Of<int, object>(),
-                    BreakingFunc.Of<int, int, object>()));
+                    BreakingFunc.Of<int, int, object>()),
+                Throws.Nothing);
         }
 
         [Test]
@@ -44,11 +45,12 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<int>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.LeftJoin(ys, e => e,
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<int, int, object>(),
-                    comparer: null));
+                    comparer: null),
+                Throws.Nothing);
         }
 
         [Test]
@@ -57,10 +59,11 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<object>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.LeftJoin(ys, x => x, y => y.GetHashCode(),
                     BreakingFunc.Of<int, object>(),
-                    BreakingFunc.Of<int, object, object>()));
+                    BreakingFunc.Of<int, object, object>()),
+                Throws.Nothing);
         }
 
         [Test]
@@ -69,11 +72,12 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<object>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.LeftJoin(ys, x => x, y => y.GetHashCode(),
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<int, object, object>(),
-                    comparer: null));
+                    comparer: null),
+                Throws.Nothing);
         }
 
         [Test]

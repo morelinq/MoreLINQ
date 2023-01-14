@@ -42,7 +42,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
         {
-            return Shuffle(source, new Random());
+            return Shuffle(source, GlobalRandom.Instance);
         }
 
         /// <summary>

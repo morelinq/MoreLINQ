@@ -78,7 +78,7 @@ namespace MoreLinq.Test
 
             var result = sequence.UsingTestingSequence(ts => ts.Rank());
 
-            Assert.AreEqual(count, result.Length);
+            Assert.That(result.Length, Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(Enumerable.Range(1, count)));
         }
 
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
 
             var result = sequence.UsingTestingSequence(ts => ts.Rank());
 
-            Assert.AreEqual(count, result.Length);
+            Assert.That(result.Length, Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(Enumerable.Range(1, count).Reverse()));
         }
 
@@ -108,7 +108,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(1234, count);
             var result = sequence.UsingTestingSequence(ts => ts.Rank());
 
-            Assert.AreEqual(count, result.Length);
+            Assert.That(result.Length, Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(Enumerable.Repeat(1, count)));
         }
 
@@ -125,7 +125,7 @@ namespace MoreLinq.Test
 
             var result = sequence.UsingTestingSequence(ts => ts.Rank());
 
-            Assert.AreEqual(count, result.Distinct().Count());
+            Assert.That(result.Distinct().Count(), Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(sequence.Reverse().Select(x => x + 1)));
         }
 
@@ -136,7 +136,7 @@ namespace MoreLinq.Test
         public void TestRankOfHighestItemIsOne()
         {
             using var ts = Enumerable.Range(1, 10).AsTestingSequence();
-            Assert.AreEqual(1, ts.Rank().OrderBy(x => x).First());
+            Assert.That(ts.Rank().OrderBy(x => x).First(), Is.EqualTo(1));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace MoreLinq.Test
             var result = sequence.UsingTestingSequence(ts =>
                 ts.RankBy(x => x.Age));
 
-            Assert.AreEqual(sequence.Length, result.Length);
+            Assert.That(result.Length, Is.EqualTo(sequence.Length));
             Assert.That(result, Is.EqualTo(sequence.Select(x => x.ExpectedRank)));
         }
 
@@ -172,7 +172,7 @@ namespace MoreLinq.Test
             const int count = 10;
             var ordinals = Enumerable.Range(1, count);
             var sequence = ordinals.Select( x => new DateTime(2010,x,20-x) );
-            // invert the CompareTo operation to Rank in reverse order (ascening to descending)
+            // invert the CompareTo operation to Rank in reverse order (ascending to descending)
             var resultA = sequence.UsingTestingSequence(ts => ts.Rank(Comparer.Create<DateTime>((a, b) => -a.CompareTo(b))));
             var resultB = sequence.UsingTestingSequence(ts => ts.RankBy(x => x.Day, Comparer.Create<int>((a, b) => -a.CompareTo(b))));
 

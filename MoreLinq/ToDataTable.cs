@@ -41,7 +41,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object>>>.Value);
+            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object?>>>.Value);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
         }
@@ -92,7 +92,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -100,7 +100,7 @@ namespace MoreLinq
 
             // TODO disallow null for "expressions" in next major update
 
-            expressions ??= EmptyArray<Expression<Func<T, object>>>.Value;
+            expressions ??= EmptyArray<Expression<Func<T, object?>>>.Value;
 
             var members = PrepareMemberInfos(expressions).ToArray();
             members = BuildOrBindSchema(table, members);
@@ -130,7 +130,7 @@ namespace MoreLinq
             return table;
         }
 
-        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object?>>> expressions)
         {
             //
             // If no lambda expressions supplied then reflect them off the source element type.

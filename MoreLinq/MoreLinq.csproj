@@ -120,7 +120,6 @@
     <VersionPrefix>3.3.2</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net451;netstandard1.0;netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
     <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
          See also: https://github.com/dotnet/msbuild/issues/2781 -->
     <BuildInParallel>false</BuildInParallel>
