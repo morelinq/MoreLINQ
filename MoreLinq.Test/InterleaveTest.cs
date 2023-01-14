@@ -42,15 +42,11 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveEarlyThrowOnNullElementInOtherSequences()
         {
-            void Code()
-            {
-                var sequenceA = Enumerable.Range(1, 1);
-                var otherSequences = new IEnumerable<int>[] {null!};
+            var sequenceA = Enumerable.Range(1, 1);
+            var otherSequences = new IEnumerable<int>[] {null!};
 
-                sequenceA.Interleave(otherSequences);
-            }
-
-            Assert.That(Code, Throws.ArgumentNullException("otherSequences"));
+            Assert.That(() => sequenceA.Interleave(otherSequences),
+                        Throws.ArgumentNullException("otherSequences"));
         }
 
         /// <summary>
@@ -59,15 +55,11 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveDoNoCallMoveNextEagerly()
         {
-            void Code()
-            {
-                var sequenceA = Enumerable.Range(1, 1);
-                var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+            var sequenceA = Enumerable.Range(1, 1);
+            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+            var result = sequenceA.Interleave(sequenceB).Take(1);
 
-                sequenceA.Interleave(sequenceB).Take(1).Consume();
-            }
-
-            Assert.That(Code, Throws.Nothing);
+            Assert.That(() => result.Consume(), Throws.Nothing);
         }
 
         /// <summary>
