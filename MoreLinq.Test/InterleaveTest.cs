@@ -50,6 +50,21 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that interleaving disposes those enumerators that it managed
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestInterleaveDisposesOnErrorAtMoveNext()
+        {
+            using var sequenceA = TestingSequence.Of<int>();
+            using var sequenceB = MoreEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
+
+            // Expected and thrown by sequenceB
+            Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
+                        Throws.TypeOf<TestException>());
+        }
+
+        /// <summary>
         /// Verify that interleaving do not call enumerators MoveNext method eagerly
         /// </summary>
         [Test]
