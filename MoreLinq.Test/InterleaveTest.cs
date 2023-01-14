@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -47,6 +48,20 @@ namespace MoreLinq.Test
             // Expected and thrown by BreakingSequence
             Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
                         Throws.BreakException);
+        }
+
+        /// <summary>
+        /// Verify that Interleave early throw ArgumentNullException when an element
+        /// of otherSequences is null.
+        /// </summary>
+        [Test]
+        public void TestInterleaveEarlyThrowOnNullElementInOtherSequences()
+        {
+            var sequenceA = Enumerable.Range(1, 1);
+            var otherSequences = new IEnumerable<int>[] { null! };
+
+            Assert.That(() => sequenceA.Interleave(otherSequences),
+                        Throws.ArgumentNullException("otherSequences"));
         }
 
         /// <summary>
@@ -82,10 +97,42 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveDoNoCallMoveNextEagerly()
         {
-            var sequenceA = Enumerable.Range(1, 1);
-            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+            using var sequenceA = TestingSequence.Of(1);
+            using var sequenceB = MoreEnumerable.From<int>(() => throw new TestException())
+                                                .AsTestingSequence();
+            var result = sequenceA.Interleave(sequenceB).Take(1);
 
-            sequenceA.Interleave(sequenceB).Take(1).Consume();
+            Assert.That(() => result.Consume(), Throws.Nothing);
+        }
+
+        /// <summary>
+        /// Verify that interleaving disposes those enumerators that it managed
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestInterleaveDisposesOnError()
+        {
+            using var sequenceA = TestingSequence.Of<int>();
+
+            Assert.That(() => sequenceA.Interleave(new BreakingSequence<int>()).Consume(),
+                        Throws.BreakException); // Expected and thrown by BreakingSequence
+        }
+
+        /// <summary>
+        /// Verify that, in case of partial enumeration, interleaving disposes those
+        /// enumerators that it managed to open successfully
+        /// </summary>
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void TestInterleaveDisposesOnPartialEnumeration(int count)
+        {
+            using var sequenceA = TestingSequence.Of(1);
+            using var sequenceB = TestingSequence.Of(2);
+            using var sequenceC = TestingSequence.Of(3);
+
+            sequenceA.Interleave(sequenceB, sequenceC).Take(count).Consume();
         }
 
         /// <summary>
