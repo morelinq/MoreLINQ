@@ -80,11 +80,8 @@ namespace MoreLinq
                 // Then, yield remaining elements from each sequence.
 
                 var node = enumerators.First;
-                while (node != null)
+                while (node is { Value: var enumerator, Next: var nextNode })
                 {
-                    var nextNode = node.Next;
-
-                    var enumerator = node.Value;
                     if (enumerator.MoveNext())
                     {
                         yield return enumerator.Current;
