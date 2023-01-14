@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         [Test]
         public void StartsWithReturnsTrueIfBothEmpty()
         {
-            Assert.True(new int[0].StartsWith(new int[0]));
+            Assert.That(new int[0].StartsWith(new int[0]), Is.True);
         }
 
         [Test]
         public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.False(new int[0].StartsWith(new[] {1,2,3}));
+            Assert.That(new int[0].StartsWith(new[] {1,2,3}), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -72,11 +72,10 @@ namespace MoreLinq.Test
         [Test]
         public void StartsWithDisposesBothSequenceEnumerators()
         {
-            using (var first = TestingSequence.Of(1,2,3))
-            using (var second = TestingSequence.Of(1))
-            {
-                first.StartsWith(second);
-            }
+            using var first = TestingSequence.Of(1,2,3);
+            using var second = TestingSequence.Of(1);
+
+            first.StartsWith(second);
         }
 
         [Test]
@@ -86,10 +85,10 @@ namespace MoreLinq.Test
             var first = new[] {1,2,3};
             var second = new[] {4,5,6};
 
-            Assert.False(first.StartsWith(second));
-            Assert.False(first.StartsWith(second, null));
-            Assert.False(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
-            Assert.True(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
+            Assert.That(first.StartsWith(second), Is.False);
+            Assert.That(first.StartsWith(second, null), Is.False);
+            Assert.That(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
+            Assert.That(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
         }
 
         [TestCase(SourceKind.BreakingCollection)]
@@ -99,7 +98,7 @@ namespace MoreLinq.Test
             var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
             var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
 
-            Assert.False(first.StartsWith(second));
+            Assert.That(first.StartsWith(second), Is.False);
         }
     }
 }

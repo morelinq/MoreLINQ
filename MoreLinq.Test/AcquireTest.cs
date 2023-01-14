@@ -26,9 +26,9 @@ namespace MoreLinq.Test
         [Test]
         public void AcquireAll()
         {
-            Disposable a = null;
-            Disposable b = null;
-            Disposable c = null;
+            Disposable? a = null;
+            Disposable? b = null;
+            Disposable? c = null;
 
             var allocators = MoreEnumerable.From(() => a = new Disposable(),
                                                  () => b = new Disposable(),
@@ -48,16 +48,16 @@ namespace MoreLinq.Test
         [Test]
         public void AcquireSome()
         {
-            Disposable a = null;
-            Disposable b = null;
-            Disposable c = null;
+            Disposable? a = null;
+            Disposable? b = null;
+            Disposable? c = null;
 
             var allocators = MoreEnumerable.From(() => a = new Disposable(),
                                                  () => b = new Disposable(),
                                                  () => throw new TestException(),
                                                  () => c = new Disposable());
 
-            Assert.Throws<TestException>(() => allocators.Acquire());
+            Assert.That(allocators.Acquire, Throws.TypeOf<TestException>());
 
             Assert.That(a, Is.Not.Null);
             Assert.That(a.Disposed, Is.True);

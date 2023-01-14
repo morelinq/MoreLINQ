@@ -87,8 +87,8 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                sequence.Window(-5));
+            Assert.That(() => sequence.Window(-5),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         /// <summary>
@@ -116,11 +116,11 @@ namespace MoreLinq.Test
             var result = sequence.Window(1);
 
             // number of windows should be equal to the source sequence length
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             // each window should contain single item consistent of element at that offset
             var index = -1;
             foreach (var window in result)
-                Assert.AreEqual(sequence.ElementAt(++index), window.Single());
+                Assert.That(window.Single(), Is.EqualTo(sequence.ElementAt(++index)));
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace MoreLinq.Test
             var result = sequence.Window(windowSize);
 
             // ensure that the number of windows is correct
-            Assert.AreEqual(count - windowSize + 1, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count - windowSize + 1));
             // ensure each window contains the correct set of items
             var index = -1;
             foreach (var window in result)
@@ -166,15 +166,14 @@ namespace MoreLinq.Test
         [Test]
         public void TestWindowWindowsImmutability()
         {
-            using (var windows = Enumerable.Range(1, 5).Window(2).AsTestingSequence())
-            using (var reader = windows.ToArray().Read())
-            {
-                reader.Read().AssertSequenceEqual(1, 2);
-                reader.Read().AssertSequenceEqual(2, 3);
-                reader.Read().AssertSequenceEqual(3, 4);
-                reader.Read().AssertSequenceEqual(4, 5);
-                reader.ReadEnd();
-            }
+            using var windows = Enumerable.Range(1, 5).Window(2).AsTestingSequence();
+
+            using var reader = windows.ToArray().Read();
+            reader.Read().AssertSequenceEqual(1, 2);
+            reader.Read().AssertSequenceEqual(2, 3);
+            reader.Read().AssertSequenceEqual(3, 4);
+            reader.Read().AssertSequenceEqual(4, 5);
+            reader.ReadEnd();
         }
     }
 }

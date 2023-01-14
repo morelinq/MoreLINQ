@@ -23,11 +23,11 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Processes a sequence into a series of subsequences representing a windowed subset of the original
+        /// Processes a sequence into a series of sub-sequences representing a windowed subset of the original
         /// </summary>
         /// <remarks>
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
-        /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+        /// Returned sub-sequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
         /// <param name="source">The sequence to evaluate a sliding window over</param>
@@ -70,11 +70,11 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Processes a sequence into a series of subsequences representing a windowed subset of the original
+        /// Processes a sequence into a series of sub-sequences representing a windowed subset of the original
         /// </summary>
         /// <remarks>
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
-        /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+        /// Returned sub-sequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
         /// <param name="source">The sequence to evaluate a sliding window over</param>
