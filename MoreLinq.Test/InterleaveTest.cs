@@ -36,6 +36,21 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that interleaving disposes those enumerators that it managed
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestInterleaveDisposesOnErrorAtGetEnumerator()
+        {
+            using var sequenceA = TestingSequence.Of<int>();
+            var sequenceB = new BreakingSequence<int>();
+
+            // Expected and thrown by BreakingSequence
+            Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
+                        Throws.BreakException);
+        }
+
+        /// <summary>
         /// Verify that Interleave early throw ArgumentNullException when an element
         /// of otherSequences is null.
         /// </summary>
