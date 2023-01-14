@@ -144,7 +144,7 @@ namespace MoreLinq.Test
         public void TestHigherCardinalityPermutations()
         {
             // NOTE: Testing higher cardinality permutations by exhaustive comparison becomes tedious
-            //       above cardiality 4 sets, as the number of permutations is N! (factorial). To provide
+            //       above cardinality 4 sets, as the number of permutations is N! (factorial). To provide
             //       some level of verification, though, we will simply test the count of items in the
             //       permuted sets, and verify they are equal to the expected number (count!).
 

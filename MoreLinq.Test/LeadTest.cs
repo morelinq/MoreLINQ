@@ -72,7 +72,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Lead() willuse default(T) if a specific default value is not supplied for the lead value.
+        /// Verify that Lead() will use default(T) if a specific default value is not supplied for the lead value.
         /// </summary>
         [Test]
         public void TestLeadImplicitDefaultValue()

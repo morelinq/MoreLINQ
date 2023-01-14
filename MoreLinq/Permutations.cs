@@ -51,7 +51,7 @@ namespace MoreLinq
             //       However, there's a fly in the ointment. The factorial function grows VERY rapidly.
             //       13! overflows the range of a Int32; while 28! overflows the range of decimal.
             //       To overcome these limitations, the algorithm relies on the fact that the factorial
-            //       of N is equivalent to the evaluation of N-1 nested loops. Unfortunatley, you can't
+            //       of N is equivalent to the evaluation of N-1 nested loops. Unfortunately, you can't
             //       just code up a variable number of nested loops ... this is where .NET generators
             //       with their elegant 'yield return' syntax come to the rescue.
             //
@@ -95,9 +95,9 @@ namespace MoreLinq
                 // restore lexographic ordering of the permutation indexes
                 for (var i = 0; i < _permutation.Length; i++)
                     _permutation[i] = i;
-                // start a newiteration over the nested loop generator
+                // start a new iteration over the nested loop generator
                 _generatorIterator = _generator.GetEnumerator();
-                // we must advance the nestedloop iterator to the initial element,
+                // we must advance the nested loop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
                 _generatorIterator.MoveNext();
                 _hasMoreResults = true; // there's always at least one permutation: the original set itself
@@ -123,7 +123,7 @@ namespace MoreLinq
                 if (_hasMoreResults)
                     _generatorIterator.Current(); // produce the next permutation ordering
                 // we return prevResult rather than m_HasMoreResults because there is always
-                // at least one permtuation: the original set. Also, this provides a simple way
+                // at least one permutation: the original set. Also, this provides a simple way
                 // to deal with the disparity between sets that have only one loop level (size 0-2)
                 // and those that have two or more (size > 2).
                 return prevResult;

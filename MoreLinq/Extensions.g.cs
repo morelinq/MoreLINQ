@@ -586,7 +586,7 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="count">The maximun number of items a sequence must have for this
+        /// <param name="count">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
@@ -1137,7 +1137,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">The source sequence</param>
         /// <param name="min">The minimum number of items a sequence must have for this
         /// function to return true</param>
-        /// <param name="max">The maximun number of items a sequence must have for this
+        /// <param name="max">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
@@ -1214,7 +1214,7 @@ namespace MoreLinq.Extensions
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -1778,7 +1778,7 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the following non-missing element in that sequence. Additional
-        /// parameters specifiy two functions, one used to determine if an
+        /// parameters specify two functions, one used to determine if an
         /// element is considered missing or not and another to provide the
         /// replacement for the missing element.
         /// </summary>
@@ -1855,7 +1855,7 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with one based on the previous non-missing element seen in that
-        /// sequence. Additional parameters specifiy two functions, one used to
+        /// sequence. Additional parameters specify two functions, one used to
         /// determine if an element is considered missing or not and another
         /// to provide the replacement for the missing element.
         /// </summary>
@@ -5034,7 +5034,7 @@ namespace MoreLinq.Extensions
     public static partial class ScanRightExtension
     {
         /// <summary>
-        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
         /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
@@ -5060,7 +5060,7 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.ScanRight(source, func);
 
         /// <summary>
-        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
         /// The specified seed value is used as the initial accumulator value.
         /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
@@ -6688,11 +6688,11 @@ namespace MoreLinq.Extensions
     public static partial class WindowExtension
     {
         /// <summary>
-        /// Processes a sequence into a series of subsequences representing a windowed subset of the original
+        /// Processes a sequence into a series of sub-sequences representing a windowed subset of the original
         /// </summary>
         /// <remarks>
         /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
-        /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+        /// Returned sub-sequences are buffered, but the overall operation is streamed.<br/>
         /// </remarks>
         /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
         /// <param name="source">The sequence to evaluate a sliding window over</param>

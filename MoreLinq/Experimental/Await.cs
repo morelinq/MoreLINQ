@@ -363,14 +363,14 @@ namespace MoreLinq.Experimental
         /// completed task.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
-        /// <typeparam name="TTaskResult"> The type of the tasks's result.</typeparam>
+        /// <typeparam name="TTaskResult"> The type of the task's result.</typeparam>
         /// <typeparam name="TResult">The type of the result elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="evaluator">A function to begin the asynchronous
         /// evaluation of each element, the second parameter of which is a
         /// <see cref="CancellationToken"/> that can be used to abort
         /// asynchronous operations.</param>
-        /// <param name="resultSelector">A fucntion that projects the final
+        /// <param name="resultSelector">A function that projects the final
         /// result given the source item and its asynchronous completion
         /// result.</param>
         /// <returns>
@@ -483,7 +483,7 @@ namespace MoreLinq.Experimental
                                 // Note that only the "last" critical error is reported
                                 // as maintaining a list would incur allocations. The idea
                                 // here is to make a best effort attempt to report any of
-                                // the error conditions that may be occuring, which is still
+                                // the error conditions that may be occurring, which is still
                                 // better than nothing.
 
                                 try
@@ -656,7 +656,7 @@ namespace MoreLinq.Experimental
                     var item = enumerator.Current;
                     var task = starter(item);
 
-                    // Add a continutation that notifies completion of the task,
+                    // Add a continuation that notifies completion of the task,
                     // along with the necessary housekeeping, in case it
                     // completes before maximum concurrency is reached.
 

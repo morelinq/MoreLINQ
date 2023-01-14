@@ -148,7 +148,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns an infinite sequence of random integers between a given
-        /// minumum and a maximum using the supplied random number generator.
+        /// minimum and a maximum using the supplied random number generator.
         /// </summary>
         /// <param name="rand">Generator used to produce random numbers</param>
         /// <param name="minValue">Inclusive lower bound of the values returned</param>
