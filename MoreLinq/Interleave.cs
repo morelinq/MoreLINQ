@@ -50,56 +50,56 @@ namespace MoreLinq
             if (otherSequences.Any(s => s == null))
                 throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
-            return Interleave(otherSequences.Prepend(sequence));
-        }
+            return _(otherSequences.Prepend(sequence));
 
-        static IEnumerable<T> Interleave<T>(IEnumerable<IEnumerable<T>> sequences)
-        {
-            var enumerators = new LinkedList<IEnumerator<T>>();
-
-            try
+            static IEnumerable<T> _(IEnumerable<IEnumerable<T>> sequences)
             {
-                // First, yield first element of each sequence.
+                var enumerators = new LinkedList<IEnumerator<T>>();
 
-                foreach (var sequence in sequences)
+                try
                 {
-                    var enumerator = sequence.GetEnumerator();
+                    // First, yield first element of each sequence.
 
-                    enumerators.AddLast(enumerator);
-                    if (enumerator.MoveNext())
+                    foreach (var sequence in sequences)
                     {
-                        yield return enumerator.Current;
+                        var enumerator = sequence.GetEnumerator();
+
+                        enumerators.AddLast(enumerator);
+                        if (enumerator.MoveNext())
+                        {
+                            yield return enumerator.Current;
+                        }
+                        else // Dispose and remove empty sequence
+                        {
+                            enumerator.Dispose();
+                            enumerators.Remove(enumerator);
+                        }
                     }
-                    else // Dispose and remove empty sequence
+
+                    // Then, yield remaining elements from each sequence.
+
+                    var node = enumerators.First;
+                    while (node is { Value: var enumerator, Next: var nextNode })
                     {
-                        enumerator.Dispose();
-                        enumerators.Remove(enumerator);
+                        if (enumerator.MoveNext())
+                        {
+                            yield return enumerator.Current;
+                        }
+                        else
+                        {
+                            enumerator.Dispose();
+                            enumerators.Remove(node);
+                        }
+
+                        // Work on next node or restart from first one.
+                        node = nextNode ?? enumerators.First;
                     }
                 }
-
-                // Then, yield remaining elements from each sequence.
-
-                var node = enumerators.First;
-                while (node is { Value: var enumerator, Next: var nextNode })
+                finally
                 {
-                    if (enumerator.MoveNext())
-                    {
-                        yield return enumerator.Current;
-                    }
-                    else
-                    {
+                    foreach (var enumerator in enumerators)
                         enumerator.Dispose();
-                        enumerators.Remove(node);
-                    }
-
-                    // Work on next node or restart from first one.
-                    node = nextNode ?? enumerators.First;
                 }
-            }
-            finally
-            {
-                foreach (var enumerator in enumerators)
-                    enumerator.Dispose();
             }
         }
     }
