@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -51,7 +50,7 @@ namespace MoreLinq.Test
                 sequenceA.Interleave(otherSequences);
             }
 
-            Assert.Throws<ArgumentNullException>(Code);
+            Assert.That(Code, Throws.ArgumentNullException("otherSequences"));
         }
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace MoreLinq.Test
                 sequenceA.Interleave(sequenceB).Take(1).Consume();
             }
 
-            Assert.DoesNotThrow(Code);
+            Assert.That(Code, Throws.Nothing);
         }
 
         /// <summary>
@@ -80,8 +79,8 @@ namespace MoreLinq.Test
         {
             using (var sequenceA = TestingSequence.Of<int>())
             {
-                Assert.Throws<BreakException>(() => // Expected and thrown by BreakingSequence
-                    sequenceA.Interleave(new BreakingSequence<int>()).Consume());
+                Assert.That(() => sequenceA.Interleave(new BreakingSequence<int>()).Consume(),
+                            Throws.BreakException); // Expected and thrown by BreakingSequence
             }
         }
 
