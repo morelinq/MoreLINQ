@@ -10,6 +10,9 @@ trim_trailing_whitespace = true
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
 
+[*.Build.{props,targets}]
+indent_size = 2
+
 [*.{sln}]
 indent_style = tab
 

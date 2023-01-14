@@ -46,12 +46,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestSortedMergeDisposesOnError()
         {
-            using (var sequenceA = TestingSequence.Of<int>())
-            {
-                // Expected and thrown by BreakingSequence
-                Assert.Throws<InvalidOperationException>(() =>
-                    sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
-            }
+            using var sequenceA = TestingSequence.Of<int>();
+
+            // Expected and thrown by BreakingSequence
+            Assert.That(() => sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>())
+                                       .Consume(),
+                        Throws.BreakException);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace MoreLinq.Test
         {
             var sequenceA = Enumerable.Range(1, 3);
             var sequenceB = Enumerable.Range(4, 3);
-            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>)null, sequenceB);
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>?)null, sequenceB);
 
             Assert.That(result, Is.EqualTo(sequenceA.Concat(sequenceB)));
         }
@@ -166,9 +166,10 @@ namespace MoreLinq.Test
             var sequenceA = new[] { "a", "D", "G", "h", "i", "J", "O", "t", "z" };
             var sequenceB = new[] { "b", "E", "k", "q", "r", "u", "V", "x", "Y" };
             var sequenceC = new[] { "C", "F", "l", "m", "N", "P", "s", "w" };
+            var comparer = StringComparer.InvariantCultureIgnoreCase;
             var expectedResult = sequenceA.Concat(sequenceB).Concat(sequenceC)
-                                          .OrderBy(a => a, StringComparer.CurrentCultureIgnoreCase);
-            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC);
+                                          .OrderBy(a => a, comparer);
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, comparer, sequenceB, sequenceC);
 
             Assert.That(result, Is.EqualTo(expectedResult));
         }
@@ -180,14 +181,14 @@ namespace MoreLinq.Test
         public void TestSortedMergeAllSequencesDisposed()
         {
             const int count = 10;
-            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
-            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
-            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
-            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
-            {
-                sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
-                         .Consume(); // ensures the sequences are actually merged and iterators are obtained
-            }
+
+            using var sequenceA = Enumerable.Range(1, count).AsTestingSequence();
+            using var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence();
+            using var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence();
+            using var sequenceD = Enumerable.Range(1, 0).AsTestingSequence();
+
+            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB, sequenceC, sequenceD)
+                     .Consume(); // ensures the sequences are actually merged and iterators are obtained
         }
     }
 }

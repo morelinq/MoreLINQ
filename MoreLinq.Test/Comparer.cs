@@ -27,19 +27,19 @@ namespace MoreLinq.Test
         /// <see cref="Func{T,T,Int32}"/>.
         /// </summary>
 
-        public static IComparer<T> Create<T>(Func<T, T, int> compare) =>
+        public static IComparer<T> Create<T>(Func<T?, T?, int> compare) =>
             new DelegatingComparer<T>(compare);
 
         sealed class DelegatingComparer<T> : IComparer<T>
         {
-            readonly Func<T, T, int> _comparer;
+            readonly Func<T?, T?, int> _comparer;
 
-            public DelegatingComparer(Func<T, T, int> comparer)
+            public DelegatingComparer(Func<T?, T?, int> comparer)
             {
                 _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
             }
 
-            public int Compare(T x, T y) => _comparer(x, y);
+            public int Compare(T? x, T? y) => _comparer(x, y);
         }
     }
 }

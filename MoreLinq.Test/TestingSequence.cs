@@ -41,7 +41,7 @@ namespace MoreLinq.Test
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
         bool? _disposed;
-        IEnumerable<T> _sequence;
+        IEnumerable<T>? _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence) =>
             _sequence = sequence;
@@ -58,14 +58,16 @@ namespace MoreLinq.Test
         {
             if (_disposed == null)
                 return;
-            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+            Assert.That(_disposed, Is.True, "Expected sequence to be disposed.");
             _disposed = null;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = _sequence.GetEnumerator().AsWatchtable();
+            Debug.Assert(_sequence is not null);
+
+            var enumerator = _sequence.GetEnumerator().AsWatchable();
             _disposed = false;
             enumerator.Disposed += delegate
             {

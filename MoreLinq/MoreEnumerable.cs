@@ -27,14 +27,14 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {
-        static int? TryGetCollectionCount<T>(this IEnumerable<T> source)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-
-            return source is ICollection<T> collection ? collection.Count
-                 : source is IReadOnlyCollection<T> readOnlyCollection ? readOnlyCollection.Count
-                 : (int?)null;
-        }
+        internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
+            source switch
+            {
+                null => throw new ArgumentNullException(nameof(source)),
+                ICollection<T> collection => collection.Count,
+                IReadOnlyCollection<T> collection => collection.Count,
+                _ => null
+            };
 
         static int CountUpTo<T>(this IEnumerable<T> source, int max)
         {
@@ -43,15 +43,15 @@ namespace MoreLinq
 
             var count = 0;
 
-            using (var e = source.GetEnumerator())
-            {
-                while (count < max && e.MoveNext())
-                {
-                    count++;
-                }
-            }
+            using var e = source.GetEnumerator();
+            while (count < max && e.MoveNext())
+                count++;
 
             return count;
         }
+
+        // See https://github.com/atifaziz/Optuple
+
+        static (bool HasValue, T Value) Some<T>(T value) => (true, value);
     }
 }

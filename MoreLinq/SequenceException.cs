@@ -46,7 +46,7 @@ namespace MoreLinq
         /// </summary>
         /// <param name="message">A message that describes the error.</param>
 
-        public SequenceException(string message) :
+        public SequenceException(string? message) :
             this(message, null) { }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// <param name="message">A message that describes the error.</param>
         /// <param name="innerException">The exception that is the cause of the current exception.</param>
 
-        public SequenceException(string message, Exception innerException) :
+        public SequenceException(string? message, Exception? innerException) :
             base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
 
 #if !NO_EXCEPTION_SERIALIZATION

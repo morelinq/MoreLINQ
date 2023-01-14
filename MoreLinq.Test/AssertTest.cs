@@ -40,24 +40,27 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
+            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            Assert.That(() => source.Assert(n => n % 2 == 0).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
+            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            Assert.That(() => source.Assert(n => n % 2 == 0, _ => null!).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomError()
         {
-            var e =
-                Assert.Throws<ValueException>(() =>
-                    new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
-            Assert.AreEqual(7, e.Value);
+            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            Assert.That(() =>
+                source.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume(),
+                Throws.TypeOf<ValueException>()
+                      .With.Property(nameof(ValueException.Value)).EqualTo(7));
         }
 
         class ValueException : Exception

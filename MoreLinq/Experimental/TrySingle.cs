@@ -15,13 +15,13 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq
+namespace MoreLinq.Experimental
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    partial class MoreEnumerable
+    partial class ExperimentalEnumerable
     {
         /// <summary>
         /// Returns a tuple with the cardinality of the sequence and the
@@ -51,7 +51,7 @@ namespace MoreLinq
         /// than two elements from the sequence.
         /// </remarks>
 
-        public static (TCardinality Cardinality, T Value)
+        public static (TCardinality Cardinality, T? Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
                 TCardinality zero, TCardinality one, TCardinality many) =>
             TrySingle(source, zero, one, many, ValueTuple.Create);
@@ -96,7 +96,7 @@ namespace MoreLinq
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
-            Func<TCardinality, T, TResult> resultSelector)
+            Func<TCardinality, T?, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
@@ -115,7 +115,7 @@ namespace MoreLinq
                     };
                     return resultSelector(one, item);
                 }
-                case int _:
+                case {}:
                     return resultSelector(many, default);
                 default:
                 {

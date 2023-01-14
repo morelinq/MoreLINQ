@@ -68,9 +68,9 @@ namespace MoreLinq
         public static IEnumerable<T> OrderedMerge<T>(
             this IEnumerable<T> first,
             IEnumerable<T> second,
-            IComparer<T> comparer)
+            IComparer<T>? comparer)
         {
-            return OrderedMerge(first, second, e => e, f => f, s => s, (a, _) => a, comparer);
+            return OrderedMerge(first, second, IdFn, IdFn, IdFn, (a, _) => a, comparer);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace MoreLinq
             IEnumerable<T> second,
             Func<T, TKey> keySelector)
         {
-            return OrderedMerge(first, second, keySelector, a => a, b => b, (a, _) => a, null);
+            return OrderedMerge(first, second, keySelector, IdFn, IdFn, (a, _) => a, null);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace MoreLinq
             Func<T, TResult> firstSelector,
             Func<T, TResult> secondSelector,
             Func<T, T, TResult> bothSelector,
-            IComparer<TKey> comparer)
+            IComparer<TKey>? comparer)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector)); // Argument name changes to 'firstKeySelector'
             return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
@@ -272,7 +272,7 @@ namespace MoreLinq
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
-            IComparer<TKey> comparer)
+            IComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -300,23 +300,21 @@ namespace MoreLinq
                         var key1 = firstKeySelector(element1);
                         var element2 = e2.Current;
                         var key2 = secondKeySelector(element2);
-                        var comparison = comparer.Compare(key1, key2);
-
-                        if (comparison < 0)
+                        switch (comparer.Compare(key1, key2))
                         {
-                            yield return firstSelector(element1);
-                            gotFirst = e1.MoveNext();
-                        }
-                        else if (comparison > 0)
-                        {
-                            yield return secondSelector(element2);
-                            gotSecond = e2.MoveNext();
-                        }
-                        else
-                        {
-                            yield return bothSelector(element1, element2);
-                            gotFirst = e1.MoveNext();
-                            gotSecond = e2.MoveNext();
+                            case < 0:
+                                yield return firstSelector(element1);
+                                gotFirst = e1.MoveNext();
+                                break;
+                            case > 0:
+                                yield return secondSelector(element2);
+                                gotSecond = e2.MoveNext();
+                                break;
+                            default:
+                                yield return bothSelector(element1, element2);
+                                gotFirst = e1.MoveNext();
+                                gotSecond = e2.MoveNext();
+                                break;
                         }
                     }
                     else if (gotSecond)

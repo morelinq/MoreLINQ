@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         public void PrependWithNullHead()
         {
             string[] tail = { "second", "third" };
-            string head = null;
+            string? head = null;
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual(null, "second", "third");
         }
