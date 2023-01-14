@@ -152,7 +152,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="PolySharp" Version="1.7.1" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" Version="1.9.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
