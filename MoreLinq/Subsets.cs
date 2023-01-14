@@ -66,7 +66,7 @@ namespace MoreLinq
                             yield return subset;
                     }
 
-                    yield return sequenceAsList; // the last subet is the original set itself
+                    yield return sequenceAsList; // the last subset is the original set itself
                 }
             }
         }
@@ -95,9 +95,9 @@ namespace MoreLinq
             if (subsetSize < 0)
                 throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be >= 0");
 
-            // NOTE: Theres an interesting trade-off that we have to make in this operator.
+            // NOTE: There's an interesting trade-off that we have to make in this operator.
             // Ideally, we would throw an exception here if the {subsetSize} parameter is
-            // greater than the sequence length. Unforunately, determining the length of a
+            // greater than the sequence length. Unfortunately, determining the length of a
             // sequence is not always possible without enumerating it. Herein lies the rub.
             // We want Subsets() to be a deferred operation that only iterates the sequence
             // when the caller is ready to consume the results. However, this forces us to
@@ -123,7 +123,7 @@ namespace MoreLinq
             /// predetermined size less than or equal to the original set size.
             /// </summary>
 
-            class SubsetEnumerator : IEnumerator<IList<T>>
+            sealed class SubsetEnumerator : IEnumerator<IList<T>>
             {
                 readonly IList<T> _set;   // the original set of elements
                 readonly T[] _subset;     // the current subset to return
@@ -136,7 +136,7 @@ namespace MoreLinq
                 int _m2;           // current swap index (lower index)
                 int _k;            // size of the subset being produced
                 int _n;            // size of the original set (sequence)
-                int _z;            // count of items excluded from the subet
+                int _z;            // count of items excluded from the subset
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -209,7 +209,7 @@ namespace MoreLinq
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
-                if (sequence == null)
+                if (sequence is null)
                     throw new ArgumentNullException(nameof(sequence));
                 if (subsetSize < 0)
                     throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");

@@ -98,10 +98,22 @@ namespace MoreLinq.Test
             var result = ss.CountBy(s => s);
 
             result.AssertSequenceEqual(
-                KeyValuePair.Create("foo", 2),
-                KeyValuePair.Create((string) null, 4),
-                KeyValuePair.Create("bar", 2),
-                KeyValuePair.Create("baz", 2));
+                KeyValuePair.Create((string?)"foo", 2),
+                KeyValuePair.Create((string?)null, 4),
+                KeyValuePair.Create((string?)"bar", 2),
+                KeyValuePair.Create((string?)"baz", 2));
+        }
+
+        [Test]
+        public void CountByWithSomeNullKeysAndEqualityComparer()
+        {
+            var result = new[] { "a", "B", null, "c", "A", null, "b", "A" }.CountBy(c => c, StringComparer.OrdinalIgnoreCase);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create((string?)"a", 3),
+                KeyValuePair.Create((string?)"B", 2),
+                KeyValuePair.Create((string?)null, 2),
+                KeyValuePair.Create((string?)"c", 1));
         }
     }
 }

@@ -87,7 +87,7 @@ namespace MoreLinq.Test
 
             var sorted = foobars.PartialSort(5);
 
-            // Pair expected and actuals by index and then check
+            // Pair expected and actual by index and then check
             // reference equality, finding the first mismatch.
 
             var mismatchIndex =

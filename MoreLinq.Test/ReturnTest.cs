@@ -34,8 +34,8 @@ namespace MoreLinq.Test
 
         static class NullSingleton
         {
-            public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return<object>(null);
-            public static IList<object> List => (IList<object>)Sequence;
+            public static readonly IEnumerable<object?> Sequence = MoreEnumerable.Return<object?>(null);
+            public static IList<object?> List => (IList<object?>)Sequence;
         }
 
         [Test]
@@ -77,13 +77,13 @@ namespace MoreLinq.Test
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemProvidedIsNull()
         {
-            Assert.That(() => NullSingleton.List.IndexOf(new object()), Throws.Nothing);
+            Assert.That(() => SomeSingleton.List.IndexOf(new object()), Throws.Nothing);
         }
 
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
         {
-            Assert.That(() => SomeSingleton.List.IndexOf(null), Throws.Nothing);
+            Assert.That(() => NullSingleton.List.IndexOf(null), Throws.Nothing);
         }
 
         [Test]

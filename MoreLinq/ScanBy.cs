@@ -78,7 +78,7 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             Func<TKey, TState> seedSelector,
             Func<TState, TKey, TSource, TState> accumulator,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -89,46 +89,15 @@ namespace MoreLinq
 
             IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
             {
-                var stateByKey = new Dictionary<TKey, TState>(comparer);
-                var prevKey = (HasValue: false, Value: default(TKey));
-                var nullKeyState = (HasValue: false, Value: default(TState));
-                var state = default(TState);
-
-                bool TryGetState(TKey key, out TState value)
-                {
-                    if (key == null)
-                    {
-                        value = nullKeyState.Value;
-                        return nullKeyState.HasValue;
-                    }
-
-                    return stateByKey.TryGetValue(key, out value);
-                }
+                var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 
                 foreach (var item in source)
                 {
                     var key = keySelector(item);
-
-                    if (!(prevKey.HasValue
-                       // key same as the previous? then re-use the state
-                       && comparer.GetHashCode(prevKey.Value) == comparer.GetHashCode(key)
-                       && comparer.Equals(prevKey.Value, key)
-                       // otherwise try & find state of the key
-                       || TryGetState(key, out state)))
-                    {
-                        state = seedSelector(key);
-                    }
-
+                    var state = stateByKey.TryGetValue(key, out var s) ? s : seedSelector(key);
                     state = accumulator(state, key, item);
-
-                    if (key != null)
-                        stateByKey[key] = state;
-                    else
-                        nullKeyState = (true, state);
-
+                    stateByKey[key] = state;
                     yield return new KeyValuePair<TKey, TState>(key, state);
-
-                    prevKey = (true, key);
                 }
             }
         }

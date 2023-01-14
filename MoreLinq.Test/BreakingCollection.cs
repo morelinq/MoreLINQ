@@ -26,8 +26,6 @@ namespace MoreLinq.Test
 
         public BreakingCollection(params T[] values) : this ((IList<T>) values) {}
         public BreakingCollection(IList<T> list) => List = list;
-        public BreakingCollection(int count) :
-            this(Enumerable.Repeat(default(T), count).ToList()) {}
 
         public int Count => List.Count;
 

@@ -17,8 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
-    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -37,21 +35,45 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// Verify that Interleave early throw ArgumentNullException when an element
-        /// of otherSequences is null.
+        /// Verify that interleaving disposes those enumerators that it managed
+        /// to open successfully
         /// </summary>
         [Test]
-        public void TestInterleaveEarlyThrowOnNullElementInOtherSequences()
+        public void TestInterleaveDisposesOnErrorAtGetEnumerator()
         {
-            void Code()
-            {
-                var sequenceA = Enumerable.Range(1, 1);
-                var otherSequences = new IEnumerable<int>[] {null};
+            using var sequenceA = TestingSequence.Of<int>();
+            var sequenceB = new BreakingSequence<int>();
 
-                sequenceA.Interleave(otherSequences);
-            }
+            // Expected and thrown by BreakingSequence
+            Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
+                        Throws.BreakException);
+        }
 
-            Assert.Throws<ArgumentNullException>(Code);
+        /// <summary>
+        /// Verify that interleaving disposes those enumerators that it managed
+        /// to open successfully
+        /// </summary>
+        [Test]
+        public void TestInterleaveDisposesOnErrorAtMoveNext()
+        {
+            using var sequenceA = TestingSequence.Of<int>();
+            using var sequenceB = MoreEnumerable.From<int>(() => throw new TestException()).AsTestingSequence();
+
+            // Expected and thrown by sequenceB
+            Assert.That(() => sequenceA.Interleave(sequenceB).Consume(),
+                        Throws.TypeOf<TestException>());
+        }
+
+        /// <summary>
+        /// Verify that interleaving do not call enumerable GetEnumerator method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNotCallGetEnumeratorEagerly()
+        {
+            var sequenceA = TestingSequence.Of(1);
+            var sequenceB = new BreakingSequence<int>();
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
         }
 
         /// <summary>
@@ -60,46 +82,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveDoNoCallMoveNextEagerly()
         {
-            void Code()
-            {
-                var sequenceA = Enumerable.Range(1, 1);
-                var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
+            var sequenceA = Enumerable.Range(1, 1);
+            var sequenceB = MoreEnumerable.From<int>(() => throw new TestException());
 
-                sequenceA.Interleave(sequenceB).Take(1).Consume();
-            }
-
-            Assert.DoesNotThrow(Code);
-        }
-
-        /// <summary>
-        /// Verify that interleaving disposes those enumerators that it managed
-        /// to open successfully
-        /// </summary>
-        [Test]
-        public void TestInterleaveDisposesOnError()
-        {
-            using (var sequenceA = TestingSequence.Of<int>())
-            {
-                Assert.Throws<InvalidOperationException>(() => // Expected and thrown by BreakingSequence
-                    sequenceA.Interleave(new BreakingSequence<int>()).Consume());
-            }
-        }
-
-        /// <summary>
-        /// Verify that, in case of partial enumeration, interleaving disposes those
-        /// enumerators that it managed to open successfully
-        /// </summary>
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        public void TestInterleaveDisposesOnPartialEnumeration(int count)
-        {
-            using var sequenceA = TestingSequence.Of<int>(1);
-            using var sequenceB = TestingSequence.Of<int>(2);
-            using var sequenceC = TestingSequence.Of<int>(3);
-
-            sequenceA.Interleave(sequenceB, sequenceC).Take(count).Consume();
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
         }
 
         /// <summary>
@@ -189,14 +175,13 @@ namespace MoreLinq.Test
         {
             const int count = 10;
 
-            using (var sequenceA = Enumerable.Range(1, count).AsTestingSequence())
-            using (var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence())
-            using (var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence())
-            using (var sequenceD = Enumerable.Range(1, 0).AsTestingSequence())
-            {
-                sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
-                         .Consume();
-            }
+            using var sequenceA = Enumerable.Range(1, count).AsTestingSequence();
+            using var sequenceB = Enumerable.Range(1, count - 1).AsTestingSequence();
+            using var sequenceC = Enumerable.Range(1, count - 5).AsTestingSequence();
+            using var sequenceD = Enumerable.Range(1, 0).AsTestingSequence();
+
+            sequenceA.Interleave(sequenceB, sequenceC, sequenceD)
+                     .Consume();
         }
     }
 }

@@ -53,13 +53,12 @@ namespace MoreLinq.Test
             int expectedCompareCount,
             int expectedMoveNextCallCount)
         {
-            var collection = new BreakingCollection<int>(collectionCount);
+            var collection = new BreakingCollection<int>(new int[collectionCount]);
 
-            using (var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence())
-            {
-                Assert.AreEqual(expectedCompareCount, collection.CompareCount(seq));
-                Assert.AreEqual(expectedMoveNextCallCount, seq.MoveNextCallCount);
-            }
+            using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
+
+            Assert.That(collection.CompareCount(seq), Is.EqualTo(expectedCompareCount));
+            Assert.That(seq.MoveNextCallCount, Is.EqualTo(expectedMoveNextCallCount));
         }
 
         [TestCase(0, 0,  0, 1)]
@@ -71,13 +70,12 @@ namespace MoreLinq.Test
             int expectedCompareCount,
             int expectedMoveNextCallCount)
         {
-            var collection = new BreakingCollection<int>(collectionCount);
+            var collection = new BreakingCollection<int>(new int[collectionCount]);
 
-            using (var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence())
-            {
-                Assert.AreEqual(expectedCompareCount, seq.CompareCount(collection));
-                Assert.AreEqual(expectedMoveNextCallCount, seq.MoveNextCallCount);
-            }
+            using var seq = Enumerable.Range(0, sequenceCount).AsTestingSequence();
+
+            Assert.That(seq.CompareCount(collection), Is.EqualTo(expectedCompareCount));
+            Assert.That(seq.MoveNextCallCount, Is.EqualTo(expectedMoveNextCallCount));
         }
 
         [TestCase(0, 0,  0, 1)]
@@ -89,45 +87,41 @@ namespace MoreLinq.Test
             int expectedCompareCount,
             int expectedMoveNextCallCount)
         {
-            using (var seq1 = Enumerable.Range(0, sequenceCount1).AsTestingSequence())
-            using (var seq2 = Enumerable.Range(0, sequenceCount2).AsTestingSequence())
-            {
-                Assert.AreEqual(expectedCompareCount, seq1.CompareCount(seq2));
-                Assert.AreEqual(expectedMoveNextCallCount, seq1.MoveNextCallCount);
-                Assert.AreEqual(expectedMoveNextCallCount, seq2.MoveNextCallCount);
-            }
+            using var seq1 = Enumerable.Range(0, sequenceCount1).AsTestingSequence();
+            using var seq2 = Enumerable.Range(0, sequenceCount2).AsTestingSequence();
+
+            Assert.That(seq1.CompareCount(seq2), Is.EqualTo(expectedCompareCount));
+            Assert.That(seq1.MoveNextCallCount, Is.EqualTo(expectedMoveNextCallCount));
+            Assert.That(seq2.MoveNextCallCount, Is.EqualTo(expectedMoveNextCallCount));
         }
 
         [Test]
         public void CompareCountDisposesSequenceEnumerators()
         {
-            using (var seq1 = TestingSequence.Of<int>())
-            using (var seq2 = TestingSequence.Of<int>())
-            {
-                Assert.AreEqual(0, seq1.CompareCount(seq2));
-            }
+            using var seq1 = TestingSequence.Of<int>();
+            using var seq2 = TestingSequence.Of<int>();
+
+            Assert.That(seq1.CompareCount(seq2), Is.Zero);
         }
 
         [Test]
         public void CompareCountDisposesFirstEnumerator()
         {
-            var collection = new BreakingCollection<int>(0);
+            var collection = new BreakingCollection<int>();
 
-            using (var seq = TestingSequence.Of<int>())
-            {
-                Assert.AreEqual(0, seq.CompareCount(collection));
-            }
+            using var seq = TestingSequence.Of<int>();
+
+            Assert.That(seq.CompareCount(collection), Is.Zero);
         }
 
         [Test]
         public void CompareCountDisposesSecondEnumerator()
         {
-            var collection = new BreakingCollection<int>(0);
+            var collection = new BreakingCollection<int>();
 
-            using (var seq = TestingSequence.Of<int>())
-            {
-                Assert.AreEqual(0, collection.CompareCount(seq));
-            }
+            using var seq = TestingSequence.Of<int>();
+
+            Assert.That(collection.CompareCount(seq), Is.Zero);
         }
 
         [Test]
@@ -141,8 +135,8 @@ namespace MoreLinq.Test
 
             var seq2 = Enumerable.Range(1, 3);
 
-            Assert.AreEqual( 1, seq1.CompareCount(seq2));
-            Assert.AreEqual(-1, seq2.CompareCount(seq1));
+            Assert.That(seq1.CompareCount(seq2), Is.EqualTo( 1));
+            Assert.That(seq2.CompareCount(seq1), Is.EqualTo(-1));
         }
 
         enum SequenceKind
