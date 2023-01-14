@@ -43,7 +43,7 @@ namespace MoreLinq.Test
         public void TestInterleaveEarlyThrowOnNullElementInOtherSequences()
         {
             var sequenceA = Enumerable.Range(1, 1);
-            var otherSequences = new IEnumerable<int>[] {null!};
+            var otherSequences = new IEnumerable<int>[] { null! };
 
             Assert.That(() => sequenceA.Interleave(otherSequences),
                         Throws.ArgumentNullException("otherSequences"));
