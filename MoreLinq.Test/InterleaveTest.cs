@@ -77,11 +77,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveDisposesOnError()
         {
-            using (var sequenceA = TestingSequence.Of<int>())
-            {
-                Assert.That(() => sequenceA.Interleave(new BreakingSequence<int>()).Consume(),
-                            Throws.BreakException); // Expected and thrown by BreakingSequence
-            }
+            using var sequenceA = TestingSequence.Of<int>();
+
+            Assert.That(() => sequenceA.Interleave(new BreakingSequence<int>()).Consume(),
+                        Throws.BreakException); // Expected and thrown by BreakingSequence
         }
 
         /// <summary>
