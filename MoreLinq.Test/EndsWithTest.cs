@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using NUnit.Framework;
 
     [TestFixture]
@@ -29,7 +28,9 @@ namespace MoreLinq.Test
         [TestCase(new[] {1, 2, 3}, new[] {0, 1, 2, 3}, ExpectedResult = false)]
         public bool EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
         {
-            return first.EndsWith(second);
+            using var fts = first.AsTestingSequence();
+            using var sts = second.AsTestingSequence();
+            return fts.EndsWith(sts);
         }
 
         [TestCase(new[] {'1', '2', '3'}, new[] {'2', '3'}, ExpectedResult = true)]
@@ -37,7 +38,9 @@ namespace MoreLinq.Test
         [TestCase(new[] {'1', '2', '3'}, new[] {'0', '1', '2', '3'}, ExpectedResult = false)]
         public bool EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
         {
-            return first.EndsWith(second);
+            using var fts = first.AsTestingSequence();
+            using var sts = second.AsTestingSequence();
+            return fts.EndsWith(sts);
         }
 
         [TestCase("123", "23", ExpectedResult = true)]
@@ -45,50 +48,71 @@ namespace MoreLinq.Test
         [TestCase("123", "0123", ExpectedResult = false)]
         public bool EndsWithWithStrings(string first, string second)
         {
-            // Conflict with String.EndsWith(), which has precedence in this case
-            return MoreEnumerable.EndsWith(first, second);
+            using var fts = first.AsTestingSequence();
+            using var sts = second.AsTestingSequence();
+            return fts.EndsWith(sts);
         }
 
         [Test]
         public void EndsWithReturnsTrueIfBothEmpty()
         {
-            Assert.That(new int[0].EndsWith(new int[0]), Is.True);
+            using var fts = TestingSequence.Of<int>();
+            using var sts = TestingSequence.Of<int>();
+            Assert.That(fts.EndsWith(sts), Is.True);
         }
 
         [Test]
         public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.That(new int[0].EndsWith(new[] {1,2,3}), Is.False);
+            using var fts = TestingSequence.Of<int>();
+            using var sts = TestingSequence.Of(1, 2, 3);
+            Assert.That(fts.EndsWith(sts), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
         [TestCase("1", "", ExpectedResult = true)]
         public bool EndsWithReturnsTrueIfSecondIsEmpty(string first, string second)
         {
-            // Conflict with String.EndsWith(), which has precedence in this case
-            return MoreEnumerable.EndsWith(first, second);
+            using var fts = first.AsTestingSequence();
+            using var sts = second.AsTestingSequence();
+            return fts.EndsWith(sts);
         }
 
         [Test]
         public void EndsWithDisposesBothSequenceEnumerators()
         {
-            using var first = TestingSequence.Of(1,2,3);
+            using var first = TestingSequence.Of(1, 2, 3);
             using var second = TestingSequence.Of(1);
 
             first.EndsWith(second);
         }
 
         [Test]
-        [SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
-        public void EndsWithUsesSpecifiedEqualityComparerOrDefault()
+        public void EndsWithUsesDefaultEqualityComparerByDefault()
         {
-            var first = new[] {1,2,3};
-            var second = new[] {4,5,6};
+            using var first = TestingSequence.Of(1, 2, 3);
+            using var second = TestingSequence.Of(4, 5, 6);
 
             Assert.That(first.EndsWith(second), Is.False);
+        }
+
+        [Test]
+        public void EndsWithUsesDefaultEqualityComparerWhenNullSpecified()
+        {
+            using var first = TestingSequence.Of(1, 2, 3);
+            using var second = TestingSequence.Of(4, 5, 6);
+
             Assert.That(first.EndsWith(second, null), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
+        }
+
+        [Test]
+        [TestCase(false, ExpectedResult = false)]
+        [TestCase(true, ExpectedResult = true)]
+        public bool EndsWithUsesSpecifiedEqualityComparer(bool result)
+        {
+            using var first = TestingSequence.Of(1, 2, 3);
+            using var second = TestingSequence.Of(4, 5, 6);
+            return first.EndsWith(second, EqualityComparer.Create<int>((_, _) => result));
         }
 
         [TestCase(SourceKind.BreakingCollection)]

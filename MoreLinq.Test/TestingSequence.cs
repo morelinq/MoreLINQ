@@ -31,6 +31,25 @@ namespace MoreLinq.Test
             source != null
             ? new TestingSequence<T>(source)
             : throw new ArgumentNullException(nameof(source));
+
+        public static TResult[] Use<T, TResult>(this TestingSequence<T> source,
+            Func<TestingSequence<T>, IEnumerable<TResult>> user)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            return user(source).ToArray();
+        }
+
+        public static TResult[] UsingTestingSequence<T, TResult>(this IEnumerable<T> source,
+            Func<TestingSequence<T>, IEnumerable<TResult>> user)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source is TestingSequence<T>) throw new ArgumentException("Source is already a testing sequence instance.");
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            return source.AsTestingSequence().Use(user);
+        }
     }
 
     /// <summary>
