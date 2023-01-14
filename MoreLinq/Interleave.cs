@@ -59,7 +59,8 @@ namespace MoreLinq
 
             try
             {
-                // First pass. create enumerators.
+                // First, yield first element of each sequence.
+
                 foreach (var sequence in sequences)
                 {
                     var enumerator = sequence.GetEnumerator();
@@ -75,6 +76,8 @@ namespace MoreLinq
                         enumerators.Remove(enumerator);
                     }
                 }
+
+                // Then, yield remaining elements from each sequence.
 
                 var node = enumerators.First;
                 while (node != null)
