@@ -80,6 +80,18 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// Verify that interleaving do not call enumerable GetEnumerator method eagerly
+        /// </summary>
+        [Test]
+        public void TestInterleaveDoNotCallGetEnumeratorEagerly()
+        {
+            var sequenceA = TestingSequence.Of(1);
+            var sequenceB = new BreakingSequence<int>();
+
+            sequenceA.Interleave(sequenceB).Take(1).Consume();
+        }
+
+        /// <summary>
         /// Verify that interleaving do not call enumerators MoveNext method eagerly
         /// </summary>
         [Test]
