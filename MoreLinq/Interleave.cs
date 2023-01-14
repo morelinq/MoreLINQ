@@ -50,10 +50,10 @@ namespace MoreLinq
             if (otherSequences.Any(s => s == null))
                 throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
-            return InterleaveSkip(otherSequences.Prepend(sequence));
+            return Interleave(otherSequences.Prepend(sequence));
         }
 
-        static IEnumerable<T> InterleaveSkip<T>(IEnumerable<IEnumerable<T>> sequences)
+        static IEnumerable<T> Interleave<T>(IEnumerable<IEnumerable<T>> sequences)
         {
             var enumerators = new LinkedList<IEnumerator<T>>();
 
