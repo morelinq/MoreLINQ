@@ -29,7 +29,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        class TestObject
+        sealed class TestObject
         {
             public int KeyField;
             public Guid? ANullableGuidField;

@@ -212,7 +212,7 @@ namespace MoreLinq.Test
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
         static class GenericArgs
         {
-            class Enumerator<T> : IEnumerator<T?>
+            sealed class Enumerator<T> : IEnumerator<T?>
             {
                 public bool MoveNext() => false;
                 public T? Current { get; private set; }
@@ -227,7 +227,7 @@ namespace MoreLinq.Test
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             }
 
-            public class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T?>
+            public sealed class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T?>
             {
                 public System.Linq.IOrderedEnumerable<T?> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
                 {
@@ -236,19 +236,19 @@ namespace MoreLinq.Test
                 }
             }
 
-            public class AwaitQuery<T> : Enumerable<T?>,
-                                         Experimental.IAwaitQuery<T?>
+            public sealed class AwaitQuery<T> : Enumerable<T?>,
+                                                Experimental.IAwaitQuery<T?>
             {
                 public Experimental.AwaitQueryOptions Options => Experimental.AwaitQueryOptions.Default;
                 public Experimental.IAwaitQuery<T?> WithOptions(Experimental.AwaitQueryOptions options) => this;
             }
 
-            public class Comparer<T> : IComparer<T>
+            public sealed class Comparer<T> : IComparer<T>
             {
                 public int Compare(T? x, T? y) => -1;
             }
 
-            public class EqualityComparer<T> : IEqualityComparer<T>
+            public sealed class EqualityComparer<T> : IEqualityComparer<T>
             {
                 public bool Equals(T? x, T? y) => false;
                 public int GetHashCode(T obj) => 0;

@@ -20,7 +20,7 @@ namespace MoreLinq.Test
     using System;
     using NUnit.Framework;
 
-    class FromTest
+    public class FromTest
     {
         [Test]
         public void TestFromIsLazy()

@@ -405,18 +405,18 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-        class Series
+        sealed class Series
         {
             public required string Name;
             public required Attribute[] Attributes;
         }
 
-        class Attribute
+        sealed class Attribute
         {
             public required int[] Values;
         }
 
-        class Tree<T>
+        sealed class Tree<T>
         {
             public readonly T Value;
             public readonly Tree<T>? Left;
