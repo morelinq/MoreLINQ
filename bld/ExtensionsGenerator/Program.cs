@@ -14,6 +14,8 @@
 //
 #endregion
 
+#pragma warning disable CA2201 // Do not raise reserved exception types
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -27,12 +29,18 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
+// Disable CA1852 due to the following false negative:
+// Type 'Program' can be sealed because it has no subtypes in its containing assembly and is not externally visible
+#pragma warning disable CA1852 // Seal internal types
 try
+#pragma warning restore CA1852 // Seal internal types
 {
     Run(args);
     return 0;
 }
+#pragma warning disable CA1031 // Do not catch general exception types
 catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
 {
     Console.Error.WriteLine(e.ToString());
     return 0xbad;
@@ -330,8 +338,8 @@ namespace MoreLinq.Extensions
 
     Console.WriteLine(template.Trim()
                               // normalize line endings
-                              .Replace("\r", string.Empty)
-                              .Replace("\n", Environment.NewLine));
+                              .Replace("\r", string.Empty, StringComparison.Ordinal)
+                              .Replace("\n", Environment.NewLine, StringComparison.Ordinal));
 }
 
 static TypeKey CreateTypeKey(TypeSyntax root, Func<string, TypeKey?> abbreviator)
