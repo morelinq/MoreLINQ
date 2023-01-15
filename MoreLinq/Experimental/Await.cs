@@ -479,7 +479,9 @@ namespace MoreLinq.Experimental
                                     () => PostNotice(Notice.End, default, default),
                                     maxConcurrency, cancellationToken);
                             }
+#pragma warning disable CA1031 // Do not catch general exception types
                             catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
                             {
                                 PostNotice(Notice.Error, default, e);
                             }
