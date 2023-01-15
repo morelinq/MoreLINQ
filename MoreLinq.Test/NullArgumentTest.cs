@@ -227,6 +227,8 @@ namespace MoreLinq.Test
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             }
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+
             public sealed class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T?>
             {
                 public System.Linq.IOrderedEnumerable<T?> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
@@ -253,6 +255,8 @@ namespace MoreLinq.Test
                 public bool Equals(T? x, T? y) => false;
                 public int GetHashCode(T obj) => 0;
             }
+
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
         }
     }
 }
