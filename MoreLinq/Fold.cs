@@ -22,6 +22,8 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
+        const string folder = nameof(folder);
+
         static TResult FoldImpl<T, TResult>(IEnumerable<T> source, int count,
             Func<T, TResult>? folder1 = null,
             Func<T, T, TResult>? folder2 = null,
@@ -60,7 +62,9 @@ namespace MoreLinq
                 || count == 16 && folder16 == null
                 )
             {                                                // ReSharper disable NotResolvedInText
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 throw new ArgumentNullException("folder");   // ReSharper restore NotResolvedInText
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
 
             var elements = new T[count];
