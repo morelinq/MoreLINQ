@@ -5205,6 +5205,7 @@ namespace MoreLinq.Extensions
         /// The single element of the input sequence.
         /// </returns>
 
+#pragma warning disable CA1720 // Identifier contains type name
         public static T Single<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.Single(source);
 
