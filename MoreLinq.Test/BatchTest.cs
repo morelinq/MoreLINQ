@@ -251,7 +251,7 @@ namespace MoreLinq.Test
         public void BatchFilterBucket()
         {
             const int scale = 2;
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(3, pool,
@@ -270,7 +270,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchSumBucket()
         {
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(3, pool, Enumerable.Sum);
@@ -289,7 +289,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchUpdatesCurrentListInPlace()
         {
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(4, pool, current => current, current => (ICurrentBuffer<int>)current);
@@ -337,7 +337,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchBucketSelectorCurrentList()
         {
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
             int[]? bucketSelectorItems = null;
 

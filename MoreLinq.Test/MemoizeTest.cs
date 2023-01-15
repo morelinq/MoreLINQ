@@ -163,13 +163,14 @@ namespace MoreLinq.Test
         public static void MemoizeIsThreadSafe()
         {
             var sequence = Enumerable.Range(1, 50000);
-            var memoized = sequence.AsTestingSequence().Memoize();
+            using var ts = sequence.AsTestingSequence();
+            var memoized = ts.Memoize();
 
             var lists = Enumerable.Range(0, Environment.ProcessorCount * 2)
                                   .Select(_ => new List<int>())
                                   .ToArray();
 
-            var start = new Barrier(lists.Length);
+            using var start = new Barrier(lists.Length);
 
             var threads =
                 from list in lists
@@ -244,10 +245,10 @@ namespace MoreLinq.Test
         {
             var error = new TestException("This is a test exception.");
 
-            var xs = MoreEnumerable.From(() => 123, () => throw error)
-                                   .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
+            using var xs = MoreEnumerable.From(() => 123, () => throw error)
+                                         .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
             var memoized = xs.Memoize();
-            using ((IDisposable) memoized)
+            using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
             using (var r2 = memoized.Read())
             {
@@ -258,6 +259,8 @@ namespace MoreLinq.Test
 
                 Assert.That(r2.Read, Throws.TypeOf<TestException>().And.SameAs(error));
             }
+
+            using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(123));
         }
@@ -268,12 +271,12 @@ namespace MoreLinq.Test
             var error = new TestException("This is a test exception.");
 
             var i = 0;
-            var xs = MoreEnumerable.From(() => 0 == i++
-                                             ? throw error // throw at start for first iteration only
-                                             : 42)
-                                   .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
+            using var xs = MoreEnumerable.From(() => 0 == i++
+                                                   ? throw error // throw at start for first iteration only
+                                                   : 42)
+                                         .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
             var memoized = xs.Memoize();
-            using ((IDisposable) memoized)
+            using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
             using (var r2 = memoized.Read())
             {
@@ -282,6 +285,7 @@ namespace MoreLinq.Test
                 Assert.That(r2.Read, Throws.TypeOf<TestException>().And.SameAs(error));
             }
 
+            using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
             using (var r2 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(r2.Read()));

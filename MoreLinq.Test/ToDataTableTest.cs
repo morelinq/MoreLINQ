@@ -80,7 +80,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableTableWithWrongColumnNames()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             dt.Columns.Add("Test");
 
             Assert.That(() => _testObjects.ToDataTable(dt),
@@ -90,7 +90,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableTableWithWrongColumnDataType()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
             Assert.That(() => _testObjects.ToDataTable(dt, t=>t.AString),
@@ -170,7 +170,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableWithSchema()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             var columns = dt.Columns;
             columns.Add("Column1", typeof(int));
             columns.Add("Value", typeof(string));

@@ -170,7 +170,8 @@ namespace MoreLinq.Test
         [Test, TestCaseSource(nameof(TestData))]
         public IEnumerable<IEnumerable<int>> TestSegment(IEnumerable<int> source)
         {
-            return source.AsTestingSequence().Segment(v => v % 3 == 0);
+            using var ts = source.AsTestingSequence();
+            return ts.Segment(v => v % 3 == 0);
         }
     }
 }
