@@ -150,15 +150,8 @@ namespace MoreLinq
                 (_permutation[j], _permutation[k]) = (_permutation[k], _permutation[j]);
 
                 // move the tail of the permutation after the jth position in increasing order
-                var x = _permutation.Length - 1;
-                var y = j + 1;
-
-                while (x > y)
-                {
+                for (int x = _permutation.Length - 1, y = j + 1; x > y; x--, y++)
                     (_permutation[x], _permutation[y]) = (_permutation[y], _permutation[x]);
-                    x--;
-                    y++;
-                }
             }
 
             /// <summary>
