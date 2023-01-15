@@ -22,7 +22,6 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Threading;
     using Delegate = Delegating.Delegate;
@@ -245,13 +244,8 @@ namespace MoreLinq.Test
         {
             var error = new Exception("This is a test exception.");
 
-            IEnumerable<int> TestSequence()
-            {
-                yield return 123;
-                throw error;
-            }
-
-            var xs = new DisposalTrackingSequence<int>(TestSequence());
+            var xs = MoreEnumerable.From(() => 123, () => throw error)
+                                   .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
             var memoized = xs.Memoize();
             using ((IDisposable) memoized)
             using (var r1 = memoized.Read())
@@ -274,14 +268,10 @@ namespace MoreLinq.Test
             var error = new Exception("This is a test exception.");
 
             var i = 0;
-            IEnumerable<int> TestSequence()
-            {
-                if (0 == i++) // throw at start for first iteration only
-                    throw error;
-                yield return 42;
-            }
-
-            var xs = new DisposalTrackingSequence<int>(TestSequence());
+            var xs = MoreEnumerable.From(() => 0 == i++
+                                             ? throw error // throw at start for first iteration only
+                                             : 42)
+                                   .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
             var memoized = xs.Memoize();
             using ((IDisposable) memoized)
             using (var r1 = memoized.Read())
@@ -314,51 +304,6 @@ namespace MoreLinq.Test
 
             ((IDisposable) memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));
-        }
-
-        // TODO Consolidate with MoreLinq.Test.TestingSequence<T>?
-
-        sealed class DisposalTrackingSequence<T> : IEnumerable<T>, IDisposable
-        {
-            readonly IEnumerable<T> _sequence;
-
-            internal DisposalTrackingSequence(IEnumerable<T> sequence) =>
-                _sequence = sequence;
-
-            public bool? IsDisposed { get; private set; }
-
-            void IDisposable.Dispose() => IsDisposed = null;
-
-            public IEnumerator<T> GetEnumerator()
-            {
-                var enumerator = new DisposeTestingSequenceEnumerator(_sequence.GetEnumerator());
-                IsDisposed = false;
-                enumerator.Disposed += delegate { IsDisposed = true; };
-                return enumerator;
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-            sealed class DisposeTestingSequenceEnumerator : IEnumerator<T>
-            {
-                readonly IEnumerator<T> _sequence;
-
-                public event EventHandler? Disposed;
-
-                public DisposeTestingSequenceEnumerator(IEnumerator<T> sequence) =>
-                    _sequence = sequence;
-
-                public T Current => _sequence.Current;
-                object? IEnumerator.Current => Current;
-                public void Reset() => _sequence.Reset();
-                public bool MoveNext() => _sequence.MoveNext();
-
-                public void Dispose()
-                {
-                    _sequence.Dispose();
-                    Disposed?.Invoke(this, EventArgs.Empty);
-                }
-            }
         }
     }
 }
