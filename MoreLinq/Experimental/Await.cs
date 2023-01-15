@@ -748,13 +748,13 @@ namespace MoreLinq.Experimental
         {
             #if NET451 || NETSTANDARD1_0
 
-            public static readonly Task Instance;
+            public static readonly Task Instance = CreateCompletedTask();
 
-            static CompletedTask()
+            static Task CreateCompletedTask()
             {
                 var tcs = new TaskCompletionSource<Unit>();
                 tcs.SetResult(default);
-                Instance = tcs.Task;
+                return tcs.Task;
             }
 
             #else
