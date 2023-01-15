@@ -148,8 +148,11 @@ namespace MoreLinq.Experimental
         /// <param name="source">The source sequence.</param>
         /// <returns>The converted sequence.</returns>
 
-        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source) =>
-            source.MaxConcurrency(1);
+        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return MaxConcurrency(source, 1);
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously to use a
@@ -162,8 +165,11 @@ namespace MoreLinq.Experimental
         /// A query whose results evaluate asynchronously using the given
         /// concurrency limit.</returns>
 
-        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(value));
+        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(value));
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously and
@@ -175,8 +181,11 @@ namespace MoreLinq.Experimental
         /// A query whose results evaluate asynchronously using no defined
         /// limitation on concurrency.</returns>
 
-        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(null));
+        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(null));
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously and uses the
@@ -242,8 +251,11 @@ namespace MoreLinq.Experimental
         /// results ordered or unordered based on <paramref name="value"/>.
         /// </returns>
 
-        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value) =>
-            source.WithOptions(source.Options.WithPreserveOrder(value));
+        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithPreserveOrder(value));
+        }
 
         /// <summary>
         /// Creates a sequence query that streams the result of each task in
