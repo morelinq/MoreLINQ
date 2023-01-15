@@ -308,6 +308,20 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void BatchCurrentListIndexerWithBadIndexThrowsArgumentOutOfRangeException()
+        {
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var pool = new TestArrayPool<int>();
+
+            var result = input.Batch(4, pool, current => current, current => (ICurrentBuffer<int>)current);
+
+            using var reader = result.Read();
+            var current = reader.Read();
+
+            Assert.That(() => current[100], Throws.ArgumentOutOfRangeException("index"));
+        }
+
+        [Test]
         public void BatchCallsBucketSelectorBeforeIteratingSource()
         {
             var iterations = 0;

@@ -268,9 +268,8 @@ namespace MoreLinq.Experimental
 
             public override T this[int index]
             {
-                get => index >= 0 && index < Count ? _array[index] : throw new IndexOutOfRangeException();
+                get => index >= 0 && index < Count ? _array[index] : throw new ArgumentOutOfRangeException(nameof(index));
                 set => throw new NotSupportedException();
-
             }
 
             public void Dispose()
