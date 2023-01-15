@@ -192,7 +192,9 @@ namespace MoreLinq.Test
 
         struct Point
         {
+#pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static Point Empty = new Point();
+#pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
             public int X { get; }
             public int Y { get; }
