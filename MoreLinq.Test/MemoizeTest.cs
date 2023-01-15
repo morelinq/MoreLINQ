@@ -43,7 +43,7 @@ namespace MoreLinq.Test
 
             flowArray.AssertSequenceEqual(flowBuffer);
 
-            IEnumerable<object> InnerForEach(IEnumerable<int> source)
+            static IEnumerable<object> InnerForEach(IEnumerable<int> source)
             {
                 var firstVisitAtInnerLoopDone = false;
 

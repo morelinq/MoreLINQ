@@ -82,7 +82,7 @@ namespace MoreLinq.Test
             while (e.MoveNext())
                 yield return e.Current;
 
-            IEnumerator<string> _(TextReader reader)
+            static IEnumerator<string> _(TextReader reader)
             {
                 while (reader.ReadLine() is { } line)
                     yield return line;
