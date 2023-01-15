@@ -76,7 +76,9 @@ namespace MoreLinq.Test
 
             protected BreakingSingleElementCollectionBase(T element) => _element = element;
 
+#pragma warning disable CA1822 // Mark members as static
             public int Count => 1;
+#pragma warning restore CA1822 // Mark members as static
 
             public IEnumerator<T> GetEnumerator()
             {
