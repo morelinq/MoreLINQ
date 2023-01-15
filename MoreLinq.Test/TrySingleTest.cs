@@ -81,7 +81,7 @@ namespace MoreLinq.Test
             public IEnumerator<T> GetEnumerator()
             {
                 yield return _element;
-                throw new Exception($"{nameof(ExperimentalEnumerable.TrySingle)} should not have attempted to consume a second element.");
+                Assert.Fail($"{nameof(ExperimentalEnumerable.TrySingle)} should not have attempted to consume a second element.");
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -128,7 +128,7 @@ namespace MoreLinq.Test
             {
                 yield return 1;
                 yield return 2;
-                throw new Exception(nameof(ExperimentalEnumerable.TrySingle) + " should not have attempted to consume a third element.");
+                Assert.Fail(nameof(ExperimentalEnumerable.TrySingle) + " should not have attempted to consume a third element.");
             }
 
             var (cardinality, value) = TestSequence().TrySingle("zero", "one", "many");

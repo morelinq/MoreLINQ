@@ -91,7 +91,9 @@ namespace MoreLinq
                                 case 1: concat2 = item.Value; break;
                                 case 2: concat3 = item.Value; break;
                                 case 3: concat4 = item.Value; break;
+#pragma warning disable CA2201 // Do not raise reserved exception types
                                 default: throw new IndexOutOfRangeException();
+#pragma warning restore CA2201 // Do not raise reserved exception types
                             }
                             continue;
                         }

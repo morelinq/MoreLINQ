@@ -83,7 +83,10 @@ namespace MoreLinq.Test
             return from param in parameters
                 where IsReferenceType(param) && CanBeNull(param) == canBeNull
                 let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-                let testCase = testCaseFactory(method, arguments, param.Name ?? throw new NullReferenceException())
+                let testCase = testCaseFactory(method, arguments,
+#pragma warning disable CA2201 // Do not raise reserved exception types
+                                               param.Name ?? throw new NullReferenceException())
+#pragma warning restore CA2201 // Do not raise reserved exception types
                 let testName = GetTestName(methodDefinition, param)
                 select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
         }

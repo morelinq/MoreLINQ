@@ -242,7 +242,7 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeRethrowsErrorDuringIterationToAllIteratorsUntilDisposed()
         {
-            var error = new Exception("This is a test exception.");
+            var error = new TestException("This is a test exception.");
 
             var xs = MoreEnumerable.From(() => 123, () => throw error)
                                    .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
@@ -252,11 +252,11 @@ namespace MoreLinq.Test
             using (var r2 = memoized.Read())
             {
                 Assert.That(r1.Read(), Is.EqualTo(r2.Read()));
-                Assert.That(r1.Read, Throws.TypeOf<Exception>().And.SameAs(error));
+                Assert.That(r1.Read, Throws.TypeOf<TestException>().And.SameAs(error));
 
                 Assert.That(xs.IsDisposed, Is.True);
 
-                Assert.That(r2.Read, Throws.TypeOf<Exception>().And.SameAs(error));
+                Assert.That(r2.Read, Throws.TypeOf<TestException>().And.SameAs(error));
             }
             using (var r1 = memoized.Read())
                 Assert.That(r1.Read(), Is.EqualTo(123));
@@ -265,7 +265,7 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeRethrowsErrorDuringIterationStartToAllIteratorsUntilDisposed()
         {
-            var error = new Exception("This is a test exception.");
+            var error = new TestException("This is a test exception.");
 
             var i = 0;
             var xs = MoreEnumerable.From(() => 0 == i++
@@ -277,9 +277,9 @@ namespace MoreLinq.Test
             using (var r1 = memoized.Read())
             using (var r2 = memoized.Read())
             {
-                Assert.That(r1.Read, Throws.TypeOf<Exception>().And.SameAs(error));
+                Assert.That(r1.Read, Throws.TypeOf<TestException>().And.SameAs(error));
                 Assert.That(xs.IsDisposed, Is.True);
-                Assert.That(r2.Read, Throws.TypeOf<Exception>().And.SameAs(error));
+                Assert.That(r2.Read, Throws.TypeOf<TestException>().And.SameAs(error));
             }
 
             using (var r1 = memoized.Read())
@@ -290,7 +290,7 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeRethrowsErrorDuringFirstIterationStartToAllIterationsUntilDisposed()
         {
-            var error = new Exception("An error on the first call!");
+            var error = new TestException("An error on the first call!");
             var obj = new object();
             var calls = 0;
             var source = Delegate.Enumerable(() => 0 == calls++
@@ -300,7 +300,7 @@ namespace MoreLinq.Test
             var memo = source.Memoize();
 
             for (var i = 0; i < 2; i++)
-                Assert.That(memo.First, Throws.TypeOf<Exception>().And.SameAs(error));
+                Assert.That(memo.First, Throws.TypeOf<TestException>().And.SameAs(error));
 
             ((IDisposable) memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));

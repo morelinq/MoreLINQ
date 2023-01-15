@@ -268,9 +268,10 @@ namespace MoreLinq.Experimental
 
             public override T this[int index]
             {
+#pragma warning disable CA2201 // Do not raise reserved exception types
                 get => index >= 0 && index < Count ? _array[index] : throw new IndexOutOfRangeException();
+#pragma warning restore CA2201 // Do not raise reserved exception types
                 set => throw new NotSupportedException();
-
             }
 
             public void Dispose()

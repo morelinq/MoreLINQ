@@ -527,9 +527,11 @@ namespace MoreLinq.Experimental
                         catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
                         {
                             var (error1, error2) = lastCriticalErrors;
+#pragma warning disable CA2201 // Do not raise reserved exception types
                             throw new Exception("One or more critical errors have occurred.",
                                 error2 != null ? new AggregateException(Assume.NotNull(error1), error2)
                                                : new AggregateException(Assume.NotNull(error1)));
+#pragma warning restore CA2201 // Do not raise reserved exception types
                         }
 
                         var (kind, result, error) = notice.Current;

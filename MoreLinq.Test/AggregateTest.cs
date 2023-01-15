@@ -69,7 +69,7 @@ namespace MoreLinq.Test
                     ? invoke.GetParameters()
                             .Select(p => Expression.Parameter(p.ParameterType))
                             .ToArray()
-                    : throw new Exception("""Method "Invoke" not found."""),
+                    : throw new MissingMethodException("""Method "Invoke" not found."""),
             }
             into m
             let resultSelector =
