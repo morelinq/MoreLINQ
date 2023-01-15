@@ -76,7 +76,7 @@ namespace MoreLinq
             var message = cmp < 0
                         ? "Sequence contains too few elements when exactly {0} were expected."
                         : "Sequence contains too many elements when exactly {0} were expected.";
-            return new SequenceException(string.Format(message, count.ToString("N0")));
+            return new SequenceException(string.Format(null, message, count.ToString("N0", null)));
         }
 
         #endif

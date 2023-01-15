@@ -100,7 +100,7 @@ namespace MoreLinq
             var message = cmp < 0
                         ? "Sequence contains too few elements when exactly {0} {1} expected."
                         : "Sequence contains too many elements when exactly {0} {1} expected.";
-            return new InvalidOperationException(string.Format(message, count.ToString("N0"), count == 1 ? "was" : "were"));
+            return new InvalidOperationException(string.Format(null, message, count.ToString("N0", null), count == 1 ? "was" : "were"));
         }
     }
 }

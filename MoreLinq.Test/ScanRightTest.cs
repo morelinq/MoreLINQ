@@ -62,7 +62,7 @@ namespace MoreLinq.Test
         public void ScanRight(SourceKind sourceKind)
         {
             var result = Enumerable.Range(1, 5)
-                                   .Select(x => x.ToString())
+                                   .Select(x => x.ToInvariantString())
                                    .ToSourceKind(sourceKind)
                                    .ScanRight((a, b) => $"({a}+{b})");
 

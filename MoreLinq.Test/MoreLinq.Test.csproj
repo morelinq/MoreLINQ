@@ -62,6 +62,7 @@
       <Compile Include="..\MoreLinq\Debug.cs" Link="Debug.cs" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
+      <Compile Include="Extensions.cs" />
       <Compile Include="Throws.cs" />
       <Compile Include="BreakingCollection.cs" />
       <Compile Include="BreakingAction.cs" />
