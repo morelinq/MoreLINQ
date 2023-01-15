@@ -19,7 +19,6 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using Delegate = Delegating.Delegate;
 
     /// <summary>
     /// Verify the behavior of the OrderBy/ThenBy operators
@@ -48,7 +47,7 @@ namespace MoreLinq.Test
         }
 
         static readonly IComparer<string> NumericStringComparer =
-            Delegate.Comparer((string? a, string? b) =>
+            Comparer<string>.Create((a, b) =>
                 (a, b) switch
                 {
                     (null, null) => 0,
