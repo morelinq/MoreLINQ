@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable CA5394 // Do not use insecure randomness
+
 namespace MoreLinq
 {
     using System;
