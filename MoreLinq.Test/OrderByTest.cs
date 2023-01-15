@@ -47,14 +47,7 @@ namespace MoreLinq.Test
         }
 
         static readonly IComparer<string> NumericStringComparer =
-            Comparer.Create((string? a, string? b) =>
-                (a, b) switch
-                {
-                    (null, null) => 0,
-                    (null, _) => -1,
-                    (_, null) => 1,
-                    var (sa, sb) => int.Parse(sa).CompareTo(int.Parse(sb))
-                });
+            Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
 
         /// <summary>
         /// Verify that OrderBy preserves the comparer

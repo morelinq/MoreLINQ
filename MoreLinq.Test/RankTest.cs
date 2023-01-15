@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     /// <summary>
@@ -172,8 +173,8 @@ namespace MoreLinq.Test
             var ordinals = Enumerable.Range(1, count);
             var sequence = ordinals.Select( x => new DateTime(2010,x,20-x) );
             // invert the CompareTo operation to Rank in reverse order (ascending to descending)
-            var resultA = sequence.AsTestingSequence().Rank(Comparer.Create<DateTime>((a, b) => -a.CompareTo(b)));
-            var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer.Create<int>((a, b) => -a.CompareTo(b)));
+            var resultA = sequence.AsTestingSequence().Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));
+            var resultB = sequence.AsTestingSequence().RankBy(x => x.Day, Comparer<int>.Create((a, b) => -a.CompareTo(b)));
 
             Assert.That(resultA, Is.EqualTo(ordinals));
             Assert.That(resultB, Is.EqualTo(ordinals.Reverse()));
