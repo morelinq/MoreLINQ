@@ -141,7 +141,7 @@ namespace MoreLinq
 
             var length = lastIndex + 1;
             return length == 0
-                 ? new TResult[0]
+                 ? EmptyArray<TResult>.Value
                  : Indexed().ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
         }
 
