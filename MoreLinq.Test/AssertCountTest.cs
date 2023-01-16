@@ -53,13 +53,17 @@ namespace MoreLinq.Test
                         Throws.TypeOf<SequenceException>());
         }
 
-        [TestCase(4, "Sequence contains too few elements when exactly 4 were expected.")]
-        [TestCase(2, "Sequence contains too many elements when exactly 2 were expected.")]
-        public void AssertCountDefaultExceptionMessageVariesWithCase(int count, string expectedMessage)
+        [TestCase("", 1, "Sequence contains too few elements when exactly 1 was expected.")]
+        [TestCase("foo,bar,baz", 1, "Sequence contains too many elements when exactly 1 was expected.")]
+        [TestCase("foo,bar,baz", 4, "Sequence contains too few elements when exactly 4 were expected.")]
+        [TestCase("foo,bar,baz", 2, "Sequence contains too many elements when exactly 2 were expected.")]
+        public void AssertCountDefaultExceptionMessageVariesWithCase(string str, int count, string expectedMessage)
         {
-            var tokens = "foo,bar,baz".GenerateSplits(',');
+            var tokens = str.GenerateSplits(',')
+                            .Where(t => t.Length > 0)
+                            .AssertCount(count);
 
-            Assert.That(() => tokens.AssertCount(count).Consume(),
+            Assert.That(() => tokens.Consume(),
                         Throws.TypeOf<SequenceException>().With.Message.EqualTo(expectedMessage));
         }
 
