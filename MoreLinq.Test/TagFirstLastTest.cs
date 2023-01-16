@@ -40,7 +40,7 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastWithSourceSequenceOfZero()
         {
-            var source = new int[0];
+            var source = Enumerable.Empty<int>();
             var sut = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
             Assert.That(sut, Is.Empty);
         }
