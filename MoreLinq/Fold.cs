@@ -22,8 +22,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        const string folder = nameof(folder);
-
         static TResult FoldImpl<T, TResult>(IEnumerable<T> source, int count,
             Func<T, TResult>? folder1 = null,
             Func<T, T, TResult>? folder2 = null,
