@@ -23,6 +23,15 @@ namespace MoreLinq.Test
     public class TagFirstLastTest
     {
         [Test]
+        public void TagFirstLastEvaluatesSourceLazily()
+        {
+            var source = MoreEnumerable.From(() => 123, () => 456, () => throw new TestException());
+            source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
+                  .Take(1)
+                  .Consume();
+        }
+
+        [Test]
         public void TagFirstLastIsLazy()
         {
             new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
