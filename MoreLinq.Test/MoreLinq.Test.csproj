@@ -8,7 +8,6 @@
     <OutputType>Exe</OutputType>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <IsPackable>false</IsPackable>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <ApplicationIcon />
     <OutputTypeEx>library</OutputTypeEx>
     <StartupObject>MoreLinq.Test.Program</StartupObject>
@@ -51,39 +50,18 @@
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net451'">
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
-    <Compile Include="Async\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+    <Compile Remove="Async\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
       <None Remove="TestResult.xml" />
       <None Remove="TestResults\**" />
-      <Compile Include="*Test.cs" />
-      <Compile Include="Test*.cs" />
       <Compile Include="..\MoreLinq\Debug.cs" Link="Debug.cs" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
-      <Compile Include="Extensions.cs" />
-      <Compile Include="Throws.cs" />
-      <Compile Include="BreakingCollection.cs" />
-      <Compile Include="BreakingAction.cs" />
-      <Compile Include="BreakingFunc.cs" />
-      <Compile Include="BreakingList.cs" />
-      <Compile Include="BreakingReadOnlyCollection.cs" />
-      <Compile Include="BreakingReadOnlyList.cs" />
-      <Compile Include="BreakingSequence.cs" />
-      <Compile Include="Combinatorics.cs" />
-      <Compile Include="Comparable.cs" />
-      <Compile Include="CurrentThreadCultureScope.cs" />
-      <Compile Include="Enumerable.cs" />
-      <Compile Include="EqualityComparer.cs" />
-      <Compile Include="FuncModule.cs" />
-      <Compile Include="KeyValuePair.cs" />
-      <Compile Include="Program.cs" />
-      <Compile Include="ReadOnlyCollection.cs" />
-      <Compile Include="SampleData.cs" />
-      <Compile Include="Scope.cs" />
-      <Compile Include="SequenceReader.cs" />
-      <Compile Include="WatchableEnumerator.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
