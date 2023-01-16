@@ -473,11 +473,11 @@ namespace MoreLinq.Experimental
                         {
                             try
                             {
-                                await enumerator.StartAsync(
-                                    e => evaluator(e.Value, cancellationToken),
-                                    (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
-                                    () => PostNotice(Notice.End, default, default),
-                                    maxConcurrency, cancellationToken).ConfigureAwait(false);
+                                await enumerator.StartAsync(e => evaluator(e.Value, cancellationToken),
+                                                            (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
+                                                            () => PostNotice(Notice.End, default, default),
+                                                            maxConcurrency, cancellationToken)
+                                                .ConfigureAwait(false);
                             }
 #pragma warning disable CA1031 // Do not catch general exception types
                             catch (Exception e)
