@@ -269,7 +269,6 @@ namespace MoreLinq.Experimental
             public override T this[int index]
             {
                 get => index >= 0 && index < Count ? _array[index] : throw new ArgumentOutOfRangeException(nameof(index));
-#pragma warning restore CA2201 // Do not raise reserved exception types
                 set => throw new NotSupportedException();
             }
 
