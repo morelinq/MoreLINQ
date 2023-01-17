@@ -23,9 +23,26 @@ namespace MoreLinq.Test
     public class TagFirstLastTest
     {
         [Test]
+        public void TagFirstLastDoesOneLookAhead()
+        {
+            var source = MoreEnumerable.From(() => 123, () => 456, BreakingFunc.Of<int>());
+            source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
+                  .Take(1)
+                  .Consume();
+        }
+
+        [Test]
         public void TagFirstLastIsLazy()
         {
             new BreakingSequence<object>().TagFirstLast(BreakingFunc.Of<object, bool, bool, object>());
+        }
+
+        [Test]
+        public void TagFirstLastWithSourceSequenceOfZero()
+        {
+            var source = Enumerable.Empty<int>();
+            var sut = source.TagFirstLast(BreakingFunc.Of<int, bool, bool, int>());
+            Assert.That(sut, Is.Empty);
         }
 
         [Test]
