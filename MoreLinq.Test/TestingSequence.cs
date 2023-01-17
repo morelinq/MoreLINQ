@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         {
             None,
             AllowMultipleEnumerations
-    }
+        }
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace MoreLinq.Test
                 ended = !moved;
                 MoveNextCallCount++;
             };
-			
+
             enumerator.GetCurrentCalled += delegate
             {
                 Assert.That(_disposed, Is.False, "LINQ operators should not attempt to get the Current value on a disposed sequence.");
