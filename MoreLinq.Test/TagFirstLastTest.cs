@@ -23,9 +23,9 @@ namespace MoreLinq.Test
     public class TagFirstLastTest
     {
         [Test]
-        public void TagFirstLastEvaluatesSourceLazily()
+        public void TagFirstLastDoesOneLookAhead()
         {
-            var source = MoreEnumerable.From(() => 123, () => 456, () => throw new TestException());
+            var source = MoreEnumerable.From(() => 123, () => 456, BreakingFunc.Of<int>());
             source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
                   .Take(1)
                   .Consume();
@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         public void TagFirstLastWithSourceSequenceOfZero()
         {
             var source = Enumerable.Empty<int>();
-            var sut = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
+            var sut = source.TagFirstLast(BreakingFunc.Of<int, bool, bool, int>());
             Assert.That(sut, Is.Empty);
         }
 
