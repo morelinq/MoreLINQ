@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2010 Johannes Rudolph. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#nullable enable
+
 namespace MoreLinq.Test
 {
     using System;
@@ -27,7 +29,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        class TestObject
+        sealed class TestObject
         {
             public int KeyField;
             public Guid? ANullableGuidField;
@@ -51,6 +53,8 @@ namespace MoreLinq.Test
                 ANullableDecimal = key / 3;
                 AString = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
             }
+
+            public override string ToString() => nameof(TestObject);
         }
 
 
@@ -67,52 +71,59 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
         {
-            Expression<Func<TestObject, object>> expression = null;
+            Expression<Func<TestObject, object?>>? expression = null;
 
-            AssertThrowsArgument.Exception("expressions",() =>
-                _testObjects.ToDataTable<TestObject>(expression));
+            Assert.That(() => _testObjects.ToDataTable(expression!),
+                        Throws.ArgumentException("expressions"));
         }
 
         [Test]
         public void ToDataTableTableWithWrongColumnNames()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             dt.Columns.Add("Test");
 
-            AssertThrowsArgument.Exception("table",() =>
-                _testObjects.ToDataTable(dt));
+            Assert.That(() => _testObjects.ToDataTable(dt),
+                        Throws.ArgumentException("table"));
         }
 
         [Test]
         public void ToDataTableTableWithWrongColumnDataType()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
-            AssertThrowsArgument.Exception("table",() =>
-                _testObjects.ToDataTable(dt, t=>t.AString));
+            Assert.That(() => _testObjects.ToDataTable(dt, t=>t.AString),
+                        Throws.ArgumentException("table"));
         }
 
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            AssertThrowsArgument.Exception("lambda", () =>
-                _testObjects.ToDataTable(t => t.ToString()));
+            Assert.That(() => _testObjects.ToDataTable(t => t.ToString()),
+                        Throws.ArgumentException("lambda"));
         }
 
 
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            AssertThrowsArgument.Exception("lambda", () =>
-                _testObjects.ToDataTable(t => t.ToString().Length));
+            Assert.That(() => _testObjects.ToDataTable(t => t.ToString().Length),
+                        Throws.ArgumentException("lambda"));
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            AssertThrowsArgument.Exception("lambda",() =>
-                _testObjects.ToDataTable(t => t[0]));
+            Assert.That(() => _testObjects.ToDataTable(t => t[0]),
+                        Throws.ArgumentException("lambda"));
+        }
+
+        [Test]
+        public void ToDataTableMemberExpressionStatic()
+        {
+            Assert.That(() => _ = _testObjects.ToDataTable(_ => DateTime.Now),
+                        Throws.ArgumentException("lambda"));
         }
 
         [Test]
@@ -122,27 +133,27 @@ namespace MoreLinq.Test
 
             // Assert properties first, then fields, then in declaration order
 
-            Assert.AreEqual("AString", dt.Columns[0].Caption);
-            Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
+            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
 
-            Assert.AreEqual("ANullableDecimal", dt.Columns[1].Caption);
-            Assert.AreEqual(typeof(decimal), dt.Columns[1].DataType);
+            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
+            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
 
-            Assert.AreEqual("KeyField", dt.Columns[2].Caption);
-            Assert.AreEqual(typeof(int), dt.Columns[2].DataType);
+            Assert.That(dt.Columns[2].Caption, Is.EqualTo("KeyField"));
+            Assert.That(dt.Columns[2].DataType, Is.EqualTo(typeof(int)));
 
-            Assert.AreEqual("ANullableGuidField", dt.Columns[3].Caption);
-            Assert.AreEqual(typeof(Guid), dt.Columns[3].DataType);
-            Assert.IsTrue(dt.Columns[3].AllowDBNull);
+            Assert.That(dt.Columns[3].Caption, Is.EqualTo("ANullableGuidField"));
+            Assert.That(dt.Columns[3].DataType, Is.EqualTo(typeof(Guid)));
+            Assert.That(dt.Columns[3].AllowDBNull, Is.True);
 
-            Assert.AreEqual(4, dt.Columns.Count);
+            Assert.That(dt.Columns.Count, Is.EqualTo(4));
         }
 
         [Test]
         public void ToDataTableContainsAllElements()
         {
             var dt = _testObjects.ToDataTable();
-            Assert.AreEqual(_testObjects.Count, dt.Rows.Count);
+            Assert.That(dt.Rows.Count, Is.EqualTo(_testObjects.Count));
         }
 
         [Test]
@@ -150,16 +161,16 @@ namespace MoreLinq.Test
         {
             var dt = _testObjects.ToDataTable(t => t.AString);
 
-            Assert.AreEqual("AString", dt.Columns[0].Caption);
-            Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
+            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
 
-            Assert.AreEqual(1, dt.Columns.Count);
+            Assert.That(dt.Columns.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void ToDataTableWithSchema()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             var columns = dt.Columns;
             columns.Add("Column1", typeof(int));
             columns.Add("Value", typeof(string));
@@ -170,7 +181,7 @@ namespace MoreLinq.Test
                                   .Cast<DictionaryEntry>()
                                   .ToArray();
 
-            vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value.ToString() })
+            vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value!.ToString() })
                 .ToDataTable(dt, e => e.Name, e => e.Value);
 
             var rows = dt.Rows.Cast<DataRow>().ToArray();
@@ -181,7 +192,9 @@ namespace MoreLinq.Test
 
         struct Point
         {
+#pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static Point Empty = new Point();
+#pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
             public int X { get; }
             public int Y { get; }
@@ -193,15 +206,17 @@ namespace MoreLinq.Test
         {
             var points = new[] { new Point(12, 34) }.ToDataTable();
 
-            Assert.AreEqual(3, points.Columns.Count);
-            DataColumn x, y, empty;
-            Assert.NotNull(x = points.Columns["X"]);
-            Assert.NotNull(y = points.Columns["Y"]);
-            Assert.NotNull(empty = points.Columns["IsEmpty"]);
+            Assert.That(points.Columns.Count, Is.EqualTo(3));
+            var x = points.Columns["X"];
+            var y = points.Columns["Y"];
+            var empty = points.Columns["IsEmpty"];
+            Assert.That(x, Is.Not.Null);
+            Assert.That(y, Is.Not.Null);
+            Assert.That(empty, Is.Not.Null);
             var row = points.Rows.Cast<DataRow>().Single();
-            Assert.AreEqual(12, row[x]);
-            Assert.AreEqual(34, row[y]);
-            Assert.AreEqual(false, row[empty]);
+            Assert.That(row[x], Is.EqualTo(12));
+            Assert.That(row[y], Is.EqualTo(34));
+            Assert.That(row[empty], Is.False);
         }
     }
 }

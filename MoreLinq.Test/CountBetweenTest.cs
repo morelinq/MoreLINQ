@@ -25,29 +25,29 @@ namespace MoreLinq.Test
         [Test]
         public void CountBetweenWithNegativeMin()
         {
-            AssertThrowsArgument.OutOfRangeException("min", () =>
-                new[] { 1 }.CountBetween(-1, 0));
+            Assert.That(() => new[] { 1 }.CountBetween(-1, 0),
+                        Throws.ArgumentOutOfRangeException("min"));
         }
 
         [Test]
         public void CountBetweenWithNegativeMax()
         {
-            AssertThrowsArgument.OutOfRangeException("max", () =>
-               new[] { 1 }.CountBetween(0, -1));
+            Assert.That(() => new[] { 1 }.CountBetween(0, -1),
+                        Throws.ArgumentOutOfRangeException("max"));
         }
 
         [Test]
         public void CountBetweenWithMaxLesserThanMin()
         {
-            AssertThrowsArgument.OutOfRangeException("max", () =>
-                new[] { 1 }.CountBetween(1, 0));
+            Assert.That(() => new[] { 1 }.CountBetween(1, 0),
+                        Throws.ArgumentOutOfRangeException("max"));
         }
 
         [Test]
         public void CountBetweenWithMaxEqualsMin()
         {
             foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.CountBetween(1, 1));
+                Assert.That(xs.CountBetween(1, 1), Is.True);
         }
 
         [TestCase(1, 2, 4, false)]
@@ -69,7 +69,7 @@ namespace MoreLinq.Test
                                              () => 3,
                                              () => 4,
                                              () => throw new TestException());
-            Assert.False(source.CountBetween(2, 3));
+            Assert.That(source.CountBetween(2, 3), Is.False);
         }
     }
 }

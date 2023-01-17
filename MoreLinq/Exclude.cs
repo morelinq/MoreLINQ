@@ -36,16 +36,19 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            if (count == 0)
-                return sequence;
+            return count switch
+            {
+                < 0 => throw new ArgumentOutOfRangeException(nameof(count)),
+                0 => sequence,
+                _ => _()
+            };
 
-            return _(); IEnumerable<T> _()
+            IEnumerable<T> _()
             {
                 var index = -1;
                 var endIndex = startIndex + count;
-                var iter = sequence.GetEnumerator();
+                using var iter = sequence.GetEnumerator();
                 // yield the first part of the sequence
                 while (iter.MoveNext() && ++index < startIndex)
                     yield return iter.Current;

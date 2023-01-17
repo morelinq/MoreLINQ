@@ -71,13 +71,11 @@ namespace MoreLinq
             int count, Func<int, int, Exception> errorSelector) =>
             AssertCountImpl(source, count, errorSelector);
 
-        static Exception OnAssertCountFailure(int cmp, int count)
-        {
-            var message = cmp < 0
-                        ? "Sequence contains too few elements when exactly {0} were expected."
-                        : "Sequence contains too many elements when exactly {0} were expected.";
-            return new SequenceException(string.Format(message, count.ToString("N0")));
-        }
+        static Exception OnAssertCountFailure(int cmp, int count) =>
+            new SequenceException(FormatSequenceLengthErrorMessage(cmp, count));
+
+        internal static string FormatSequenceLengthErrorMessage(int cmp, int count) =>
+            $"Sequence contains too {(cmp < 0 ? "few" : "many")} elements when exactly {count:N0} {(count == 1 ? "was" : "were")} expected.";
 
         #endif
 
@@ -89,7 +87,7 @@ namespace MoreLinq
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
             return
-                source.TryGetCollectionCount() is int collectionCount
+                source.TryGetCollectionCount() is {} collectionCount
                 ? collectionCount == count
                   ? source
                   : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))

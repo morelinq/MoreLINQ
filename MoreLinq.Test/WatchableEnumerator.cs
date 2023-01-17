@@ -23,7 +23,7 @@ namespace MoreLinq.Test
 
     partial class TestExtensions
     {
-        public static WatchableEnumerator<T> AsWatchtable<T>(this IEnumerator<T> source) =>
+        public static WatchableEnumerator<T> AsWatchable<T>(this IEnumerator<T> source) =>
             new WatchableEnumerator<T>(source);
     }
 
@@ -31,14 +31,14 @@ namespace MoreLinq.Test
     {
         readonly IEnumerator<T> _source;
 
-        public event EventHandler Disposed;
-        public event EventHandler<bool> MoveNextCalled;
+        public event EventHandler? Disposed;
+        public event EventHandler<bool>? MoveNextCalled;
 
         public WatchableEnumerator(IEnumerator<T> source) =>
             _source = source ?? throw new ArgumentNullException(nameof(source));
 
         public T Current => _source.Current;
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
         public void Reset() => _source.Reset();
 
         public bool MoveNext()
