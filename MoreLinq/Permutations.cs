@@ -129,7 +129,7 @@ namespace MoreLinq
                 return prevResult;
             }
 
-            void IDisposable.Dispose() { }
+            void IDisposable.Dispose() => _generatorIterator.Dispose();
 
             /// <summary>
             /// Transposes elements in the cached permutation array to produce the next permutation

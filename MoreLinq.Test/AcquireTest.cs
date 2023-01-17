@@ -66,7 +66,7 @@ namespace MoreLinq.Test
             Assert.That(c, Is.Null);
         }
 
-        class Disposable : IDisposable
+        sealed class Disposable : IDisposable
         {
             public bool Disposed { get; private set; }
             public void Dispose() { Disposed = true; }

@@ -85,7 +85,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveDoNotCallGetEnumeratorEagerly()
         {
-            var sequenceA = TestingSequence.Of(1);
+            using var sequenceA = TestingSequence.Of(1);
             var sequenceB = new BreakingSequence<int>();
 
             sequenceA.Interleave(sequenceB).Take(1).Consume();

@@ -87,7 +87,9 @@ namespace MoreLinq
             // perform in-place, partial Fisher-Yates shuffle
             while (m < subsetSize)
             {
+#pragma warning disable CA5394 // Do not use insecure randomness
                 var k = g - rand.Next(w);
+#pragma warning restore CA5394 // Do not use insecure randomness
                 (array[k], array[m]) = (array[m], array[k]);
                 ++m;
                 --w;

@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.Sequence)]
         public void AggregateRight(SourceKind sourceKind)
         {
-            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString()).ToSourceKind(sourceKind);
+            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToInvariantString()).ToSourceKind(sourceKind);
 
             var result = enumerable.AggregateRight((a, b) => $"({a}+{b})");
 

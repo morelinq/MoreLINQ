@@ -29,7 +29,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        class TestObject
+        sealed class TestObject
         {
             public int KeyField;
             public Guid? ANullableGuidField;
@@ -80,7 +80,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableTableWithWrongColumnNames()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             dt.Columns.Add("Test");
 
             Assert.That(() => _testObjects.ToDataTable(dt),
@@ -90,7 +90,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableTableWithWrongColumnDataType()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             dt.Columns.Add("AString", typeof(int));
 
             Assert.That(() => _testObjects.ToDataTable(dt, t=>t.AString),
@@ -170,7 +170,7 @@ namespace MoreLinq.Test
         [Test]
         public void ToDataTableWithSchema()
         {
-            var dt = new DataTable();
+            using var dt = new DataTable();
             var columns = dt.Columns;
             columns.Add("Column1", typeof(int));
             columns.Add("Value", typeof(string));
@@ -192,7 +192,9 @@ namespace MoreLinq.Test
 
         struct Point
         {
+#pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static Point Empty = new Point();
+#pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
             public int X { get; }
             public int Y { get; }

@@ -148,8 +148,11 @@ namespace MoreLinq.Experimental
         /// <param name="source">The source sequence.</param>
         /// <returns>The converted sequence.</returns>
 
-        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source) =>
-            source.MaxConcurrency(1);
+        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return MaxConcurrency(source, 1);
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously to use a
@@ -162,8 +165,11 @@ namespace MoreLinq.Experimental
         /// A query whose results evaluate asynchronously using the given
         /// concurrency limit.</returns>
 
-        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(value));
+        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(value));
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously and
@@ -175,8 +181,11 @@ namespace MoreLinq.Experimental
         /// A query whose results evaluate asynchronously using no defined
         /// limitation on concurrency.</returns>
 
-        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(null));
+        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(null));
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously and uses the
@@ -242,8 +251,11 @@ namespace MoreLinq.Experimental
         /// results ordered or unordered based on <paramref name="value"/>.
         /// </returns>
 
-        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value) =>
-            source.WithOptions(source.Options.WithPreserveOrder(value));
+        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithPreserveOrder(value));
+        }
 
         /// <summary>
         /// Creates a sequence query that streams the result of each task in
@@ -461,13 +473,15 @@ namespace MoreLinq.Experimental
                         {
                             try
                             {
-                                await enumerator.StartAsync(
-                                    e => evaluator(e.Value, cancellationToken),
-                                    (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
-                                    () => PostNotice(Notice.End, default, default),
-                                    maxConcurrency, cancellationToken);
+                                await enumerator.StartAsync(e => evaluator(e.Value, cancellationToken),
+                                                            (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
+                                                            () => PostNotice(Notice.End, default, default),
+                                                            maxConcurrency, cancellationToken)
+                                                .ConfigureAwait(false);
                             }
+#pragma warning disable CA1031 // Do not catch general exception types
                             catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
                             {
                                 PostNotice(Notice.Error, default, e);
                             }
@@ -527,9 +541,11 @@ namespace MoreLinq.Experimental
                         catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
                         {
                             var (error1, error2) = lastCriticalErrors;
+#pragma warning disable CA2201 // Do not raise reserved exception types
                             throw new Exception("One or more critical errors have occurred.",
                                 error2 != null ? new AggregateException(Assume.NotNull(error1), error2)
                                                : new AggregateException(Assume.NotNull(error1)));
+#pragma warning restore CA2201 // Do not raise reserved exception types
                         }
 
                         var (kind, result, error) = notice.Current;
@@ -644,7 +660,8 @@ namespace MoreLinq.Experimental
                 {
                     try
                     {
-                        await concurrencyGate.EnterAsync(cancellationToken);
+                        await concurrencyGate.EnterAsync(cancellationToken)
+                                             .ConfigureAwait(false);
                     }
                     catch (OperationCanceledException e) when (e.CancellationToken == cancellationToken)
                     {
@@ -731,13 +748,13 @@ namespace MoreLinq.Experimental
         {
             #if NET451 || NETSTANDARD1_0
 
-            public static readonly Task Instance;
+            public static readonly Task Instance = CreateCompletedTask();
 
-            static CompletedTask()
+            static Task CreateCompletedTask()
             {
                 var tcs = new TaskCompletionSource<Unit>();
                 tcs.SetResult(default);
-                Instance = tcs.Task;
+                return tcs.Task;
             }
 
             #else

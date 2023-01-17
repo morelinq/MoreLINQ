@@ -61,7 +61,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipLongestDisposeSequencesEagerly()
         {
-            var shorter = TestingSequence.Of(1, 2, 3);
+            using var shorter = TestingSequence.Of(1, 2, 3);
             var longer = MoreEnumerable.Generate(1, x => x + 1);
             var zipped = shorter.ZipLongest(longer, Tuple.Create);
 

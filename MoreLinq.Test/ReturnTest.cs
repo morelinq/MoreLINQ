@@ -22,7 +22,7 @@ namespace MoreLinq.Test
     using NUnit.Framework;
     using NUnit.Framework.Interfaces;
 
-    class ReturnTest
+    public class ReturnTest
     {
         static class SomeSingleton
         {

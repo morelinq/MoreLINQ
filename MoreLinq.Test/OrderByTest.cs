@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using NUnit.Framework;
 
     /// <summary>
@@ -47,7 +48,7 @@ namespace MoreLinq.Test
         }
 
         static readonly IComparer<string> NumericStringComparer =
-            Comparer<string>.Create((a, b) => int.Parse(a).CompareTo(int.Parse(b)));
+            Comparer<string>.Create((a, b) => int.Parse(a, CultureInfo.InvariantCulture).CompareTo(int.Parse(b, CultureInfo.InvariantCulture)));
 
         /// <summary>
         /// Verify that OrderBy preserves the comparer
@@ -56,7 +57,7 @@ namespace MoreLinq.Test
         public void TestOrderByComparerPreserved()
         {
             var sequence = Enumerable.Range(1, 100);
-            var sequenceAscending = sequence.Select(x => x.ToString());
+            var sequenceAscending = sequence.Select(x => x.ToInvariantString());
             var sequenceDescending = sequenceAscending.Reverse();
 
             var comparer = NumericStringComparer;

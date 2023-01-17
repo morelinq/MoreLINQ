@@ -48,7 +48,7 @@ namespace MoreLinq.Test
             var source = new[] { new StringBuilder(), new StringBuilder() };
             // The action will occur "in" the pipe, so by the time Where gets it, the
             // sequence will be empty.
-            Assert.That(source.Pipe(sb => sb.Append("x"))
+            Assert.That(source.Pipe(sb => sb.Append('x'))
                               .Where(x => x.Length == 0),
                         Is.Empty);
         }

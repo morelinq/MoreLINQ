@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable CA5394 // Do not use insecure randomness
+
 namespace MoreLinq
 {
     using System;
@@ -34,11 +36,16 @@ namespace MoreLinq
         /// On .NET 6+, delegates to <c>Random.Shared</c>.
         /// </remarks>
 
-        sealed class GlobalRandom : Random
-        {
+        partial class GlobalRandom { }
+
 #if NET6_0_OR_GREATER
-            public static Random Instance => Shared;
-#else
+        static partial class GlobalRandom
+        {
+            public static Random Instance => System.Random.Shared;
+        }
+#else // NET6_0_OR_GREATER
+        sealed partial class GlobalRandom : Random
+        {
             public static Random Instance { get; } = new GlobalRandom();
 
             static int _seed = Environment.TickCount;
@@ -65,7 +72,7 @@ namespace MoreLinq
 
                 throw new NotImplementedException();
             }
-#endif
         }
+#endif // NET6_0_OR_GREATER
     }
 }

@@ -43,7 +43,7 @@ namespace MoreLinq
 
             public T this[int index]
             {
-                get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
+                get => index == 0 ? _item : throw new ArgumentOutOfRangeException(nameof(index));
                 set => throw ReadOnlyException();
             }
 

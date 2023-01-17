@@ -83,7 +83,10 @@ namespace MoreLinq.Test
             return from param in parameters
                 where IsReferenceType(param) && CanBeNull(param) == canBeNull
                 let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-                let testCase = testCaseFactory(method, arguments, param.Name ?? throw new NullReferenceException())
+                let testCase = testCaseFactory(method, arguments,
+#pragma warning disable CA2201 // Do not raise reserved exception types
+                                               param.Name ?? throw new NullReferenceException())
+#pragma warning restore CA2201 // Do not raise reserved exception types
                 let testName = GetTestName(methodDefinition, param)
                 select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
         }
@@ -209,7 +212,7 @@ namespace MoreLinq.Test
         // ReSharper disable UnusedMember.Local, UnusedAutoPropertyAccessor.Local
         static class GenericArgs
         {
-            class Enumerator<T> : IEnumerator<T?>
+            sealed class Enumerator<T> : IEnumerator<T?>
             {
                 public bool MoveNext() => false;
                 public T? Current { get; private set; }
@@ -224,7 +227,9 @@ namespace MoreLinq.Test
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             }
 
-            public class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T?>
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+
+            public sealed class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T?>
             {
                 public System.Linq.IOrderedEnumerable<T?> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
                 {
@@ -233,23 +238,25 @@ namespace MoreLinq.Test
                 }
             }
 
-            public class AwaitQuery<T> : Enumerable<T?>,
-                                         Experimental.IAwaitQuery<T?>
+            public sealed class AwaitQuery<T> : Enumerable<T?>,
+                                                Experimental.IAwaitQuery<T?>
             {
                 public Experimental.AwaitQueryOptions Options => Experimental.AwaitQueryOptions.Default;
                 public Experimental.IAwaitQuery<T?> WithOptions(Experimental.AwaitQueryOptions options) => this;
             }
 
-            public class Comparer<T> : IComparer<T>
+            public sealed class Comparer<T> : IComparer<T>
             {
                 public int Compare(T? x, T? y) => -1;
             }
 
-            public class EqualityComparer<T> : IEqualityComparer<T>
+            public sealed class EqualityComparer<T> : IEqualityComparer<T>
             {
                 public bool Equals(T? x, T? y) => false;
                 public int GetHashCode(T obj) => 0;
             }
+
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
         }
     }
 }

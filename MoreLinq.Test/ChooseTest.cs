@@ -67,7 +67,9 @@ namespace MoreLinq.Test
 
         static class Option<T>
         {
+#pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static readonly (bool IsSome, T Value) None = default;
+#pragma warning restore CA1805 // Do not initialize unnecessarily
         }
 
         [Test]
