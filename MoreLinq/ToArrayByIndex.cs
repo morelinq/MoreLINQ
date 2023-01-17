@@ -249,7 +249,7 @@ namespace MoreLinq
             {
                 var i = indexSelector(e);
 
-                if (i < 0 || i > array.Length)
+                if (i < 0 || i >= array.Length)
                 {
 #pragma warning disable CA2201 // Do not raise reserved exception types
                     throw new IndexOutOfRangeException();

@@ -83,7 +83,7 @@ namespace MoreLinq.Test
             Assert.That(() => input.ToArrayByIndex(length, _ => badIndex),
                         Throws.TypeOf<IndexOutOfRangeException>());
 
-            Assert.That(() => input.ToArrayByIndex(10, _ => -1, BreakingFunc.Of<int, object>()),
+            Assert.That(() => input.ToArrayByIndex(length, _ => badIndex, BreakingFunc.Of<int, object>()),
                         Throws.TypeOf<IndexOutOfRangeException>());
         }
 
