@@ -36,6 +36,9 @@ namespace MoreLinq
     /// Exception thrown when the program executes an instruction that was thought to be unreachable.
     /// </summary>
 
+#if !NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
 #pragma warning disable CA1064 // Exceptions should be public
     sealed class UnreachableException : Exception
 #pragma warning restore CA1064 // Exceptions should be public
