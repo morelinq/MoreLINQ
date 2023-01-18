@@ -46,14 +46,7 @@ namespace MoreLinq.Test
             }
         }
 
-        object? IEnumerator.Current
-        {
-            get
-            {
-                GetCurrentCalled?.Invoke(this, EventArgs.Empty);
-                return Current;
-            }
-        }
+        object? IEnumerator.Current => this.Current;
 
         public void Reset() => _source.Reset();
 
