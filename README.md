@@ -74,11 +74,11 @@ Building the documentation is supported on Windows only and requires
 [Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
 generates the documentation in the `docs/api` directory. It can be browsed
 locally using any HTTP server of static files, like
-[http-server][http-server].
+[dotnet-serve][dotnet-serve].
 
 [dotnet-linux]: https://learn.microsoft.com/en-us/dotnet/core/install/linux
-[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
-[http-server]: https://www.npmjs.com/package/http-server
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2022.12.30.0
+[dotnet-serve]: https://www.nuget.org/packages/dotnet-serve
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
