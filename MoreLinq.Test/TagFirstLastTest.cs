@@ -25,9 +25,8 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastDoesOneLookAhead()
         {
-            var source = MoreEnumerable.From(() => 123, () => 456, BreakingFunc.Of<int>());
-            using var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-                                     .AsTestingSequence();
+            using var source = MoreEnumerable.From(() => 123, () => 456, BreakingFunc.Of<int>()).AsTestingSequence();
+            var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
 
             result.Take(1).Consume();
         }
@@ -41,9 +40,8 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastWithSourceSequenceOfZero()
         {
-            var source = Enumerable.Empty<int>();
-            using var result = source.TagFirstLast(BreakingFunc.Of<int, bool, bool, int>())
-                                     .AsTestingSequence();
+            using var source = Enumerable.Empty<int>().AsTestingSequence();
+            var result = source.TagFirstLast(BreakingFunc.Of<int, bool, bool, int>());
 
             Assert.That(result, Is.Empty);
         }
@@ -51,9 +49,8 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastWithSourceSequenceOfOne()
         {
-            var source = new[] { 123 };
-            using var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-                                     .AsTestingSequence();
+            using var source = new[] { 123 }.AsTestingSequence();
+            var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
 
             result.AssertSequenceEqual(new { Item = 123, IsFirst = true, IsLast = true });
         }
@@ -61,9 +58,8 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastWithSourceSequenceOfTwo()
         {
-            var source = new[] { 123, 456 };
-            using var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-                                     .AsTestingSequence();
+            using var source = new[] { 123, 456 }.AsTestingSequence();
+            var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
 
             result.AssertSequenceEqual(new { Item = 123, IsFirst = true,  IsLast = false },
                                        new { Item = 456, IsFirst = false, IsLast = true });
@@ -72,9 +68,8 @@ namespace MoreLinq.Test
         [Test]
         public void TagFirstLastWithSourceSequenceOfThree()
         {
-            var source = new[] { 123, 456, 789 };
-            using var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast })
-                                     .AsTestingSequence();
+            using var source = new[] { 123, 456, 789 }.AsTestingSequence();
+            var result = source.TagFirstLast((item, isFirst, isLast) => new { Item = item, IsFirst = isFirst, IsLast = isLast });
 
             result.AssertSequenceEqual(new { Item = 123, IsFirst = true,  IsLast = false },
                                        new { Item = 456, IsFirst = false, IsLast = false },
