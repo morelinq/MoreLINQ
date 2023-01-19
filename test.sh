@@ -26,6 +26,6 @@ if [[ -z `which mono 2>/dev/null` ]]; then
     echo>&2 against the Mono runtime will be skipped.
 else
     for c in $configs; do
-        mono MoreLinq.Test/bin/$c/net451/MoreLinq.Test.exe
+        mono MoreLinq.Test/bin/$c/net462/MoreLinq.Test.exe
     done
 fi

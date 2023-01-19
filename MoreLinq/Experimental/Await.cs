@@ -746,7 +746,7 @@ namespace MoreLinq.Experimental
 
         static class CompletedTask
         {
-            #if NET451 || NETSTANDARD1_0
+            #if NETSTANDARD1_0
 
             public static readonly Task Instance = CreateCompletedTask();
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>net7.0;net6.0;netcoreapp3.1;net451</TargetFrameworks>
+    <TargetFrameworks>net7.0;net6.0;netcoreapp3.1;net462</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -48,11 +48,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net451'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Compile Remove="Async\*.cs" />
   </ItemGroup>
 
@@ -64,7 +64,7 @@
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />

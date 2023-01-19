@@ -14,8 +14,8 @@ call build ^
   && call :test net6.0 Release ^
   && call :test netcoreapp3.1 Debug ^
   && call :test netcoreapp3.1 Release ^
-  && call :test net451 Debug ^
-  && call :test net451 Release ^
+  && call :test net462 Debug ^
+  && call :test net462 Release ^
   && call :report-cover
 goto :EOF
 
@@ -30,8 +30,8 @@ goto :EOF
 setlocal
 cd MoreLinq.Test
 echo Testing %1 (%2)...
-if %1==net451 (
-    bin\%2\net451\MoreLinq.Test.exe
+if %1==net462 (
+    bin\%2\net462\MoreLinq.Test.exe
     exit /b %ERRORLEVEL%
 )
 dotnet test --no-build -f %1 -c %2 --settings coverlet.runsettings || exit /b 1
