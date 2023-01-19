@@ -21,6 +21,7 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
     using NUnit.Framework;
+    using static TestingSequence;
 
     static class TestingSequence
     {
@@ -33,14 +34,16 @@ namespace MoreLinq.Test
         internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source,
                                                                 Options options = Options.None) =>
             source != null
-            ? new TestingSequence<T>(source) { IsReiterationAllowed = options.HasFlag(Options.AllowMultipleEnumerations) }
+            ? new TestingSequence<T>(source, options)
             : throw new ArgumentNullException(nameof(source));
 
         [Flags]
         public enum Options
         {
             None,
-            AllowMultipleEnumerations
+            AllowMultipleEnumerations = 0x1,
+            AllowRepeatedDisposals = 0x2,
+            AllowRepeatedMoveNexts = 0x4,
         }
     }
 
@@ -51,14 +54,17 @@ namespace MoreLinq.Test
     /// </summary>
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
+        Options _options;
         bool? _disposed;
         IEnumerable<T>? _sequence;
 
-        internal TestingSequence(IEnumerable<T> sequence) =>
+        internal TestingSequence(IEnumerable<T> sequence, Options options)
+        {
             _sequence = sequence;
+            _options = options;
+        }
 
         public bool IsDisposed => _disposed ?? false;
-        public bool IsReiterationAllowed { get; init; }
         public int MoveNextCallCount { get; private set; }
 
         void IDisposable.Dispose() =>
@@ -77,8 +83,7 @@ namespace MoreLinq.Test
 
         public IEnumerator<T> GetEnumerator()
         {
-            if (!IsReiterationAllowed)
-                Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
 
             Debug.Assert(_sequence is not null);
 
@@ -86,11 +91,17 @@ namespace MoreLinq.Test
             _disposed = false;
             enumerator.Disposed += delegate
             {
+                if (!_options.HasFlag(Options.AllowRepeatedDisposals))
+                    Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
+
                 _disposed = true;
             };
             var ended = false;
             enumerator.MoveNextCalled += (_, moved) =>
             {
+                if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
+                    Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
+
                 Assert.That(_disposed, Is.False, "LINQ operators should not call MoveNext() on a disposed sequence.");
                 ended = !moved;
                 MoveNextCallCount++;
@@ -102,7 +113,7 @@ namespace MoreLinq.Test
                 Assert.That(ended, Is.False, "LINQ operators should not attempt to get the Current value on a completed sequence.");
             };
 
-            if (!IsReiterationAllowed)
+            if (!_options.HasFlag(Options.AllowMultipleEnumerations))
                 _sequence = null;
 
             return enumerator;
