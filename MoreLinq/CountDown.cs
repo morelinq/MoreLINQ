@@ -39,7 +39,7 @@ namespace MoreLinq
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -57,9 +57,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.TryAsListLike() is IListLike<T> listLike
+            return source.TryAsListLike() is {} listLike
                    ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is int collectionCount
+                   : source.TryGetCollectionCount() is {} collectionCount
                      ? IterateCollection(collectionCount)
                      : IterateSequence();
 

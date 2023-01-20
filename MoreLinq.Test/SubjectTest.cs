@@ -25,9 +25,9 @@ namespace MoreLinq.Test
     public class SubjectTest
     {
         static IDisposable Subscribe<T>(IObservable<T> subject,
-                                        Action<T> onNext = null,
-                                        Action<Exception> onError = null,
-                                        Action onCompleted = null) =>
+                                        Action<T>? onNext = null,
+                                        Action<Exception>? onError = null,
+                                        Action? onCompleted = null) =>
             subject.Subscribe(onNext ?? BreakingAction.Of<T>(),
                               onError ?? BreakingAction.Of<Exception>(),
                               onCompleted ?? BreakingAction.WithoutArguments);
@@ -36,8 +36,8 @@ namespace MoreLinq.Test
         public void SubscribeWithNullObserverThrows()
         {
             var subject = new Subject<int>();
-            var e = Assert.Throws<ArgumentNullException>(() => subject.Subscribe(null));
-            Assert.That(e.ParamName, Is.EqualTo("observer"));
+            Assert.That(() => subject.Subscribe(null!),
+                        Throws.ArgumentNullException("observer"));
         }
 
         [Test]
@@ -60,8 +60,8 @@ namespace MoreLinq.Test
         [Test]
         public void OnErrorObservations()
         {
-            Exception error1 = null;
-            Exception error2 = null;
+            Exception? error1 = null;
+            Exception? error2 = null;
 
             var subject = new Subject<int>();
 
@@ -139,7 +139,7 @@ namespace MoreLinq.Test
         [Test]
         public void SubscriptionPostError()
         {
-            Exception observedError = null;
+            Exception? observedError = null;
             var subject = new Subject<int>();
             var error = new TestException();
             subject.OnError(error);
@@ -215,8 +215,12 @@ namespace MoreLinq.Test
         public void SafeToDisposeDuringOnNext()
         {
             var subject = new Subject<int>();
-            IDisposable subscription = null;
-            var action = new Action(() => subscription.Dispose());
+            IDisposable? subscription = null;
+            var action = new Action(() =>
+            {
+                Debug.Assert(subscription is not null);
+                subscription.Dispose();
+            });
             subscription = subject.Subscribe(_ => action());
             subject.OnNext(42);
             action = BreakingAction.WithoutArguments;

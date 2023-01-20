@@ -43,7 +43,7 @@ namespace MoreLinq
 
             public T this[int index]
             {
-                get => index == 0 ? _item : throw new ArgumentOutOfRangeException();
+                get => index == 0 ? _item : throw new ArgumentOutOfRangeException(nameof(index));
                 set => throw ReadOnlyException();
             }
 
@@ -63,8 +63,7 @@ namespace MoreLinq
             public void Insert(int index, T item) => throw ReadOnlyException();
             public void RemoveAt(int index)       => throw ReadOnlyException();
 
-            static NotSupportedException ReadOnlyException() =>
-                new NotSupportedException("Single element list is immutable.");
+            static NotSupportedException ReadOnlyException() => new("Single element list is immutable.");
         }
     }
 }

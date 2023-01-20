@@ -9,7 +9,7 @@ MoreLINQ is available for download and installation as
 [NuGet packages](https://www.nuget.org/packages/morelinq/).
 
 Documentation for the stable and beta releases can be found at
-[morelinq.github.io](http://morelinq.github.io/).
+[morelinq.github.io](https://morelinq.github.io/).
 
 
 ## Usage
@@ -54,7 +54,7 @@ extension methods as well as all the regular static methods on
 [lag]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lag.htm
 [lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
 [using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
-[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip--3
+[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip#System_Linq_Enumerable_Zip__3_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEnumerable___1__System_Func___0___1___2__
 [zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
 [unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
 [random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
@@ -63,13 +63,8 @@ extension methods as well as all the regular static methods on
 
 ## Building
 
-To build MoreLINQ from sources, you will need:
-
-- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
-- [Mono][mono] 5.0 if building on other platforms than Windows
-
-Then run either `build.cmd` if building on Windows or `build.sh` if
-building on macOS or a Linux distribution supported by .NET Core.
+Run either `build.cmd` if building on Windows or `build.sh` if building on macOS
+or a [Linux distribution supported by .NET][dotnet-linux].
 
 Some code in the project is generated using [T4][t4] templates. To regenerate
 the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
@@ -79,13 +74,11 @@ Building the documentation is supported on Windows only and requires
 [Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
 generates the documentation in the `docs/api` directory. It can be browsed
 locally using any HTTP server of static files, like
-[http-server][http-server].
+[dotnet-serve][dotnet-serve].
 
-
-[mono]: https://www.mono-project.com/
-[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
-[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
-[http-server]: https://www.npmjs.com/package/http-server
+[dotnet-linux]: https://learn.microsoft.com/en-us/dotnet/core/install/linux
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2022.12.30.0
+[dotnet-serve]: https://www.nuget.org/packages/dotnet-serve
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
@@ -101,7 +94,7 @@ acquired till that point are disposed.
 
 Applies multiple accumulators sequentially in a single pass over a sequence.
 
-This method has 8 overloads.
+This method has 7 overloads.
 
 ### AggregateRight
 
@@ -148,7 +141,7 @@ the third-last element and so on.
 
 Batches the source sequence into sized buckets.
 
-This method has 2 overloads.
+This method has 4 overloads, 2 of which are experimental.
 
 ### Cartesian
 
@@ -156,7 +149,7 @@ Returns the Cartesian product of two or more sequences by combining each
 element from the sequences and applying a user-defined projection to the
 set.
 
-This method has 8 overloads.
+This method has 7 overloads.
 
 ### Choose
 
@@ -245,6 +238,8 @@ Excludes elements from a sequence starting at a given index
 Returns the elements of a sequence and falls back to another if the original
 sequence is empty.
 
+This method has 6 overloads.
+
 ### FillBackward
 
 Returns a sequence with each null reference or value in the source replaced
@@ -309,7 +304,7 @@ Returns a sequence of values based on indexes
 Groups the adjacent elements of a sequence according to a specified key
 selector function.
 
-This method has 4 overloads.
+This method has 6 overloads.
 
 ### ~~Incremental~~
 
@@ -341,8 +336,6 @@ Inserts the elements of a sequence into another sequence at a specified index.
 
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
-
-This method has 2 overloads.
 
 ### Lag
 
@@ -422,9 +415,13 @@ which is only returned as the predecessor of the second element
 
 Combines `OrderBy` (where element is key) and `Take` in a single operation.
 
+This method has 4 overloads.
+
 ### PartialSortBy
 
 Combines `OrderBy` and `Take` in a single operation.
+
+This method has 4 overloads.
 
 ### Partition
 
@@ -633,7 +630,7 @@ This method has 4 overloads.
 Creates a delimited string from a sequence of values. The delimiter used
 depends on the current culture of the executing thread.
 
-This method has 30 overloads.
+This method has 15 overloads.
 
 ### ToDictionary
 
@@ -676,21 +673,11 @@ Traces the elements of a source sequence for diagnostics.
 
 This method has 3 overloads.
 
-### TrySingle
-
-Returns the only element of a sequence that has just one element. If the
-sequence has zero or multiple elements, then returns a user-defined value
-that indicates the cardinality of the result sequence.
-
-This method has 2 overloads.
-
 ### Unfold
 
 Returns a sequence generated by applying a state to the generator function,
 and from its result, determines if the sequence should have a next element and
 its value, and the next state in the recursive call.
-
-This method has 2 overloads.
 
 ### Window
 
@@ -767,6 +754,14 @@ final result given the source item and completed task.
 Creates a sequence that lazily caches the source as it is iterated for the
 first time, reusing the cache thereafter for future re-iterations. If the
 source is already cached or buffered then it is returned verbatim.
+
+### TrySingle
+
+Returns the only element of a sequence that has just one element. If the
+sequence has zero or multiple elements, then returns a user-defined value
+that indicates the cardinality of the result sequence.
+
+This method has 2 overloads.
 
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122

@@ -32,7 +32,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source)
         {
-            return source.RankBy(x => x);
+            return source.RankBy(IdFn);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace MoreLinq
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
         {
-            return source.RankBy(x => x, comparer);
+            return source.RankBy(IdFn, comparer);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MoreLinq
         /// <param name="comparer">An object that defines the comparison semantics for keys used to rank items</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
+        public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
@@ -83,11 +83,13 @@ namespace MoreLinq
             {
                 source = source.ToArray(); // avoid enumerating source twice
 
-                var rankDictionary = source.Distinct()
-                                           .OrderByDescending(keySelector, comparer)
-                                           .Index(1)
-                                           .ToDictionary(item => item.Value,
-                                                         item => item.Key);
+                var rankDictionary = new Collections.Dictionary<TSource, int>(EqualityComparer<TSource>.Default);
+                var i = 1;
+                foreach (var item in source.Distinct()
+                                           .OrderByDescending(keySelector, comparer))
+                {
+                    rankDictionary[item] = i++;
+                }
 
                 // The following loop should not be be converted to a query to
                 // keep this RankBy lazy.

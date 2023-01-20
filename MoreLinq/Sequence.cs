@@ -71,7 +71,7 @@ namespace MoreLinq
                              : stop <= current)
             {
                 yield return (int)current;
-                current = current + step;
+                current += step;
             }
         }
     }

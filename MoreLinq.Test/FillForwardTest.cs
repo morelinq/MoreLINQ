@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2017 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using NUnit.Framework;
 
@@ -62,7 +63,7 @@ namespace MoreLinq.Test
                     Continent = cont,
                     Country   = ctry,
                     City      = city,
-                    Value     = int.Parse(val),
+                    Value     = int.Parse(val, CultureInfo.InvariantCulture),
                 });
 
             data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })

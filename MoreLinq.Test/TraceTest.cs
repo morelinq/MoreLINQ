@@ -78,19 +78,13 @@ namespace MoreLinq.Test
 
         static IEnumerable<string> Lines(string str)
         {
-            using (var e = _(string.IsNullOrEmpty(str)
-                         ? TextReader.Null
-                         : new StringReader(str)))
-            {
-                while (e.MoveNext())
-                    yield return e.Current;
-            }
+            using var e = _(string.IsNullOrEmpty(str) ? TextReader.Null : new StringReader(str));
+            while (e.MoveNext())
+                yield return e.Current;
 
-            IEnumerator<string> _(TextReader reader)
+            static IEnumerator<string> _(TextReader reader)
             {
-                Debug.Assert(reader != null);
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                while (reader.ReadLine() is { } line)
                     yield return line;
             }
         }
