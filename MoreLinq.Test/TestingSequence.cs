@@ -108,7 +108,7 @@ namespace MoreLinq.Test
                     _disposedCount++;
                     _currentlyEnumerating = false;
                     disposed = true;
-                    }
+                }
                 else if (!_options.HasFlag(Options.AllowRepeatedDisposals))
                 {
                     Assert.Fail(TooManyDisposals);
@@ -138,5 +138,187 @@ namespace MoreLinq.Test
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    [TestFixture]
+    public class TestingSequenceTest
+    {
+        [Test]
+        public void TestingSequenceShouldValidateDisposal()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                var enumerator = enumerable.GetEnumerator();
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(ExpectedDisposal));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateNumberOfUsages()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using (var enumerator = enumerable.GetEnumerator())
+                    yield return 1;
+                using (var enumerator = enumerable.GetEnumerator())
+                    yield return 2;
+                using (var enumerator = enumerable.GetEnumerator())
+                    yield return 3;
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence(numEnumerations: 2);
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(TooManyEnumerations));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateDisposeOnDisposedSequence()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using var enumerator = enumerable.GetEnumerator();
+                enumerator.Dispose();
+                enumerator.Dispose();
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(TooManyDisposals));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateMoveNextOnDisposedSequence()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using var enumerator = enumerable.GetEnumerator();
+                enumerator.Dispose();
+                enumerator.MoveNext();
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(MoveNextDisposed));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateMoveNextOnCompletedSequence()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using var enumerator = enumerable.GetEnumerator();
+                while (enumerator.MoveNext())
+                    yield return enumerator.Current;
+                enumerator.MoveNext();
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(MoveNextCompleted));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateCurrentOnDisposedSequence()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using var enumerator = enumerable.GetEnumerator();
+                enumerator.Dispose();
+                yield return enumerator.Current;
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(CurrentDisposed));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateCurrentOnEndedSequence()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using var enumerator = enumerable.GetEnumerator();
+                while (enumerator.MoveNext())
+                    yield return enumerator.Current;
+                yield return enumerator.Current;
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(CurrentCompleted));
+        }
+
+        [Test]
+        public void TestingSequenceShouldValidateSimultaneousEnumeration()
+        {
+            static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
+            {
+                using var enum1 = enumerable.GetEnumerator();
+                using var enum2 = enumerable.GetEnumerator();
+
+                yield break;
+            }
+
+            Assert.That(
+                () =>
+                {
+                    using var xs = Enumerable.Range(1, 10).AsTestingSequence(numEnumerations: 2);
+                    InvalidUsage(xs).Consume();
+                },
+                Throws.InstanceOf<AssertionException>()
+                    .With.Message.Contains(SimultaneousEnumerations));
+        }
     }
 }
