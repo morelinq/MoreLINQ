@@ -246,7 +246,7 @@ namespace MoreLinq.Test
             var error = new TestException("This is a test exception.");
 
             using var xs = MoreEnumerable.From(() => 123, () => throw error)
-                                         .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
+                                         .AsTestingSequence(numEnumerations: 2);
             var memoized = xs.Memoize();
             using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
@@ -274,7 +274,7 @@ namespace MoreLinq.Test
             using var xs = MoreEnumerable.From(() => 0 == i++
                                                    ? throw error // throw at start for first iteration only
                                                    : 42)
-                                         .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
+                                         .AsTestingSequence(numEnumerations: 2);
             var memoized = xs.Memoize();
             using ((IDisposable)memoized)
             using (var r1 = memoized.Read())

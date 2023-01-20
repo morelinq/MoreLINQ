@@ -26,22 +26,31 @@ namespace MoreLinq.Test
     static class TestingSequence
     {
         internal static TestingSequence<T> Of<T>(params T[] elements) =>
-            Of(Options.None, elements);
+            new(elements, Options.None, numEnumerations: 1);
 
         internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
-            elements.AsTestingSequence(options);
+            elements.AsTestingSequence(options, numEnumerations: 1);
 
         internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source,
-                                                                Options options = Options.None) =>
+                                                                Options options = Options.None,
+                                                                int numEnumerations = 1) =>
             source != null
-            ? new TestingSequence<T>(source, options)
+            ? new TestingSequence<T>(source, options, numEnumerations)
             : throw new ArgumentNullException(nameof(source));
+
+        internal const string ExpectedDisposal = "Expected sequence to be disposed.";
+        internal const string TooManyEnumerations = "Sequence should not be enumerated more than expected.";
+        internal const string TooManyDisposals = "Sequence should not be disposed more than once per enumeration.";
+        internal const string SimultaneousEnumerations = "Sequence should not have simultaneous enumeration.";
+        internal const string MoveNextDisposed = "LINQ operators should not call MoveNext() on a disposed sequence.";
+        internal const string MoveNextCompleted = "LINQ operators should not continue iterating a sequence that has terminated.";
+        internal const string CurrentDisposed = "LINQ operators should not attempt to get the Current value on a disposed sequence.";
+        internal const string CurrentCompleted = "LINQ operators should not attempt to get the Current value on a completed sequence.";
 
         [Flags]
         public enum Options
         {
             None,
-            AllowMultipleEnumerations = 0x1,
             AllowRepeatedDisposals = 0x2,
             AllowRepeatedMoveNexts = 0x4,
         }
@@ -54,72 +63,80 @@ namespace MoreLinq.Test
     /// </summary>
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        Options _options;
-        bool? _disposed;
-        IEnumerable<T>? _sequence;
+        private IEnumerable<T>? _sequence;
+        private readonly Options _options;
+        private readonly int _numEnumerations;
 
-        internal TestingSequence(IEnumerable<T> sequence, Options options)
+        private bool _hasEnumerated;
+        private bool _currentlyEnumerating;
+        private int _disposedCount;
+        private int _enumerationCount;
+
+        internal TestingSequence(IEnumerable<T> sequence, Options options, int numEnumerations)
         {
             _sequence = sequence;
+            _numEnumerations = numEnumerations;
             _options = options;
         }
 
-        public bool IsDisposed => _disposed ?? false;
         public int MoveNextCallCount { get; private set; }
+        public bool IsDisposed => !_currentlyEnumerating;
 
-        void IDisposable.Dispose() =>
-            AssertDisposed();
-
-        /// <summary>
-        /// Checks that the iterator was disposed, and then resets.
-        /// </summary>
-        void AssertDisposed()
+        void IDisposable.Dispose()
         {
-            if (_disposed == null)
-                return;
-            Assert.That(_disposed, Is.True, "Expected sequence to be disposed.");
-            _disposed = null;
+            if (_hasEnumerated)
+                Assert.That(_disposedCount, Is.EqualTo(_enumerationCount), ExpectedDisposal);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            Assert.That(_sequence is null, Is.False, TooManyEnumerations);
 
             Debug.Assert(_sequence is not null);
 
+            Assert.That(_currentlyEnumerating, Is.False, SimultaneousEnumerations);
+            _currentlyEnumerating = true;
+
+            _hasEnumerated = true;
+
             var enumerator = _sequence.GetEnumerator().AsWatchable();
-            _disposed = false;
+            var disposed = false;
             enumerator.Disposed += delegate
             {
-                if (!_options.HasFlag(Options.AllowRepeatedDisposals))
-                    Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
-
-                _disposed = true;
+                if (!disposed)
+                {
+                    _disposedCount++;
+                    _currentlyEnumerating = false;
+                    disposed = true;
+                    }
+                else if (!_options.HasFlag(Options.AllowRepeatedDisposals))
+                {
+                    Assert.Fail(TooManyDisposals);
+                }
             };
+
             var ended = false;
             enumerator.MoveNextCalled += (_, moved) =>
             {
+                Assert.That(disposed, Is.False, MoveNextDisposed);
                 if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
-                    Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
+                    Assert.That(ended, Is.False, MoveNextCompleted);
 
-                Assert.That(_disposed, Is.False, "LINQ operators should not call MoveNext() on a disposed sequence.");
                 ended = !moved;
                 MoveNextCallCount++;
             };
 
             enumerator.GetCurrentCalled += delegate
             {
-                Assert.That(_disposed, Is.False, "LINQ operators should not attempt to get the Current value on a disposed sequence.");
-                Assert.That(ended, Is.False, "LINQ operators should not attempt to get the Current value on a completed sequence.");
+                Assert.That(disposed, Is.False, CurrentDisposed);
+                Assert.That(ended, Is.False, CurrentCompleted);
             };
 
-            if (!_options.HasFlag(Options.AllowMultipleEnumerations))
+            if (++_enumerationCount == _numEnumerations)
                 _sequence = null;
-
             return enumerator;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
     }
 }
