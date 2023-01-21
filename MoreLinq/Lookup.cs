@@ -25,6 +25,7 @@
 #endregion
 
 #pragma warning disable IDE0040 // Add accessibility modifiers
+#pragma warning disable IDE0032 // Use auto property
 
 namespace MoreLinq
 {
