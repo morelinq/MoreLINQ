@@ -26,6 +26,8 @@ indent_size = 4
 max_line_length = 100
 
 [*.cs]
+dotnet_analyzer_diagnostic.category-Style.severity = warning
+
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
@@ -60,4 +62,15 @@ csharp_preserve_single_line_blocks = true
 
 # Modifier preferences
 dotnet_style_require_accessibility_modifiers = omit_if_default
-dotnet_diagnostic.IDE0040.severity = warning
+
+# IDE0011: Add braces
+csharp_prefer_braces = when_multiline
+
+# IDE0061: Use block body for local functions
+csharp_style_expression_bodied_local_functions = true
+
+# IDE0065: Misplaced using directive
+csharp_using_directive_placement = inside_namespace
+
+# IDE0048: Add parentheses for clarity
+dotnet_diagnostic.IDE0048.severity = suggestion
