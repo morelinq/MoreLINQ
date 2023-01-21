@@ -79,7 +79,7 @@ namespace MoreLinq
             IEnumerable<TResult> IterateCollection(int i)
             {
                 foreach (var item in source)
-                    yield return resultSelector(item, i-- <= count ? i : (int?) null);
+                    yield return resultSelector(item, i-- <= count ? i : null);
             }
 
             IEnumerable<TResult> IterateSequence()
