@@ -140,7 +140,7 @@ namespace MoreLinq.Test
             from ma in new (string MethodName, Action Action)[]
             {
                 ("Add"     , () => SomeSingleton.List.Add(new object())),
-                ("Clear"   , () => SomeSingleton.Collection.Clear()),
+                ("Clear"   ,       SomeSingleton.Collection.Clear),
                 ("Remove"  , () => SomeSingleton.Collection.Remove(SomeSingleton.Item)),
                 ("RemoveAt", () => SomeSingleton.List.RemoveAt(0)),
                 ("Insert"  , () => SomeSingleton.List.Insert(0, new object())),
