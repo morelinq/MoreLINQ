@@ -27,7 +27,6 @@ namespace MoreLinq.Experimental
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unit = System.ValueTuple;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.
@@ -751,7 +750,7 @@ namespace MoreLinq.Experimental
 
             static Task CreateCompletedTask()
             {
-                var tcs = new TaskCompletionSource<Unit>();
+                var tcs = new TaskCompletionSource<System.ValueTuple>();
                 tcs.SetResult(default);
                 return tcs.Task;
             }
