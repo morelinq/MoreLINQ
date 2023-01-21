@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         sealed class ValueException : Exception
         {
             public object Value { get; }
-            public ValueException(object value) { Value = value; }
+            public ValueException(object value) => Value = value;
         }
     }
 }

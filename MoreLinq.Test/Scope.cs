@@ -23,10 +23,7 @@ namespace MoreLinq.Test
     {
         readonly T _old;
 
-        protected Scope(T current)
-        {
-            _old = current;
-        }
+        protected Scope(T current) => _old = current;
 
         public virtual void Dispose()
         {

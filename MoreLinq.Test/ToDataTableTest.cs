@@ -54,12 +54,10 @@ namespace MoreLinq.Test
         readonly IReadOnlyCollection<TestObject> _testObjects;
 
 
-        public ToDataTableTest()
-        {
+        public ToDataTableTest() =>
             _testObjects = Enumerable.Range(0, 3)
                                      .Select(i => new TestObject(i))
                                      .ToArray();
-        }
 
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
