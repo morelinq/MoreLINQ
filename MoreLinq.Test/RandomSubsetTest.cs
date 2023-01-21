@@ -33,8 +33,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetIsLazy()
         {
-            new BreakingSequence<int>().RandomSubset(10);
-            new BreakingSequence<int>().RandomSubset(10, new Random());
+            _ = new BreakingSequence<int>().RandomSubset(10);
+            _ = new BreakingSequence<int>().RandomSubset(10, new Random());
         }
 
         /// <summary>

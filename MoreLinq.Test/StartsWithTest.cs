@@ -75,7 +75,7 @@ namespace MoreLinq.Test
             using var first = TestingSequence.Of(1,2,3);
             using var second = TestingSequence.Of(1);
 
-            first.StartsWith(second);
+            _ = first.StartsWith(second);
         }
 
         [Test]

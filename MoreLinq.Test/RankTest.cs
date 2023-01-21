@@ -33,7 +33,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRankIsLazy()
         {
-            new BreakingSequence<int>().Rank();
+            _ = new BreakingSequence<int>().Rank();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRankByIsLazy()
         {
-            new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().RankBy(BreakingFunc.Of<int, int>());
         }
 
         /// <summary>

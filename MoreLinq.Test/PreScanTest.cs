@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void PreScanIsLazy()
         {
-            new BreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
+            _ = new BreakingSequence<int>().PreScan(BreakingFunc.Of<int, int, int>(), 0);
         }
 
         [Test]

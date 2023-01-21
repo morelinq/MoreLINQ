@@ -101,7 +101,7 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeIsLazy()
         {
-            new BreakingSequence<int>().Memoize();
+            _ = new BreakingSequence<int>().Memoize();
         }
 
         [TestCase(SourceKind.BreakingCollection)]

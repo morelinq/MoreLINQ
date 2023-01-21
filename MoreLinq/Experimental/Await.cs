@@ -426,11 +426,11 @@ namespace MoreLinq.Experimental
 
             return
                 AwaitQuery.Create(
-                    options => _(options.MaxConcurrency,
-                                 options.Scheduler ?? TaskScheduler.Default,
-                                 options.PreserveOrder));
+                    options => Impl(options.MaxConcurrency,
+                                    options.Scheduler ?? TaskScheduler.Default,
+                                    options.PreserveOrder));
 
-            IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
+            IEnumerable<TResult> Impl(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
                 // A separate task will enumerate the source and launch tasks.
                 // It will post all progress as notices to the collection below.
@@ -466,7 +466,7 @@ namespace MoreLinq.Experimental
                     // completes and another, an end-notice, when all tasks have
                     // completed.
 
-                    Task.Factory.StartNew(
+                    _ = Task.Factory.StartNew(
                         async () =>
                         {
                             try
@@ -668,7 +668,7 @@ namespace MoreLinq.Experimental
                         return;
                     }
 
-                    Interlocked.Increment(ref pendingCount);
+                    _ = Interlocked.Increment(ref pendingCount);
 
                     var item = enumerator.Current;
                     var task = starter(item);
@@ -677,9 +677,7 @@ namespace MoreLinq.Experimental
                     // along with the necessary housekeeping, in case it
                     // completes before maximum concurrency is reached.
 
-                    #pragma warning disable 4014 // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs4014
-
-                    task.ContinueWith(cancellationToken: cancellationToken,
+                    _ = task.ContinueWith(cancellationToken: cancellationToken,
                         continuationOptions: TaskContinuationOptions.ExecuteSynchronously,
                         scheduler: TaskScheduler.Current,
                         continuationAction: t =>
@@ -692,8 +690,6 @@ namespace MoreLinq.Experimental
                             onTaskCompletion(item, t);
                             OnPendingCompleted();
                         });
-
-                    #pragma warning restore 4014
                 }
 
                 OnPendingCompleted();

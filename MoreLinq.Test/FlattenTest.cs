@@ -109,7 +109,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenIsLazy()
         {
-            new BreakingSequence<int>().Flatten();
+            _ = new BreakingSequence<int>().Flatten();
         }
 
         // Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
@@ -220,7 +220,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateIsLazy()
         {
-            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
         }
 
         [Test]
@@ -298,7 +298,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenSelectorIsLazy()
         {
-            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
+            _ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
         }
 
         [Test]

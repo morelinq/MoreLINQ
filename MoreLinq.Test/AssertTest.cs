@@ -26,8 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void AssertIsLazy()
         {
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
         }
 
         [Test]

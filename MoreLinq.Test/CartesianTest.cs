@@ -31,9 +31,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestCartesianIsLazy()
         {
-            new BreakingSequence<string>()
-                .Cartesian(new BreakingSequence<int>(),
-                           BreakingFunc.Of<string, int, bool>());
+            var bs = new BreakingSequence<string>();
+            _ = bs.Cartesian(new BreakingSequence<int>(), BreakingFunc.Of<string, int, bool>());
         }
 
         /// <summary>

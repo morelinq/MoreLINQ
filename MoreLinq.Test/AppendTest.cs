@@ -54,7 +54,7 @@ namespace MoreLinq.Test
         [Test]
         public void AppendIsLazyInHeadSequence()
         {
-            new BreakingSequence<string>().Append("tail");
+            _ = new BreakingSequence<string>().Append("tail");
         }
         #endregion
 

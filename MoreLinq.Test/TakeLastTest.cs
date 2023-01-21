@@ -51,7 +51,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastIsLazy()
         {
-            new BreakingSequence<object>().TakeLast(1);
+            _ = new BreakingSequence<object>().TakeLast(1);
         }
 
         [Test]

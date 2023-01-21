@@ -36,7 +36,7 @@ namespace MoreLinq.Test
         public void ExceptByIsLazy()
         {
             var bs = new BreakingSequence<string>();
-            bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
+            _ = bs.ExceptBy(bs, BreakingFunc.Of<string, int>());
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace MoreLinq.Test
         public void ExceptByIsLazyWithComparer()
         {
             var bs = new BreakingSequence<string>();
-            bs.ExceptBy(bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+            _ = bs.ExceptBy(bs, BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
         }
     }
 }

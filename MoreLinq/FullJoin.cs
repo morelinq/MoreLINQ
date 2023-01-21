@@ -228,7 +228,9 @@ namespace MoreLinq
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return Impl();
+
+            IEnumerable<TResult> Impl()
             {
                 var seconds = second.Select(e => new KeyValuePair<TKey, TSecond>(secondKeySelector(e), e)).ToArray();
                 var secondLookup = seconds.ToLookup(e => e.Key, e => e.Value, comparer);
@@ -237,7 +239,7 @@ namespace MoreLinq
                 foreach (var fe in first)
                 {
                     var key = firstKeySelector(fe);
-                    firstKeys.Add(key);
+                    _ = firstKeys.Add(key);
 
                     using var se = secondLookup[key].GetEnumerator();
 

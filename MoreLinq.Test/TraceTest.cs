@@ -93,7 +93,7 @@ namespace MoreLinq.Test
         {
             var writer = new StringWriter();
             var listener = new TextWriterTraceListener(writer);
-            Trace.Listeners.Add(listener);
+            _ = Trace.Listeners.Add(listener);
             try
             {
                 action();

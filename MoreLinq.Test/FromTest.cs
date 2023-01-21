@@ -26,10 +26,10 @@ namespace MoreLinq.Test
         public void TestFromIsLazy()
         {
             var breakingFunc = BreakingFunc.Of<int>();
-            MoreEnumerable.From(breakingFunc);
-            MoreEnumerable.From(breakingFunc, breakingFunc);
-            MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
-            MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc, breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
         }
 
         [TestCase(1)]

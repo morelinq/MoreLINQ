@@ -54,7 +54,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependIsLazyInTailSequence()
         {
-            new BreakingSequence<string>().Prepend("head");
+            _ = new BreakingSequence<string>().Prepend("head");
         }
 
         [TestCaseSource(nameof(PrependManySource))]

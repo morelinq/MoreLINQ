@@ -114,7 +114,7 @@ namespace MoreLinq.Test
                         0, (s, _) => s + 1,
                         (int?)null, (s, e) => s is {} n ? Math.Min(n, e.Num) : e.Num,
                         (int?)null, (s, e) => s is {} n ? Math.Max(n, e.Num) : e.Num,
-                        new HashSet<int>(), (s, e) => { s.Add(e.Str.Length); return s; },
+                        new HashSet<int>(), (s, e) => { _ = s.Add(e.Str.Length); return s; },
                         new List<(int Num, string Str)>(), (s, e) => { s.Add((e.Num, e.Str)); return s; },
                         (sum, esum, count, min, max, lengths, items) => new
                         {

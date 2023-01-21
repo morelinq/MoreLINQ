@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void ShuffleIsLazy()
         {
-            new BreakingSequence<int>().Shuffle();
+            _ = new BreakingSequence<int>().Shuffle();
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace MoreLinq.Test
         [Test]
         public void ShuffleSeedIsLazy()
         {
-            new BreakingSequence<int>().Shuffle(Seed);
+            _ = new BreakingSequence<int>().Shuffle(Seed);
         }
 
         [Test]

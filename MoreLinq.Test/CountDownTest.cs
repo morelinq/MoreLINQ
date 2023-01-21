@@ -28,8 +28,8 @@ namespace MoreLinq.Test
         [Test]
         public void IsLazy()
         {
-            new BreakingSequence<object>()
-                .CountDown(42, BreakingFunc.Of<object, int?, object>());
+            var bs = new BreakingSequence<object>();
+            _ = bs.CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
         [Test]

@@ -85,7 +85,7 @@ namespace MoreLinq.Test
         [Test]
         public void CountByIsLazy()
         {
-            new BreakingSequence<string>().CountBy(BreakingFunc.Of<string, int>());
+            _ = new BreakingSequence<string>().CountBy(BreakingFunc.Of<string, int>());
         }
 
         [Test]

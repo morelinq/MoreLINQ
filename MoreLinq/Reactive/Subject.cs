@@ -109,7 +109,7 @@ namespace MoreLinq.Reactive
                 // Remove any observers that were marked for deletion during
                 // iteration.
 
-                observers.RemoveAll(o => o == null);
+                _ = observers.RemoveAll(o => o == null);
             }
         }
 

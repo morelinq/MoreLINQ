@@ -26,8 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void IsLazy()
         {
-            new BreakingSequence<object>()
-                .Choose(BreakingFunc.Of<object, (bool, object)>());
+            _ = new BreakingSequence<object>().Choose(BreakingFunc.Of<object, (bool, object)>());
         }
 
         [Test]

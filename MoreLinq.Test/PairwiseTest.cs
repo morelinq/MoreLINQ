@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void PairwiseIsLazy()
         {
-            new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
+            _ = new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
         }
 
         [TestCase(0)]
