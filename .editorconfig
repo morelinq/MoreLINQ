@@ -80,3 +80,6 @@ dotnet_diagnostic.IDE0048.severity = suggestion
 
 # IDE0055: Fix formatting
 dotnet_diagnostic.IDE0055.severity = suggestion
+
+# IDE0046: Convert to conditional expression
+dotnet_diagnostic.IDE0046.severity = suggestion

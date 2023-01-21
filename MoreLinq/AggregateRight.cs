@@ -47,12 +47,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = source.ToListLike();
-
-            if (list.Count == 0)
-                throw new InvalidOperationException("Sequence contains no elements.");
-
-            return AggregateRightImpl(list, list[^1], func, list.Count - 1);
+            return source.ToListLike() switch
+            {
+                { Count: 0 } => throw new InvalidOperationException("Sequence contains no elements."),
+                var list => AggregateRightImpl(list, list[^1], func, list.Count - 1)
+            };
         }
 
         /// <summary>

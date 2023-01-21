@@ -134,6 +134,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
+
             return source.FallbackIfEmpty((IEnumerable<T>)fallback);
         }
 
@@ -154,6 +155,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (fallback == null) throw new ArgumentNullException(nameof(fallback));
+
             return FallbackIfEmptyImpl(source, null, default, default, default, default, fallback);
         }
 

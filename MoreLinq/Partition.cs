@@ -113,6 +113,7 @@ namespace MoreLinq
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             return source.Partition(key1: true, key2: false, (t, f, _) => resultSelector(t, f));
         }
 
@@ -140,6 +141,7 @@ namespace MoreLinq
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
             return source.Partition(key1: true, key2: false, key3: null, (t, f, n, _) => resultSelector(t, f, n));
         }
 

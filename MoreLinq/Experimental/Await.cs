@@ -200,6 +200,7 @@ namespace MoreLinq.Experimental
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (value == null) throw new ArgumentNullException(nameof(value));
+
             return source.WithOptions(source.Options.WithScheduler(value));
         }
 

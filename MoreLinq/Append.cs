@@ -34,6 +34,7 @@ namespace MoreLinq
         public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
         {
             if (head == null) throw new ArgumentNullException(nameof(head));
+
             return head is PendNode<T> node
                 ? node.Concat(tail)
                 : PendNode<T>.WithSource(head).Concat(tail);
