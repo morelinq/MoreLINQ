@@ -126,7 +126,9 @@ namespace MoreLinq
 
             foreach (var e in source)
             {
+#pragma warning disable IDE0010 // Add missing cases (false negative)
                 switch (indexSelector(e))
+#pragma warning restore IDE0010 // Add missing cases
                 {
                     case < 0:
 #pragma warning disable CA2201 // Do not raise reserved exception types

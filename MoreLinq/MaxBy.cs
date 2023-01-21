@@ -348,6 +348,8 @@ namespace MoreLinq
                         case 0:
                             extrema.Add(ref store, limit, item);
                             break;
+                        default:
+                            break;
                     }
                 }
 
