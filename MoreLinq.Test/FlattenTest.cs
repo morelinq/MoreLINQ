@@ -422,7 +422,7 @@ namespace MoreLinq.Test
             public readonly Tree<T>? Left;
             public readonly Tree<T>? Right;
 
-            public Tree(T value) : this(null, value, null) {}
+            public Tree(T value) : this(null, value, null) { }
             public Tree(Tree<T>? left, T value, Tree<T>? right)
             {
                 Left = left;

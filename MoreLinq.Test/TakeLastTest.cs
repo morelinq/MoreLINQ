@@ -57,7 +57,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastDisposesSequenceEnumerator()
         {
-            using var seq = TestingSequence.Of(1,2,3);
+            using var seq = TestingSequence.Of(1, 2, 3);
             seq.TakeLast(1).Consume();
         }
 

@@ -59,7 +59,7 @@ namespace MoreLinq.Test
         [TestCase(4)]
         public void TestFromInvokesMethodsMultipleTimes(int numArgs)
         {
-            var evals = new [] { 0, 0, 0, 0 };
+            var evals = new[] { 0, 0, 0, 0 };
             int F1() { evals[0]++; return -2; }
             int F2() { evals[1]++; return -2; }
             int F3() { evals[2]++; return -2; }

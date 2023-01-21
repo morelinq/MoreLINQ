@@ -57,9 +57,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.TryAsListLike() is {} listLike
+            return source.TryAsListLike() is { } listLike
                    ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is {} collectionCount
+                   : source.TryGetCollectionCount() is { } collectionCount
                      ? IterateCollection(collectionCount)
                      : IterateSequence();
 
@@ -71,7 +71,7 @@ namespace MoreLinq
                 {
                     var cd = list.Count - i <= count
                            ? --countdown
-                           : (int?) null;
+                           : (int?)null;
                     yield return resultSelector(list[i], cd);
                 }
             }

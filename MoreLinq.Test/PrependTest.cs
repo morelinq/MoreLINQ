@@ -80,7 +80,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithSharedSource()
         {
-            var first  = new [] { 1 }.Prepend(2);
+            var first  = new[] { 1 }.Prepend(2);
             var second = first.Prepend(3).Prepend(4);
             var third  = first.Prepend(4).Prepend(8);
 

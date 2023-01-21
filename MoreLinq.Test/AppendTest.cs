@@ -81,7 +81,7 @@ namespace MoreLinq.Test
         [Test]
         public void AppendWithSharedSource()
         {
-            var first  = new [] { 1 }.Append(2);
+            var first  = new[] { 1 }.Append(2);
             var second = first.Append(3).Append(4);
             var third  = first.Append(4).Append(8);
 

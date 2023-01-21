@@ -38,7 +38,7 @@ namespace MoreLinq.Test
             const int count = 10;
             Enumerable.Range(1, count)
                       .CountDown(-1000, (_, cd) => cd)
-                      .AssertSequenceEqual(Enumerable.Repeat((int?) null, count));
+                      .AssertSequenceEqual(Enumerable.Repeat((int?)null, count));
         }
 
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)

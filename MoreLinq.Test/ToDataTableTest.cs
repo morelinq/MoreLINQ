@@ -86,7 +86,7 @@ namespace MoreLinq.Test
             using var dt = new DataTable();
             _ = dt.Columns.Add("AString", typeof(int));
 
-            Assert.That(() => _testObjects.ToDataTable(dt, t=>t.AString),
+            Assert.That(() => _testObjects.ToDataTable(dt, t => t.AString),
                         Throws.ArgumentException("table"));
         }
 

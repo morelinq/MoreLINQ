@@ -52,7 +52,7 @@ namespace MoreLinq.Test
         public void ExceptByWithComparer()
         {
             string[] first = { "first", "second", "third", "fourth" };
-            string[] second = { "FIRST" , "thiRD", "FIFTH" };
+            string[] second = { "FIRST", "thiRD", "FIFTH" };
             var result = first.ExceptBy(second, word => word, StringComparer.OrdinalIgnoreCase);
             result.AssertSequenceEqual("second", "fourth");
         }

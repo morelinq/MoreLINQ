@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         public void ScanDoesNotIterateExtra()
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
-            var gold = new[] {1, 3, 6};
+            var gold = new[] { 1, 3, 6 };
             Assert.That(sequence.Consume, Throws.BreakException);
             sequence.Take(3).AssertSequenceEqual(gold);
         }

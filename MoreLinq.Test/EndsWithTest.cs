@@ -24,17 +24,17 @@ namespace MoreLinq.Test
     [TestFixture]
     public class EndsWithTest
     {
-        [TestCase(new[] {1, 2, 3}, new[] {2, 3}, ExpectedResult = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {1, 2, 3}, ExpectedResult = true)]
-        [TestCase(new[] {1, 2, 3}, new[] {0, 1, 2, 3}, ExpectedResult = false)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 2, 3 }, ExpectedResult = true)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, ExpectedResult = true)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, ExpectedResult = false)]
         public bool EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
         {
             return first.EndsWith(second);
         }
 
-        [TestCase(new[] {'1', '2', '3'}, new[] {'2', '3'}, ExpectedResult = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'1', '2', '3'}, ExpectedResult = true)]
-        [TestCase(new[] {'1', '2', '3'}, new[] {'0', '1', '2', '3'}, ExpectedResult = false)]
+        [TestCase(new[] { '1', '2', '3' }, new[] { '2', '3' }, ExpectedResult = true)]
+        [TestCase(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, ExpectedResult = true)]
+        [TestCase(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, ExpectedResult = false)]
         public bool EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
         {
             return first.EndsWith(second);
@@ -58,7 +58,7 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.That(new int[0].EndsWith(new[] {1,2,3}), Is.False);
+            Assert.That(new int[0].EndsWith(new[] { 1, 2, 3 }), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -72,7 +72,7 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithDisposesBothSequenceEnumerators()
         {
-            using var first = TestingSequence.Of(1,2,3);
+            using var first = TestingSequence.Of(1, 2, 3);
             using var second = TestingSequence.Of(1);
 
             _ = first.EndsWith(second);
@@ -82,8 +82,8 @@ namespace MoreLinq.Test
         [SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
         public void EndsWithUsesSpecifiedEqualityComparerOrDefault()
         {
-            var first = new[] {1,2,3};
-            var second = new[] {4,5,6};
+            var first = new[] { 1, 2, 3 };
+            var second = new[] { 4, 5, 6 };
 
             Assert.That(first.EndsWith(second), Is.False);
             Assert.That(first.EndsWith(second, null), Is.False);

@@ -175,7 +175,7 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var ordinals = Enumerable.Range(1, count);
-            var sequence = ordinals.Select( x => new DateTime(2010,x,20-x) );
+            var sequence = ordinals.Select(x => new DateTime(2010, x, 20 - x));
             // invert the CompareTo operation to Rank in reverse order (ascending to descending)
             using var tsA = sequence.AsTestingSequence();
             var resultA = tsA.Rank(Comparer<DateTime>.Create((a, b) => -a.CompareTo(b)));

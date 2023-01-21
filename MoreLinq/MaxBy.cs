@@ -279,7 +279,7 @@ namespace MoreLinq
 
                     public override void Add(ref Queue<T>? store, int? limit, T item)
                     {
-                        if (limit is {} n && store is {} queue && queue.Count == n)
+                        if (limit is { } n && store is { } queue && queue.Count == n)
                             _ = queue.Dequeue();
                         (store ??= new Queue<T>()).Enqueue(item);
                     }

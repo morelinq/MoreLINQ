@@ -148,7 +148,7 @@ namespace MoreLinq.Test
 
             var memoized = xs.Memoize();
 
-            using ((IDisposable) memoized)
+            using ((IDisposable)memoized)
                 memoized.Take(1).Consume();
         }
 
@@ -204,7 +204,7 @@ namespace MoreLinq.Test
 
             void Run()
             {
-                using ((IDisposable) memoized)
+                using ((IDisposable)memoized)
                     memoized.Take(1).Consume();
             }
 
@@ -219,7 +219,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 10);
             var memoized = sequence.Memoize();
-            var disposable = (IDisposable) memoized;
+            var disposable = (IDisposable)memoized;
 
             using var reader = memoized.Read();
             Assert.That(reader.Read(), Is.EqualTo(1));
@@ -306,7 +306,7 @@ namespace MoreLinq.Test
             for (var i = 0; i < 2; i++)
                 Assert.That(memo.First, Throws.TypeOf<TestException>().And.SameAs(error));
 
-            ((IDisposable) memo).Dispose();
+            ((IDisposable)memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));
         }
     }

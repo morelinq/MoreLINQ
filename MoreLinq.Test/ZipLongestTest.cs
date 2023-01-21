@@ -66,7 +66,7 @@ namespace MoreLinq.Test
             var zipped = shorter.ZipLongest(longer, Tuple.Create);
 
             var count = 0;
-            foreach(var _ in zipped.Take(10))
+            foreach (var _ in zipped.Take(10))
             {
                 if (++count == 4)
                     ((IDisposable)shorter).Dispose();

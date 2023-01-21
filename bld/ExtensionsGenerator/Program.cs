@@ -117,7 +117,7 @@ static void Run(IEnumerable<string> args)
 
     var abbreviatedTypeNodes = Enumerable
         .Range(0, 26)
-        .Select(a => (char) ('a' + a))
+        .Select(a => (char)('a' + a))
         .Select(ch => new SimpleTypeKey(ch.ToString()))
         .ToArray();
 
@@ -243,7 +243,7 @@ static void Run(IEnumerable<string> args)
     var indent2 = indent + indent;
     var indent3 = indent2 + indent;
 
-    var baseImports = new []
+    var baseImports = new[]
     {
         "System",
         "System.CodeDom.Compiler",
@@ -403,7 +403,7 @@ abstract class TypeKey : IComparable<TypeKey>
 
 sealed class SimpleTypeKey : TypeKey
 {
-    public SimpleTypeKey(string name) : base(name) {}
+    public SimpleTypeKey(string name) : base(name) { }
     public override string ToString() => Name;
     public override ImmutableList<TypeKey> Parameters => ImmutableList<TypeKey>.Empty;
 }
@@ -411,7 +411,7 @@ sealed class SimpleTypeKey : TypeKey
 abstract class ParameterizedTypeKey : TypeKey
 {
     protected ParameterizedTypeKey(string name, TypeKey parameter) :
-        this(name, ImmutableList.Create(parameter)) {}
+        this(name, ImmutableList.Create(parameter)) { }
 
     protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) :
         base(name) => Parameters = parameters;
@@ -422,7 +422,7 @@ abstract class ParameterizedTypeKey : TypeKey
 sealed class GenericTypeKey : ParameterizedTypeKey
 {
     public GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :
-        base(name, parameters) {}
+        base(name, parameters) { }
 
     public override string ToString() =>
         Name + "<" + string.Join(", ", Parameters) + ">";
@@ -430,14 +430,14 @@ sealed class GenericTypeKey : ParameterizedTypeKey
 
 sealed class NullableTypeKey : ParameterizedTypeKey
 {
-    public NullableTypeKey(TypeKey underlying) : base("?", underlying) {}
+    public NullableTypeKey(TypeKey underlying) : base("?", underlying) { }
     public override string ToString() => Parameters.Single() + "?";
 }
 
 sealed class TupleTypeKey : ParameterizedTypeKey
 {
     public TupleTypeKey(ImmutableList<TypeKey> parameters) :
-        base("()", parameters) {}
+        base("()", parameters) { }
 
     public override string ToString() =>
         "(" + string.Join(", ", Parameters) + ")";

@@ -652,7 +652,7 @@ namespace MoreLinq.Experimental
                         onEnd();
                 }
 
-                var concurrencyGate = maxConcurrency is {} count
+                var concurrencyGate = maxConcurrency is { } count
                                     ? new ConcurrencyGate(count)
                                     : ConcurrencyGate.Unbounded;
 
@@ -742,7 +742,7 @@ namespace MoreLinq.Experimental
 
         static class CompletedTask
         {
-            #if NETSTANDARD1_0
+#if NETSTANDARD1_0
 
             public static readonly Task Instance = CreateCompletedTask();
 
@@ -753,11 +753,11 @@ namespace MoreLinq.Experimental
                 return tcs.Task;
             }
 
-            #else
+#else
 
             public static readonly Task Instance = Task.CompletedTask;
 
-            #endif
+#endif
         }
 
         sealed class ConcurrencyGate
@@ -770,7 +770,7 @@ namespace MoreLinq.Experimental
                 _semaphore = semaphore;
 
             public ConcurrencyGate(int max) :
-                this(new SemaphoreSlim(max, max)) {}
+                this(new SemaphoreSlim(max, max)) { }
 
             public Task EnterAsync(CancellationToken token)
             {

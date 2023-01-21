@@ -101,7 +101,7 @@ namespace MoreLinq
                 }
             }
 
-            var source = (Source) current;
+            var source = (Source)current;
 
             foreach (var item in source.Value)
                 yield return item;
