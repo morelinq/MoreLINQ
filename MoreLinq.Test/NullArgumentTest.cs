@@ -184,7 +184,7 @@ namespace MoreLinq.Test
         static object CreateGenericInterfaceInstance(TypeInfo type)
         {
             Debug.Assert(type.IsGenericType && type.IsInterface);
-            var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
+            var name = type.Name[1..]; // Delete first character, i.e. the 'I' in IEnumerable
             var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
             Debug.Assert(definition is not null);
             var instance = Activator.CreateInstance(definition.MakeGenericType(type.GetGenericArguments()));
