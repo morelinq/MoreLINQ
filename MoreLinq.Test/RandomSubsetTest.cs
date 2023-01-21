@@ -240,7 +240,7 @@ namespace MoreLinq.Test
         {
             var average = values.Average();
             var standardDeviation = StandardDeviationInternal(values, average);
-            return (standardDeviation * 100.0) / average;
+            return standardDeviation * 100.0 / average;
         }
 
         static double StandardDeviationInternal(IEnumerable<double> values, double average)
