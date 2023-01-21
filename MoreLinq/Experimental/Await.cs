@@ -527,8 +527,10 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
 
+#pragma warning disable IDE0011 // Add braces
                     using (var notice = notices.GetConsumingEnumerable(consumerCancellationTokenSource.Token)
                                                .GetEnumerator())
+#pragma warning restore IDE0011 // Add braces
                     while (true)
                     {
                         try

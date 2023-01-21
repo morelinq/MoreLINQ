@@ -460,9 +460,12 @@ sealed class ArrayTypeKey : ParameterizedTypeKey
         {
             if (Ranks.Count.CompareTo(a.Ranks.Count) is var rlc and not 0)
                 return rlc;
+
             if (Ranks.Zip(a.Ranks, (us, them) => (Us: us, Them: them))
                      .Aggregate(0, (c, r) => c == 0 ? r.Us.CompareTo(r.Them) : c) is var rc and not 0)
+            {
                 return rc;
+            }
         }
 
         return base.CompareParameters(other);
