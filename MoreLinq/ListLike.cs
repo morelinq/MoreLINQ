@@ -50,9 +50,9 @@ namespace MoreLinq
 
     static class ListLike
     {
-        public static ListLike<T> AsListLike<T>(this List<T> list) => new ListLike<T>((IList<T>)list);
-        public static ListLike<T> AsListLike<T>(this IList<T> list) => new ListLike<T>(list);
-        public static ListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new ListLike<T>(list);
+        public static ListLike<T> AsListLike<T>(this List<T> list) => new((IList<T>)list);
+        public static ListLike<T> AsListLike<T>(this IList<T> list) => new(list);
+        public static ListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new(list);
 
         public static ListLike<T> ToListLike<T>(this IEnumerable<T> source)
             => source.TryAsListLike() ?? source.ToList().AsListLike();
