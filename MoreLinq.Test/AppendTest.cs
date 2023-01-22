@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         public void AppendWithNullTail()
         {
             var head = new[] { "first", "second" };
-            string tail = null;
+            string? tail = null;
             var whole = head.Append(tail);
             whole.AssertSequenceEqual("first", "second", null);
         }

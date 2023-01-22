@@ -120,8 +120,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>3.3.2</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
-    <TargetFrameworks>net451;netstandard1.0;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>net462;netstandard1.0;netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
     <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
          See also: https://github.com/dotnet/msbuild/issues/2781 -->
@@ -150,16 +149,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="PolySharp" Version="1.9.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
-    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -182,19 +181,23 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net451'">
-    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS</DefineConstants>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net462' ">
+    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
@@ -202,7 +205,7 @@
     <Compile Remove="Extensions.ToDataTable.g.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net451'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net462'">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
@@ -245,45 +248,5 @@
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Nullable" Version="1.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <Target Name="_CollectTextTemplates">
-    <ItemGroup>
-      <TextTemplate Include="%(None.Identity)" Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'">
-        <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
-      </TextTemplate>
-    </ItemGroup>
-  </Target>
-
-  <Target Name="_TransformTextTemplate" Inputs="$(TextTemplate)" Outputs="$(TextTemplateOutput)">
-    <Exec Command="dotnet t4 -h &gt; /dev/null" IgnoreExitCode="True" Condition="'$(WINDIR)' == ''">
-      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
-    </Exec>
-    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True" Condition="'$(WINDIR)' != ''">
-      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
-    </Exec>
-    <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
-    <Exec Command="dotnet t4 $(TextTemplate)" />
-  </Target>
-
-  <Target Name="TransformTextTemplates"
-          DependsOnTargets="_CollectTextTemplates">
-    <MSBuild Projects="$(MSBuildProjectFile)"
-             Targets="_TransformTextTemplate"
-             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
-  </Target>
-
-  <Target Name="_TransformTextTemplates"
-          AfterTargets="BeforeBuild" DependsOnTargets="TransformTextTemplates" />
 
 </Project>

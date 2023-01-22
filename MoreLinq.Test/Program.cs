@@ -24,8 +24,10 @@ namespace MoreLinq.Test
 
     static class Program
     {
-        static int Main(string[] args) =>
-            new AutoRun(typeof(Program).GetTypeInfo().Assembly)
-                .Execute(args, new ExtendedTextWrapper(Console.Out), Console.In);
+        static int Main(string[] args)
+        {
+            using var writer = new ExtendedTextWrapper(Console.Out);
+            return new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, writer, Console.In);
+        }
     }
 }

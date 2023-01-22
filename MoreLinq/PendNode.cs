@@ -91,7 +91,7 @@ namespace MoreLinq
                                 case 1: concat2 = item.Value; break;
                                 case 2: concat3 = item.Value; break;
                                 case 3: concat4 = item.Value; break;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new UnreachableException();
                             }
                             continue;
                         }

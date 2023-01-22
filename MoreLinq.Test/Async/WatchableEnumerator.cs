@@ -48,11 +48,10 @@ namespace MoreLinq.Test.Async
             return moved;
         }
 
-        public ValueTask DisposeAsync()
+        public async ValueTask DisposeAsync()
         {
-            _source.DisposeAsync();
+            await _source.DisposeAsync();
             Disposed?.Invoke(this, EventArgs.Empty);
-            return new ValueTask();
         }
     }
 }

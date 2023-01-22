@@ -61,7 +61,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateByIndex()
         {
-            var sequence = MoreEnumerable.GenerateByIndex(x => x.ToString()).Take(3);
+            var sequence = MoreEnumerable.GenerateByIndex(x => x.ToInvariantString()).Take(3);
             sequence.AssertSequenceEqual("0", "1", "2");
         }
     }

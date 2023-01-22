@@ -20,7 +20,6 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     /// <summary>
@@ -88,8 +87,7 @@ namespace MoreLinq
         /// otherwise, the first element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Take(1).AsEnumerable().FirstOrDefault();
@@ -125,8 +123,7 @@ namespace MoreLinq
         /// otherwise, the last element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.TakeLast(1).AsEnumerable().LastOrDefault();
@@ -145,7 +142,9 @@ namespace MoreLinq
         /// The single element of the input sequence.
         /// </returns>
 
+#pragma warning disable CA1720 // Identifier contains type name
         public static T Single<T>(this IExtremaEnumerable<T> source)
+#pragma warning restore CA1720 // Identifier contains type name
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Take(2).AsEnumerable().Single();
@@ -164,8 +163,7 @@ namespace MoreLinq
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Take(2).AsEnumerable().SingleOrDefault();
@@ -340,16 +338,16 @@ namespace MoreLinq
                 {
                     var item = e.Current;
                     var key = selector(item);
-                    var comparison = comparer(key, extremaKey);
-                    if (comparison > 0)
+                    switch (comparer(key, extremaKey))
                     {
-                        extrema.Restart(ref store);
-                        extrema.Add(ref store, limit, item);
-                        extremaKey = key;
-                    }
-                    else if (comparison == 0)
-                    {
-                        extrema.Add(ref store, limit, item);
+                        case > 0:
+                            extrema.Restart(ref store);
+                            extrema.Add(ref store, limit, item);
+                            extremaKey = key;
+                            break;
+                        case 0:
+                            extrema.Add(ref store, limit, item);
+                            break;
                     }
                 }
 

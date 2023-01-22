@@ -91,10 +91,10 @@ namespace MoreLinq.Experimental.Async
 
             async IAsyncEnumerable<T> Async([EnumeratorCancellation]CancellationToken cancellationToken = default)
             {
-                var thisCancellationTokenSource = new CancellationTokenSource();
-                var cancellationTokenSource = cancellationToken.CanBeCanceled
-                                            ? CancellationTokenSource.CreateLinkedTokenSource(thisCancellationTokenSource.Token, cancellationToken)
-                                            : thisCancellationTokenSource;
+                using var thisCancellationTokenSource = new CancellationTokenSource();
+                using var cancellationTokenSource = cancellationToken.CanBeCanceled
+                                                  ? CancellationTokenSource.CreateLinkedTokenSource(thisCancellationTokenSource.Token, cancellationToken)
+                                                  : thisCancellationTokenSource;
                 cancellationToken = cancellationTokenSource.Token;
 
                 var enumeratorList = new List<IAsyncEnumerator<T>>();

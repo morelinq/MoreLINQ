@@ -43,15 +43,15 @@ namespace MoreLinq
 
             var count = 0;
 
-            using (var e = source.GetEnumerator())
-            {
-                while (count < max && e.MoveNext())
-                {
-                    count++;
-                }
-            }
+            using var e = source.GetEnumerator();
+            while (count < max && e.MoveNext())
+                count++;
 
             return count;
         }
+
+        // See https://github.com/atifaziz/Optuple
+
+        static (bool HasValue, T Value) Some<T>(T value) => (true, value);
     }
 }

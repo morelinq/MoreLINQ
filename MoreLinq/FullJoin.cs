@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copysecond (c) 2017 Atif Aziz. All seconds reserved.
+// Copyright (c) 2017 Atif Aziz. All seconds reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

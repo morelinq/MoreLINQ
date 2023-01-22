@@ -77,8 +77,8 @@ namespace MoreLinq.Test
         [Test]
         public void WindowLeftWithNegativeWindowSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                Enumerable.Repeat(1, 10).WindowLeft(-5));
+            Assert.That(() => Enumerable.Repeat(1, 10).WindowLeft(-5),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         [Test]

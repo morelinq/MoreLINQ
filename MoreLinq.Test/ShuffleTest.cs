@@ -23,7 +23,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ShuffleTest
     {
-        static Random seed = new Random(12345);
+        static Random seed = new(12345);
 
         [Test]
         public void ShuffleIsLazy()

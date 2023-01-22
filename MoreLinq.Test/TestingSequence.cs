@@ -25,12 +25,23 @@ namespace MoreLinq.Test
     static class TestingSequence
     {
         internal static TestingSequence<T> Of<T>(params T[] elements) =>
-            new TestingSequence<T>(elements);
+            Of(Options.None, elements);
 
-        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
+        internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
+            elements.AsTestingSequence(options);
+
+        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source,
+                                                                Options options = Options.None) =>
             source != null
-            ? new TestingSequence<T>(source)
+            ? new TestingSequence<T>(source) { IsReiterationAllowed = options.HasFlag(Options.AllowMultipleEnumerations) }
             : throw new ArgumentNullException(nameof(source));
+
+        [Flags]
+        public enum Options
+        {
+            None,
+            AllowMultipleEnumerations
+        }
     }
 
     /// <summary>
@@ -41,11 +52,13 @@ namespace MoreLinq.Test
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
         bool? _disposed;
-        IEnumerable<T> _sequence;
+        IEnumerable<T>? _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence) =>
             _sequence = sequence;
 
+        public bool IsDisposed => _disposed ?? false;
+        public bool IsReiterationAllowed { get; init; }
         public int MoveNextCallCount { get; private set; }
 
         void IDisposable.Dispose() =>
@@ -58,13 +71,17 @@ namespace MoreLinq.Test
         {
             if (_disposed == null)
                 return;
-            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+            Assert.That(_disposed, Is.True, "Expected sequence to be disposed.");
             _disposed = null;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+            if (!IsReiterationAllowed)
+                Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+
+            Debug.Assert(_sequence is not null);
+
             var enumerator = _sequence.GetEnumerator().AsWatchable();
             _disposed = false;
             enumerator.Disposed += delegate
@@ -79,7 +96,10 @@ namespace MoreLinq.Test
                 ended = !moved;
                 MoveNextCallCount++;
             };
-            _sequence = null;
+
+            if (!IsReiterationAllowed)
+                _sequence = null;
+
             return enumerator;
         }
 

@@ -62,10 +62,9 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return TraceImpl(source,
-                string.IsNullOrEmpty(format)
-                ? (Func<TSource, string>) (x => x == null ? string.Empty : x.ToString())
-                : (x => string.Format(format, x)));
+            return TraceImpl(source, string.IsNullOrEmpty(format)
+                                     ? x => x?.ToString() ?? string.Empty
+                                     : x => string.Format(null, format, x));
         }
 
         /// <summary>

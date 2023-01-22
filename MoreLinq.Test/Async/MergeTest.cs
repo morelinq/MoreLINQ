@@ -24,6 +24,7 @@ namespace MoreLinq.Test.Async
     using System.Threading.Tasks;
     using Experimental.Async;
     using NUnit.Framework;
+    using Throws = Throws;
 
     [TestFixture]
     public class MergeTest
@@ -36,7 +37,7 @@ namespace MoreLinq.Test.Async
         {
             var sources = new IAsyncEnumerable<object>[0];
             void Act() => sources.Merge(n);
-            AssertThrowsArgument.OutOfRangeException("maxConcurrent", Act);
+            Assert.That(Act, Throws.ArgumentOutOfRangeException("maxConcurrent"));
         }
 
         [Test]
@@ -85,7 +86,7 @@ namespace MoreLinq.Test.Async
 
         sealed class AsyncControl<T>
         {
-            record State(TaskCompletionSource<T> TaskCompletionSource, T Result);
+            sealed record State(TaskCompletionSource<T> TaskCompletionSource, T Result);
 
             State? _state;
 
