@@ -29,8 +29,8 @@ namespace MoreLinq.Experimental.Async
     partial class ExperimentalEnumerable
     {
         /// <summary>
-        /// Concurrently merges all the elements of multiple asynchronous
-        /// streams into a single asynchronous stream.
+        /// Concurrently merges all the elements of multiple asynchronous streams into a single
+        /// asynchronous stream.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the elements in <paramref name="sources"/>.</typeparam>
@@ -41,30 +41,28 @@ namespace MoreLinq.Experimental.Async
         /// <remarks>
         /// <para>This operator uses deferred execution and streams its results.</para>
         /// <para>
-        /// The elements in the resulting stream may appear in a different
-        /// order than their order in <paramref name="sources"/>.</para>
+        /// The elements in the resulting stream may appear in a different order than their order in
+        /// <paramref name="sources"/>.</para>
         /// <para>
-        /// When disposed part of the way, there is a best-effort attempt to
-        /// cancel all iterations that are in flight. This requires that all
-        /// asynchronous streams in <paramref name="sources"/> properly
-        /// honour timely cancellation.</para>
+        /// When disposed part of the way, there is a best-effort attempt to cancel all iterations
+        /// that are in flight. This requires that all asynchronous streams in <paramref
+        /// name="sources"/> properly honour timely cancellation.</para>
         /// </remarks>
 
         public static IAsyncEnumerable<T> Merge<T>(this IEnumerable<IAsyncEnumerable<T>> sources) =>
             Merge(sources, int.MaxValue);
 
         /// <summary>
-        /// Concurrently merges all the elements of multiple asynchronous
-        /// streams into a single asynchronous stream. An additional parameter
-        /// specifies the maximum concurrent operations that may be in flight
-        /// at any give time.
+        /// Concurrently merges all the elements of multiple asynchronous streams into a single
+        /// asynchronous stream. An additional parameter specifies the maximum concurrent operations
+        /// that may be in flight at any give time.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the elements in <paramref name="sources"/>.</typeparam>
         /// <param name="sources">The sequence of asynchronous streams.</param>
         /// <param name="maxConcurrent">
-        /// Maximum number of asynchronous operations to have in flight at any
-        /// given time. A value of 1 (or below) disables concurrency.</param>
+        /// Maximum number of asynchronous operations to have in flight at any given time. A value
+        /// of 1 (or below) disables concurrency.</param>
         /// <returns>
         /// An asynchronous stream with all elements from all <paramref name="sources"/>.
         /// </returns>
@@ -72,14 +70,13 @@ namespace MoreLinq.Experimental.Async
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// <para>
-        /// When <paramref name="maxConcurrent"/> is 2 or greater then the
-        /// elements in the resulting stream may appear in a different
-        /// order than their order in <paramref name="sources"/>.</para>
+        /// When <paramref name="maxConcurrent"/> is 2 or greater then the elements in the resulting
+        /// stream may appear in a different order than their order in <paramref
+        /// name="sources"/>.</para>
         /// <para>
-        /// When disposed part of the way, there is a best-effort attempt to
-        /// cancel all iterations that are in flight. This requires that all
-        /// asynchronous streams in <paramref name="sources"/> properly
-        /// honour timely cancellation.</para>
+        /// When disposed part of the way, there is a best-effort attempt to cancel all iterations
+        /// that are in flight. This requires that all asynchronous streams in <paramref
+        /// name="sources"/> properly honour timely cancellation.</para>
         /// </remarks>
 
         public static IAsyncEnumerable<T> Merge<T>(this IEnumerable<IAsyncEnumerable<T>> sources,
