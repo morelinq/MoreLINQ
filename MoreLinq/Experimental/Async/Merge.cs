@@ -144,7 +144,7 @@ namespace MoreLinq.Experimental.Async
 
                     while (enumeratorList.Count > 0)
                     {
-                        while (pendingTaskList.Count is { } ptc
+                        while (pendingTaskList.Count is var ptc
                                && ptc < enumeratorList.Count
                                && ptc < maxConcurrent)
                         {
