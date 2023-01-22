@@ -27,7 +27,7 @@ namespace MoreLinq
     /// both to be treated the same.
     /// </summary>
 
-    struct ListLike<T> // TODO Can be readonly when using C# 7.2
+    readonly struct ListLike<T>
     {
         readonly IList<T>? _l;
         readonly IReadOnlyList<T>? _r;
