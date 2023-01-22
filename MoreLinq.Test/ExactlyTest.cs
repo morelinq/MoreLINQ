@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class ExactlyTest
@@ -29,33 +30,23 @@ namespace MoreLinq.Test
                         Throws.ArgumentOutOfRangeException("count"));
         }
 
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.That(xs.Exactly(0), Is.True);
-        }
+        static IEnumerable<TestCaseData> ExactlySource =>
+            from k in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 1, Count: 1),
+                (Size: 3, Count: 1)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size == e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.That(xs.Exactly(1), Is.False);
-        }
+        [TestCaseSource(nameof(ExactlySource))]
+        public bool Exactly(SourceKind sourceKind, int sequenceSize, int exactlyAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).Exactly(exactlyAssertCount);
 
-        [Test]
-        public void ExactlyWithSingleElementHasExactlyOneElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.That(xs.Exactly(1), Is.True);
-        }
-
-        [Test]
-        public void ExactlyWithManyElementHasExactlyOneElement()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.That(xs.Exactly(1), Is.False);
-        }
 
         [Test]
         public void ExactlyDoesNotIterateUnnecessaryElements()
