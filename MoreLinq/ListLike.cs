@@ -29,23 +29,26 @@ namespace MoreLinq
 
     readonly struct ListLike<T>
     {
-        readonly IList<T>? _l;
-        readonly IReadOnlyList<T>? _r;
+        readonly IList<T>? _rw;
+        readonly IReadOnlyList<T>? _rx;
 
         public ListLike(IList<T> list)
         {
-            _l = list ?? throw new ArgumentNullException(nameof(list));
-            _r = null;
+            _rw = list ?? throw new ArgumentNullException(nameof(list));
+            _rx = null;
         }
 
         public ListLike(IReadOnlyList<T> list)
         {
-            _l = null;
-            _r = list ?? throw new ArgumentNullException(nameof(list));
+            _rw = null;
+            _rx = list ?? throw new ArgumentNullException(nameof(list));
         }
 
-        public int Count => _l?.Count ?? _r!.Count;
-        public T this[int index] => _l != null ? _l[index] : _r![index];
+        public int Count => _rw?.Count ?? _rx?.Count ?? 0;
+
+        public T this[int index] => _rw is { } rw ? rw[index]
+                                  : _rx is { } rx ? rx[index]
+                                  : throw new ArgumentOutOfRangeException(nameof(index));
     }
 
     static class ListLike
