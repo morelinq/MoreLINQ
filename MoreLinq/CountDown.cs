@@ -39,7 +39,7 @@ namespace MoreLinq
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -57,19 +57,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            switch (source)
-            {
-                case IList<T> list:
-                    return IterateList(list.AsListLike());
-                case IReadOnlyList<T> list:
-                    return IterateList(list.AsListLike());
-                case ICollection<T> collection:
-                    return IterateCollection(collection.Count);
-                case IReadOnlyCollection<T> collection:
-                    return IterateCollection(collection.Count);
-                default:
-                    return IterateSequence();
-            }
+            return source.TryAsListLike() is {} listLike
+                   ? IterateList(listLike)
+                   : source.TryGetCollectionCount() is {} collectionCount
+                     ? IterateCollection(collectionCount)
+                     : IterateSequence();
 
             IEnumerable<TResult> IterateList(ListLike<T> list)
             {
@@ -92,7 +84,7 @@ namespace MoreLinq
 
             IEnumerable<TResult> IterateSequence()
             {
-                var queue = new Queue<T>();
+                var queue = new Queue<T>(Math.Max(1, count + 1));
 
                 foreach (var item in source)
                 {

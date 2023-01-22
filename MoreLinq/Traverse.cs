@@ -24,18 +24,26 @@ namespace MoreLinq
     public partial class MoreEnumerable
     {
         /// <summary>
-        /// Traverses a tree in a breadth-first fashion, starting at a root node and using a user-defined
-        /// function to get the children at each node of the tree.
+        /// Traverses a tree in a breadth-first fashion, starting at a root
+        /// node and using a user-defined function to get the children at each
+        /// node of the tree.
         /// </summary>
         /// <typeparam name="T">The tree node type</typeparam>
-        /// <param name="root">The root of the tree to traverse</param>
-        /// <param name="childrenSelector">The function that produces the children of each element</param>
-        /// <returns>A sequence containing the traversed values</returns>
+        /// <param name="root">The root of the tree to traverse.</param>
+        /// <param name="childrenSelector">
+        /// The function that produces the children of each element.</param>
+        /// <returns>A sequence containing the traversed values.</returns>
         /// <remarks>
-        /// This function defers traversal until needed and streams the results.
-        /// The tree is not checked for loops. If the resulting sequence needs to be finite then it is the
-        /// responsibility of <paramref name="childrenSelector"/> to ensure that loops are not produced.
+        /// <para>
+        /// The tree is not checked for loops. If the resulting sequence needs
+        /// to be finite then it is the responsibility of
+        /// <paramref name="childrenSelector"/> to ensure that loops are not
+        /// produced.</para>
+        /// <para>
+        /// This function defers traversal until needed and streams the
+        /// results.</para>
         /// </remarks>
+
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
@@ -56,18 +64,26 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Traverses a tree in a depth-first fashion, starting at a root node and using a user-defined
-        /// function to get the children at each node of the tree.
+        /// Traverses a tree in a depth-first fashion, starting at a root node
+        /// and using a user-defined function to get the children at each node
+        /// of the tree.
         /// </summary>
-        /// <typeparam name="T">The tree node type</typeparam>
-        /// <param name="root">The root of the tree to traverse</param>
-        /// <param name="childrenSelector">The function that produces the children of each element</param>
-        /// <returns>A sequence containing the traversed values</returns>
+        /// <typeparam name="T">The tree node type.</typeparam>
+        /// <param name="root">The root of the tree to traverse.</param>
+        /// <param name="childrenSelector">
+        /// The function that produces the children of each element.</param>
+        /// <returns>A sequence containing the traversed values.</returns>
         /// <remarks>
-        /// This function defers traversal until needed and streams the results.
-        /// The tree is not checked for loops. If the resulting sequence needs to be finite then it is the
-        /// responsibility of <paramref name="childrenSelector"/> to ensure that loops are not produced.
+        /// <para>
+        /// The tree is not checked for loops. If the resulting sequence needs
+        /// to be finite then it is the responsibility of
+        /// <paramref name="childrenSelector"/> to ensure that loops are not
+        /// produced.</para>
+        /// <para>
+        /// This function defers traversal until needed and streams the
+        /// results.</para>
         /// </remarks>
+
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));

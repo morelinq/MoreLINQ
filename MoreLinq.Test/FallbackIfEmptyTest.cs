@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2016 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,29 +36,37 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(bool readOnly)
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(SourceKind sourceKind)
         {
-            var source = new[] { 1 }.ToBreakingList(readOnly);
+            var source = new[] { 1 }.ToSourceKind(sourceKind);
             // ReSharper disable PossibleMultipleEnumeration
-            Assert.AreSame(source.FallbackIfEmpty(12), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56), source);
-            Assert.AreSame(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), source);
+            Assert.That(source.FallbackIfEmpty(12), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45, 56), Is.SameAs(source));
+            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), Is.SameAs(source));
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(bool readOnly)
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(SourceKind sourceKind)
         {
-            var source = new int[0].ToBreakingList(readOnly);
+            var source = new int[0].ToSourceKind(sourceKind);
             var fallback = new[] { 1 };
-            Assert.AreSame(source.FallbackIfEmpty(fallback), fallback);
-            Assert.AreSame(source.FallbackIfEmpty(fallback.AsEnumerable()), fallback);
+            Assert.That(source.FallbackIfEmpty(fallback), Is.SameAs(fallback));
+            Assert.That(source.FallbackIfEmpty(fallback.AsEnumerable()), Is.SameAs(fallback));
+        }
+
+        [Test]
+        public void FallbackIfEmptyWithEmptyNullableSequence()
+        {
+            var source = Enumerable.Empty<int?>().Select(x => x);
+            var fallback = (int?)null;
+            source.FallbackIfEmpty(fallback).AssertSequenceEqual(fallback);
         }
     }
 }

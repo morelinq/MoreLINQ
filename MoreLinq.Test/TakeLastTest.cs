@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2009 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         {
             AssertTakeLast(new[] { 12, 34, 56 },
                            -2,
-                           result => Assert.IsFalse(result.GetEnumerator().MoveNext()));
+                           result => Assert.That(result, Is.Empty));
         }
 
         [Test]
@@ -57,17 +57,15 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastDisposesSequenceEnumerator()
         {
-            using (var seq = TestingSequence.Of(1,2,3))
-            {
-                seq.TakeLast(1).Consume();
-            }
+            using var seq = TestingSequence.Of(1,2,3);
+            seq.TakeLast(1).Consume();
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void TakeLastOptimizedForCollections(bool readOnly)
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void TakeLastOptimizedForCollections(SourceKind sourceKind)
         {
-            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToBreakingList(readOnly);
+            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);
 
             sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
         }

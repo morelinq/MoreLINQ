@@ -34,27 +34,25 @@ namespace MoreLinq
         /// <returns>The final accumulator value.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
+
         public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list
-                = source is IReadOnlyList<TSource> readOnlyList
-                ? readOnlyList.AsListLike()
-                : (source as IList<TSource> ?? source.ToList()).AsListLike();
+            var list = source.ToListLike();
 
             if (list.Count == 0)
                 throw new InvalidOperationException("Sequence contains no elements.");
 
-            return AggregateRightImpl(list, list[list.Count - 1], func, list.Count - 1);
+            return AggregateRightImpl(list, list[^1], func, list.Count - 1);
         }
 
         /// <summary>
@@ -72,21 +70,20 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
+
         public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = source is IReadOnlyList<TSource> readOnlyList
-                     ? readOnlyList.AsListLike()
-                     : (source as IList<TSource> ?? source.ToList()).AsListLike();
+            var list = source.ToListLike();
 
             return AggregateRightImpl(list, seed, func, list.Count);
         }
@@ -109,13 +106,14 @@ namespace MoreLinq
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
+        /// int result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})", str => str.Length);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
         /// <remarks>
         /// This operator executes immediately.
         /// </remarks>
+
         public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

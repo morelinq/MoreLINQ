@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents a union over list types implementing either
@@ -28,8 +29,8 @@ namespace MoreLinq
 
     struct ListLike<T> // TODO Can be readonly when using C# 7.2
     {
-        readonly IList<T> _l;
-        readonly IReadOnlyList<T> _r;
+        readonly IList<T>? _l;
+        readonly IReadOnlyList<T>? _r;
 
         public ListLike(IList<T> list)
         {
@@ -43,13 +44,26 @@ namespace MoreLinq
             _r = list ?? throw new ArgumentNullException(nameof(list));
         }
 
-        public int Count => _l?.Count ?? _r.Count;
-        public T this[int index] => _l != null ? _l[index] : _r[index];
+        public int Count => _l?.Count ?? _r!.Count;
+        public T this[int index] => _l != null ? _l[index] : _r![index];
     }
 
     static class ListLike
     {
+        public static ListLike<T> AsListLike<T>(this List<T> list) => new ListLike<T>((IList<T>)list);
         public static ListLike<T> AsListLike<T>(this IList<T> list) => new ListLike<T>(list);
         public static ListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new ListLike<T>(list);
+
+        public static ListLike<T> ToListLike<T>(this IEnumerable<T> source)
+            => source.TryAsListLike() ?? source.ToList().AsListLike();
+
+        public static ListLike<T>? TryAsListLike<T>(this IEnumerable<T> source) =>
+            source switch
+            {
+                null => throw new ArgumentNullException(nameof(source)),
+                IList<T> list => list.AsListLike(),
+                IReadOnlyList<T> list => list.AsListLike(),
+                _ => null
+            };
     }
 }

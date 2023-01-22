@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copysecond (c) 2017 Atif Aziz. All seconds reserved.
+// Copyright (c) 2017 Atif Aziz. All seconds reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             Func<TSource, TResult> firstSelector,
             Func<TSource, TSource, TResult> bothSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             return first.LeftJoin(second,
@@ -198,7 +198,7 @@ namespace MoreLinq
             Func<TSecond, TKey> secondKeySelector,
             Func<TFirst, TResult> firstSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -207,14 +207,12 @@ namespace MoreLinq
             if (firstSelector == null) throw new ArgumentNullException(nameof(firstSelector));
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
 
-            KeyValuePair<TK, TV> Pair<TK, TV>(TK k, TV v) => new KeyValuePair<TK, TV>(k, v);
-
-            return // TODO replace KeyValuePair<,> with (,) for clarity
-                from j in first.GroupJoin(second, firstKeySelector, secondKeySelector,
-                                          (f, ss) => Pair(f, from s in ss select Pair(true, s)),
+            return
+                from f in first.GroupJoin(second, firstKeySelector, secondKeySelector,
+                                          (f, ss) => (Value: f, Seconds: from s in ss select (HasValue: true, Value: s)),
                                           comparer)
-                from s in j.Value.DefaultIfEmpty()
-                select s.Key ? bothSelector(j.Key, s.Value) : firstSelector(j.Key);
+                from s in f.Seconds.DefaultIfEmpty()
+                select s.HasValue ? bothSelector(f.Value, s.Value) : firstSelector(f.Value);
         }
     }
 }

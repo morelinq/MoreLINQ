@@ -18,54 +18,37 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
     using Tuple = System.ValueTuple;
 
     [TestFixture]
     public class ZipLongestTest
     {
-        [Test]
-        public void BothSequencesDisposedWithUnequalLengthsAndLongerFirst()
-        {
-            using (var longer = TestingSequence.Of(1, 2, 3))
-            using (var shorter = TestingSequence.Of(1, 2))
+        static IEnumerable<T> Seq<T>(params T[] values) => values;
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
             {
-                longer.ZipLongest(shorter, (x, y) => x + y).Consume();
+                new { A = Seq<int>(  ), B = Seq("foo", "bar", "baz"), Result = Seq<(int, string?)>((0, "foo"), (0, "bar"), (0, "baz")) },
+                new { A = Seq(1      ), B = Seq("foo", "bar", "baz"), Result = Seq<(int, string?)>((1, "foo"), (0, "bar"), (0, "baz")) },
+                new { A = Seq(1, 2   ), B = Seq("foo", "bar", "baz"), Result = Seq<(int, string?)>((1, "foo"), (2, "bar"), (0, "baz")) },
+                new { A = Seq(1, 2, 3), B = Seq<string>(           ), Result = Seq<(int, string?)>((1, null ), (2, null ), (3, null )) },
+                new { A = Seq(1, 2, 3), B = Seq("foo"              ), Result = Seq<(int, string?)>((1, "foo"), (2, null ), (3, null )) },
+                new { A = Seq(1, 2, 3), B = Seq("foo", "bar"       ), Result = Seq<(int, string?)>((1, "foo"), (2, "bar"), (3, null )) },
+                new { A = Seq(1, 2, 3), B = Seq("foo", "bar", "baz"), Result = Seq<(int, string?)>((1, "foo"), (2, "bar"), (3, "baz")) },
             }
-        }
+            select new TestCaseData(e.A, e.B)
+                .Returns(e.Result);
 
-        [Test]
-        public void BothSequencesDisposedWithUnequalLengthsAndShorterFirst()
-        {
-            using (var longer = TestingSequence.Of(1, 2, 3))
-            using (var shorter = TestingSequence.Of(1, 2))
-            {
-                shorter.ZipLongest(longer, (x, y) => x + y).Consume();
-            }
-        }
 
-        [Test]
-        public void ZipWithEqualLengthSequences()
+        [Test, TestCaseSource(nameof(TestData))]
+        public IEnumerable<(int, string)> ZipLongest(int[] first, string[] second)
         {
-            var zipped = new[] { 1, 2, 3 }.ZipLongest(new[] { 4, 5, 6 }, Tuple.Create);
-            Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
-        }
-
-        [Test]
-        public void ZipWithFirstSequenceShorterThanSecond()
-        {
-            var zipped = new[] { 1, 2 }.ZipLongest(new[] { 4, 5, 6 }, Tuple.Create);
-            Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual((1, 4), (2, 5), (0, 6));
-        }
-
-        [Test]
-        public void ZipWithFirstSequnceLongerThanSecond()
-        {
-            var zipped = new[] { 1, 2, 3 }.ZipLongest(new[] { 4, 5 }, Tuple.Create);
-            Assert.That(zipped, Is.Not.Null);
-            zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 0));
+            using var ts1 = TestingSequence.Of(first);
+            using var ts2 = TestingSequence.Of(second);
+            return ts1.ZipLongest(ts2, Tuple.Create).ToArray();
         }
 
         [Test]
@@ -78,7 +61,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipLongestDisposeSequencesEagerly()
         {
-            var shorter = TestingSequence.Of(1, 2, 3);
+            using var shorter = TestingSequence.Of(1, 2, 3);
             var longer = MoreEnumerable.Generate(1, x => x + 1);
             var zipped = shorter.ZipLongest(longer, Tuple.Create);
 
@@ -93,11 +76,10 @@ namespace MoreLinq.Test
         [Test]
         public void ZipLongestDisposesInnerSequencesCaseGetEnumeratorThrows()
         {
-            using (var s1 = TestingSequence.Of(1, 2))
-            {
-                Assert.Throws<InvalidOperationException>(() =>
-                    s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume());
-            }
+            using var s1 = TestingSequence.Of(1, 2);
+
+            Assert.That(() => s1.ZipLongest(new BreakingSequence<int>(), Tuple.Create).Consume(),
+                        Throws.BreakException);
         }
     }
 }

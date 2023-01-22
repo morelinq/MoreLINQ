@@ -25,21 +25,21 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryNegativeSkip()
         {
-            AssertThrowsArgument.OutOfRangeException("step",() =>
-                new object[0].TakeEvery(-1));
+            Assert.That(() => new object[0].TakeEvery(-1),
+                        Throws.ArgumentOutOfRangeException("step"));
         }
 
         [Test]
         public void TakeEveryOutOfRangeZeroStep()
         {
-            AssertThrowsArgument.OutOfRangeException("step", () =>
-                new object[0].TakeEvery(0));
+            Assert.That(() => new object[0].TakeEvery(0),
+                        Throws.ArgumentOutOfRangeException("step"));
         }
 
         [Test]
         public void TakeEveryEmptySequence()
         {
-            Assert.That(new object[0].TakeEvery(1).GetEnumerator().MoveNext(), Is.False);
+            Assert.That(new object[0].TakeEvery(1), Is.Empty);
         }
 
         [Test]

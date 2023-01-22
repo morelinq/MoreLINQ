@@ -31,7 +31,7 @@ namespace MoreLinq
         /// element is a special case, it is set to the identity). More
         /// generally, the pre-scan allows any commutative binary operation,
         /// not just a sum.
-        /// The inclusive version of PreScan is <see cref="Scan{TSource}"/>.
+        /// The inclusive version of PreScan is <see cref="MoreEnumerable.Scan{TSource}"/>.
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
@@ -39,7 +39,7 @@ namespace MoreLinq
         /// int[] values = { 1, 2, 3, 4 };
         /// var prescan = values.PreScan((a, b) => a + b, 0);
         /// var scan = values.Scan((a, b) => a + b);
-        /// var result = values.ZipShortest(prescan, plus);
+        /// var result = values.EquiZip(prescan, ValueTuple.Create);
         /// ]]></code>
         /// <c>prescan</c> will yield <c>{ 0, 1, 3, 6 }</c>, while <c>scan</c>
         /// and <c>result</c> will both yield <c>{ 1, 3, 6, 10 }</c>. This
@@ -62,20 +62,18 @@ namespace MoreLinq
             return _(); IEnumerable<TSource> _()
             {
                 var aggregator = identity;
+                using var e = source.GetEnumerator();
 
-                using (var e = source.GetEnumerator())
+                if (e.MoveNext())
                 {
-                    if (e.MoveNext())
-                    {
-                        yield return aggregator;
-                        var current = e.Current;
+                    yield return aggregator;
+                    var current = e.Current;
 
-                        while (e.MoveNext())
-                        {
-                            aggregator = transformation(aggregator, current);
-                            yield return aggregator;
-                            current = e.Current;
-                        }
+                    while (e.MoveNext())
+                    {
+                        aggregator = transformation(aggregator, current);
+                        yield return aggregator;
+                        current = e.Current;
                     }
                 }
             }

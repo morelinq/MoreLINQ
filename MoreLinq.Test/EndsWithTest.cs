@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2016 Andreas Gullberg Larsen. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithReturnsTrueIfBothEmpty()
         {
-            Assert.True(new int[0].EndsWith(new int[0]));
+            Assert.That(new int[0].EndsWith(new int[0]), Is.True);
         }
 
         [Test]
         public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.False(new int[0].EndsWith(new[] {1,2,3}));
+            Assert.That(new int[0].EndsWith(new[] {1,2,3}), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -72,11 +72,10 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithDisposesBothSequenceEnumerators()
         {
-            using (var first = TestingSequence.Of(1,2,3))
-            using (var second = TestingSequence.Of(1))
-            {
-                first.EndsWith(second);
-            }
+            using var first = TestingSequence.Of(1,2,3);
+            using var second = TestingSequence.Of(1);
+
+            first.EndsWith(second);
         }
 
         [Test]
@@ -86,20 +85,20 @@ namespace MoreLinq.Test
             var first = new[] {1,2,3};
             var second = new[] {4,5,6};
 
-            Assert.False(first.EndsWith(second));
-            Assert.False(first.EndsWith(second, null));
-            Assert.False(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })));
-            Assert.True(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })));
+            Assert.That(first.EndsWith(second), Is.False);
+            Assert.That(first.EndsWith(second, null), Is.False);
+            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
+            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(bool readOnly)
+        [TestCase(SourceKind.BreakingCollection)]
+        [TestCase(SourceKind.BreakingReadOnlyCollection)]
+        public void EndsWithUsesCollectionsCountToAvoidUnnecessaryIteration(SourceKind sourceKind)
         {
-            var first = new[] { 1, 2 }.ToBreakingCollection(readOnly);
-            var second = new[] { 1, 2, 3 }.ToBreakingCollection(readOnly);
+            var first = new[] { 1, 2 }.ToSourceKind(sourceKind);
+            var second = new[] { 1, 2, 3 }.ToSourceKind(sourceKind);
 
-            Assert.False(first.EndsWith(second));
+            Assert.That(first.EndsWith(second), Is.False);
         }
     }
 }

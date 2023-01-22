@@ -19,83 +19,101 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
         /// </summary>
-        /// <example>
-        /// <code><![CDATA[
-        /// int[] numbers = { 1, 2, 3, 4 };
-        /// string[] letters = { "A", "B", "C", "D" };
-        /// var zipped = numbers.EquiZip(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", "4D" in turn.
-        /// </example>
-        /// <typeparam name="TFirst">Type of elements in first sequence</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">First sequence</param>
-        /// <param name="second">Second sequence</param>
-        /// <param name="resultSelector">Function to apply to each pair of elements</param>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each pair of elements.</param>
         /// <returns>
         /// A sequence that contains elements of the two input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped  = numbers.EquiZip(letters, (n, l) => n + l);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
+        /// "2B", "3C", "4D" in turn.
+        /// </example>
         /// <remarks>
-        /// If the two input sequences are of different lengths then
-        /// <see cref="InvalidOperationException"/> is thrown.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
-        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first,
-             IEnumerable<TSecond> second,
-             Func<TFirst, TSecond, TResult> resultSelector)
+        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b));
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
         /// </summary>
-        /// <remarks>
-        /// If the three input sequences are of different lengths then
-        /// <see cref="InvalidOperationException"/> is thrown.
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = { 1, 2, 3, 4 };
-        /// var letters = { "A", "B", "C", "D" };
-        /// var chars    = { 'a', 'b', 'c', 'd' };
-        /// var zipped = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa", "2Bb", "3Cc", "4Dd" in turn.
-        /// </example>
-        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">First sequence</param>
-        /// <param name="second">Second sequence</param>
-        /// <param name="third">Third sequence</param>
-        /// <param name="resultSelector">Function to apply to each triplet of elements</param>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each triplet of elements.</param>
         /// <returns>
         /// A sequence that contains elements of the three input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var zipped  = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
+        /// "2Bb", "3Cc", "4Dd" in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
-        public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third,
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -107,41 +125,51 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
         /// </summary>
-        /// <remarks>
-        /// If the three input sequences are of different lengths then
-        /// <see cref="InvalidOperationException"/> is thrown.
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = { 1, 2, 3, 4 };
-        /// var letters = { "A", "B", "C", "D" };
-        /// var chars   = { 'a', 'b', 'c', 'd' };
-        /// var flags   = { true, false, true, false };
-        /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue", "2BbFalse", "3CcTrue", "4DdFalse" in turn.
-        /// </example>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence</typeparam>
         /// <typeparam name="T3">Type of elements in third sequence</typeparam>
         /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
         /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">First sequence</param>
-        /// <param name="second">Second sequence</param>
-        /// <param name="third">Third sequence</param>
-        /// <param name="fourth">Fourth sequence</param>
-        /// <param name="resultSelector">Function to apply to each quadruplet of elements</param>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <param name="resultSelector">
+        /// Function to apply to each quadruplet of elements.</param>
         /// <returns>
         /// A sequence that contains elements of the four input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var flags   = new[] { true, false, true, false };
+        /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
+        /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
 
-        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(this IEnumerable<T1> first,
-             IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
+        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -154,15 +182,12 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> EquiZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1,
-            IEnumerable<T2> s2,
-            IEnumerable<T3> s3,
-            IEnumerable<T4> s4,
+            IEnumerable<T1>  s1,
+            IEnumerable<T2>  s2,
+            IEnumerable<T3>? s3,
+            IEnumerable<T4>? s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
-            Debug.Assert(s1 != null);
-            Debug.Assert(s2 != null);
-
             const int zero = 0, one = 1;
 
             var limit = 1 + (s3 != null ? one : zero)

@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using System;
@@ -28,8 +45,8 @@ namespace MoreLinq.Test
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize",() =>
-                sequence.Subsets(-5));
+            Assert.That(() => sequence.Subsets(-5),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -42,10 +59,8 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Subsets(count + 5);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-            {
-                result.Consume(); // this particular exception is deferred until sequence evaluation
-            });
+            Assert.That(result.Consume, // this particular exception is deferred until sequence evaluation
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -57,7 +72,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Repeat(0, 0);
             var result = sequence.Subsets();
 
-            Assert.IsTrue(result.Single().SequenceEqual(sequence));
+            Assert.That(result.Single(), Is.EqualTo(sequence));
         }
 
         /// <summary>
@@ -73,7 +88,7 @@ namespace MoreLinq.Test
             var prevSubset = Enumerable.Empty<int>();
             foreach (var subset in result)
             {
-                Assert.GreaterOrEqual(subset.Count, prevSubset.Count());
+                Assert.That(subset.Count, Is.GreaterThanOrEqualTo(prevSubset.Count()));
                 prevSubset = subset;
             }
         }
@@ -90,7 +105,7 @@ namespace MoreLinq.Test
 
             var expectedCount = Math.Pow(2, count);
 
-            Assert.AreEqual(expectedCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -113,7 +128,7 @@ namespace MoreLinq.Test
 
             var index = 0;
             foreach (var subset in result)
-                Assert.IsTrue(subset.SequenceEqual(expectedSubsets[index++]));
+                Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
 
         /// <summary>
@@ -130,7 +145,7 @@ namespace MoreLinq.Test
             // number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
             var expectedSubsetCount = Combinatorics.Binomial(count, subsetSize);
 
-            Assert.AreEqual(expectedSubsetCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedSubsetCount));
         }
 
         /// <summary>
@@ -163,7 +178,7 @@ namespace MoreLinq.Test
 
             var index = 0;
             foreach (var subset in result)
-                Assert.IsTrue(subset.SequenceEqual(expectedSubsets[index++]));
+                Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
     }
 }

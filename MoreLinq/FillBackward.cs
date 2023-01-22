@@ -74,7 +74,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the following non-missing element in that sequence. Additional
-        /// parameters specifiy two functions, one used to determine if an
+        /// parameters specify two functions, one used to determine if an
         /// element is considered missing or not and another to provide the
         /// replacement for the missing element.
         /// </summary>
@@ -82,8 +82,9 @@ namespace MoreLinq
         /// <param name="predicate">The function used to determine if
         /// an element in the sequence is considered missing.</param>
         /// <param name="fillSelector">The function used to produce the element
-        /// that will replace the missing one. It receives the next non-missing
-        /// element as well as the current element considered missing.</param>
+        /// that will replace the missing one. Its first argument receives the
+        /// current element considered missing while the second argument
+        /// receives the next non-missing element.</param>
         /// <typeparam name="T">Type of the elements in the source sequence.</typeparam>
         /// An <see cref="IEnumerable{T}"/> with missing values replaced.
         /// <returns>
@@ -104,16 +105,16 @@ namespace MoreLinq
             return FillBackwardImpl(source, predicate, fillSelector);
         }
 
-        static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
+        static IEnumerable<T> FillBackwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
         {
-            List<T> blanks = null;
+            List<T>? blanks = null;
 
             foreach (var item in source)
             {
                 var isBlank = predicate(item);
                 if (isBlank)
                 {
-                    (blanks ?? (blanks = new List<T>())).Add(item);
+                    (blanks ??= new List<T>()).Add(item);
                 }
                 else
                 {

@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     partial class MoreEnumerable
     {
@@ -62,12 +61,21 @@ namespace MoreLinq
 
             return _(); IEnumerable<TResult> _()
             {
-                var edge = new(bool HasValue, TSource Value)[] { default };
-                return edge.Concat(source.Select(e => (HasValue: true, Value: e)))
-                           .Concat(edge)
-                           .Pairwise((a, b) => (Prev: a, Curr: b))
-                           .Pairwise((a, b) => (a.Prev, a.Curr, Next: b.Curr))
-                           .Select(e => resultSelector(e.Curr.Value, !e.Prev.HasValue, !e.Next.HasValue));
+                using var enumerator = source.GetEnumerator();
+
+                if (!enumerator.MoveNext())
+                    yield break;
+
+                var current = enumerator.Current;
+                var hasNext = enumerator.MoveNext();
+                yield return resultSelector(current, true, !hasNext);
+
+                while (hasNext)
+                {
+                    current = enumerator.Current;
+                    hasNext = enumerator.MoveNext();
+                    yield return resultSelector(current, false, !hasNext);
+                }
             }
         }
     }

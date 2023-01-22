@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -26,22 +27,22 @@ namespace MoreLinq.Test
         [Test]
         public void MoveWithNegativeFromIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("fromIndex", () =>
-                new[] { 1 }.Move(-1, 0, 0));
+            Assert.That(() => new[] { 1 }.Move(-1, 0, 0),
+                        Throws.ArgumentOutOfRangeException("fromIndex"));
         }
 
         [Test]
         public void MoveWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.Move(0, -1, 0));
+            Assert.That(() => new[] { 1 }.Move(0, -1, 0),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         [Test]
         public void MoveWithNegativeToIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("toIndex", () =>
-                new[] { 1 }.Move(0, 0, -1));
+            Assert.That(() => new[] { 1 }.Move(0, 0, -1),
+                        Throws.ArgumentOutOfRangeException("toIndex"));
         }
 
         [Test]
@@ -55,24 +56,27 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, length);
 
-            var exclude = source.Exclude(fromIndex, count);
-            var slice = source.Slice(fromIndex, count);
-            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
+            using var test = source.AsTestingSequence();
 
-            using (var test = source.AsTestingSequence())
-            {
-                var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EquivalentTo(expectations));
-            }
+            var result = test.Move(fromIndex, count, toIndex);
+
+            var slice = source.Slice(fromIndex, count);
+            var exclude = source.Exclude(fromIndex, count);
+            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         public static IEnumerable<object> MoveSource()
         {
             const int length = 10;
-
             return from index in Enumerable.Range(0, length)
                    from count in Enumerable.Range(0, length + 1)
-                   select new TestCaseData(length, index, count, index);
+                   from tcd in new[]
+                   {
+                       new TestCaseData(length, index, count, Math.Max(0, index - 1)),
+                       new TestCaseData(length, index, count, index + 1),
+                   }
+                   select tcd;
         }
 
         [TestCaseSource(nameof(MoveWithSequenceShorterThanToIndexSource))]
@@ -80,13 +84,12 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, length);
 
-            var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
+            using var test = source.AsTestingSequence();
 
-            using (var test = source.AsTestingSequence())
-            {
-                var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EquivalentTo(expectations));
-            }
+            var result = test.Move(fromIndex, count, toIndex);
+
+            var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         public static IEnumerable<object> MoveWithSequenceShorterThanToIndexSource()
@@ -95,6 +98,15 @@ namespace MoreLinq.Test
 
             return Enumerable.Range(length, length + 5)
                              .Select(toIndex => new TestCaseData(length, 5, 2, toIndex));
+        }
+
+        [Test]
+        public void MoveIsRepeatable()
+        {
+            var source = Enumerable.Range(0, 10);
+            var result = source.Move(0, 5, 10);
+
+            Assert.That(result.ToArray(), Is.EqualTo(result));
         }
 
         [Test]
