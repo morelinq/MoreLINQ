@@ -17,35 +17,28 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
     public class CompareCountTest
     {
-        static IEnumerable<TestCaseData> CompareCountData
-        {
-            get
+        static IEnumerable<TestCaseData> CompareCountData =>
+            from e in new[]
             {
-                return
-                from e in new[]
-                {
-                    (Count1: 0, Count2: 0, Comparison:  0 ),
-                    (Count1: 0, Count2: 1, Comparison: -1 ),
-                    (Count1: 1, Count2: 0, Comparison:  1 ),
-                    (Count1: 1, Count2: 1, Comparison:  0 )
-                }
-                from firstKind in SourceKinds.SequenceAndCollection
-                from secondKind in SourceKinds.SequenceAndCollection
-                select new TestCaseData(
-                        Enumerable.Range(1, e.Count1).ToSourceKind(firstKind),
-                        Enumerable.Range(1, e.Count2).ToSourceKind(secondKind)
-                    )
-                    .Returns(e.Comparison)
-                    .SetName($"{{m}}({firstKind}[{e.Count1}], {secondKind}[{e.Count2}]) = {e.Comparison}");
+                (Count1: 0, Count2: 0, Comparison:  0 ),
+                (Count1: 0, Count2: 1, Comparison: -1 ),
+                (Count1: 1, Count2: 0, Comparison:  1 ),
+                (Count1: 1, Count2: 1, Comparison:  0 )
             }
-        }
+            from firstKind in SourceKinds.SequenceAndCollection
+            from secondKind in SourceKinds.SequenceAndCollection
+            select new TestCaseData(
+                    Enumerable.Range(1, e.Count1).ToSourceKind(firstKind),
+                    Enumerable.Range(1, e.Count2).ToSourceKind(secondKind))
+                .Returns(e.Comparison)
+                .SetName($"{{m}}({firstKind}[{e.Count1}], {secondKind}[{e.Count2}]) = {e.Comparison}");
+
 
         [TestCaseSource(nameof(CompareCountData))]
         public int CompareCount(IEnumerable<int> xs, IEnumerable<int> ys) =>
