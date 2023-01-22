@@ -26,25 +26,27 @@ namespace MoreLinq
         delegate TResult Folder<in T, out TResult>(params T[] args);
 
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1,
-            IEnumerable<T2> s2,
-            IEnumerable<T3> s3,
-            IEnumerable<T4> s4,
+            IEnumerable<T1>  s1,
+            IEnumerable<T2>  s2,
+            IEnumerable<T3>? s3,
+            IEnumerable<T4>? s4,
             Func<T1, T2, T3, T4, TResult> resultSelector,
             int limit,
-            Folder<IEnumerator, Exception> errorSelector = null)
+            Folder<IEnumerator?, Exception>? errorSelector = null)
         {
-            IEnumerator<T1> e1;
-            IEnumerator<T2> e2;
-            IEnumerator<T3> e3;
-            IEnumerator<T4> e4;
+            IEnumerator<T1>? e1 = null;
+            IEnumerator<T2>? e2 = null;
+            IEnumerator<T3>? e3 = null;
+            IEnumerator<T4>? e4 = null;
             var terminations = 0;
 
-            using (e1 = s1 .GetEnumerator())
-            using (e2 = s2 .GetEnumerator())
-            using (e3 = s3?.GetEnumerator())
-            using (e4 = s4?.GetEnumerator())
+            try
             {
+                e1 = s1 .GetEnumerator();
+                e2 = s2 .GetEnumerator();
+                e3 = s3?.GetEnumerator();
+                e4 = s4?.GetEnumerator();
+
                 while (true)
                 {
                     var n = 0;
@@ -59,11 +61,18 @@ namespace MoreLinq
                         yield break;
                 }
             }
+            finally
+            {
+                e1?.Dispose();
+                e2?.Dispose();
+                e3?.Dispose();
+                e4?.Dispose();
+            }
 
-            T Read<T>(ref IEnumerator<T> e, int n)
+            T Read<T>(ref IEnumerator<T>? e, int n)
             {
                 if (e == null || terminations > limit)
-                    return default;
+                    return default!;
 
                 T value;
                 if (e.MoveNext())
@@ -75,7 +84,7 @@ namespace MoreLinq
                     e.Dispose();
                     e = null;
                     terminations++;
-                    value = default;
+                    value = default!;
                 }
 
                 if (errorSelector != null && terminations > 0 && terminations < n)

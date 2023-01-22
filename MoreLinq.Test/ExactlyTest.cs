@@ -26,8 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.Exactly(-1));
+            Assert.That(() => new[] { 1 }.Exactly(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         static IEnumerable<TestCaseData> ExactlySource =>
@@ -55,7 +55,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => throw new TestException());
-            Assert.IsFalse(source.Exactly(2));
+            Assert.That(source.Exactly(2), Is.False);
         }
     }
 }

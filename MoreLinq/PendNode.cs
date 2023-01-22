@@ -22,25 +22,25 @@ namespace MoreLinq
     using System.Collections.Generic;
 
     /// <summary>
-    /// Prepend-Concat node is a single linked-list of the discriminated union
-    /// of a prepend item, a concat item and the source.
+    /// Prepend-Append node is a single linked-list of the discriminated union
+    /// of an item to prepend, an item to append and the source.
     /// </summary>
 
-    abstract class PcNode<T> : IEnumerable<T>
+    abstract class PendNode<T> : IEnumerable<T>
     {
-        public static PcNode<T> WithSource(IEnumerable<T> source) => new Source(source);
+        public static PendNode<T> WithSource(IEnumerable<T> source) => new Source(source);
 
-        public PcNode<T> Prepend(T item) => new Item(item, isPrepend: true , next: this);
-        public PcNode<T> Concat(T item)  => new Item(item, isPrepend: false, next: this);
+        public PendNode<T> Prepend(T item) => new Item(item, isPrepend: true , next: this);
+        public PendNode<T> Concat(T item)  => new Item(item, isPrepend: false, next: this);
 
-        sealed class Item : PcNode<T>
+        sealed class Item : PendNode<T>
         {
             public T Value { get; }
             public bool IsPrepend { get; }
             public int ConcatCount { get; }
-            public PcNode<T> Next { get; }
+            public PendNode<T> Next { get; }
 
-            public Item(T item, bool isPrepend, PcNode<T> next)
+            public Item(T item, bool isPrepend, PendNode<T> next)
             {
                 if (next == null) throw new ArgumentNullException(nameof(next));
 
@@ -53,7 +53,7 @@ namespace MoreLinq
             }
         }
 
-        sealed class Source : PcNode<T>
+        sealed class Source : PendNode<T>
         {
             public IEnumerable<T> Value { get; }
             public Source(IEnumerable<T> source) => Value = source;
@@ -62,7 +62,7 @@ namespace MoreLinq
         public IEnumerator<T> GetEnumerator()
         {
             var i = 0;
-            T[] concats = null;       // Array for > 4 concatenations
+            T[]? concats = null;      // Array for > 4 concatenations
             var concat1 = default(T); // Slots for up to 4 concatenations
             var concat2 = default(T);
             var concat3 = default(T);
@@ -91,7 +91,7 @@ namespace MoreLinq
                                 case 1: concat2 = item.Value; break;
                                 case 2: concat3 = item.Value; break;
                                 case 3: concat4 = item.Value; break;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new UnreachableException();
                             }
                             continue;
                         }
@@ -108,10 +108,10 @@ namespace MoreLinq
 
             if (concats == null)
             {
-                if (i == 4) { yield return concat4; i--; }
-                if (i == 3) { yield return concat3; i--; }
-                if (i == 2) { yield return concat2; i--; }
-                if (i == 1) { yield return concat1; i--; }
+                if (i == 4) { yield return concat4!; i--; }
+                if (i == 3) { yield return concat3!; i--; }
+                if (i == 2) { yield return concat2!; i--; }
+                if (i == 1) { yield return concat1!; i--; }
                 yield break;
             }
 

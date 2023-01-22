@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using System;
@@ -19,10 +36,10 @@ namespace MoreLinq.Test
         public void TestNegativeMaxValueException()
         {
             const int maxValue = -10;
-            Assert.Less(maxValue, 0);
+            Assert.That(maxValue, Is.LessThan(0));
 
-            AssertThrowsArgument.OutOfRangeException("maxValue",() =>
-                MoreEnumerable.Random(maxValue));
+            Assert.That(() => MoreEnumerable.Random(maxValue),
+                        Throws.ArgumentOutOfRangeException("maxValue"));
         }
 
         /// <summary>
@@ -35,10 +52,10 @@ namespace MoreLinq.Test
             const int minValue = 100;
             const int maxValue = 10;
 
-            Assert.Greater(minValue, maxValue);
+            Assert.That(minValue, Is.GreaterThan(maxValue));
 
-            AssertThrowsArgument.OutOfRangeException("minValue",() =>
-                MoreEnumerable.Random(minValue, maxValue));
+            Assert.That(() => MoreEnumerable.Random(minValue, maxValue),
+                        Throws.ArgumentOutOfRangeException("minValue"));
         }
 
         /// <summary>
@@ -51,10 +68,10 @@ namespace MoreLinq.Test
             var resultB = MoreEnumerable.RandomDouble(new Random()).Take(RandomTrials);
 
             // NOTE: Unclear what should actually be verified here... some additional thought needed.
-            Assert.AreEqual(RandomTrials, resultA.Count());
-            Assert.AreEqual(RandomTrials, resultB.Count());
-            Assert.IsTrue(resultA.All(x => x >= 0.0 && x < 1.0));
-            Assert.IsTrue(resultB.All(x => x >= 0.0 && x < 1.0));
+            Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultA.All(x => x is >= 0.0 and < 1.0), Is.True);
+            Assert.That(resultB.All(x => x is >= 0.0 and < 1.0), Is.True);
         }
 
         /// <summary>
@@ -67,10 +84,10 @@ namespace MoreLinq.Test
             var resultA = MoreEnumerable.Random(max).Take(RandomTrials);
             var resultB = MoreEnumerable.Random(new Random(), max).Take(RandomTrials);
 
-            Assert.AreEqual(RandomTrials, resultA.Count());
-            Assert.AreEqual(RandomTrials, resultB.Count());
-            Assert.IsTrue(resultA.All(x => x < max));
-            Assert.IsTrue(resultB.All(x => x < max));
+            Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultA.All(x => x < max), Is.True);
+            Assert.That(resultB.All(x => x < max), Is.True);
         }
 
         /// <summary>
@@ -84,10 +101,10 @@ namespace MoreLinq.Test
             var resultA = MoreEnumerable.Random(min, max).Take(RandomTrials);
             var resultB = MoreEnumerable.Random(new Random(), min, max).Take(RandomTrials);
 
-            Assert.AreEqual(RandomTrials, resultA.Count());
-            Assert.AreEqual(RandomTrials, resultB.Count());
-            Assert.IsTrue(resultA.All(x => x >= min && x < max));
-            Assert.IsTrue(resultB.All(x => x >= min && x < max));
+            Assert.That(resultA.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultB.Count(), Is.EqualTo(RandomTrials));
+            Assert.That(resultA.All(x => x is >= min and < max), Is.True);
+            Assert.That(resultB.All(x => x is >= min and < max), Is.True);
         }
 
         /// <summary>

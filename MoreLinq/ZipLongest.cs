@@ -24,7 +24,10 @@ namespace MoreLinq
     {
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
@@ -37,6 +40,10 @@ namespace MoreLinq
         /// A sequence that contains elements of the two input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = { 1, 2, 3 };
@@ -47,30 +54,27 @@ namespace MoreLinq
         /// "2B", "3C", "0D" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the two input sequences are of different lengths then the result
-        /// sequence will always be as long as the longer of the two input
-        /// sequences. The default value of the shorter sequence element type
-        /// is used for padding.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
-            Func<TFirst, TSecond, TResult> resultSelector)
+            Func<TFirst?, TSecond?, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b), 1);
+            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b), 1);
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -85,6 +89,11 @@ namespace MoreLinq
         /// A sequence that contains elements of the three input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -96,33 +105,29 @@ namespace MoreLinq
         /// "2Bb", "3Cc", "0Dd", "0e" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the input sequences are of different lengths then the result
-        /// sequence will always be as long as the longest of input sequences.
-        /// The default value of the each shorter sequence element type is used
-        /// for padding. This operator uses deferred execution and streams its
-        /// results.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
             this IEnumerable<T1> first,
             IEnumerable<T2> second,
             IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+            Func<T1?, T2?, T3?, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (third == null) throw new ArgumentNullException(nameof(third));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, d) => resultSelector(a, b, c), 2);
+            return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c), 2);
         }
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence</typeparam>
@@ -139,6 +144,11 @@ namespace MoreLinq
         /// A sequence that contains elements of the four input sequences,
         /// combined by <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -151,13 +161,7 @@ namespace MoreLinq
         /// "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False" in turn.
         /// </example>
         /// <remarks>
-        /// <para>
-        /// If the input sequences are of different lengths then the result
-        /// sequence will always be as long as the longest of input sequences.
-        /// The default value of the each shorter sequence element type is used
-        /// for padding.</para>
-        /// <para>
-        /// This operator uses deferred execution and streams its results.</para>
+        /// This operator uses deferred execution and streams its results.
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
@@ -165,7 +169,7 @@ namespace MoreLinq
             IEnumerable<T2> second,
             IEnumerable<T3> third,
             IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+            Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));

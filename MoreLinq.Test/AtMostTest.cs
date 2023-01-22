@@ -26,8 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void AtMostWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count",
-                () => new[] { 1 }.AtMost(-1));
+            Assert.That(() => new[] { 1 }.AtMost(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         public static IEnumerable<TestCaseData> AtMostSource =>
@@ -56,7 +56,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => throw new TestException());
-            Assert.IsFalse(source.AtMost(2));
+            Assert.That(source.AtMost(2), Is.False);
         }
     }
 }

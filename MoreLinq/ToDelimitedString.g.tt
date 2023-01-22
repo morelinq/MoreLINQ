@@ -1,7 +1,8 @@
 <#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
-<#@ import namespace="System.CodeDom" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System.ComponentModel.Primitives" #>
+<#@ import namespace="System.CodeDom" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Text" #>
@@ -49,7 +50,8 @@ namespace MoreLinq
             select method.GetParameters() into parameters
             where parameters.Length == 1
             select parameters.First().ParameterType into type
-            where type.IsValueType || type == typeof(string)
+            where !type.IsGenericType // e.g. ReadOnlySpan<>
+               && (type.IsValueType || type == typeof(string))
             let res = new
             {
                 Type = type,

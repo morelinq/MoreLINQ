@@ -24,14 +24,14 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Peforms a scan (inclusive prefix sum) on a sequence of elements.
+        /// Performs a scan (inclusive prefix sum) on a sequence of elements.
         /// </summary>
         /// <remarks>
         /// An inclusive prefix sum returns an equal-length sequence where the
         /// N-th element is the sum of the first N input elements. More
         /// generally, the scan allows any commutative binary operation, not
         /// just a sum.
-        /// The exclusive version of Scan is <see cref="PreScan{TSource}"/>.
+        /// The exclusive version of Scan is <see cref="MoreEnumerable.PreScan{TSource}"/>.
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
@@ -55,23 +55,8 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
-            return _(); IEnumerable<TSource> _()
-            {
-                using (var i = source.GetEnumerator())
-                {
-                    if (!i.MoveNext())
-                        yield break;
 
-                    var aggregator = i.Current;
-                    yield return aggregator;
-
-                    while (i.MoveNext())
-                    {
-                        aggregator = transformation(aggregator, i.Current);
-                        yield return aggregator;
-                    }
-                }
-            }
+            return ScanImpl(source, transformation, e => e.MoveNext() ? (true, e.Current) : default);
         }
 
         /// <summary>
@@ -101,19 +86,26 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
-            return _(); IEnumerable<TState> _()
-            {
-                using (var i = source.GetEnumerator())
-                {
-                    var aggregator = seed;
-                    yield return aggregator;
+            return ScanImpl(source, transformation, _ => (true, seed));
+        }
 
-                    while (i.MoveNext())
-                    {
-                        aggregator = transformation(aggregator, i.Current);
-                        yield return aggregator;
-                    }
-                }
+        static IEnumerable<TState> ScanImpl<TSource, TState>(IEnumerable<TSource> source,
+            Func<TState, TSource, TState> transformation,
+            Func<IEnumerator<TSource>, (bool, TState)> seeder)
+        {
+            using var e = source.GetEnumerator();
+
+            var (seeded, aggregator) = seeder(e);
+
+            if (!seeded)
+                yield break;
+
+            yield return aggregator;
+
+            while (e.MoveNext())
+            {
+                aggregator = transformation(aggregator, e.Current);
+                yield return aggregator;
             }
         }
     }

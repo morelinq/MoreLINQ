@@ -60,36 +60,37 @@ namespace MoreLinq
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
-            if (index < 0)  throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
-            if (index == 0)
-                return first.Concat(second);
-
-            return _(); IEnumerable<T> _()
+            return index switch
             {
-                using (var e = first.CountDown(index, ValueTuple.Create)
-                                    .GetEnumerator())
+                < 0 => throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative."),
+                0 => first.Concat(second),
+                _ => _()
+            };
+
+            IEnumerable<T> _()
+            {
+                using var e = first.CountDown(index, ValueTuple.Create).GetEnumerator();
+
+                if (e.MoveNext())
                 {
-                    if (e.MoveNext())
+                    var (_, countdown) = e.Current;
+                    if (countdown is {} n && n != index - 1)
+                        throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+
+                    do
                     {
-                        var (_, countdown) = e.Current;
-                        if (countdown is int n && n != index - 1)
-                            throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
-
-                        do
+                        T a;
+                        (a, countdown) = e.Current;
+                        if (countdown == index - 1)
                         {
-                            T a;
-                            (a, countdown) = e.Current;
-                            if (countdown == index - 1)
-                            {
-                                foreach (var b in second)
-                                    yield return b;
-                            }
-
-                            yield return a;
+                            foreach (var b in second)
+                                yield return b;
                         }
-                        while (e.MoveNext());
+
+                        yield return a;
                     }
+                    while (e.MoveNext());
                 }
             }
         }

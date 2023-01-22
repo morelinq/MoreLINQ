@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2016 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         {
             var sorted = Enumerable.Range(1, 10)
                                    .Reverse()
-                                   .Concat(0)
+                                   .Append(0)
                                    .PartialSort(5);
 
             sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
@@ -39,13 +39,13 @@ namespace MoreLinq.Test
         {
             var sorted = Enumerable.Range(1, 10)
                                     .Reverse()
-                                    .Concat(0)
+                                    .Append(0)
                                     .PartialSort(5, OrderByDirection.Ascending);
 
             sorted.AssertSequenceEqual(Enumerable.Range(0, 5));
             sorted = Enumerable.Range(1, 10)
                                 .Reverse()
-                                .Concat(0)
+                                .Append(0)
                                 .PartialSort(5, OrderByDirection.Descending);
             sorted.AssertSequenceEqual(Enumerable.Range(6, 5).Reverse());
         }
@@ -92,7 +92,7 @@ namespace MoreLinq.Test
 
             var sorted = foobars.PartialSortBy(5, s => s.Length);
 
-            // Pair expected and actuals by index and then check
+            // Pair expected and actual by index and then check
             // reference equality, finding the first mismatch.
 
             var mismatchIndex =

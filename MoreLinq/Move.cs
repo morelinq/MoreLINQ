@@ -63,26 +63,28 @@ namespace MoreLinq
 
             IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
-                using (var e = source.GetEnumerator())
-                {
-                    for (var i = 0; i < bufferStartIndex && e.MoveNext(); i++)
-                        yield return e.Current;
+                bool hasMore = true;
+                bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
 
-                    var buffer = new T[bufferSize];
-                    var length = 0;
+                using var e = source.GetEnumerator();
 
-                    for (; length < bufferSize && e.MoveNext(); length++)
-                        buffer[length] = e.Current;
+                for (var i = 0; i < bufferStartIndex && MoveNext(e); i++)
+                    yield return e.Current;
 
-                    for (var i = 0; i < bufferYieldIndex && e.MoveNext(); i++)
-                        yield return e.Current;
+                var buffer = new T[bufferSize];
+                var length = 0;
 
-                    for (var i = 0; i < length; i++)
-                        yield return buffer[i];
+                for (; length < bufferSize && MoveNext(e); length++)
+                    buffer[length] = e.Current;
 
-                    while (e.MoveNext())
-                        yield return e.Current;
-                }
+                for (var i = 0; i < bufferYieldIndex && MoveNext(e); i++)
+                    yield return e.Current;
+
+                for (var i = 0; i < length; i++)
+                    yield return buffer[i];
+
+                while (MoveNext(e))
+                    yield return e.Current;
             }
         }
     }

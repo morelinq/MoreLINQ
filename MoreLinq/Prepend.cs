@@ -44,9 +44,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source is PcNode<TSource> node
+            return source is PendNode<TSource> node
                  ? node.Prepend(value)
-                 : PcNode<TSource>.WithSource(source).Prepend(value);
+                 : PendNode<TSource>.WithSource(source).Prepend(value);
         }
     }
 }

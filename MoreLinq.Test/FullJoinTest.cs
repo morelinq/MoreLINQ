@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2015 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2017 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,11 +32,12 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<int>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.FullJoin(ys, e => e,
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<int, object>(),
-                    BreakingFunc.Of<int, int, object>()));
+                    BreakingFunc.Of<int, int, object>()),
+                Throws.Nothing);
         }
 
         [Test]
@@ -45,12 +46,13 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<int>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.FullJoin(ys, e => e,
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<int, int, object>(),
-                    comparer: null));
+                    comparer: null),
+                Throws.Nothing);
         }
 
         [Test]
@@ -59,11 +61,12 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<object>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.FullJoin(ys, x => x, y => y.GetHashCode(),
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<object, object>(),
-                    BreakingFunc.Of<int, object, object>()));
+                    BreakingFunc.Of<int, object, object>()),
+                Throws.Nothing);
         }
 
         [Test]
@@ -72,12 +75,13 @@ namespace MoreLinq.Test
             var xs = new BreakingSequence<int>();
             var ys = new BreakingSequence<object>();
 
-            Assert.DoesNotThrow(() =>
+            Assert.That(() =>
                 xs.FullJoin(ys, x => x, y => y.GetHashCode(),
                     BreakingFunc.Of<int, object>(),
                     BreakingFunc.Of<object, object>(),
                     BreakingFunc.Of<int, object, object>(),
-                    comparer: null));
+                    comparer: null),
+                Throws.Nothing);
         }
 
         [Test]

@@ -34,8 +34,14 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source) =>
-            Flatten(source, obj => !(obj is string));
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source) =>
+            Flatten(source, obj => obj is not string);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -54,15 +60,71 @@ namespace MoreLinq
         /// and all nested sequences for which the predicate function
         /// returned <c>true</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="predicate"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return _(); IEnumerable<object> _()
+            return Flatten(source, obj => obj is IEnumerable inner && predicate(inner) ? inner : null);
+        }
+
+        /// <summary>
+        /// Flattens a sequence containing arbitrarily-nested sequences. An
+        /// additional parameter specifies a function that projects an inner
+        /// sequence via a property of an object.
+        /// </summary>
+        /// <param name="source">The sequence that will be flattened.</param>
+        /// <param name="selector">
+        /// A function that receives each element of the sequence as an object
+        /// and projects an inner sequence to be flattened. If the function
+        /// returns <c>null</c> then the object argument is considered a leaf
+        /// of the flattening process.
+        /// </param>
+        /// <returns>
+        /// A sequence that contains the elements of <paramref name="source"/>
+        /// and all nested sequences projected via the
+        /// <paramref name="selector"/> function.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="selector"/> is <c>null</c>.</exception>
+
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source,
+                    Func<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*....................*/ object,
+#nullable restore
+/*....................*/ IEnumerable?> selector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            return _();
+
+            IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*...................*/ object
+#nullable restore
+/*.........................*/ > _()
             {
                 var e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
@@ -79,7 +141,7 @@ namespace MoreLinq
 
                         while (e.MoveNext())
                         {
-                            if (e.Current is IEnumerable inner && predicate(inner))
+                            if (selector(e.Current) is {} inner)
                             {
                                 stack.Push(e);
                                 e = inner.GetEnumerator();
@@ -92,6 +154,7 @@ namespace MoreLinq
                         }
 
                         (e as IDisposable)?.Dispose();
+                        e = null;
                     }
                 }
                 finally

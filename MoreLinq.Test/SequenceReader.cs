@@ -35,9 +35,9 @@ namespace MoreLinq.Test
     /// "read" operation.
     /// </summary>
     /// <typeparam name="T">Type of elements to read.</typeparam>
-    class SequenceReader<T> : IDisposable
+    sealed class SequenceReader<T> : IDisposable
     {
-        IEnumerator<T> _enumerator;
+        IEnumerator<T>? _enumerator;
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -63,42 +63,8 @@ namespace MoreLinq.Test
             return source.GetEnumerator();
         }
 
-        /// <summary>
-        /// Tires to read the next value.
-        /// </summary>
-        /// <param name="value">
-        /// When this method returns, contains the value read on success.
-        /// </param>
-        /// <returns>
-        /// Returns true if a value was successfully read; otherwise, false.
-        /// </returns>
-
-        public virtual bool TryRead(out T value)
-        {
-            EnsureNotDisposed();
-
-            value = default;
-
-            var e = _enumerator;
-            if (!e.MoveNext())
-                return false;
-
-            value = e.Current;
-            return true;
-        }
-
-        /// <summary>
-        /// Tires to read the next value otherwise return the default.
-        /// </summary>
-
-        public T TryRead() => TryRead(default);
-
-        /// <summary>
-        /// Tires to read the next value otherwise return a given default.
-        /// </summary>
-
-        public T TryRead(T defaultValue) =>
-            TryRead(out var result) ? result : defaultValue;
+        IEnumerator<T> Enumerator =>
+            _enumerator ?? throw new ObjectDisposedException(GetType().FullName);
 
         /// <summary>
         /// Reads a value otherwise throws <see cref="InvalidOperationException"/>
@@ -108,31 +74,27 @@ namespace MoreLinq.Test
         /// Returns the read value;
         /// </returns>
 
-        public T Read() =>
-            TryRead(out var result) ? result : throw new InvalidOperationException();
+        public T Read()
+        {
+            var e = Enumerator;
+
+            if (!e.MoveNext())
+                throw new InvalidOperationException();
+
+            return e.Current;
+        }
 
         /// <summary>
         /// Reads the end. If the end has not been reached then it
         /// throws <see cref="InvalidOperationException"/>.
         /// </summary>
 
-        public virtual void ReadEnd()
+        public void ReadEnd()
         {
-            EnsureNotDisposed();
+            var enumerator = Enumerator;
 
-            if (_enumerator.MoveNext())
+            if (enumerator.MoveNext())
                 throw new InvalidOperationException();
-        }
-
-        /// <summary>
-        /// Ensures that this object has not been disposed, that
-        /// <see cref="Dispose"/> has not been previously called.
-        /// </summary>
-
-        protected void EnsureNotDisposed()
-        {
-            if (_enumerator == null)
-                throw new ObjectDisposedException(GetType().FullName);
         }
 
         /// <summary>
@@ -140,7 +102,7 @@ namespace MoreLinq.Test
         /// initialized.
         /// </summary>
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             var e = _enumerator;
             if (e == null) return;

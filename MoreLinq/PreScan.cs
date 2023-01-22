@@ -31,7 +31,7 @@ namespace MoreLinq
         /// element is a special case, it is set to the identity). More
         /// generally, the pre-scan allows any commutative binary operation,
         /// not just a sum.
-        /// The inclusive version of PreScan is <see cref="Scan{TSource}"/>.
+        /// The inclusive version of PreScan is <see cref="MoreEnumerable.Scan{TSource}"/>.
         /// This operator uses deferred execution and streams its result.
         /// </remarks>
         /// <example>
@@ -62,20 +62,18 @@ namespace MoreLinq
             return _(); IEnumerable<TSource> _()
             {
                 var aggregator = identity;
+                using var e = source.GetEnumerator();
 
-                using (var e = source.GetEnumerator())
+                if (e.MoveNext())
                 {
-                    if (e.MoveNext())
-                    {
-                        yield return aggregator;
-                        var current = e.Current;
+                    yield return aggregator;
+                    var current = e.Current;
 
-                        while (e.MoveNext())
-                        {
-                            aggregator = transformation(aggregator, current);
-                            yield return aggregator;
-                            current = e.Current;
-                        }
+                    while (e.MoveNext())
+                    {
+                        aggregator = transformation(aggregator, current);
+                        yield return aggregator;
+                        current = e.Current;
                     }
                 }
             }

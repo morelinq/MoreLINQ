@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     static partial class MoreEnumerable
     {
@@ -46,7 +45,7 @@ namespace MoreLinq
         /// 123, 456, 789 and two zeroes, in turn.
         /// </example>
 
-        public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> Pad<TSource>(this IEnumerable<TSource> source, int width)
         {
             return Pad(source, width, default(TSource));
         }
@@ -114,10 +113,9 @@ namespace MoreLinq
             return PadImpl(source, width, default, paddingSelector);
         }
 
-        static IEnumerable<T> PadImpl<T>(IEnumerable<T> source,
-            int width, T padding, Func<int, T> paddingSelector)
+        static IEnumerable<T> PadImpl<T>(IEnumerable<T> source, int width,
+                                         T? padding, Func<int, T>? paddingSelector)
         {
-            Debug.Assert(source != null);
             Debug.Assert(width >= 0);
 
             var count = 0;
@@ -128,7 +126,7 @@ namespace MoreLinq
             }
             while (count < width)
             {
-                yield return paddingSelector != null ? paddingSelector(count) : padding;
+                yield return paddingSelector != null ? paddingSelector(count) : padding!;
                 count++;
             }
         }

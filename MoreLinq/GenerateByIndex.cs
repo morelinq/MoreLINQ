@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -43,19 +44,8 @@ namespace MoreLinq
         {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
 
-            // Would just use Enumerable.Range(0, int.MaxValue).Select(generator) but that doesn't
-            // include int.MaxValue. Picky, I know...
-
-            return _(); IEnumerable<TResult> _()
-            {
-                // Looping over 0...int.MaxValue inclusive is a pain. Simplest is to go exclusive,
-                // then go again for int.MaxValue.
-
-                for (var i = 0; i < int.MaxValue; i++)
-                    yield return generator(i);
-
-                yield return generator(int.MaxValue);
-            }
+            return MoreEnumerable.Sequence(0, int.MaxValue)
+                                 .Select(generator);
         }
     }
 }

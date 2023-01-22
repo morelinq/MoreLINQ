@@ -41,7 +41,7 @@ namespace MoreLinq.Test
 
             var expectations = sequence.Take(take - skip);
 
-            Assert.That(expectations, Is.EquivalentTo(sequence.SkipLast(skip)));
+            Assert.That(expectations, Is.EqualTo(sequence.SkipLast(skip)));
         }
 
         [TestCase(5)]

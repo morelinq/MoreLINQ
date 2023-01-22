@@ -9,18 +9,62 @@ MoreLINQ is available for download and installation as
 [NuGet packages](https://www.nuget.org/packages/morelinq/).
 
 Documentation for the stable and beta releases can be found at
-[morelinq.github.io](http://morelinq.github.io/).
+[morelinq.github.io](https://morelinq.github.io/).
+
+
+## Usage
+
+MoreLINQ can be used in one of two ways. The simplest is to just import the
+`MoreLinq` namespace and all extension methods become instantly available for
+you to use on the types they extend (typically some instantiation of
+`IEnumerable<T>`). In some very rare instances, however, doing so can cause
+conflicts with other libraries you may be using that incidentally also extend
+the same type with an identically named method and signature. This happened
+with MoreLINQ, for example, when Microsoft .NET Framework 4.0 introduced
+[`Zip`][netzip] and [MoreLINQ already had one][zip]. Starting with version 3.0
+of MoreLINQ, you can reduce the potential for present (or even future)
+conflicts by individually importing just the extension methods you need using
+the [static imports feature introduced in C# 6][using-static]:
+
+```c#
+using static MoreLinq.Extensions.LagExtension;
+using static MoreLinq.Extensions.LeadExtension;
+```
+
+In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
+methods will be available in scope.
+
+Apart from extension methods, MoreLINQ also offers regular static method
+that *generate* (instead of operating on) sequences, like `Unfold`,
+`Random`, `Sequence` and others. If you want to use these while statically
+importing other individual extension methods, you can do so via aliasing:
+
+```c#
+using static MoreLinq.Extensions.LagExtension;
+using static MoreLinq.Extensions.LeadExtension;
+using MoreEnumerable = MoreLinq.MoreEnumerable;
+```
+
+In the example above, [`Lag`][lag] and [`Lead`][lead] will be available as
+extension methods as well as all the regular static methods on
+`MoreEnumerable` but _without_ any of the extension methods offered by
+`MoreEnumerable`.
+
+
+[lag]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lag.htm
+[lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
+[using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
+[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip#System_Linq_Enumerable_Zip__3_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEnumerable___1__System_Func___0___1___2__
+[zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
+[unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
+[random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
+[sequence]: https://morelinq.github.io/2.2/ref/api/html/Overload_MoreLinq_MoreEnumerable_Sequence.htm
 
 
 ## Building
 
-To build MoreLINQ from sources, you will need:
-
-- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
-- [Mono][mono] 5.0 if building on other platforms than Windows
-
-Then run either `build.cmd` if building on Windows or `build.sh` if
-building on macOS or a Linux distribution supported by .NET Core.
+Run either `build.cmd` if building on Windows or `build.sh` if building on macOS
+or a [Linux distribution supported by .NET][dotnet-linux].
 
 Some code in the project is generated using [T4][t4] templates. To regenerate
 the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
@@ -30,13 +74,11 @@ Building the documentation is supported on Windows only and requires
 [Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
 generates the documentation in the `docs/api` directory. It can be browsed
 locally using any HTTP server of static files, like
-[http-server][http-server].
+[dotnet-serve][dotnet-serve].
 
-
-[mono]: https://www.mono-project.com/
-[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
-[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
-[http-server]: https://www.npmjs.com/package/http-server
+[dotnet-linux]: https://learn.microsoft.com/en-us/dotnet/core/install/linux
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2022.12.30.0
+[dotnet-serve]: https://www.nuget.org/packages/dotnet-serve
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
@@ -44,9 +86,15 @@ locally using any HTTP server of static files, like
 
 ### Acquire
 
-Ensures that a source sequence of objects are all acquired successfully. If
-the acquisition of any one fails then those successfully acquired till that
-point are disposed
+Ensures that a source sequence of disposable objects are all acquired
+successfully. If the acquisition of any one fails then those successfully
+acquired till that point are disposed.
+
+### Aggregate
+
+Applies multiple accumulators sequentially in a single pass over a sequence.
+
+This method has 7 overloads.
 
 ### AggregateRight
 
@@ -55,10 +103,14 @@ This operator is the right-associative version of the Aggregate LINQ operator.
 
 This method has 3 overloads.
 
+### Append
+
+Returns a sequence consisting of the head element and the given tail elements.
+
 ### Assert
 
 Asserts that all elements of a sequence meet a given condition otherwise
-throws an object.
+throws an exception.
 
 This method has 2 overloads.
 
@@ -89,13 +141,15 @@ the third-last element and so on.
 
 Batches the source sequence into sized buckets.
 
-This method has 2 overloads.
+This method has 4 overloads, 2 of which are experimental.
 
 ### Cartesian
 
-Returns the Cartesian product of two sequences by combining each element of
-the first set with each in the second and applying a user-defined projection
-to the pair.
+Returns the Cartesian product of two or more sequences by combining each
+element from the sequences and applying a user-defined projection to the
+set.
+
+This method has 7 overloads.
 
 ### Choose
 
@@ -109,9 +163,12 @@ second.
 Compares two sequences and returns an integer that indicates whether the
 first sequence has fewer, the same or more elements than the second sequence.
 
-### Concat
+### ~~Concat~~
 
 Returns a sequence consisting of the head element and the given tail elements.
+
+This method is obsolete and will be removed in a future version. Use `Append`
+instead.
 
 ### Consume
 
@@ -154,8 +211,9 @@ This method has 2 overloads.
 
 ### EquiZip
 
-Returns a projection of tuples, where each tuple contains the N-th element
-from each of the argument sequences.
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. An exception is thrown
+if the input sequences are of different lengths.
 
 This method has 3 overloads.
 
@@ -180,6 +238,8 @@ Excludes elements from a sequence starting at a given index
 Returns the elements of a sequence and falls back to another if the original
 sequence is empty.
 
+This method has 6 overloads.
+
 ### FillBackward
 
 Returns a sequence with each null reference or value in the source replaced
@@ -198,7 +258,7 @@ This method has 3 overloads.
 
 Flattens a sequence containing arbitrarily-nested sequences.
 
-This method has 2 overloads.
+This method has 3 overloads.
 
 ### Fold
 
@@ -244,7 +304,7 @@ Returns a sequence of values based on indexes
 Groups the adjacent elements of a sequence according to a specified key
 selector function.
 
-This method has 4 overloads.
+This method has 6 overloads.
 
 ### ~~Incremental~~
 
@@ -258,6 +318,16 @@ the source sequence.
 
 This method has 2 overloads.
 
+### IndexBy
+
+
+Applies a key-generating function to each element of a sequence and returns
+a sequence that contains the elements of the original sequence as well its
+key and index inside the group of its key. An additional argument specifies
+a comparer to use for testing equivalence of keys.
+
+This method has 2 overloads.
+
 ### Insert
 
 Inserts the elements of a sequence into another sequence at a specified index.
@@ -266,8 +336,6 @@ Inserts the elements of a sequence into another sequence at a specified index.
 
 Interleaves the elements of two or more sequences into a single sequence,
 skipping sequences as they are consumed.
-
-This method has 2 overloads.
 
 ### Lag
 
@@ -347,9 +415,13 @@ which is only returned as the predecessor of the second element
 
 Combines `OrderBy` (where element is key) and `Take` in a single operation.
 
+This method has 4 overloads.
+
 ### PartialSortBy
 
 Combines `OrderBy` and `Take` in a single operation.
+
+This method has 4 overloads.
 
 ### Partition
 
@@ -415,6 +487,10 @@ Repeats the sequence indefinitely or a specific number of times.
 
 This method has 2 overloads.
 
+### Return
+
+Returns a single-element sequence containing the item provided.
+
 ### RightJoin
 
 Performs a right outer join between two sequences.
@@ -432,6 +508,13 @@ This method has 2 overloads.
 ### Scan
 
 Peforms a scan (inclusive prefix sum) on a sequence of elements.
+
+This method has 2 overloads.
+
+### ScanBy
+
+Applies an accumulator function over sequence element keys, returning the keys
+along with intermediate accumulator states.
 
 This method has 2 overloads.
 
@@ -547,7 +630,7 @@ This method has 4 overloads.
 Creates a delimited string from a sequence of values. The delimiter used
 depends on the current culture of the executing thread.
 
-This method has 30 overloads.
+This method has 15 overloads.
 
 ### ToDictionary
 
@@ -558,8 +641,8 @@ This method has 4 overloads.
 
 ### ToHashSet
 
-Returns a of the source items using the default equality comparer for the
-type.
+Returns a [hash-set][hashset] of the source items using the default equality
+comparer for the type.
 
 This method has 2 overloads.
 
@@ -596,12 +679,18 @@ Returns a sequence generated by applying a state to the generator function,
 and from its result, determines if the sequence should have a next element and
 its value, and the next state in the recursive call.
 
-This method has 2 overloads.
-
-### Windowed
+### Window
 
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
+
+### ~~Windowed~~
+
+Processes a sequence into a series of subsequences representing a windowed
+subset of the original
+
+This method is obsolete and will be removed in a future version. Use `Window`
+instead.
 
 ### WindowLeft
 
@@ -613,15 +702,19 @@ Creates a right-aligned sliding window over the source sequence of a given size.
 
 ### ZipLongest
 
-Returns a projection of tuples, where each tuple contains the N-th element
-from each of the argument sequences
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. The resulting sequence
+will always be as long as the longest of input sequences where the
+default value of each of the shorter sequence element types is used
+for padding.
 
 This method has 3 overloads.
 
 ### ZipShortest
 
-Returns a projection of tuples, where each tuple contains the N-th element
-from each of the argument sequences.
+Returns a projection of tuples, where each tuple contains the N-th
+element from each of the argument sequences. The resulting sequence
+is as short as the shortest input sequence.
 
 This method has 3 overloads.
 
@@ -635,6 +728,13 @@ SOLICIT FEEDBACK ON THEIR UTILITY AND DESIGN/IMPLEMENTATION DEFECTS.
 
 Use of experimental methods requires importing the `MoreLinq.Experimental`
 namespace.
+
+### Aggregate
+
+Applies multiple accumulator queries sequentially in a single pass over a
+sequence.
+
+This method has 8 overloads.
 
 ### Await
 
@@ -655,9 +755,18 @@ Creates a sequence that lazily caches the source as it is iterated for the
 first time, reusing the cache thereafter for future re-iterations. If the
 source is already cached or buffered then it is returned verbatim.
 
+### TrySingle
+
+Returns the only element of a sequence that has just one element. If the
+sequence has zero or multiple elements, then returns a user-defined value
+that indicates the cardinality of the result sequence.
+
+This method has 2 overloads.
+
 
 [#122]: https://github.com/morelinq/MoreLINQ/issues/122
 [dict]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.Dictionary-2
+[hashset]: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1
 [kvp]: https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.KeyValuePair-2
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
 [v2.1]: https://github.com/morelinq/MoreLINQ/releases/tag/v2.1.0

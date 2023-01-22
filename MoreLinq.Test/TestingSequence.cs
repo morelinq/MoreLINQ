@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2009 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,12 +25,23 @@ namespace MoreLinq.Test
     static class TestingSequence
     {
         internal static TestingSequence<T> Of<T>(params T[] elements) =>
-            new TestingSequence<T>(elements);
+            Of(Options.None, elements);
 
-        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source) =>
+        internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
+            elements.AsTestingSequence(options);
+
+        internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source,
+                                                                Options options = Options.None) =>
             source != null
-            ? new TestingSequence<T>(source)
+            ? new TestingSequence<T>(source) { IsReiterationAllowed = options.HasFlag(Options.AllowMultipleEnumerations) }
             : throw new ArgumentNullException(nameof(source));
+
+        [Flags]
+        public enum Options
+        {
+            None,
+            AllowMultipleEnumerations
+        }
     }
 
     /// <summary>
@@ -41,11 +52,13 @@ namespace MoreLinq.Test
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
         bool? _disposed;
-        IEnumerable<T> _sequence;
+        IEnumerable<T>? _sequence;
 
         internal TestingSequence(IEnumerable<T> sequence) =>
             _sequence = sequence;
 
+        public bool IsDisposed => _disposed ?? false;
+        public bool IsReiterationAllowed { get; init; }
         public int MoveNextCallCount { get; private set; }
 
         void IDisposable.Dispose() =>
@@ -58,18 +71,35 @@ namespace MoreLinq.Test
         {
             if (_disposed == null)
                 return;
-            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
+            Assert.That(_disposed, Is.True, "Expected sequence to be disposed.");
             _disposed = null;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
-            var enumerator = _sequence.GetEnumerator().AsWatchtable();
+            if (!IsReiterationAllowed)
+                Assert.That(_sequence, Is.Not.Null, "LINQ operators should not enumerate a sequence more than once.");
+
+            Debug.Assert(_sequence is not null);
+
+            var enumerator = _sequence.GetEnumerator().AsWatchable();
             _disposed = false;
-            enumerator.Disposed += delegate { _disposed = true; };
-            enumerator.MoveNextCalled += delegate { MoveNextCallCount++; };
-            _sequence = null;
+            enumerator.Disposed += delegate
+            {
+                Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
+                _disposed = true;
+            };
+            var ended = false;
+            enumerator.MoveNextCalled += (_, moved) =>
+            {
+                Assert.That(ended, Is.False, "LINQ operators should not continue iterating a sequence that has terminated.");
+                ended = !moved;
+                MoveNextCallCount++;
+            };
+
+            if (!IsReiterationAllowed)
+                _sequence = null;
+
             return enumerator;
         }
 

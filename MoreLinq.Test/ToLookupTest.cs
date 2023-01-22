@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2017 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,9 +39,9 @@ namespace MoreLinq.Test
             var dict = pairs.ToLookup();
 
             Assert.That(dict.Count, Is.EqualTo(3));
-            Assert.That(dict["foo"], Is.EquivalentTo(new[] { 1, 2 }));
-            Assert.That(dict["bar"], Is.EquivalentTo(new[] { 3 }));
-            Assert.That(dict["baz"], Is.EquivalentTo(new[] { 4, 5, 6 }));
+            Assert.That(dict["foo"], Is.EqualTo(new[] { 1, 2 }));
+            Assert.That(dict["bar"], Is.EqualTo(new[] { 3 }));
+            Assert.That(dict["baz"], Is.EqualTo(new[] { 4, 5, 6 }));
         }
 
         [Test]
@@ -60,9 +60,9 @@ namespace MoreLinq.Test
             var dict = pairs.ToLookup();
 
             Assert.That(dict.Count, Is.EqualTo(3));
-            Assert.That(dict["foo"], Is.EquivalentTo(new[] { 1, 2 }));
-            Assert.That(dict["bar"], Is.EquivalentTo(new[] { 3 }));
-            Assert.That(dict["baz"], Is.EquivalentTo(new[] { 4, 5, 6 }));
+            Assert.That(dict["foo"], Is.EqualTo(new[] { 1, 2 }));
+            Assert.That(dict["bar"], Is.EqualTo(new[] { 3 }));
+            Assert.That(dict["baz"], Is.EqualTo(new[] { 4, 5, 6 }));
         }
 
         [Test]
@@ -81,9 +81,9 @@ namespace MoreLinq.Test
             var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict.Count, Is.EqualTo(3));
-            Assert.That(dict["FOO"], Is.EquivalentTo(new[] { 1, 2 }));
-            Assert.That(dict["BAR"], Is.EquivalentTo(new[] { 3 }));
-            Assert.That(dict["BAZ"], Is.EquivalentTo(new[] { 4, 5, 6 }));
+            Assert.That(dict["FOO"], Is.EqualTo(new[] { 1, 2 }));
+            Assert.That(dict["BAR"], Is.EqualTo(new[] { 3 }));
+            Assert.That(dict["BAZ"], Is.EqualTo(new[] { 4, 5, 6 }));
         }
 
         [Test]
@@ -102,9 +102,9 @@ namespace MoreLinq.Test
             var dict = pairs.ToLookup(StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict.Count, Is.EqualTo(3));
-            Assert.That(dict["FOO"], Is.EquivalentTo(new[] { 1, 2 }));
-            Assert.That(dict["BAR"], Is.EquivalentTo(new[] { 3 }));
-            Assert.That(dict["BAZ"], Is.EquivalentTo(new[] { 4, 5, 6 }));
+            Assert.That(dict["FOO"], Is.EqualTo(new[] { 1, 2 }));
+            Assert.That(dict["BAR"], Is.EqualTo(new[] { 3 }));
+            Assert.That(dict["BAZ"], Is.EqualTo(new[] { 4, 5, 6 }));
         }
     }
 }

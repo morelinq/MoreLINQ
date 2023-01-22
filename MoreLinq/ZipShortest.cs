@@ -23,8 +23,9 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.
+        /// Returns a projection of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
         /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
@@ -37,6 +38,10 @@ namespace MoreLinq
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <example>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
@@ -46,9 +51,10 @@ namespace MoreLinq
         /// </example>
         /// <remarks>
         /// <para>
-        /// If the two input sequences are of different lengths, the result
-        /// sequence is terminated as soon as the shortest input sequence is
-        /// exhausted.</para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
@@ -62,12 +68,13 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b));
         }
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element  from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -81,6 +88,11 @@ namespace MoreLinq
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -94,7 +106,8 @@ namespace MoreLinq
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
@@ -116,7 +129,8 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences.
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
         /// </summary>
         /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
         /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
@@ -132,6 +146,11 @@ namespace MoreLinq
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -146,7 +165,8 @@ namespace MoreLinq
         /// <remarks>
         /// <para>
         /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted.
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
         /// </para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
@@ -169,8 +189,10 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1, IEnumerable<T2> s2,
-            IEnumerable<T3> s3, IEnumerable<T4> s4,
+            IEnumerable<T1>  s1,
+            IEnumerable<T2>  s2,
+            IEnumerable<T3>? s3,
+            IEnumerable<T4>? s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             return ZipImpl(s1, s2, s3, s4, resultSelector, 0);
