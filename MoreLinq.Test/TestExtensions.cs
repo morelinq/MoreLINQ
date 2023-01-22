@@ -96,13 +96,6 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
-        {
-            yield return input.ToSourceKind(SourceKind.Sequence);
-            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
-            yield return input.ToSourceKind(SourceKind.BreakingCollection);
-        }
-
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
         {
             return sourceKind switch
