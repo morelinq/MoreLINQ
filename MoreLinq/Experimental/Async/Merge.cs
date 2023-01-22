@@ -21,6 +21,7 @@ namespace MoreLinq.Experimental.Async
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -103,8 +104,8 @@ namespace MoreLinq.Experimental.Async
 
                 try
                 {
-                    foreach (var source in sources)
-                        enumeratorList.Add(source.GetAsyncEnumerator(cancellationToken));
+                    enumeratorList.AddRange(from s in sources
+                                            select s.GetAsyncEnumerator(cancellationToken));
 
                     pendingTaskList = new List<Task<(bool, IAsyncEnumerator<T>)>>();
 
