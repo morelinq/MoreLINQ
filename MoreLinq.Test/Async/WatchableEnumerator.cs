@@ -23,8 +23,7 @@ namespace MoreLinq.Test.Async
 
     partial class TestExtensions
     {
-        public static WatchableEnumerator<T> AsWatchable<T>(this IAsyncEnumerator<T> source) =>
-            new WatchableEnumerator<T>(source);
+        public static WatchableEnumerator<T> AsWatchable<T>(this IAsyncEnumerator<T> source) => new(source);
     }
 
     sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>

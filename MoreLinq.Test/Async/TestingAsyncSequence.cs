@@ -27,7 +27,7 @@ namespace MoreLinq.Test.Async
     static class TestingAsyncSequence
     {
         public static TestingAsyncSequence<T> Of<T>(params T[] elements) =>
-            new TestingAsyncSequence<T>(elements.ToAsyncEnumerable());
+            new(elements.ToAsyncEnumerable());
 
         public static TestingAsyncSequence<T> AsTestingSequence<T>(this IAsyncEnumerable<T> source) =>
             source is not null
