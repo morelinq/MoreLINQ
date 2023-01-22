@@ -54,7 +54,7 @@ namespace MoreLinq.Test
                 (Count: 4, Min: 2, Max: 4),
                 (Count: 5, Min: 2, Max: 4),
             }
-            from type in SourceKinds.SequenceAndCollection
+            from type in SourceKinds.Sequence.Concat(SourceKinds.Collection)
             select new TestCaseData(type, args.Count, args.Min, args.Max)
                 .Returns(args.Count >= args.Min && args.Count <= args.Max)
                 .SetName($"{{m}}({type}[{args.Count}], {args.Min}, {args.Max})");

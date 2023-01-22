@@ -49,12 +49,6 @@ namespace MoreLinq.Test
             SourceKind.BreakingList,
             SourceKind.BreakingReadOnlyList
         };
-
-        public static readonly IEnumerable<SourceKind> SequenceAndCollection =
-            Sequence.Concat(Collection);
-
-        public static readonly IEnumerable<SourceKind> SequenceAndList =
-            Sequence.Concat(List);
     }
 
     static partial class TestExtensions

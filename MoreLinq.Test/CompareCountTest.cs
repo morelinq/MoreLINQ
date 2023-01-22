@@ -31,8 +31,8 @@ namespace MoreLinq.Test
                 (Count1: 1, Count2: 0, Comparison:  1 ),
                 (Count1: 1, Count2: 1, Comparison:  0 )
             }
-            from firstKind in SourceKinds.SequenceAndCollection
-            from secondKind in SourceKinds.SequenceAndCollection
+            from firstKind in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            from secondKind in SourceKinds.Sequence.Concat(SourceKinds.Collection)
             select new TestCaseData(
                     Enumerable.Range(1, e.Count1).ToSourceKind(firstKind),
                     Enumerable.Range(1, e.Count2).ToSourceKind(secondKind))

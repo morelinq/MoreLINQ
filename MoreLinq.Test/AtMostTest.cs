@@ -31,7 +31,7 @@ namespace MoreLinq.Test
         }
 
         public static IEnumerable<TestCaseData> AtMostSource =>
-            from k in SourceKinds.SequenceAndCollection
+            from k in SourceKinds.Sequence.Concat(SourceKinds.Collection)
             from e in new[]
             {
                 (Size: 0, Count: 0),
