@@ -32,27 +32,27 @@ dotnet_analyzer_diagnostic.category-Style.severity = warning
 dotnet_diagnostic.IDE0022.severity = suggestion
 
 # Prefer "var" everywhere
-csharp_style_var_for_built_in_types = true:suggestion
-csharp_style_var_when_type_is_apparent = true:suggestion
-csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_for_built_in_types = true
+csharp_style_var_when_type_is_apparent = true
+csharp_style_var_elsewhere = true
 
 # Prefer method-like constructs to have a block body
 csharp_style_expression_bodied_methods = true
 csharp_style_expression_bodied_constructors = true
-csharp_style_expression_bodied_operators = false:none
+csharp_style_expression_bodied_operators = true
 
 # Prefer property-like constructs to have an expression-body
-csharp_style_expression_bodied_properties = true:none
-csharp_style_expression_bodied_indexers = true:none
-csharp_style_expression_bodied_accessors = true:none
+csharp_style_expression_bodied_properties = true
+csharp_style_expression_bodied_indexers = true
+csharp_style_expression_bodied_accessors = true
 
 # Suggest more modern language features when available
-csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
-csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
-csharp_style_inlined_variable_declaration = true:suggestion
-csharp_style_throw_expression = true:suggestion
-csharp_style_conditional_delegate_call = true:suggestion
-csharp_prefer_simple_default_expression = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true
+csharp_style_pattern_matching_over_as_with_null_check = true
+csharp_style_inlined_variable_declaration = true
+csharp_style_throw_expression = true
+csharp_style_conditional_delegate_call = true
+csharp_prefer_simple_default_expression = true
 
 # Spacing
 csharp_space_after_cast = false
