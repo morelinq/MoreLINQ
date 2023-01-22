@@ -90,7 +90,7 @@ namespace MoreLinq.Test.Async
 
             public Task<T> Result(T result)
             {
-                if (!(_state is null))
+                if (_state is not null)
                     throw new InvalidOperationException();
                 _state = new State(new TaskCompletionSource<T>(), result);
                 return _state.TaskCompletionSource.Task;
@@ -98,7 +98,7 @@ namespace MoreLinq.Test.Async
 
             public void Complete()
             {
-                if (!(_state is {} state))
+                if (_state is not { } state)
                     throw new InvalidOperationException();
                 _state = null;
                 state.TaskCompletionSource.SetResult(state.Result);
