@@ -28,6 +28,9 @@ max_line_length = 100
 [*.cs]
 dotnet_analyzer_diagnostic.category-Style.severity = warning
 
+# IDE0022: Use expression/block body for methods
+dotnet_diagnostic.IDE0022.severity = suggestion
+
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
