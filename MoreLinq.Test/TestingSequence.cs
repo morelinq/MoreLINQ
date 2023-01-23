@@ -26,26 +26,26 @@ namespace MoreLinq.Test
     static class TestingSequence
     {
         internal static TestingSequence<T> Of<T>(params T[] elements) =>
-            new(elements, Options.None, numEnumerations: 1);
+            new(elements, Options.None, maxEnumerations: 1);
 
         internal static TestingSequence<T> Of<T>(Options options, params T[] elements) =>
-            elements.AsTestingSequence(options, numEnumerations: 1);
+            elements.AsTestingSequence(options, maxEnumerations: 1);
 
         internal static TestingSequence<T> AsTestingSequence<T>(this IEnumerable<T> source,
                                                                 Options options = Options.None,
-                                                                int numEnumerations = 1) =>
+                                                                int maxEnumerations = 1) =>
             source != null
-            ? new TestingSequence<T>(source, options, numEnumerations)
+            ? new TestingSequence<T>(source, options, maxEnumerations)
             : throw new ArgumentNullException(nameof(source));
 
         internal const string ExpectedDisposal = "Expected sequence to be disposed.";
         internal const string TooManyEnumerations = "Sequence should not be enumerated more than expected.";
         internal const string TooManyDisposals = "Sequence should not be disposed more than once per enumeration.";
         internal const string SimultaneousEnumerations = "Sequence should not have simultaneous enumeration.";
-        internal const string MoveNextDisposed = "LINQ operators should not call MoveNext() on a disposed sequence.";
-        internal const string MoveNextCompleted = "LINQ operators should not continue iterating a sequence that has terminated.";
-        internal const string CurrentDisposed = "LINQ operators should not attempt to get the Current value on a disposed sequence.";
-        internal const string CurrentCompleted = "LINQ operators should not attempt to get the Current value on a completed sequence.";
+        internal const string MoveNextPostDisposal = "LINQ operators should not call MoveNext() on a disposed sequence.";
+        internal const string MoveNextPostEnumeration = "LINQ operators should not continue iterating a sequence that has terminated.";
+        internal const string CurrentPostDisposal = "LINQ operators should not attempt to get the Current value on a disposed sequence.";
+        internal const string CurrentPostEnumeration = "LINQ operators should not attempt to get the Current value on a completed sequence.";
 
         [Flags]
         public enum Options
@@ -63,41 +63,34 @@ namespace MoreLinq.Test
     /// </summary>
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        private IEnumerable<T>? _sequence;
-        private readonly Options _options;
-        private readonly int _numEnumerations;
+        readonly IEnumerable<T> _sequence;
+        readonly Options _options;
+        readonly int _maxEnumerations;
 
-        private bool _hasEnumerated;
-        private bool _currentlyEnumerating;
-        private int _disposedCount;
-        private int _enumerationCount;
+        int _disposedCount;
+        int _enumerationCount;
 
-        internal TestingSequence(IEnumerable<T> sequence, Options options, int numEnumerations)
+        internal TestingSequence(IEnumerable<T> sequence, Options options, int maxEnumerations)
         {
             _sequence = sequence;
-            _numEnumerations = numEnumerations;
+            _maxEnumerations = maxEnumerations;
             _options = options;
         }
 
         public int MoveNextCallCount { get; private set; }
-        public bool IsDisposed => !_currentlyEnumerating;
+        public bool IsDisposed => _enumerationCount > 0 && _disposedCount == _enumerationCount;
 
         void IDisposable.Dispose()
         {
-            if (_hasEnumerated)
+            if (_enumerationCount > 0)
                 Assert.That(_disposedCount, Is.EqualTo(_enumerationCount), ExpectedDisposal);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(_sequence is null, Is.False, TooManyEnumerations);
-
-            Debug.Assert(_sequence is not null);
-
-            Assert.That(_currentlyEnumerating, Is.False, SimultaneousEnumerations);
-            _currentlyEnumerating = true;
-
-            _hasEnumerated = true;
+            Assert.That(_enumerationCount, Is.LessThan(_maxEnumerations), TooManyEnumerations);
+            Assert.That(_enumerationCount, Is.EqualTo(_disposedCount), SimultaneousEnumerations);
+            _enumerationCount++;
 
             var enumerator = _sequence.GetEnumerator().AsWatchable();
             var disposed = false;
@@ -106,7 +99,6 @@ namespace MoreLinq.Test
                 if (!disposed)
                 {
                     _disposedCount++;
-                    _currentlyEnumerating = false;
                     disposed = true;
                 }
                 else if (!_options.HasFlag(Options.AllowRepeatedDisposals))
@@ -118,9 +110,9 @@ namespace MoreLinq.Test
             var ended = false;
             enumerator.MoveNextCalled += (_, moved) =>
             {
-                Assert.That(disposed, Is.False, MoveNextDisposed);
+                Assert.That(disposed, Is.False, MoveNextPostDisposal);
                 if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
-                    Assert.That(ended, Is.False, MoveNextCompleted);
+                    Assert.That(ended, Is.False, MoveNextPostEnumeration);
 
                 ended = !moved;
                 MoveNextCallCount++;
@@ -128,12 +120,10 @@ namespace MoreLinq.Test
 
             enumerator.GetCurrentCalled += delegate
             {
-                Assert.That(disposed, Is.False, CurrentDisposed);
-                Assert.That(ended, Is.False, CurrentCompleted);
+                Assert.That(disposed, Is.False, CurrentPostDisposal);
+                Assert.That(ended, Is.False, CurrentPostEnumeration);
             };
 
-            if (++_enumerationCount == _numEnumerations)
-                _sequence = null;
             return enumerator;
         }
 
@@ -148,17 +138,19 @@ namespace MoreLinq.Test
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
             {
-                var enumerator = enumerable.GetEnumerator();
+                var _ = enumerable.GetEnumerator();
 
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
                     .With.Message.Contains(ExpectedDisposal));
         }
@@ -168,22 +160,24 @@ namespace MoreLinq.Test
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
             {
-                using (var enumerator = enumerable.GetEnumerator())
+                using (var _ = enumerable.GetEnumerator())
                     yield return 1;
-                using (var enumerator = enumerable.GetEnumerator())
+                using (var _ = enumerable.GetEnumerator())
                     yield return 2;
-                using (var enumerator = enumerable.GetEnumerator())
+                using (var _ = enumerable.GetEnumerator())
                     yield return 3;
 
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence(maxEnumerations: 2);
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence(numEnumerations: 2);
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
                     .With.Message.Contains(TooManyEnumerations));
         }
@@ -193,19 +187,21 @@ namespace MoreLinq.Test
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
             {
-                using var enumerator = enumerable.GetEnumerator();
+                var enumerator = enumerable.GetEnumerator();
                 enumerator.Dispose();
                 enumerator.Dispose();
 
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
                     .With.Message.Contains(TooManyDisposals));
         }
@@ -222,14 +218,16 @@ namespace MoreLinq.Test
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(MoveNextDisposed));
+                    .With.Message.Contains(MoveNextPostDisposal));
         }
 
         [Test]
@@ -245,14 +243,16 @@ namespace MoreLinq.Test
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(MoveNextCompleted));
+                    .With.Message.Contains(MoveNextPostEnumeration));
         }
 
         [Test]
@@ -267,14 +267,16 @@ namespace MoreLinq.Test
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(CurrentDisposed));
+                    .With.Message.Contains(CurrentPostDisposal));
         }
 
         [Test]
@@ -290,14 +292,16 @@ namespace MoreLinq.Test
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence();
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence();
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(CurrentCompleted));
+                    .With.Message.Contains(CurrentPostEnumeration));
         }
 
         [Test]
@@ -311,12 +315,14 @@ namespace MoreLinq.Test
                 yield break;
             }
 
+            static void Act()
+            {
+                using var xs = Enumerable.Range(1, 10).AsTestingSequence(maxEnumerations: 2);
+                InvalidUsage(xs).Consume();
+            }
+
             Assert.That(
-                () =>
-                {
-                    using var xs = Enumerable.Range(1, 10).AsTestingSequence(numEnumerations: 2);
-                    InvalidUsage(xs).Consume();
-                },
+                Act,
                 Throws.InstanceOf<AssertionException>()
                     .With.Message.Contains(SimultaneousEnumerations));
         }
