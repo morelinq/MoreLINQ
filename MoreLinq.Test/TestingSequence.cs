@@ -211,7 +211,7 @@ namespace MoreLinq.Test
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
             {
-                using var enumerator = enumerable.GetEnumerator();
+                var enumerator = enumerable.GetEnumerator();
                 enumerator.Dispose();
                 enumerator.MoveNext();
 
@@ -260,7 +260,7 @@ namespace MoreLinq.Test
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
             {
-                using var enumerator = enumerable.GetEnumerator();
+                var enumerator = enumerable.GetEnumerator();
                 enumerator.Dispose();
                 yield return enumerator.Current;
 
