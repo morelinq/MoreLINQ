@@ -24,6 +24,8 @@
 // SOFTWARE.
 #endregion
 
+#pragma warning disable IDE0040 // Add accessibility modifiers
+
 namespace MoreLinq
 {
     using System;
