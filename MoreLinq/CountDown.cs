@@ -65,11 +65,11 @@ namespace MoreLinq
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
             {
-                var count = list.Count;
-                var countdown = Math.Min(count, count);
+                var listCount = list.Count;
+                var countdown = Math.Min(count, listCount);
 
-                for (var i = 0; i < count; i++)
-                    yield return resultSelector(list[i], count - i <= count ? --countdown : null);
+                for (var i = 0; i < listCount; i++)
+                    yield return resultSelector(list[i], listCount - i <= count ? --countdown : null);
             }
 
             IEnumerable<TResult> IterateCollection(int i)
