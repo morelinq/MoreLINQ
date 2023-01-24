@@ -511,19 +511,19 @@ namespace MoreLinq.Test.Async
             LinqEnumerable.ToArrayAsync(source);
 
         public static ValueTask<Dictionary<TKey, TSource>> ToDictionaryAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-            where TKey: notnull =>
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector);
 
         public static ValueTask<Dictionary<TKey, TSource>> ToDictionaryAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-            where TKey: notnull =>
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, comparer);
 
         public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAsync<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
-            where TKey: notnull =>
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, elementSelector);
 
         public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAsync<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
-            where TKey: notnull =>
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, elementSelector, comparer);
 
         public static ValueTask<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> source) =>

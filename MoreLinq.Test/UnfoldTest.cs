@@ -52,10 +52,10 @@ namespace MoreLinq.Test
         [Test]
         public void UnfoldIsLazy()
         {
-            MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
-                                     BreakingFunc.Of<(int, int), bool>(),
-                                     BreakingFunc.Of<(int, int), int>(),
-                                     BreakingFunc.Of<(int, int), int>());
+            _ = MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
+                                         BreakingFunc.Of<(int, int), bool>(),
+                                         BreakingFunc.Of<(int, int), int>(),
+                                         BreakingFunc.Of<(int, int), int>());
         }
 
 

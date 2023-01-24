@@ -27,7 +27,6 @@ namespace MoreLinq.Experimental
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unit = System.ValueTuple;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.
@@ -427,11 +426,11 @@ namespace MoreLinq.Experimental
 
             return
                 AwaitQuery.Create(
-                    options => _(options.MaxConcurrency,
-                                 options.Scheduler ?? TaskScheduler.Default,
-                                 options.PreserveOrder));
+                    options => Impl(options.MaxConcurrency,
+                                    options.Scheduler ?? TaskScheduler.Default,
+                                    options.PreserveOrder));
 
-            IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
+            IEnumerable<TResult> Impl(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
                 // A separate task will enumerate the source and launch tasks.
                 // It will post all progress as notices to the collection below.
@@ -467,7 +466,7 @@ namespace MoreLinq.Experimental
                     // completes and another, an end-notice, when all tasks have
                     // completed.
 
-                    Task.Factory.StartNew(
+                    _ = Task.Factory.StartNew(
                         async () =>
                         {
                             try
@@ -528,8 +527,10 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
 
+#pragma warning disable IDE0011 // Add braces
                     using (var notice = notices.GetConsumingEnumerable(consumerCancellationTokenSource.Token)
                                                .GetEnumerator())
+#pragma warning restore IDE0011 // Add braces
                     while (true)
                     {
                         try
@@ -651,7 +652,7 @@ namespace MoreLinq.Experimental
                         onEnd();
                 }
 
-                var concurrencyGate = maxConcurrency is {} count
+                var concurrencyGate = maxConcurrency is { } count
                                     ? new ConcurrencyGate(count)
                                     : ConcurrencyGate.Unbounded;
 
@@ -667,7 +668,7 @@ namespace MoreLinq.Experimental
                         return;
                     }
 
-                    Interlocked.Increment(ref pendingCount);
+                    _ = Interlocked.Increment(ref pendingCount);
 
                     var item = enumerator.Current;
                     var task = starter(item);
@@ -676,9 +677,7 @@ namespace MoreLinq.Experimental
                     // along with the necessary housekeeping, in case it
                     // completes before maximum concurrency is reached.
 
-                    #pragma warning disable 4014 // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs4014
-
-                    task.ContinueWith(cancellationToken: cancellationToken,
+                    _ = task.ContinueWith(cancellationToken: cancellationToken,
                         continuationOptions: TaskContinuationOptions.ExecuteSynchronously,
                         scheduler: TaskScheduler.Current,
                         continuationAction: t =>
@@ -691,8 +690,6 @@ namespace MoreLinq.Experimental
                             onTaskCompletion(item, t);
                             OnPendingCompleted();
                         });
-
-                    #pragma warning restore 4014
                 }
 
                 OnPendingCompleted();
@@ -745,22 +742,22 @@ namespace MoreLinq.Experimental
 
         static class CompletedTask
         {
-            #if NETSTANDARD1_0
+#if NETSTANDARD1_0
 
             public static readonly Task Instance = CreateCompletedTask();
 
             static Task CreateCompletedTask()
             {
-                var tcs = new TaskCompletionSource<Unit>();
+                var tcs = new TaskCompletionSource<System.ValueTuple>();
                 tcs.SetResult(default);
                 return tcs.Task;
             }
 
-            #else
+#else
 
             public static readonly Task Instance = Task.CompletedTask;
 
-            #endif
+#endif
         }
 
         sealed class ConcurrencyGate
@@ -773,7 +770,7 @@ namespace MoreLinq.Experimental
                 _semaphore = semaphore;
 
             public ConcurrencyGate(int max) :
-                this(new SemaphoreSlim(max, max)) {}
+                this(new SemaphoreSlim(max, max)) { }
 
             public Task EnterAsync(CancellationToken token)
             {

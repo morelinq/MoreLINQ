@@ -26,10 +26,10 @@ namespace MoreLinq.Test
         [Test]
         public void ScanByIsLazy()
         {
-            new BreakingSequence<string>().ScanBy(
-                BreakingFunc.Of<string, int>(),
-                BreakingFunc.Of<int, char>(),
-                BreakingFunc.Of<char, int, string, char>());
+            var bs = new BreakingSequence<string>();
+            _ = bs.ScanBy(BreakingFunc.Of<string, int>(),
+                          BreakingFunc.Of<int, char>(),
+                          BreakingFunc.Of<char, int, string, char>());
         }
 
         [Test]

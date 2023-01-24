@@ -191,8 +191,8 @@ namespace MoreLinq
 
             var schemas = from m in members
                           let type = m.MemberType == MemberTypes.Property
-                                   ? ((PropertyInfo) m).PropertyType
-                                   : ((FieldInfo) m).FieldType
+                                   ? ((PropertyInfo)m).PropertyType
+                                   : ((FieldInfo)m).FieldType
                           select new
                           {
                               Member = m,

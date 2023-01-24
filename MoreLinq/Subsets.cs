@@ -191,7 +191,7 @@ namespace MoreLinq
 
                     ExtractSubset();
 
-                    _continue = (_indices[0] != _z);
+                    _continue = _indices[0] != _z;
                     return true;
                 }
 

@@ -5,12 +5,10 @@
     <TargetFrameworks>net7.0;net6.0;netcoreapp3.1;net462</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
-    <OutputType>Exe</OutputType>
+    <OutputType Condition="'$(TargetFramework)' == 'net462'">Exe</OutputType>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <IsPackable>false</IsPackable>
     <ApplicationIcon />
-    <OutputTypeEx>library</OutputTypeEx>
-    <StartupObject>MoreLinq.Test.Program</StartupObject>
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
@@ -50,6 +48,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <Compile Remove="Program.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">

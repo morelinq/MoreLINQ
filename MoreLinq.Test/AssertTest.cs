@@ -26,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void AssertIsLazy()
         {
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
         }
 
         [Test]
         public void AssertSequenceWithValidAllElements()
         {
-            var source = new[] {2, 4, 6, 8};
+            var source = new[] { 2, 4, 6, 8 };
             source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
         }
 
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         sealed class ValueException : Exception
         {
             public object Value { get; }
-            public ValueException(object value) { Value = value; }
+            public ValueException(object value) => Value = value;
         }
     }
 }

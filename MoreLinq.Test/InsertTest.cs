@@ -83,7 +83,7 @@ namespace MoreLinq.Test
         [Test]
         public void InsertIsLazy()
         {
-            new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
+            _ = new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
         }
     }
 }

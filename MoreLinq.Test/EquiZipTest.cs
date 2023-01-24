@@ -73,7 +73,7 @@ namespace MoreLinq.Test
         public void ZipIsLazy()
         {
             var bs = new BreakingSequence<int>();
-            bs.EquiZip(bs, BreakingFunc.Of<int, int, int>());
+            _ = bs.EquiZip(bs, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]

@@ -35,7 +35,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0);
+            _ = new BreakingSequence<int>().PadStart(0);
         }
 
         public class PadStartWithDefaultPadding
@@ -70,7 +70,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithPaddingIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0, -1);
+            _ = new BreakingSequence<int>().PadStart(0, -1);
         }
 
         public class PadStartWithPadding
@@ -105,7 +105,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithSelectorIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
         }
 
         public class PadStartWithSelector

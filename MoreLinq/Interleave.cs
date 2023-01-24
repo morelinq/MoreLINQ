@@ -50,9 +50,9 @@ namespace MoreLinq
             if (otherSequences.Any(s => s == null))
                 throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
-            return _(otherSequences.Prepend(sequence));
+            return Impl(otherSequences.Prepend(sequence));
 
-            static IEnumerable<T> _(IEnumerable<IEnumerable<T>> sequences)
+            static IEnumerable<T> Impl(IEnumerable<IEnumerable<T>> sequences)
             {
                 var enumerators = new LinkedList<IEnumerator<T>>();
 
@@ -64,7 +64,7 @@ namespace MoreLinq
                     {
                         var enumerator = sequence.GetEnumerator();
 
-                        enumerators.AddLast(enumerator);
+                        _ = enumerators.AddLast(enumerator);
                         if (enumerator.MoveNext())
                         {
                             yield return enumerator.Current;
@@ -72,7 +72,7 @@ namespace MoreLinq
                         else // Dispose and remove empty sequence
                         {
                             enumerator.Dispose();
-                            enumerators.Remove(enumerator);
+                            _ = enumerators.Remove(enumerator);
                         }
                     }
 
