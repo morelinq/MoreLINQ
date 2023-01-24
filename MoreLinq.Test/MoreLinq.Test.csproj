@@ -5,54 +5,54 @@
     <TargetFrameworks>net7.0;net6.0;netcoreapp3.1;net462</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
-	  <OutputType Condition="'$(TargetFramework)' == 'net462'">Exe</OutputType>
-	  <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-	  <IsPackable>false</IsPackable>
-	  <ApplicationIcon />
-	  <WarningsNotAsErrors>618</WarningsNotAsErrors>
+    <OutputType Condition="'$(TargetFramework)' == 'net462'">Exe</OutputType>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <IsPackable>false</IsPackable>
+    <ApplicationIcon />
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
+    <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="coverlet.collector" Version="3.2.0">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
-	  <PackageReference Include="Delegating" Version="1.3.1" />
-	  <PackageReference Include="IsExternalInit" Version="1.0.3">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
-	  <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
-	  <PackageReference Include="NUnit" Version="3.13.3" />
-	  <PackageReference Include="NUnit.Analyzers" Version="3.5.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Include="NUnitLite" Version="3.13.3" />
-	  <PackageReference Include="PolySharp" Version="1.9.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Include="System.Reactive" Version="3.1.1" />
-	  <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-	  <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
-	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Delegating" Version="1.3.1" />
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.5.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NUnitLite" Version="3.13.3" />
+    <PackageReference Include="PolySharp" Version="1.9.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
-	  <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <Compile Remove="Program.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-	  <Compile Remove="Async\*.cs" />
+    <Compile Remove="Async\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
