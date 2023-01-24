@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class AtMostTest
@@ -29,47 +30,24 @@ namespace MoreLinq.Test
                         Throws.ArgumentOutOfRangeException("count"));
         }
 
-        [Test]
-        public void AtMostWithEmptySequenceHasAtMostZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.That(xs.AtMost(0), Is.True);
-        }
+        public static IEnumerable<TestCaseData> AtMostSource =>
+            from k in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 1, Count: 0),
+                (Size: 1, Count: 1),
+                (Size: 1, Count: 2),
+                (Size: 3, Count: 1)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size <= e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
-        [Test]
-        public void AtMostWithEmptySequenceHasAtMostOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.That(xs.AtMost(1), Is.True);
-        }
-
-        [Test]
-        public void AtMostWithSingleElementHasAtMostZeroElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.That(xs.AtMost(0), Is.False);
-        }
-
-        [Test]
-        public void AtMostWithSingleElementHasAtMostOneElement()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.That(xs.AtMost(1), Is.True);
-        }
-
-        [Test]
-        public void AtMostWithSingleElementHasAtMostManyElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.That(xs.AtMost(2), Is.True);
-        }
-
-        [Test]
-        public void AtMostWithManyElementsHasAtMostOneElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.That(xs.AtMost(1), Is.False);
-        }
+        [TestCaseSource(nameof(AtMostSource))]
+        public bool AtMost(SourceKind sourceKind, int sequenceSize, int atMostAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtMost(atMostAssertCount);
 
         [Test]
         public void AtMostDoesNotIterateUnnecessaryElements()

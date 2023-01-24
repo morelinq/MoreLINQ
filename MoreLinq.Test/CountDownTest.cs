@@ -77,7 +77,7 @@ namespace MoreLinq.Test
             {
                 Source = xs, Count = count, Countdown = countdown
             })
-            from kind in new[] { SourceKind.BreakingList, SourceKind.BreakingReadOnlyList }
+            from kind in SourceKinds.List
             select new TestCaseData(e.Source.ToSourceKind(kind), e.Count)
                 .Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
                 .SetName($"{nameof(WithList)}({kind} {{ {string.Join(", ", e.Source)} }}, {e.Count})");
