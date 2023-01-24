@@ -99,7 +99,7 @@ namespace MoreLinq
                 _generatorIterator = _generator.GetEnumerator();
                 // we must advance the nested loop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
-                _generatorIterator.MoveNext();
+                _ = _generatorIterator.MoveNext();
                 _hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 

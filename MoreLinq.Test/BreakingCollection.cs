@@ -24,7 +24,7 @@ namespace MoreLinq.Test
     {
         protected readonly IList<T> List;
 
-        public BreakingCollection(params T[] values) : this ((IList<T>) values) {}
+        public BreakingCollection(params T[] values) : this((IList<T>)values) { }
         public BreakingCollection(IList<T> list) => List = list;
 
         public int Count => List.Count;

@@ -31,8 +31,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestLeadIsLazy()
         {
-            new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
-            new BreakingSequence<int>().Lead(5, -1, BreakingFunc.Of<int, int, int>());
+            _ = new BreakingSequence<int>().Lead(5, BreakingFunc.Of<int, int, int>());
+            _ = new BreakingSequence<int>().Lead(5, -1, BreakingFunc.Of<int, int, int>());
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace MoreLinq.Test
             var bf = BreakingFunc.Of<int, int>();
             var bfg = BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>();
 
-            bs.FullGroupJoin(bs, bf, bf, bfg);
+            _ = bs.FullGroupJoin(bs, bf, bf, bfg);
         }
 
         [TestCase(CustomResult)]

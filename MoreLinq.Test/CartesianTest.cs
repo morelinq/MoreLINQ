@@ -31,9 +31,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestCartesianIsLazy()
         {
-            new BreakingSequence<string>()
-                .Cartesian(new BreakingSequence<int>(),
-                           BreakingFunc.Of<string, int, bool>());
+            var bs = new BreakingSequence<string>();
+            _ = bs.Cartesian(new BreakingSequence<int>(), BreakingFunc.Of<string, int, bool>());
         }
 
         /// <summary>
@@ -82,7 +81,7 @@ namespace MoreLinq.Test
         {
             const int countA = 100;
             const int countB = 75;
-            const int expectedCount = countA*countB;
+            const int expectedCount = countA * countB;
             using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence();
             using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence();
 

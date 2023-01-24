@@ -161,12 +161,7 @@ namespace MoreLinq
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
             if (rand == null) throw new ArgumentNullException(nameof(rand));
-
-            if (minValue > maxValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minValue),
-                    $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
-            }
+            if (minValue > maxValue) throw new ArgumentOutOfRangeException(nameof(minValue), $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
         }

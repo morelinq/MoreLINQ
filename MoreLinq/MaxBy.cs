@@ -215,7 +215,7 @@ namespace MoreLinq
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             comparer ??= Comparer<TKey>.Default;
-            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => comparer.Compare(x, y));
+            return new ExtremaEnumerable<TSource, TKey>(source, selector, comparer.Compare);
         }
 
         sealed class ExtremaEnumerable<T, TKey> : IExtremaEnumerable<T>
@@ -279,8 +279,8 @@ namespace MoreLinq
 
                     public override void Add(ref Queue<T>? store, int? limit, T item)
                     {
-                        if (limit is {} n && store is {} queue && queue.Count == n)
-                            queue.Dequeue();
+                        if (limit is { } n && store is { } queue && queue.Count == n)
+                            _ = queue.Dequeue();
                         (store ??= new Queue<T>()).Enqueue(item);
                     }
                 }
@@ -347,6 +347,8 @@ namespace MoreLinq
                             break;
                         case 0:
                             extrema.Add(ref store, limit, item);
+                            break;
+                        default:
                             break;
                     }
                 }

@@ -22,7 +22,7 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        #if MORELINQ
+#if MORELINQ
 
         static readonly Func<int, int, Exception> DefaultErrorSelector = OnAssertCountFailure;
 
@@ -77,7 +77,7 @@ namespace MoreLinq
         internal static string FormatSequenceLengthErrorMessage(int cmp, int count) =>
             $"Sequence contains too {(cmp < 0 ? "few" : "many")} elements when exactly {count:N0} {(count == 1 ? "was" : "were")} expected.";
 
-        #endif
+#endif
 
         static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)
@@ -87,23 +87,23 @@ namespace MoreLinq
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
             return
-                source.TryGetCollectionCount() is {} collectionCount
+                source.TryGetCollectionCount() is { } collectionCount
                 ? collectionCount == count
                   ? source
                   : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))
                 : _(); IEnumerable<TSource> _()
+            {
+                var iterations = 0;
+                foreach (var element in source)
                 {
-                    var iterations = 0;
-                    foreach (var element in source)
-                    {
-                        iterations++;
-                        if (iterations > count)
-                            throw errorSelector(1, count);
-                        yield return element;
-                    }
-                    if (iterations != count)
-                        throw errorSelector(-1, count);
+                    iterations++;
+                    if (iterations > count)
+                        throw errorSelector(1, count);
+                    yield return element;
                 }
+                if (iterations != count)
+                    throw errorSelector(-1, count);
+            }
         }
     }
 }

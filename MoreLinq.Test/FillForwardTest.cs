@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void FillForwardIsLazy()
         {
-            new BreakingSequence<object>().FillForward();
+            _ = new BreakingSequence<object>().FillForward();
         }
 
         [Test]

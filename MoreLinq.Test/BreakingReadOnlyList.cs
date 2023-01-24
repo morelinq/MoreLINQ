@@ -31,8 +31,8 @@ namespace MoreLinq.Test
     {
         readonly IReadOnlyList<T> _list;
 
-        public BreakingReadOnlyList(params T[] values) : this ((IReadOnlyList<T>) values) {}
-        public BreakingReadOnlyList(IReadOnlyList<T> list) : base (list)
+        public BreakingReadOnlyList(params T[] values) : this((IReadOnlyList<T>)values) { }
+        public BreakingReadOnlyList(IReadOnlyList<T> list) : base(list)
             => _list = list;
 
         public T this[int index] => _list[index];

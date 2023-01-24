@@ -31,7 +31,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestExcludeIsLazy()
         {
-            new BreakingSequence<int>().Exclude(0, 10);
+            _ = new BreakingSequence<int>().Exclude(0, 10);
         }
 
         /// <summary>

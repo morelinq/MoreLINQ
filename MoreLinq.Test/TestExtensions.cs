@@ -87,9 +87,8 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
-        {
-            return sourceKind switch
+        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
+            sourceKind switch
             {
                 SourceKind.Sequence => input.Select(x => x),
                 SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
@@ -98,6 +97,5 @@ namespace MoreLinq.Test
                 SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input.ToList()),
                 _ => throw new ArgumentException(null, nameof(sourceKind))
             };
-        }
     }
 }
