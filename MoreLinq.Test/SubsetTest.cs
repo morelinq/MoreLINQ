@@ -32,8 +32,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestSubsetsIsLazy()
         {
-            new BreakingSequence<int>().Subsets();
-            new BreakingSequence<int>().Subsets(5);
+            _ = new BreakingSequence<int>().Subsets();
+            _ = new BreakingSequence<int>().Subsets(5);
         }
 
         /// <summary>

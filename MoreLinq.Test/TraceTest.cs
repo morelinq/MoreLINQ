@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void TraceSequenceWithSomeNullElements()
         {
-            var trace = Lines(CaptureTrace(() => new int?[] {1, null, 2, null, 3}.Trace().Consume()));
+            var trace = Lines(CaptureTrace(() => new int?[] { 1, null, 2, null, 3 }.Trace().Consume()));
             trace.AssertSequenceEqual("1", string.Empty, "2", string.Empty, "3");
         }
 
@@ -93,7 +93,7 @@ namespace MoreLinq.Test
         {
             var writer = new StringWriter();
             var listener = new TextWriterTraceListener(writer);
-            Trace.Listeners.Add(listener);
+            _ = Trace.Listeners.Add(listener);
             try
             {
                 action();

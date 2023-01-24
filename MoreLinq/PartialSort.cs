@@ -243,7 +243,7 @@ namespace MoreLinq
                 if (keys != null)
                 {
                     var key = Assume.NotNull(keySelector)(item);
-                    if (Insert(keys, key, keyComparer) is {} i)
+                    if (Insert(keys, key, keyComparer) is { } i)
                     {
                         if (top.Count == count)
                             top.RemoveAt(count - 1);

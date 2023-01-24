@@ -121,12 +121,14 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var lastIndex = -1;
-            var indexed = (List<KeyValuePair<int, T>>?) null;
+            var indexed = (List<KeyValuePair<int, T>>?)null;
             List<KeyValuePair<int, T>> Indexed() => indexed ??= new List<KeyValuePair<int, T>>();
 
             foreach (var e in source)
             {
+#pragma warning disable IDE0010 // Add missing cases (false negative)
                 switch (indexSelector(e))
+#pragma warning restore IDE0010 // Add missing cases
                 {
                     case < 0:
 #pragma warning disable CA2201 // Do not raise reserved exception types

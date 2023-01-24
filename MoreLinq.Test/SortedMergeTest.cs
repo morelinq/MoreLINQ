@@ -36,7 +36,7 @@ namespace MoreLinq.Test
             var sequenceA = new BreakingSequence<int>();
             var sequenceB = new BreakingSequence<int>();
 
-            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+            _ = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
         }
 
         /// <summary>

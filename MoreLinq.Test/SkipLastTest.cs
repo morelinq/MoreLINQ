@@ -54,7 +54,7 @@ namespace MoreLinq.Test
         [Test]
         public void SkipLastIsLazy()
         {
-            new BreakingSequence<object>().SkipLast(1);
+            _ = new BreakingSequence<object>().SkipLast(1);
         }
     }
 }

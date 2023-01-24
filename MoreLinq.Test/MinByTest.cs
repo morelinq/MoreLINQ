@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void MinByIsLazy()
         {
-            new BreakingSequence<int>().MinBy(BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().MinBy(BreakingFunc.Of<int, int>());
         }
 
         [Test]

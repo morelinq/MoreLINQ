@@ -37,7 +37,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source)
         {
-            return Trace(source, (string?) null);
+            return Trace(source, (string?)null);
         }
 
         /// <summary>

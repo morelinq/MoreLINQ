@@ -63,7 +63,7 @@ namespace MoreLinq
 
             IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
-                bool hasMore = true;
+                var hasMore = true;
                 bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
 
                 using var e = source.GetEnumerator();

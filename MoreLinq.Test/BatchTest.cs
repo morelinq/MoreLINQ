@@ -92,7 +92,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchIsLazy()
         {
-            new BreakingSequence<object>().Batch(1);
+            _ = new BreakingSequence<object>().Batch(1);
         }
 
         [TestCase(SourceKind.BreakingCollection  , 0)]

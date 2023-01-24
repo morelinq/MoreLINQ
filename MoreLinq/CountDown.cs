@@ -57,29 +57,25 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.TryAsListLike() is {} listLike
+            return source.TryAsListLike() is { } listLike
                    ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is {} collectionCount
+                   : source.TryGetCollectionCount() is { } collectionCount
                      ? IterateCollection(collectionCount)
                      : IterateSequence();
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
             {
-                var countdown = Math.Min(count, list.Count);
+                var listCount = list.Count;
+                var countdown = Math.Min(count, listCount);
 
-                for (var i = 0; i < list.Count; i++)
-                {
-                    var cd = list.Count - i <= count
-                           ? --countdown
-                           : (int?) null;
-                    yield return resultSelector(list[i], cd);
-                }
+                for (var i = 0; i < listCount; i++)
+                    yield return resultSelector(list[i], listCount - i <= count ? --countdown : null);
             }
 
             IEnumerable<TResult> IterateCollection(int i)
             {
                 foreach (var item in source)
-                    yield return resultSelector(item, i-- <= count ? i : (int?) null);
+                    yield return resultSelector(item, i-- <= count ? i : null);
             }
 
             IEnumerable<TResult> IterateSequence()

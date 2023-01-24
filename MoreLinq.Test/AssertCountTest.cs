@@ -104,13 +104,13 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountIsLazy()
         {
-            new BreakingSequence<object>().AssertCount(0);
+            _ = new BreakingSequence<object>().AssertCount(0);
         }
 
         [Test]
         public void AssertCountWithCollectionIsLazy()
         {
-            new BreakingCollection<int>(new int[5]).AssertCount(0);
+            _ = new BreakingCollection<int>(new int[5]).AssertCount(0);
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountWithReadOnlyCollectionIsLazy()
         {
-            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+            _ = new BreakingReadOnlyCollection<object>(5).AssertCount(0);
         }
     }
 }

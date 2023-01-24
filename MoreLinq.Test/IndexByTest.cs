@@ -72,7 +72,7 @@ namespace MoreLinq.Test
         [Test]
         public void IndexByIsLazy()
         {
-            new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
+            _ = new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
         }
 
         [Test]
