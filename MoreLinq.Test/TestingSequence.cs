@@ -160,11 +160,11 @@ namespace MoreLinq.Test
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
             {
-                using (var _ = enumerable.GetEnumerator())
+                using (enumerable.GetEnumerator())
                     yield return 1;
-                using (var _ = enumerable.GetEnumerator())
+                using (enumerable.GetEnumerator())
                     yield return 2;
-                using (var _ = enumerable.GetEnumerator())
+                using (enumerable.GetEnumerator())
                     yield return 3;
 
                 yield break;
