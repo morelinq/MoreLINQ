@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
     using NUnit.Framework;
     using static TestingSequence;
 
@@ -149,10 +150,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(ExpectedDisposal));
+            AssertTestingSequenceException(Act, ExpectedDisposal);
         }
 
         [Test]
@@ -176,10 +174,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(TooManyEnumerations));
+            AssertTestingSequenceException(Act, TooManyEnumerations);
         }
 
         [Test]
@@ -200,10 +195,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(TooManyDisposals));
+            AssertTestingSequenceException(Act, TooManyDisposals);
         }
 
         [Test]
@@ -224,10 +216,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(MoveNextPostDisposal));
+            AssertTestingSequenceException(Act, MoveNextPostDisposal);
         }
 
         [Test]
@@ -249,10 +238,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(MoveNextPostEnumeration));
+            AssertTestingSequenceException(Act, MoveNextPostEnumeration);
         }
 
         [Test]
@@ -273,10 +259,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(CurrentPostDisposal));
+            AssertTestingSequenceException(Act, CurrentPostDisposal);
         }
 
         [Test]
@@ -298,10 +281,7 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(CurrentPostEnumeration));
+            AssertTestingSequenceException(Act, CurrentPostEnumeration);
         }
 
         [Test]
@@ -321,10 +301,10 @@ namespace MoreLinq.Test
                 InvalidUsage(xs).Consume();
             }
 
-            Assert.That(
-                Act,
-                Throws.InstanceOf<AssertionException>()
-                    .With.Message.Contains(SimultaneousEnumerations));
+            AssertTestingSequenceException(Act, SimultaneousEnumerations);
         }
+
+        static void AssertTestingSequenceException(TestDelegate code, string message) =>
+            Assert.That(code, Throws.InstanceOf<AssertionException>().With.Message.Matches(@"^\s*" + Regex.Escape(message)));
     }
 }
