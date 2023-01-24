@@ -205,7 +205,7 @@ namespace MoreLinq.Test
             {
                 var enumerator = enumerable.GetEnumerator();
                 enumerator.Dispose();
-                enumerator.MoveNext();
+                _ = enumerator.MoveNext();
 
                 yield break;
             }
@@ -227,7 +227,7 @@ namespace MoreLinq.Test
                 using var enumerator = enumerable.GetEnumerator();
                 while (enumerator.MoveNext())
                     yield return enumerator.Current;
-                enumerator.MoveNext();
+                _ = enumerator.MoveNext();
 
                 yield break;
             }
