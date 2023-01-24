@@ -74,7 +74,7 @@ namespace MoreLinq
             comparer ??= EqualityComparer<T>.Default;
 
             List<T> secondList;
-#pragma warning disable IDE0075 // Simplify conditional expression
+#pragma warning disable IDE0075 // Simplify conditional expression (makes it worse)
             return second.TryGetCollectionCount() is { } secondCount
                    ? first.TryGetCollectionCount() is { } firstCount && secondCount > firstCount
                      ? false
