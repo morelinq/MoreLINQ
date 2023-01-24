@@ -59,7 +59,6 @@ namespace MoreLinq
             Func<TSource, TSource, TResult> bothSelector)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-
             return first.RightJoin(second, keySelector,
                                    secondSelector, bothSelector,
                                    null);
@@ -106,7 +105,6 @@ namespace MoreLinq
             IEqualityComparer<TKey>? comparer)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-
             return first.RightJoin(second,
                                    keySelector, keySelector,
                                    secondSelector, bothSelector,

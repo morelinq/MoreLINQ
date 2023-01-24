@@ -184,7 +184,6 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-
             return PartialSortByImpl(source, count, keySelector, comparer, null);
         }
 

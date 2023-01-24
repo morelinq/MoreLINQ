@@ -78,7 +78,6 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-
             return PadStartImpl(source, width, padding, null);
         }
 
@@ -113,7 +112,6 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
             if (width < 0) throw new ArgumentException(null, nameof(width));
-
             return PadStartImpl(source, width, default, paddingSelector);
         }
 

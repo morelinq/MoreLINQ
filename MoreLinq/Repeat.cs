@@ -35,7 +35,6 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Repeat count must be greater than or equal to zero.");
-
             return RepeatImpl(sequence, count);
         }
 

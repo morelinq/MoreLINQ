@@ -47,7 +47,6 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-
             return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
         }
 

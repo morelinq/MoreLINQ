@@ -53,7 +53,6 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-
             return direction == OrderByDirection.Ascending
                        ? source.OrderBy(keySelector, comparer)
                        : source.OrderByDescending(keySelector, comparer);
@@ -89,7 +88,6 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-
             return direction == OrderByDirection.Ascending
                        ? source.ThenBy(keySelector, comparer)
                        : source.ThenByDescending(keySelector, comparer);
