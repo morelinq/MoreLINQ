@@ -42,9 +42,15 @@ namespace MoreLinq
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
 
+#if NET6_0_OR_GREATER
+        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector)
+#else
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector)
+#endif
         {
             return ExceptBy(first, second, keySelector, null);
         }
@@ -70,10 +76,17 @@ namespace MoreLinq
         /// <returns>A sequence of elements from <paramref name="first"/> whose key was not also a key for
         /// any element in <paramref name="second"/>.</returns>
 
+#if NET6_0_OR_GREATER
+        public static IEnumerable<TSource> ExceptBy<TSource, TKey>(IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey>? keyComparer)
+#else
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey>? keyComparer)
+#endif
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
