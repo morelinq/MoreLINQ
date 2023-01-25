@@ -135,6 +135,28 @@ namespace MoreLinq.Test
     public class TestingSequenceTest
     {
         [Test]
+        public void TestingSequencePublicPropertiesTest()
+        {
+            using var sequence = Of(1, 2, 3, 4);
+            Assert.That(sequence.IsDisposed, Is.False);
+            Assert.That(sequence.MoveNextCallCount, Is.EqualTo(0));
+
+            var iter = sequence.GetEnumerator();
+            Assert.That(sequence.IsDisposed, Is.False);
+            Assert.That(sequence.MoveNextCallCount, Is.EqualTo(0));
+
+            for (var i = 1; i <= 4; i++)
+            {
+                _ = iter.MoveNext();
+                Assert.That(sequence.IsDisposed, Is.False);
+                Assert.That(sequence.MoveNextCallCount, Is.EqualTo(i));
+            }
+
+            iter.Dispose();
+            Assert.That(sequence.IsDisposed, Is.True);
+        }
+
+        [Test]
         public void TestingSequenceShouldValidateDisposal()
         {
             static IEnumerable<int> InvalidUsage(IEnumerable<int> enumerable)
