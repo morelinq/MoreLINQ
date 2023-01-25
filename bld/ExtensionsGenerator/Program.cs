@@ -268,7 +268,17 @@ static void Run(IEnumerable<string> args)
                 select
                     MethodDeclaration(md.ReturnType, md.Identifier)
                         .WithAttributeLists(md.AttributeLists)
-                        .WithModifiers(md.Modifiers)
+                        .WithModifiers(
+                            new SyntaxTokenList(
+                                md.Modifiers[0]
+                                    .WithLeadingTrivia(
+                                        from lt in md.Modifiers[0].LeadingTrivia
+                                        where !lt.IsKind(SyntaxKind.DisabledTextTrivia)
+                                        where !lt.IsKind(SyntaxKind.IfDirectiveTrivia)
+                                        where !lt.IsKind(SyntaxKind.ElseDirectiveTrivia)
+                                        where !lt.IsKind(SyntaxKind.EndIfDirectiveTrivia)
+                                        select lt),
+                                md.Modifiers[1]))
                         .WithTypeParameterList(md.TypeParameterList)
                         .WithConstraintClauses(md.ConstraintClauses)
                         .WithParameterList(md.ParameterList)
