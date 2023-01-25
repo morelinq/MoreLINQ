@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#if !NETSTANDARD2_1 && !NETCOREAPP2_0_OR_GREATER
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -80,3 +82,5 @@ namespace MoreLinq.Test
         }
     }
 }
+
+#endif

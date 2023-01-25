@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#if !NET6_0_OR_GREATER
+
 namespace MoreLinq.Test
 {
     using System;
@@ -74,3 +76,5 @@ namespace MoreLinq.Test
         }
     }
 }
+
+#endif
