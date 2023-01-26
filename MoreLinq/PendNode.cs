@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -42,7 +42,7 @@ namespace MoreLinq
 
             public Item(T item, bool isPrepend, PendNode<T> next)
             {
-                if (next == null) throw new ArgumentNullException(nameof(next));
+                Guard.IsNotNull(next);
 
                 Value       = item;
                 IsPrepend   = isPrepend;

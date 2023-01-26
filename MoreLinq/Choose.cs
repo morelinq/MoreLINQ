@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -52,8 +53,8 @@ namespace MoreLinq
         public static IEnumerable<TResult> Choose<T, TResult>(this IEnumerable<T> source,
             Func<T, (bool, TResult)> chooser)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (chooser == null) throw new ArgumentNullException(nameof(chooser));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(chooser);
 
             return _(); IEnumerable<TResult> _()
             {

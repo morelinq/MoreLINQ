@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Reactive
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using Delegate = Delegating.Delegate;
 
@@ -42,9 +43,10 @@ namespace MoreLinq.Reactive
         /// <returns>The subscription, which when disposed, will unsubscribe
         /// from <paramref name="source"/>.</returns>
 
-        public static IDisposable Subscribe<T>(this IObservable<T> source, Action<T> onNext, Action<Exception>? onError = null, Action? onCompleted = null) =>
-            source == null
-            ? throw new ArgumentNullException(nameof(source))
-            : source.Subscribe(Delegate.Observer(onNext, onError, onCompleted));
+        public static IDisposable Subscribe<T>(this IObservable<T> source, Action<T> onNext, Action<Exception>? onError = null, Action? onCompleted = null)
+        {
+            Guard.IsNotNull(source);
+            return source.Subscribe(Delegate.Observer(onNext, onError, onCompleted));
+        }
     }
 }

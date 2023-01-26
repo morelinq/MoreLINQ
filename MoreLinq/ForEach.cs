@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -31,8 +32,8 @@ namespace MoreLinq
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (action == null) throw new ArgumentNullException(nameof(action));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(action);
 
             foreach (var element in source)
                 action(element);
@@ -49,8 +50,8 @@ namespace MoreLinq
 
         public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (action == null) throw new ArgumentNullException(nameof(action));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(action);
 
             var index = 0;
             foreach (var element in source)

@@ -26,6 +26,7 @@
 
 namespace Delegating
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Threading;
 
@@ -44,8 +45,11 @@ namespace Delegating
     {
         Action? _delegatee;
 
-        public DelegatingDisposable(Action delegatee) =>
-            _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
+        public DelegatingDisposable(Action delegatee)
+        {
+            Guard.IsNotNull(delegatee);
+            _delegatee = delegatee;
+        }
 
         public void Dispose()
         {
@@ -66,7 +70,8 @@ namespace Delegating
                                   Action<Exception>? onError = null,
                                   Action? onCompleted = null)
         {
-            _onNext = onNext ?? throw new ArgumentNullException(nameof(onNext));
+            Guard.IsNotNull(onNext);
+            _onNext = onNext;
             _onError = onError;
             _onCompleted = onCompleted;
         }

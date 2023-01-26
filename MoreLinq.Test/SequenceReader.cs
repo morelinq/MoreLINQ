@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace MoreLinq.Test
     {
         public static SequenceReader<T> Read<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return new SequenceReader<T>(source);
         }
     }
@@ -59,7 +60,7 @@ namespace MoreLinq.Test
 
         static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.GetEnumerator();
         }
 

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Linq;
     using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
 #endif
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
 
             return count < 1 ? Enumerable.Empty<TSource>()
                  : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))

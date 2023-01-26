@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -45,8 +46,8 @@ namespace MoreLinq
 
         public static string ToDelimitedString<TSource>(this IEnumerable<TSource> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(delimiter);
             return ToDelimitedStringImpl(source, delimiter, (sb, e) => sb.Append(e));
         }
 

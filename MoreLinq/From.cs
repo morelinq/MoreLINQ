@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -109,7 +110,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(params Func<T>[] functions)
         {
-            if (functions == null) throw new ArgumentNullException(nameof(functions));
+            Guard.IsNotNull(functions);
             return Evaluate(functions);
         }
     }

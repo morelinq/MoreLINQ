@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -63,7 +64,7 @@ namespace MoreLinq
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
 #endif
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return new HashSet<TSource>(source, comparer);
         }
     }

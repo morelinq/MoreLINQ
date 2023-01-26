@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -54,8 +55,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> TakeUntil<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(predicate);
 
             return _(); IEnumerable<TSource> _()
             {

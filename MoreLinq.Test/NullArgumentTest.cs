@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -56,9 +57,20 @@ namespace MoreLinq.Test
                 Assert.That(e, Is.InstanceOf<ArgumentNullException>().With.Property(nameof(ArgumentNullException.ParamName)).EqualTo(paramName));
                 Debug.Assert(e is not null);
                 var stackTrace = new StackTrace(e, false);
-                var stackFrame = stackTrace.GetFrames().First();
-                var actualType = stackFrame.GetMethod()?.DeclaringType;
-                Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
+                var stackFrames = stackTrace.GetFrames();
+
+                // `Guard.IsNotNull()` adds additional stack frames
+                // so find first non-CommunityToolkit.Diagnostics
+                for (var i = 0; i < stackFrames.Length; i++)
+                {
+                    var actualType = stackFrames[i]?.GetMethod()?.DeclaringType;
+                    if (actualType?.Namespace != "CommunityToolkit.Diagnostics")
+                    {
+                        // top _non_-`Guard` should be `MoreEnumerable`
+                        Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
+                        break;
+                    }
+                }
             });
 
         static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
@@ -226,7 +238,7 @@ namespace MoreLinq.Test
             {
                 public System.Linq.IOrderedEnumerable<T?> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
                 {
-                    if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+                    Guard.IsNotNull(keySelector);
                     return this;
                 }
             }

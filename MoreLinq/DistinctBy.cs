@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -75,8 +76,8 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
 #endif
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
 
             return _(); IEnumerable<TSource> _()
             {

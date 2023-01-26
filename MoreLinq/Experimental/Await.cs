@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Concurrent;
@@ -64,12 +65,14 @@ namespace MoreLinq.Experimental
 
         AwaitQueryOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
         {
-            MaxConcurrency = maxConcurrency is null or > 0
+            Guard.IsNotNull(maxConcurrency);
+            Guard.IsNotNull(scheduler);
+            MaxConcurrency = maxConcurrency is > 0
                            ? maxConcurrency
                            : throw new ArgumentOutOfRangeException(
                                  nameof(maxConcurrency), maxConcurrency,
                                  "Maximum concurrency must be 1 or greater.");
-            Scheduler      = scheduler ?? throw new ArgumentNullException(nameof(scheduler));
+            Scheduler      = scheduler;
             PreserveOrder  = preserveOrder;
         }
 
@@ -146,7 +149,7 @@ namespace MoreLinq.Experimental
 
         public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source)
         {
-            if (source is null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return MaxConcurrency(source, 1);
         }
 
@@ -163,7 +166,7 @@ namespace MoreLinq.Experimental
 
         public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value)
         {
-            if (source is null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.WithOptions(source.Options.WithMaxConcurrency(value));
         }
 
@@ -179,7 +182,7 @@ namespace MoreLinq.Experimental
 
         public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source)
         {
-            if (source is null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.WithOptions(source.Options.WithMaxConcurrency(null));
         }
 
@@ -196,8 +199,8 @@ namespace MoreLinq.Experimental
 
         public static IAwaitQuery<T> Scheduler<T>(this IAwaitQuery<T> source, TaskScheduler value)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(value);
             return source.WithOptions(source.Options.WithScheduler(value));
         }
 
@@ -249,7 +252,7 @@ namespace MoreLinq.Experimental
 
         public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value)
         {
-            if (source is null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.WithOptions(source.Options.WithPreserveOrder(value));
         }
 
@@ -419,8 +422,8 @@ namespace MoreLinq.Experimental
             Func<T, CancellationToken, Task<TTaskResult>> evaluator,
             Func<T, Task<TTaskResult>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (evaluator == null) throw new ArgumentNullException(nameof(evaluator));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(evaluator);
 
             return
                 AwaitQuery.Create(
@@ -634,10 +637,10 @@ namespace MoreLinq.Experimental
             int? maxConcurrency,
             CancellationToken cancellationToken)
         {
-            if (enumerator == null) throw new ArgumentNullException(nameof(enumerator));
-            if (starter == null) throw new ArgumentNullException(nameof(starter));
-            if (onTaskCompletion == null) throw new ArgumentNullException(nameof(onTaskCompletion));
-            if (onEnd == null) throw new ArgumentNullException(nameof(onEnd));
+            Guard.IsNotNull(enumerator);
+            Guard.IsNotNull(starter);
+            Guard.IsNotNull(onTaskCompletion);
+            Guard.IsNotNull(onEnd);
             if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
 
             using (enumerator)
@@ -718,7 +721,7 @@ namespace MoreLinq.Experimental
 
             public IAwaitQuery<T> WithOptions(AwaitQueryOptions options)
             {
-                if (options == null) throw new ArgumentNullException(nameof(options));
+                Guard.IsNotNull(options);
                 return Options == options ? this : new AwaitQuery<T>(_impl, options);
             }
 

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -80,10 +81,10 @@ namespace MoreLinq
             Func<TState, TKey, TSource, TState> accumulator,
             IEqualityComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            if (seedSelector == null) throw new ArgumentNullException(nameof(seedSelector));
-            if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
+            Guard.IsNotNull(seedSelector);
+            Guard.IsNotNull(accumulator);
 
             return _(comparer ?? EqualityComparer<TKey>.Default);
 

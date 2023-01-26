@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -178,9 +179,9 @@ namespace MoreLinq
             TSource separator, IEqualityComparer<TSource>? comparer, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
             comparer ??= EqualityComparer<TSource>.Default;
             return Split(source, item => comparer.Equals(item, separator), count, resultSelector);
@@ -262,10 +263,10 @@ namespace MoreLinq
             Func<TSource, bool> separatorFunc, int count,
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (separatorFunc == null) throw new ArgumentNullException(nameof(separatorFunc));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(separatorFunc);
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
             return _(); IEnumerable<TResult> _()
             {

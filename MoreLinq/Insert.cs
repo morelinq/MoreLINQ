@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -51,8 +52,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
             return _(); IEnumerable<T> _()

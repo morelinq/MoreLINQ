@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace MoreLinq.Experimental
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source) =>
             source switch
             {
-                null => throw new ArgumentNullException(nameof(source)),
+                null => ThrowHelper.ThrowArgumentNullException<IEnumerable<T>>(nameof(source)),
                 ICollection<T> => source,
                 IReadOnlyCollection<T> => source,
                 MemoizedEnumerable<T> => source,
@@ -73,7 +74,8 @@ namespace MoreLinq.Experimental
 
         public MemoizedEnumerable(IEnumerable<T> sequence)
         {
-            _source = sequence ?? throw new ArgumentNullException(nameof(sequence));
+            Guard.IsNotNull(sequence);
+            _source = sequence;
             _locker = new object();
         }
 

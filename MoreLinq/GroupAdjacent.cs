@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -84,8 +85,8 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
 
             return GroupAdjacent(source, keySelector, IdFn, comparer);
         }
@@ -161,9 +162,9 @@ namespace MoreLinq
             Func<TSource, TElement> elementSelector,
             IEqualityComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            if (elementSelector == null) throw new ArgumentNullException(nameof(elementSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
+            Guard.IsNotNull(elementSelector);
 
             return GroupAdjacentImpl(source, keySelector, elementSelector, CreateGroupAdjacentGrouping,
                                      comparer ?? EqualityComparer<TKey>.Default);
@@ -201,9 +202,9 @@ namespace MoreLinq
             Func<TSource, TKey> keySelector,
             Func<TKey, IEnumerable<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
+            Guard.IsNotNull(resultSelector);
 
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
@@ -247,9 +248,9 @@ namespace MoreLinq
             Func<TKey, IEnumerable<TSource>, TResult> resultSelector,
             IEqualityComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
+            Guard.IsNotNull(resultSelector);
 
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);

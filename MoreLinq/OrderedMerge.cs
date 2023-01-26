@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -180,7 +181,7 @@ namespace MoreLinq
             Func<T, T, TResult> bothSelector,
             IComparer<TKey>? comparer)
         {
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector)); // Argument name changes to 'firstKeySelector'
+            Guard.IsNotNull(keySelector); // Argument name changes to 'firstKeySelector'
             return OrderedMerge(first, second, keySelector, keySelector, firstSelector, secondSelector, bothSelector, comparer);
         }
 
@@ -274,13 +275,13 @@ namespace MoreLinq
             Func<TFirst, TSecond, TResult> bothSelector,
             IComparer<TKey>? comparer)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (firstKeySelector == null) throw new ArgumentNullException(nameof(firstKeySelector));
-            if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
-            if (firstSelector == null) throw new ArgumentNullException(nameof(firstSelector));
-            if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
-            if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
+            Guard.IsNotNull(firstKeySelector);
+            Guard.IsNotNull(secondKeySelector);
+            Guard.IsNotNull(firstSelector);
+            Guard.IsNotNull(bothSelector);
+            Guard.IsNotNull(secondSelector);
 
             return _(comparer ?? Comparer<TKey>.Default);
 

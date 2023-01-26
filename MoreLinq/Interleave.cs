@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -52,10 +53,10 @@ namespace MoreLinq
 
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
-            if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
+            Guard.IsNotNull(sequence);
+            Guard.IsNotNull(otherSequences);
             if (otherSequences.Any(s => s == null))
-                throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
+                ThrowHelper.ThrowArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
             return Impl(otherSequences.Prepend(sequence));
 

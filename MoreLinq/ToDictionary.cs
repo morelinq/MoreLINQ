@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -57,7 +57,7 @@ namespace MoreLinq
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.ToDictionary(e => e.Key, e => e.Value, comparer);
         }
 
@@ -96,7 +96,7 @@ namespace MoreLinq
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.ToDictionary(e => e.Key, e => e.Value, comparer);
         }
     }

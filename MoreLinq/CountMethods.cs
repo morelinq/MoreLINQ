@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -134,7 +135,7 @@ namespace MoreLinq
 
         static bool QuantityIterator<T>(IEnumerable<T> source, int limit, int min, int max)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
 
             var count = source.TryAsCollectionLike()?.Count ?? source.CountUpTo(limit);
 
@@ -164,8 +165,8 @@ namespace MoreLinq
 
         public static int CompareCount<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
 
             if (first.TryAsCollectionLike() is { Count: var firstCount })
             {

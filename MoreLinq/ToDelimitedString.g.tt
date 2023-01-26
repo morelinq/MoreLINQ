@@ -46,6 +46,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -94,8 +95,8 @@ namespace MoreLinq
 <#= type.IsNotClsCompliant ? "        [CLSCompliant(false)]" : string.Empty #>
         public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(delimiter);
             return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 <#      } #>

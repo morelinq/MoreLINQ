@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Experimental;
@@ -33,7 +34,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence, int count)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            Guard.IsNotNull(sequence);
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Repeat count must be greater than or equal to zero.");
             return RepeatImpl(sequence, count);
         }
@@ -47,7 +48,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> sequence)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            Guard.IsNotNull(sequence);
             return RepeatImpl(sequence, null);
         }
 

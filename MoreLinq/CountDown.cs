@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -54,8 +55,8 @@ namespace MoreLinq
         public static IEnumerable<TResult> CountDown<T, TResult>(this IEnumerable<T> source,
             int count, Func<T, int?, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
 
             return source.TryAsListLike() is { } listLike
                    ? IterateList(listLike)

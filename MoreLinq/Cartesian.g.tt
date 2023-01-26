@@ -32,6 +32,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Experimental;
@@ -111,9 +112,9 @@ IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
 Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult> resultSelector)
         {
 <#      foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
+            Guard.IsNotNull(<#= arg.Ordinal #>);
 <#      } #>
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
             return _(); IEnumerable<TResult> _()
             {

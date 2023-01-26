@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -31,7 +31,7 @@ namespace MoreLinq
 
         public static void Consume<T>(this IEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             foreach (var _ in source)
             {
             }

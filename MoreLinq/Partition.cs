@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -83,9 +84,9 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<T> source,
             Func<T, bool> predicate, Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(predicate);
+            Guard.IsNotNull(resultSelector);
 
             return source.GroupBy(predicate).Partition(resultSelector);
         }
@@ -112,7 +113,7 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
             return source.Partition(key1: true, key2: false, (t, f, _) => resultSelector(t, f));
         }
 
@@ -139,7 +140,7 @@ namespace MoreLinq
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
         {
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
             return source.Partition(key1: true, key2: false, key3: null, (t, f, n, _) => resultSelector(t, f, n));
         }
 
@@ -201,7 +202,7 @@ namespace MoreLinq
             TKey key, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
             return PartitionImpl(source, 1, key, key2: default, key3: default, comparer,
                                  (a, _, _, rest) => resultSelector(a, rest));
@@ -268,7 +269,7 @@ namespace MoreLinq
             TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
             Func<IEnumerable<TElement>, IEnumerable<TElement>, IEnumerable<IGrouping<TKey, TElement>>, TResult> resultSelector)
         {
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
             return PartitionImpl(source, 2, key1, key2, key3: default, comparer,
                                  (a, b, c, rest) => resultSelector(a, b, rest));
@@ -344,8 +345,8 @@ namespace MoreLinq
         {
             Debug.Assert(count is > 0 and <= 3);
 
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
 
             comparer ??= EqualityComparer<TKey>.Default;
 

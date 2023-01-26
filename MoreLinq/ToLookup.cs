@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -55,7 +55,7 @@ namespace MoreLinq
         public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.ToLookup(e => e.Key, e => e.Value, comparer);
         }
 
@@ -92,7 +92,7 @@ namespace MoreLinq
         public static ILookup<TKey, TValue> ToLookup<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.ToLookup(e => e.Key, e => e.Value, comparer);
         }
     }

@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -39,7 +39,7 @@ namespace MoreLinq
         public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> source, int count)
 #endif
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
 
             return count < 1 ? source
                  : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))

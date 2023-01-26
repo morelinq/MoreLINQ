@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -62,9 +63,9 @@ namespace MoreLinq
             IEnumerable<TSecond> second,
             Func<TFirst?, TSecond?, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
+            Guard.IsNotNull(resultSelector);
 
             return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b), 1);
         }
@@ -114,10 +115,10 @@ namespace MoreLinq
             IEnumerable<T3> third,
             Func<T1?, T2?, T3?, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (third == null) throw new ArgumentNullException(nameof(third));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
+            Guard.IsNotNull(third);
+            Guard.IsNotNull(resultSelector);
 
             return ZipImpl<T1, T2, T3, object, TResult>(first, second, third, null, (a, b, c, _) => resultSelector(a, b, c), 2);
         }
@@ -171,11 +172,11 @@ namespace MoreLinq
             IEnumerable<T4> fourth,
             Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (third == null) throw new ArgumentNullException(nameof(third));
-            if (fourth == null) throw new ArgumentNullException(nameof(fourth));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
+            Guard.IsNotNull(third);
+            Guard.IsNotNull(fourth);
+            Guard.IsNotNull(resultSelector);
 
             return ZipImpl(first, second, third, fourth, resultSelector, 3);
         }

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -65,8 +66,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(predicate);
 
             return FillForwardImpl(source, predicate, null);
         }
@@ -97,9 +98,9 @@ namespace MoreLinq
 
         public static IEnumerable<T> FillForward<T>(this IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-            if (fillSelector == null) throw new ArgumentNullException(nameof(fillSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(predicate);
+            Guard.IsNotNull(fillSelector);
 
             return FillForwardImpl(source, predicate, fillSelector);
         }

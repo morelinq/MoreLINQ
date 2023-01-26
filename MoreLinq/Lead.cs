@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -47,8 +48,8 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
         {
-            if (source is null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector is null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
 
             return source.Select(Some)
                          .Lead(offset, default, (curr, lead) => resultSelector(curr.Value, lead is (true, var some) ? some : default));
@@ -76,8 +77,8 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
             if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
             return _(); IEnumerable<TResult> _()

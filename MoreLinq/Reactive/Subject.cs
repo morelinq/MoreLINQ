@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Reactive
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Delegate = Delegating.Delegate;
@@ -34,7 +35,7 @@ namespace MoreLinq.Reactive
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            if (observer == null) throw new ArgumentNullException(nameof(observer));
+            Guard.IsNotNull(observer);
 
             if (_error != null)
             {

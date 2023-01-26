@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -45,7 +46,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             if (step <= 0) throw new ArgumentOutOfRangeException(nameof(step));
             return source.Where((_, i) => i % step == 0);
         }

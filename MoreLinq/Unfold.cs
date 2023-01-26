@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -56,10 +57,10 @@ namespace MoreLinq
             Func<T, TState> stateSelector,
             Func<T, TResult> resultSelector)
         {
-            if (generator == null) throw new ArgumentNullException(nameof(generator));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-            if (stateSelector == null) throw new ArgumentNullException(nameof(stateSelector));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(generator);
+            Guard.IsNotNull(predicate);
+            Guard.IsNotNull(stateSelector);
+            Guard.IsNotNull(resultSelector);
 
             return _(state); IEnumerable<TResult> _(TState initialState)
             {

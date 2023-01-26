@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -51,8 +52,8 @@ namespace MoreLinq
 
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey>? comparer, OrderByDirection direction)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
             return direction == OrderByDirection.Ascending
                        ? source.OrderBy(keySelector, comparer)
                        : source.OrderByDescending(keySelector, comparer);
@@ -86,8 +87,8 @@ namespace MoreLinq
 
         public static IOrderedEnumerable<T> ThenBy<T, TKey>(this IOrderedEnumerable<T> source, Func<T, TKey> keySelector, IComparer<TKey>? comparer, OrderByDirection direction)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
             return direction == OrderByDirection.Ascending
                        ? source.ThenBy(keySelector, comparer)
                        : source.ThenByDescending(keySelector, comparer);

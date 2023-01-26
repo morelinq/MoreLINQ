@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -37,7 +37,7 @@ namespace MoreLinq
         public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
 #endif
         {
-            if (head == null) throw new ArgumentNullException(nameof(head));
+            Guard.IsNotNull(head);
             return head is PendNode<T> node
                 ? node.Concat(tail)
                 : PendNode<T>.WithSource(head).Concat(tail);

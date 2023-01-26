@@ -19,6 +19,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Linq;
     using System.Collections;
@@ -75,7 +76,7 @@ namespace MoreLinq
 /*...................................*/ >
             Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
         {
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            Guard.IsNotNull(predicate);
 
             return Flatten(source, obj => obj is IEnumerable inner && predicate(inner) ? inner : null);
         }
@@ -116,8 +117,8 @@ namespace MoreLinq
 #nullable restore
 /*....................*/ IEnumerable?> selector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(selector);
 
             return _();
 

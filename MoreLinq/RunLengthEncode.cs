@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     public static partial class MoreEnumerable
@@ -47,7 +47,7 @@ namespace MoreLinq
 
         public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T>? comparer)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            Guard.IsNotNull(sequence);
 
             return _(comparer ?? EqualityComparer<T>.Default);
 

@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -98,8 +99,8 @@ namespace MoreLinq.Experimental
             TCardinality zero, TCardinality one, TCardinality many,
             Func<TCardinality, T?, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
 
             switch (source.TryAsCollectionLike())
             {

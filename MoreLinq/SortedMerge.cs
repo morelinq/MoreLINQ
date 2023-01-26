@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -80,8 +81,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(otherSequences);
 
             if (otherSequences.Length == 0)
                 return source; // optimization for when otherSequences is empty

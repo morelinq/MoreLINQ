@@ -19,6 +19,7 @@
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Buffers;
     using System.Collections.Generic;
@@ -74,10 +75,10 @@ namespace MoreLinq.Experimental
                                     ArrayPool<TSource> pool,
                                     Func<ICurrentBuffer<TSource>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (pool == null) throw new ArgumentNullException(nameof(pool));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(pool);
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
             return source.Batch(size, pool, current => current,
                                 current => resultSelector((ICurrentBuffer<TSource>)current));
@@ -139,11 +140,11 @@ namespace MoreLinq.Experimental
                 Func<ICurrentBuffer<TSource>, IEnumerable<TBucket>> bucketProjectionSelector,
                 Func<IEnumerable<TBucket>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (pool == null) throw new ArgumentNullException(nameof(pool));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(pool);
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
-            if (bucketProjectionSelector == null) throw new ArgumentNullException(nameof(bucketProjectionSelector));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(bucketProjectionSelector);
+            Guard.IsNotNull(resultSelector);
 
             return _(); IEnumerable<TResult> _()
             {
@@ -157,8 +158,8 @@ namespace MoreLinq.Experimental
         static ICurrentBufferProvider<T>
             Batch<T>(this IEnumerable<T> source, int size, ArrayPool<T> pool)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (pool == null) throw new ArgumentNullException(nameof(pool));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(pool);
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
             ICurrentBufferProvider<T> Cursor(IEnumerator<(T[], int)> source) =>

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -49,7 +50,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> Move<T>(this IEnumerable<T> source, int fromIndex, int count, int toIndex)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             if (fromIndex < 0) throw new ArgumentOutOfRangeException(nameof(fromIndex), "The source index cannot be negative.");
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
             if (toIndex < 0) throw new ArgumentOutOfRangeException(nameof(toIndex), "Target index of range to move cannot be negative.");

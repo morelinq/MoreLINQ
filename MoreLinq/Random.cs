@@ -19,6 +19,7 @@
 
 namespace MoreLinq
 {
+	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -63,7 +64,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Random(Random rand)
         {
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            Guard.IsNotNull(rand);
 
             return RandomImpl(rand, r => r.Next());
         }
@@ -111,7 +112,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Random(Random rand, int maxValue)
         {
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            Guard.IsNotNull(rand);
             if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
 
             return RandomImpl(rand, r => r.Next(maxValue));
@@ -160,7 +161,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            Guard.IsNotNull(rand);
             if (minValue > maxValue) throw new ArgumentOutOfRangeException(nameof(minValue), $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
@@ -204,7 +205,7 @@ namespace MoreLinq
 
         public static IEnumerable<double> RandomDouble(Random rand)
         {
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            Guard.IsNotNull(rand);
 
             return RandomImpl(rand, r => r.NextDouble());
         }
