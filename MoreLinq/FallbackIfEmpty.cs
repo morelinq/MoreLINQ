@@ -161,14 +161,11 @@ namespace MoreLinq
             int? count, T? fallback1, T? fallback2, T? fallback3, T? fallback4,
             IEnumerable<T>? fallback)
         {
-            return source.TryGetCollectionCount() is { } collectionCount
-                 ? collectionCount == 0 ? Fallback() : source
-                 : _();
-
-            IEnumerable<T> _()
+            return _(); IEnumerable<T> _()
             {
-                using (var e = source.GetEnumerator())
+                if (source.TryAsCollectionLike() is null or { Count: > 0 })
                 {
+                    using var e = source.GetEnumerator();
                     if (e.MoveNext())
                     {
                         do { yield return e.Current; }
@@ -177,15 +174,14 @@ namespace MoreLinq
                     }
                 }
 
-                foreach (var item in Fallback())
-                    yield return item;
-            }
+                if (fallback is { } someFallback)
+                {
+                    Debug.Assert(count is null);
 
-            IEnumerable<T> Fallback()
-            {
-                return fallback ?? FallbackOnArgs();
-
-                IEnumerable<T> FallbackOnArgs()
+                    foreach (var item in someFallback)
+                        yield return item;
+                }
+                else
                 {
                     Debug.Assert(count is >= 1 and <= 4);
 

@@ -27,12 +27,12 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {
-        internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
+        internal static CollectionLike<T>? TryAsCollectionLike<T>(this IEnumerable<T> source) =>
             source switch
             {
                 null => throw new ArgumentNullException(nameof(source)),
-                ICollection<T> collection => collection.Count,
-                IReadOnlyCollection<T> collection => collection.Count,
+                ICollection<T> collection => new CollectionLike<T>(collection),
+                IReadOnlyCollection<T> collection => new CollectionLike<T>(collection),
                 _ => null
             };
 

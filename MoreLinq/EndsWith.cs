@@ -75,8 +75,8 @@ namespace MoreLinq
 
             List<T> secondList;
 #pragma warning disable IDE0075 // Simplify conditional expression (makes it worse)
-            return second.TryGetCollectionCount() is { } secondCount
-                   ? first.TryGetCollectionCount() is { } firstCount && secondCount > firstCount
+            return second.TryAsCollectionLike() is { Count: var secondCount }
+                   ? first.TryAsCollectionLike() is { Count: var firstCount } && secondCount > firstCount
                      ? false
                      : Impl(second, secondCount)
                    : Impl(secondList = second.ToList(), secondList.Count);

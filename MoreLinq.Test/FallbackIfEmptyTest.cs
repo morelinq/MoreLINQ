@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -36,37 +37,32 @@ namespace MoreLinq.Test
             // ReSharper restore PossibleMultipleEnumeration
         }
 
-        [TestCase(SourceKind.BreakingCollection)]
-        [TestCase(SourceKind.BreakingReadOnlyCollection)]
-        public void FallbackIfEmptyPreservesSourceCollectionIfPossible(SourceKind sourceKind)
-        {
-            var source = new[] { 1 }.ToSourceKind(sourceKind);
-            // ReSharper disable PossibleMultipleEnumeration
-            Assert.That(source.FallbackIfEmpty(12), Is.SameAs(source));
-            Assert.That(source.FallbackIfEmpty(12, 23), Is.SameAs(source));
-            Assert.That(source.FallbackIfEmpty(12, 23, 34), Is.SameAs(source));
-            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45), Is.SameAs(source));
-            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45, 56), Is.SameAs(source));
-            Assert.That(source.FallbackIfEmpty(12, 23, 34, 45, 56, 67), Is.SameAs(source));
-            // ReSharper restore PossibleMultipleEnumeration
-        }
-
-        [TestCase(SourceKind.BreakingCollection)]
-        [TestCase(SourceKind.BreakingReadOnlyCollection)]
-        public void FallbackIfEmptyPreservesFallbackCollectionIfPossible(SourceKind sourceKind)
-        {
-            var source = new int[0].ToSourceKind(sourceKind);
-            var fallback = new[] { 1 };
-            Assert.That(source.FallbackIfEmpty(fallback), Is.SameAs(fallback));
-            Assert.That(source.FallbackIfEmpty(fallback.AsEnumerable()), Is.SameAs(fallback));
-        }
-
         [Test]
         public void FallbackIfEmptyWithEmptyNullableSequence()
         {
             var source = Enumerable.Empty<int?>().Select(x => x);
             var fallback = (int?)null;
             source.FallbackIfEmpty(fallback).AssertSequenceEqual(fallback);
+        }
+
+        [Test]
+        public void FallbackUsesCollectionCountAtIterationTime()
+        {
+            var source = new List<int>();
+
+            var results = new[]
+            {
+                source.FallbackIfEmpty(-1),
+                source.FallbackIfEmpty(-1, -2),
+                source.FallbackIfEmpty(-1, -2, -3),
+                source.FallbackIfEmpty(-1, -2, -3, -4),
+                source.FallbackIfEmpty(-1, -2, -3, -4, -5),
+            };
+
+            source.Add(123);
+
+            foreach (var result in results)
+                result.AssertSequenceEqual(123);
         }
     }
 }
