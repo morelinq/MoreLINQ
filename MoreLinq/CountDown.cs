@@ -63,7 +63,7 @@ namespace MoreLinq
                      ? IterateCollection(collectionCount)
                      : IterateSequence();
 
-            IEnumerable<TResult> IterateList(IListLike<T> list)
+            IEnumerable<TResult> IterateList(ListLike<T> list)
             {
                 var listCount = list.Count;
                 var countdown = Math.Min(count, listCount);
