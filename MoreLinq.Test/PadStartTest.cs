@@ -133,6 +133,14 @@ namespace MoreLinq.Test
             }
         }
 
+        [Test]
+        public void PadStartUsesCollectionCountAtIterationTime()
+        {
+            var queue = new Queue<int>(Enumerable.Range(1, 3));
+            var result = queue.PadStart(4, -1);
+            queue.Enqueue(4);
+            result.AssertSequenceEqual(1, 2, 3, 4);
+        }
 
         static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
         {

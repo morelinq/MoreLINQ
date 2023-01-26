@@ -101,11 +101,11 @@ namespace MoreLinq.Experimental
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            switch (source.TryGetCollectionCount())
+            switch (source.TryAsCollectionLike())
             {
-                case 0:
+                case { Count: 0 }:
                     return resultSelector(zero, default);
-                case 1:
+                case { Count: 1 }:
                 {
                     var item = source switch
                     {

@@ -59,8 +59,8 @@ namespace MoreLinq
 
             return source.TryAsListLike() is { } listLike
                    ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is { } collectionCount
-                     ? IterateCollection(collectionCount)
+                   : source.TryAsCollectionLike() is { } collectionLike
+                     ? IterateCollection(collectionLike)
                      : IterateSequence();
 
             IEnumerable<TResult> IterateList(IListLike<T> list)
@@ -72,9 +72,10 @@ namespace MoreLinq
                     yield return resultSelector(list[i], listCount - i <= count ? --countdown : null);
             }
 
-            IEnumerable<TResult> IterateCollection(int i)
+            IEnumerable<TResult> IterateCollection(CollectionLike<T> collection)
             {
-                foreach (var item in source)
+                var i = collection.Count;
+                foreach (var item in collection)
                     yield return resultSelector(item, i-- <= count ? i : null);
             }
 
