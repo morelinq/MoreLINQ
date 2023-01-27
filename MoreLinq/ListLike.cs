@@ -30,24 +30,24 @@ namespace MoreLinq
     readonly struct ListLike<T>
     {
         readonly IList<T>? _rw;
-        readonly IReadOnlyList<T>? _rx;
+        readonly IReadOnlyList<T>? _ro;
 
         public ListLike(IList<T> list)
         {
             _rw = list ?? throw new ArgumentNullException(nameof(list));
-            _rx = null;
+            _ro = null;
         }
 
         public ListLike(IReadOnlyList<T> list)
         {
             _rw = null;
-            _rx = list ?? throw new ArgumentNullException(nameof(list));
+            _ro = list ?? throw new ArgumentNullException(nameof(list));
         }
 
-        public int Count => _rw?.Count ?? _rx?.Count ?? 0;
+        public int Count => _rw?.Count ?? _ro?.Count ?? 0;
 
         public T this[int index] => _rw is { } rw ? rw[index]
-                                  : _rx is { } rx ? rx[index]
+                                  : _ro is { } rx ? rx[index]
                                   : throw new ArgumentOutOfRangeException(nameof(index));
     }
 
