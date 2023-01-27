@@ -186,8 +186,6 @@ namespace MoreLinq.Test
                     yield return 2;
                 using (enumerable.GetEnumerator())
                     yield return 3;
-
-                yield break;
             }
 
             static void Act()
@@ -250,8 +248,6 @@ namespace MoreLinq.Test
                 while (enumerator.MoveNext())
                     yield return enumerator.Current;
                 _ = enumerator.MoveNext();
-
-                yield break;
             }
 
             static void Act()
@@ -271,8 +267,6 @@ namespace MoreLinq.Test
                 var enumerator = enumerable.GetEnumerator();
                 enumerator.Dispose();
                 yield return enumerator.Current;
-
-                yield break;
             }
 
             static void Act()
@@ -293,8 +287,6 @@ namespace MoreLinq.Test
                 while (enumerator.MoveNext())
                     yield return enumerator.Current;
                 yield return enumerator.Current;
-
-                yield break;
             }
 
             static void Act()
