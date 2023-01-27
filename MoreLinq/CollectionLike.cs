@@ -49,4 +49,16 @@ namespace MoreLinq
         public IEnumerator<T> GetEnumerator() =>
             _rw?.GetEnumerator() ?? _rx?.GetEnumerator() ?? Enumerable.Empty<T>().GetEnumerator();
     }
+
+    static class CollectionLike
+    {
+        public static CollectionLike<T>? TryAsCollectionLike<T>(this IEnumerable<T> source) =>
+            source switch
+            {
+                null => throw new ArgumentNullException(nameof(source)),
+                ICollection<T> collection => new(collection),
+                IReadOnlyCollection<T> collection => new(collection),
+                _ => null
+            };
+    }
 }
