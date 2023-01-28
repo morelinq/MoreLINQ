@@ -54,8 +54,6 @@ namespace MoreLinq
     static class ListLike
     {
         public static ListLike<T> AsListLike<T>(this List<T> list) => new((IList<T>)list);
-        public static ListLike<T> AsListLike<T>(this IList<T> list) => new(list);
-        public static ListLike<T> AsListLike<T>(this IReadOnlyList<T> list) => new(list);
 
         public static ListLike<T> ToListLike<T>(this IEnumerable<T> source)
             => source.TryAsListLike() ?? source.ToList().AsListLike();
@@ -64,8 +62,8 @@ namespace MoreLinq
             source switch
             {
                 null => throw new ArgumentNullException(nameof(source)),
-                IList<T> list => list.AsListLike(),
-                IReadOnlyList<T> list => list.AsListLike(),
+                IList<T> list => new(list),
+                IReadOnlyList<T> list => new(list),
                 _ => null
             };
     }
