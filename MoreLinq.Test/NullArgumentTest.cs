@@ -45,7 +45,7 @@ namespace MoreLinq.Test
 
                 try
                 {
-                    method.Invoke(null, args);
+                    _ = method.Invoke(null, args);
                 }
                 catch (TargetInvocationException tie)
                 {
@@ -57,12 +57,6 @@ namespace MoreLinq.Test
                 Debug.Assert(e is not null);
                 var stackTrace = new StackTrace(e, false);
                 var stackFrame = stackTrace.GetFrames().First();
-#if NETCOREAPP3_1
-                // Under .NET Core 3.1, "StackTrace.GetFrames()" was defined to return an array
-                // of nullable frame elements. See:
-                // https://github.com/dotnet/corefx/blob/v3.1.32/src/Common/src/CoreLib/System/Diagnostics/StackTrace.cs#L162
-                Debug.Assert(stackFrame is not null);
-#endif
                 var actualType = stackFrame.GetMethod()?.DeclaringType;
                 Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
             });
