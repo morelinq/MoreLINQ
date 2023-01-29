@@ -27,7 +27,7 @@ namespace MoreLinq
 
     partial class MoreEnumerable
     {
-<#      const int max = 16;
+<#      const int max = 15;
         var overloads =
             from i in Enumerable.Range(1, max)
             let istr = i.ToString(CultureInfo.InvariantCulture)
