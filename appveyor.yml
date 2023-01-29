@@ -61,7 +61,6 @@ install:
 - sh: export PATH="$HOME/.dotnet:$PATH"
 before_build:
 - dotnet --info
-build_script:
 - pwsh: |
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
     if ($LASTEXITCODE -eq 0) {
@@ -69,6 +68,7 @@ build_script:
     } else {
         $LASTEXITCODE = 0
     }
+build_script:
 - ps: |
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
     $id = $id.Substring(0, 13)
@@ -76,6 +76,8 @@ build_script:
     if ($LASTEXITCODE -ne 0) {
         throw "Building/Packing failed with an exit code of $LASTEXITCODE."
     }
+after_build:
+- ps: |
     $diff = git diff --ignore-all-space --exit-code 2>&1
     $diff | % { if ($_ -is [string]) { $_ } else { [string]$_ } } | echo
     if ($LASTEXITCODE -ne 0) {
