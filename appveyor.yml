@@ -68,6 +68,8 @@ before_build:
     } else {
         $LASTEXITCODE = 0
     }
+# Touch T4 templates to force code generation & validation
+- touch MoreLinq/*.g.tt
 build_script:
 - ps: |
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
