@@ -61,6 +61,8 @@ install:
 - sh: export PATH="$HOME/.dotnet:$PATH"
 before_build:
 - dotnet --info
+# Touch T4 templates to force code generation & validation
+- touch MoreLinq/*.g.tt
 build_script:
 - pwsh: |
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
