@@ -1,9 +1,8 @@
-[CmdletBinding()]
+[CmdletBinding(DefaultParameterSetName='Default')]
 param (
-    [Parameter(Mandatory=$true, ParameterSetName='TrimTrailingWhitespace')]
+    [Parameter(ParameterSetName='Default')]
     [switch]$TrimTrailingWhitespace,
-
-    [Parameter(Mandatory=$true, ParameterSetName='InsertFinalNewline')]
+    [Parameter(ParameterSetName='Default')]
     [switch]$InsertFinalNewline,
 
     [Parameter(Mandatory=$true, ParameterSetName='ShowGlob')]
@@ -33,16 +32,24 @@ if (-not (Get-Command eclint -ErrorAction SilentlyContinue)) {
     throw 'ECLint is not installed. To install, run: npm install -g eclint'
 }
 
-$rule = switch ($PSCmdlet.ParameterSetName) {
-    'TrimTrailingWhitespace' { '--trim_trailing_whitespace' }
-    'InsertFinalNewline' { '--insert_final_newline' }
+$rules = @()
+
+if ($trimTrailingWhitespace) {
+    $rules += '--trim_trailing_whitespace'
 }
 
-Write-Verbose "eclint check $rule $glob"
+if ($insertFinalNewline) {
+    $rules += '--insert_final_newline'
+}
 
-# https://github.com/jednano/eclint
-eclint check $rule $glob
+$rules | % {
 
-if ($LASTEXITCODE) {
-    throw "eclint terminated with a non-zero exit code ($LASTEXITCODE)."
+    Write-Verbose "eclint check $rule $glob"
+
+    # https://github.com/jednano/eclint
+    eclint check $_ $glob
+
+    if ($LASTEXITCODE) {
+        throw "eclint terminated with a non-zero exit code ($LASTEXITCODE)."
+    }
 }
