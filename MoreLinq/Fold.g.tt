@@ -43,8 +43,7 @@ namespace MoreLinq
 
         foreach (var e in overloads) { #>
         /// <summary>
-        /// Returns the result of applying a function to a sequence of
-        /// <#= e.CountElements #>.
+        /// Returns the result of applying a function to a sequence of <#= e.CountElements #>.
         /// </summary>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers
