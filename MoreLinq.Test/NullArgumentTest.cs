@@ -45,7 +45,7 @@ namespace MoreLinq.Test
 
                 try
                 {
-                    method.Invoke(null, args);
+                    _ = method.Invoke(null, args);
                 }
                 catch (TargetInvocationException tie)
                 {
