@@ -49,8 +49,8 @@ skip_commits:
 install:
 - npm install -g eclint
 - git rm .editorconfig
-- eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
-- eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+- ps: ./eclint.ps1 -InsertFinalNewline -Verbose
+- ps: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 - git reset --hard
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 3.1.10 -SkipNonVersionedFiles }
