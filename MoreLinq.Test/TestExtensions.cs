@@ -25,6 +25,8 @@ namespace MoreLinq.Test
     public enum SourceKind
     {
         Sequence,
+        Collection,
+        List,
         BreakingList,
         BreakingReadOnlyList,
         BreakingCollection,
@@ -91,6 +93,8 @@ namespace MoreLinq.Test
             sourceKind switch
             {
                 SourceKind.Sequence => input.Select(x => x),
+                SourceKind.Collection => new Collection<T>(input.ToList()),
+                SourceKind.List => input.ToList(),
                 SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
                 SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input.ToList()),
                 SourceKind.BreakingCollection => new BreakingCollection<T>(input.ToList()),

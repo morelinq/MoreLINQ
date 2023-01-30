@@ -17,13 +17,30 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using NUnit.Framework;
 
-    [TestFixture]
+    [TestFixture(SourceKind.Sequence, SourceKind.Sequence)]
+    [TestFixture(SourceKind.Sequence, SourceKind.Collection)]
+    [TestFixture(SourceKind.Sequence, SourceKind.List)]
+    [TestFixture(SourceKind.Collection, SourceKind.Sequence)]
+    [TestFixture(SourceKind.Collection, SourceKind.Collection)]
+    [TestFixture(SourceKind.Collection, SourceKind.List)]
+    [TestFixture(SourceKind.List, SourceKind.Sequence)]
+    [TestFixture(SourceKind.List, SourceKind.Collection)]
+    [TestFixture(SourceKind.List, SourceKind.List)]
     public class EndsWithTest
     {
+        readonly SourceKind _firstSourceKind;
+        readonly SourceKind _secondSourceKind;
+
+        public EndsWithTest(SourceKind firstSourceKind, SourceKind secondSourceKind)
+        {
+            _firstSourceKind = firstSourceKind;
+            _secondSourceKind = secondSourceKind;
+        }
+
         [TestCase(new int[0], new int[0], ExpectedResult = true)]
         [TestCase(new int[0], new[] { 1, 2, 3 }, ExpectedResult = false)]
         [TestCase(new[] { 1, 2, 3 }, new int[0], ExpectedResult = true)]
@@ -32,15 +49,7 @@ namespace MoreLinq.Test
         [TestCase(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, ExpectedResult = false)]
         public bool EndsWithWithIntegers(IEnumerable<int> first, IEnumerable<int> second)
         {
-            return first.EndsWith(second);
-        }
-
-        [TestCase(new[] { '1', '2', '3' }, new[] { '2', '3' }, ExpectedResult = true)]
-        [TestCase(new[] { '1', '2', '3' }, new[] { '1', '2', '3' }, ExpectedResult = true)]
-        [TestCase(new[] { '1', '2', '3' }, new[] { '0', '1', '2', '3' }, ExpectedResult = false)]
-        public bool EndsWithWithChars(IEnumerable<char> first, IEnumerable<char> second)
-        {
-            return first.EndsWith(second);
+            return first.ToSourceKind(_firstSourceKind).EndsWith(second.ToSourceKind(_secondSourceKind));
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -51,8 +60,7 @@ namespace MoreLinq.Test
         [TestCase("123", "0123", ExpectedResult = false)]
         public bool EndsWithWithStrings(string first, string second)
         {
-            // Conflict with String.EndsWith(), which has precedence in this case
-            return MoreEnumerable.EndsWith(first, second);
+            return first.ToSourceKind(_firstSourceKind).EndsWith(second.ToSourceKind(_secondSourceKind));
         }
 
         [Test]
@@ -64,17 +72,23 @@ namespace MoreLinq.Test
             _ = first.EndsWith(second);
         }
 
-        [Test]
-        [SuppressMessage("ReSharper", "RedundantArgumentDefaultValue")]
-        public void EndsWithUsesSpecifiedEqualityComparerOrDefault()
+        [TestCaseSource(nameof(EndsWithUsesSpecifiedEqualityComparerOrDefaultTestCases))]
+        public bool EndsWithUsesSpecifiedEqualityComparerOrDefault(IEqualityComparer<int>? equalityComparer)
         {
-            var first = new[] { 1, 2, 3 };
-            var second = new[] { 4, 5, 6 };
+            var first = new[] { 1, 2, 3 }.ToSourceKind(_firstSourceKind);
+            var second = new[] { 4, 5, 6 }.ToSourceKind(_secondSourceKind);
 
-            Assert.That(first.EndsWith(second), Is.False);
-            Assert.That(first.EndsWith(second, null), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
+            return first.EndsWith(second, equalityComparer);
+        }
+
+        public static IEnumerable EndsWithUsesSpecifiedEqualityComparerOrDefaultTestCases
+        {
+            get
+            {
+                yield return new TestCaseData(null).Returns(false);
+                yield return new TestCaseData(EqualityComparer.Create<int>(delegate { return false; })).Returns(false);
+                yield return new TestCaseData(EqualityComparer.Create<int>(delegate { return true; })).Returns(true);
+            }
         }
 
         [TestCase(SourceKind.BreakingCollection)]
