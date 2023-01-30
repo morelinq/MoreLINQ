@@ -24,6 +24,9 @@ namespace MoreLinq.Test
     [TestFixture]
     public class EndsWithTest
     {
+        [TestCase(new int[0], new int[0], ExpectedResult = true)]
+        [TestCase(new int[0], new[] { 1, 2, 3 }, ExpectedResult = false)]
+        [TestCase(new[] { 1, 2, 3 }, new int[0], ExpectedResult = true)]
         [TestCase(new[] { 1, 2, 3 }, new[] { 2, 3 }, ExpectedResult = true)]
         [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, ExpectedResult = true)]
         [TestCase(new[] { 1, 2, 3 }, new[] { 0, 1, 2, 3 }, ExpectedResult = false)]
@@ -40,30 +43,13 @@ namespace MoreLinq.Test
             return first.EndsWith(second);
         }
 
+        [TestCase("", "", ExpectedResult = true)]
+        [TestCase("", "1", ExpectedResult = false)]
+        [TestCase("1", "", ExpectedResult = true)]
         [TestCase("123", "23", ExpectedResult = true)]
         [TestCase("123", "123", ExpectedResult = true)]
         [TestCase("123", "0123", ExpectedResult = false)]
         public bool EndsWithWithStrings(string first, string second)
-        {
-            // Conflict with String.EndsWith(), which has precedence in this case
-            return MoreEnumerable.EndsWith(first, second);
-        }
-
-        [Test]
-        public void EndsWithReturnsTrueIfBothEmpty()
-        {
-            Assert.That(new int[0].EndsWith(new int[0]), Is.True);
-        }
-
-        [Test]
-        public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
-        {
-            Assert.That(new int[0].EndsWith(new[] { 1, 2, 3 }), Is.False);
-        }
-
-        [TestCase("", "", ExpectedResult = true)]
-        [TestCase("1", "", ExpectedResult = true)]
-        public bool EndsWithReturnsTrueIfSecondIsEmpty(string first, string second)
         {
             // Conflict with String.EndsWith(), which has precedence in this case
             return MoreEnumerable.EndsWith(first, second);
