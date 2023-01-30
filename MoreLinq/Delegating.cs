@@ -22,6 +22,8 @@
 
 // https://github.com/atifaziz/Delegating
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+
 namespace Delegating
 {
     using System;
@@ -33,14 +35,14 @@ namespace Delegating
             new DelegatingDisposable(delegatee);
 
         public static IObserver<T> Observer<T>(Action<T> onNext,
-                                               Action<Exception> onError = null,
-                                               Action onCompleted = null) =>
+                                               Action<Exception>? onError = null,
+                                               Action? onCompleted = null) =>
             new DelegatingObserver<T>(onNext, onError, onCompleted);
     }
 
     sealed class DelegatingDisposable : IDisposable
     {
-        Action _delegatee;
+        Action? _delegatee;
 
         public DelegatingDisposable(Action delegatee) =>
             _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
@@ -57,12 +59,12 @@ namespace Delegating
     sealed class DelegatingObserver<T> : IObserver<T>
     {
         readonly Action<T> _onNext;
-        readonly Action<Exception> _onError;
-        readonly Action _onCompleted;
+        readonly Action<Exception>? _onError;
+        readonly Action? _onCompleted;
 
         public DelegatingObserver(Action<T> onNext,
-                                  Action<Exception> onError = null,
-                                  Action onCompleted = null)
+                                  Action<Exception>? onError = null,
+                                  Action? onCompleted = null)
         {
             _onNext = onNext ?? throw new ArgumentNullException(nameof(onNext));
             _onError = onError;

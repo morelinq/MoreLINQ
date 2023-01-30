@@ -26,16 +26,20 @@ namespace MoreLinq.Test
     {
         // NOTE: See the T4 template TuplewiseTest.g.tt for the actual tests
 
-        void TuplewiseNWide<TSource, TResult, TFunc>(Func<IEnumerable<TSource>, TFunc, IEnumerable<TResult>> tuplewise, TFunc resultSelector, IEnumerable<TSource> source, params TResult[] fullResult)
+        static void TuplewiseNWide<TSource, TResult, TFunc>(Func<IEnumerable<TSource>, TFunc, IEnumerable<TResult>> tuplewise, TFunc resultSelector, IEnumerable<TSource> source, params TResult[] fullResult)
+            where TFunc : Delegate
         {
             var arity = resultSelector.GetType().GetGenericArguments().Length - 1;
 
             for (var i = 0; i < fullResult.Length; ++i)
-                using (var ts = source.Take(i).AsTestingSequence())
-                    Assert.That(tuplewise(ts, resultSelector), Is.EqualTo(fullResult.Take(i - arity + 1)));
+            {
+                using var ts = source.Take(i).AsTestingSequence();
+                Assert.That(tuplewise(ts, resultSelector), Is.EqualTo(fullResult.Take(i - arity + 1)));
+            }
         }
 
-        void TuplewiseNWideInt<TFunc>(Func<IEnumerable<int>, TFunc, IEnumerable<int>> tuplewise, TFunc resultSelector)
+        static void TuplewiseNWideInt<TFunc>(Func<IEnumerable<int>, TFunc, IEnumerable<int>> tuplewise, TFunc resultSelector)
+            where TFunc : Delegate
         {
             const int rangeLen = 100;
             var arity = resultSelector.GetType().GetGenericArguments().Length - 1;
@@ -48,7 +52,8 @@ namespace MoreLinq.Test
             );
         }
 
-        void TuplewiseNWideString<TFunc>(Func<IEnumerable<char>, TFunc, IEnumerable<string>> tuplewise, TFunc resultSelector)
+        static void TuplewiseNWideString<TFunc>(Func<IEnumerable<char>, TFunc, IEnumerable<string>> tuplewise, TFunc resultSelector)
+            where TFunc : Delegate
         {
             const string alphabet = "abcdefghijklmnopqrstuvwxyz";
             var arity = resultSelector.GetType().GetGenericArguments().Length - 1;

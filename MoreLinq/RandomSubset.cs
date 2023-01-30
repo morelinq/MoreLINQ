@@ -37,7 +37,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize)
         {
-            return RandomSubset(source, subsetSize, new Random());
+            return RandomSubset(source, subsetSize, GlobalRandom.Instance);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MoreLinq
 
         static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
         {
-            // The simplest and most efficient way to return a random subet is to perform
+            // The simplest and most efficient way to return a random subset is to perform
             // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
             // a full shuffle, it would be wasteful in the cases where subsetSize is shorter
             // than the length of the sequence.
@@ -87,15 +87,15 @@ namespace MoreLinq
             // perform in-place, partial Fisher-Yates shuffle
             while (m < subsetSize)
             {
+#pragma warning disable CA5394 // Do not use insecure randomness
                 var k = g - rand.Next(w);
-                var tmp = array[k];
-                array[k] = array[m];
-                array[m] = tmp;
+#pragma warning restore CA5394 // Do not use insecure randomness
+                (array[k], array[m]) = (array[m], array[k]);
                 ++m;
                 --w;
             }
 
-            // yield the random subet as a new sequence
+            // yield the random subset as a new sequence
             for (var i = 0; i < subsetSize; i++)
                 yield return array[i];
         }

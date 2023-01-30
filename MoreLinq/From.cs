@@ -38,7 +38,9 @@ namespace MoreLinq
         {
             return _(); IEnumerable<T> _()
             {
+#pragma warning disable CA1062 // Validate arguments of public methods
                 yield return function();
+#pragma warning restore CA1062 // Validate arguments of public methods
             }
         }
 
@@ -59,8 +61,10 @@ namespace MoreLinq
         {
             return _(); IEnumerable<T> _()
             {
+#pragma warning disable CA1062 // Validate arguments of public methods
                 yield return function1();
                 yield return function2();
+#pragma warning restore CA1062 // Validate arguments of public methods
             }
         }
 
@@ -82,9 +86,11 @@ namespace MoreLinq
         {
             return _(); IEnumerable<T> _()
             {
+#pragma warning disable CA1062 // Validate arguments of public methods
                 yield return function1();
                 yield return function2();
                 yield return function3();
+#pragma warning restore CA1062 // Validate arguments of public methods
             }
         }
 

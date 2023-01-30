@@ -39,7 +39,7 @@ namespace MoreLinq
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -57,29 +57,26 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.TryAsListLike() is IListLike<T> listLike
+            return source.TryAsListLike() is { } listLike
                    ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is int collectionCount
-                     ? IterateCollection(collectionCount)
+                   : source.TryAsCollectionLike() is { } collectionLike
+                     ? IterateCollection(collectionLike)
                      : IterateSequence();
 
-            IEnumerable<TResult> IterateList(IListLike<T> list)
+            IEnumerable<TResult> IterateList(ListLike<T> list)
             {
-                var countdown = Math.Min(count, list.Count);
+                var listCount = list.Count;
+                var countdown = Math.Min(count, listCount);
 
-                for (var i = 0; i < list.Count; i++)
-                {
-                    var cd = list.Count - i <= count
-                           ? --countdown
-                           : (int?) null;
-                    yield return resultSelector(list[i], cd);
-                }
+                for (var i = 0; i < listCount; i++)
+                    yield return resultSelector(list[i], listCount - i <= count ? --countdown : null);
             }
 
-            IEnumerable<TResult> IterateCollection(int i)
+            IEnumerable<TResult> IterateCollection(CollectionLike<T> collection)
             {
-                foreach (var item in source)
-                    yield return resultSelector(item, i-- <= count ? i : (int?) null);
+                var i = collection.Count;
+                foreach (var item in collection)
+                    yield return resultSelector(item, i-- <= count ? i : null);
             }
 
             IEnumerable<TResult> IterateSequence()

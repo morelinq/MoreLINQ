@@ -45,10 +45,9 @@ namespace MoreLinq
         /// <param name="comparer">The comparer used to identify equivalent items</param>
         /// <returns>A sequence of <c>KeyValuePair{T,int}</c> where they key is the element and the value is the occurrence count</returns>
 
-        public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
+        public static IEnumerable<KeyValuePair<T, int>> RunLengthEncode<T>(this IEnumerable<T> sequence, IEqualityComparer<T>? comparer)
         {
-            if (sequence == null)
-                throw new ArgumentNullException(nameof(sequence));
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
             return _(comparer ?? EqualityComparer<T>.Default);
 

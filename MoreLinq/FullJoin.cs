@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copysecond (c) 2017 Atif Aziz. All seconds reserved.
+// Copyright (c) 2017 Atif Aziz. All seconds reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -113,7 +113,7 @@ namespace MoreLinq
             Func<TSource, TResult> firstSelector,
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
             return first.FullJoin(second,
@@ -218,7 +218,7 @@ namespace MoreLinq
             Func<TFirst, TResult> firstSelector,
             Func<TSecond, TResult> secondSelector,
             Func<TFirst, TSecond, TResult> bothSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -228,7 +228,9 @@ namespace MoreLinq
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return Impl();
+
+            IEnumerable<TResult> Impl()
             {
                 var seconds = second.Select(e => new KeyValuePair<TKey, TSecond>(secondKeySelector(e), e)).ToArray();
                 var secondLookup = seconds.ToLookup(e => e.Key, e => e.Value, comparer);
@@ -237,7 +239,7 @@ namespace MoreLinq
                 foreach (var fe in first)
                 {
                     var key = firstKeySelector(fe);
-                    firstKeys.Add(key);
+                    _ = firstKeys.Add(key);
 
                     using var se = secondLookup[key].GetEnumerator();
 

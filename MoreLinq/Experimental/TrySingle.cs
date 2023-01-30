@@ -51,7 +51,7 @@ namespace MoreLinq.Experimental
         /// than two elements from the sequence.
         /// </remarks>
 
-        public static (TCardinality Cardinality, T Value)
+        public static (TCardinality Cardinality, T? Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
                 TCardinality zero, TCardinality one, TCardinality many) =>
             TrySingle(source, zero, one, many, ValueTuple.Create);
@@ -96,16 +96,16 @@ namespace MoreLinq.Experimental
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
-            Func<TCardinality, T, TResult> resultSelector)
+            Func<TCardinality, T?, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            switch (source.TryGetCollectionCount())
+            switch (source.TryAsCollectionLike())
             {
-                case 0:
+                case { Count: 0 }:
                     return resultSelector(zero, default);
-                case 1:
+                case { Count: 1 }:
                 {
                     var item = source switch
                     {
@@ -115,7 +115,7 @@ namespace MoreLinq.Experimental
                     };
                     return resultSelector(one, item);
                 }
-                case int _:
+                case not null:
                     return resultSelector(many, default);
                 default:
                 {

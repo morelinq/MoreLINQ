@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeUntilEvaluatesSourceLazily()
         {
-            new BreakingSequence<string>().TakeUntil(x => x.Length == 0);
+            _ = new BreakingSequence<string>().TakeUntil(x => x.Length == 0);
         }
 
         [Test]

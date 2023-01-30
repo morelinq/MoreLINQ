@@ -35,7 +35,8 @@ namespace MoreLinq
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source) =>
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
+            where TKey : notnull =>
             source.ToDictionary(null);
 
         /// <summary>
@@ -53,7 +54,8 @@ namespace MoreLinq
         /// </returns>
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.ToDictionary(e => e.Key, e => e.Value, comparer);
@@ -72,7 +74,8 @@ namespace MoreLinq
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source) =>
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)
+            where TKey : notnull =>
             source.ToDictionary(null);
 
         /// <summary>
@@ -90,7 +93,8 @@ namespace MoreLinq
         /// </returns>
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.ToDictionary(e => e.Key, e => e.Value, comparer);

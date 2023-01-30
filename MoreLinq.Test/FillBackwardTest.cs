@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void FillBackwardIsLazy()
         {
-            new BreakingSequence<object>().FillBackward();
+            _ = new BreakingSequence<object>().FillBackward();
         }
 
         [Test]

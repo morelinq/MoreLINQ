@@ -27,7 +27,7 @@ namespace MoreLinq
     /// </summary>
 
 #if !NO_EXCEPTION_SERIALIZATION
-    [ Serializable ]
+    [Serializable]
 #endif
     public class SequenceException : Exception
     {
@@ -38,7 +38,7 @@ namespace MoreLinq
         /// </summary>
 
         public SequenceException() :
-            this(null) {}
+            this(null) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceException"/> class
@@ -46,7 +46,7 @@ namespace MoreLinq
         /// </summary>
         /// <param name="message">A message that describes the error.</param>
 
-        public SequenceException(string message) :
+        public SequenceException(string? message) :
             this(message, null) { }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// <param name="message">A message that describes the error.</param>
         /// <param name="innerException">The exception that is the cause of the current exception.</param>
 
-        public SequenceException(string message, Exception innerException) :
+        public SequenceException(string? message, Exception? innerException) :
             base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
 
 #if !NO_EXCEPTION_SERIALIZATION
@@ -69,7 +69,7 @@ namespace MoreLinq
         /// <param name="context">The contextual information about the source or destination.</param>
 
         protected SequenceException(SerializationInfo info, StreamingContext context) :
-            base(info, context) {}
+            base(info, context) { }
 #endif
     }
 }

@@ -62,9 +62,9 @@ namespace MoreLinq.Test
         public void ScanRight(SourceKind sourceKind)
         {
             var result = Enumerable.Range(1, 5)
-                                   .Select(x => x.ToString())
+                                   .Select(x => x.ToInvariantString())
                                    .ToSourceKind(sourceKind)
-                                   .ScanRight((a, b) => string.Format("({0}+{1})", a, b));
+                                   .ScanRight((a, b) => $"({a}+{b})");
 
             var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
 
@@ -74,7 +74,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanRightIsLazy()
         {
-            new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
+            _ = new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
         }
 
         // ScanRight(source, seed, func)
@@ -84,7 +84,7 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void ScanRightSeedWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].ScanRight(defaultValue, (a, b) => b), Is.EqualTo(new[] { defaultValue }));
+            Assert.That(new int[0].ScanRight(defaultValue, (_, b) => b), Is.EqualTo(new[] { defaultValue }));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace MoreLinq.Test
         public void ScanRightSeed()
         {
             var result = Enumerable.Range(1, 4)
-                                   .ScanRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+                                   .ScanRight("5", (a, b) => $"({a}+{b})");
 
             var expectations = new[] { "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" };
 
@@ -111,7 +111,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanRightSeedIsLazy()
         {
-            new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
+            _ = new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
         }
     }
 }

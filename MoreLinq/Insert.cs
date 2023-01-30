@@ -53,7 +53,7 @@ namespace MoreLinq
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
-            if (index < 0)  throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
             return _(); IEnumerable<T> _()
             {
@@ -65,7 +65,7 @@ namespace MoreLinq
                     yield return iter.Current;
 
                 if (i < index)
-                   throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+                    throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
 
                 foreach (var item in second)
                     yield return item;

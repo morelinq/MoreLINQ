@@ -30,8 +30,8 @@ namespace MoreLinq.Test
 
     sealed class BreakingList<T> : BreakingCollection<T>, IList<T>
     {
-        public BreakingList() : this(new List<T>()) {}
-        public BreakingList(List<T> list) : base(list) {}
+        public BreakingList() : this(new List<T>()) { }
+        public BreakingList(List<T> list) : base(list) { }
 
         public int IndexOf(T item) => List.IndexOf(item);
         public void Insert(int index, T item) => throw new NotImplementedException();
