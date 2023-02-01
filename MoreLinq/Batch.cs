@@ -84,7 +84,7 @@ namespace MoreLinq
             Func<TSource[], TResult> resultSelector)
         {
             Guard.IsNotNull(source);
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsGreaterThan(size, 0);
             Guard.IsNotNull(resultSelector);
 
             return _(); IEnumerable<TResult> _()

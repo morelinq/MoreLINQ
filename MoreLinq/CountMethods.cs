@@ -20,6 +20,7 @@ namespace MoreLinq
 	using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
 
     static partial class MoreEnumerable
     {
@@ -45,7 +46,7 @@ namespace MoreLinq
 
         public static bool AtLeast<T>(this IEnumerable<T> source, int count)
         {
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+            Guard.IsGreaterThanOrEqualTo(count, 0);
 
             return QuantityIterator(source, count, count, int.MaxValue);
         }
@@ -72,7 +73,7 @@ namespace MoreLinq
 
         public static bool AtMost<T>(this IEnumerable<T> source, int count)
         {
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+            Guard.IsGreaterThanOrEqualTo(count, 0);
 
             return QuantityIterator(source, count + 1, 0, count);
         }
@@ -98,7 +99,7 @@ namespace MoreLinq
 
         public static bool Exactly<T>(this IEnumerable<T> source, int count)
         {
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be negative.");
+            Guard.IsGreaterThanOrEqualTo(count, 0);
 
             return QuantityIterator(source, count + 1, count, count);
         }
@@ -127,8 +128,8 @@ namespace MoreLinq
 
         public static bool CountBetween<T>(this IEnumerable<T> source, int min, int max)
         {
-            if (min < 0) throw new ArgumentOutOfRangeException(nameof(min), "Minimum count cannot be negative.");
-            if (max < min) throw new ArgumentOutOfRangeException(nameof(max), "Maximum count must be greater than or equal to the minimum count.");
+            Guard.IsGreaterThanOrEqualTo(min, 0);
+            Guard.IsGreaterThanOrEqualTo(max, min);
 
             return QuantityIterator(source, max + 1, min, max);
         }

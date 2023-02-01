@@ -36,11 +36,11 @@ namespace MoreLinq
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
             Guard.IsNotNull(sequence);
-            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            Guard.IsGreaterThanOrEqualTo(startIndex, 0);
+            Guard.IsGreaterThanOrEqualTo(count, 0);
 
             return count switch
             {
-                < 0 => throw new ArgumentOutOfRangeException(nameof(count)),
                 0 => sequence,
                 _ => _()
             };

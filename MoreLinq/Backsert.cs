@@ -61,10 +61,10 @@ namespace MoreLinq
         {
             Guard.IsNotNull(first);
             Guard.IsNotNull(second);
+            Guard.IsGreaterThanOrEqualTo(index, 0);
 
             return index switch
             {
-                < 0 => throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative."),
                 0 => first.Concat(second),
                 _ => _()
             };
@@ -77,7 +77,10 @@ namespace MoreLinq
                 {
                     var (_, countdown) = e.Current;
                     if (countdown is { } n && n != index - 1)
-                        throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+                    {
+                        ThrowHelper.ThrowArgumentOutOfRangeException(
+                            nameof(index), "Insertion index is greater than the length of the first sequence.");
+                    }
 
                     do
                     {

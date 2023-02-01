@@ -243,7 +243,7 @@ namespace MoreLinq
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
         {
             Guard.IsNotNull(source);
-            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+            Guard.IsGreaterThanOrEqualTo(length, 0);
             Guard.IsNotNull(indexSelector);
             Guard.IsNotNull(resultSelector);
 

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -43,7 +44,11 @@ namespace MoreLinq
 
             public T this[int index]
             {
-                get => index == 0 ? _item : throw new ArgumentOutOfRangeException(nameof(index));
+                get
+                {
+                    Guard.IsBetweenOrEqualTo(index, 0, 0);
+                    return _item;
+                }
                 set => throw ReadOnlyException();
             }
 

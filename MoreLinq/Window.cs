@@ -43,7 +43,7 @@ namespace MoreLinq
         public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
         {
             Guard.IsNotNull(source);
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsGreaterThan(size, 0);
 
             return _(); IEnumerable<IList<TSource>> _()
             {

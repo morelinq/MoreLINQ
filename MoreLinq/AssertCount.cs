@@ -68,7 +68,7 @@ namespace MoreLinq
             int count, Func<int, int, Exception> errorSelector)
         {
             Guard.IsNotNull(source);
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            Guard.IsGreaterThanOrEqualTo(count, 0);
             Guard.IsNotNull(errorSelector);
 
             return _(); IEnumerable<TSource> _()

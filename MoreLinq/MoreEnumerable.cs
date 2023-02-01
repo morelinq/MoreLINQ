@@ -31,7 +31,7 @@ namespace MoreLinq
         static int CountUpTo<T>(this IEnumerable<T> source, int max)
         {
             Guard.IsNotNull(source);
-            if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
+            Guard.IsGreaterThanOrEqualTo(max, 0);
 
             var count = 0;
 

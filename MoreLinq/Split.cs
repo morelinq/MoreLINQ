@@ -180,7 +180,7 @@ namespace MoreLinq
             Func<IEnumerable<TSource>, TResult> resultSelector)
         {
             Guard.IsNotNull(source);
-            if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
+            Guard.IsGreaterThan(count, 0);
             Guard.IsNotNull(resultSelector);
 
             comparer ??= EqualityComparer<TSource>.Default;
@@ -265,7 +265,7 @@ namespace MoreLinq
         {
             Guard.IsNotNull(source);
             Guard.IsNotNull(separatorFunc);
-            if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
+            Guard.IsGreaterThan(count, 0);
             Guard.IsNotNull(resultSelector);
 
             return _(); IEnumerable<TResult> _()

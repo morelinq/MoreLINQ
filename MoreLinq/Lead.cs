@@ -79,7 +79,7 @@ namespace MoreLinq
         {
             Guard.IsNotNull(source);
             Guard.IsNotNull(resultSelector);
-            if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            Guard.IsGreaterThan(offset, 0);
 
             return _(); IEnumerable<TResult> _()
             {

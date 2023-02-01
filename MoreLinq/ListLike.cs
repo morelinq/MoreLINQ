@@ -51,7 +51,7 @@ namespace MoreLinq
 
         public T this[int index] => _rw is { } rw ? rw[index]
                                   : _ro is { } rx ? rx[index]
-                                  : throw new ArgumentOutOfRangeException(nameof(index));
+                                  : ThrowHelper.ThrowInvalidOperationException<T>("Invalid `ListLike` construction.");
     }
 
     static class ListLike

@@ -62,7 +62,7 @@ namespace MoreLinq
         public static IEnumerable<IList<TSource>> WindowRight<TSource>(this IEnumerable<TSource> source, int size)
         {
             Guard.IsNotNull(source);
-            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsGreaterThan(size, 0);
 
             return source.WindowRightWhile((_, i) => i < size);
         }

@@ -77,7 +77,7 @@ namespace MoreLinq.Experimental
         {
             Guard.IsNotNull(source);
             Guard.IsNotNull(pool);
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsGreaterThan(size, 0);
             Guard.IsNotNull(resultSelector);
 
             return source.Batch(size, pool, current => current,
@@ -142,7 +142,7 @@ namespace MoreLinq.Experimental
         {
             Guard.IsNotNull(source);
             Guard.IsNotNull(pool);
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsGreaterThan(size, 0);
             Guard.IsNotNull(bucketProjectionSelector);
             Guard.IsNotNull(resultSelector);
 
@@ -160,7 +160,7 @@ namespace MoreLinq.Experimental
         {
             Guard.IsNotNull(source);
             Guard.IsNotNull(pool);
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsGreaterThan(size, 0);
 
             ICurrentBufferProvider<T> Cursor(IEnumerator<(T[], int)> source) =>
                 new CurrentPoolArrayProvider<T>(source, pool);
@@ -269,7 +269,12 @@ namespace MoreLinq.Experimental
 
             public override T this[int index]
             {
-                get => index >= 0 && index < Count ? _array[index] : throw new ArgumentOutOfRangeException(nameof(index));
+                get
+                {
+                    Guard.IsBetween(index, -1, Count);
+                    return _array[index];
+                }
+
                 set => throw new NotSupportedException();
             }
 

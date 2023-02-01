@@ -19,6 +19,7 @@
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -86,8 +87,8 @@ namespace MoreLinq.Experimental
 
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), arrayIndex, null);
-            if (arrayIndex + Count > array.Length) throw new ArgumentException(null, nameof(arrayIndex));
+            Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+            Guard.IsLessThanOrEqualTo(arrayIndex, array.Length - Count);
 
             for (int i = 0, j = arrayIndex; i < Count; i++, j++)
                 array[j] = this[i];

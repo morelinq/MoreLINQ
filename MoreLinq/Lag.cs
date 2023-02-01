@@ -82,7 +82,7 @@ namespace MoreLinq
             // NOTE: Theoretically, we could assume that negative (or zero-offset) lags could be
             //       re-written as: sequence.Lead( -lagBy, resultSelector ). However, I'm not sure
             //       that it's an intuitive - or even desirable - behavior. So it's being omitted.
-            if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            Guard.IsGreaterThan(offset, 0);
 
             return _(); IEnumerable<TResult> _()
             {

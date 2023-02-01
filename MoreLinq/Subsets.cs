@@ -99,8 +99,7 @@ namespace MoreLinq
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence, int subsetSize)
         {
             Guard.IsNotNull(sequence);
-            if (subsetSize < 0)
-                throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be >= 0");
+            Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
             // NOTE: There's an interesting trade-off that we have to make in this operator.
             // Ideally, we would throw an exception here if the {subsetSize} parameter is
@@ -149,7 +148,11 @@ namespace MoreLinq
                 {
                     // precondition: subsetSize <= set.Count
                     if (subsetSize > set.Count)
-                        throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
+                    {
+                        ThrowHelper.ThrowArgumentOutOfRangeException(
+                            nameof(subsetSize),
+                            "Subset size must be <= sequence.Count()");
+                    }
 
                     // initialize set arrays...
                     _set = set;
@@ -217,8 +220,7 @@ namespace MoreLinq
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
                 Guard.IsNotNull(sequence);
-                if (subsetSize < 0)
-                    throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");
+                Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
                 _subsetSize = subsetSize;
                 _sequence = sequence;
             }

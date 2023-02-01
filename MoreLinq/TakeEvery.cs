@@ -47,7 +47,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> TakeEvery<TSource>(this IEnumerable<TSource> source, int step)
         {
             Guard.IsNotNull(source);
-            if (step <= 0) throw new ArgumentOutOfRangeException(nameof(step));
+            Guard.IsGreaterThan(step, 0);
             return source.Where((_, i) => i % step == 0);
         }
     }

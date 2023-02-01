@@ -60,7 +60,7 @@ namespace MoreLinq
         {
             Guard.IsNotNull(rand);
             Guard.IsNotNull(source);
-            if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
+            Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
             return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
         }
@@ -77,7 +77,8 @@ namespace MoreLinq
 
             if (array.Length < subsetSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(subsetSize),
+                ThrowHelper.ThrowArgumentOutOfRangeException(
+                    nameof(subsetSize),
                     "Subset size must be less than or equal to the source length.");
             }
 

@@ -96,7 +96,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Random(int maxValue)
         {
-            if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
+            Guard.IsGreaterThanOrEqualTo(maxValue, 0);
 
             return Random(GlobalRandom.Instance, maxValue);
         }
@@ -113,7 +113,7 @@ namespace MoreLinq
         public static IEnumerable<int> Random(Random rand, int maxValue)
         {
             Guard.IsNotNull(rand);
-            if (maxValue < 0) throw new ArgumentOutOfRangeException(nameof(maxValue));
+            Guard.IsGreaterThanOrEqualTo(maxValue, 0);
 
             return RandomImpl(rand, r => r.Next(maxValue));
         }
@@ -162,7 +162,7 @@ namespace MoreLinq
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
             Guard.IsNotNull(rand);
-            if (minValue > maxValue) throw new ArgumentOutOfRangeException(nameof(minValue), $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
+            Guard.IsLessThan(minValue, maxValue);
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
         }

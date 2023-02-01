@@ -54,7 +54,7 @@ namespace MoreLinq
         {
             Guard.IsNotNull(first);
             Guard.IsNotNull(second);
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
+            Guard.IsGreaterThanOrEqualTo(index, 0);
 
             return _(); IEnumerable<T> _()
             {
@@ -65,8 +65,7 @@ namespace MoreLinq
                 while (++i < index && iter.MoveNext())
                     yield return iter.Current;
 
-                if (i < index)
-                    throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+                Guard.IsLessThanOrEqualTo(i, index);
 
                 foreach (var item in second)
                     yield return item;

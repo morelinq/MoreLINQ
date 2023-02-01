@@ -67,11 +67,9 @@ namespace MoreLinq.Experimental
         {
             Guard.IsNotNull(maxConcurrency);
             Guard.IsNotNull(scheduler);
-            MaxConcurrency = maxConcurrency is > 0
-                           ? maxConcurrency
-                           : throw new ArgumentOutOfRangeException(
-                                 nameof(maxConcurrency), maxConcurrency,
-                                 "Maximum concurrency must be 1 or greater.");
+            Guard.IsGreaterThan(maxConcurrency.Value, 0);
+
+            MaxConcurrency = maxConcurrency;
             Scheduler      = scheduler;
             PreserveOrder  = preserveOrder;
         }
@@ -641,7 +639,8 @@ namespace MoreLinq.Experimental
             Guard.IsNotNull(starter);
             Guard.IsNotNull(onTaskCompletion);
             Guard.IsNotNull(onEnd);
-            if (maxConcurrency < 1) throw new ArgumentOutOfRangeException(nameof(maxConcurrency));
+            Guard.IsNotNull(maxConcurrency);
+            Guard.IsGreaterThanOrEqualTo(maxConcurrency.Value, 0);
 
             using (enumerator)
             {
