@@ -38,7 +38,7 @@ namespace MoreLinq
                 CountElements = istr + " " + (i == 1 ? "element" : "elements"),
                 CountArg      = istr,
                 FolderArgs    = "folder" + istr + ": folder",
-
+                Elements      = string.Join(", ", Enumerable.Range(0, i).Select(j => $"elements[{j}]")),
             };
 
         foreach (var e in overloads) { #>
@@ -61,7 +61,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
         {
-            return FoldImpl(source, <#= e.CountArg #>, <#= e.FolderArgs #>);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[<#= e.Count #>];
+            foreach (var e in AssertCountImpl(source.Index(), <#= e.Count #>, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(<#= e.Elements #>);
         }
 
 <#      } #>

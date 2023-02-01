@@ -41,7 +41,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
         {
-            return FoldImpl(source, 1, folder1: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[1];
+            foreach (var e in AssertCountImpl(source.Index(), 1, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0]);
         }
 
         /// <summary>
@@ -63,7 +70,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
         {
-            return FoldImpl(source, 2, folder2: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[2];
+            foreach (var e in AssertCountImpl(source.Index(), 2, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1]);
         }
 
         /// <summary>
@@ -85,7 +99,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 3, folder3: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[3];
+            foreach (var e in AssertCountImpl(source.Index(), 3, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2]);
         }
 
         /// <summary>
@@ -107,7 +128,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 4, folder4: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[4];
+            foreach (var e in AssertCountImpl(source.Index(), 4, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3]);
         }
 
         /// <summary>
@@ -129,7 +157,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 5, folder5: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[5];
+            foreach (var e in AssertCountImpl(source.Index(), 5, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4]);
         }
 
         /// <summary>
@@ -151,7 +186,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 6, folder6: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[6];
+            foreach (var e in AssertCountImpl(source.Index(), 6, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
         }
 
         /// <summary>
@@ -173,7 +215,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 7, folder7: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[7];
+            foreach (var e in AssertCountImpl(source.Index(), 7, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
         }
 
         /// <summary>
@@ -195,7 +244,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 8, folder8: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[8];
+            foreach (var e in AssertCountImpl(source.Index(), 8, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
         }
 
         /// <summary>
@@ -217,7 +273,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 9, folder9: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[9];
+            foreach (var e in AssertCountImpl(source.Index(), 9, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
         }
 
         /// <summary>
@@ -239,7 +302,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 10, folder10: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[10];
+            foreach (var e in AssertCountImpl(source.Index(), 10, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
         }
 
         /// <summary>
@@ -261,7 +331,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 11, folder11: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[11];
+            foreach (var e in AssertCountImpl(source.Index(), 11, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
         }
 
         /// <summary>
@@ -283,7 +360,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 12, folder12: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[12];
+            foreach (var e in AssertCountImpl(source.Index(), 12, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
         }
 
         /// <summary>
@@ -305,7 +389,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 13, folder13: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[13];
+            foreach (var e in AssertCountImpl(source.Index(), 13, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
         }
 
         /// <summary>
@@ -327,7 +418,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 14, folder14: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[14];
+            foreach (var e in AssertCountImpl(source.Index(), 14, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
         }
 
         /// <summary>
@@ -349,7 +447,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 15, folder15: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[15];
+            foreach (var e in AssertCountImpl(source.Index(), 15, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
         }
 
         /// <summary>
@@ -371,7 +476,14 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 16, folder16: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = new T[16];
+            foreach (var e in AssertCountImpl(source.Index(), 16, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
         }
 
     }
