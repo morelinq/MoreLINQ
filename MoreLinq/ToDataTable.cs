@@ -147,14 +147,16 @@ namespace MoreLinq
             //
 
             if (expressions.Any(e => e == null))
-                throw new ArgumentException("One of the supplied expressions was null.", nameof(expressions));
+                ThrowHelper.ThrowArgumentException(nameof(expressions), "One of the supplied expressions was null.");
+
             try
             {
                 return expressions.Select(GetAccessedMember);
             }
             catch (ArgumentException e)
             {
-                throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
+                ThrowHelper.ThrowArgumentException(nameof(expressions), "One of the supplied expressions is not allowed.", e);
+                return default!;
             }
 
             static MemberInfo GetAccessedMember(LambdaExpression lambda)
@@ -169,7 +171,7 @@ namespace MoreLinq
                 // member access e.g. not a.b.c
                 return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
                      ? member
-                     : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
+                     : ThrowHelper.ThrowArgumentException<MemberInfo>(nameof(lambda), $"Illegal expression: {lambda}");
             }
         }
 

@@ -275,7 +275,7 @@ namespace MoreLinq.Experimental
                     return _array[index];
                 }
 
-                set => throw new NotSupportedException();
+                set => ThrowHelper.ThrowNotSupportedException();
             }
 
             public void Dispose()

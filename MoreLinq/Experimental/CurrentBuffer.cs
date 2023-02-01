@@ -97,11 +97,11 @@ namespace MoreLinq.Experimental
         public virtual IEnumerator<T> GetEnumerator() => this.Take(Count).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        void IList<T>.Insert(int index, T item) => throw new NotSupportedException();
-        void IList<T>.RemoveAt(int index) => throw new NotSupportedException();
-        void ICollection<T>.Add(T item) => throw new NotSupportedException();
-        void ICollection<T>.Clear() => throw new NotSupportedException();
-        bool ICollection<T>.Remove(T item) => throw new NotSupportedException();
+        void IList<T>.Insert(int index, T item) => ThrowHelper.ThrowNotSupportedException();
+        void IList<T>.RemoveAt(int index) => ThrowHelper.ThrowNotSupportedException();
+        void ICollection<T>.Add(T item) => ThrowHelper.ThrowNotSupportedException();
+        void ICollection<T>.Clear() => ThrowHelper.ThrowNotSupportedException();
+        bool ICollection<T>.Remove(T item) => ThrowHelper.ThrowNotSupportedException<bool>();
     }
 }
 

@@ -114,7 +114,7 @@ namespace MoreLinq.Experimental
                     lock (_locker)
                     {
                         if (_cache == null) // Cache disposed during iteration?
-                            throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
+                            ThrowHelper.ThrowObjectDisposedException(nameof(MemoizedEnumerable<T>));
 
                         if (index >= _cache.Count)
                         {

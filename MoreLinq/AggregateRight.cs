@@ -50,7 +50,7 @@ namespace MoreLinq
 
             return source.ToListLike() switch
             {
-                { Count: 0 } => throw new InvalidOperationException("Sequence contains no elements."),
+                { Count: 0 } => ThrowHelper.ThrowInvalidOperationException<TSource>("Sequence contains no elements."),
                 var list => AggregateRightImpl(list, list[^1], func, list.Count - 1)
             };
         }

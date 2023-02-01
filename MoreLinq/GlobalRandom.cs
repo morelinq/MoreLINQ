@@ -21,6 +21,7 @@ namespace MoreLinq
 {
     using System;
 #if !NET6_0_OR_GREATER
+    using CommunityToolkit.Diagnostics;
     using System.Threading;
 #endif
 
@@ -70,7 +71,7 @@ namespace MoreLinq
                 // randomizing operator from the outer class then they will
                 // need to be overriden.
 
-                throw new NotImplementedException();
+                return ThrowHelper.ThrowNotSupportedException<double>();
             }
         }
 #endif // NET6_0_OR_GREATER

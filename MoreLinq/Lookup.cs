@@ -275,6 +275,6 @@ namespace MoreLinq
         void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
 
         [DoesNotReturn]
-        static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
+        static void ThrowModificationNotSupportedException() => ThrowHelper.ThrowNotSupportedException("Grouping is immutable.");
     }
 }

@@ -78,7 +78,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
         {
             Guard.IsNotNull(source);
-            if (width < 0) throw new ArgumentException(null, nameof(width));
+            Guard.IsGreaterThanOrEqualTo(width, 0);
             return PadImpl(source, width, padding, null);
         }
 
@@ -110,7 +110,7 @@ namespace MoreLinq
         {
             Guard.IsNotNull(source);
             Guard.IsNotNull(paddingSelector);
-            if (width < 0) throw new ArgumentException(null, nameof(width));
+            Guard.IsGreaterThanOrEqualTo(width, 0);
             return PadImpl(source, width, default, paddingSelector);
         }
 

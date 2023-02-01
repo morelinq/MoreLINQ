@@ -29,7 +29,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithNegativeWidth()
         {
-            Assert.That(() => new int[0].PadStart(-1), Throws.ArgumentException("width"));
+            Assert.That(() => new int[0].PadStart(-1), Throws.ArgumentOutOfRangeException("width"));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithPaddingWithNegativeWidth()
         {
-            Assert.That(() => new int[0].PadStart(-1, 1), Throws.ArgumentException("width"));
+            Assert.That(() => new int[0].PadStart(-1, 1), Throws.ArgumentOutOfRangeException("width"));
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithSelectorWithNegativeWidth()
         {
-            Assert.That(() => new int[0].PadStart(-1, x => x), Throws.ArgumentException("width"));
+            Assert.That(() => new int[0].PadStart(-1, x => x), Throws.ArgumentOutOfRangeException("width"));
         }
 
         [Test]
