@@ -81,5 +81,5 @@ namespace MoreLinq
         {
             return source.Maxima(selector, comparer);
         }
-    }
-}
+            }
+                    }

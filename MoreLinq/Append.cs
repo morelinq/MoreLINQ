@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using CommunityToolkit.Diagnostics;
+	using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable

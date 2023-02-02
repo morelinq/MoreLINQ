@@ -27,7 +27,7 @@
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -158,7 +158,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -303,7 +303,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -462,7 +462,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -635,7 +635,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -822,7 +822,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -1023,7 +1023,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 

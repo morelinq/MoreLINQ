@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-	using CommunityToolkit.Diagnostics;
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
