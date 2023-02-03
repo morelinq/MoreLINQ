@@ -37,8 +37,8 @@ namespace MoreLinq
                 Count         = i,
                 CountElements = istr + " " + (i == 1 ? "element" : "elements"),
                 CountArg      = istr,
-                FolderArgs    = "folder" + istr + ": folder",
-                Elements      = string.Join(", ", Enumerable.Range(0, i).Select(j => $"elements[{j}]")),
+                Elements      = string.Join(", ", Enumerable.Range(0, i)
+                    .Select(j => FormattableString.Invariant($"elements[{j}]"))),
             };
 
         foreach (var e in overloads) { #>
