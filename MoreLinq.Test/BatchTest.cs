@@ -133,6 +133,16 @@ namespace MoreLinq.Test
             var batches = Enumerable.Empty<int>().ToSourceKind(kind).Batch(100);
             Assert.That(batches, Is.Empty);
         }
+
+        [Test]
+        public void BatchUsesCollectionCountAtIterationTime()
+        {
+            var stack = new List<int>(Enumerable.Range(1, 3));
+            var result = stack.Batch(3);
+            stack.Add(4);
+            result.AssertCount(2).Consume();
+            Assert.Pass();
+        }
     }
 }
 
