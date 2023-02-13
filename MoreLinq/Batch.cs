@@ -92,18 +92,18 @@ namespace MoreLinq
                 {
                     case ICollection<TSource> { Count: 0 }:
                     {
-                        yield break;
+                        break;
                     }
                     case ICollection<TSource> collection when collection.Count <= size:
                     {
                         var bucket = new TSource[collection.Count];
                         collection.CopyTo(bucket, 0);
                         yield return resultSelector(bucket);
-                        yield break;
+                        break;
                     }
                     case IReadOnlyCollection<TSource> { Count: 0 }:
                     {
-                        yield break;
+                        break;
                     }
                     case IReadOnlyList<TSource> list when list.Count <= size:
                     {
@@ -111,7 +111,7 @@ namespace MoreLinq
                         for (var i = 0; i < list.Count; i++)
                             bucket[i] = list[i];
                         yield return resultSelector(bucket);
-                        yield break;
+                        break;
                     }
                     case IReadOnlyCollection<TSource> collection when collection.Count <= size:
                     {
@@ -144,6 +144,7 @@ namespace MoreLinq
                             Array.Resize(ref bucket, count);
                             yield return resultSelector(bucket);
                         }
+
                         break;
                     }
                 }
