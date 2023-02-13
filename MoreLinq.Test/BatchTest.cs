@@ -137,9 +137,12 @@ namespace MoreLinq.Test
         [Test]
         public void BatchUsesCollectionCountAtIterationTime()
         {
-            var stack = new List<int>(Enumerable.Range(1, 3));
-            var result = stack.Batch(3);
-            stack.Add(4);
+            var list = new List<int>(Enumerable.Range(1, 3));
+
+            var result = list.Batch(3);
+            result.AssertCount(1).Consume();
+
+            list.Add(4);
             result.AssertCount(2).Consume();
             Assert.Pass();
         }
