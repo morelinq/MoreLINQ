@@ -87,15 +87,18 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
+        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind, bool copy = true) =>
             sourceKind switch
             {
-                SourceKind.Sequence => input.Select(x => x),
-                SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
-                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input.ToList()),
-                SourceKind.BreakingCollection => new BreakingCollection<T>(input.ToList()),
-                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input.ToList()),
+                SourceKind.Sequence => copy ? input.Select(x => x) : throw new InvalidOperationException("Invalid to keep original as sequence."),
+                SourceKind.BreakingList => new BreakingList<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
                 _ => throw new ArgumentException(null, nameof(sourceKind))
             };
+
+        internal static T SafeCast<T>(this object obj) where T : class =>
+            obj is T t ? t : throw new InvalidOperationException($"Must pass an object of type `{typeof(T)}`.");
     }
 }
