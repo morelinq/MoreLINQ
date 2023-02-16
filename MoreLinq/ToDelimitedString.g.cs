@@ -57,12 +57,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Boolean);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, bool, StringBuilder> Boolean = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -88,12 +83,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Byte);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, byte, StringBuilder> Byte = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -119,12 +109,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Char);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, char, StringBuilder> Char = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -150,12 +135,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Decimal);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, decimal, StringBuilder> Decimal = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -181,12 +161,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Double);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, double, StringBuilder> Double = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -212,12 +187,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Single);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, float, StringBuilder> Single = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -243,12 +213,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int32);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, int, StringBuilder> Int32 = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -274,12 +239,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int64);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, long, StringBuilder> Int64 = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -305,12 +265,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.SByte);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, sbyte, StringBuilder> SByte = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -336,12 +291,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.Int16);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, short, StringBuilder> Int16 = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -367,12 +317,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.String);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, string, StringBuilder> String = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -398,12 +343,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt32);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, uint, StringBuilder> UInt32 = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -429,12 +369,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt64);
-        }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, ulong, StringBuilder> UInt64 = (sb, e) => sb.Append(e);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
 
         /// <summary>
@@ -460,15 +395,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.UInt16);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, ushort, StringBuilder> UInt16 = (sb, e) => sb.Append(e);
-        }
-
-
-        static partial class StringBuilderAppenders {}
     }
 }
