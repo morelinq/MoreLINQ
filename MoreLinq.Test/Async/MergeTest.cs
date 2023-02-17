@@ -117,7 +117,7 @@ namespace MoreLinq.Test.Async
                 yield return 2;
                 yield return 3;
                 _ = await ac1.Result(0);
-            };
+            }
 
             async IAsyncEnumerable<int> Source2()
             {
