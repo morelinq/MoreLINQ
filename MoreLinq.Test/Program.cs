@@ -15,19 +15,12 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq.Test
-{
-    using System;
-    using System.Reflection;
-    using NUnit.Common;
-    using NUnitLite;
+#pragma warning disable CA1852 // Seal internal types (false positive)
 
-    static class Program
-    {
-        static int Main(string[] args)
-        {
-            using var writer = new ExtendedTextWrapper(Console.Out);
-            return new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, writer, Console.In);
-        }
-    }
-}
+using System;
+using System.Reflection;
+using NUnit.Common;
+using NUnitLite;
+
+using var writer = new ExtendedTextWrapper(Console.Out);
+return new AutoRun(typeof(Program).GetTypeInfo().Assembly).Execute(args, writer, Console.In);

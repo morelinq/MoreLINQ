@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByIsLazy()
         {
-            new BreakingSequence<int>().MaxBy(BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().MaxBy(BreakingFunc.Of<int, int>());
         }
 
         [Test]

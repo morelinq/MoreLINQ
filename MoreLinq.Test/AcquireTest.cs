@@ -69,7 +69,7 @@ namespace MoreLinq.Test
         sealed class Disposable : IDisposable
         {
             public bool Disposed { get; private set; }
-            public void Dispose() { Disposed = true; }
+            public void Dispose() => Disposed = true;
         }
     }
 }

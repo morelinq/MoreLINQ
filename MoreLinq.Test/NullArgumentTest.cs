@@ -45,7 +45,7 @@ namespace MoreLinq.Test
 
                 try
                 {
-                    method.Invoke(null, args);
+                    _ = method.Invoke(null, args);
                 }
                 catch (TargetInvocationException tie)
                 {
@@ -57,12 +57,6 @@ namespace MoreLinq.Test
                 Debug.Assert(e is not null);
                 var stackTrace = new StackTrace(e, false);
                 var stackFrame = stackTrace.GetFrames().First();
-#if NETCOREAPP3_1
-                // Under .NET Core 3.1, "StackTrace.GetFrames()" was defined to return an array
-                // of nullable frame elements. See:
-                // https://github.com/dotnet/corefx/blob/v3.1.32/src/Common/src/CoreLib/System/Diagnostics/StackTrace.cs#L162
-                Debug.Assert(stackFrame is not null);
-#endif
                 var actualType = stackFrame.GetMethod()?.DeclaringType;
                 Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
             });
@@ -71,7 +65,7 @@ namespace MoreLinq.Test
             GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
 
         static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory) =>
-            from m in typeof (MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            from m in typeof(MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
             from t in CreateTestCases(m, canBeNull, testCaseFactory)
             select t;
 
@@ -81,14 +75,14 @@ namespace MoreLinq.Test
             var parameters = method.GetParameters().ToList();
 
             return from param in parameters
-                where IsReferenceType(param) && CanBeNull(param) == canBeNull
-                let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-                let testCase = testCaseFactory(method, arguments,
+                   where IsReferenceType(param) && CanBeNull(param) == canBeNull
+                   let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
+                   let testCase = testCaseFactory(method, arguments,
 #pragma warning disable CA2201 // Do not raise reserved exception types
-                                               param.Name ?? throw new NullReferenceException())
+                                                  param.Name ?? throw new NullReferenceException())
 #pragma warning restore CA2201 // Do not raise reserved exception types
-                let testName = GetTestName(methodDefinition, param)
-                select (ITestCaseData) new TestCaseData(testCase).SetName(testName);
+                   let testName = GetTestName(methodDefinition, param)
+                   select (ITestCaseData)new TestCaseData(testCase).SetName(testName);
         }
 
         static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
@@ -120,7 +114,7 @@ namespace MoreLinq.Test
         static bool CanBeNull(ParameterInfo parameter)
         {
             var nullableTypes =
-                from t in new[] { typeof (IEqualityComparer<>), typeof (IComparer<>) }
+                from t in new[] { typeof(IEqualityComparer<>), typeof(IComparer<>) }
                 select t.GetTypeInfo();
 
             var nullableParameters = new[]
@@ -143,8 +137,8 @@ namespace MoreLinq.Test
 
         static object CreateInstance(Type type)
         {
-            if (type == typeof (int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
-            if (type == typeof (string)) return "";
+            if (type == typeof(int)) return 7; // int is used as size/length/range etc. avoid ArgumentOutOfRange for '0'.
+            if (type == typeof(string)) return "";
             if (type == typeof(TaskScheduler)) return TaskScheduler.Default;
             if (type == typeof(IEnumerable<int>)) return new[] { 1, 2, 3 }; // Provide non-empty sequence for MinBy/MaxBy.
             if (typeof(Delegate).IsAssignableFrom(type)) return CreateDelegateInstance(type);
@@ -184,8 +178,8 @@ namespace MoreLinq.Test
         static object CreateGenericInterfaceInstance(TypeInfo type)
         {
             Debug.Assert(type.IsGenericType && type.IsInterface);
-            var name = type.Name.Substring(1); // Delete first character, i.e. the 'I' in IEnumerable
-            var definition = typeof (GenericArgs).GetTypeInfo().GetNestedType(name);
+            var name = type.Name[1..]; // Delete first character, i.e. the 'I' in IEnumerable
+            var definition = typeof(GenericArgs).GetTypeInfo().GetNestedType(name);
             Debug.Assert(definition is not null);
             var instance = Activator.CreateInstance(definition.MakeGenericType(type.GetGenericArguments()));
             Debug.Assert(instance is not null);

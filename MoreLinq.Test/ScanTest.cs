@@ -39,14 +39,14 @@ namespace MoreLinq.Test
         [Test]
         public void ScanIsLazy()
         {
-            new BreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
+            _ = new BreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
         }
 
         [Test]
         public void ScanDoesNotIterateExtra()
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
-            var gold = new[] {1, 3, 6};
+            var gold = new[] { 1, 3, 6 };
             Assert.That(sequence.Consume, Throws.BreakException);
             sequence.Take(3).AssertSequenceEqual(gold);
         }
@@ -68,7 +68,7 @@ namespace MoreLinq.Test
         [Test]
         public void SeededScanIsLazy()
         {
-            new BreakingSequence<object>().Scan(null, BreakingFunc.Of<object?, object, object>());
+            _ = new BreakingSequence<object>().Scan(null, BreakingFunc.Of<object?, object, object>());
         }
 
         [Test]

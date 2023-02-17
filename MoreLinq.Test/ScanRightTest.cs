@@ -74,7 +74,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanRightIsLazy()
         {
-            new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
+            _ = new BreakingSequence<int>().ScanRight(BreakingFunc.Of<int, int, int>());
         }
 
         // ScanRight(source, seed, func)
@@ -111,7 +111,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanRightSeedIsLazy()
         {
-            new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
+            _ = new BreakingSequence<int>().ScanRight(string.Empty, BreakingFunc.Of<int, string, string>());
         }
     }
 }

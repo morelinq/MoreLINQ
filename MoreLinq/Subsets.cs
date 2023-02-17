@@ -25,22 +25,28 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of
-        /// the subsets of any size that are part of the original sequence. In
-        /// mathematics, it is equivalent to the <em>power set</em> of a set.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets of any size
+        /// that are part of the original sequence. In mathematics, it is equivalent to the
+        /// <em>power set</em> of a set.
         /// </summary>
+        /// <param name="sequence">Sequence for which to produce subsets.</param>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <returns>
+        /// A sequence of lists that represent the all subsets of the original sequence.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see
+        /// langword="null"/>.</exception>
         /// <remarks>
-        /// This operator produces all of the subsets of a given sequence. Subsets are returned
-        /// in increasing cardinality, starting with the empty set and terminating with the
-        /// entire original sequence.<br/>
+        /// <para>
+        /// This operator produces all of the subsets of a given sequence. Subsets are returned in
+        /// increasing cardinality, starting with the empty set and terminating with the entire
+        /// original sequence.</para>
+        /// <para>
         /// Subsets are produced in a deferred, streaming manner; however, each subset is returned
-        /// as a materialized list.<br/>
-        /// There are 2^N subsets of a given sequence, where N => sequence.Count().
+        /// as a materialized list.</para>
+        /// <para>
+        /// There are 2<sup>N</sup> subsets of a given sequence, where N &#8658;
+        /// <c>sequence.Count()</c>.</para>
         /// </remarks>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
 
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
@@ -72,17 +78,18 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all
-        /// subsets of a given size that are part of the original sequence. In
-        /// mathematics, it is equivalent to the <em>combinations</em> or
-        /// <em>k-subsets</em> of a set.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of a given size
+        /// that are part of the original sequence. In mathematics, it is equivalent to the
+        /// <em>combinations</em> or <em>k-subsets</em> of a set.
         /// </summary>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <param name="subsetSize">The size of the subsets to produce</param>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <returns>A sequence of lists that represents of K-sized subsets of the original sequence</returns>
+        /// <param name="sequence">Sequence for which to produce subsets.</param>
+        /// <param name="subsetSize">The size of the subsets to produce.</param>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <returns>
+        /// A sequence of lists that represents of K-sized subsets of the original
+        /// sequence.</returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="sequence"/> is <see langword="null"/>
+        /// Thrown if <paramref name="sequence"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
@@ -191,7 +198,7 @@ namespace MoreLinq
 
                     ExtractSubset();
 
-                    _continue = (_indices[0] != _z);
+                    _continue = _indices[0] != _z;
                     return true;
                 }
 

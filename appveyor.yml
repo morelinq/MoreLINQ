@@ -20,7 +20,7 @@ for:
       secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
     symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
     on:
-      branch: deploy
+      branch: master
   notifications:
   - provider: Email
     to:
@@ -49,19 +49,16 @@ skip_commits:
 install:
 - npm install -g eclint
 - git rm .editorconfig
-- eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
-- eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+- pwsh: ./eclint.ps1 -InsertFinalNewline -Verbose
+- pwsh: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 - git reset --hard
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
-- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 3.1.10 -SkipNonVersionedFiles }
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 6.0.11 -SkipNonVersionedFiles }
 - sh: ./tools/dotnet-install.sh --jsonfile global.json
-- sh: ./tools/dotnet-install.sh --runtime dotnet --version 3.1.10 --skip-non-versioned-files
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 6.0.11 --skip-non-versioned-files
 - sh: export PATH="$HOME/.dotnet:$PATH"
 before_build:
 - dotnet --info
-build_script:
 - pwsh: |
     grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
     if ($LASTEXITCODE -eq 0) {
@@ -69,6 +66,9 @@ build_script:
     } else {
         $LASTEXITCODE = 0
     }
+# Touch T4 templates to force code generation & validation
+- touch MoreLinq/*.g.tt
+build_script:
 - ps: |
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
     $id = $id.Substring(0, 13)
@@ -76,6 +76,8 @@ build_script:
     if ($LASTEXITCODE -ne 0) {
         throw "Building/Packing failed with an exit code of $LASTEXITCODE."
     }
+after_build:
+- ps: |
     $diff = git diff --ignore-all-space --exit-code 2>&1
     $diff | % { if ($_ -is [string]) { $_ } else { [string]$_ } } | echo
     if ($LASTEXITCODE -ne 0) {

@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryIsLazy()
         {
-            new BreakingSequence<object>().TakeEvery(1);
+            _ = new BreakingSequence<object>().TakeEvery(1);
         }
     }
 }

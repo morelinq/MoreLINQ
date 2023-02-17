@@ -31,7 +31,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatIsLazy()
         {
-            new BreakingSequence<int>().Repeat(5);
+            _ = new BreakingSequence<int>().Repeat(5);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatForeverIsLazy()
         {
-            new BreakingSequence<int>().Repeat();
+            _ = new BreakingSequence<int>().Repeat();
         }
     }
 }

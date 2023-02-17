@@ -75,7 +75,7 @@ namespace MoreLinq.Test
             var xs = new int?[] { 1, 2, 3, null, 5, 6, 7, null, 9, 10 };
 
             var (lt5, gte5, nils) =
-                xs.GroupBy(x => x != null ? x < 5 : (bool?) null)
+                xs.GroupBy(x => x != null ? x < 5 : (bool?)null)
                   .Partition((t, f, n) => Tuple.Create(t, f, n));
 
             Assert.That(lt5,  Is.EqualTo(new[] { 1, 2, 3 }));

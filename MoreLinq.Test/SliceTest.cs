@@ -32,7 +32,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestSliceIsLazy()
         {
-            new BreakingSequence<int>().Slice(10, 10);
+            _ = new BreakingSequence<int>().Slice(10, 10);
         }
 
         /// <summary>

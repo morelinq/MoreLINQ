@@ -101,7 +101,7 @@ namespace MoreLinq.Test
         [Test]
         public void MemoizeIsLazy()
         {
-            new BreakingSequence<int>().Memoize();
+            _ = new BreakingSequence<int>().Memoize();
         }
 
         [TestCase(SourceKind.BreakingCollection)]
@@ -148,7 +148,7 @@ namespace MoreLinq.Test
 
             var memoized = xs.Memoize();
 
-            using ((IDisposable) memoized)
+            using ((IDisposable)memoized)
                 memoized.Take(1).Consume();
         }
 
@@ -204,7 +204,7 @@ namespace MoreLinq.Test
 
             void Run()
             {
-                using ((IDisposable) memoized)
+                using ((IDisposable)memoized)
                     memoized.Take(1).Consume();
             }
 
@@ -219,7 +219,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 10);
             var memoized = sequence.Memoize();
-            var disposable = (IDisposable) memoized;
+            var disposable = (IDisposable)memoized;
 
             using var reader = memoized.Read();
             Assert.That(reader.Read(), Is.EqualTo(1));
@@ -246,7 +246,7 @@ namespace MoreLinq.Test
             var error = new TestException("This is a test exception.");
 
             using var xs = MoreEnumerable.From(() => 123, () => throw error)
-                                         .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
+                                         .AsTestingSequence(maxEnumerations: 2);
             var memoized = xs.Memoize();
             using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
@@ -274,7 +274,7 @@ namespace MoreLinq.Test
             using var xs = MoreEnumerable.From(() => 0 == i++
                                                    ? throw error // throw at start for first iteration only
                                                    : 42)
-                                         .AsTestingSequence(TestingSequence.Options.AllowMultipleEnumerations);
+                                         .AsTestingSequence(maxEnumerations: 2);
             var memoized = xs.Memoize();
             using ((IDisposable)memoized)
             using (var r1 = memoized.Read())
@@ -306,7 +306,7 @@ namespace MoreLinq.Test
             for (var i = 0; i < 2; i++)
                 Assert.That(memo.First, Throws.TypeOf<TestException>().And.SameAs(error));
 
-            ((IDisposable) memo).Dispose();
+            ((IDisposable)memo).Dispose();
             Assert.That(memo.Single(), Is.EqualTo(obj));
         }
     }

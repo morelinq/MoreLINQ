@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeIsLazy()
         {
-            new BreakingSequence<BreakingSequence<int>>().Transpose();
+            _ = new BreakingSequence<BreakingSequence<int>>().Transpose();
         }
 
         [Test]

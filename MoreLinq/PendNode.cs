@@ -101,7 +101,7 @@ namespace MoreLinq
                 }
             }
 
-            var source = (Source) current;
+            var source = (Source)current;
 
             foreach (var item in source.Value)
                 yield return item;
@@ -111,7 +111,7 @@ namespace MoreLinq
                 if (i == 4) { yield return concat4!; i--; }
                 if (i == 3) { yield return concat3!; i--; }
                 if (i == 2) { yield return concat2!; i--; }
-                if (i == 1) { yield return concat1!; i--; }
+                if (i == 1) { yield return concat1!; }
                 yield break;
             }
 

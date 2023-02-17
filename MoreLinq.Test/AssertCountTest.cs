@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -104,20 +105,13 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountIsLazy()
         {
-            new BreakingSequence<object>().AssertCount(0);
+            _ = new BreakingSequence<object>().AssertCount(0);
         }
 
         [Test]
         public void AssertCountWithCollectionIsLazy()
         {
-            new BreakingCollection<int>(new int[5]).AssertCount(0);
-        }
-
-        [Test]
-        public void AssertCountWithMatchingCollectionCount()
-        {
-            var xs = new[] { 123, 456, 789 };
-            Assert.That(xs, Is.SameAs(xs.AssertCount(3)));
+            _ = new BreakingCollection<int>(new int[5]).AssertCount(0);
         }
 
         [TestCase(3, 2, "Sequence contains too many elements when exactly 2 were expected.")]
@@ -133,7 +127,17 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountWithReadOnlyCollectionIsLazy()
         {
-            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+            _ = new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountUsesCollectionCountAtIterationTime()
+        {
+            var stack = new Stack<int>(Enumerable.Range(1, 3));
+            var result = stack.AssertCount(4);
+            stack.Push(4);
+            result.Consume();
+            Assert.Pass();
         }
     }
 }

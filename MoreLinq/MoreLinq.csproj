@@ -118,12 +118,9 @@
     <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>3.3.2</VersionPrefix>
+    <VersionPrefix>3.4.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net462;netstandard1.0;netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
-    <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
-         See also: https://github.com/dotnet/msbuild/issues/2781 -->
-    <BuildInParallel>false</BuildInParallel>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>MoreLinq</AssemblyName>
@@ -158,6 +155,7 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -247,5 +245,32 @@
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <Target Name="_CollectTextTemplates">
+    <ItemGroup>
+      <TextTemplate Include="%(None.Identity)" Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'">
+        <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
+      </TextTemplate>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_TransformTextTemplate" Inputs="$(TextTemplate)" Outputs="$(TextTemplateOutput)">
+    <Exec Command="dotnet t4 -h &gt; /dev/null" IgnoreExitCode="True" Condition="'$(WINDIR)' == ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True" Condition="'$(WINDIR)' != ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
+    <Message Text="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" Importance="High" />
+    <Exec Command="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" />
+  </Target>
+
+  <Target Name="TransformTextTemplates"
+          DependsOnTargets="_CollectTextTemplates">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             Targets="_TransformTextTemplate"
+             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
+  </Target>
 
 </Project>

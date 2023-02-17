@@ -73,8 +73,8 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            if (first.TryGetCollectionCount() is {} firstCount &&
-                second.TryGetCollectionCount() is {} secondCount &&
+            if (first.TryAsCollectionLike() is { Count: var firstCount } &&
+                second.TryAsCollectionLike() is { Count: var secondCount } &&
                 secondCount > firstCount)
             {
                 return false;

@@ -168,7 +168,7 @@ namespace MoreLinq.Experimental
             {
                 case ICollection<T> { Count: 0 }:
                 {
-                    return Cursor(Enumerable.Empty <(T[], int)>().GetEnumerator());
+                    return Cursor(Enumerable.Empty<(T[], int)>().GetEnumerator());
                 }
                 case ICollection<T> collection when collection.Count <= size:
                 {
@@ -178,7 +178,7 @@ namespace MoreLinq.Experimental
                 }
                 case IReadOnlyCollection<T> { Count: 0 }:
                 {
-                    return Cursor(Enumerable.Empty <(T[], int)>().GetEnumerator());
+                    return Cursor(Enumerable.Empty<(T[], int)>().GetEnumerator());
                 }
                 case IReadOnlyList<T> list when list.Count <= size:
                 {

@@ -28,8 +28,8 @@ namespace MoreLinq.Test
         [Test]
         public void IsLazy()
         {
-            new BreakingSequence<object>()
-                .CountDown(42, BreakingFunc.Of<object, int?, object>());
+            var bs = new BreakingSequence<object>();
+            _ = bs.CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
             const int count = 10;
             Enumerable.Range(1, count)
                       .CountDown(-1000, (_, cd) => cd)
-                      .AssertSequenceEqual(Enumerable.Repeat((int?) null, count));
+                      .AssertSequenceEqual(Enumerable.Repeat((int?)null, count));
         }
 
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
             {
                 Source = xs, Count = count, Countdown = countdown
             })
-            from kind in new[] { SourceKind.BreakingList, SourceKind.BreakingReadOnlyList }
+            from kind in SourceKinds.List
             select new TestCaseData(e.Source.ToSourceKind(kind), e.Count)
                 .Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
                 .SetName($"{nameof(WithList)}({kind} {{ {string.Join(", ", e.Source)} }}, {e.Count})");
@@ -210,6 +210,15 @@ namespace MoreLinq.Test
 
                 protected override IEnumerable<T> Items => _collection;
             }
+        }
+
+        [Test]
+        public void UsesCollectionCountAtIterationTime()
+        {
+            var stack = new Stack<int>(Enumerable.Range(1, 3));
+            var result = stack.CountDown(2, (_, cd) => cd);
+            stack.Push(4);
+            result.AssertSequenceEqual(null, null, 1, 0);
         }
     }
 }

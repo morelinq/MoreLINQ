@@ -69,7 +69,7 @@ namespace MoreLinq.Test
         public void ZipShortestIsLazy()
         {
             var bs = new BreakingSequence<int>();
-            bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
+            _ = bs.ZipShortest(bs, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
