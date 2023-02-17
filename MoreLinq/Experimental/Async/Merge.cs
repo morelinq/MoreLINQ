@@ -174,27 +174,25 @@ namespace MoreLinq.Experimental.Async
                 }
                 finally
                 {
-                    // Signal cancellation to those in flight. Unfortunately,
-                    // this relies on all iterators to honour the cancellation.
+                    // Signal cancellation to those in flight. Unfortunately, this relies on all
+                    // iterators to honour the cancellation.
 
                     thisCancellationTokenSource.Cancel();
 
-                    // > The caller of an async-iterator method should only call
-                    // > `DisposeAsync()` when the method completed or was suspended
-                    // > by a `yield return`.
+                    // > The caller of an async-iterator method should only call `DisposeAsync()`
+                    // > when the method completed or was suspended by a `yield return`.
                     //
                     // Source: https://github.com/dotnet/roslyn/blob/0e7b657bf6c019ec8019dcbd4f833f0dda50a97d/docs/features/async-streams.md#disposal
                     //
-                    // > The result of invoking `DisposeAsync` from states -1 or N is
-                    // > unspecified. This compiler generates `throw new
-                    // > NotSupportException()` for those cases.
+                    // > The result of invoking `DisposeAsync` from states -1 or N is unspecified.
+                    // > This compiler generates `throw new NotSupportException()` for those cases.
                     //
                     // Source: https://github.com/dotnet/roslyn/blob/0e7b657bf6c019ec8019dcbd4f833f0dda50a97d/docs/features/async-streams.md#state-values-and-transitions
                     //
-                    // As result, wait for all pending tasks to complete, irrespective
-                    // of how they complete (successfully, faulted or canceled). The
-                    // goal is that the iterator is in some defined stat where it is
-                    // before disposing it otherwise it could throw "NotSupportedException".
+                    // As result, wait for all pending tasks to complete, irrespective of how they
+                    // complete (successfully, faulted or canceled). The goal is that the iterator
+                    // is in some defined stat where it is before disposing it otherwise it could
+                    // throw "NotSupportedException".
 
                     if (pendingTaskList is { Count: > 0 })
                     {
