@@ -189,10 +189,10 @@ namespace MoreLinq.Experimental.Async
                     //
                     // Source: https://github.com/dotnet/roslyn/blob/0e7b657bf6c019ec8019dcbd4f833f0dda50a97d/docs/features/async-streams.md#state-values-and-transitions
                     //
-                    // As result, wait for all pending tasks to complete, irrespective of how they
+                    // As a result, wait for all pending tasks to complete, irrespective of how they
                     // complete (successfully, faulted or canceled). The goal is that the iterator
-                    // is in some defined stat where it is before disposing it otherwise it could
-                    // throw "NotSupportedException".
+                    // is in some defined state before disposing it otherwise it could throw
+                    // "NotSupportedException".
 
                     if (pendingTaskList is { Count: > 0 })
                     {
