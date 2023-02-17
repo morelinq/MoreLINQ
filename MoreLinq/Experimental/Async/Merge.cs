@@ -110,7 +110,7 @@ namespace MoreLinq.Experimental.Async
 
                     ValueTask? DisposeAsync(IAsyncEnumerator<T> enumerator)
                     {
-                        enumeratorList.Remove(enumerator);
+                        _ = enumeratorList.Remove(enumerator);
                         var disposalTask = enumerator.DisposeAsync();
                         if (disposalTask.IsCompleted)
                             return disposalTask;
@@ -156,7 +156,7 @@ namespace MoreLinq.Experimental.Async
                         {
                             var completedTask = await Task.WhenAny(pendingTaskList).ConfigureAwait(false);
                             var (moved, enumerator) = await completedTask.ConfigureAwait(false);
-                            pendingTaskList.Remove(completedTask);
+                            _ = pendingTaskList.Remove(completedTask);
 
                             if (moved)
                             {
@@ -201,7 +201,7 @@ namespace MoreLinq.Experimental.Async
                         while (await Task.WhenAny(pendingTaskList)
                                          .ConfigureAwait(false) is { } completedTask)
                         {
-                            pendingTaskList.Remove(completedTask);
+                            _ = pendingTaskList.Remove(completedTask);
                         }
                     }
 
