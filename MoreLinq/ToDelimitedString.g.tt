@@ -42,8 +42,8 @@ namespace MoreLinq
     using System.Text;
 
     partial class MoreEnumerable
-    {
-<#      var cscp = new CSharpCodeProvider();
+    {<#
+        var cscp = new CSharpCodeProvider();
         var types =
             from method in typeof(StringBuilder).GetMethods(BindingFlags.Public | BindingFlags.Instance)
             where "Append" == method.Name
@@ -73,6 +73,7 @@ namespace MoreLinq
                 break;
             }
         #>
+
         /// <summary>
         /// Creates a delimited string from a sequence of values and
         /// a given delimiter.
@@ -96,16 +97,8 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, <#= type.Name #>, StringBuilder> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
-        }
-
 <#      } #>
-
-        static partial class StringBuilderAppenders {}
     }
 }
