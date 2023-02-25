@@ -31,6 +31,26 @@ namespace MoreLinq.Test
         BreakingReadOnlyCollection
     }
 
+    static class SourceKinds
+    {
+        public static readonly IEnumerable<SourceKind> Sequence = new[]
+        {
+            SourceKind.Sequence,
+        };
+
+        public static readonly IEnumerable<SourceKind> Collection = new[]
+        {
+            SourceKind.BreakingCollection,
+            SourceKind.BreakingReadOnlyCollection
+        };
+
+        public static readonly IEnumerable<SourceKind> List = new[]
+        {
+            SourceKind.BreakingList,
+            SourceKind.BreakingReadOnlyList
+        };
+    }
+
     static partial class TestExtensions
     {
         /// <summary>
@@ -67,30 +87,15 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
-        {
-            yield return input.ToSourceKind(SourceKind.Sequence);
-            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
-            yield return input.ToSourceKind(SourceKind.BreakingCollection);
-        }
-
-        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
-        {
-            switch (sourceKind)
+        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
+            sourceKind switch
             {
-                case SourceKind.Sequence:
-                    return input.Select(x => x);
-                case SourceKind.BreakingList:
-                    return new BreakingList<T>(input.ToList());
-                case SourceKind.BreakingReadOnlyList:
-                    return new BreakingReadOnlyList<T>(input.ToList());
-                case SourceKind.BreakingCollection:
-                    return new BreakingCollection<T>(input.ToList());
-                case SourceKind.BreakingReadOnlyCollection:
-                    return new BreakingReadOnlyCollection<T>(input.ToList());
-                default:
-                    throw new ArgumentException(null, nameof(sourceKind));
-            }
-        }
+                SourceKind.Sequence => input.Select(x => x),
+                SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input.ToList()),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(input.ToList()),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input.ToList()),
+                _ => throw new ArgumentException(null, nameof(sourceKind))
+            };
     }
 }

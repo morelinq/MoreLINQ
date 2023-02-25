@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -31,13 +29,13 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithNegativeWidth()
         {
-            AssertThrowsArgument.Exception("width", () => new int[0].PadStart(-1));
+            Assert.That(() => new int[0].PadStart(-1), Throws.ArgumentException("width"));
         }
 
         [Test]
         public void PadStartIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0);
+            _ = new BreakingSequence<int>().PadStart(0);
         }
 
         public class PadStartWithDefaultPadding
@@ -66,13 +64,13 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithPaddingWithNegativeWidth()
         {
-            AssertThrowsArgument.Exception("width", () => new int[0].PadStart(-1, 1));
+            Assert.That(() => new int[0].PadStart(-1, 1), Throws.ArgumentException("width"));
         }
 
         [Test]
         public void PadStartWithPaddingIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0, -1);
+            _ = new BreakingSequence<int>().PadStart(0, -1);
         }
 
         public class PadStartWithPadding
@@ -101,13 +99,13 @@ namespace MoreLinq.Test
         [Test]
         public void PadStartWithSelectorWithNegativeWidth()
         {
-            AssertThrowsArgument.Exception("width", () => new int[0].PadStart(-1, x => x));
+            Assert.That(() => new int[0].PadStart(-1, x => x), Throws.ArgumentException("width"));
         }
 
         [Test]
         public void PadStartWithSelectorIsLazy()
         {
-            new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().PadStart(0, BreakingFunc.Of<int, int>());
         }
 
         public class PadStartWithSelector
@@ -135,6 +133,14 @@ namespace MoreLinq.Test
             }
         }
 
+        [Test]
+        public void PadStartUsesCollectionCountAtIterationTime()
+        {
+            var queue = new Queue<int>(Enumerable.Range(1, 3));
+            var result = queue.PadStart(4, -1);
+            queue.Enqueue(4);
+            result.AssertSequenceEqual(1, 2, 3, 4);
+        }
 
         static void AssertEqual<T>(ICollection<T> input, Func<IEnumerable<T>, IEnumerable<T>> op, IEnumerable<T> expected)
         {

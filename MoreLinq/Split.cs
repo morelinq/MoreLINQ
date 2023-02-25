@@ -50,7 +50,7 @@ namespace MoreLinq
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             TSource separator, int count)
         {
-            return Split(source, separator, count, s => s);
+            return Split(source, separator, count, IdFn);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace MoreLinq
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             TSource separator, IEqualityComparer<TSource>? comparer, int count)
         {
-            return Split(source, separator, comparer, count, s => s);
+            return Split(source, separator, comparer, count, IdFn);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace MoreLinq
         public static IEnumerable<IEnumerable<TSource>> Split<TSource>(this IEnumerable<TSource> source,
             Func<TSource, bool> separatorFunc, int count)
         {
-            return Split(source, separatorFunc, count, s => s);
+            return Split(source, separatorFunc, count, IdFn);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace MoreLinq
                         }
                     }
 
-                    if (items != null && items.Count > 0)
+                    if (items is { Count: > 0 })
                         yield return resultSelector(items);
                 }
             }

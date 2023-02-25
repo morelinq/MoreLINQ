@@ -26,8 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void IsLazy()
         {
-            new BreakingSequence<object>()
-                .Choose(BreakingFunc.Of<object, (bool, object)>());
+            _ = new BreakingSequence<object>().Choose(BreakingFunc.Of<object, (bool, object)>());
         }
 
         [Test]
@@ -67,14 +66,16 @@ namespace MoreLinq.Test
 
         static class Option<T>
         {
-            public static readonly (bool IsSome, T Value) None = (false, default);
+#pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
+            public static readonly (bool IsSome, T Value) None = default;
+#pragma warning restore CA1805 // Do not initialize unnecessarily
         }
 
         [Test]
         public void ThoseThatAreIntegers()
         {
             new int?[] { 0, 1, 2, null, 4, null, 6, null, null, 9 }
-                .Choose(e => e is {} n ? Option.Some(n) : Option<int>.None)
+                .Choose(e => e is { } n ? Option.Some(n) : Option<int>.None)
                 .AssertSequenceEqual(0, 1, 2, 4, 6, 9);
         }
 

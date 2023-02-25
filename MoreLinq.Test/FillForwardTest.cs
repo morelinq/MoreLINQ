@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void FillForwardIsLazy()
         {
-            new BreakingSequence<object>().FillForward();
+            _ = new BreakingSequence<object>().FillForward();
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace MoreLinq.Test
                     Continent = cont,
                     Country   = ctry,
                     City      = city,
-                    Value     = int.Parse(val),
+                    Value     = int.Parse(val, CultureInfo.InvariantCulture),
                 });
 
             data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })

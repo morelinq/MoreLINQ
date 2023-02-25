@@ -41,7 +41,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object>>>.Value);
+            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object?>>>.Value);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
         }
@@ -92,7 +92,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -100,7 +100,7 @@ namespace MoreLinq
 
             // TODO disallow null for "expressions" in next major update
 
-            expressions ??= EmptyArray<Expression<Func<T, object>>>.Value;
+            expressions ??= EmptyArray<Expression<Func<T, object?>>>.Value;
 
             var members = PrepareMemberInfos(expressions).ToArray();
             members = BuildOrBindSchema(table, members);
@@ -130,7 +130,7 @@ namespace MoreLinq
             return table;
         }
 
-        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object?>>> expressions)
         {
             //
             // If no lambda expressions supplied then reflect them off the source element type.
@@ -159,19 +159,18 @@ namespace MoreLinq
                 throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
             }
 
-            MemberInfo GetAccessedMember(LambdaExpression lambda)
+            static MemberInfo GetAccessedMember(LambdaExpression lambda)
             {
                 var body = lambda.Body;
 
                 // If it's a field access, boxing was used, we need the field
-                if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
+                if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
                     body = ((UnaryExpression)body).Operand;
 
                 // Check if the member expression is valid and is a "first level"
                 // member access e.g. not a.b.c
-                return body is MemberExpression memberExpression
-                       && memberExpression.Expression.NodeType == ExpressionType.Parameter
-                     ? memberExpression.Member
+                return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
+                     ? member
                      : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
         }
@@ -192,8 +191,8 @@ namespace MoreLinq
 
             var schemas = from m in members
                           let type = m.MemberType == MemberTypes.Property
-                                   ? ((PropertyInfo) m).PropertyType
-                                   : ((FieldInfo) m).FieldType
+                                   ? ((PropertyInfo)m).PropertyType
+                                   : ((FieldInfo)m).FieldType
                           select new
                           {
                               Member = m,
@@ -221,10 +220,7 @@ namespace MoreLinq
                 foreach (var info in schemas)
                 {
                     var member = info.Member;
-                    var column = info.Column;
-
-                    if (column == null)
-                        throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
+                    var column = info.Column ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
                     if (info.Type != column.DataType)
                         throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));

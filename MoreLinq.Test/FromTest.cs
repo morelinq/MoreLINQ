@@ -18,19 +18,18 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Collections.Generic;
     using NUnit.Framework;
 
-    class FromTest
+    public class FromTest
     {
         [Test]
         public void TestFromIsLazy()
         {
             var breakingFunc = BreakingFunc.Of<int>();
-            MoreEnumerable.From(breakingFunc);
-            MoreEnumerable.From(breakingFunc, breakingFunc);
-            MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
-            MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc, breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc);
+            _ = MoreEnumerable.From(breakingFunc, breakingFunc, breakingFunc, breakingFunc);
         }
 
         [TestCase(1)]
@@ -60,21 +59,20 @@ namespace MoreLinq.Test
         [TestCase(4)]
         public void TestFromInvokesMethodsMultipleTimes(int numArgs)
         {
-            var evals = new [] { 0, 0, 0, 0 };
+            var evals = new[] { 0, 0, 0, 0 };
             int F1() { evals[0]++; return -2; }
             int F2() { evals[1]++; return -2; }
             int F3() { evals[2]++; return -2; }
             int F4() { evals[3]++; return -2; }
 
-            IEnumerable<int> results;
-            switch (numArgs)
+            var results = numArgs switch
             {
-                case 1: results = MoreEnumerable.From(F1); break;
-                case 2: results = MoreEnumerable.From(F1, F2); break;
-                case 3: results = MoreEnumerable.From(F1, F2, F3); break;
-                case 4: results = MoreEnumerable.From(F1, F2, F3, F4); break;
-                default: throw new ArgumentOutOfRangeException(nameof(numArgs));
-            }
+                1 => MoreEnumerable.From(F1),
+                2 => MoreEnumerable.From(F1, F2),
+                3 => MoreEnumerable.From(F1, F2, F3),
+                4 => MoreEnumerable.From(F1, F2, F3, F4),
+                _ => throw new ArgumentOutOfRangeException(nameof(numArgs))
+            };
 
             results.Consume();
             results.Consume();

@@ -58,7 +58,9 @@ namespace MoreLinq
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {
+#pragma warning disable IDE0007 // Use implicit type (false positive)
                 IEnumerator<T>?[] enumerators = source.Select(e => e.GetEnumerator()).Acquire();
+#pragma warning restore IDE0007 // Use implicit type
 
                 try
                 {

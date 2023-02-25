@@ -32,12 +32,12 @@ namespace MoreLinq.Test
             var bfo = BreakingFunc.Of<object, object>();
             var bfg = BreakingFunc.Of<int, IEnumerable<object>, IEnumerable<object>>();
 
-            bs.GroupAdjacent(bf);
-            bs.GroupAdjacent(bf, bfo);
-            bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(bf, bfg);
-            bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf);
+            _ = bs.GroupAdjacent(bf, bfo);
+            _ = bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf, bfg);
+            _ = bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace MoreLinq.Test
                 new { Month = 1, Value = 781 },
             };
 
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value));
+            var groupings = source.GroupAdjacent(e => e.Month, (_, group) => group.Sum(v => v.Value));
 
             using var reader = groupings.Read();
             AssertResult(reader, 123 + 456 + 789);
@@ -188,7 +188,7 @@ namespace MoreLinq.Test
                 new { Month = "JAN", Value = 781 },
             };
 
-            var groupings = source.GroupAdjacent(e => e.Month, (key, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
+            var groupings = source.GroupAdjacent(e => e.Month, (_, group) => group.Sum(v => v.Value), StringComparer.OrdinalIgnoreCase);
 
             using var reader = groupings.Read();
             AssertResult(reader, 123 + 456 + 789);
@@ -235,7 +235,7 @@ namespace MoreLinq.Test
         {
             var result = reader.Read();
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(element, result);
+            Assert.That(result, Is.EqualTo(element));
         }
     }
 }

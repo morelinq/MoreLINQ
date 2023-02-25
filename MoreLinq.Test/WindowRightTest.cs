@@ -26,20 +26,18 @@ namespace MoreLinq.Test
         [Test]
         public void WindowRightIsLazy()
         {
-            new BreakingSequence<int>().WindowRight(1);
+            _ = new BreakingSequence<int>().WindowRight(1);
         }
 
         [Test]
         public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
         {
             var sequence = Enumerable.Range(0, 3);
-            using var e = sequence.WindowRight(2).GetEnumerator();
+            using var reader = sequence.WindowRight(2).Read();
 
-            e.MoveNext();
-            var window1 = e.Current;
+            var window1 = reader.Read();
             window1[0] = -1;
-            e.MoveNext();
-            var window2 = e.Current;
+            var window2 = reader.Read();
 
             Assert.That(window2[0], Is.EqualTo(0));
         }
@@ -48,13 +46,11 @@ namespace MoreLinq.Test
         public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
         {
             var sequence = Enumerable.Range(0, 3);
-            using var e = sequence.WindowRight(2).GetEnumerator();
+            using var reader = sequence.WindowRight(2).Read();
 
-            e.MoveNext();
-            var window1 = e.Current;
-            e.MoveNext();
+            var window1 = reader.Read();
             window1[0] = -1;
-            var window2 = e.Current;
+            var window2 = reader.Read();
 
             Assert.That(window2[0], Is.EqualTo(0));
         }
@@ -63,12 +59,10 @@ namespace MoreLinq.Test
         public void WindowModifiedDoesNotAffectPreviousWindow()
         {
             var sequence = Enumerable.Range(0, 3);
-            using var e = sequence.WindowRight(2).GetEnumerator();
+            using var reader = sequence.WindowRight(2).Read();
 
-            e.MoveNext();
-            var window1 = e.Current;
-            e.MoveNext();
-            var window2 = e.Current;
+            var window1 = reader.Read();
+            var window2 = reader.Read();
             window2[0] = -1;
 
             Assert.That(window1[0], Is.EqualTo(0));
@@ -77,8 +71,8 @@ namespace MoreLinq.Test
         [Test]
         public void WindowRightWithNegativeWindowSize()
         {
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                Enumerable.Repeat(1, 10).WindowRight(-5));
+            Assert.That(() => Enumerable.Repeat(1, 10).WindowRight(-5),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         [Test]

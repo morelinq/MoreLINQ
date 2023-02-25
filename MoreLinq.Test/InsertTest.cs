@@ -25,8 +25,8 @@ namespace MoreLinq.Test
         [Test]
         public void InsertWithNegativeIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("index", () =>
-                 Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1));
+            Assert.That(() => Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1),
+                        Throws.ArgumentOutOfRangeException("index"));
         }
 
         [TestCase(7)]
@@ -42,9 +42,8 @@ namespace MoreLinq.Test
 
             var result = test1.Insert(test2, count + 1);
 
-            AssertThrowsArgument.OutOfRangeException("index", () =>
-                result.ForEach((e, index) =>
-                    Assert.That(e, Is.EqualTo(seq1[index]))));
+            Assert.That(() => result.ForEach((e, index) => Assert.That(e, Is.EqualTo(seq1[index]))),
+                        Throws.ArgumentOutOfRangeException("index"));
         }
 
         [TestCase(7)]
@@ -84,7 +83,7 @@ namespace MoreLinq.Test
         [Test]
         public void InsertIsLazy()
         {
-            new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
+            _ = new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
         }
     }
 }

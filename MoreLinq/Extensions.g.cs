@@ -360,7 +360,7 @@ namespace MoreLinq.Extensions
         /// <returns>The final accumulator value.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = Enumerable.Range(1, 5).Select(i => i.ToString()).AggregateRight((a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/5))))"</c>.
         /// </example>
@@ -386,7 +386,7 @@ namespace MoreLinq.Extensions
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// string result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b));
+        /// string result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>"(1/(2/(3/(4/(5/6)))))"</c>.
         /// </example>
@@ -415,7 +415,7 @@ namespace MoreLinq.Extensions
         /// <example>
         /// <code><![CDATA[
         /// var numbers = Enumerable.Range(1, 5);
-        /// int result = numbers.AggregateRight("6", (a, b) => string.Format("({0}/{1})", a, b), str => str.Length);
+        /// int result = numbers.AggregateRight("6", (a, b) => $"({a}/{b})", str => str.Length);
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>21</c>.
         /// </example>
@@ -586,7 +586,7 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="count">The maximun number of items a sequence must have for this
+        /// <param name="count">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
@@ -690,6 +690,7 @@ namespace MoreLinq.Extensions
         /// <param name="size">Size of buckets.</param>
         /// <param name="resultSelector">The projection to apply to each bucket.</param>
         /// <returns>A sequence of projections on equally sized buckets containing elements of the source collection.</returns>
+        /// <remarks>
         /// <para>
         /// This operator uses deferred execution and streams its results
         /// (buckets are streamed but their content buffered).</para>
@@ -705,6 +706,7 @@ namespace MoreLinq.Extensions
         /// hoping for a single bucket, then it can lead to memory exhaustion
         /// (<see cref="OutOfMemoryException"/>).
         /// </para>
+        /// </remarks>
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
             Func<IEnumerable<TSource>, TResult> resultSelector)
@@ -1135,7 +1137,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">The source sequence</param>
         /// <param name="min">The minimum number of items a sequence must have for this
         /// function to return true</param>
-        /// <param name="max">The maximun number of items a sequence must have for this
+        /// <param name="max">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
@@ -1212,7 +1214,7 @@ namespace MoreLinq.Extensions
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -1747,7 +1749,7 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with the following non-missing element in that sequence. Additional
-        /// parameters specifiy two functions, one used to determine if an
+        /// parameters specify two functions, one used to determine if an
         /// element is considered missing or not and another to provide the
         /// replacement for the missing element.
         /// </summary>
@@ -1824,7 +1826,7 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with one based on the previous non-missing element seen in that
-        /// sequence. Additional parameters specifiy two functions, one used to
+        /// sequence. Additional parameters specify two functions, one used to
         /// determine if an element is considered missing or not and another
         /// to provide the replacement for the missing element.
         /// </summary>
@@ -1890,8 +1892,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the first element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.FirstOrDefault(source);
 
     }
@@ -1911,7 +1912,13 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source)             => MoreEnumerable.Flatten(source);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source)             => MoreEnumerable.            Flatten(source);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -1935,8 +1942,14 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="predicate"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
-            => MoreEnumerable.Flatten(source, predicate);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
+            => MoreEnumerable.            Flatten(source, predicate);
 
         /// <summary>
         /// Flattens a sequence containing arbitrarily-nested sequences. An
@@ -1960,8 +1973,20 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="selector"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<object> Flatten(this IEnumerable source, Func<object, IEnumerable?> selector)
-            => MoreEnumerable.Flatten(source, selector);
+        public static IEnumerable<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*.............................*/ object
+#nullable restore
+/*...................................*/ >
+            Flatten(this IEnumerable source,
+                    Func<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*....................*/ object,
+#nullable restore
+/*....................*/ IEnumerable?> selector)
+            => MoreEnumerable.            Flatten(source, selector);
 
     }
 
@@ -2967,24 +2992,31 @@ namespace MoreLinq.Extensions
     public static partial class InterleaveExtension
     {
         /// <summary>
-        /// Interleaves the elements of two or more sequences into a single sequence, skipping sequences as they are consumed
+        /// Interleaves the elements of two or more sequences into a single sequence, skipping
+        /// sequences as they are consumed.
         /// </summary>
+        /// <typeparam name="T">The type of the elements of the source sequences.</typeparam>
+        /// <param name="sequence">The first sequence in the interleave group.</param>
+        /// <param name="otherSequences">The other sequences in the interleave group.</param>
+        /// <returns>A sequence of interleaved elements from all of the source sequences.</returns>
         /// <remarks>
-        /// Interleave combines sequences by visiting each in turn, and returning the first element of each, followed
-        /// by the second, then the third, and so on. So, for example:<br/>
+        /// <para>
+        /// Interleave combines sequences by visiting each in turn, and returning the first element
+        /// of each, followed by the second, then the third, and so on. So, for example:</para>
         /// <code><![CDATA[
-        /// {1,1,1}.Interleave( {2,2,2}, {3,3,3} ) => { 1,2,3,1,2,3,1,2,3 }
+        /// var xs = new[] { 1, 1, 1 }.Interleave(new[] { 2, 2, 2 }, new[] { 3, 3, 3 });
+        /// // xs = { 1, 2, 3, 1, 2, 3, 1, 2, 3 }
         /// ]]></code>
-        /// This operator behaves in a deferred and streaming manner.<br/>
-        /// When sequences are of unequal length, this method will skip those sequences that have been fully consumed
-        /// and continue interleaving the remaining sequences.<br/>
-        /// The sequences are interleaved in the order that they appear in the <paramref name="otherSequences"/>
-        /// collection, with <paramref name="sequence"/> as the first sequence.
+        /// <para>
+        /// This operator behaves in a deferred and streaming manner.</para>
+        /// <para>
+        /// When sequences are of unequal length, this method will skip those sequences that have
+        /// been fully consumed and continue interleaving the remaining sequences.</para>
+        /// <para>
+        /// The sequences are interleaved in the order that they appear in the <paramref
+        /// name="otherSequences"/> collection, with <paramref name="sequence"/> as the first
+        /// sequence.</para>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements of the source sequences</typeparam>
-        /// <param name="sequence">The first sequence in the interleave group</param>
-        /// <param name="otherSequences">The other sequences in the interleave group</param>
-        /// <returns>A sequence of interleaved elements from all of the source sequences</returns>
 
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> sequence, params IEnumerable<T>[] otherSequences)
             => MoreEnumerable.Interleave(sequence, otherSequences);
@@ -2997,35 +3029,49 @@ namespace MoreLinq.Extensions
     public static partial class LagExtension
     {
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// negative offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each
+        /// value of the sequence.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and lagged
+        /// items (in that order) and returns a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lagged
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
-        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
+        /// <para>
+        /// This operator evaluates in a deferred and streaming manner.</para>
+        /// <para>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged
+        /// value.</para>
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate lag</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
-        /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lag(source, offset, resultSelector);
 
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// negative offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each
+        /// value of the sequence.</param>
+        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the
+        /// lag offset.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and lagged
+        /// items (in that order) and returns a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lagged
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// This operator evaluates in a deferred and streaming manner.
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate lag</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
-        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
-        /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
             => MoreEnumerable.Lag(source, offset, defaultLagValue, resultSelector);
@@ -3073,8 +3119,7 @@ namespace MoreLinq.Extensions
         /// otherwise, the last element in source.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.LastOrDefault(source);
 
     }
@@ -3085,36 +3130,49 @@ namespace MoreLinq.Extensions
     public static partial class LeadExtension
     {
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// positive offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements in the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate lead.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each
+        /// element of the sequence.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and
+        /// subsequent (lead) element (in that order) and produces a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lead
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
-        /// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
-        /// default(T) is used as the lead value.<br/>
+        /// <para>
+        /// This operator evaluates in a deferred and streaming manner.</para>
+        /// <para>
+        /// For elements of the sequence that are less than <paramref name="offset"/> items from the
+        /// end, <c>default(T)</c> is used as the lead value.</para>
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements in the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate Lead</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
-        /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
             => MoreEnumerable.Lead(source, offset, resultSelector);
 
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// positive offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements in the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate Lead.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each
+        /// element of the sequence.</param>
+        /// <param name="defaultLeadValue">A default value supplied for the leading element when
+        /// none is available.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and
+        /// subsequent (lead) element (in that order) and produces a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lead
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// This operator evaluates in a deferred and streaming manner.
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements in the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate Lead</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
-        /// <param name="defaultLeadValue">A default value supplied for the leading element when none is available</param>
-        /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
             => MoreEnumerable.Lead(source, offset, defaultLeadValue, resultSelector);
@@ -3922,7 +3980,7 @@ namespace MoreLinq.Extensions
     {
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey})"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// </summary>
         /// <typeparam name="T">Type of elements in the sequence.</typeparam>
@@ -3939,7 +3997,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
@@ -3959,7 +4017,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation. An additional parameter specifies how the
         /// elements compare to each other.
         /// </summary>
@@ -3979,7 +4037,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, IComparer{TKey}, OrderByDirection)"/>,
-        /// where each element is its key, and <see cref="Enumerable.Take{TSource}"/>
+        /// where each element is its key, and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/>
         /// in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
@@ -4009,7 +4067,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
         /// <typeparam name="TKey">Type of keys.</typeparam>
@@ -4029,7 +4087,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// An additional parameter specifies the direction of the sort
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
@@ -4051,7 +4109,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="Enumerable.OrderBy{TSource,TKey}(IEnumerable{TSource},Func{TSource,TKey},IComparer{TKey})"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// An additional parameter specifies how the keys compare to each other.
         /// </summary>
         /// <typeparam name="TSource">Type of elements in the sequence.</typeparam>
@@ -4074,7 +4132,7 @@ namespace MoreLinq.Extensions
 
         /// <summary>
         /// Combines <see cref="MoreEnumerable.OrderBy{T, TKey}(IEnumerable{T}, Func{T, TKey}, OrderByDirection)"/>,
-        /// and <see cref="Enumerable.Take{TSource}"/> in a single operation.
+        /// and <see cref="Enumerable.Take{TSource}(IEnumerable{TSource},int)"/> in a single operation.
         /// Additional parameters specify how the elements compare to each other and
         /// the direction of the sort.
         /// </summary>
@@ -4115,6 +4173,8 @@ namespace MoreLinq.Extensions
         /// A tuple of elements satisfying the predicate and those that do not,
         /// respectively.
         /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is
+        /// <see langword="null"/>.</exception>
         /// <example>
         /// <code><![CDATA[
         /// var (evens, odds) =
@@ -4142,6 +4202,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -4162,6 +4226,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<T, TResult>(this IEnumerable<IGrouping<bool?, T>> source,
             Func<IEnumerable<T>, IEnumerable<T>, IEnumerable<T>, TResult> resultSelector)
@@ -4183,6 +4251,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/>, <paramref name="predicate"/>, or
+        /// <paramref name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var (evens, odds) =
@@ -4203,19 +4275,24 @@ namespace MoreLinq.Extensions
         /// matching a key and those groups that do not.
         /// </summary>
         /// <typeparam name="TKey">Type of keys in source groupings.</typeparam>
-        /// <typeparam name="TElement">Type of elements in source groupings.</typeparam>
+        /// <typeparam name="TElement">Type of elements in source
+        /// groupings.</typeparam>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="key">The key to partition.</param>
         /// <param name="resultSelector">
         /// Function that projects the result from sequences of elements
-        /// matching <paramref name="key"/> and those groups that do not (in
-        /// the order in which they appear in <paramref name="source"/>),
-        /// passed as arguments.
+        /// matching <paramref name="key"/> and those groups that do not (in the
+        /// order in which they appear in <paramref name="source"/>), passed as
+        /// arguments.
         /// </param>
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key,
@@ -4241,6 +4318,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2,
@@ -4266,6 +4347,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key, IEqualityComparer<TKey>? comparer,
@@ -4293,6 +4378,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3,
@@ -4320,6 +4409,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, IEqualityComparer<TKey>? comparer,
@@ -4349,6 +4442,10 @@ namespace MoreLinq.Extensions
         /// <returns>
         /// The return value from <paramref name="resultSelector"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> or <paramref name="resultSelector"/> is
+        /// <see langword="null"/>.
+        /// </exception>
 
         public static TResult Partition<TKey, TElement, TResult>(this IEnumerable<IGrouping<TKey, TElement>> source,
             TKey key1, TKey key2, TKey key3, IEqualityComparer<TKey>? comparer,
@@ -4365,17 +4462,21 @@ namespace MoreLinq.Extensions
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="sequence">The original sequence to permute.</param>
+        /// <returns>
+        /// A sequence of lists representing permutations of the original sequence.</returns>
         /// <remarks>
-        /// A permutation is a unique re-ordering of the elements of the sequence.<br/>
+        /// <para>
+        /// A permutation is a unique re-ordering of the elements of the sequence.</para>
+        /// <para>
         /// This operator returns permutations in a deferred, streaming fashion; however, each
         /// permutation is materialized into a new list. There are N! permutations of a sequence,
-        /// where N => sequence.Count().<br/>
+        /// where N &#8658; <c>sequence.Count()</c>.</para>
+        /// <para>
         /// Be aware that the original sequence is considered one of the permutations and will be
-        /// returned as one of the results.
+        /// returned as one of the results.</para>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The original sequence to permute</param>
-        /// <returns>A sequence of lists representing permutations of the original sequence</returns>
 
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
             => MoreEnumerable.Permutations(sequence);
@@ -4542,7 +4643,7 @@ namespace MoreLinq.Extensions
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
             => MoreEnumerable.Rank(source, comparer);
 
     }
@@ -4942,7 +5043,7 @@ namespace MoreLinq.Extensions
     public static partial class ScanRightExtension
     {
         /// <summary>
-        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
         /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource}(IEnumerable{TSource}, Func{TSource, TSource, TSource})"/> LINQ operator.
         /// </summary>
@@ -4968,7 +5069,7 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.ScanRight(source, func);
 
         /// <summary>
-        /// Peforms a right-associative scan (inclusive prefix) on a sequence of elements.
+        /// Performs a right-associative scan (inclusive prefix) on a sequence of elements.
         /// The specified seed value is used as the initial accumulator value.
         /// This operator is the right-associative version of the
         /// <see cref="MoreEnumerable.Scan{TSource, TState}(IEnumerable{TSource}, TState, Func{TState, TSource, TState})"/> LINQ operator.
@@ -4981,7 +5082,7 @@ namespace MoreLinq.Extensions
         /// <returns>The scanned sequence.</returns>
         /// <example>
         /// <code><![CDATA[
-        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => string.Format("({0}/{1})", a, b));
+        /// var result = Enumerable.Range(1, 4).ScanRight("5", (a, b) => $"({a}+{b})");
         /// ]]></code>
         /// The <c>result</c> variable will contain <c>[ "(1+(2+(3+(4+5))))", "(2+(3+(4+5)))", "(3+(4+5))", "(4+5)", "5" ]</c>.
         /// </example>
@@ -5113,6 +5214,7 @@ namespace MoreLinq.Extensions
         /// The single element of the input sequence.
         /// </returns>
 
+#pragma warning disable CA1720 // Identifier contains type name
         public static T Single<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.Single(source);
 
@@ -5137,8 +5239,7 @@ namespace MoreLinq.Extensions
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
-        [return: MaybeNull]
-        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
             => MoreEnumerable.SingleOrDefault(source);
 
     }
@@ -5209,20 +5310,28 @@ namespace MoreLinq.Extensions
     public static partial class SliceExtension
     {
         /// <summary>
-        /// Extracts a contiguous count of elements from a sequence at a particular zero-based starting index
+        /// Extracts a contiguous count of elements from a sequence at a particular zero-based
+        /// starting index.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
+        /// <param name="sequence">The sequence from which to extract elements.</param>
+        /// <param name="startIndex">The zero-based index at which to begin slicing.</param>
+        /// <param name="count">The number of items to slice out of the index.</param>
+        /// <returns>
+        /// A new sequence containing any elements sliced out from the source sequence.</returns>
         /// <remarks>
-        /// If the starting position or count specified result in slice extending past the end of the sequence,
-        /// it will return all elements up to that point. There is no guarantee that the resulting sequence will
-        /// contain the number of elements requested - it may have anywhere from 0 to <paramref name="count"/>.<br/>
-        /// This method is implemented in an optimized manner for any sequence implementing <c>IList{T}</c>.<br/>
-        /// The result of Slice() is identical to: <c>sequence.Skip(startIndex).Take(count)</c>
+        /// <para>
+        /// If the starting position or count specified result in slice extending past the end of
+        /// the sequence, it will return all elements up to that point. There is no guarantee that
+        /// the resulting sequence will contain the number of elements requested - it may have
+        /// anywhere from 0 to <paramref name="count"/>.</para>
+        /// <para>
+        /// This method is implemented in an optimized manner for any sequence implementing <see
+        /// cref="IList{T}"/>.</para>
+        /// <para>
+        /// The result of <see cref="Slice{T}"/> is identical to:
+        /// <c>sequence.Skip(startIndex).Take(count)</c></para>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements in the source sequence</typeparam>
-        /// <param name="sequence">The sequence from which to extract elements</param>
-        /// <param name="startIndex">The zero-based index at which to begin slicing</param>
-        /// <param name="count">The number of items to slice out of the index</param>
-        /// <returns>A new sequence containing any elements sliced out from the source sequence</returns>
 
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
             => MoreEnumerable.Slice(sequence, startIndex, count);
@@ -5235,44 +5344,57 @@ namespace MoreLinq.Extensions
     public static partial class SortedMergeExtension
     {
         /// <summary>
-        /// Merges two or more sequences that are in a common order (either ascending or descending) into
-        /// a single sequence that preserves that order.
+        /// Merges two or more sequences that are in a common order (either ascending or descending)
+        /// into a single sequence that preserves that order.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the sequence.</typeparam>
+        /// <param name="source">The primary sequence with which to merge.</param>
+        /// <param name="direction">The ordering that all sequences must already exhibit.</param>
+        /// <param name="otherSequences">A variable argument array of zero or more other sequences
+        /// to merge with.</param>
+        /// <returns>
+        /// A merged, order-preserving sequence containing all of the elements of the original
+        /// sequences.</returns>
         /// <remarks>
-        /// Using SortedMerge on sequences that are not ordered or are not in the same order produces
-        /// undefined results.<br/>
-        /// <c>SortedMerge</c> uses performs the merge in a deferred, streaming manner. <br/>
-        ///
-        /// Here is an example of a merge, as well as the produced result:
+        /// <para>
+        /// Using <see
+        /// cref="SortedMerge{TSource}(IEnumerable{TSource},OrderByDirection,IEnumerable{TSource}[])"/>
+        /// on sequences that are not ordered or are not in the same order produces undefined
+        /// results.</para>
+        /// <para>
+        /// <see
+        /// cref="SortedMerge{TSource}(IEnumerable{TSource},OrderByDirection,IEnumerable{TSource}[])"/>
+        /// uses performs the merge in a deferred, streaming manner.</para>
+        /// <para>
+        /// Here is an example of a merge, as well as the produced result:</para>
         /// <code><![CDATA[
-        ///   var s1 = new[] { 3, 7, 11 };
-        ///   var s2 = new[] { 2, 4, 20 };
-        ///   var s3 = new[] { 17, 19, 25 };
-        ///   var merged = s1.SortedMerge( OrderByDirection.Ascending, s2, s3 );
-        ///   var result = merged.ToArray();
-        ///   // result will be:
-        ///   // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
+        /// var s1 = new[] { 3, 7, 11 };
+        /// var s2 = new[] { 2, 4, 20 };
+        /// var s3 = new[] { 17, 19, 25 };
+        /// var merged = s1.SortedMerge(OrderByDirection.Ascending, s2, s3);
+        /// var result = merged.ToArray();
+        /// // result will be:
+        /// // { 2, 3, 4, 7, 11, 17, 19, 20, 25 }
         /// ]]></code>
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements of the sequence</typeparam>
-        /// <param name="source">The primary sequence with which to merge</param>
-        /// <param name="direction">The ordering that all sequences must already exhibit</param>
-        /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-        /// <returns>A merged, order-preserving sequence containing all of the elements of the original sequences</returns>
 
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, params IEnumerable<TSource>[] otherSequences)
             => MoreEnumerable.SortedMerge(source, direction, otherSequences);
 
         /// <summary>
-        /// Merges two or more sequences that are in a common order (either ascending or descending) into
-        /// a single sequence that preserves that order.
+        /// Merges two or more sequences that are in a common order (either ascending or descending)
+        /// into a single sequence that preserves that order.
         /// </summary>
-        /// <typeparam name="TSource">The type of the elements in the sequence</typeparam>
-        /// <param name="source">The primary sequence with which to merge</param>
-        /// <param name="direction">The ordering that all sequences must already exhibit</param>
-        /// <param name="comparer">The comparer used to evaluate the relative order between elements</param>
-        /// <param name="otherSequences">A variable argument array of zero or more other sequences to merge with</param>
-        /// <returns>A merged, order-preserving sequence containing al of the elements of the original sequences</returns>
+        /// <typeparam name="TSource">The type of the elements in the sequence.</typeparam>
+        /// <param name="source">The primary sequence with which to merge.</param>
+        /// <param name="direction">The ordering that all sequences must already exhibit.</param>
+        /// <param name="comparer">The comparer used to evaluate the relative order between
+        /// elements.</param>
+        /// <param name="otherSequences">A variable argument array of zero or more other sequences
+        /// to merge with.</param>
+        /// <returns>
+        /// A merged, order-preserving sequence containing al of the elements of the original
+        /// sequences.</returns>
 
         public static IEnumerable<TSource> SortedMerge<TSource>(this IEnumerable<TSource> source, OrderByDirection direction, IComparer<TSource>? comparer, params IEnumerable<TSource>[] otherSequences)
             => MoreEnumerable.SortedMerge(source, direction, comparer, otherSequences);
@@ -5558,38 +5680,45 @@ namespace MoreLinq.Extensions
     public static partial class SubsetsExtension
     {
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of
-        /// the subsets of any size that are part of the original sequence. In
-        /// mathematics, it is equivalent to the <em>power set</em> of a set.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets of any size
+        /// that are part of the original sequence. In mathematics, it is equivalent to the
+        /// <em>power set</em> of a set.
         /// </summary>
+        /// <param name="sequence">Sequence for which to produce subsets.</param>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <returns>
+        /// A sequence of lists that represent the all subsets of the original sequence.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see
+        /// langword="null"/>.</exception>
         /// <remarks>
-        /// This operator produces all of the subsets of a given sequence. Subsets are returned
-        /// in increasing cardinality, starting with the empty set and terminating with the
-        /// entire original sequence.<br/>
+        /// <para>
+        /// This operator produces all of the subsets of a given sequence. Subsets are returned in
+        /// increasing cardinality, starting with the empty set and terminating with the entire
+        /// original sequence.</para>
+        /// <para>
         /// Subsets are produced in a deferred, streaming manner; however, each subset is returned
-        /// as a materialized list.<br/>
-        /// There are 2^N subsets of a given sequence, where N => sequence.Count().
+        /// as a materialized list.</para>
+        /// <para>
+        /// There are 2<sup>N</sup> subsets of a given sequence, where N &#8658;
+        /// <c>sequence.Count()</c>.</para>
         /// </remarks>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
 
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
             => MoreEnumerable.Subsets(sequence);
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all
-        /// subsets of a given size that are part of the original sequence. In
-        /// mathematics, it is equivalent to the <em>combinations</em> or
-        /// <em>k-subsets</em> of a set.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of a given size
+        /// that are part of the original sequence. In mathematics, it is equivalent to the
+        /// <em>combinations</em> or <em>k-subsets</em> of a set.
         /// </summary>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <param name="subsetSize">The size of the subsets to produce</param>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <returns>A sequence of lists that represents of K-sized subsets of the original sequence</returns>
+        /// <param name="sequence">Sequence for which to produce subsets.</param>
+        /// <param name="subsetSize">The size of the subsets to produce.</param>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <returns>
+        /// A sequence of lists that represents of K-sized subsets of the original
+        /// sequence.</returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="sequence"/> is <see langword="null"/>
+        /// Thrown if <paramref name="sequence"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
@@ -6323,7 +6452,8 @@ namespace MoreLinq.Extensions
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)             => MoreEnumerable.ToDictionary(source);
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)
+            where TKey : notnull             => MoreEnumerable.ToDictionary(source);
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
         /// <see cref="KeyValuePair{TKey,TValue}" /> elements.
@@ -6336,7 +6466,8 @@ namespace MoreLinq.Extensions
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)             => MoreEnumerable.ToDictionary(source);
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
+            where TKey : notnull             => MoreEnumerable.ToDictionary(source);
 
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -6354,6 +6485,7 @@ namespace MoreLinq.Extensions
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
             => MoreEnumerable.ToDictionary(source, comparer);
 
         /// <summary>
@@ -6372,6 +6504,7 @@ namespace MoreLinq.Extensions
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
             => MoreEnumerable.ToDictionary(source, comparer);
 
     }
@@ -6593,16 +6726,21 @@ namespace MoreLinq.Extensions
     public static partial class WindowExtension
     {
         /// <summary>
-        /// Processes a sequence into a series of subsequences representing a windowed subset of the original
+        /// Processes a sequence into a series of sub-sequences representing a windowed subset of
+        /// the original.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the source sequence.</typeparam>
+        /// <param name="source">The sequence to evaluate a sliding window over.</param>
+        /// <param name="size">The size (number of elements) in each window.</param>
+        /// <returns>
+        /// A series of sequences representing each sliding window subsequence.</returns>
         /// <remarks>
-        /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) + 1</c><br/>
-        /// Returned subsequences are buffered, but the overall operation is streamed.<br/>
+        /// <para>
+        /// The number of sequences returned is: <c>Max(0, sequence.Count() - windowSize) +
+        /// 1</c></para>
+        /// <para>
+        /// Returned sub-sequences are buffered, but the overall operation is streamed.</para>
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
-        /// <param name="source">The sequence to evaluate a sliding window over</param>
-        /// <param name="size">The size (number of elements) in each window</param>
-        /// <returns>A series of sequences representing each sliding window subsequence</returns>
 
         public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
             => MoreEnumerable.Window(source, size);

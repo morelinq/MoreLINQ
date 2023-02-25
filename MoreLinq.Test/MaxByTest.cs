@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,21 +25,21 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByIsLazy()
         {
-            new BreakingSequence<int>().MaxBy(BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().MaxBy(BreakingFunc.Of<int, int>());
         }
 
         [Test]
         public void MaxByReturnsMaxima()
         {
-            Assert.AreEqual(new[] { "hello", "world" },
-                            SampleData.Strings.MaxBy(x => x.Length));
+            Assert.That(SampleData.Strings.MaxBy(x => x.Length),
+                        Is.EqualTo(new[] { "hello", "world" }));
         }
 
         [Test]
         public void MaxByNullComparer()
         {
-            Assert.AreEqual(SampleData.Strings.MaxBy(x => x.Length),
-                            SampleData.Strings.MaxBy(x => x.Length, null));
+            Assert.That(SampleData.Strings.MaxBy(x => x.Length, null),
+                        Is.EqualTo(SampleData.Strings.MaxBy(x => x.Length)));
         }
 
         [Test]
@@ -52,13 +51,13 @@ namespace MoreLinq.Test
         [Test]
         public void MaxByWithNaturalComparer()
         {
-            Assert.AreEqual(new[] { "az" }, SampleData.Strings.MaxBy(x => x[1]));
+            Assert.That(SampleData.Strings.MaxBy(x => x[1]), Is.EqualTo(new[] { "az" }));
         }
 
         [Test]
         public void MaxByWithComparer()
         {
-            Assert.AreEqual(new[] { "aa" }, SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer));
+            Assert.That(SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer), Is.EqualTo(new[] { "aa" }));
         }
 
         public class First
@@ -83,16 +82,18 @@ namespace MoreLinq.Test
             public void WithEmptySourceThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.First(strings.MaxBy(s => s.Length)));
+                Assert.That(() =>
+                    MoreEnumerable.First(strings.MaxBy(s => s.Length)),
+                    Throws.InvalidOperationException);
             }
 
             [Test]
             public void WithEmptySourceWithComparerThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+                Assert.That(() =>
+                    MoreEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)),
+                    Throws.InvalidOperationException);
             }
         }
 
@@ -153,16 +154,18 @@ namespace MoreLinq.Test
             public void WithEmptySourceThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.Last(strings.MaxBy(s => s.Length)));
+                Assert.That(() =>
+                    MoreEnumerable.Last(strings.MaxBy(s => s.Length)),
+                    Throws.InvalidOperationException);
             }
 
             [Test]
             public void WithEmptySourceWithComparerThrows()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                Assert.Throws<InvalidOperationException>(() =>
-                    MoreEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)));
+                Assert.That(() =>
+                    MoreEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)),
+                    Throws.InvalidOperationException);
             }
         }
 

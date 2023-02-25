@@ -43,9 +43,9 @@ namespace MoreLinq
         /// </remarks>
         /// <returns>A <c>bool</c> value indicating if the enumerator has moved to the next element.</returns>
 
-        public static bool TryRead<T>(ref IEnumerator<T> enumerator, out T item)
+        public static bool TryRead<T>(ref IEnumerator<T>? enumerator, out T? item)
         {
-            if (enumerator == null)
+            if (enumerator is null)
             {
                 item = default;
                 return false;

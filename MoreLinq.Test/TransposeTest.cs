@@ -27,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeIsLazy()
         {
-            new BreakingSequence<BreakingSequence<int>>().Transpose();
+            _ = new BreakingSequence<BreakingSequence<int>>().Transpose();
         }
 
         [Test]
@@ -36,10 +36,10 @@ namespace MoreLinq.Test
             using var seq1 = TestingSequence.Of(10, 11);
             using var seq2 = TestingSequence.Of<int>();
             using var seq3 = TestingSequence.Of(30, 31, 32);
-            using var matrix = TestingSequence.Of(seq1, seq2, seq3, null);
+            using var matrix = TestingSequence.Of<IEnumerable<int>>(seq1, seq2, seq3, null!);
 
-            Assert.Throws<NullReferenceException>(() =>
-                matrix.Transpose().FirstOrDefault());
+            Assert.That(() => matrix.Transpose().FirstOrDefault(),
+                        Throws.TypeOf<NullReferenceException>());
         }
 
         [Test]
@@ -174,8 +174,8 @@ namespace MoreLinq.Test
 
             result.ElementAt(0).AssertSequenceEqual(10, 20, 30);
 
-            Assert.Throws<TestException>(() =>
-                result.ElementAt(1));
+            Assert.That(() => result.ElementAt(1),
+                        Throws.TypeOf<TestException>());
         }
 
         [Test]
@@ -188,8 +188,8 @@ namespace MoreLinq.Test
             using var row3 = TestingSequence.Of(30, 32);
             using var matrix = TestingSequence.Of(row1, row2, row3);
 
-            Assert.Throws<TestException>(() =>
-                matrix.Transpose().Consume());
+            Assert.That(() => matrix.Transpose().Consume(),
+                        Throws.TypeOf<TestException>());
         }
 
         static bool IsPrime(int number)
@@ -215,7 +215,7 @@ namespace MoreLinq.Test
             var resultList = result.ToList();
             var expectationList = expectation.ToList();
 
-            Assert.AreEqual(expectationList.Count, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(expectationList.Count));
 
             expectationList.Zip(resultList, ValueTuple.Create)
                            .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));

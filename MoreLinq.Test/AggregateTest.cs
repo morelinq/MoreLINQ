@@ -52,8 +52,8 @@ namespace MoreLinq.Test
                 Source = source,
                 Expectation = sum,
                 Instantiation = m.MakeGenericMethod(Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
-                                                 .Append(typeof(int[])) // TResult
-                                                 .ToArray()),
+                                                              .Append(typeof(int[])) // TResult
+                                                              .ToArray()),
             }
             into m
             let rst = m.Instantiation.GetParameters().Last().ParameterType
@@ -65,10 +65,11 @@ namespace MoreLinq.Test
                 AccumulatorCount   = (m.Instantiation.GetParameters().Length - 2 /* source + resultSelector */) / 2 /* seed + accumulator */,
                 ResultSelectorType = rst,
                 Parameters =
-                    rst.GetMethod("Invoke")
-                       .GetParameters()
-                       .Select(p => Expression.Parameter(p.ParameterType))
-                       .ToArray(),
+                    rst.GetMethod("Invoke") is { } invoke
+                    ? invoke.GetParameters()
+                            .Select(p => Expression.Parameter(p.ParameterType))
+                            .ToArray()
+                    : throw new MissingMethodException("""Method "Invoke" not found."""),
             }
             into m
             let resultSelector =
@@ -96,7 +97,7 @@ namespace MoreLinq.Test
             select new TestCaseData(t.Method, t.Args).SetName(t.Name).Returns(t.Expectation);
 
         [TestCaseSource(nameof(AccumulatorsTestSource), new object[] { nameof(Accumulators), 10 })]
-        public object Accumulators(MethodInfo method, object[] args) =>
+        public object? Accumulators(MethodInfo method, object[] args) =>
             method.Invoke(null, args);
 
         [Test]
@@ -111,9 +112,9 @@ namespace MoreLinq.Test
                         0, (s, e) => s + e.Num,
                         0, (s, e) => e.Num % 2 == 0 ? s + e.Num : s,
                         0, (s, _) => s + 1,
-                        (int?)null, (s, e) => s is {} n ? Math.Min(n, e.Num) : e.Num,
-                        (int?)null, (s, e) => s is {} n ? Math.Max(n, e.Num) : e.Num,
-                        new HashSet<int>(), (s, e) => { s.Add(e.Str.Length); return s; },
+                        (int?)null, (s, e) => s is { } n ? Math.Min(n, e.Num) : e.Num,
+                        (int?)null, (s, e) => s is { } n ? Math.Max(n, e.Num) : e.Num,
+                        new HashSet<int>(), (s, e) => { _ = s.Add(e.Str.Length); return s; },
                         new List<(int Num, string Str)>(), (s, e) => { s.Add((e.Num, e.Str)); return s; },
                         (sum, esum, count, min, max, lengths, items) => new
                         {
@@ -121,8 +122,8 @@ namespace MoreLinq.Test
                             EvenSum       = esum,
                             Count         = count,
                             Average       = (double)sum / count,
-                            Min           = min is {} mn ? mn : throw new InvalidOperationException(),
-                            Max           = max is {} mx ? mx : throw new InvalidOperationException(),
+                            Min           = min ?? throw new InvalidOperationException(),
+                            Max           = max ?? throw new InvalidOperationException(),
                             UniqueLengths = lengths,
                             Items         = items,
                         }

@@ -50,15 +50,10 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (count < 1)
-                return Enumerable.Empty<TSource>();
-
-            return
-                source.TryGetCollectionCount() is {} collectionCount
-                ? source.Slice(Math.Max(0, collectionCount - count), int.MaxValue)
-                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
-                        .SkipWhile(e => e.Countdown == null)
-                        .Select(e => e.Element);
+            return count < 1 ? Enumerable.Empty<TSource>()
+                 : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
+                         .SkipWhile(e => e.Countdown == null)
+                         .Select(e => e.Element);
         }
     }
 }

@@ -23,12 +23,10 @@ namespace MoreLinq.Experimental
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
-    using Unit = System.ValueTuple;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.
@@ -41,10 +39,9 @@ namespace MoreLinq.Experimental
         /// asynchronously.
         /// </summary>
 
-        public static readonly AwaitQueryOptions Default =
-            new AwaitQueryOptions(null /* = unbounded concurrency */,
-                                  TaskScheduler.Default,
-                                  preserveOrder: false);
+        public static readonly AwaitQueryOptions Default = new(null /* = unbounded concurrency */,
+                                                               TaskScheduler.Default,
+                                                               preserveOrder: false);
 
         /// <summary>
         /// Gets a positive (non-zero) integer that specifies the maximum
@@ -69,7 +66,7 @@ namespace MoreLinq.Experimental
 
         AwaitQueryOptions(int? maxConcurrency, TaskScheduler scheduler, bool preserveOrder)
         {
-            MaxConcurrency = maxConcurrency == null || maxConcurrency > 0
+            MaxConcurrency = maxConcurrency is null or > 0
                            ? maxConcurrency
                            : throw new ArgumentOutOfRangeException(
                                  nameof(maxConcurrency), maxConcurrency,
@@ -149,8 +146,11 @@ namespace MoreLinq.Experimental
         /// <param name="source">The source sequence.</param>
         /// <returns>The converted sequence.</returns>
 
-        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source) =>
-            source.MaxConcurrency(1);
+        public static IEnumerable<T> AsSequential<T>(this IAwaitQuery<T> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return MaxConcurrency(source, 1);
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously to use a
@@ -163,8 +163,11 @@ namespace MoreLinq.Experimental
         /// A query whose results evaluate asynchronously using the given
         /// concurrency limit.</returns>
 
-        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(value));
+        public static IAwaitQuery<T> MaxConcurrency<T>(this IAwaitQuery<T> source, int value)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(value));
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously and
@@ -176,8 +179,11 @@ namespace MoreLinq.Experimental
         /// A query whose results evaluate asynchronously using no defined
         /// limitation on concurrency.</returns>
 
-        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source) =>
-            source.WithOptions(source.Options.WithMaxConcurrency(null));
+        public static IAwaitQuery<T> UnboundedConcurrency<T>(this IAwaitQuery<T> source)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithMaxConcurrency(null));
+        }
 
         /// <summary>
         /// Returns a query whose results evaluate asynchronously and uses the
@@ -243,8 +249,11 @@ namespace MoreLinq.Experimental
         /// results ordered or unordered based on <paramref name="value"/>.
         /// </returns>
 
-        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value) =>
-            source.WithOptions(source.Options.WithPreserveOrder(value));
+        public static IAwaitQuery<T> PreserveOrder<T>(this IAwaitQuery<T> source, bool value)
+        {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            return source.WithOptions(source.Options.WithPreserveOrder(value));
+        }
 
         /// <summary>
         /// Creates a sequence query that streams the result of each task in
@@ -364,14 +373,14 @@ namespace MoreLinq.Experimental
         /// completed task.
         /// </summary>
         /// <typeparam name="T">The type of the source elements.</typeparam>
-        /// <typeparam name="TTaskResult"> The type of the tasks's result.</typeparam>
+        /// <typeparam name="TTaskResult"> The type of the task's result.</typeparam>
         /// <typeparam name="TResult">The type of the result elements.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="evaluator">A function to begin the asynchronous
         /// evaluation of each element, the second parameter of which is a
         /// <see cref="CancellationToken"/> that can be used to abort
         /// asynchronous operations.</param>
-        /// <param name="resultSelector">A fucntion that projects the final
+        /// <param name="resultSelector">A function that projects the final
         /// result given the source item and its asynchronous completion
         /// result.</param>
         /// <returns>
@@ -417,11 +426,11 @@ namespace MoreLinq.Experimental
 
             return
                 AwaitQuery.Create(
-                    options => _(options.MaxConcurrency,
-                                 options.Scheduler ?? TaskScheduler.Default,
-                                 options.PreserveOrder));
+                    options => Impl(options.MaxConcurrency,
+                                    options.Scheduler ?? TaskScheduler.Default,
+                                    options.PreserveOrder));
 
-            IEnumerable<TResult> _(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
+            IEnumerable<TResult> Impl(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
             {
                 // A separate task will enumerate the source and launch tasks.
                 // It will post all progress as notices to the collection below.
@@ -457,18 +466,20 @@ namespace MoreLinq.Experimental
                     // completes and another, an end-notice, when all tasks have
                     // completed.
 
-                    Task.Factory.StartNew(
+                    _ = Task.Factory.StartNew(
                         async () =>
                         {
                             try
                             {
-                                await enumerator.StartAsync(
-                                    e => evaluator(e.Value, cancellationToken),
-                                    (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
-                                    () => PostNotice(Notice.End, default, default),
-                                    maxConcurrency, cancellationToken);
+                                await enumerator.StartAsync(e => evaluator(e.Value, cancellationToken),
+                                                            (e, r) => PostNotice(Notice.Result, (e.Key, e.Value, r), default),
+                                                            () => PostNotice(Notice.End, default, default),
+                                                            maxConcurrency, cancellationToken)
+                                                .ConfigureAwait(false);
                             }
+#pragma warning disable CA1031 // Do not catch general exception types
                             catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
                             {
                                 PostNotice(Notice.Error, default, e);
                             }
@@ -484,7 +495,7 @@ namespace MoreLinq.Experimental
                                 // Note that only the "last" critical error is reported
                                 // as maintaining a list would incur allocations. The idea
                                 // here is to make a best effort attempt to report any of
-                                // the error conditions that may be occuring, which is still
+                                // the error conditions that may be occurring, which is still
                                 // better than nothing.
 
                                 try
@@ -516,8 +527,10 @@ namespace MoreLinq.Experimental
                     var nextKey = 0;
                     var holds = ordered ? new List<(int, T, Task<TTaskResult>)>() : null;
 
+#pragma warning disable IDE0011 // Add braces
                     using (var notice = notices.GetConsumingEnumerable(consumerCancellationTokenSource.Token)
                                                .GetEnumerator())
+#pragma warning restore IDE0011 // Add braces
                     while (true)
                     {
                         try
@@ -528,17 +541,17 @@ namespace MoreLinq.Experimental
                         catch (OperationCanceledException e) when (e.CancellationToken == consumerCancellationTokenSource.Token)
                         {
                             var (error1, error2) = lastCriticalErrors;
+#pragma warning disable CA2201 // Do not raise reserved exception types
                             throw new Exception("One or more critical errors have occurred.",
-                                error2 != null ? new AggregateException(error1, error2)
-                                               : new AggregateException(error1));
+                                error2 != null ? new AggregateException(Assume.NotNull(error1), error2)
+                                               : new AggregateException(Assume.NotNull(error1)));
+#pragma warning restore CA2201 // Do not raise reserved exception types
                         }
 
                         var (kind, result, error) = notice.Current;
 
                         if (kind == Notice.Error)
-                        {
-                            error!.Throw();
-                        }
+                            Assume.NotNull(error).Throw();
 
                         if (kind == Notice.End)
                             break;
@@ -639,7 +652,7 @@ namespace MoreLinq.Experimental
                         onEnd();
                 }
 
-                var concurrencyGate = maxConcurrency is {} count
+                var concurrencyGate = maxConcurrency is { } count
                                     ? new ConcurrencyGate(count)
                                     : ConcurrencyGate.Unbounded;
 
@@ -647,25 +660,24 @@ namespace MoreLinq.Experimental
                 {
                     try
                     {
-                        await concurrencyGate.EnterAsync(cancellationToken);
+                        await concurrencyGate.EnterAsync(cancellationToken)
+                                             .ConfigureAwait(false);
                     }
                     catch (OperationCanceledException e) when (e.CancellationToken == cancellationToken)
                     {
                         return;
                     }
 
-                    Interlocked.Increment(ref pendingCount);
+                    _ = Interlocked.Increment(ref pendingCount);
 
                     var item = enumerator.Current;
                     var task = starter(item);
 
-                    // Add a continutation that notifies completion of the task,
+                    // Add a continuation that notifies completion of the task,
                     // along with the necessary housekeeping, in case it
                     // completes before maximum concurrency is reached.
 
-                    #pragma warning disable 4014 // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs4014
-
-                    task.ContinueWith(cancellationToken: cancellationToken,
+                    _ = task.ContinueWith(cancellationToken: cancellationToken,
                         continuationOptions: TaskContinuationOptions.ExecuteSynchronously,
                         scheduler: TaskScheduler.Current,
                         continuationAction: t =>
@@ -678,8 +690,6 @@ namespace MoreLinq.Experimental
                             onTaskCompletion(item, t);
                             OnPendingCompleted();
                         });
-
-                    #pragma warning restore 4014
                 }
 
                 OnPendingCompleted();
@@ -732,27 +742,27 @@ namespace MoreLinq.Experimental
 
         static class CompletedTask
         {
-            #if NET451 || NETSTANDARD1_0
+#if NETSTANDARD1_0
 
-            public static readonly Task Instance;
+            public static readonly Task Instance = CreateCompletedTask();
 
-            static CompletedTask()
+            static Task CreateCompletedTask()
             {
-                var tcs = new TaskCompletionSource<Unit>();
+                var tcs = new TaskCompletionSource<System.ValueTuple>();
                 tcs.SetResult(default);
-                Instance = tcs.Task;
+                return tcs.Task;
             }
 
-            #else
+#else
 
             public static readonly Task Instance = Task.CompletedTask;
 
-            #endif
+#endif
         }
 
         sealed class ConcurrencyGate
         {
-            public static readonly ConcurrencyGate Unbounded = new ConcurrencyGate();
+            public static readonly ConcurrencyGate Unbounded = new();
 
             readonly SemaphoreSlim? _semaphore;
 
@@ -760,7 +770,7 @@ namespace MoreLinq.Experimental
                 _semaphore = semaphore;
 
             public ConcurrencyGate(int max) :
-                this(new SemaphoreSlim(max, max)) {}
+                this(new SemaphoreSlim(max, max)) { }
 
             public Task EnterAsync(CancellationToken token)
             {

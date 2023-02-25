@@ -31,9 +31,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestCartesianIsLazy()
         {
-            new BreakingSequence<string>()
-                .Cartesian(new BreakingSequence<int>(),
-                           BreakingFunc.Of<string, int, bool>());
+            var bs = new BreakingSequence<string>();
+            _ = bs.Cartesian(new BreakingSequence<int>(), BreakingFunc.Of<string, int, bool>());
         }
 
         /// <summary>
@@ -82,13 +81,13 @@ namespace MoreLinq.Test
         {
             const int countA = 100;
             const int countB = 75;
-            const int expectedCount = countA*countB;
+            const int expectedCount = countA * countB;
             using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence();
             using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence();
 
             var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
 
-            Assert.AreEqual(expectedCount, result.Count() );
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace MoreLinq.Test
             var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
 
             const int expectedCount = countA * countB * countC * countD;
-            Assert.AreEqual(expectedCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -139,12 +138,12 @@ namespace MoreLinq.Test
                             .ToArray();
 
             // verify that the expected number of results is correct
-            Assert.AreEqual(sequenceA.Count() * sequenceB.Count(), result.Count());
+            Assert.That(result.Count(), Is.EqualTo(sequenceA.Count() * sequenceB.Count()));
 
             // ensure that all "cells" were visited by the cartesian product
             foreach (var coord in result)
                 expectedSet[coord.A][coord.B] = true;
-            Assert.IsTrue(expectedSet.SelectMany(x => x).All(z => z));
+            Assert.That(expectedSet.SelectMany(x => x).All(z => z), Is.True);
         }
 
         /// <summary>
@@ -160,9 +159,9 @@ namespace MoreLinq.Test
             var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
             var resultC = Enumerable.Empty<int>().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
 
-            Assert.AreEqual(0, resultA.Count());
-            Assert.AreEqual(0, resultB.Count());
-            Assert.AreEqual(0, resultC.Count());
+            Assert.That(resultA.Count(), Is.Zero);
+            Assert.That(resultB.Count(), Is.Zero);
+            Assert.That(resultC.Count(), Is.Zero);
         }
     }
 }
