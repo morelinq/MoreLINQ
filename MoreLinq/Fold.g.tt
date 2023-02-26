@@ -26,8 +26,8 @@ namespace MoreLinq
     using System.Collections.Generic;
 
     partial class MoreEnumerable
-    {
-<#      const int max = 16;
+    {<#
+        const int max = 16;
         var overloads =
             from i in Enumerable.Range(1, max)
             let istr = i.ToString(CultureInfo.InvariantCulture)
@@ -41,6 +41,7 @@ namespace MoreLinq
             };
 
         foreach (var e in overloads) { #>
+
         /// <summary>
         /// Returns the result of applying a function to a sequence of
         /// <#= e.CountElements #>.
@@ -66,7 +67,6 @@ namespace MoreLinq
             var elements = source.Fold(<#= e.CountArg #>);
             return folder(<#= e.Elements #>);
         }
-
 <#      } #>
     }
 }
