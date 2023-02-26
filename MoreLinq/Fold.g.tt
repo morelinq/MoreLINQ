@@ -52,8 +52,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly <#= e.CountString #> <#= e.ElementNoun #>.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= string.Join(", ", Enumerable.Repeat("T", e.Count)) #>, TResult> folder)

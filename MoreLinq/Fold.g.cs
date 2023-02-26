@@ -35,8 +35,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 1 element.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
@@ -61,8 +62,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 2 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
@@ -87,8 +89,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 3 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
@@ -113,8 +116,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 4 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
@@ -139,8 +143,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 5 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
@@ -165,8 +170,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 6 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
@@ -191,8 +197,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 7 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
@@ -217,8 +224,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 8 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
@@ -243,8 +251,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 9 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -269,8 +278,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 10 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -295,8 +305,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 11 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -321,8 +332,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 12 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -347,8 +359,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 13 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -373,8 +386,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 14 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -399,8 +413,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 15 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
@@ -425,8 +440,9 @@ namespace MoreLinq
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
         /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 16 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
