@@ -41,7 +41,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
         {
-            return FoldImpl(source, 1, folder1: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(1);
+            return folder(elements[0]);
         }
 
         /// <summary>
@@ -63,7 +67,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
         {
-            return FoldImpl(source, 2, folder2: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(2);
+            return folder(elements[0], elements[1]);
         }
 
         /// <summary>
@@ -85,7 +93,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 3, folder3: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(3);
+            return folder(elements[0], elements[1], elements[2]);
         }
 
         /// <summary>
@@ -107,7 +119,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 4, folder4: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(4);
+            return folder(elements[0], elements[1], elements[2], elements[3]);
         }
 
         /// <summary>
@@ -129,7 +145,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 5, folder5: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(5);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4]);
         }
 
         /// <summary>
@@ -151,7 +171,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 6, folder6: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(6);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
         }
 
         /// <summary>
@@ -173,7 +197,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 7, folder7: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(7);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
         }
 
         /// <summary>
@@ -195,7 +223,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 8, folder8: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(8);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
         }
 
         /// <summary>
@@ -217,7 +249,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 9, folder9: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(9);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
         }
 
         /// <summary>
@@ -239,7 +275,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 10, folder10: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(10);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
         }
 
         /// <summary>
@@ -261,7 +301,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 11, folder11: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(11);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
         }
 
         /// <summary>
@@ -283,7 +327,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 12, folder12: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(12);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
         }
 
         /// <summary>
@@ -305,7 +353,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 13, folder13: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(13);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
         }
 
         /// <summary>
@@ -327,7 +379,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 14, folder14: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(14);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
         }
 
         /// <summary>
@@ -349,7 +405,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 15, folder15: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(15);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
         }
 
         /// <summary>
@@ -371,7 +431,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 16, folder16: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(16);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
         }
 
     }

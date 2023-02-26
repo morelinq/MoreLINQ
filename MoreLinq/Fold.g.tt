@@ -34,11 +34,10 @@ namespace MoreLinq
             select new
             {
                 Ts            = string.Join(", ", Enumerable.Repeat("T", i)),
-                Count         = i,
                 CountElements = istr + " " + (i == 1 ? "element" : "elements"),
                 CountArg      = istr,
-                FolderArgs    = "folder" + istr + ": folder",
-
+                Elements      = string.Join(", ", from j in Enumerable.Range(0, i)
+                                                  select FormattableString.Invariant($"elements[{j}]")),
             };
 
         foreach (var e in overloads) { #>
@@ -61,7 +60,11 @@ namespace MoreLinq
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
         {
-            return FoldImpl(source, <#= e.CountArg #>, <#= e.FolderArgs #>);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(<#= e.CountArg #>);
+            return folder(<#= e.Elements #>);
         }
 
 <#      } #>
