@@ -22,9 +22,13 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        static T[] Fold<T>(this IEnumerable<T> source, int count) =>
-            source.AssertCount(count, static (cmp, count) => new InvalidOperationException(FormatSequenceLengthErrorMessage(cmp, count)))
-                  .Index()
-                  .ToArrayByIndex(count, e => e.Key, e => e.Value);
+        static T[] Fold<T>(this IEnumerable<T> source, int count)
+        {
+            var elements = new T[count];
+            foreach (var e in source.AssertCount(count, static (cmp, count) => new InvalidOperationException(FormatSequenceLengthErrorMessage(cmp, count))).Index())
+                elements[e.Key] = e.Value;
+
+            return elements;
+        }
     }
 }
