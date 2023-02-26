@@ -137,32 +137,17 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.BreakingList)]
         [TestCase(SourceKind.BreakingReadOnlyList)]
         [TestCase(SourceKind.BreakingCollection)]
-        public void BatchCollectionSmallerThanSizeUsesCollectionCountAtIterationTime(SourceKind kind)
-        {
-            var list = new List<int> { 1, 2 };
-            var result = list.ToSourceKind(kind, copy: false).Batch(3);
-            list.Add(3);
-
-            result.AssertSequenceEqual(new[] { 1, 2, 3 });
-        }
-
-        [TestCase(SourceKind.BreakingList)]
-        [TestCase(SourceKind.BreakingReadOnlyList)]
-        [TestCase(SourceKind.BreakingCollection)]
         public void BatchUsesCollectionCountAtIterationTime(SourceKind kind)
         {
-            var list = new List<int>(Enumerable.Range(1, 3));
-            var result = list.ToSourceKind(kind, copy: false).Batch(3);
+            var list = new List<int> { 1, 2 };
+            var result = list.AsSourceKind(kind).Batch(3);
 
-            // should use `CopyTo`
-            result.AssertCount(1).Consume();
+            list.Add(3);
+            result.AssertSequenceEqual(new[] { 1, 2, 3 });
 
             list.Add(4);
-
             // should fail trying to enumerate
-            Assert.That(
-                () => result.AssertCount(2).Consume(),
-                Throws.TypeOf<BreakException>());
+            Assert.That(result.Consume, Throws.TypeOf<BreakException>());
         }
     }
 }

@@ -86,7 +86,7 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return Impl(); IEnumerable<TResult> Impl()
+            return _(); IEnumerable<TResult> _()
             {
                 switch (source)
                 {

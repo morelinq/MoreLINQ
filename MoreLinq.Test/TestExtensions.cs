@@ -86,19 +86,25 @@ namespace MoreLinq.Test
             foreach (var split in str.Split(separators))
                 yield return split;
         }
-
-        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind, bool copy = true) =>
+ 
+        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
+#pragma warning disable IDE0072 // Add missing cases
             sourceKind switch
+#pragma warning restore IDE0072 // Add missing cases
             {
-                SourceKind.Sequence => copy ? input.Select(x => x) : throw new InvalidOperationException("Invalid to keep original as sequence."),
-                SourceKind.BreakingList => new BreakingList<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
-                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
-                SourceKind.BreakingCollection => new BreakingCollection<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
-                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(copy ? input.ToList() : input.SafeCast<List<T>>()),
-                _ => throw new ArgumentException(null, nameof(sourceKind))
+                SourceKind.Sequence => input.Select(x => x),
+                var kind => input.ToList().AsSourceKind(kind)
             };
 
-        internal static T SafeCast<T>(this object obj) where T : class =>
-            obj is T t ? t : throw new InvalidOperationException($"Must pass an object of type `{typeof(T)}`.");
+        internal static IEnumerable<T> AsSourceKind<T>(this List<T> input, SourceKind sourceKind) =>
+            sourceKind switch
+            {
+                SourceKind.Sequence => input.Select(x => x),
+                SourceKind.BreakingList => new BreakingList<T>(input),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(input),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input),
+                _ => throw new ArgumentException(null, nameof(sourceKind))
+            };
     }
 }
