@@ -64,10 +64,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[<#= e.Count #>];
-            foreach (var e in AssertCountImpl(source.Index(), <#= e.Count #>, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(<#= e.Count #>);
             return folder(<#= e.Elements #>);
         }
 

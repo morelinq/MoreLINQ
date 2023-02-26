@@ -18,9 +18,19 @@
 namespace MoreLinq
 {
     using System;
+    using System.Collections.Generic;
 
     static partial class MoreEnumerable
     {
+        static T[] Fold<T>(this IEnumerable<T> source, int count)
+        {
+            var elements = new T[count];
+            foreach (var e in AssertCountImpl(source.Index(), count, OnFolderSourceSizeErrorSelector))
+                elements[e.Key] = e.Value;
+
+            return elements;
+        }
+
         static readonly Func<int, int, Exception> OnFolderSourceSizeErrorSelector = OnFolderSourceSizeError;
 
         static Exception OnFolderSourceSizeError(int cmp, int count) =>

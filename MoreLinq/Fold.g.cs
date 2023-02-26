@@ -44,10 +44,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[1];
-            foreach (var e in AssertCountImpl(source.Index(), 1, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(1);
             return folder(elements[0]);
         }
 
@@ -73,10 +70,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[2];
-            foreach (var e in AssertCountImpl(source.Index(), 2, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(2);
             return folder(elements[0], elements[1]);
         }
 
@@ -102,10 +96,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[3];
-            foreach (var e in AssertCountImpl(source.Index(), 3, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(3);
             return folder(elements[0], elements[1], elements[2]);
         }
 
@@ -131,10 +122,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[4];
-            foreach (var e in AssertCountImpl(source.Index(), 4, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(4);
             return folder(elements[0], elements[1], elements[2], elements[3]);
         }
 
@@ -160,10 +148,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[5];
-            foreach (var e in AssertCountImpl(source.Index(), 5, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(5);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4]);
         }
 
@@ -189,10 +174,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[6];
-            foreach (var e in AssertCountImpl(source.Index(), 6, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(6);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
         }
 
@@ -218,10 +200,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[7];
-            foreach (var e in AssertCountImpl(source.Index(), 7, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(7);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
         }
 
@@ -247,10 +226,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[8];
-            foreach (var e in AssertCountImpl(source.Index(), 8, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(8);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
         }
 
@@ -276,10 +252,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[9];
-            foreach (var e in AssertCountImpl(source.Index(), 9, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(9);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
         }
 
@@ -305,10 +278,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[10];
-            foreach (var e in AssertCountImpl(source.Index(), 10, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(10);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
         }
 
@@ -334,10 +304,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[11];
-            foreach (var e in AssertCountImpl(source.Index(), 11, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(11);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
         }
 
@@ -363,10 +330,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[12];
-            foreach (var e in AssertCountImpl(source.Index(), 12, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(12);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
         }
 
@@ -392,10 +356,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[13];
-            foreach (var e in AssertCountImpl(source.Index(), 13, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(13);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
         }
 
@@ -421,10 +382,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[14];
-            foreach (var e in AssertCountImpl(source.Index(), 14, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(14);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
         }
 
@@ -450,10 +408,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[15];
-            foreach (var e in AssertCountImpl(source.Index(), 15, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(15);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
         }
 
@@ -479,10 +434,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = new T[16];
-            foreach (var e in AssertCountImpl(source.Index(), 16, OnFolderSourceSizeErrorSelector))
-                elements[e.Key] = e.Value;
-
+            var elements = source.Fold(16);
             return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
         }
 
