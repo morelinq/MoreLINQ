@@ -47,14 +47,14 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly <#= e.CountString #> <#= e.ElementNoun #></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly <#= e.CountString #> <#= e.ElementNoun #>.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= string.Join(", ", Enumerable.Repeat("T", e.Count)) #>, TResult> folder)
         {
