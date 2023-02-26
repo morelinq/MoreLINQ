@@ -220,10 +220,7 @@ namespace MoreLinq
                 foreach (var info in schemas)
                 {
                     var member = info.Member;
-                    var column = info.Column;
-
-                    if (column == null)
-                        throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
+                    var column = info.Column ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
                     if (info.Type != column.DataType)
                         throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));
