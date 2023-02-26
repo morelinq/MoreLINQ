@@ -25,15 +25,10 @@ namespace MoreLinq
         static T[] Fold<T>(this IEnumerable<T> source, int count)
         {
             var elements = new T[count];
-            foreach (var e in source.Index().AssertCount(count, OnFolderSourceSizeErrorSelector))
+            foreach (var e in source.Index().AssertCount(count, static (cmp, count) => new InvalidOperationException(FormatSequenceLengthErrorMessage(cmp, count))))
                 elements[e.Key] = e.Value;
 
             return elements;
         }
-
-        static readonly Func<int, int, Exception> OnFolderSourceSizeErrorSelector = OnFolderSourceSizeError;
-
-        static Exception OnFolderSourceSizeError(int cmp, int count) =>
-            new InvalidOperationException(FormatSequenceLengthErrorMessage(cmp, count));
     }
 }
