@@ -25,7 +25,7 @@ namespace MoreLinq
         static T[] Fold<T>(this IEnumerable<T> source, int count)
         {
             var elements = new T[count];
-            foreach (var e in AssertCountImpl(source.Index(), count, OnFolderSourceSizeErrorSelector))
+            foreach (var e in source.Index().AssertCount(count, OnFolderSourceSizeErrorSelector))
                 elements[e.Key] = e.Value;
 
             return elements;
