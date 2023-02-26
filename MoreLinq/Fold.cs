@@ -25,10 +25,20 @@ namespace MoreLinq
         static T[] Fold<T>(this IEnumerable<T> source, int count)
         {
             var elements = new T[count];
-            foreach (var e in source.AssertCount(count, static (cmp, count) => new InvalidOperationException(FormatSequenceLengthErrorMessage(cmp, count))).Index())
-                elements[e.Key] = e.Value;
+            var i = 0;
+
+            foreach (var item in source)
+            {
+                elements[i] = i < count ? item : throw LengthError(1);
+                i++;
+            }
+
+            if (i < elements.Length)
+                throw LengthError(-1);
 
             return elements;
+
+            InvalidOperationException LengthError(int cmp) => new(FormatSequenceLengthErrorMessage(cmp, count));
         }
     }
 }
