@@ -29,22 +29,19 @@ namespace MoreLinq
     {<#
         const int max = 16;
         var overloads =
-            from i in Enumerable.Range(1, max)
-            let istr = i.ToString(CultureInfo.InvariantCulture)
-            select new
-            {
-                Ts            = string.Join(", ", Enumerable.Repeat("T", i)),
-                CountElements = istr + " " + (i == 1 ? "element" : "elements"),
-                CountArg      = istr,
-                Elements      = string.Join(", ", from j in Enumerable.Range(0, i)
-                                                  select FormattableString.Invariant($"elements[{j}]")),
-            };
+            Enumerable.Range(1, max)
+                      .Zip(Enumerable.Repeat("elements", max).Prepend("element"), (c, n) => new
+                      {
+                          Count = c,
+                          CountString = c.ToString(CultureInfo.InvariantCulture),
+                          ElementNoun = n
+                      });
 
         foreach (var e in overloads) { #>
 
         /// <summary>
         /// Returns the result of applying a function to a sequence of
-        /// <#= e.CountElements #>.
+        /// <#= e.CountString #> <#= e.ElementNoun #>.
         /// </summary>
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers
@@ -57,15 +54,16 @@ namespace MoreLinq
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly <#= e.CountElements #></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly <#= e.CountString #> <#= e.ElementNoun #></exception>
 
-        public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= e.Ts #>, TResult> folder)
+        public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<<#= string.Join(", ", Enumerable.Repeat("T", e.Count)) #>, TResult> folder)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = source.Fold(<#= e.CountArg #>);
-            return folder(<#= e.Elements #>);
+            var elements = source.Fold(<#= e.CountString #>);
+            return folder(<#= string.Join(", ", from i in Enumerable.Range(0, e.Count)
+                                                select FormattableString.Invariant($"elements[{i}]")) #>);
         }
 <#      } #>
     }
