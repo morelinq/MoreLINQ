@@ -34,7 +34,6 @@ namespace MoreLinq
             select new
             {
                 Ts            = string.Join(", ", Enumerable.Repeat("T", i)),
-                Count         = i,
                 CountElements = istr + " " + (i == 1 ? "element" : "elements"),
                 CountArg      = istr,
                 Elements      = string.Join(", ", from j in Enumerable.Range(0, i)
@@ -64,7 +63,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (folder == null) throw new ArgumentNullException(nameof(folder));
 
-            var elements = source.Fold(<#= e.Count #>);
+            var elements = source.Fold(<#= e.CountArg #>);
             return folder(<#= e.Elements #>);
         }
 
