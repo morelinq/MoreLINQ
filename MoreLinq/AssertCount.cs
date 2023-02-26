@@ -24,7 +24,8 @@ namespace MoreLinq
     {
 #if MORELINQ
 
-        static readonly Func<int, int, Exception> DefaultErrorSelector = OnAssertCountFailure;
+        internal static string FormatSequenceLengthErrorMessage(int cmp, int count) =>
+            $"Sequence contains too {(cmp < 0 ? "few" : "many")} elements when exactly {count:N0} {(count == 1 ? "was" : "were")} expected.";
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -42,7 +43,7 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count) =>
-            AssertCountImpl(source, count, DefaultErrorSelector);
+            AssertCountImpl(source, count, static (cmp, count) => new SequenceException(FormatSequenceLengthErrorMessage(cmp, count)));
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -70,12 +71,6 @@ namespace MoreLinq
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector) =>
             AssertCountImpl(source, count, errorSelector);
-
-        static Exception OnAssertCountFailure(int cmp, int count) =>
-            new SequenceException(FormatSequenceLengthErrorMessage(cmp, count));
-
-        internal static string FormatSequenceLengthErrorMessage(int cmp, int count) =>
-            $"Sequence contains too {(cmp < 0 ? "few" : "many")} elements when exactly {count:N0} {(count == 1 ? "was" : "were")} expected.";
 
 #endif
 
