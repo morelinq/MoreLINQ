@@ -133,6 +133,22 @@ namespace MoreLinq.Test
             var batches = Enumerable.Empty<int>().ToSourceKind(kind).Batch(100);
             Assert.That(batches, Is.Empty);
         }
+
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        public void BatchUsesCollectionCountAtIterationTime(SourceKind kind)
+        {
+            var list = new List<int> { 1, 2 };
+            var result = list.AsSourceKind(kind).Batch(3);
+
+            list.Add(3);
+            result.AssertSequenceEqual(new[] { 1, 2, 3 });
+
+            list.Add(4);
+            // should fail trying to enumerate because count is now greater than the batch size
+            Assert.That(result.Consume, Throws.TypeOf<BreakException>());
+        }
     }
 }
 

@@ -88,13 +88,22 @@ namespace MoreLinq.Test
         }
 
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
+#pragma warning disable IDE0072 // Add missing cases
+            sourceKind switch
+#pragma warning restore IDE0072 // Add missing cases
+            {
+                SourceKind.Sequence => input.Select(x => x),
+                var kind => input.ToList().AsSourceKind(kind)
+            };
+
+        internal static IEnumerable<T> AsSourceKind<T>(this List<T> input, SourceKind sourceKind) =>
             sourceKind switch
             {
                 SourceKind.Sequence => input.Select(x => x),
-                SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
-                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input.ToList()),
-                SourceKind.BreakingCollection => new BreakingCollection<T>(input.ToList()),
-                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input.ToList()),
+                SourceKind.BreakingList => new BreakingList<T>(input),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(input),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input),
                 _ => throw new ArgumentException(null, nameof(sourceKind))
             };
     }
