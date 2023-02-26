@@ -755,6 +755,14 @@ Creates a sequence that lazily caches the source as it is iterated for the
 first time, reusing the cache thereafter for future re-iterations. If the
 source is already cached or buffered then it is returned verbatim.
 
+### Merge
+
+Concurrently merges all the elements of multiple asynchronous streams into a
+single asynchronous stream. An overload with an additional parameter specifies
+the maximum concurrent operations that may be in flight at any give time.
+
+This method has 2 overloads.
+
 ### TrySingle
 
 Returns the only element of a sequence that has just one element. If the
