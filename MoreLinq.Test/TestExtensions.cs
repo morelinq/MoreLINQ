@@ -86,7 +86,7 @@ namespace MoreLinq.Test
             foreach (var split in str.Split(separators))
                 yield return split;
         }
- 
+
         internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
 #pragma warning disable IDE0072 // Add missing cases
             sourceKind switch
