@@ -83,6 +83,13 @@ after_build:
     if ($LASTEXITCODE -ne 0) {
         throw "New code was generated during build that's not been committed."
     }
+- ps: |
+    dir dist\*.nupkg | % {
+      dotnet meziantou.validate-nuget-package --excluded-rules IconMustBeSet,Symbols $_
+      if ($LASTEXITCODE) {
+        throw "Package validation failed: $_"
+      }
+    }
 test_script:
 - cmd: test.cmd
 - sh: ./test.sh
