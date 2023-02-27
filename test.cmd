@@ -5,8 +5,9 @@ popd & exit /b %ERRORLEVEL%
 
 :main
 setlocal
-call build ^
-  && call :clean ^
+if not defined SKIP_TEST_BUILD set SKIP_TEST_BUILD=false
+if %SKIP_TEST_BUILD%==false call build || exit /b 1
+call :clean ^
   && call :test net7.0 Debug ^
   && call :test net7.0 Release ^
   && call :test net6.0 Debug ^

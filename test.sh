@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 cd "$(dirname "$0")"
-./build.sh $c
+if [[ "${SKIP_TEST_BUILD:=false}" == "false" ]]; then
+    ./build.sh $c
+fi
 if [[ -d "MoreLinq.Test/TestResults" ]]; then
     rm -rf MoreLinq.Test/TestResults
 fi
