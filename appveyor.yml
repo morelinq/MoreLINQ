@@ -85,7 +85,7 @@ after_build:
     }
 - ps: |
     dir dist\*.nupkg | % {
-      dotnet meziantou.validate-nuget-package --excluded-rules IconMustBeSet,Symbols $_
+      dotnet meziantou.validate-nuget-package --excluded-rules IconMustBeSet $_
       if ($LASTEXITCODE) {
         throw "Package validation failed: $_"
       }
