@@ -540,7 +540,8 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
-            int count, Func<int, int, Exception> errorSelector)             => MoreEnumerable.AssertCount(source, count, errorSelector);
+            int count, Func<int, int, Exception> errorSelector)
+            => MoreEnumerable.AssertCount(source, count, errorSelector);
 
     }
 
