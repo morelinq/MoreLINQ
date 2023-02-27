@@ -22,8 +22,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        static readonly Func<int, int, Exception> DefaultErrorSelector = OnAssertCountFailure;
-
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
         /// </summary>
@@ -40,7 +38,7 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count) =>
-            AssertCount(source, count, DefaultErrorSelector);
+            AssertCount(source, count, static (cmp, count) => new SequenceException(FormatSequenceLengthErrorMessage(cmp, count)));
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -92,9 +90,6 @@ namespace MoreLinq
                     throw errorSelector(-1, count);
             }
         }
-
-        static Exception OnAssertCountFailure(int cmp, int count) =>
-            new SequenceException(FormatSequenceLengthErrorMessage(cmp, count));
 
         internal static string FormatSequenceLengthErrorMessage(int cmp, int count) =>
             $"Sequence contains too {(cmp < 0 ? "few" : "many")} elements when exactly {count:N0} {(count == 1 ? "was" : "were")} expected.";
