@@ -133,6 +133,7 @@
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
     <PackageOutputPath>..\dist</PackageOutputPath>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -155,6 +156,7 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
     <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
