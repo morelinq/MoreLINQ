@@ -498,7 +498,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class AssertCountExtension
     {
-
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
         /// </summary>
