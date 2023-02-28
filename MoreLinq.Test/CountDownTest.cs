@@ -211,5 +211,14 @@ namespace MoreLinq.Test
                 protected override IEnumerable<T> Items => _collection;
             }
         }
+
+        [Test]
+        public void UsesCollectionCountAtIterationTime()
+        {
+            var stack = new Stack<int>(Enumerable.Range(1, 3));
+            var result = stack.CountDown(2, (_, cd) => cd);
+            stack.Push(4);
+            result.AssertSequenceEqual(null, null, 1, 0);
+        }
     }
 }

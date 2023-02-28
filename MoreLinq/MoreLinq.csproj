@@ -54,6 +54,7 @@
         - LeftJoin
         - MaxBy
         - Memoize (EXPERIMENTAL)
+        - Merge (EXPERIMENTAL)
         - MinBy
         - Move
         - OrderBy
@@ -117,12 +118,9 @@
     <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>3.3.2</VersionPrefix>
+    <VersionPrefix>3.4.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>net462;netstandard1.0;netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
-    <!-- Parallel build is disabled to avoid file locking issues during T4 code generation.
-         See also: https://github.com/dotnet/msbuild/issues/2781 -->
-    <BuildInParallel>false</BuildInParallel>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>MoreLinq</AssemblyName>
@@ -135,6 +133,9 @@
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
     <PackageOutputPath>..\dist</PackageOutputPath>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>3.3.1</PackageValidationBaselineVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -147,6 +148,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -157,6 +162,8 @@
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
+    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -191,11 +198,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net462' ">
-    <DefineConstants>$(DefineConstants);NO_BUFFERS</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
-    <DefineConstants>$(DefineConstants);NO_BUFFERS;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0'">
@@ -246,5 +253,32 @@
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <Target Name="_CollectTextTemplates">
+    <ItemGroup>
+      <TextTemplate Include="%(None.Identity)" Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'">
+        <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
+      </TextTemplate>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_TransformTextTemplate" Inputs="$(TextTemplate)" Outputs="$(TextTemplateOutput)">
+    <Exec Command="dotnet t4 -h &gt; /dev/null" IgnoreExitCode="True" Condition="'$(WINDIR)' == ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True" Condition="'$(WINDIR)' != ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
+    <Message Text="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" Importance="High" />
+    <Exec Command="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" />
+  </Target>
+
+  <Target Name="TransformTextTemplates"
+          DependsOnTargets="_CollectTextTemplates">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             Targets="_TransformTextTemplate"
+             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
+  </Target>
 
 </Project>

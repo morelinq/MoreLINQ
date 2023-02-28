@@ -72,6 +72,15 @@ namespace MoreLinq.Test
             sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
         }
 
+        [Test]
+        public void TakeLastUsesCollectionCountAtIterationTime()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            var result = list.TakeLast(3);
+            list.Add(5);
+            result.AssertSequenceEqual(3, 4, 5);
+        }
+
         static void AssertTakeLast<T>(ICollection<T> input, int count, Action<IEnumerable<T>> action)
         {
             // Test that the behaviour does not change whether a collection

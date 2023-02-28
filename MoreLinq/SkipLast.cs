@@ -42,7 +42,6 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
 
             return count < 1 ? source
-                 : source.TryGetCollectionCount() is { } collectionCount ? source.Take(collectionCount - count)
                  : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
                          .TakeWhile(e => e.Countdown == null)
                          .Select(e => e.Element);

@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2021 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,51 +15,39 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq.Test
+namespace MoreLinq.Test.Async
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     partial class TestExtensions
     {
-        public static WatchableEnumerator<T> AsWatchable<T>(this IEnumerator<T> source) => new(source);
+        public static WatchableEnumerator<T> AsWatchable<T>(this IAsyncEnumerator<T> source) => new(source);
     }
 
-    sealed class WatchableEnumerator<T> : IEnumerator<T>
+    sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
     {
-        readonly IEnumerator<T> _source;
+        readonly IAsyncEnumerator<T> _source;
 
         public event EventHandler? Disposed;
-        public event EventHandler? GetCurrentCalled;
         public event EventHandler<bool>? MoveNextCalled;
 
-        public WatchableEnumerator(IEnumerator<T> source) =>
+        public WatchableEnumerator(IAsyncEnumerator<T> source) =>
             _source = source ?? throw new ArgumentNullException(nameof(source));
 
-        public T Current
+        public T Current => _source.Current;
+
+        public async ValueTask<bool> MoveNextAsync()
         {
-            get
-            {
-                GetCurrentCalled?.Invoke(this, EventArgs.Empty);
-                return _source.Current;
-            }
-        }
-
-        object? IEnumerator.Current => this.Current;
-
-        public void Reset() => _source.Reset();
-
-        public bool MoveNext()
-        {
-            var moved = _source.MoveNext();
+            var moved = await _source.MoveNextAsync();
             MoveNextCalled?.Invoke(this, moved);
             return moved;
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            _source.Dispose();
+            await _source.DisposeAsync();
             Disposed?.Invoke(this, EventArgs.Empty);
         }
     }

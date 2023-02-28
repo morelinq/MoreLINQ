@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -118,42 +117,47 @@ namespace MoreLinq
         static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
             int width, T? padding, Func<int, T>? paddingSelector)
         {
-            return
-                source.TryGetCollectionCount() is { } collectionCount
-                ? collectionCount >= width
-                  ? source
-                  : Enumerable.Range(0, width - collectionCount)
-                              .Select(i => paddingSelector != null ? paddingSelector(i) : padding!)
-                              .Concat(source)
-                : _(); IEnumerable<T> _()
+            return _(); IEnumerable<T> _()
             {
-                var array = new T[width];
-                var count = 0;
-
-                using (var e = source.GetEnumerator())
+                if (source.TryAsCollectionLike() is { Count: var collectionCount } && collectionCount < width)
                 {
-                    for (; count < width && e.MoveNext(); count++)
-                        array[count] = e.Current;
+                    var paddingCount = width - collectionCount;
+                    for (var i = 0; i < paddingCount; i++)
+                        yield return paddingSelector is { } selector ? selector(i) : padding!;
 
-                    if (count == width)
-                    {
-                        for (var i = 0; i < count; i++)
-                            yield return array[i];
-
-                        while (e.MoveNext())
-                            yield return e.Current;
-
-                        yield break;
-                    }
+                    foreach (var item in source)
+                        yield return item;
                 }
+                else
+                {
+                    var array = new T[width];
+                    var count = 0;
 
-                var len = width - count;
+                    using (var e = source.GetEnumerator())
+                    {
+                        for (; count < width && e.MoveNext(); count++)
+                            array[count] = e.Current;
 
-                for (var i = 0; i < len; i++)
-                    yield return paddingSelector != null ? paddingSelector(i) : padding!;
+                        if (count == width)
+                        {
+                            for (var i = 0; i < count; i++)
+                                yield return array[i];
 
-                for (var i = 0; i < count; i++)
-                    yield return array[i];
+                            while (e.MoveNext())
+                                yield return e.Current;
+
+                            yield break;
+                        }
+                    }
+
+                    var len = width - count;
+
+                    for (var i = 0; i < len; i++)
+                        yield return paddingSelector != null ? paddingSelector(i) : padding!;
+
+                    for (var i = 0; i < count; i++)
+                        yield return array[i];
+                }
             }
         }
     }

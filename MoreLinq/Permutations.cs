@@ -180,17 +180,21 @@ namespace MoreLinq
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="sequence">The original sequence to permute.</param>
+        /// <returns>
+        /// A sequence of lists representing permutations of the original sequence.</returns>
         /// <remarks>
-        /// A permutation is a unique re-ordering of the elements of the sequence.<br/>
+        /// <para>
+        /// A permutation is a unique re-ordering of the elements of the sequence.</para>
+        /// <para>
         /// This operator returns permutations in a deferred, streaming fashion; however, each
         /// permutation is materialized into a new list. There are N! permutations of a sequence,
-        /// where N => sequence.Count().<br/>
+        /// where N &#8658; <c>sequence.Count()</c>.</para>
+        /// <para>
         /// Be aware that the original sequence is considered one of the permutations and will be
-        /// returned as one of the results.
+        /// returned as one of the results.</para>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The original sequence to permute</param>
-        /// <returns>A sequence of lists representing permutations of the original sequence</returns>
 
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {

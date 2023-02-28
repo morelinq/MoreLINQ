@@ -30,18 +30,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 1 element</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 1 element.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, TResult> folder)
         {
-            return FoldImpl(source, 1, folder1: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(1);
+            return folder(elements[0]);
         }
 
         /// <summary>
@@ -52,18 +57,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 2 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 2 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, TResult> folder)
         {
-            return FoldImpl(source, 2, folder2: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(2);
+            return folder(elements[0], elements[1]);
         }
 
         /// <summary>
@@ -74,18 +84,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 3 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 3 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 3, folder3: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(3);
+            return folder(elements[0], elements[1], elements[2]);
         }
 
         /// <summary>
@@ -96,18 +111,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 4 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 4 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 4, folder4: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(4);
+            return folder(elements[0], elements[1], elements[2], elements[3]);
         }
 
         /// <summary>
@@ -118,18 +138,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 5 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 5 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 5, folder5: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(5);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4]);
         }
 
         /// <summary>
@@ -140,18 +165,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 6 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 6 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 6, folder6: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(6);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5]);
         }
 
         /// <summary>
@@ -162,18 +192,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 7 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 7 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 7, folder7: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(7);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6]);
         }
 
         /// <summary>
@@ -184,18 +219,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 8 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 8 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 8, folder8: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(8);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7]);
         }
 
         /// <summary>
@@ -206,18 +246,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 9 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 9 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 9, folder9: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(9);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8]);
         }
 
         /// <summary>
@@ -228,18 +273,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 10 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 10 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 10, folder10: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(10);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9]);
         }
 
         /// <summary>
@@ -250,18 +300,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 11 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 11 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 11, folder11: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(11);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10]);
         }
 
         /// <summary>
@@ -272,18 +327,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 12 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 12 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 12, folder12: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(12);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11]);
         }
 
         /// <summary>
@@ -294,18 +354,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 13 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 13 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 13, folder13: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(13);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12]);
         }
 
         /// <summary>
@@ -316,18 +381,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 14 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 14 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 14, folder14: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(14);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13]);
         }
 
         /// <summary>
@@ -338,18 +408,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 15 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 15 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 15, folder15: folder);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
+
+            var elements = source.Fold(15);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14]);
         }
 
         /// <summary>
@@ -360,19 +435,23 @@ namespace MoreLinq
         /// This operator uses immediate execution and effectively buffers
         /// as many items of the source sequence as necessary.
         /// </remarks>
-        /// <typeparam name="T">Type of element in the source sequence</typeparam>
-        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <typeparam name="T">Type of element in the source sequence.</typeparam>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="source">The sequence of items to fold.</param>
         /// <param name="folder">Function to apply to the elements in the sequence.</param>
         /// <returns>The folded value returned by <paramref name="folder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="folder"/> is null</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 16 elements</exception>
+        /// <exception cref="ArgumentNullException">
+        /// Either <paramref name="source"/> or <paramref name="folder"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException"><paramref name="source"/> does not contain exactly 16 elements.</exception>
 
         public static TResult Fold<T, TResult>(this IEnumerable<T> source, Func<T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, TResult> folder)
         {
-            return FoldImpl(source, 16, folder16: folder);
-        }
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (folder == null) throw new ArgumentNullException(nameof(folder));
 
+            var elements = source.Fold(16);
+            return folder(elements[0], elements[1], elements[2], elements[3], elements[4], elements[5], elements[6], elements[7], elements[8], elements[9], elements[10], elements[11], elements[12], elements[13], elements[14], elements[15]);
+        }
     }
 }
