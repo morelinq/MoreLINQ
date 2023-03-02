@@ -45,6 +45,11 @@ namespace MoreLinq.Test
         public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.Any(source, predicate);
 
+#if NET471_OR_GREATER || NET6_0_OR_GREATER
+        public static IEnumerable<TSource> Append<TSource> (this IEnumerable<TSource> source, TSource element) =>
+            LinqEnumerable.Append(source, element);
+#endif
+
         public static IEnumerable<TSource> AsEnumerable<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.AsEnumerable(source);
 

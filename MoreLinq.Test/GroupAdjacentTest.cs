@@ -19,7 +19,6 @@ namespace MoreLinq.Test
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -223,7 +222,7 @@ namespace MoreLinq.Test
             reader.ReadEnd();
         }
 
-        static void AssertGrouping<TKey, TElement>(SequenceReader<IGrouping<TKey, TElement>> reader,
+        static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader,
             TKey key, params TElement[] elements)
         {
             var grouping = reader.Read();
