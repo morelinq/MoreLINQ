@@ -27,6 +27,8 @@
 //
 // Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
 
+#pragma warning disable RS0041 // Public members should not use oblivious types
+
 namespace MoreLinq.Extensions
 {
     using System;
