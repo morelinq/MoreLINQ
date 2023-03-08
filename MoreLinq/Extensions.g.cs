@@ -4511,6 +4511,9 @@ namespace MoreLinq.Extensions
         /// <param name="sequence">The original sequence to permute.</param>
         /// <returns>
         /// A sequence of lists representing permutations of the original sequence.</returns>
+        /// <exception cref="OverflowException">
+        /// Too many permutations (limited by <see cref="ulong.MaxValue"/>); thrown during iteration
+        /// of the resulting sequence.</exception>
         /// <remarks>
         /// <para>
         /// A permutation is a unique re-ordering of the elements of the sequence.</para>
