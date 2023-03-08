@@ -15,6 +15,16 @@
 // limitations under the License.
 #endregion
 
+#nullable enable // required for auto-generated sources (see below why)
+
+// > Older code generation strategies may not be nullable aware. Setting the
+// > project-level nullable context to "enable" could result in many
+// > warnings that a user is unable to fix. To support this scenario any syntax
+// > tree that is determined to be generated will have its nullable state
+// > implicitly set to "disable", regardless of the overall project state.
+//
+// Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
+
 namespace MoreLinq
 {
     using System;
