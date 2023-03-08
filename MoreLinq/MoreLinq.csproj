@@ -283,8 +283,11 @@
     <Exec Command="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" />
   </Target>
 
-  <Target Name="TransformTextTemplates" DependsOnTargets="_CollectTextTemplates">
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="_TransformTextTemplate" Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)" />
+  <Target Name="TransformTextTemplates"
+          DependsOnTargets="_CollectTextTemplates">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             Targets="_TransformTextTemplate"
+             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
   </Target>
 
 </Project>
