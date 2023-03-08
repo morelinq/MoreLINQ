@@ -258,7 +258,7 @@ static void Run(IEnumerable<string> args)
     var classes =
         from md in q
         select md.Method.Syntax into md
-        group md by md.Identifier.Value is string id ? id : throw new NullReferenceException()
+        group md by md.Identifier.Value as string ?? throw new NullReferenceException()
         into g
         select new
         {
