@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable RS0041 // Public members should not use oblivious types
+
 namespace MoreLinq
 {
     using System;

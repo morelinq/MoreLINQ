@@ -258,7 +258,7 @@ static void Run(IEnumerable<string> args)
     var classes =
         from md in q
         select md.Method.Syntax into md
-        group md by md.Identifier.Value is string id ? id : throw new NullReferenceException()
+        group md by md.Identifier.Value as string ?? throw new NullReferenceException()
         into g
         select new
         {
@@ -335,6 +335,8 @@ static void Run(IEnumerable<string> args)
         // > implicitly set to "disable", regardless of the overall project state.
         //
         // Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
+
+        #pragma warning disable RS0041 // Public members should not use oblivious types
 
         namespace MoreLinq.Extensions
         {
