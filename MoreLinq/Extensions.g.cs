@@ -27,6 +27,8 @@
 //
 // Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
 
+#pragma warning disable RS0041 // Public members should not use oblivious types
+
 namespace MoreLinq.Extensions
 {
     using System;
@@ -4511,6 +4513,9 @@ namespace MoreLinq.Extensions
         /// <param name="sequence">The original sequence to permute.</param>
         /// <returns>
         /// A sequence of lists representing permutations of the original sequence.</returns>
+        /// <exception cref="OverflowException">
+        /// Too many permutations (limited by <see cref="ulong.MaxValue"/>); thrown during iteration
+        /// of the resulting sequence.</exception>
         /// <remarks>
         /// <para>
         /// A permutation is a unique re-ordering of the elements of the sequence.</para>

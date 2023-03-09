@@ -83,7 +83,7 @@ namespace MoreLinq
                 // The nested loop construction below takes into account the fact that:
                 // 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
                 // 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
-                _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
+                _generator = NestedLoops(NextPermutation, Generate(2UL, n => n + 1).Take(Math.Max(0, _valueSet.Count - 1)));
                 Reset();
             }
 
@@ -184,6 +184,9 @@ namespace MoreLinq
         /// <param name="sequence">The original sequence to permute.</param>
         /// <returns>
         /// A sequence of lists representing permutations of the original sequence.</returns>
+        /// <exception cref="OverflowException">
+        /// Too many permutations (limited by <see cref="ulong.MaxValue"/>); thrown during iteration
+        /// of the resulting sequence.</exception>
         /// <remarks>
         /// <para>
         /// A permutation is a unique re-ordering of the elements of the sequence.</para>

@@ -1,0 +1,3 @@
+#nullable enable
+static MoreLinq.MoreEnumerable.Append<T>(System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Prepend<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
