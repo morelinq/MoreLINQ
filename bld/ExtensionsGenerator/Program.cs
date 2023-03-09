@@ -294,7 +294,7 @@ static void Run(IEnumerable<string> args)
             ? $$"""
 
                     /// <summary><c>{{m.Name}}</c> extension.</summary>
-    
+
                     [GeneratedCode("{{thisAssemblyName.Name}}", "{{thisAssemblyName.Version}}")]
                 """
             : null
