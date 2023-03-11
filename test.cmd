@@ -1,8 +1,7 @@
 @echo off
 pushd "%~dp0"
 call :main %*
-popd
-goto :EOF
+popd & exit /b %ERRORLEVEL%
 
 :main
 setlocal
@@ -15,14 +14,14 @@ call build ^
   && call :test net462 Debug ^
   && call :test net462 Release ^
   && call :report-cover
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :clean
 setlocal
 cd MoreLinq.Test
 if exist TestResults rd /s /q TestResults || exit /b 1
 if exist TestResult.xml del TestResult.xml || exit /b 1
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :test
 setlocal
@@ -41,7 +40,7 @@ if not defined TEST_RESULTS_DIR (
     exit /b 1
 )
 copy "%TEST_RESULTS_DIR%\coverage.opencover.xml" coverage-%1-%2.opencover.xml > nul
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :report-cover
 setlocal
@@ -50,4 +49,4 @@ dotnet reportgenerator -reports:coverage-*.opencover.xml ^
                        -reporttypes:Html;TextSummary ^
                        -targetdir:reports ^
   && type reports\Summary.txt
-goto :EOF
+exit /b %ERRORLEVEL%
