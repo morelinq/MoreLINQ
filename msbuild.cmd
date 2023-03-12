@@ -18,7 +18,7 @@ if not defined MSBUILD_VERSION_MAJOR goto :nomsbuild
 if %MSBUILD_VERSION_MAJOR% lss 17    goto :nomsbuild
 :build
 "%MSBUILD%" %*
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :nomsbuild
 echo>&2 Microsoft Build Engine 17.0 or a later version is required to build
@@ -27,4 +27,4 @@ echo>&2 https://docs.microsoft.com/en-us/visualstudio/install/use-command-line-p
 echo>&2 At the very least, you will want to install the MSBuilt Tool workload
 echo>&2 that has the identifier "Microsoft.VisualStudio.Workload.MSBuildTools":
 echo>&2 https://docs.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-build-tools#msbuild-tools
-exit /b s
+exit /b 1
