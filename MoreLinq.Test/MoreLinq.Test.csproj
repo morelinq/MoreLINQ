@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>net7.0;net6.0;net462</TargetFrameworks>
+    <TargetFrameworks>net7.0;net6.0;net471</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
-    <OutputType Condition="'$(TargetFramework)' == 'net462'">Exe</OutputType>
+    <OutputType Condition="'$(TargetFramework)' == 'net471'">Exe</OutputType>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <IsPackable>false</IsPackable>
     <ApplicationIcon />
@@ -46,12 +46,12 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net471'">
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <Compile Remove="Program.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
     <Compile Remove="Async\*.cs" />
   </ItemGroup>
 
@@ -61,16 +61,6 @@
       <Compile Include="..\MoreLinq\Debug.cs" Link="Debug.cs" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-    <Reference Include="System" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>
