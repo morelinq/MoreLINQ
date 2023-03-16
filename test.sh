@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 cd "$(dirname "$0")"
-./build.sh $c
+if [[ "${SKIP_TEST_BUILD:=false}" == "false" ]]; then
+    ./build.sh $c
+fi
 if [[ -d "MoreLinq.Test/TestResults" ]]; then
     rm -rf MoreLinq.Test/TestResults
 fi
@@ -26,6 +28,6 @@ if [[ -z `which mono 2>/dev/null` ]]; then
     echo>&2 against the Mono runtime will be skipped.
 else
     for c in $configs; do
-        mono MoreLinq.Test/bin/$c/net462/MoreLinq.Test.exe
+        mono MoreLinq.Test/bin/$c/net471/MoreLinq.Test.exe
     done
 fi

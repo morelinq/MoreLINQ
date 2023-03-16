@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#if !NO_ASYNC
-
 namespace MoreLinq.Experimental
 {
     using System;
@@ -789,4 +787,3 @@ namespace MoreLinq.Experimental
     }
 }
 
-#endif // !NO_ASYNC

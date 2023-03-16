@@ -2,10 +2,11 @@ version: '{build}'
 image:
 - Visual Studio 2022
 - Ubuntu1604
-- macos
+- macos-bigsur
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  SKIP_TEST_BUILD: true
 for:
 -
   matrix:
@@ -37,7 +38,7 @@ for:
 -
   matrix:
     only:
-      - image: macos
+      - image: macos-bigsur
   environment:
     IMAGE_NAME: macos
 skip_commits:
@@ -93,7 +94,7 @@ after_build:
 test_script:
 - cmd: test.cmd
 - sh: ./test.sh
-- ps: dotnet reportgenerator -reports:MoreLinq.Test/TestResults/coverage-*.opencover.xml -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: dotnet reportgenerator '-reports:MoreLinq.Test/TestResults/coverage-*.opencover.xml' -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
 - ps: |
     cd tmp/cover
     tar -cz -f "../../coverage-report-${env:IMAGE_NAME}.tar.gz" *

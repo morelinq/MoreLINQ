@@ -1,1 +1,1 @@
-@"%~dp0build" docs
+@call "%~dp0build" docs

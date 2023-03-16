@@ -36,10 +36,8 @@ using System.Reflection;
 // CLS compliance and COM visibility
 
 [assembly: CLSCompliant(true)]
-#if !NO_COM
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 
 // ID of the typelib if this project is exposed to COM.
 
 [assembly: System.Runtime.InteropServices.Guid("fc632c9d-390e-4902-8c1c-3e57b08c1d38")]
-#endif
