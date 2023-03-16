@@ -91,11 +91,7 @@ namespace MoreLinq
 
         static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
         {
-            return source
-#if !NO_TRACING
-                .Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)))
-#endif
-                ;
+            return source.Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)));
         }
     }
 }
