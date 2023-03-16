@@ -17,15 +17,15 @@
 
 namespace MoreLinq.Test
 {
-    using Experimental;
-    using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq.Expressions;
+    using NUnit.Framework;
+    using Experimental;
     using System.Reactive.Linq;
     using System.Reflection;
+    using NUnit.Framework.Interfaces;
     using static FuncModule;
 
     [TestFixture]
