@@ -38,6 +38,7 @@ namespace MoreLinq.Test
             _ = bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
             _ = bs.GroupAdjacent(bf, bfg);
             _ = bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf, (l, r) => true);
         }
 
         [Test]
@@ -220,6 +221,65 @@ namespace MoreLinq.Test
             AssertGrouping(reader, 5, 5, 5, 5, 5, 5);
             AssertGrouping(reader, null, aNull);
             reader.ReadEnd();
+        }
+
+        [Test]
+        public void GroupAdjacentPairwiseSourceSequence()
+        {
+            const string one = "one";
+            const string two = "two";
+            const string three = "three";
+            const string four = "four";
+            const string five = "five";
+            const string six = "six";
+            const string seven = "seven";
+            const string eight = "eight";
+            const string nine = "nine";
+            const string ten = "ten";
+
+            var source = new[] { one, two, three, four, five, six, seven, eight, nine, ten };
+
+            var groups = source.GroupAdjacent((l, r) => l.Length == r.Length + 1);
+
+            Assert.That(groups, Is.EquivalentTo(new[]
+            {
+                new[] { one },
+                new[] { two },
+                new[] { three, four },
+                new[] { five, six },
+                new[] { seven },
+                new[] { eight, nine, ten },
+            }));
+        }
+
+        [Test]
+        public void GroupAdjacentPairwiseSourceSequenceResultSelector()
+        {
+            var source = new[]
+            {
+                new { Month = 01, Value = 123 },
+                new { Month = 02, Value = 456 },
+                new { Month = 03, Value = 789 },
+                new { Month = 05, Value = 987 },
+                new { Month = 06, Value = 654 },
+                new { Month = 07, Value = 321 },
+                new { Month = 09, Value = 789 },
+                new { Month = 10, Value = 456 },
+                new { Month = 11, Value = 123 },
+                new { Month = 13, Value = 123 },
+                new { Month = 14, Value = 456 },
+                new { Month = 15, Value = 781 },
+            };
+
+            var groups = source.GroupAdjacent((x, y) => x.Month + 1 == y.Month, group => group.Sum(v => v.Value));
+
+            Assert.That(groups, Is.EquivalentTo(new[]
+            {
+                123 + 456 + 789,
+                987 + 654 + 321,
+                789 + 456 + 123,
+                123 + 456 + 781,
+            }));
         }
 
         static void AssertGrouping<TKey, TElement>(SequenceReader<System.Linq.IGrouping<TKey, TElement>> reader,

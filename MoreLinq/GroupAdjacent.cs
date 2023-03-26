@@ -257,6 +257,101 @@ namespace MoreLinq
                                      comparer ?? EqualityComparer<TKey>.Default);
         }
 
+        /// <summary>
+        /// Groups the adjacent elements of a sequence by a predicate
+        /// over each pair of neighbor elements.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of
+        /// <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence whose elements to group.</param>
+        /// <param name="predicate">A predicate over two neighbor elements.</param>
+        /// <returns>A sequence of groups where each group
+        /// (<see cref="IReadOnlyCollection{TSource}"/>) contains the adjacent elements
+        /// in the same order as found in the source sequence.</returns>
+        /// <remarks>
+        /// This method is implemented by using deferred execution and
+        /// streams the groups. The grouping elements, however, are
+        /// buffered. Each group is therefore yielded as soon as it
+        /// is complete and before the next group occurs.
+        /// </remarks>
+
+        public static IEnumerable<IReadOnlyCollection<TSource>> GroupAdjacent<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, bool> predicate)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+            return GroupAdjacentImpl(source, predicate, IdFn);
+        }
+
+        /// <summary>
+        /// Groups the adjacent elements of a sequence by a predicate
+        /// over each pair of neighbor elements.
+        /// Each group's elements are projected by using a specified function.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of
+        /// <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements in the
+        /// resulting sequence.</typeparam>
+        /// <param name="source">A sequence whose elements to group.</param>
+        /// <param name="predicate">A predicate over two neighbors.</param>
+        /// <param name="resultSelector">A function to map each group to a result object.</param>
+        /// <returns>A sequence of groups where each group
+        /// (<see cref="IReadOnlyCollection{TSource}"/>) contains the adjacent elements
+        /// in the same order as found in the source sequence.</returns>
+        /// <remarks>
+        /// This method is implemented by using deferred execution and
+        /// streams the groups. The grouping elements, however, are
+        /// buffered. Each group is therefore yielded as soon as it
+        /// is complete and before the next group occurs.
+        /// </remarks>
+
+        public static IEnumerable<TResult> GroupAdjacent<TSource, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, bool> predicate,
+            Func<IReadOnlyCollection<TSource>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return GroupAdjacentImpl(source, predicate, resultSelector);
+        }
+
+        static IEnumerable<TResult> GroupAdjacentImpl<TSource, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, bool> predicate,
+            Func<IReadOnlyCollection<TSource>, TResult> resultSelector)
+        {
+            using var iterator = source.GetEnumerator();
+
+            if (!iterator.MoveNext())
+                yield break;
+
+            var previous = iterator.Current;
+            var group = new List<TSource> { previous };
+
+            while (iterator.MoveNext())
+            {
+                var current = iterator.Current;
+
+                if (predicate(previous, current))
+                {
+                    group.Add(current);
+                }
+                else
+                {
+                    yield return resultSelector(group);
+                    group = new List<TSource> { current };
+                }
+
+                previous = current;
+            }
+
+            yield return resultSelector(group);
+        }
+
         static IEnumerable<TResult> GroupAdjacentImpl<TSource, TKey, TElement, TResult>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,

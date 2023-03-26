@@ -2707,6 +2707,29 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class GroupAdjacentExtension
     {
+
+        /// <summary>
+        /// Groups the adjacent elements of a sequence by a predicate
+        /// over each pair of neighbor elements.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of
+        /// <paramref name="source"/>.</typeparam>
+        /// <param name="source">A sequence whose elements to group.</param>
+        /// <param name="predicate">A predicate over two neighbor elements.</param>
+        /// <returns>A sequence of groups where each group
+        /// (<see cref="IReadOnlyCollection{TSource}"/>) contains the adjacent elements
+        /// in the same order as found in the source sequence.</returns>
+        /// <remarks>
+        /// This method is implemented by using deferred execution and
+        /// streams the groups. The grouping elements, however, are
+        /// buffered. Each group is therefore yielded as soon as it
+        /// is complete and before the next group occurs.
+        /// </remarks>
+
+        public static IEnumerable<IReadOnlyCollection<TSource>> GroupAdjacent<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, bool> predicate)
+            => MoreEnumerable.GroupAdjacent(source, predicate);
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
         /// specified key selector function.
@@ -2764,6 +2787,34 @@ namespace MoreLinq.Extensions
             Func<TSource, TKey> keySelector,
             IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.GroupAdjacent(source, keySelector, comparer);
+
+        /// <summary>
+        /// Groups the adjacent elements of a sequence by a predicate
+        /// over each pair of neighbor elements.
+        /// Each group's elements are projected by using a specified function.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of
+        /// <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements in the
+        /// resulting sequence.</typeparam>
+        /// <param name="source">A sequence whose elements to group.</param>
+        /// <param name="predicate">A predicate over two neighbors.</param>
+        /// <param name="resultSelector">A function to map each group to a result object.</param>
+        /// <returns>A sequence of groups where each group
+        /// (<see cref="IReadOnlyCollection{TSource}"/>) contains the adjacent elements
+        /// in the same order as found in the source sequence.</returns>
+        /// <remarks>
+        /// This method is implemented by using deferred execution and
+        /// streams the groups. The grouping elements, however, are
+        /// buffered. Each group is therefore yielded as soon as it
+        /// is complete and before the next group occurs.
+        /// </remarks>
+
+        public static IEnumerable<TResult> GroupAdjacent<TSource, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, bool> predicate,
+            Func<IReadOnlyCollection<TSource>, TResult> resultSelector)
+            => MoreEnumerable.GroupAdjacent(source, predicate, resultSelector);
 
         /// <summary>
         /// Groups the adjacent elements of a sequence according to a
