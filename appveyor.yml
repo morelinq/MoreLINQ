@@ -20,7 +20,9 @@ for:
       secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
     symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
     on:
-      branch: master
+      branch:
+      - master
+      - /^[0-9]+\.(x|[0-9]+)$/
   notifications:
   - provider: Email
     to:
