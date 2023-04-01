@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipMapIsLazy()
         {
-            new BreakingSequence<object>().ZipMap(o => o);
+            _ = new BreakingSequence<object>().ZipMap(o => o);
         }
 
         [Test]

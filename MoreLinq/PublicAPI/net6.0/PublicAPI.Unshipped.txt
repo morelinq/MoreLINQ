@@ -1,1 +1,4 @@
 #nullable enable
+MoreLinq.Extensions.ZipMapExtension
+static MoreLinq.Extensions.ZipMapExtension.ZipMap<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! func) -> System.Collections.Generic.IEnumerable<(TSource Item, TResult Result)>!
+static MoreLinq.MoreEnumerable.ZipMap<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult>! func) -> System.Collections.Generic.IEnumerable<(TSource Item, TResult Result)>!
