@@ -6858,7 +6858,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">The sequence to iterate over.</param>
         /// <param name="func">The function to apply on each element.</param>
         /// <returns>
-        /// Returns a sequence of tuples with the the source element and the
+        /// Returns a sequence of tuples with the source element and the
         /// result from <paramref name="func"/> parameter.
         /// </returns>
         /// <remarks>
