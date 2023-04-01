@@ -23,12 +23,12 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ShuffleTest
     {
-        static Random seed = new Random(12345);
+        static readonly Random Seed = new(12345);
 
         [Test]
         public void ShuffleIsLazy()
         {
-            new BreakingSequence<int>().Shuffle();
+            _ = new BreakingSequence<int>().Shuffle();
         }
 
         [Test]
@@ -65,14 +65,14 @@ namespace MoreLinq.Test
         [Test]
         public void ShuffleSeedIsLazy()
         {
-            new BreakingSequence<int>().Shuffle(seed);
+            _ = new BreakingSequence<int>().Shuffle(Seed);
         }
 
         [Test]
         public void ShuffleSeed()
         {
             var source = Enumerable.Range(1, 100);
-            var result = source.Shuffle(seed);
+            var result = source.Shuffle(Seed);
 
             Assert.That(result, Is.Not.EqualTo(source));
             Assert.That(result.OrderBy(x => x), Is.EqualTo(source));
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
         public void ShuffleSeedWithEmptySequence()
         {
             var source = Enumerable.Empty<int>();
-            var result = source.Shuffle(seed);
+            var result = source.Shuffle(Seed);
 
             Assert.That(result, Is.Empty);
         }
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
             var sequenceClone = sequence.ToArray();
 
             // force complete enumeration of random subsets
-            sequence.Shuffle(seed).Consume();
+            sequence.Shuffle(Seed).Consume();
 
             // verify the original sequence is untouched
             Assert.That(sequence, Is.EqualTo(sequenceClone));

@@ -27,20 +27,19 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeIsLazy()
         {
-            new BreakingSequence<BreakingSequence<int>>().Transpose();
+            _ = new BreakingSequence<BreakingSequence<int>>().Transpose();
         }
 
         [Test]
         public void TransposeWithOneNullRow()
         {
-            using (var seq1 = TestingSequence.Of(10, 11))
-            using (var seq2 = TestingSequence.Of<int>())
-            using (var seq3 = TestingSequence.Of(30, 31, 32))
-            using (var matrix = TestingSequence.Of(seq1, seq2, seq3, null))
-            {
-                Assert.Throws<NullReferenceException>(() =>
-                    matrix.Transpose().FirstOrDefault());
-            }
+            using var seq1 = TestingSequence.Of(10, 11);
+            using var seq2 = TestingSequence.Of<int>();
+            using var seq3 = TestingSequence.Of(30, 31, 32);
+            using var matrix = TestingSequence.Of<IEnumerable<int>>(seq1, seq2, seq3, null!);
+
+            Assert.That(() => matrix.Transpose().FirstOrDefault(),
+                        Throws.TypeOf<NullReferenceException>());
         }
 
         [Test]
@@ -54,13 +53,12 @@ namespace MoreLinq.Test
                 new [] { 13, 23, 33 },
             };
 
-            using (var row1 = TestingSequence.Of(10, 11, 12, 13))
-            using (var row2 = TestingSequence.Of(20, 21, 22, 23))
-            using (var row3 = TestingSequence.Of(30, 31, 32, 33))
-            using (var matrix = TestingSequence.Of(row1, row2, row3))
-            {
-                AssertMatrix(expectations, matrix.Transpose());
-            }
+            using var row1 = TestingSequence.Of(10, 11, 12, 13);
+            using var row2 = TestingSequence.Of(20, 21, 22, 23);
+            using var row3 = TestingSequence.Of(30, 31, 32, 33);
+            using var matrix = TestingSequence.Of(row1, row2, row3);
+
+            AssertMatrix(expectations, matrix.Transpose());
         }
 
         [Test]
@@ -73,14 +71,13 @@ namespace MoreLinq.Test
                 new[] { 32 }
             };
 
-            using (var row1 = TestingSequence.Of(10, 11))
-            using (var row2 = TestingSequence.Of(20))
-            using (var row3 = TestingSequence.Of<int>())
-            using (var row4 = TestingSequence.Of(30, 31, 32))
-            using (var matrix = TestingSequence.Of(row1, row2, row3, row4))
-            {
-                AssertMatrix(expectations, matrix.Transpose());
-            }
+            using var row1 = TestingSequence.Of(10, 11);
+            using var row2 = TestingSequence.Of(20);
+            using var row3 = TestingSequence.Of<int>();
+            using var row4 = TestingSequence.Of(30, 31, 32);
+            using var matrix = TestingSequence.Of(row1, row2, row3, row4);
+
+            AssertMatrix(expectations, matrix.Transpose());
         }
 
         [Test]
@@ -177,23 +174,22 @@ namespace MoreLinq.Test
 
             result.ElementAt(0).AssertSequenceEqual(10, 20, 30);
 
-            Assert.Throws<TestException>(() =>
-                result.ElementAt(1));
+            Assert.That(() => result.ElementAt(1),
+                        Throws.TypeOf<TestException>());
         }
 
         [Test]
         public void TransposeWithErroneousRowDisposesRowIterators()
         {
-            using (var row1 = TestingSequence.Of(10, 11))
-            using (var row2 = MoreEnumerable.From(() => 20,
-                                                  () => throw new TestException())
-                                            .AsTestingSequence())
-            using (var row3 = TestingSequence.Of(30, 32))
-            using (var matrix = TestingSequence.Of(row1, row2, row3))
-            {
-                Assert.Throws<TestException>(() =>
-                    matrix.Transpose().Consume());
-            }
+            using var row1 = TestingSequence.Of(10, 11);
+            using var row2 = MoreEnumerable.From(() => 20,
+                                                 () => throw new TestException())
+                                           .AsTestingSequence();
+            using var row3 = TestingSequence.Of(30, 32);
+            using var matrix = TestingSequence.Of(row1, row2, row3);
+
+            Assert.That(() => matrix.Transpose().Consume(),
+                        Throws.TypeOf<TestException>());
         }
 
         static bool IsPrime(int number)
@@ -219,7 +215,7 @@ namespace MoreLinq.Test
             var resultList = result.ToList();
             var expectationList = expectation.ToList();
 
-            Assert.AreEqual(expectationList.Count, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(expectationList.Count));
 
             expectationList.Zip(resultList, ValueTuple.Create)
                            .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));

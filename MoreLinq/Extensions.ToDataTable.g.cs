@@ -27,6 +27,8 @@
 //
 // Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
 
+#pragma warning disable RS0041 // Public members should not use oblivious types
+
 namespace MoreLinq.Extensions
 {
     using System;
@@ -68,7 +70,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
             => MoreEnumerable.ToDataTable(source, expressions);
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
@@ -101,7 +103,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
             => MoreEnumerable.ToDataTable(source, table, expressions);
 

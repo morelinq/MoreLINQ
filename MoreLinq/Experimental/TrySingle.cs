@@ -51,7 +51,7 @@ namespace MoreLinq.Experimental
         /// than two elements from the sequence.
         /// </remarks>
 
-        public static (TCardinality Cardinality, T Value)
+        public static (TCardinality Cardinality, T? Value)
             TrySingle<T, TCardinality>(this IEnumerable<T> source,
                 TCardinality zero, TCardinality one, TCardinality many) =>
             TrySingle(source, zero, one, many, ValueTuple.Create);
@@ -96,20 +96,16 @@ namespace MoreLinq.Experimental
 
         public static TResult TrySingle<T, TCardinality, TResult>(this IEnumerable<T> source,
             TCardinality zero, TCardinality one, TCardinality many,
-            // TODO review second argument of resultSelector
-            // ...that can be defaulted to null for nullable references
-            // so the signature is not quite accurate, but can we do
-            // something about that?
-            Func<TCardinality, T, TResult> resultSelector)
+            Func<TCardinality, T?, TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            switch (source.TryGetCollectionCount())
+            switch (source.TryAsCollectionLike())
             {
-                case 0:
-                    return resultSelector(zero, default!);
-                case 1:
+                case { Count: 0 }:
+                    return resultSelector(zero, default);
+                case { Count: 1 }:
                 {
                     var item = source switch
                     {
@@ -119,16 +115,16 @@ namespace MoreLinq.Experimental
                     };
                     return resultSelector(one, item);
                 }
-                case {}:
-                    return resultSelector(many, default!);
+                case not null:
+                    return resultSelector(many, default);
                 default:
                 {
                     using var e = source.GetEnumerator();
                     if (!e.MoveNext())
-                        return resultSelector(zero, default!);
+                        return resultSelector(zero, default);
                     var current = e.Current;
                     return !e.MoveNext() ? resultSelector(one, current)
-                                         : resultSelector(many, default!);
+                                         : resultSelector(many, default);
                 }
             }
         }

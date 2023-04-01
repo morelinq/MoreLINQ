@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{835F8FFA-471F-4322-B721-A897F27872FA}"
 	ProjectSection(SolutionItems) = preProject
@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.sh = build.sh
 		builddocs.cmd = builddocs.cmd
 		COPYING.txt = COPYING.txt
+		Directory.Build.props = Directory.Build.props
 		global.json = global.json
 		msbuild.cmd = msbuild.cmd
 		pack.cmd = pack.cmd

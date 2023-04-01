@@ -22,43 +22,49 @@ namespace MoreLinq
     using System.Linq;
 
     /// <summary>
-    /// Represents an list-like (indexable) data structure.
+    /// Represents a union over list types implementing either
+    /// <see cref="IList{T}"/> or <see cref="IReadOnlyList{T}"/>, allowing
+    /// both to be treated the same.
     /// </summary>
 
-    interface IListLike<out T>
+    readonly struct ListLike<T>
     {
-        int Count { get; }
-        T this[int index] { get; }
+        readonly IList<T>? _rw;
+        readonly IReadOnlyList<T>? _ro;
+
+        public ListLike(IList<T> list)
+        {
+            _rw = list ?? throw new ArgumentNullException(nameof(list));
+            _ro = null;
+        }
+
+        public ListLike(IReadOnlyList<T> list)
+        {
+            _rw = null;
+            _ro = list ?? throw new ArgumentNullException(nameof(list));
+        }
+
+        public int Count => _rw?.Count ?? _ro?.Count ?? 0;
+
+        public T this[int index] => _rw is { } rw ? rw[index]
+                                  : _ro is { } rx ? rx[index]
+                                  : throw new ArgumentOutOfRangeException(nameof(index));
     }
 
     static class ListLike
     {
-        public static IListLike<T> ToListLike<T>(this IEnumerable<T> source)
-            => source.TryAsListLike() ?? new List<T>(source.ToList());
+        public static ListLike<T> AsListLike<T>(this List<T> list) => new((IList<T>)list);
 
-        public static IListLike<T>? TryAsListLike<T>(this IEnumerable<T> source) =>
+        public static ListLike<T> ToListLike<T>(this IEnumerable<T> source)
+            => source.TryAsListLike() ?? source.ToList().AsListLike();
+
+        public static ListLike<T>? TryAsListLike<T>(this IEnumerable<T> source) =>
             source switch
             {
                 null => throw new ArgumentNullException(nameof(source)),
-                IList<T> list => new List<T>(list),
-                IReadOnlyList<T> list => new ReadOnlyList<T>(list),
+                IList<T> list => new(list),
+                IReadOnlyList<T> list => new(list),
                 _ => null
             };
-
-        sealed class List<T> : IListLike<T>
-        {
-            readonly IList<T> _list;
-            public List(IList<T> list) => _list = list ?? throw new ArgumentNullException(nameof(list));
-            public int Count => _list.Count;
-            public T this[int index] => _list[index];
-        }
-
-        sealed class ReadOnlyList<T> : IListLike<T>
-        {
-            readonly IReadOnlyList<T> _list;
-            public ReadOnlyList(IReadOnlyList<T> list) => _list = list ?? throw new ArgumentNullException(nameof(list));
-            public int Count => _list.Count;
-            public T this[int index] => _list[index];
-        }
     }
 }

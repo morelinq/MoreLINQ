@@ -25,8 +25,8 @@ namespace MoreLinq.Test
         [Test]
         public void InsertWithNegativeIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("index", () =>
-                 Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1));
+            Assert.That(() => Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1),
+                        Throws.ArgumentOutOfRangeException("index"));
         }
 
         [TestCase(7)]
@@ -37,15 +37,13 @@ namespace MoreLinq.Test
             var seq1 = Enumerable.Range(0, count).ToList();
             var seq2 = new[] { 97, 98, 99 };
 
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                var result = test1.Insert(test2, count + 1);
+            using var test1 = seq1.AsTestingSequence();
+            using var test2 = seq2.AsTestingSequence();
 
-                AssertThrowsArgument.OutOfRangeException("index", () =>
-                    result.ForEach((e, index) =>
-                        Assert.That(e, Is.EqualTo(seq1[index]))));
-            }
+            var result = test1.Insert(test2, count + 1);
+
+            Assert.That(() => result.ForEach((e, index) => Assert.That(e, Is.EqualTo(seq1[index]))),
+                        Throws.ArgumentOutOfRangeException("index"));
         }
 
         [TestCase(7)]
@@ -56,13 +54,12 @@ namespace MoreLinq.Test
             var seq1 = Enumerable.Range(0, count);
             var seq2 = new[] { 97, 98, 99 };
 
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                var result = test1.Insert(test2, count + 1).Take(count);
+            using var test1 = seq1.AsTestingSequence();
+            using var test2 = seq2.AsTestingSequence();
 
-                Assert.That(seq1, Is.EqualTo(result));
-            }
+            var result = test1.Insert(test2, count + 1).Take(count);
+
+            Assert.That(seq1, Is.EqualTo(result));
         }
 
         [TestCase(3, 0)]
@@ -74,19 +71,19 @@ namespace MoreLinq.Test
             var seq1 = Enumerable.Range(1, count);
             var seq2 = new[] { 97, 98, 99 };
 
-            using (var test1 = seq1.AsTestingSequence())
-            using (var test2 = seq2.AsTestingSequence())
-            {
-                var result = test1.Insert(test2, index);
-                var expectations = seq1.Take(index).Concat(seq2).Concat(seq1.Skip(index));
-                Assert.That(result, Is.EqualTo(expectations));
-            }
+            using var test1 = seq1.AsTestingSequence();
+            using var test2 = seq2.AsTestingSequence();
+
+            var result = test1.Insert(test2, index);
+
+            var expectations = seq1.Take(index).Concat(seq2).Concat(seq1.Skip(index));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
         public void InsertIsLazy()
         {
-            new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
+            _ = new BreakingSequence<int>().Insert(new BreakingSequence<int>(), 0);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestSliceIsLazy()
         {
-            new BreakingSequence<int>().Slice(10, 10);
+            _ = new BreakingSequence<int>().Slice(10, 10);
         }
 
         /// <summary>
@@ -142,8 +142,8 @@ namespace MoreLinq.Test
 
             var result = sequence.Slice(sliceStart, sliceCount);
 
-            Assert.AreEqual(sliceCount, result.Count());
-            CollectionAssert.AreEqual(Enumerable.Range(5, sliceCount), result);
+            Assert.That(result.Count(), Is.EqualTo(sliceCount));
+            Assert.That(Enumerable.Range(5, sliceCount), Is.EqualTo(result));
         }
     }
 }

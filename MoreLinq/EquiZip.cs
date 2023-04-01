@@ -42,6 +42,10 @@ namespace MoreLinq
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
         /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3, 4 };
@@ -64,7 +68,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+            return EquiZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b));
         }
 
         /// <summary>
@@ -87,6 +91,11 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
         /// </exception>
         /// <example>
         /// <code><![CDATA[
@@ -137,6 +146,11 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// The input sequences are of different lengths.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
         /// </exception>
         /// <example>
         /// <code><![CDATA[

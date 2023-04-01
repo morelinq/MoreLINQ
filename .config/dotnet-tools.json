@@ -3,15 +3,21 @@
   "isRoot": true,
   "tools": {
     "dotnet-t4": {
-      "version": "2.0.5",
+      "version": "2.3.0",
       "commands": [
         "t4"
       ]
     },
     "dotnet-reportgenerator-globaltool": {
-      "version": "4.6.4",
+      "version": "5.1.11",
       "commands": [
         "reportgenerator"
+      ]
+    },
+    "meziantou.framework.nugetpackagevalidation.tool": {
+      "version": "1.0.9",
+      "commands": [
+        "meziantou.validate-nuget-package"
       ]
     }
   }

@@ -37,7 +37,7 @@ namespace MoreLinq
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
 
-            return Segment(source, (curr, prev, index) => newSegmentPredicate(curr));
+            return Segment(source, (curr, _, _) => newSegmentPredicate(curr));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace MoreLinq
         {
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
 
-            return Segment(source, (curr, prev, index) => newSegmentPredicate(curr, index));
+            return Segment(source, (curr, _, index) => newSegmentPredicate(curr, index));
         }
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace MoreLinq
 
                     if (newSegmentPredicate(current, previous, index))
                     {
-                         yield return segment;              // yield the completed segment
-                         segment = new List<T> { current }; // start a new segment
+                        yield return segment;              // yield the completed segment
+                        segment = new List<T> { current }; // start a new segment
                     }
                     else // not a new segment, append and continue
                     {

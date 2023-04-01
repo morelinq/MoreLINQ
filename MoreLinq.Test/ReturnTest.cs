@@ -22,11 +22,11 @@ namespace MoreLinq.Test
     using NUnit.Framework;
     using NUnit.Framework.Interfaces;
 
-    class ReturnTest
+    public class ReturnTest
     {
         static class SomeSingleton
         {
-            public static readonly object Item = new object();
+            public static readonly object Item = new();
             public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return(Item);
             public static IList<object> List => (IList<object>)Sequence;
             public static ICollection<object> Collection => (ICollection<object>)Sequence;
@@ -34,8 +34,8 @@ namespace MoreLinq.Test
 
         static class NullSingleton
         {
-            public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return<object>(null);
-            public static IList<object> List => (IList<object>)Sequence;
+            public static readonly IEnumerable<object?> Sequence = MoreEnumerable.Return<object?>(null);
+            public static IList<object?> List => (IList<object?>)Sequence;
         }
 
         [Test]
@@ -77,13 +77,13 @@ namespace MoreLinq.Test
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemProvidedIsNull()
         {
-            Assert.That(() => NullSingleton.List.IndexOf(new object()), Throws.Nothing);
+            Assert.That(() => SomeSingleton.List.IndexOf(new object()), Throws.Nothing);
         }
 
         [Test]
         public void TestIndexOfDoesNotThrowWhenTheItemContainedIsNull()
         {
-            Assert.That(() => SomeSingleton.List.IndexOf(null), Throws.Nothing);
+            Assert.That(() => NullSingleton.List.IndexOf(null), Throws.Nothing);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace MoreLinq.Test
             from ma in new (string MethodName, Action Action)[]
             {
                 ("Add"     , () => SomeSingleton.List.Add(new object())),
-                ("Clear"   , () => SomeSingleton.Collection.Clear()),
+                ("Clear"   ,       SomeSingleton.Collection.Clear),
                 ("Remove"  , () => SomeSingleton.Collection.Remove(SomeSingleton.Item)),
                 ("RemoveAt", () => SomeSingleton.List.RemoveAt(0)),
                 ("Insert"  , () => SomeSingleton.List.Insert(0, new object())),
