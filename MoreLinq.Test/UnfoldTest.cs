@@ -81,5 +81,18 @@ namespace MoreLinq.Test
                                                   e => e.Result);
             Assert.That(result, Is.Empty);
         }
+
+        [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/990")]
+        public void UnfoldReiterationsReturnsSameResult()
+        {
+            var xs = MoreEnumerable.Unfold(1, n => (Result: n, Next: n + 1),
+                                           _ => true,
+                                           n => n.Next,
+                                           n => n.Result)
+                                   .Take(5);
+
+            xs.AssertSequenceEqual(1, 2, 3, 4, 5);
+            xs.AssertSequenceEqual(1, 2, 3, 4, 5);
+        }
     }
 }
