@@ -430,25 +430,6 @@ namespace MoreLinq.Extensions
 
     }
 
-    /// <summary><c>Append</c> extension.</summary>
-
-    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class AppendExtension
-    {
-        /// <summary>
-        /// Returns a sequence consisting of the head elements and the given tail element.
-        /// </summary>
-        /// <typeparam name="T">Type of sequence</typeparam>
-        /// <param name="head">All elements of the head. Must not be null.</param>
-        /// <param name="tail">Tail element of the new sequence.</param>
-        /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
-        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
-            => MoreEnumerable.Append(head, tail);
-
-    }
-
     /// <summary><c>Assert</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
@@ -4556,35 +4537,6 @@ namespace MoreLinq.Extensions
 
         public static IEnumerable<T> Pipe<T>(this IEnumerable<T> source, Action<T> action)
             => MoreEnumerable.Pipe(source, action);
-
-    }
-
-    /// <summary><c>Prepend</c> extension.</summary>
-
-    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class PrependExtension
-    {
-        /// <summary>
-        /// Prepends a single value to a sequence.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The sequence to prepend to.</param>
-        /// <param name="value">The value to prepend.</param>
-        /// <returns>
-        /// Returns a sequence where a value is prepended to it.
-        /// </returns>
-        /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
-        /// <code><![CDATA[
-        /// int[] numbers = { 1, 2, 3 };
-        /// var result = numbers.Prepend(0);
-        /// ]]></code>
-        /// The <c>result</c> variable, when iterated over, will yield
-        /// 0, 1, 2 and 3, in turn.
-
-        public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
-            => MoreEnumerable.Prepend(source, value);
 
     }
 
