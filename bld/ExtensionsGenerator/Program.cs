@@ -45,8 +45,7 @@ try
     {
         Console.Error.WriteLine("Invalid argument or usage!");
         Console.Error.WriteLine();
-        var usage = ProgramArguments.Help.Replace("#BIN#", Path.GetFileName(Environment.ProcessPath), StringComparison.Ordinal);
-        Console.Error.WriteLine(usage);
+        Console.Error.WriteLine(ProgramArguments.Help);
     }
 
     return exitCode;
@@ -444,10 +443,10 @@ sealed class ArrayTypeKey : ParameterizedTypeKey
     }
 }
 
-[DocoptArguments]
+[DocoptArguments(HelpConstName = nameof(HelpText))]
 sealed partial class ProgramArguments
 {
-    public const string Help = """
+    const string HelpText = """
         Usage:
           #BIN# [options] [-u NAMESPACE]... [DIR]
 
@@ -458,4 +457,7 @@ sealed partial class ProgramArguments
           --no-class-lead        Skip generating class lead.
           -d, --debug            Produce output for debugging.
         """;
+
+    public static string Help =>
+        HelpText.Replace("#BIN#", Path.GetFileName(Environment.ProcessPath), StringComparison.Ordinal);
 }
