@@ -61,6 +61,12 @@ namespace MoreLinq.Test
             Assert.That(actual, Is.EqualTo(expected));
 
         /// <summary>
+        /// Just to make our testing easier so we can chain the assertion call.
+        /// </summary>
+        internal static void AssertSequenceEquivalent<T>(this IEnumerable<T> actual, IEnumerable<T> expected) =>
+            Assert.That(actual, Is.EquivalentTo(expected));
+
+        /// <summary>
         /// Make testing even easier - a params array makes for readable tests :)
         /// The sequence should be evaluated exactly once.
         /// </summary>

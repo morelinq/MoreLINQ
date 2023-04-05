@@ -61,6 +61,7 @@
         - OrderedMerge
         - Pad
         - PadStart
+        - Pairs
         - Pairwise
         - PartialSort
         - PartialSortBy
@@ -241,6 +242,7 @@
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
+    <Content Include="Pairs.cs" />
   </ItemGroup>
 
   <Target Name="_CollectTextTemplates">

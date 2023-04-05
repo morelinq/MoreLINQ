@@ -405,6 +405,12 @@ Pads a sequence with default values in the beginning if it is narrower
 
 This method has 3 overloads.
 
+### Pairs
+
+Enumerates all positionally distinct pairs of items in an
+enumeration. Two of the same values at different positions
+would appear in a pair.
+
 ### Pairwise
 
 Returns a sequence resulting from applying a function to each element in the
