@@ -429,7 +429,6 @@ static MoreLinq.MoreEnumerable.Cartesian<T1, T2, T3, TResult>(this System.Collec
 static MoreLinq.MoreEnumerable.Cartesian<T1, T2, TResult>(this System.Collections.Generic.IEnumerable<T1>! first, System.Collections.Generic.IEnumerable<T2>! second, System.Func<T1, T2, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static MoreLinq.MoreEnumerable.Choose<T, TResult>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, (bool, TResult)>! chooser) -> System.Collections.Generic.IEnumerable<TResult>!
 static MoreLinq.MoreEnumerable.CompareCount<TFirst, TSecond>(this System.Collections.Generic.IEnumerable<TFirst>! first, System.Collections.Generic.IEnumerable<TSecond>! second) -> int
-static MoreLinq.MoreEnumerable.Concat<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Consume<T>(this System.Collections.Generic.IEnumerable<T>! source) -> void
 static MoreLinq.MoreEnumerable.CountBetween<T>(this System.Collections.Generic.IEnumerable<T>! source, int min, int max) -> bool
 static MoreLinq.MoreEnumerable.CountBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>>!
