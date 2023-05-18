@@ -167,7 +167,7 @@ first sequence has fewer, the same or more elements than the second sequence.
 
 Returns a sequence consisting of the head element and the given tail elements.
 
-This method is obsolete and will be removed in a future version. Use `Append`
+This method was removed with version 4.0. Use `Append`
 instead.
 
 ### Consume
