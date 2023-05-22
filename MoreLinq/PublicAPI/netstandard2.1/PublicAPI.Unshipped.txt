@@ -1,1 +1,2 @@
 #nullable enable
+*REMOVED*static MoreLinq.MoreEnumerable.Concat<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
