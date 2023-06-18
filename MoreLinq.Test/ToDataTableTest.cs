@@ -77,33 +77,35 @@ namespace MoreLinq.Test
                         Throws.ArgumentException("table"));
         }
 
+        void TestDataTableMemberExpression(Expression<Func<TestObject, object?>> expression)
+        {
+            Assert.That(() => this.testObjects.ToDataTable(expression),
+                        Throws.ArgumentException("expressions")
+                              .And.InnerException.With.ParamName("lambda"));
+        }
+
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            Assert.That(() => this.testObjects.ToDataTable(t => t.ToString()),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(t => t.ToString());
         }
-
 
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            Assert.That(() => this.testObjects.ToDataTable(t => t.ToString().Length),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(t => t.ToString().Length);
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            Assert.That(() => this.testObjects.ToDataTable(t => t[0]),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(t => t[0]);
         }
 
         [Test]
         public void ToDataTableMemberExpressionStatic()
         {
-            Assert.That(() => _ = this.testObjects.ToDataTable(_ => DateTime.Now),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(_ => DateTime.Now);
         }
 
         [Test]
@@ -113,18 +115,18 @@ namespace MoreLinq.Test
 
             // Assert properties first, then fields, then in declaration order
 
-            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
-            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
-
-            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
-            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
-
             Assert.That(dt.Columns[2].Caption, Is.EqualTo("KeyField"));
             Assert.That(dt.Columns[2].DataType, Is.EqualTo(typeof(int)));
 
             Assert.That(dt.Columns[3].Caption, Is.EqualTo("ANullableGuidField"));
             Assert.That(dt.Columns[3].DataType, Is.EqualTo(typeof(Guid)));
             Assert.That(dt.Columns[3].AllowDBNull, Is.True);
+
+            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
+            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
+
+            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
+            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
 
             Assert.That(dt.Columns.Count, Is.EqualTo(4));
         }
