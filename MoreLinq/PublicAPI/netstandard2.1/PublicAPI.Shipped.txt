@@ -410,6 +410,7 @@ static MoreLinq.MoreEnumerable.Aggregate<T, TAccumulate1, TAccumulate2, TResult>
 static MoreLinq.MoreEnumerable.AggregateRight<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TSource, TAccumulate, TAccumulate>! func, System.Func<TAccumulate, TResult>! resultSelector) -> TResult
 static MoreLinq.MoreEnumerable.AggregateRight<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TSource, TAccumulate, TAccumulate>! func) -> TAccumulate
 static MoreLinq.MoreEnumerable.AggregateRight<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! func) -> TSource
+static MoreLinq.MoreEnumerable.Append<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Assert<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Assert<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate, System.Func<TSource, System.Exception!>? errorSelector) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.AssertCount<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -555,6 +556,7 @@ static MoreLinq.MoreEnumerable.Partition<TKey, TElement, TResult>(this System.Co
 static MoreLinq.MoreEnumerable.Partition<TKey, TElement, TResult>(this System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>!>! source, TKey key1, TKey key2, TKey key3, System.Func<System.Collections.Generic.IEnumerable<TElement>!, System.Collections.Generic.IEnumerable<TElement>!, System.Collections.Generic.IEnumerable<TElement>!, System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>!>!, TResult>! resultSelector) -> TResult
 static MoreLinq.MoreEnumerable.Permutations<T>(this System.Collections.Generic.IEnumerable<T>! sequence) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>!>!
 static MoreLinq.MoreEnumerable.Pipe<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Action<T>! action) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Prepend<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.PreScan<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! transformation, TSource identity) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Random() -> System.Collections.Generic.IEnumerable<int>!
 static MoreLinq.MoreEnumerable.Random(int maxValue) -> System.Collections.Generic.IEnumerable<int>!
@@ -594,6 +596,7 @@ static MoreLinq.MoreEnumerable.Shuffle<T>(this System.Collections.Generic.IEnume
 static MoreLinq.MoreEnumerable.Shuffle<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Random! rand) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Single<T>(this MoreLinq.IExtremaEnumerable<T>! source) -> T
 static MoreLinq.MoreEnumerable.SingleOrDefault<T>(this MoreLinq.IExtremaEnumerable<T>! source) -> T?
+static MoreLinq.MoreEnumerable.SkipLast<T>(this System.Collections.Generic.IEnumerable<T>! source, int count) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.SkipUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Slice<T>(this System.Collections.Generic.IEnumerable<T>! sequence, int startIndex, int count) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.SortedMerge<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, MoreLinq.OrderByDirection direction, params System.Collections.Generic.IEnumerable<TSource>![]! otherSequences) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -616,6 +619,7 @@ static MoreLinq.MoreEnumerable.Subsets<T>(this System.Collections.Generic.IEnume
 static MoreLinq.MoreEnumerable.Subsets<T>(this System.Collections.Generic.IEnumerable<T>! sequence, int subsetSize) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>!>!
 static MoreLinq.MoreEnumerable.TagFirstLast<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool, bool, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static MoreLinq.MoreEnumerable.TakeEvery<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int step) -> System.Collections.Generic.IEnumerable<TSource>!
+static MoreLinq.MoreEnumerable.TakeLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.TakeUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.ThenBy<T, TKey>(this System.Linq.IOrderedEnumerable<T>! source, System.Func<T, TKey>! keySelector, MoreLinq.OrderByDirection direction) -> System.Linq.IOrderedEnumerable<T>!
 static MoreLinq.MoreEnumerable.ThenBy<T, TKey>(this System.Linq.IOrderedEnumerable<T>! source, System.Func<T, TKey>! keySelector, System.Collections.Generic.IComparer<TKey>? comparer, MoreLinq.OrderByDirection direction) -> System.Linq.IOrderedEnumerable<T>!
@@ -648,6 +652,8 @@ static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collection
 static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.Dictionary<TKey, TValue>!
 static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source) -> System.Collections.Generic.Dictionary<TKey, TValue>!
 static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.Dictionary<TKey, TValue>!
+static MoreLinq.MoreEnumerable.ToHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.HashSet<TSource>!
+static MoreLinq.MoreEnumerable.ToHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEqualityComparer<TSource>? comparer) -> System.Collections.Generic.HashSet<TSource>!
 static MoreLinq.MoreEnumerable.ToLookup<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source) -> System.Linq.ILookup<TKey, TValue>!
 static MoreLinq.MoreEnumerable.ToLookup<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Linq.ILookup<TKey, TValue>!
 static MoreLinq.MoreEnumerable.ToLookup<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source) -> System.Linq.ILookup<TKey, TValue>!

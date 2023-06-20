@@ -404,6 +404,7 @@ static MoreLinq.MoreEnumerable.Aggregate<T, TAccumulate1, TAccumulate2, TResult>
 static MoreLinq.MoreEnumerable.AggregateRight<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TSource, TAccumulate, TAccumulate>! func, System.Func<TAccumulate, TResult>! resultSelector) -> TResult
 static MoreLinq.MoreEnumerable.AggregateRight<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource>! source, TAccumulate seed, System.Func<TSource, TAccumulate, TAccumulate>! func) -> TAccumulate
 static MoreLinq.MoreEnumerable.AggregateRight<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! func) -> TSource
+static MoreLinq.MoreEnumerable.Append<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Assert<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Assert<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate, System.Func<TSource, System.Exception!>? errorSelector) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.AssertCount<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -549,6 +550,7 @@ static MoreLinq.MoreEnumerable.Partition<TKey, TElement, TResult>(this System.Co
 static MoreLinq.MoreEnumerable.Partition<TKey, TElement, TResult>(this System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>!>! source, TKey key1, TKey key2, TKey key3, System.Func<System.Collections.Generic.IEnumerable<TElement>!, System.Collections.Generic.IEnumerable<TElement>!, System.Collections.Generic.IEnumerable<TElement>!, System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>!>!, TResult>! resultSelector) -> TResult
 static MoreLinq.MoreEnumerable.Permutations<T>(this System.Collections.Generic.IEnumerable<T>! sequence) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>!>!
 static MoreLinq.MoreEnumerable.Pipe<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Action<T>! action) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Prepend<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.PreScan<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TSource, TSource>! transformation, TSource identity) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Random() -> System.Collections.Generic.IEnumerable<int>!
 static MoreLinq.MoreEnumerable.Random(int maxValue) -> System.Collections.Generic.IEnumerable<int>!

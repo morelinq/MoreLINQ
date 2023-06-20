@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using DocoptNet;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -35,8 +36,19 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 try
 #pragma warning restore CA1852 // Seal internal types
 {
-    Run(args);
-    return 0;
+    var exitCode =
+        ProgramArguments.CreateParser()
+                        .Parse(args)
+                        .Match(args => { Run(args); return 0; }, _ => 1);
+
+    if (exitCode != 0)
+    {
+        Console.Error.WriteLine("Invalid argument or usage!");
+        Console.Error.WriteLine();
+        Console.Error.WriteLine(ProgramArguments.Help);
+    }
+
+    return exitCode;
 }
 #pragma warning disable CA1031 // Do not catch general exception types
 catch (Exception e)
@@ -46,54 +58,9 @@ catch (Exception e)
     return 0xbad;
 }
 
-static void Run(IEnumerable<string> args)
+static void Run(ProgramArguments args)
 {
-    var dir = Directory.GetCurrentDirectory();
-
-    string? includePattern = null;
-    string? excludePattern = null;
-    var debug = false;
-    var usings = new List<string>();
-    var noClassLead = false;
-
-    using (var arg = args.GetEnumerator())
-    {
-        while (arg.MoveNext())
-        {
-            switch (arg.Current)
-            {
-                case "-i":
-                case "--include":
-                    includePattern = Read(arg, MissingArgValue);
-                    break;
-                case "-x":
-                case "--exclude":
-                    excludePattern = Read(arg, MissingArgValue);
-                    break;
-                case "-u":
-                case "--using":
-                    usings.Add(Read(arg, MissingArgValue));
-                    break;
-                case "--no-class-lead":
-                    noClassLead = true;
-                    break;
-                case "-d":
-                case "--debug":
-                    debug = true;
-                    break;
-                case "":
-                    continue;
-                default:
-                    dir = arg.Current[0] != '-'
-                        ? arg.Current
-                        : throw new Exception("Invalid argument: " + arg.Current);
-                    break;
-            }
-        }
-
-        static Exception MissingArgValue() =>
-            new InvalidOperationException("Missing argument value.");
-    }
+    var dir = args.ArgDir ?? Directory.GetCurrentDirectory();
 
     static Func<string, bool>
         PredicateFromPattern(string? pattern, bool @default) =>
@@ -101,8 +68,8 @@ static void Run(IEnumerable<string> args)
             ? delegate { return @default; }
             : new Func<string, bool>(new Regex(pattern).IsMatch);
 
-    var includePredicate = PredicateFromPattern(includePattern, true);
-    var excludePredicate = PredicateFromPattern(excludePattern, false);
+    var includePredicate = PredicateFromPattern(args.OptInclude, true);
+    var excludePredicate = PredicateFromPattern(args.OptExclude, false);
 
     var thisAssemblyName = typeof(TypeKey).GetTypeInfo().Assembly.GetName();
 
@@ -198,7 +165,7 @@ static void Run(IEnumerable<string> args)
 
     q = q.ToArray();
 
-    if (debug)
+    if (args.OptDebug)
     {
         var ms =
             //
@@ -252,7 +219,7 @@ static void Run(IEnumerable<string> args)
     };
 
     var imports =
-        from ns in baseImports.Concat(usings)
+        from ns in baseImports.Concat(args.OptUsing)
         select indent + $"using {ns};";
 
     var classes =
@@ -299,7 +266,7 @@ static void Run(IEnumerable<string> args)
                         .WithSemicolonToken(ParseToken(";").WithTrailingTrivia(LineFeed))
         }
         into m
-        let classLead = !noClassLead
+        let classLead = !args.OptNoClassLead
             ? $$"""
 
                     /// <summary><c>{{m.Name}}</c> extension.</summary>
@@ -381,9 +348,6 @@ static TypeKey CreateTypeKey(TypeSyntax root, Func<string, TypeKey?> abbreviator
         _ => throw new NotSupportedException("Unhandled type: " + ts)
     };
 }
-
-static T Read<T>(IEnumerator<T> e, Func<Exception> errorFactory) =>
-    e.MoveNext() ? e.Current : throw errorFactory();
 
 //
 // Logical type nodes designed to be structurally sortable based on:
@@ -486,4 +450,23 @@ sealed class ArrayTypeKey : ParameterizedTypeKey
 
         return base.CompareParameters(other);
     }
+}
+
+[DocoptArguments(HelpConstName = nameof(HelpText))]
+sealed partial class ProgramArguments
+{
+    const string HelpText = """
+        Usage:
+          #BIN# [options] [-u NAMESPACE]... [DIR]
+
+        Options:
+          -i, --include REGEX    Include files matching pattern.
+          -x, --exclude REGEX    Exclude files matching pattern.
+          -u, --using NAMESPACE  Additional using imports to add.
+          --no-class-lead        Skip generating class lead.
+          -d, --debug            Produce output for debugging.
+        """;
+
+    public static string Help =>
+        HelpText.Replace("#BIN#", Path.GetFileName(Environment.ProcessPath), StringComparison.Ordinal);
 }

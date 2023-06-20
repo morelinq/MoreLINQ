@@ -181,7 +181,7 @@ namespace MoreLinq.Test
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
         }
 
-        struct Point
+        readonly struct Point
         {
 
 #pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)

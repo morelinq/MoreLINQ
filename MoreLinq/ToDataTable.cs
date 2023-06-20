@@ -190,16 +190,16 @@ namespace MoreLinq
             var columns = table.Columns;
 
             var schemas = from m in members
-                          let type = m.MemberType == MemberTypes.Property
-                                   ? ((PropertyInfo)m).PropertyType
-                                   : ((FieldInfo)m).FieldType
                           select new
                           {
                               Member = m,
-                              Type = type.IsGenericType
-                                     && typeof(Nullable<>) == type.GetGenericTypeDefinition()
-                                   ? type.GetGenericArguments()[0]
-                                   : type,
+                              Type = (m.MemberType == MemberTypes.Property
+                                      ? ((PropertyInfo)m).PropertyType
+                                      : ((FieldInfo)m).FieldType) switch
+                              {
+                                  var type when Nullable.GetUnderlyingType(type) is { } t => t,
+                                  var type => type,
+                              },
                               Column = columns[m.Name],
                           };
 
