@@ -189,20 +189,6 @@ namespace MoreLinq
 
             var columns = table.Columns;
 
-            var schemas = from m in members
-                          select new
-                          {
-                              Member = m,
-                              Type = (m.MemberType == MemberTypes.Property
-                                      ? ((PropertyInfo)m).PropertyType
-                                      : ((FieldInfo)m).FieldType) switch
-                              {
-                                  var type when Nullable.GetUnderlyingType(type) is { } t => t,
-                                  var type => type,
-                              },
-                              Column = columns[m.Name],
-                          };
-
             //
             // If the table has no columns then build the schema.
             // If it has columns then validate members against the columns
@@ -211,25 +197,34 @@ namespace MoreLinq
 
             if (columns.Count == 0)
             {
-                columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
+                foreach (var member in members)
+                    _ = columns.Add(member.Name, GetElementaryTypeOfPropertyOrField(member));
+
+                return members;
             }
-            else
+
+            var columnMembers = new MemberInfo[columns.Count];
+
+            foreach (var member in members)
             {
-                members = new MemberInfo[columns.Count];
+                var column = columns[member.Name] ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
-                foreach (var info in schemas)
-                {
-                    var member = info.Member;
-                    var column = info.Column ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
+                if (GetElementaryTypeOfPropertyOrField(member) is var type && type != column.DataType)
+                    throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {type} when it is {column.DataType}.", nameof(table));
 
-                    if (info.Type != column.DataType)
-                        throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));
-
-                    members[column.Ordinal] = member;
-                }
+                columnMembers[column.Ordinal] = member;
             }
 
-            return members;
+            return columnMembers;
+
+            static Type GetElementaryTypeOfPropertyOrField(MemberInfo member) =>
+                (member.MemberType == MemberTypes.Property ? ((PropertyInfo)member).PropertyType
+                                                           : ((FieldInfo)member).FieldType)
+                switch
+                {
+                    var type when Nullable.GetUnderlyingType(type) is { } ut => ut,
+                    var type => type,
+                };
         }
 
         static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
