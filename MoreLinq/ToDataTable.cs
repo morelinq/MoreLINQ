@@ -103,8 +103,8 @@ namespace MoreLinq
             expressions ??= EmptyArray<Expression<Func<T, object?>>>.Value;
 
             var members = PrepareMemberInfos(expressions).ToArray();
-            members = BuildOrBindSchema(table, members);
-            var shredder = CreateShredder<T>(members);
+            var boundMembers = BuildOrBindSchema(table, members);
+            var shredder = CreateShredder<T>(boundMembers);
 
             //
             // Builds rows out of elements in the sequence and
@@ -180,7 +180,7 @@ namespace MoreLinq
         /// columns for which there is no source member supplying a value.
         /// </remarks>
 
-        static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+        static MemberInfo?[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
         {
             //
             // Retrieve member information needed to
@@ -227,7 +227,7 @@ namespace MoreLinq
                 };
         }
 
-        static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+        static Func<T, object[]> CreateShredder<T>(MemberInfo?[] members)
         {
             var parameter = Expression.Parameter(typeof(T), "e");
 
