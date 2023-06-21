@@ -167,8 +167,11 @@ first sequence has fewer, the same or more elements than the second sequence.
 
 Returns a sequence consisting of the head element and the given tail elements.
 
-This method was removed with version 4.0. Use `Append`
-instead.
+This extension was rendered obsolete in version 3.0 and eventually removed in
+version 4.0. Use [`Append`][linq-append] from .NET instead that's been available
+since .NET Standard 1.6+, .NET Core 1.0+ and .NET Framework 4.7.1+.
+
+[linq-append]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.append
 
 ### Consume
 
