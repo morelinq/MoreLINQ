@@ -1,5 +1,6 @@
 #nullable enable
 *REMOVED*static MoreLinq.MoreEnumerable.Append<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
+*REMOVED*static MoreLinq.MoreEnumerable.Concat<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
 *REMOVED*static MoreLinq.MoreEnumerable.Prepend<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.DistinctBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.DistinctBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
