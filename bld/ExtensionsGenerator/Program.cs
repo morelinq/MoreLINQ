@@ -235,7 +235,16 @@ static void Run(ProgramArguments args)
                 select
                     MethodDeclaration(md.ReturnType, md.Identifier)
                         .WithAttributeLists(md.AttributeLists)
-                        .WithModifiers(md.Modifiers)
+                        .WithModifiers(
+                            TokenList(md.Modifiers[0] // assume at least one modifier, like public
+                                        .WithLeadingTrivia(
+                                            from lt in md.Modifiers[0].LeadingTrivia
+                                            where lt.Kind() is not (SyntaxKind.DisabledTextTrivia
+                                                                    or SyntaxKind.IfDirectiveTrivia
+                                                                    or SyntaxKind.ElseDirectiveTrivia
+                                                                    or SyntaxKind.EndIfDirectiveTrivia)
+                                            select lt))
+                                .AddRange(md.Modifiers.Skip(1)))
                         .WithTypeParameterList(md.TypeParameterList)
                         .WithConstraintClauses(md.ConstraintClauses)
                         .WithParameterList(md.ParameterList)

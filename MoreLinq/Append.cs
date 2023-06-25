@@ -31,7 +31,11 @@ namespace MoreLinq
         /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
+#if NET471_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP2_0_OR_GREATER
+        public static IEnumerable<T> Append<T>(IEnumerable<T> head, T tail)
+#else
         public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
+#endif
         {
             if (head == null) throw new ArgumentNullException(nameof(head));
             return head is PendNode<T> node

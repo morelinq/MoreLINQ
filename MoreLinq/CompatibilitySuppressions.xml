@@ -2,10 +2,87 @@
 <!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.AppendExtension</Target>
+    <Left>lib/net462/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.PrependExtension</Target>
+    <Left>lib/net462/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.AppendExtension</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net6.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.PrependExtension</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net6.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.AppendExtension</Target>
+    <Left>lib/netstandard2.0/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.PrependExtension</Target>
+    <Left>lib/netstandard2.0/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.AppendExtension</Target>
+    <Left>lib/netstandard2.1/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.1/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:MoreLinq.Extensions.PrependExtension</Target>
+    <Left>lib/netstandard2.1/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.1/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Append``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/net462/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.MoreEnumerable.Concat``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
     <Left>lib/net462/MoreLinq.dll</Left>
     <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Prepend``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/net462/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Append``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net6.0/MoreLinq.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
   <Suppression>
@@ -17,7 +94,14 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:MoreLinq.MoreEnumerable.Concat``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Target>M:MoreLinq.MoreEnumerable.Prepend``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net6.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Append``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
     <Left>lib/netstandard2.0/MoreLinq.dll</Left>
     <Right>lib/netstandard2.0/MoreLinq.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
@@ -25,6 +109,34 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.MoreEnumerable.Concat``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/netstandard2.0/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Prepend``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/netstandard2.0/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Append``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/netstandard2.1/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.1/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Concat``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/netstandard2.1/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.1/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Prepend``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
     <Left>lib/netstandard2.1/MoreLinq.dll</Left>
     <Right>lib/netstandard2.1/MoreLinq.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
