@@ -103,13 +103,9 @@ This operator is the right-associative version of the Aggregate LINQ operator.
 
 This method has 3 overloads.
 
-### ~~Append~~
+### Append
 
 Returns a sequence consisting of the head element and the given tail elements.
-
-This extension was removed in version 4.0. Use [`Append`][linq-append] from .NET
-instead that's been available since .NET Standard 1.6+, .NET Core 1.0+ and .NET
-Framework 4.7.1+.
 
 ### Assert
 
@@ -174,6 +170,8 @@ Returns a sequence consisting of the head element and the given tail elements.
 This extension was rendered obsolete in version 3.0 and eventually removed in
 version 4.0. Use [`Append`][linq-append] from .NET instead that's been available
 since .NET Standard 1.6+, .NET Core 1.0+ and .NET Framework 4.7.1+.
+
+[linq-append]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.append
 
 ### Consume
 
@@ -444,13 +442,9 @@ sequence
 
 Executes the given action on each element in the source sequence and yields it
 
-### ~~Prepend~~
+### Prepend
 
 Prepends a single value to a sequence
-
-This extension was removed in version 4.0. Use [`Prepend`][linq-prepend] from
-.NET instead that's been available since .NET Standard 1.6+, .NET Core 1.0+ and
-.NET Framework 4.7.1+.
 
 ### PreScan
 
@@ -788,5 +782,3 @@ This method has 2 overloads.
 [lookup]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.lookup-2
 [v2.1]: https://github.com/morelinq/MoreLINQ/releases/tag/v2.1.0
 [v3.0]: https://github.com/morelinq/MoreLINQ/releases/tag/v3.0.0
-[linq-append]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.append
-[linq-prepend]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.prepend
