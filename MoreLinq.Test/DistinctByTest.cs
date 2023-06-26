@@ -15,12 +15,11 @@
 // limitations under the License.
 #endregion
 
-#if !NET6_0_OR_GREATER
-
 namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.DistinctByExtension;
 
     [TestFixture]
     public class DistinctByTest
@@ -63,5 +62,3 @@ namespace MoreLinq.Test
         }
     }
 }
-
-#endif

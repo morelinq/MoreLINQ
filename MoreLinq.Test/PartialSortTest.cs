@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.AppendExtension;
 
     [TestFixture]
     public class PartialSortTests

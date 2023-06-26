@@ -15,12 +15,11 @@
 // limitations under the License.
 #endregion
 
-#if !NET471_OR_GREATER && !NETSTANDARD1_6_OR_GREATER && !NETCOREAPP2_0_OR_GREATER
-
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.AppendExtension;
 
     [TestFixture]
     public class AppendTest
@@ -92,5 +91,3 @@ namespace MoreLinq.Test
         }
     }
 }
-
-#endif

@@ -15,13 +15,12 @@
 // limitations under the License.
 #endregion
 
-#if !NETSTANDARD2_1 && !NETCOREAPP2_0_OR_GREATER
-
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
     using System.Collections.Generic;
     using System;
+    using static MoreLinq.Extensions.TakeLastExtension;
 
     [TestFixture]
     public class TakeLastTest
@@ -91,5 +90,3 @@ namespace MoreLinq.Test
         }
     }
 }
-
-#endif

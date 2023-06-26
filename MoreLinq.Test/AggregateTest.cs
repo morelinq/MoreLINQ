@@ -26,6 +26,7 @@ namespace MoreLinq.Test
     using System.Reactive.Linq;
     using System.Reflection;
     using NUnit.Framework.Interfaces;
+    using static MoreLinq.Extensions.AppendExtension;
     using static FuncModule;
 
     [TestFixture]

@@ -15,12 +15,11 @@
 // limitations under the License.
 #endregion
 
-#if !NETSTANDARD2_1 && !NETCOREAPP2_0_OR_GREATER
-
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.SkipLastExtension;
 
     [TestFixture]
     public class SkipLastTest
@@ -70,5 +69,3 @@ namespace MoreLinq.Test
         }
     }
 }
-
-#endif
