@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public static partial class MoreEnumerable
     {
@@ -63,34 +62,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size < 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            return source.WindowRightWhile((_, i) => i < size);
-        }
-
-        /// <summary>
-        /// Creates a right-aligned sliding window over the source sequence
-        /// with a predicate function determining the window range.
-        /// </summary>
-
-        static IEnumerable<IList<TSource>> WindowRightWhile<TSource>(
-            this IEnumerable<TSource> source,
-            Func<TSource, int, bool> predicate)
-        {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (predicate == null) throw new ArgumentNullException(nameof(predicate));
-
-            return _(); IEnumerable<IList<TSource>> _()
-            {
-                var window = new List<TSource>();
-                foreach (var item in source)
-                {
-                    window.Add(item);
-
-                    // prepare next window before exposing data
-                    var nextWindow = new List<TSource>(predicate(item, window.Count) ? window : window.Skip(1));
-                    yield return window;
-                    window = nextWindow;
-                }
-            }
+            return Window(source, size, true, false);
         }
     }
 }

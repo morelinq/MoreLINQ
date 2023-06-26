@@ -44,34 +44,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
 
-            return _(); IEnumerable<IList<TSource>> _()
-            {
-                using var iter = source.GetEnumerator();
-
-                // generate the first window of items
-                var window = new TSource[size];
-                int i;
-                for (i = 0; i < size && iter.MoveNext(); i++)
-                    window[i] = iter.Current;
-
-                if (i < size)
-                    yield break;
-
-                while (iter.MoveNext())
-                {
-                    // generate the next window by shifting forward by one item
-                    // and do that before exposing the data
-                    var newWindow = new TSource[size];
-                    Array.Copy(window, 1, newWindow, 0, size - 1);
-                    newWindow[size - 1] = iter.Current;
-
-                    yield return window;
-                    window = newWindow;
-                }
-
-                // return the last window.
-                yield return window;
-            }
+            return Window(source, size, false, false);
         }
 
         /// <summary>
@@ -93,5 +66,106 @@ namespace MoreLinq
         [Obsolete("Use " + nameof(Window) + " instead.")]
         public static IEnumerable<IEnumerable<TSource>> Windowed<TSource>(this IEnumerable<TSource> source, int size) =>
             source.Window(size);
+
+        private static IEnumerable<IList<TSource>> Window<TSource>(IEnumerable<TSource> source, int size,
+            bool hasPartialBegin, bool hasPartialEnd)
+        {
+            using var iter = source.GetEnumerator();
+
+            var hasNext = iter.MoveNext();
+
+            // early break
+            if (!hasNext)
+                yield break;
+
+            // Store the window to be yield.
+            // In any cases we build the next window (if any) before yielding
+            // Loops do not have to yield the last window they created.
+            TSource[] window;
+
+            // Warm-up
+            if (hasPartialBegin)
+            {
+                // build first partial window;
+                window = new[] {iter.Current};
+                hasNext = iter.MoveNext();
+
+                // build other partial windows
+                while (window.Length < size && hasNext)
+                {
+                    // Prepare next window, bigger than the previous one
+                    var nextWindow = new TSource[window.Length + 1];
+                    Array.Copy(window, nextWindow, window.Length);
+
+                    // window ready to ship, we forget it immediately
+                    yield return window;
+
+                    nextWindow[nextWindow.Length - 1] = iter.Current;
+                    hasNext = iter.MoveNext();
+                    window = nextWindow;
+                }
+            }
+            else
+            {
+                // build first window
+                window = new TSource[size];
+                int i;
+                for (i = 0; i < size && hasNext; i++)
+                {
+                    window[i] = iter.Current;
+                    hasNext = iter.MoveNext();
+                }
+
+                // Ensure correct size on partial window cases
+                if (i != size)
+                {
+                    if (hasPartialEnd)
+                        Array.Resize(ref window, i);
+                    else
+                        yield break;
+                }
+            }
+
+            // Main loop
+            if (window.Length == size)
+            {
+                // build windows of given size
+                while (hasNext)
+                {
+                    // Prepare next window, same size as the previous one
+                    var nextWindow = new TSource[size];
+                    Array.Copy(window, 1, nextWindow, 0, size - 1);
+
+                    // window ready to ship, we forget it immediately
+                    yield return window;
+
+                    nextWindow[size - 1] = iter.Current;
+                    hasNext = iter.MoveNext();
+                    window = nextWindow;
+                }
+            }
+
+            // Cool down
+            if (hasPartialEnd)
+            {
+                // build final partial windows
+                while (window.Length > 1)
+                {
+                    // Prepare next window, smaller than the previous one
+                    var nextWindow = new TSource[window.Length - 1];
+                    Array.Copy(window, 1, nextWindow, 0, nextWindow.Length);
+
+                    // window ready to ship, we forget it immediately
+                    yield return window;
+                    window = nextWindow;
+                }
+            }
+
+            // No more windows to build, we can finally yield this one
+            if (hasPartialBegin || hasPartialEnd || window.Length == size)
+            {
+                yield return window;
+            }
+        }
     }
 }
