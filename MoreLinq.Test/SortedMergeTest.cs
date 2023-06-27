@@ -60,9 +60,13 @@ namespace MoreLinq.Test
         [Test]
         public void TestSortedMergeDoNotCallMoveNextEagerly()
         {
-            var sequenceA = TestingSequence.Of(1, 3);
-            var sequenceB = MoreEnumerable.From(() => 2, () => throw new TestException());
-            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB).Take(2).Consume();
+            using var sequenceA = TestingSequence.Of(1, 3);
+            using var sequenceB = MoreEnumerable.From(() => 2, () => throw new TestException())
+                                                .AsTestingSequence();
+
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB).Take(2);
+
+            Assert.That(() => result.Consume(), Throws.Nothing);
         }
 
         /// <summary>
