@@ -68,7 +68,6 @@ namespace MoreLinq
                 {
                     if (++index >= lastIndex)
                         yield break;
-
                     else if (index >= startIndex)
                         yield return item;
                 }
