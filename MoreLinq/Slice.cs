@@ -57,8 +57,22 @@ namespace MoreLinq
             {
                 IList<T> list => SliceList(list.Count, i => list[i]),
                 IReadOnlyList<T> list => SliceList(list.Count, i => list[i]),
-                var seq => seq.Skip(startIndex).Take(count)
+                _ => SliceDefault()
             };
+
+            IEnumerable<T> SliceDefault()
+            {
+                var lastIndex = startIndex + count;
+                var index = -1;
+                foreach (var item in sequence)
+                {
+                    if (++index >= lastIndex)
+                        yield break;
+
+                    else if (index >= startIndex)
+                        yield return item;
+                }
+            }
 
             IEnumerable<T> SliceList(int listCount, Func<int, T> indexer)
             {
