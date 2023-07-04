@@ -32,8 +32,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestSubsetsIsLazy()
         {
-            new BreakingSequence<int>().Subsets();
-            new BreakingSequence<int>().Subsets(5);
+            _ = new BreakingSequence<int>().Subsets();
+            _ = new BreakingSequence<int>().Subsets(5);
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace MoreLinq.Test
             const int count = 10;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize",() =>
-                sequence.Subsets(-5));
+            Assert.That(() => sequence.Subsets(-5),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -59,10 +59,8 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, count);
             var result = sequence.Subsets(count + 5);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-            {
-                result.Consume(); // this particular exception is deferred until sequence evaluation
-            });
+            Assert.That(result.Consume, // this particular exception is deferred until sequence evaluation
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -90,7 +88,7 @@ namespace MoreLinq.Test
             var prevSubset = Enumerable.Empty<int>();
             foreach (var subset in result)
             {
-                Assert.GreaterOrEqual(subset.Count, prevSubset.Count());
+                Assert.That(subset.Count, Is.GreaterThanOrEqualTo(prevSubset.Count()));
                 prevSubset = subset;
             }
         }
@@ -107,7 +105,7 @@ namespace MoreLinq.Test
 
             var expectedCount = Math.Pow(2, count);
 
-            Assert.AreEqual(expectedCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -147,7 +145,7 @@ namespace MoreLinq.Test
             // number of subsets of a given size is defined by the binomial coefficient: c! / ((c-s)!*s!)
             var expectedSubsetCount = Combinatorics.Binomial(count, subsetSize);
 
-            Assert.AreEqual(expectedSubsetCount, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(expectedSubsetCount));
         }
 
         /// <summary>

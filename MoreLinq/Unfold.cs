@@ -61,9 +61,9 @@ namespace MoreLinq
             if (stateSelector == null) throw new ArgumentNullException(nameof(stateSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(state); IEnumerable<TResult> _(TState initialState)
             {
-                while (true)
+                for (var state = initialState; ;)
                 {
                     var step = generator(state);
 

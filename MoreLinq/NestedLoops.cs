@@ -34,19 +34,17 @@ namespace MoreLinq
         /// <param name="loopCounts">A sequence of loop repetition counts</param>
         /// <returns>A sequence of Action representing the expansion of a set of nested loops</returns>
 
-        static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<int> loopCounts)
+        static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<ulong> loopCounts)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
 
             return _(); IEnumerable<Action> _()
             {
-                var count = loopCounts.Assert(n => n >= 0,
-                                              n => new InvalidOperationException("Invalid loop count (must be greater than or equal to zero)."))
-                                      .DefaultIfEmpty()
-                                      .Aggregate((acc, x) => acc * x);
+                var count = loopCounts.DefaultIfEmpty()
+                                      .Aggregate((acc, x) => checked(acc * x));
 
-                for (var i = 0; i < count; i++)
+                for (var i = 0UL; i < count; i++)
                     yield return action;
             }
         }

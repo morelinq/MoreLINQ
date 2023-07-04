@@ -26,8 +26,8 @@ namespace MoreLinq.Test
         [Test]
         public void AssertIsLazy()
         {
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
         }
 
         [Test]
@@ -42,31 +42,32 @@ namespace MoreLinq.Test
         public void AssertSequenceWithValidSomeInvalidElements()
         {
             using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
-            var q = source.Assert(n => n % 2 == 0);
-            Assert.Throws<InvalidOperationException>(() => q.Consume());
+            Assert.That(() => source.Assert(n => n % 2 == 0).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
             using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
-            var q = source.Assert(n => n % 2 == 0, _ => null);
-            Assert.Throws<InvalidOperationException>(() => q.Consume());
+            Assert.That(() => source.Assert(n => n % 2 == 0, _ => null!).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomError()
         {
             using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
-            var q = source.Assert(n => n % 2 == 0, n => new ValueException(n));
-            var e = Assert.Throws<ValueException>(() => q.Consume());
-            Assert.AreEqual(7, e.Value);
+            Assert.That(() =>
+                source.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume(),
+                Throws.TypeOf<ValueException>()
+                      .With.Property(nameof(ValueException.Value)).EqualTo(7));
         }
 
-        class ValueException : Exception
+        sealed class ValueException : Exception
         {
             public object Value { get; }
-            public ValueException(object value) { Value = value; }
+            public ValueException(object value) => Value = value;
         }
     }
 }

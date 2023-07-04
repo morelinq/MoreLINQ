@@ -121,21 +121,29 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             var lastIndex = -1;
-            var indexed = (List<KeyValuePair<int, T>>) null;
+            var indexed = (List<KeyValuePair<int, T>>?)null;
             List<KeyValuePair<int, T>> Indexed() => indexed ??= new List<KeyValuePair<int, T>>();
 
             foreach (var e in source)
             {
-                var i = indexSelector(e);
-                if (i < 0)
-                    throw new IndexOutOfRangeException();
-                lastIndex = Math.Max(i, lastIndex);
-                Indexed().Add(new KeyValuePair<int, T>(i, e));
+#pragma warning disable IDE0010 // Add missing cases (false negative)
+                switch (indexSelector(e))
+#pragma warning restore IDE0010 // Add missing cases
+                {
+                    case < 0:
+#pragma warning disable CA2201 // Do not raise reserved exception types
+                        throw new IndexOutOfRangeException();
+#pragma warning restore CA2201 // Do not raise reserved exception types
+                    case var i:
+                        lastIndex = Math.Max(i, lastIndex);
+                        Indexed().Add(new KeyValuePair<int, T>(i, e));
+                        break;
+                }
             }
 
             var length = lastIndex + 1;
             return length == 0
-                 ? new TResult[0]
+                 ? EmptyArray<TResult>.Value
                  : Indexed().ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
         }
 
@@ -242,8 +250,14 @@ namespace MoreLinq
             foreach (var e in source)
             {
                 var i = indexSelector(e);
-                if (i < 0 || i > array.Length)
+
+                if (i < 0 || i >= array.Length)
+                {
+#pragma warning disable CA2201 // Do not raise reserved exception types
                     throw new IndexOutOfRangeException();
+#pragma warning restore CA2201 // Do not raise reserved exception types
+                }
+
                 array[i] = resultSelector(e, i);
             }
             return array;

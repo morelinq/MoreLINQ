@@ -59,8 +59,12 @@ namespace MoreLinq
             {
                 while (count == null || count-- > 0)
                 {
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
                     foreach (var item in memo)
+#pragma warning restore CA1851 // Possible multiple enumerations of 'IEnumerable' collection
+                    {
                         yield return item;
+                    }
                 }
             }
         }

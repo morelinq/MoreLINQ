@@ -20,6 +20,7 @@ namespace MoreLinq
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public static partial class MoreEnumerable
@@ -28,7 +29,7 @@ namespace MoreLinq
         /// The private implementation class that produces permutations of a sequence.
         /// </summary>
 
-        class PermutationEnumerator<T> : IEnumerator<IList<T>>
+        sealed class PermutationEnumerator<T> : IEnumerator<IList<T>>
         {
             // NOTE: The algorithm used to generate permutations uses the fact that any set
             //       can be put into 1-to-1 correspondence with the set of ordinals number (0..n).
@@ -50,7 +51,7 @@ namespace MoreLinq
             //       However, there's a fly in the ointment. The factorial function grows VERY rapidly.
             //       13! overflows the range of a Int32; while 28! overflows the range of decimal.
             //       To overcome these limitations, the algorithm relies on the fact that the factorial
-            //       of N is equivalent to the evaluation of N-1 nested loops. Unfortunatley, you can't
+            //       of N is equivalent to the evaluation of N-1 nested loops. Unfortunately, you can't
             //       just code up a variable number of nested loops ... this is where .NET generators
             //       with their elegant 'yield return' syntax come to the rescue.
             //
@@ -73,6 +74,8 @@ namespace MoreLinq
             IEnumerator<Action> _generatorIterator;
             bool _hasMoreResults;
 
+            IList<T>? _current;
+
             public PermutationEnumerator(IEnumerable<T> valueSet)
             {
                 _valueSet = valueSet.ToArray();
@@ -80,44 +83,53 @@ namespace MoreLinq
                 // The nested loop construction below takes into account the fact that:
                 // 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
                 // 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
-                _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
+                _generator = NestedLoops(NextPermutation, Generate(2UL, n => n + 1).Take(Math.Max(0, _valueSet.Count - 1)));
                 Reset();
             }
 
+            [MemberNotNull(nameof(_generatorIterator))]
             public void Reset()
             {
+                _current = null;
                 _generatorIterator?.Dispose();
                 // restore lexographic ordering of the permutation indexes
                 for (var i = 0; i < _permutation.Length; i++)
                     _permutation[i] = i;
-                // start a newiteration over the nested loop generator
+                // start a new iteration over the nested loop generator
                 _generatorIterator = _generator.GetEnumerator();
-                // we must advance the nestedloop iterator to the initial element,
+                // we must advance the nested loop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
-                _generatorIterator.MoveNext();
+                _ = _generatorIterator.MoveNext();
                 _hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
-            public IList<T> Current { get; private set; }
+            public IList<T> Current
+            {
+                get
+                {
+                    Debug.Assert(_current is not null);
+                    return _current;
+                }
+            }
 
             object IEnumerator.Current => Current;
 
             public bool MoveNext()
             {
-                Current = PermuteValueSet();
+                _current = PermuteValueSet();
                 // check if more permutation left to enumerate
                 var prevResult = _hasMoreResults;
                 _hasMoreResults = _generatorIterator.MoveNext();
                 if (_hasMoreResults)
                     _generatorIterator.Current(); // produce the next permutation ordering
                 // we return prevResult rather than m_HasMoreResults because there is always
-                // at least one permtuation: the original set. Also, this provides a simple way
+                // at least one permutation: the original set. Also, this provides a simple way
                 // to deal with the disparity between sets that have only one loop level (size 0-2)
                 // and those that have two or more (size > 2).
                 return prevResult;
             }
 
-            void IDisposable.Dispose() { }
+            void IDisposable.Dispose() => _generatorIterator.Dispose();
 
             /// <summary>
             /// Transposes elements in the cached permutation array to produce the next permutation
@@ -135,23 +147,11 @@ namespace MoreLinq
                 while (_permutation[j] > _permutation[k])
                     k--;
 
-                // interchange m_Permutation[j] and m_Permutation[k]
-                var oldValue = _permutation[k];
-                _permutation[k] = _permutation[j];
-                _permutation[j] = oldValue;
+                (_permutation[j], _permutation[k]) = (_permutation[k], _permutation[j]);
 
                 // move the tail of the permutation after the jth position in increasing order
-                var x = _permutation.Length - 1;
-                var y = j + 1;
-
-                while (x > y)
-                {
-                    oldValue = _permutation[y];
-                    _permutation[y] = _permutation[x];
-                    _permutation[x] = oldValue;
-                    x--;
-                    y++;
-                }
+                for (int x = _permutation.Length - 1, y = j + 1; x > y; x--, y++)
+                    (_permutation[x], _permutation[y]) = (_permutation[y], _permutation[x]);
             }
 
             /// <summary>
@@ -180,17 +180,24 @@ namespace MoreLinq
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="sequence">The original sequence to permute.</param>
+        /// <returns>
+        /// A sequence of lists representing permutations of the original sequence.</returns>
+        /// <exception cref="OverflowException">
+        /// Too many permutations (limited by <see cref="ulong.MaxValue"/>); thrown during iteration
+        /// of the resulting sequence.</exception>
         /// <remarks>
-        /// A permutation is a unique re-ordering of the elements of the sequence.<br/>
+        /// <para>
+        /// A permutation is a unique re-ordering of the elements of the sequence.</para>
+        /// <para>
         /// This operator returns permutations in a deferred, streaming fashion; however, each
         /// permutation is materialized into a new list. There are N! permutations of a sequence,
-        /// where N => sequence.Count().<br/>
+        /// where N &#8658; <c>sequence.Count()</c>.</para>
+        /// <para>
         /// Be aware that the original sequence is considered one of the permutations and will be
-        /// returned as one of the results.
+        /// returned as one of the results.</para>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The original sequence to permute</param>
-        /// <returns>A sequence of lists representing permutations of the original sequence</returns>
 
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {

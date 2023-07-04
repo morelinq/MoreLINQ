@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void PairwiseIsLazy()
         {
-            new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
+            _ = new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
         }
 
         [TestCase(0)]
@@ -41,7 +41,8 @@ namespace MoreLinq.Test
         [Test]
         public void PairwiseWideSourceSequence()
         {
-            var result = new[] { "a", "b", "c", "d" }.Pairwise((x, y) => x + y);
+            using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
+            var result = source.Pairwise((x, y) => x + y);
             result.AssertSequenceEqual("ab", "bc", "cd");
         }
     }

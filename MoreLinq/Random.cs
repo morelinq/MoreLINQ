@@ -15,11 +15,12 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable CA5394 // Do not use insecure randomness
+
 namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
 
     public static partial class MoreEnumerable
     {
@@ -29,6 +30,7 @@ namespace MoreLinq
         /// </summary>
         /// <returns>An infinite sequence of random integers</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -41,7 +43,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<int> Random()
@@ -71,6 +75,7 @@ namespace MoreLinq
         /// <param name="maxValue">exclusive upper bound for the random values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -83,7 +88,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<int> Random(int maxValue)
@@ -118,6 +125,7 @@ namespace MoreLinq
         /// <param name="maxValue">Exclusive upper bound of the values returned</param>
         /// <returns>An infinite sequence of random integers</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -130,7 +138,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<int> Random(int minValue, int maxValue)
@@ -140,7 +150,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Returns an infinite sequence of random integers between a given
-        /// minumum and a maximum using the supplied random number generator.
+        /// minimum and a maximum using the supplied random number generator.
         /// </summary>
         /// <param name="rand">Generator used to produce random numbers</param>
         /// <param name="minValue">Inclusive lower bound of the values returned</param>
@@ -151,12 +161,7 @@ namespace MoreLinq
         public static IEnumerable<int> Random(Random rand, int minValue, int maxValue)
         {
             if (rand == null) throw new ArgumentNullException(nameof(rand));
-
-            if (minValue > maxValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minValue),
-                    $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
-            }
+            if (minValue > maxValue) throw new ArgumentOutOfRangeException(nameof(minValue), $"The argument minValue ({minValue}) is greater than maxValue ({maxValue})");
 
             return RandomImpl(rand, r => r.Next(minValue, maxValue));
         }
@@ -166,6 +171,7 @@ namespace MoreLinq
         /// </summary>
         /// <returns>An infinite sequence of random doubles</returns>
         /// <remarks>
+        /// <para>
         /// The implementation internally uses a shared, thread-local instance of
         /// <see cref="System.Random" /> to generate a random number on each
         /// iteration. The actual <see cref="System.Random" /> instance used
@@ -178,7 +184,9 @@ namespace MoreLinq
         /// in the generation of the sequence of random numbers. Because the
         /// <see cref="System.Random" /> instance is shared, if multiple sequences
         /// are generated on the same thread, the order of enumeration affects the
-        /// resulting sequences.
+        /// resulting sequences.</para>
+        /// <para>
+        /// On .NET 6 or later, <c>System.Random.Shared</c> is used.</para>
         /// </remarks>
 
         public static IEnumerable<double> RandomDouble()
@@ -214,45 +222,6 @@ namespace MoreLinq
         {
             while (true)
                 yield return nextValue(rand);
-        }
-
-        /// <remarks>
-        /// <see cref="System.Random"/> is not thread-safe so the following
-        /// implementation uses thread-local <see cref="System.Random"/>
-        /// instances to create the illusion of a global
-        /// <see cref="System.Random"/> implementation. For some background,
-        /// see <a href="https://blogs.msdn.microsoft.com/pfxteam/2009/02/19/getting-random-numbers-in-a-thread-safe-way/">Getting
-        /// random numbers in a thread-safe way</a>
-        /// </remarks>
-
-        sealed class GlobalRandom : Random
-        {
-            public static readonly Random Instance = new GlobalRandom();
-
-            static int _seed = Environment.TickCount;
-            [ThreadStatic] static Random _threadRandom;
-            static Random ThreadRandom => _threadRandom ??= new Random(Interlocked.Increment(ref _seed));
-
-            GlobalRandom() { }
-
-            public override int Next() => ThreadRandom.Next();
-            public override int Next(int minValue, int maxValue) => ThreadRandom.Next(minValue, maxValue);
-            public override int Next(int maxValue) => ThreadRandom.Next(maxValue);
-            public override double NextDouble() => ThreadRandom.NextDouble();
-            public override void NextBytes(byte[] buffer) => ThreadRandom.NextBytes(buffer);
-
-            protected override double Sample()
-            {
-                // All the NextXXX calls are hijacked above to use the Random
-                // instance allocated for the thread so no call from the base
-                // class should ever end up here. If Random introduces new
-                // virtual members in the future that call into Sample and
-                // which end up getting used in the implementation of a
-                // randomizing operator from the outer class then they will
-                // need to be overriden.
-
-                throw new NotImplementedException();
-            }
         }
     }
 }

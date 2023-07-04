@@ -23,9 +23,9 @@ namespace MoreLinq.Reactive
 
     sealed class Subject<T> : IObservable<T>, IObserver<T>
     {
-        List<IObserver<T>> _observers;
+        List<IObserver<T>>? _observers;
         bool _completed;
-        Exception _error;
+        Exception? _error;
 
         bool HasObservers => (_observers?.Count ?? 0) > 0;
         List<IObserver<T>> Observers => _observers ??= new List<IObserver<T>>();
@@ -66,7 +66,7 @@ namespace MoreLinq.Reactive
                     if (observers[i] == observer)
                     {
                         if (_shouldDeleteObserver)
-                            observers[i] = null;
+                            observers[i] = null!;
                         else
                             observers.RemoveAt(i);
                         break;
@@ -109,7 +109,7 @@ namespace MoreLinq.Reactive
                 // Remove any observers that were marked for deletion during
                 // iteration.
 
-                observers.RemoveAll(o => o == null);
+                _ = observers.RemoveAll(o => o == null);
             }
         }
 
@@ -119,7 +119,7 @@ namespace MoreLinq.Reactive
         public void OnCompleted() =>
             OnFinality(ref _completed, true, (observer, _) => observer.OnCompleted());
 
-        void OnFinality<TState>(ref TState state, TState value, Action<IObserver<T>, TState> action)
+        void OnFinality<TState>(ref TState? state, TState value, Action<IObserver<T>, TState> action)
         {
             if (IsMuted)
                 return;

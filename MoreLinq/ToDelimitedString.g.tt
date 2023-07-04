@@ -24,6 +24,16 @@
 // limitations under the License.
 #endregion
 
+#nullable enable // required for auto-generated sources (see below why)
+
+// > Older code generation strategies may not be nullable aware. Setting the
+// > project-level nullable context to "enable" could result in many
+// > warnings that a user is unable to fix. To support this scenario any syntax
+// > tree that is determined to be generated will have its nullable state
+// > implicitly set to "disable", regardless of the overall project state.
+//
+// Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
+
 #if !MORELINQ
 //
 // For projects that may include/embed this source file directly, suppress the
@@ -38,12 +48,10 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.Text;
 
     partial class MoreEnumerable
-    {
-<#      var cscp = new CSharpCodeProvider();
+    {<#
+        var cscp = new CSharpCodeProvider();
         var types =
             from method in typeof(StringBuilder).GetMethods(BindingFlags.Public | BindingFlags.Instance)
             where "Append" == method.Name
@@ -52,27 +60,19 @@ namespace MoreLinq
             select parameters.First().ParameterType into type
             where !type.IsGenericType // e.g. ReadOnlySpan<>
                && (type.IsValueType || type == typeof(string))
-            let res = new
+            select cscp.GetTypeOutput(new CodeTypeReference(type)) into builtInName
+            select new
             {
-                Type = type,
-                Name = cscp.GetTypeOutput(new CodeTypeReference(type)),
+                Name = builtInName,
+                IsNotClsCompliant = builtInName is "sbyte" or "ulong" or "ushort" or "uint",
             }
-            orderby res.Name
-            select res;
-        foreach (var type in types) {
-            string attribute;
-            switch(type.Name.ToLowerInvariant()) {
-            case "sbyte":
-            case "ulong":
-            case "ushort":
-            case "uint":
-                attribute = "        [CLSCompliant(false)]";
-                break;
-            default:
-                attribute = "";
-                break;
-            }
+            into type
+            orderby type.Name
+            select type;
+        foreach (var type in types)
+        {
         #>
+
         /// <summary>
         /// Creates a delimited string from a sequence of values and
         /// a given delimiter.
@@ -91,21 +91,13 @@ namespace MoreLinq
         /// <remarks>
         /// This operator uses immediate execution and effectively buffers the sequence.
         /// </remarks>
-<#= attribute #>
+<#= type.IsNotClsCompliant ? "        [CLSCompliant(false)]" : string.Empty #>
         public static string ToDelimitedString(this IEnumerable<<#= type.Name #>> source, string delimiter)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (delimiter == null) throw new ArgumentNullException(nameof(delimiter));
-            return ToDelimitedStringImpl(source, delimiter, StringBuilderAppenders.<#= type.Type.Name #>);
+            return ToDelimitedStringImpl(source, delimiter, static (sb, e) => sb.Append(e));
         }
-
-        static partial class StringBuilderAppenders
-        {
-            public static readonly Func<StringBuilder, <#= type.Name #>, StringBuilder> <#= type.Type.Name #> = (sb, e) => sb.Append(e);
-        }
-
 <#      } #>
-
-        static partial class StringBuilderAppenders {}
     }
 }

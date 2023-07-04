@@ -1,0 +1,18 @@
+#nullable enable
+*REMOVED*static MoreLinq.MoreEnumerable.Append<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
+*REMOVED*static MoreLinq.MoreEnumerable.Concat<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
+*REMOVED*static MoreLinq.MoreEnumerable.Prepend<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static MoreLinq.MoreEnumerable.DistinctBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static MoreLinq.MoreEnumerable.DistinctBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static MoreLinq.MoreEnumerable.SkipLast<T>(this System.Collections.Generic.IEnumerable<T>! source, int count) -> System.Collections.Generic.IEnumerable<T>!
+*REMOVED*static MoreLinq.MoreEnumerable.TakeLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
+*REMOVED*static MoreLinq.MoreEnumerable.ToHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.HashSet<TSource>!
+*REMOVED*static MoreLinq.MoreEnumerable.ToHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEqualityComparer<TSource>? comparer) -> System.Collections.Generic.HashSet<TSource>!
+static MoreLinq.MoreEnumerable.Append<T>(System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.DistinctBy<TSource, TKey>(System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector) -> System.Collections.Generic.IEnumerable<TSource>!
+static MoreLinq.MoreEnumerable.DistinctBy<TSource, TKey>(System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! keySelector, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.IEnumerable<TSource>!
+static MoreLinq.MoreEnumerable.Prepend<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
+static MoreLinq.MoreEnumerable.SkipLast<T>(System.Collections.Generic.IEnumerable<T>! source, int count) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.TakeLast<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
+static MoreLinq.MoreEnumerable.ToHashSet<TSource>(System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.HashSet<TSource>!
+static MoreLinq.MoreEnumerable.ToHashSet<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEqualityComparer<TSource>? comparer) -> System.Collections.Generic.HashSet<TSource>!

@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -40,22 +39,22 @@ namespace MoreLinq.Test
         [Test]
         public void ScanIsLazy()
         {
-            new BreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
+            _ = new BreakingSequence<object>().Scan(BreakingFunc.Of<object, object, object>());
         }
 
         [Test]
         public void ScanDoesNotIterateExtra()
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(SampleData.Plus);
-            var gold = new[] {1, 3, 6};
-            Assert.Throws<InvalidOperationException>(sequence.Consume);
+            var gold = new[] { 1, 3, 6 };
+            Assert.That(sequence.Consume, Throws.BreakException);
             sequence.Take(3).AssertSequenceEqual(gold);
         }
 
         [Test]
         public void SeededScanEmpty()
         {
-            Assert.AreEqual(-1, new int[0].Scan(-1, SampleData.Plus).Single());
+            Assert.That(new int[0].Scan(-1, SampleData.Plus).Single(), Is.EqualTo(-1));
         }
 
         [Test]
@@ -69,7 +68,7 @@ namespace MoreLinq.Test
         [Test]
         public void SeededScanIsLazy()
         {
-            new BreakingSequence<object>().Scan(null, BreakingFunc.Of<object, object, object>());
+            _ = new BreakingSequence<object>().Scan(null, BreakingFunc.Of<object?, object, object>());
         }
 
         [Test]
@@ -77,7 +76,7 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Range(1, 3).Concat(new BreakingSequence<int>()).Scan(0, SampleData.Plus);
             var gold = new[] { 0, 1, 3, 6 };
-            Assert.Throws<InvalidOperationException>(sequence.Consume);
+            Assert.That(sequence.Consume, Throws.BreakException);
             sequence.Take(4).AssertSequenceEqual(gold);
         }
 

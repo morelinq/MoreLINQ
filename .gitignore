@@ -1,4 +1,5 @@
 *.opencover.xml
+**/TestResults/
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and

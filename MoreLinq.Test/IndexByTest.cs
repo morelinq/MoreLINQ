@@ -72,7 +72,7 @@ namespace MoreLinq.Test
         [Test]
         public void IndexByIsLazy()
         {
-            new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
+            _ = new BreakingSequence<string>().IndexBy(BreakingFunc.Of<string, char>());
         }
 
         [Test]
@@ -81,18 +81,17 @@ namespace MoreLinq.Test
             var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
             var result = source.IndexBy(c => c);
 
-            const string @null = null; // type inference happiness
             result.AssertSequenceEqual(
-                KeyValuePair.Create(0, "foo"),
-                KeyValuePair.Create(0, @null),
-                KeyValuePair.Create(0, "bar"),
-                KeyValuePair.Create(0, "baz"),
-                KeyValuePair.Create(1, @null),
-                KeyValuePair.Create(2, @null),
-                KeyValuePair.Create(1, "baz"),
-                KeyValuePair.Create(1, "bar"),
-                KeyValuePair.Create(3, @null),
-                KeyValuePair.Create(1, "foo"));
+                KeyValuePair.Create(0, (string?)"foo"),
+                KeyValuePair.Create(0, (string?)null),
+                KeyValuePair.Create(0, (string?)"bar"),
+                KeyValuePair.Create(0, (string?)"baz"),
+                KeyValuePair.Create(1, (string?)null),
+                KeyValuePair.Create(2, (string?)null),
+                KeyValuePair.Create(1, (string?)"baz"),
+                KeyValuePair.Create(1, (string?)"bar"),
+                KeyValuePair.Create(3, (string?)null),
+                KeyValuePair.Create(1, (string?)"foo"));
         }
 
         [Test]
@@ -116,8 +115,8 @@ namespace MoreLinq.Test
                 KeyValuePair.Create(1, "bob"    ),
                 KeyValuePair.Create(0, "davi"   ));
 
-            Assert.Throws<TestException>(() =>
-                result.ElementAt(5));
+            Assert.That(() => result.ElementAt(5),
+                        Throws.TypeOf<TestException>());
         }
     }
 }

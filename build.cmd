@@ -1,8 +1,7 @@
 @echo off
 pushd "%~dp0"
 call :main %*
-popd
-goto :EOF
+popd & exit /b %ERRORLEVEL%
 
 :main
 setlocal
@@ -15,11 +14,11 @@ dotnet restore && dotnet tool restore ^
   && call :codegen MoreLinq\Extensions.ToDataTable.g.cs -i "[/\\]ToDataTable\.cs$" -u System.Data -u System.Linq.Expressions MoreLinq ^
   && call MoreLinq\tt ^
   && for %%i in (debug release) do dotnet build -c %%i --no-restore %* || exit /b 1
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :docs
 call :build && call msbuild.cmd MoreLinq.shfbproj %1 %2 %3 %4 %5 %6 %7 %8 %9
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :nodotnet
 echo>&2 dotnet executable not found in PATH
@@ -28,7 +27,7 @@ exit /b 2
 
 :codegen
 echo | set /p=Generating extensions wrappers (%1)...
-dotnet run -p bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
+dotnet run --project bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
   && move "%temp%\%~nx1" "%~dp1" > nul ^
   && echo Done.
-goto :EOF
+exit /b %ERRORLEVEL%

@@ -23,12 +23,15 @@ namespace MoreLinq
     {
         readonly IComparer<T> _underlying;
 
-        public ReverseComparer(IComparer<T> underlying)
-        {
+        public ReverseComparer(IComparer<T>? underlying) =>
             _underlying = underlying ?? Comparer<T>.Default;
-        }
 
-        public int Compare(T x, T y)
+        public int Compare
+#if NETCOREAPP3_1_OR_GREATER
+            (T? x, T? y)
+#else
+            (T x, T y)
+#endif
         {
             var result = _underlying.Compare(x, y);
             return result < 0 ? 1 : result > 0 ? -1 : 0;

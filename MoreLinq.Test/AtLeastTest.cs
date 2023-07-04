@@ -17,59 +17,54 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class AtLeastTest
     {
         [Test]
-        public void WithNegativeCount()
+        public void AtLeastWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.AtLeast(-1));
+            Assert.That(() => new[] { 1 }.AtLeast(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
-        [TestCase(0, 0, SourceKind.Sequence                   , ExpectedResult = true )]
-        [TestCase(0, 0, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
-        [TestCase(0, 0, SourceKind.BreakingCollection         , ExpectedResult = true )]
-        [TestCase(0, 1, SourceKind.Sequence                   , ExpectedResult = false)]
-        [TestCase(0, 1, SourceKind.BreakingReadOnlyCollection , ExpectedResult = false)]
-        [TestCase(0, 1, SourceKind.BreakingCollection         , ExpectedResult = false)]
-        [TestCase(0, 2, SourceKind.Sequence                   , ExpectedResult = false)]
-        [TestCase(0, 2, SourceKind.BreakingReadOnlyCollection , ExpectedResult = false)]
-        [TestCase(0, 2, SourceKind.BreakingCollection         , ExpectedResult = false)]
-        [TestCase(1, 0, SourceKind.Sequence                   , ExpectedResult = true )]
-        [TestCase(1, 0, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
-        [TestCase(1, 0, SourceKind.BreakingCollection         , ExpectedResult = true )]
-        [TestCase(1, 1, SourceKind.Sequence                   , ExpectedResult = true )]
-        [TestCase(1, 1, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
-        [TestCase(1, 1, SourceKind.BreakingCollection         , ExpectedResult = true )]
-        [TestCase(1, 2, SourceKind.Sequence                   , ExpectedResult = false)]
-        [TestCase(1, 2, SourceKind.BreakingReadOnlyCollection , ExpectedResult = false)]
-        [TestCase(1, 2, SourceKind.BreakingCollection         , ExpectedResult = false)]
-        [TestCase(3, 0, SourceKind.Sequence                   , ExpectedResult = true )]
-        [TestCase(3, 0, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
-        [TestCase(3, 0, SourceKind.BreakingCollection         , ExpectedResult = true )]
-        [TestCase(3, 1, SourceKind.Sequence                   , ExpectedResult = true )]
-        [TestCase(3, 1, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
-        [TestCase(3, 1, SourceKind.BreakingCollection         , ExpectedResult = true )]
-        [TestCase(3, 2, SourceKind.Sequence                   , ExpectedResult = true )]
-        [TestCase(3, 2, SourceKind.BreakingReadOnlyCollection , ExpectedResult = true )]
-        [TestCase(3, 2, SourceKind.BreakingCollection         , ExpectedResult = true )]
-        public bool Case(int count, int atLeast, SourceKind kind)
+        public static IEnumerable<TestCaseData> AtLeastSource =>
+            from k in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 0, Count: 2),
+                (Size: 1, Count: 0),
+                (Size: 1, Count: 1),
+                (Size: 1, Count: 2),
+                (Size: 3, Count: 0),
+                (Size: 3, Count: 1),
+                (Size: 3, Count: 2)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size >= e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
+
+        [TestCaseSource(nameof(AtLeastSource))]
+        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount)
         {
-            var xs = Enumerable.Range(1, count).ToSourceKind(kind);
-            using var _ = xs as TestingSequence<int>;
-            return xs.AtLeast(atLeast);
+            var xs = Enumerable.Range(0, sequenceSize);
+            var source = xs.ToSourceKind(sourceKind);
+            using (source as IDisposable) // primarily for `TestingSequence<>`
+                return source.AtLeast(atLeastAssertCount);
         }
 
         [Test]
-        public void DoesNotIterateUnnecessaryElements()
+        public void AtLeastDoesNotIterateUnnecessaryElements()
         {
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => throw new TestException());
-            Assert.IsTrue(source.AtLeast(2));
+            Assert.That(source.AtLeast(2), Is.True);
         }
     }
 }
