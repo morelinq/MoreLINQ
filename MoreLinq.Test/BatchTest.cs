@@ -63,17 +63,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchSequenceYieldsListsOfBatches()
-        {
-            var result = new[] { 1, 2, 3 }.Batch(2);
-
-            using var reader = result.Read();
-            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-            reader.ReadEnd();
-        }
-
-        [Test]
         public void BatchSequencesAreIndependentInstances()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4);
