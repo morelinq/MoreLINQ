@@ -680,7 +680,7 @@ namespace MoreLinq.Extensions
         /// </para>
         /// </remarks>
 
-        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
+        public static IEnumerable<TSource[]> Batch<TSource>(this IEnumerable<TSource> source, int size)
             => MoreEnumerable.Batch(source, size);
 
         /// <summary>
@@ -711,7 +711,7 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
+            Func<TSource[], TResult> resultSelector)
             => MoreEnumerable.Batch(source, size, resultSelector);
 
     }
