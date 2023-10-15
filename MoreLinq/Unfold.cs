@@ -42,9 +42,13 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
-        /// <code><![CDATA[ var result = MoreEnumerable.Unfold(1, s => s <= 100 ? (true, s * 2, s) :
-        /// default); ]]></code>
-        /// The <c>result</c> will be a sequence that will yield <c>{ 1, 2, 4, 8, 16, 32, 64 }</c>.
+        /// <code><![CDATA[
+        /// var fibonacciNumbersLowerThan100 =
+        ///     MoreEnumerable.Unfold((Curr: 0, Next: 1),
+        ///                           s => s.Curr < 100 ? (true, (s.Next, s.Curr + s.Next), s.Curr) : default);
+        /// ]]></code>
+        /// The <c>result</c> will be a sequence that will yield
+        /// <c>{ 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 }</c>.
         /// </example>
 
         public static IEnumerable<TResult> Unfold<TState, TResult>(
