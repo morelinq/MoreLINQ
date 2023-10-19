@@ -17,80 +17,109 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using NUnit.Framework;
 
     [TestFixture]
     public class UnfoldTest
     {
-        [Test]
-        public void UnfoldInfiniteSequence()
-        {
-            var result = MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
+        static IEnumerable<TestCaseData>
+            TestCaseData<T>(IEnumerable<T> source1,
+                            IEnumerable<T> source2,
+                            [CallerMemberName] string? callerMemberName = null) =>
+            new TestCaseData[]
+            {
+                new(source1) { TestName = $"{callerMemberName}(generator)" },
+                new(source2) { TestName = $"{callerMemberName}(state, generator, predicate, stateSelector, resultSelector)" },
+            };
+
+        static IEnumerable<TestCaseData> UnfoldInfiniteSequenceData() =>
+            TestCaseData(MoreEnumerable.Unfold(1, x => (true, State: x + 1, Result: x)),
+                         MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
                                                   _ => true,
                                                   e => e.State,
-                                                  e => e.Result)
-                                       .Take(100);
+                                                  e => e.Result));
 
+        [Test]
+        [TestCaseSource(nameof(UnfoldInfiniteSequenceData))]
+        public void UnfoldInfiniteSequence(IEnumerable<int> unfold)
+        {
+            var result = unfold.Take(100);
             var expectations = MoreEnumerable.Generate(1, x => x + 1).Take(100);
-
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-        [Test]
-        public void UnfoldFiniteSequence()
-        {
-            var result = MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
+        static IEnumerable<TestCaseData> UnfoldFiniteSequenceData() =>
+            TestCaseData(MoreEnumerable.Unfold(1, x => x <= 100 ? (true, State: x + 1, Result: x) : default),
+                         MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
                                                   e => e.Result <= 100,
                                                   e => e.State,
-                                                  e => e.Result);
+                                                  e => e.Result));
 
+        [Test]
+        [TestCaseSource(nameof(UnfoldFiniteSequenceData))]
+        public void UnfoldFiniteSequence(IEnumerable<int> unfold)
+        {
+            var result = unfold;
             var expectations = MoreEnumerable.Generate(1, x => x + 1).Take(100);
-
             Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
         public void UnfoldIsLazy()
         {
+            _ = MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (bool, int, int)>());
+
             _ = MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
                                          BreakingFunc.Of<(int, int), bool>(),
                                          BreakingFunc.Of<(int, int), int>(),
                                          BreakingFunc.Of<(int, int), int>());
         }
 
-
-        [Test]
-        public void UnfoldSingleElementSequence()
-        {
-            var result = MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
+        static IEnumerable<TestCaseData> UnfoldSingleElementSequenceData() =>
+            TestCaseData(MoreEnumerable.Unfold(0, x => x == 0 ? (true, State: x + 1, Result: x) : default),
+                         MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
                                                   x => x.Result == 0,
                                                   e => e.State,
-                                                  e => e.Result);
+                                                  e => e.Result));
 
+        [Test]
+        [TestCaseSource(nameof(UnfoldSingleElementSequenceData))]
+        public void UnfoldSingleElementSequence(IEnumerable<int> unfold)
+        {
+            var result = unfold;
             var expectations = new[] { 0 };
-
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-        [Test]
-        public void UnfoldEmptySequence()
-        {
-            var result = MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
+        static IEnumerable<TestCaseData> UnfoldEmptySequenceData() =>
+            TestCaseData(MoreEnumerable.Unfold(0, x => x < 0 ? (true, State: x + 1, Result: x) : default),
+                         MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
                                                   x => x.Result < 0,
                                                   e => e.State,
-                                                  e => e.Result);
+                                                  e => e.Result));
+
+        [Test]
+        [TestCaseSource(nameof(UnfoldEmptySequenceData))]
+        public void UnfoldEmptySequence(IEnumerable<int> unfold)
+        {
+            var result = unfold;
             Assert.That(result, Is.Empty);
         }
 
-        [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/990")]
-        public void UnfoldReiterationsReturnsSameResult()
-        {
-            var xs = MoreEnumerable.Unfold(1, n => (Result: n, Next: n + 1),
-                                           _ => true,
-                                           n => n.Next,
-                                           n => n.Result)
-                                   .Take(5);
+        static IEnumerable<TestCaseData> UnfoldReiterationsReturnsSameResultData() =>
+            TestCaseData(MoreEnumerable.Unfold(1, n => (true, State: n + 1, Result: n)),
+                         MoreEnumerable.Unfold(1, n => (Result: n, Next: n + 1),
+                                                  _ => true,
+                                                  n => n.Next,
+                                                  n => n.Result));
 
+        [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/990")]
+        [TestCaseSource(nameof(UnfoldReiterationsReturnsSameResultData))]
+        public void UnfoldReiterationsReturnsSameResult(IEnumerable<int> unfold)
+        {
+            var xs = unfold.Take(5);
             xs.AssertSequenceEqual(1, 2, 3, 4, 5);
             xs.AssertSequenceEqual(1, 2, 3, 4, 5);
         }
