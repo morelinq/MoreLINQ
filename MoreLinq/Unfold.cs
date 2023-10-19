@@ -45,7 +45,7 @@ namespace MoreLinq
         /// <code><![CDATA[
         /// var fibonacciNumbersLowerThan100 =
         ///     MoreEnumerable.Unfold((Curr: 0, Next: 1),
-        ///                           s => s.Curr < 100 ? (true, (s.Next, s.Curr + s.Next), s.Curr) : default);
+        ///                           s => s.Curr < 100 ? (true, s.Curr, (s.Next, s.Curr + s.Next)) : default);
         /// ]]></code>
         /// The <c>result</c> will be a sequence that will yield
         /// <c>{ 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 }</c>.
