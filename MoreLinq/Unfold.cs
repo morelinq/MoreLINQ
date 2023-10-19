@@ -53,7 +53,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Unfold<TState, TResult>(
             TState state,
-            Func<TState, (bool Continue, TState State, TResult Result)> generator)
+            Func<TState, (bool Continue, TResult Result, TState State)> generator)
         {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
 
