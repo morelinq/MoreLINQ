@@ -34,10 +34,11 @@ using static MoreLinq.Extensions.LeadExtension;
 In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
 methods will be available in scope.
 
-Apart from extension methods, MoreLINQ also offers regular static method
-that *generate* (instead of operating on) sequences, like `Unfold`,
-`Random`, `Sequence` and others. If you want to use these while statically
-importing other individual extension methods, you can do so via aliasing:
+Apart from extension methods, MoreLINQ also offers regular static method that
+*generate* (instead of operating on) sequences, like [`Unfold`][unfold],
+[`Random`][random], [`Sequence`][sequence] and others. If you want to use these
+while statically importing other individual extension methods, you can do so via
+aliasing:
 
 ```c#
 using static MoreLinq.Extensions.LagExtension;
