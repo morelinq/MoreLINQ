@@ -18,6 +18,8 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class SkipUntilTest
@@ -46,7 +48,7 @@ namespace MoreLinq.Test
         [Test]
         public void SkipUntilEvaluatesSourceLazily()
         {
-            new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
+            _ = new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
         }
 
         [Test]
@@ -56,6 +58,27 @@ namespace MoreLinq.Test
             // started returning items after -1.
             var sequence = Enumerable.Range(-2, 5).SkipUntil(x => 1 / x == -1);
             sequence.AssertSequenceEqual(0, 1, 2);
+        }
+
+        public static readonly IEnumerable<ITestCaseData> TestData =
+            from e in new[]
+            {
+                new { Source = new int[0]       , Min = 0, Expected = new int[0]     }, // empty sequence
+                new { Source = new[] { 0       }, Min = 0, Expected = new int[0]     }, // one-item sequence, predicate succeed
+                new { Source = new[] { 0       }, Min = 1, Expected = new int[0]     }, // one-item sequence, predicate don't succeed
+                new { Source = new[] { 1, 2, 3 }, Min = 0, Expected = new[] { 2, 3 } }, // predicate succeed on first item
+                new { Source = new[] { 1, 2, 3 }, Min = 1, Expected = new[] { 2, 3 } },
+                new { Source = new[] { 1, 2, 3 }, Min = 2, Expected = new[] { 3    } },
+                new { Source = new[] { 1, 2, 3 }, Min = 3, Expected = new int[0]     }, // predicate succeed on last item
+                new { Source = new[] { 1, 2, 3 }, Min = 4, Expected = new int[0]     }  // predicate never succeed
+            }
+            select new TestCaseData(e.Source, e.Min).Returns(e.Expected);
+
+        [Test, TestCaseSource(nameof(TestData))]
+        public int[] TestSkipUntil(int[] source, int min)
+        {
+            using var ts = source.AsTestingSequence();
+            return ts.SkipUntil(v => v >= min).ToArray();
         }
     }
 }

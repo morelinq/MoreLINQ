@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2013 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,22 +26,25 @@ namespace MoreLinq.Test
         [Test]
         public void FoldWithTooFewItems()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()));
+            Assert.That(() => Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int, int, int>()),
+                        Throws.TypeOf<InvalidOperationException>()
+                              .And.Message.EqualTo("Sequence contains too few elements when exactly 4 were expected."));
         }
 
         [Test]
         public void FoldWithEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()));
+            Assert.That(() => Enumerable.Empty<int>().Fold(BreakingFunc.Of<int, int>()),
+                        Throws.TypeOf<InvalidOperationException>()
+                              .And.Message.EqualTo("Sequence contains too few elements when exactly 1 was expected."));
         }
 
         [Test]
         public void FoldWithTooManyItems()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()));
+            Assert.That(() => Enumerable.Range(1, 3).Fold(BreakingFunc.Of<int, int, int>()),
+                        Throws.TypeOf<InvalidOperationException>()
+                              .And.Message.EqualTo("Sequence contains too many elements when exactly 2 were expected."));
         }
 
         [Test]

@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2009 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using NUnit.Framework;
     using System.Collections.Generic;
     using System;
+    using static MoreLinq.Extensions.TakeLastExtension;
 
     [TestFixture]
     public class TakeLastTest
@@ -51,16 +52,14 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastIsLazy()
         {
-            new BreakingSequence<object>().TakeLast(1);
+            _ = new BreakingSequence<object>().TakeLast(1);
         }
 
         [Test]
         public void TakeLastDisposesSequenceEnumerator()
         {
-            using (var seq = TestingSequence.Of(1,2,3))
-            {
-                seq.TakeLast(1).Consume();
-            }
+            using var seq = TestingSequence.Of(1, 2, 3);
+            seq.TakeLast(1).Consume();
         }
 
         [TestCase(SourceKind.BreakingList)]
@@ -70,6 +69,15 @@ namespace MoreLinq.Test
             var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);
 
             sequence.TakeLast(3).AssertSequenceEqual(8, 9, 10);
+        }
+
+        [Test]
+        public void TakeLastUsesCollectionCountAtIterationTime()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            var result = list.TakeLast(3);
+            list.Add(5);
+            result.AssertSequenceEqual(3, 4, 5);
         }
 
         static void AssertTakeLast<T>(ICollection<T> input, int count, Action<IEnumerable<T>> action)

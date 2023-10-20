@@ -66,7 +66,7 @@ namespace MoreLinq
         /// elements at the same index.
         /// </remarks>
 
-        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer)
+        public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -74,11 +74,13 @@ namespace MoreLinq
             comparer ??= EqualityComparer<T>.Default;
 
             List<T> secondList;
-            return second.TryGetCollectionCount() is int secondCount
-                   ? first.TryGetCollectionCount() is int firstCount && secondCount > firstCount
+#pragma warning disable IDE0075 // Simplify conditional expression (makes it worse)
+            return second.TryAsCollectionLike() is { Count: var secondCount }
+                   ? first.TryAsCollectionLike() is { Count: var firstCount } && secondCount > firstCount
                      ? false
                      : Impl(second, secondCount)
                    : Impl(secondList = second.ToList(), secondList.Count);
+#pragma warning restore IDE0075 // Simplify conditional expression
 
             bool Impl(IEnumerable<T> snd, int count)
             {

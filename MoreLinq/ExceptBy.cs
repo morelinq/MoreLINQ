@@ -73,13 +73,15 @@ namespace MoreLinq
         public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
             Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> keyComparer)
+            IEqualityComparer<TKey>? keyComparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return _(); IEnumerable<TSource>_()
+            return Impl();
+
+            IEnumerable<TSource> Impl()
             {
                 // TODO Use ToHashSet
                 var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);
@@ -89,7 +91,7 @@ namespace MoreLinq
                     if (keys.Contains(key))
                         continue;
                     yield return element;
-                    keys.Add(key);
+                    _ = keys.Add(key);
                 }
             }
         }

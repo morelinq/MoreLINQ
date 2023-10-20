@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
@@ -14,9 +31,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestCartesianIsLazy()
         {
-            new BreakingSequence<string>()
-                .Cartesian(new BreakingSequence<int>(),
-                           BreakingFunc.Of<string, int, bool>());
+            var bs = new BreakingSequence<string>();
+            _ = bs.Cartesian(new BreakingSequence<int>(), BreakingFunc.Of<string, int, bool>());
         }
 
         /// <summary>
@@ -25,12 +41,12 @@ namespace MoreLinq.Test
         [Test]
         public void TestCartesianOfEmptySequences()
         {
-            using (var sequenceA = Enumerable.Empty<int>().AsTestingSequence())
-            using (var sequenceB = Enumerable.Empty<int>().AsTestingSequence())
-            {
-                var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
-                Assert.That(result, Is.Empty);
-            }
+            using var sequenceA = Enumerable.Empty<int>().AsTestingSequence();
+            using var sequenceB = Enumerable.Empty<int>().AsTestingSequence();
+
+            var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
+
+            Assert.That(result, Is.Empty);
         }
 
         /// <summary>
@@ -65,13 +81,13 @@ namespace MoreLinq.Test
         {
             const int countA = 100;
             const int countB = 75;
-            const int expectedCount = countA*countB;
-            using (var sequenceA = Enumerable.Range(1, countA).AsTestingSequence())
-            using (var sequenceB = Enumerable.Range(1, countB).AsTestingSequence())
-            {
-                var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
-                Assert.AreEqual( expectedCount, result.Count() );
-            }
+            const int expectedCount = countA * countB;
+            using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence();
+            using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence();
+
+            var result = sequenceA.Cartesian(sequenceB, (a, b) => a + b);
+
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -86,15 +102,15 @@ namespace MoreLinq.Test
             const int countC = 8;
             const int countD = 7;
 
+            using var sequenceA = Enumerable.Range(1, countA).AsTestingSequence();
+            using var sequenceB = Enumerable.Range(1, countB).AsTestingSequence();
+            using var sequenceC = Enumerable.Range(1, countC).AsTestingSequence();
+            using var sequenceD = Enumerable.Range(1, countD).AsTestingSequence();
+
+            var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
+
             const int expectedCount = countA * countB * countC * countD;
-            using (var sequenceA = Enumerable.Range(1, countA).AsTestingSequence())
-            using (var sequenceB = Enumerable.Range(1, countB).AsTestingSequence())
-            using (var sequenceC = Enumerable.Range(1, countC).AsTestingSequence())
-            using (var sequenceD = Enumerable.Range(1, countD).AsTestingSequence())
-            {
-                var result = sequenceA.Cartesian(sequenceB, sequenceC, sequenceD, (a, b, c, d) => a + b + c + d);
-                Assert.AreEqual(expectedCount, result.Count());
-            }
+            Assert.That(result.Count(), Is.EqualTo(expectedCount));
         }
 
         /// <summary>
@@ -115,20 +131,19 @@ namespace MoreLinq.Test
                 Enumerable.Repeat(false, 5).ToArray()
             };
 
-            using (var tsA = sequenceA.AsTestingSequence())
-            using (var tsB = sequenceB.AsTestingSequence())
-            {
-                var result = tsA.Cartesian(tsB, (a, b) => new { A = a, B = b })
-                                .ToArray();
+            using var tsA = sequenceA.AsTestingSequence();
+            using var tsB = sequenceB.AsTestingSequence();
 
-                // verify that the expected number of results is correct
-                Assert.AreEqual(sequenceA.Count() * sequenceB.Count(), result.Count());
+            var result = tsA.Cartesian(tsB, (a, b) => new { A = a, B = b })
+                            .ToArray();
 
-                // ensure that all "cells" were visited by the cartesian product
-                foreach (var coord in result)
-                    expectedSet[coord.A][coord.B] = true;
-                Assert.IsTrue(expectedSet.SelectMany(x => x).All(z => z));
-            }
+            // verify that the expected number of results is correct
+            Assert.That(result.Count(), Is.EqualTo(sequenceA.Count() * sequenceB.Count()));
+
+            // ensure that all "cells" were visited by the cartesian product
+            foreach (var coord in result)
+                expectedSet[coord.A][coord.B] = true;
+            Assert.That(expectedSet.SelectMany(x => x).All(z => z), Is.True);
         }
 
         /// <summary>
@@ -138,16 +153,15 @@ namespace MoreLinq.Test
         [Test]
         public void TestEmptyCartesianEvaluation()
         {
-            using (var sequence = Enumerable.Range(0, 5).AsTestingSequence())
-            {
-                var resultA = sequence.Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
-                var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
-                var resultC = Enumerable.Empty<int>().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
+            using var sequence = Enumerable.Range(0, 5).AsTestingSequence();
 
-                Assert.AreEqual(0, resultA.Count());
-                Assert.AreEqual(0, resultB.Count());
-                Assert.AreEqual(0, resultC.Count());
-            }
+            var resultA = sequence.Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
+            var resultB = Enumerable.Empty<int>().Cartesian(sequence, (a, b) => new { A = a, B = b });
+            var resultC = Enumerable.Empty<int>().Cartesian(Enumerable.Empty<int>(), (a, b) => new { A = a, B = b });
+
+            Assert.That(resultA.Count(), Is.Zero);
+            Assert.That(resultB.Count(), Is.Zero);
+            Assert.That(resultC.Count(), Is.Zero);
         }
     }
 }

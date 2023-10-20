@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2015 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2015 Felipe Sateler. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,13 +27,14 @@ namespace MoreLinq.Test
     {
         public enum OverloadCase { CustomResult, TupleResult }
 
+        [Test]
         public void FullGroupIsLazy()
         {
             var bs = new BreakingSequence<int>();
             var bf = BreakingFunc.Of<int, int>();
             var bfg = BreakingFunc.Of<int, IEnumerable<int>, IEnumerable<int>, int>();
 
-            bs.FullGroupJoin(bs, bf, bf, bfg);
+            _ = bs.FullGroupJoin(bs, bf, bf, bfg);
         }
 
         [TestCase(CustomResult)]
@@ -45,12 +46,12 @@ namespace MoreLinq.Test
 
             var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-            Assert.AreEqual(3, result.Keys.Count);
+            Assert.That(result.Keys.Count, Is.EqualTo(3));
 
-            Assert.IsEmpty(result[1].Second);
+            Assert.That(result[1].Second, Is.Empty);
             result[1].First.AssertSequenceEqual(1);
 
-            Assert.IsEmpty(result[3].First);
+            Assert.That(result[3].First, Is.Empty);
             result[3].Second.AssertSequenceEqual(3);
 
             result[2].First.AssertSequenceEqual(2);
@@ -66,13 +67,13 @@ namespace MoreLinq.Test
 
             var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-            Assert.AreEqual(2, result.Keys.Count);
+            Assert.That(result.Keys.Count, Is.EqualTo(2));
 
-            Assert.IsEmpty(result[2].First);
-            Assert.AreEqual(2, result[2].Second.Single());
+            Assert.That(result[2].First, Is.Empty);
+            Assert.That(result[2].Second.Single(), Is.EqualTo(2));
 
-            Assert.IsEmpty(result[3].First);
-            Assert.AreEqual(3, result[3].Second.Single());
+            Assert.That(result[3].First, Is.Empty);
+            Assert.That(result[3].Second.Single(), Is.EqualTo(3));
         }
 
         [TestCase(CustomResult)]
@@ -84,13 +85,13 @@ namespace MoreLinq.Test
 
             var result = FullGroupJoin(overloadCase, listA, listB, x => x).ToDictionary(a => a.Key);
 
-            Assert.AreEqual(2, result.Keys.Count);
+            Assert.That(result.Keys.Count, Is.EqualTo(2));
 
-            Assert.AreEqual(2, result[2].First.Single());
-            Assert.IsEmpty(result[2].Second);
+            Assert.That(result[2].First.Single(), Is.EqualTo(2));
+            Assert.That(result[2].Second, Is.Empty);
 
-            Assert.AreEqual(3, result[3].First.Single());
-            Assert.IsEmpty(result[3].Second);
+            Assert.That(result[3].First.Single(), Is.EqualTo(3));
+            Assert.That(result[3].Second, Is.Empty);
         }
 
         [TestCase(CustomResult)]
@@ -130,17 +131,12 @@ namespace MoreLinq.Test
             }
         }
 
-        static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey)
-        {
-            switch (overloadCase)
+        static IEnumerable<(int Key, IEnumerable<T> First, IEnumerable<T> Second)> FullGroupJoin<T>(OverloadCase overloadCase, IEnumerable<T> listA, IEnumerable<T> listB, Func<T, int> getKey) =>
+            overloadCase switch
             {
-                case CustomResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create);
-                case TupleResult:
-                    return listA.FullGroupJoin(listB, getKey, getKey);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(overloadCase));
-            }
-        }
+                CustomResult => listA.FullGroupJoin(listB, getKey, getKey, ValueTuple.Create, comparer: null),
+                TupleResult => listA.FullGroupJoin(listB, getKey, getKey),
+                _ => throw new ArgumentOutOfRangeException(nameof(overloadCase))
+            };
     }
 }

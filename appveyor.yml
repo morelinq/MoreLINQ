@@ -1,65 +1,106 @@
 version: '{build}'
-image: Visual Studio 2019
+image:
+- Visual Studio 2022
+- Ubuntu1604
+- macos-bigsur
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  SKIP_TEST_BUILD: true
+for:
+-
+  matrix:
+    only:
+      - image: Visual Studio 2022
+  environment:
+    IMAGE_NAME: win
+  deploy:
+  - provider: NuGet
+    server: https://www.myget.org/F/morelinq/api/v2/package
+    api_key:
+      secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
+    symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
+    on:
+      branch: master
+  notifications:
+  - provider: Email
+    to:
+    - morelinq-roll@googlegroups.com
+    on_build_success: true
+    on_build_failure: true
+    on_build_status_changed: false
+-
+  matrix:
+    only:
+      - image: Ubuntu1604
+  environment:
+    IMAGE_NAME: ubuntu-16.04
+-
+  matrix:
+    only:
+      - image: macos-bigsur
+  environment:
+    IMAGE_NAME: macos
 skip_commits:
   files:
     - '*.md'
     - '*.txt'
     - '.editorconfig'
     - lic/*
-environment:
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 install:
-- ps: Install-Product node 6
 - npm install -g eclint
 - git rm .editorconfig
-- eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
-- eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+- pwsh: ./eclint.ps1 -InsertFinalNewline -Verbose
+- pwsh: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 - git reset --hard
-- ps: tools\dotnet-install.ps1 -Version ((type .\global.json | ConvertFrom-Json).sdk.version)
+- ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
+- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 6.0.11 -SkipNonVersionedFiles }
+- sh: ./tools/dotnet-install.sh --jsonfile global.json
+- sh: ./tools/dotnet-install.sh --runtime dotnet --version 6.0.11 --skip-non-versioned-files
+- sh: export PATH="$HOME/.dotnet:$PATH"
 before_build:
 - dotnet --info
-build_script:
-- ps: >-
-    grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir MoreLinq.Test\*Test.cs)
-
+- pwsh: |
+    grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
     if ($LASTEXITCODE -eq 0) {
         throw 'Unit tests should not import System.Linq'
+    } else {
+        $LASTEXITCODE = 0
     }
-
+# Touch T4 templates to force code generation & validation
+- touch MoreLinq/*.g.tt
+build_script:
+- ps: |
     $id = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP -replace '([-:]|\.0+Z)', ''
-
     $id = $id.Substring(0, 13)
-
-    cmd /c call pack.cmd ci-$id
-
+    if ($isWindows) { cmd /c call pack.cmd ci-$id } else { ./pack.sh ci-$id }
     if ($LASTEXITCODE -ne 0) {
         throw "Building/Packing failed with an exit code of $LASTEXITCODE."
     }
-
+after_build:
+- ps: |
     $diff = git diff --ignore-all-space --exit-code 2>&1
-
     $diff | % { if ($_ -is [string]) { $_ } else { [string]$_ } } | echo
-
     if ($LASTEXITCODE -ne 0) {
         throw "New code was generated during build that's not been committed."
     }
+- ps: |
+    dir dist\*.nupkg | % {
+      dotnet meziantou.validate-nuget-package --excluded-rules IconMustBeSet $_
+      if ($LASTEXITCODE) {
+        throw "Package validation failed: $_"
+      }
+    }
 test_script:
 - cmd: test.cmd
+- sh: ./test.sh
+- ps: dotnet reportgenerator '-reports:MoreLinq.Test/TestResults/coverage-*.opencover.xml' -targetdir:tmp/cover -tag:(git show -q --pretty=%H)
+- ps: |
+    cd tmp/cover
+    tar -cz -f "../../coverage-report-${env:IMAGE_NAME}.tar.gz" *
+- sh: curl -sSL https://codecov.io/bash > codecov
+- sh: chmod +x codecov
+- sh: if [ "$CI_LINUX" = "true" ]; then ./codecov; fi
 artifacts:
 - path: dist\*.nupkg
-deploy:
-- provider: NuGet
-  server: https://www.myget.org/F/morelinq/api/v2/package
-  api_key:
-    secure: fhGwXyO35FSshRzs5GWmF1LJTrd1sIqmS/jNCSfO2LfOciuYAKiXuFMYZFGiTAl+
-  symbol_server: https://www.myget.org/F/morelinq/symbols/api/v2/package
-  on:
-    branch: master
-notifications:
-- provider: Email
-  to:
-  - morelinq-roll@googlegroups.com
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: false
+- path: coverage-report-*

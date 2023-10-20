@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.DistinctByExtension;
 
     [TestFixture]
     public class DistinctByTest
@@ -34,7 +35,7 @@ namespace MoreLinq.Test
         [Test]
         public void DistinctByIsLazy()
         {
-            new BreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
+            _ = new BreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
         }
 
         [Test]
@@ -56,8 +57,8 @@ namespace MoreLinq.Test
         [Test]
         public void DistinctByIsLazyWithComparer()
         {
-            new BreakingSequence<string>()
-                .DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+            var bs = new BreakingSequence<string>();
+            _ = bs.DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
         }
     }
 }

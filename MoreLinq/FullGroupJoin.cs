@@ -76,7 +76,7 @@ namespace MoreLinq
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             return FullGroupJoin(first, second, firstKeySelector, secondKeySelector, ValueTuple.Create, comparer);
         }
@@ -139,7 +139,7 @@ namespace MoreLinq
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -151,7 +151,7 @@ namespace MoreLinq
 
             IEnumerable<TResult> _(IEqualityComparer<TKey> comparer)
             {
-                var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+                var alookup = Lookup<TKey, TFirst>.CreateForJoin(first, firstKeySelector, comparer);
                 var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
                 foreach (var a in alookup)

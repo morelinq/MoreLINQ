@@ -26,10 +26,10 @@ namespace MoreLinq.Test
         [Test]
         public void ScanByIsLazy()
         {
-            new BreakingSequence<string>().ScanBy(
-                BreakingFunc.Of<string, int>(),
-                BreakingFunc.Of<int, char>(),
-                BreakingFunc.Of<char, int, string, char>());
+            var bs = new BreakingSequence<string>();
+            _ = bs.ScanBy(BreakingFunc.Of<string, int>(),
+                          BreakingFunc.Of<int, char>(),
+                          BreakingFunc.Of<char, int, string, char>());
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace MoreLinq.Test
             var result =
                     source.ScanBy(
                         item => item.First(),
-                        key => (Element: default(string), Key: key, State: key - 1),
+                        key => (Element: string.Empty, Key: key, State: key - 1),
                         (state, key, item) => (item, char.ToUpperInvariant(key), state.State + 1));
 
             result.AssertSequenceEqual(
@@ -67,7 +67,7 @@ namespace MoreLinq.Test
         [Test]
         public void ScanByWithSecondOccurenceImmediatelyAfterFirst()
         {
-            var result = "jaffer".ScanBy(c => c, k => -1, (i, k, e) => i + 1);
+            var result = "jaffer".ScanBy(c => c, _ => -1, (i, _, _) => i + 1);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create('j', 0),
@@ -83,8 +83,8 @@ namespace MoreLinq.Test
         {
             var source = new[] { "a", "B", "c", "A", "b", "A" };
             var result = source.ScanBy(c => c,
-                                       k => -1,
-                                       (i, k, e) => i + 1,
+                                       _ => -1,
+                                       (i, _, _) => i + 1,
                                        StringComparer.OrdinalIgnoreCase);
 
             result.AssertSequenceEqual(
@@ -100,19 +100,34 @@ namespace MoreLinq.Test
         public void ScanByWithSomeNullKeys()
         {
             var source = new[] { "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo" };
-            var result = source.ScanBy(c => c, k => -1, (i, k, e) => i + 1);
+            var result = source.ScanBy(c => c, _ => -1, (i, _, _) => i + 1);
 
             result.AssertSequenceEqual(
-                KeyValuePair.Create("foo"       , 0),
-                KeyValuePair.Create((string)null, 0),
-                KeyValuePair.Create("bar"       , 0),
-                KeyValuePair.Create("baz"       , 0),
-                KeyValuePair.Create((string)null, 1),
-                KeyValuePair.Create((string)null, 2),
-                KeyValuePair.Create("baz"       , 1),
-                KeyValuePair.Create("bar"       , 1),
-                KeyValuePair.Create((string)null, 3),
-                KeyValuePair.Create("foo"       , 1));
+                KeyValuePair.Create((string?)"foo", 0),
+                KeyValuePair.Create((string?)null , 0),
+                KeyValuePair.Create((string?)"bar", 0),
+                KeyValuePair.Create((string?)"baz", 0),
+                KeyValuePair.Create((string?)null , 1),
+                KeyValuePair.Create((string?)null , 2),
+                KeyValuePair.Create((string?)"baz", 1),
+                KeyValuePair.Create((string?)"bar", 1),
+                KeyValuePair.Create((string?)null , 3),
+                KeyValuePair.Create((string?)"foo", 1));
+        }
+
+        [Test]
+        public void ScanByWithNullSeed()
+        {
+            var nil = (object?)null;
+            var source = new[] { "foo", null, "bar", null, "baz" };
+            var result = source.ScanBy(c => c, _ => nil, (_, _, _) => nil);
+
+            result.AssertSequenceEqual(
+                KeyValuePair.Create((string?)"foo", nil),
+                KeyValuePair.Create((string?)null , nil),
+                KeyValuePair.Create((string?)"bar", nil),
+                KeyValuePair.Create((string?)null , nil),
+                KeyValuePair.Create((string?)"baz", nil));
         }
 
         [Test]
@@ -127,7 +142,7 @@ namespace MoreLinq.Test
                                              () => "angelo",
                                              () => "carlos");
 
-            var result = source.ScanBy(c => c.First(), k => -1, (i, k, e) => i + 1);
+            var result = source.ScanBy(c => c.First(), _ => -1, (i, _, _) => i + 1);
 
             result.Take(5).AssertSequenceEqual(
                 KeyValuePair.Create('a', 0),
@@ -136,8 +151,8 @@ namespace MoreLinq.Test
                 KeyValuePair.Create('b', 1),
                 KeyValuePair.Create('d', 0));
 
-            Assert.Throws<TestException>(() =>
-                result.ElementAt(5));
+            Assert.That(() => result.ElementAt(5),
+                        Throws.TypeOf<TestException>());
         }
     }
 }

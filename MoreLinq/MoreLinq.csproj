@@ -29,6 +29,7 @@
         - DistinctBy
         - EndsWith
         - EquiZip
+        - Evaluate
         - Exactly
         - ExceptBy
         - Exclude
@@ -45,13 +46,15 @@
         - GenerateByIndex
         - GroupAdjacent
         - Index
+        - IndexBy
         - Insert
         - Interleave
         - Lag
         - Lead
         - LeftJoin
         - MaxBy
-        - Memoize
+        - Memoize (EXPERIMENTAL)
+        - Merge (EXPERIMENTAL)
         - MinBy
         - Move
         - OrderBy
@@ -72,9 +75,11 @@
         - Rank
         - RankBy
         - Repeat
+        - Return
         - RightJoin
         - RunLengthEncode
         - Scan
+        - ScanBy
         - ScanRight
         - Segment
         - Sequence
@@ -101,7 +106,7 @@
         - Transpose
         - TraverseBreadthFirst
         - TraverseDepthFirst
-        - TrySingle
+        - TrySingle (EXPERIMENTAL)
         - Unfold
         - Window
         - WindowLeft
@@ -113,23 +118,24 @@
     <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>3.3.0</VersionPrefix>
+    <VersionPrefix>4.0.0</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
-    <TargetFrameworks>net451;netstandard1.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>8</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>MoreLinq</AssemblyName>
     <OutputType>Library</OutputType>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
     <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
     <PackageOutputPath>..\dist</PackageOutputPath>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>3.4.1</PackageValidationBaselineVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -142,15 +148,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.2">
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-*" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="PolySharp" Version="1.9.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
+    <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
@@ -173,29 +190,13 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'net451' ">
+  <PropertyGroup>
     <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <DefineConstants>$(DefineConstants);MORELINQ;NO_SERIALIZATION_ATTRIBUTES;NO_EXCEPTION_SERIALIZATION;NO_TRACING;NO_COM;NO_ASYNC</DefineConstants>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <Compile Remove="ToDataTable.cs" />
-    <Compile Remove="Extensions.ToDataTable.g.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'net451'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
@@ -238,7 +239,35 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
   </ItemGroup>
+
+  <Target Name="_CollectTextTemplates">
+    <ItemGroup>
+      <TextTemplate Include="%(None.Identity)" Condition="'%(None.Generator)' == 'TextTemplatingFileGenerator'">
+        <LastGenOutput>%(None.LastGenOutput)</LastGenOutput>
+      </TextTemplate>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_TransformTextTemplate" Inputs="$(TextTemplate)" Outputs="$(TextTemplateOutput)">
+    <Exec Command="dotnet t4 -h &gt; /dev/null" IgnoreExitCode="True" Condition="'$(WINDIR)' == ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet t4 -h &gt; NUL" IgnoreExitCode="True" Condition="'$(WINDIR)' != ''">
+      <Output TaskParameter="ExitCode" PropertyName="_TestExitCode" />
+    </Exec>
+    <Exec Command="dotnet tool restore" Condition="$(_TestExitCode) != 0" />
+    <Message Text="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" Importance="High" />
+    <Exec Command="dotnet t4 $(TextTemplate) -o $(TextTemplateOutput)" />
+  </Target>
+
+  <Target Name="TransformTextTemplates"
+          DependsOnTargets="_CollectTextTemplates">
+    <MSBuild Projects="$(MSBuildProjectFile)"
+             Targets="_TransformTextTemplate"
+             Properties="TextTemplate=%(TextTemplate.Identity);TextTemplateOutput=%(TextTemplate.LastGenOutput)"  />
+  </Target>
 
 </Project>

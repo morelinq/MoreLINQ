@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2012 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ namespace MoreLinq.Test
         [Test]
         public void AcquireAll()
         {
-            Disposable a = null;
-            Disposable b = null;
-            Disposable c = null;
+            Disposable? a = null;
+            Disposable? b = null;
+            Disposable? c = null;
 
             var allocators = MoreEnumerable.From(() => a = new Disposable(),
                                                  () => b = new Disposable(),
@@ -48,16 +48,16 @@ namespace MoreLinq.Test
         [Test]
         public void AcquireSome()
         {
-            Disposable a = null;
-            Disposable b = null;
-            Disposable c = null;
+            Disposable? a = null;
+            Disposable? b = null;
+            Disposable? c = null;
 
             var allocators = MoreEnumerable.From(() => a = new Disposable(),
                                                  () => b = new Disposable(),
                                                  () => throw new TestException(),
                                                  () => c = new Disposable());
 
-            Assert.Throws<TestException>(() => allocators.Acquire());
+            Assert.That(allocators.Acquire, Throws.TypeOf<TestException>());
 
             Assert.That(a, Is.Not.Null);
             Assert.That(a.Disposed, Is.True);
@@ -66,10 +66,10 @@ namespace MoreLinq.Test
             Assert.That(c, Is.Null);
         }
 
-        class Disposable : IDisposable
+        sealed class Disposable : IDisposable
         {
             public bool Disposed { get; private set; }
-            public void Dispose() { Disposed = true; }
+            public void Dispose() => Disposed = true;
         }
     }
 }

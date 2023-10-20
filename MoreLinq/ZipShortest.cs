@@ -38,6 +38,10 @@ namespace MoreLinq
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
         /// <example>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
         /// var letters = new[] { "A", "B", "C", "D" };
@@ -64,7 +68,7 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, c, d) => resultSelector(a, b));
+            return ZipImpl<TFirst, TSecond, object, object, TResult>(first, second, null, null, (a, b, _, _) => resultSelector(a, b));
         }
 
         /// <summary>
@@ -84,6 +88,11 @@ namespace MoreLinq
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, or <paramref name="resultSelector"/> is <see
+        /// langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -137,6 +146,11 @@ namespace MoreLinq
         /// <returns>
         /// A projection of tuples, where each tuple contains the N-th element
         /// from each of the argument sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
+        /// name="third"/>, <paramref name="fourth"/>, or <paramref
+        /// name="resultSelector"/> is <see langword="null"/>.
+        /// </exception>
         /// <example>
         /// <code><![CDATA[
         /// var numbers = new[] { 1, 2, 3 };
@@ -175,8 +189,10 @@ namespace MoreLinq
         }
 
         static IEnumerable<TResult> ZipImpl<T1, T2, T3, T4, TResult>(
-            IEnumerable<T1> s1, IEnumerable<T2> s2,
-            IEnumerable<T3> s3, IEnumerable<T4> s4,
+            IEnumerable<T1>  s1,
+            IEnumerable<T2>  s2,
+            IEnumerable<T3>? s3,
+            IEnumerable<T4>? s4,
             Func<T1, T2, T3, T4, TResult> resultSelector)
         {
             return ZipImpl(s1, s2, s3, s4, resultSelector, 0);

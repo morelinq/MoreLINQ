@@ -158,17 +158,14 @@ namespace MoreLinq
         }
 
         static IEnumerable<T> FallbackIfEmptyImpl<T>(IEnumerable<T> source,
-            int? count, T fallback1, T fallback2, T fallback3, T fallback4,
-            IEnumerable<T> fallback)
+            int? count, T? fallback1, T? fallback2, T? fallback3, T? fallback4,
+            IEnumerable<T>? fallback)
         {
-            return source.TryGetCollectionCount() is int collectionCount
-                 ? collectionCount == 0 ? Fallback() : source
-                 : _();
-
-            IEnumerable<T> _()
+            return _(); IEnumerable<T> _()
             {
-                using (var e = source.GetEnumerator())
+                if (source.TryAsCollectionLike() is null or { Count: > 0 })
                 {
+                    using var e = source.GetEnumerator();
                     if (e.MoveNext())
                     {
                         do { yield return e.Current; }
@@ -177,25 +174,21 @@ namespace MoreLinq
                     }
                 }
 
-                foreach (var item in Fallback())
-                    yield return item;
-            }
-
-            IEnumerable<T> Fallback()
-            {
-                switch (count)
+                if (fallback is { } someFallback)
                 {
-                    case null: return fallback;
-                    case int n when n >= 1 && n <= 4: return FallbackOnArgs();
-                    default: throw new ArgumentOutOfRangeException(nameof(count), count, null);
+                    Debug.Assert(count is null);
+
+                    foreach (var item in someFallback)
+                        yield return item;
                 }
-
-                IEnumerable<T> FallbackOnArgs()
+                else
                 {
-                    yield return fallback1;
-                    if (count > 1) yield return fallback2;
-                    if (count > 2) yield return fallback3;
-                    if (count > 3) yield return fallback4;
+                    Debug.Assert(count is >= 1 and <= 4);
+
+                    yield return fallback1!;
+                    if (count > 1) yield return fallback2!;
+                    if (count > 2) yield return fallback3!;
+                    if (count > 3) yield return fallback4!;
                 }
             }
         }

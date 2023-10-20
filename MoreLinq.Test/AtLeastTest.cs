@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2015 "sholland". All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class AtLeastTest
@@ -25,72 +26,31 @@ namespace MoreLinq.Test
         [Test]
         public void AtLeastWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.AtLeast(-1));
+            Assert.That(() => new[] { 1 }.AtLeast(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
+        public static IEnumerable<TestCaseData> AtLeastSource =>
+            from k in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 0, Count: 2),
+                (Size: 1, Count: 0),
+                (Size: 1, Count: 1),
+                (Size: 1, Count: 2),
+                (Size: 3, Count: 0),
+                (Size: 3, Count: 1),
+                (Size: 3, Count: 2)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size >= e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithEmptySequenceHasAtLeastManyElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastZeroElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastOneElement()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithSingleElementHasAtLeastManyElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.AtLeast(2));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastZeroElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(0));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastOneElement()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(1));
-        }
-
-        [Test]
-        public void AtLeastWithManyElementsHasAtLeastManyElements()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.AtLeast(2));
-        }
+        [TestCaseSource(nameof(AtLeastSource))]
+        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtLeast(atLeastAssertCount);
 
         [Test]
         public void AtLeastDoesNotIterateUnnecessaryElements()
@@ -98,7 +58,7 @@ namespace MoreLinq.Test
             var source = MoreEnumerable.From(() => 1,
                                              () => 2,
                                              () => throw new TestException());
-            Assert.IsTrue(source.AtLeast(2));
+            Assert.That(source.AtLeast(2), Is.True);
         }
     }
 }

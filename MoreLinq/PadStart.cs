@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -45,7 +44,7 @@ namespace MoreLinq
         /// The <c>result</c> variable will contain <c>{ 0, 0, 123, 456, 789 }</c>.
         /// </example>
 
-        public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width)
+        public static IEnumerable<TSource?> PadStart<TSource>(this IEnumerable<TSource> source, int width)
         {
             return PadStart(source, width, default(TSource));
         }
@@ -116,16 +115,20 @@ namespace MoreLinq
         }
 
         static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
-            int width, T padding, Func<int, T> paddingSelector)
+            int width, T? padding, Func<int, T>? paddingSelector)
         {
-            return
-                source.TryGetCollectionCount() is int collectionCount
-                ? collectionCount >= width
-                  ? source
-                  : Enumerable.Range(0, width - collectionCount)
-                              .Select(i => paddingSelector != null ? paddingSelector(i) : padding)
-                              .Concat(source)
-                : _(); IEnumerable<T> _()
+            return _(); IEnumerable<T> _()
+            {
+                if (source.TryAsCollectionLike() is { Count: var collectionCount } && collectionCount < width)
+                {
+                    var paddingCount = width - collectionCount;
+                    for (var i = 0; i < paddingCount; i++)
+                        yield return paddingSelector is { } selector ? selector(i) : padding!;
+
+                    foreach (var item in source)
+                        yield return item;
+                }
+                else
                 {
                     var array = new T[width];
                     var count = 0;
@@ -150,11 +153,12 @@ namespace MoreLinq
                     var len = width - count;
 
                     for (var i = 0; i < len; i++)
-                        yield return paddingSelector != null ? paddingSelector(i) : padding;
+                        yield return paddingSelector != null ? paddingSelector(i) : padding!;
 
                     for (var i = 0; i < count; i++)
                         yield return array[i];
                 }
+            }
         }
     }
 }

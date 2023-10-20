@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2013 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,44 +26,47 @@ namespace MoreLinq.Test
         [Test]
         public void AssertIsLazy()
         {
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
-            new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<object>().Assert(BreakingFunc.Of<object, bool>(), BreakingFunc.Of<object, Exception>());
         }
 
         [Test]
         public void AssertSequenceWithValidAllElements()
         {
-            var source = new[] {2, 4, 6, 8};
+            var source = new[] { 2, 4, 6, 8 };
             source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
         }
 
         [Test]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0).Consume());
+            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            Assert.That(() => source.Assert(n => n % 2 == 0).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, _ => null).Consume());
+            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            Assert.That(() => source.Assert(n => n % 2 == 0, _ => null!).Consume(),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomError()
         {
-            var e =
-                Assert.Throws<ValueException>(() =>
-                    new[] { 2, 4, 6, 7, 8, 9 }.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume());
-            Assert.AreEqual(7, e.Value);
+            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            Assert.That(() =>
+                source.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume(),
+                Throws.TypeOf<ValueException>()
+                      .With.Property(nameof(ValueException.Value)).EqualTo(7));
         }
 
-        class ValueException : Exception
+        sealed class ValueException : Exception
         {
             public object Value { get; }
-            public ValueException(object value) { Value = value; }
+            public ValueException(object value) => Value = value;
         }
     }
 }

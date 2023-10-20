@@ -1,3 +1,20 @@
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2010 Leopold Bushkin. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
 namespace MoreLinq.Test
 {
     using System;
@@ -16,8 +33,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetIsLazy()
         {
-            new BreakingSequence<int>().RandomSubset(10);
-            new BreakingSequence<int>().RandomSubset(10, new Random());
+            _ = new BreakingSequence<int>().RandomSubset(10);
+            _ = new BreakingSequence<int>().RandomSubset(10, new Random());
         }
 
         /// <summary>
@@ -26,8 +43,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize()
         {
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-                Enumerable.Range(1, 10).RandomSubset(-5));
+            Assert.That(() => Enumerable.Range(1, 10).RandomSubset(-5),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -36,8 +53,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetNegativeSubsetSize2()
         {
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-                Enumerable.Range(1, 10).RandomSubset(-1, new Random()));
+            Assert.That(() => Enumerable.Range(1, 10).RandomSubset(-1, new Random()),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -49,7 +66,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Empty<int>();
             var result = sequence.RandomSubset(0); // we can only get subsets <= sequence.Count()
 
-            Assert.AreEqual(0, result.Count());
+            Assert.That(result.Count(), Is.Zero);
         }
 
         /// <summary>
@@ -64,8 +81,8 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(count, new Random(12345));
 
             // ensure random subset is always a complete reordering of original sequence
-            Assert.AreEqual(count, resultA.Distinct().Count());
-            Assert.AreEqual(count, resultB.Distinct().Count());
+            Assert.That(resultA.Distinct().Count(), Is.EqualTo(count));
+            Assert.That(resultB.Distinct().Count(), Is.EqualTo(count));
         }
 
         /// <summary>
@@ -81,8 +98,8 @@ namespace MoreLinq.Test
             var resultB = sequence.RandomSubset(subsetSize, new Random(12345));
 
             // ensure random subset is always a distinct subset of original sequence
-            Assert.AreEqual(subsetSize, resultA.Distinct().Count());
-            Assert.AreEqual(subsetSize, resultB.Distinct().Count());
+            Assert.That(resultA.Distinct().Count(), Is.EqualTo(subsetSize));
+            Assert.That(resultB.Distinct().Count(), Is.EqualTo(subsetSize));
         }
 
         /// <summary>
@@ -96,10 +113,8 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-            {
-                sequence.RandomSubset(subsetSize).Consume();
-            });
+            Assert.That(() => sequence.RandomSubset(subsetSize).Consume(),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -113,10 +128,8 @@ namespace MoreLinq.Test
             const int subsetSize = count + 5;
             var sequence = Enumerable.Range(1, count);
 
-            AssertThrowsArgument.OutOfRangeException("subsetSize", () =>
-            {
-                sequence.RandomSubset(subsetSize, new Random(1234)).Consume();
-            });
+            Assert.That(() => sequence.RandomSubset(subsetSize, new Random(1234)).Consume(),
+                        Throws.ArgumentOutOfRangeException("subsetSize"));
         }
 
         /// <summary>
@@ -169,10 +182,10 @@ namespace MoreLinq.Test
 
             // ensure that wth increasing trial size the a RSD% continually decreases
             for (var j = 0; j < rsdResults.Length - 1; j++)
-                Assert.Less(rsdResults[j + 1], rsdResults[j]);
+                Assert.That(rsdResults[j + 1], Is.LessThan(rsdResults[j]));
 
             // ensure that the RSD% for the 5M trial size is < 1.0    (this is somewhat arbitrary)
-            Assert.Less(rsdResults.Last(), 1.0);
+            Assert.That(rsdResults.Last(), Is.LessThan(1.0));
 
             // for sanity, we output the RSD% values as a cross-check, the expected result should be
             // that the RSD% rapidly decreases and eventually drops below 1.0
@@ -227,7 +240,7 @@ namespace MoreLinq.Test
         {
             var average = values.Average();
             var standardDeviation = StandardDeviationInternal(values, average);
-            return (standardDeviation * 100.0) / average;
+            return standardDeviation * 100.0 / average;
         }
 
         static double StandardDeviationInternal(IEnumerable<double> values, double average)

@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Text;
 
     static partial class MoreEnumerable
@@ -53,17 +52,14 @@ namespace MoreLinq
 
         static string ToDelimitedStringImpl<T>(IEnumerable<T> source, string delimiter, Func<StringBuilder, T, StringBuilder> append)
         {
-            Debug.Assert(source != null);
-            Debug.Assert(delimiter != null);
-            Debug.Assert(append != null);
-
             var sb = new StringBuilder();
             var i = 0;
 
             foreach (var value in source)
             {
-                if (i++ > 0) sb.Append(delimiter);
-                append(sb, value);
+                if (i++ > 0)
+                    _ = sb.Append(delimiter);
+                _ = append(sb, value);
             }
 
             return sb.ToString();
