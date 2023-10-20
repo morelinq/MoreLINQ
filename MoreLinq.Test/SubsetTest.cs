@@ -141,9 +141,7 @@ namespace MoreLinq.Test
             var actual = sequence.Subsets(0);
 
             // For any set there is always 1 subset of size 0: the empty set.
-            var expected = new[] {new int[0]};
-
-            CollectionAssert.AreEquivalent(expected, actual);
+            actual.AssertSequenceEqual(new int[0]);
         }
 
         /// <summary>
