@@ -35,7 +35,7 @@ namespace MoreLinq.Test
             };
 
         static IEnumerable<TestCaseData> UnfoldInfiniteSequenceData() =>
-            TestCaseData(MoreEnumerable.Unfold(1, x => (true, Result: x, State: x + 1)),
+            TestCaseData(MoreEnumerable.Unfold(1, x => (true, (Result: x, State: x + 1))),
                          MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
                                                   _ => true,
                                                   e => e.State,
@@ -51,7 +51,7 @@ namespace MoreLinq.Test
         }
 
         static IEnumerable<TestCaseData> UnfoldFiniteSequenceData() =>
-            TestCaseData(MoreEnumerable.Unfold(1, x => x <= 100 ? (true, Result: x, State: x + 1) : default),
+            TestCaseData(MoreEnumerable.Unfold(1, x => x <= 100 ? (true, (Result: x, State: x + 1)) : default),
                          MoreEnumerable.Unfold(1, x => (Result: x, State: x + 1),
                                                   e => e.Result <= 100,
                                                   e => e.State,
@@ -69,7 +69,7 @@ namespace MoreLinq.Test
         [Test]
         public void UnfoldIsLazy()
         {
-            _ = MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (bool, int, int)>());
+            _ = MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (bool, (int, int))>());
 
             _ = MoreEnumerable.Unfold(0, BreakingFunc.Of<int, (int, int)>(),
                                          BreakingFunc.Of<(int, int), bool>(),
@@ -78,7 +78,7 @@ namespace MoreLinq.Test
         }
 
         static IEnumerable<TestCaseData> UnfoldSingleElementSequenceData() =>
-            TestCaseData(MoreEnumerable.Unfold(0, x => x == 0 ? (true, Result: x, State: x + 1) : default),
+            TestCaseData(MoreEnumerable.Unfold(0, x => x == 0 ? (true, (Result: x, State: x + 1)) : default),
                          MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
                                                   x => x.Result == 0,
                                                   e => e.State,
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
         }
 
         static IEnumerable<TestCaseData> UnfoldEmptySequenceData() =>
-            TestCaseData(MoreEnumerable.Unfold(0, x => x < 0 ? (true, Result: x, State: x + 1) : default),
+            TestCaseData(MoreEnumerable.Unfold(0, x => x < 0 ? (true, (Result: x, State: x + 1)) : default),
                          MoreEnumerable.Unfold(0, x => (Result: x, State: x + 1),
                                                   x => x.Result < 0,
                                                   e => e.State,
@@ -109,7 +109,7 @@ namespace MoreLinq.Test
         }
 
         static IEnumerable<TestCaseData> UnfoldReiterationsReturnsSameResultData() =>
-            TestCaseData(MoreEnumerable.Unfold(1, n => (true, Result: n, State: n + 1)),
+            TestCaseData(MoreEnumerable.Unfold(1, n => (true, (Result: n, State: n + 1))),
                          MoreEnumerable.Unfold(1, n => (Result: n, Next: n + 1),
                                                   _ => true,
                                                   n => n.Next,
