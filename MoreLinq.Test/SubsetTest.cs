@@ -132,7 +132,7 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
-        /// See issue #645
+        /// See <see href="https://github.com/morelinq/MoreLINQ/issues/645">issue #645</see>.
         /// </summary>
         [Test]
         public void Test0SubsetIsEmptyList()
