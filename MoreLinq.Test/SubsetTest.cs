@@ -132,6 +132,19 @@ namespace MoreLinq.Test
         }
 
         /// <summary>
+        /// See <see href="https://github.com/morelinq/MoreLINQ/issues/645">issue #645</see>.
+        /// </summary>
+        [Test]
+        public void Test0SubsetIsEmptyList()
+        {
+            var sequence = Enumerable.Range(1, 4);
+            var actual = sequence.Subsets(0);
+
+            // For any set there is always 1 subset of size 0: the empty set.
+            actual.AssertSequenceEqual(new int[0]);
+        }
+
+        /// <summary>
         /// Verify that the number of subsets for a given subset-size is correct.
         /// </summary>
         [Test]

@@ -166,7 +166,7 @@ namespace MoreLinq
                     _k = _subset.Length;
                     _n = _set.Count;
                     _z = _n - _k + 1;
-                    _continue = _subset.Length > 0;
+                    _continue = true;
                 }
 
                 public IList<T> Current => (IList<T>)_subset.Clone();
@@ -198,7 +198,7 @@ namespace MoreLinq
 
                     ExtractSubset();
 
-                    _continue = _indices[0] != _z;
+                    _continue = _indices.Length > 0 && _indices[0] != _z;
                     return true;
                 }
 
