@@ -32,8 +32,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestSubsetsIsLazy()
         {
-            new BreakingSequence<int>().Subsets();
-            new BreakingSequence<int>().Subsets(5);
+            _ = new BreakingSequence<int>().Subsets();
+            _ = new BreakingSequence<int>().Subsets(5);
         }
 
         /// <summary>
@@ -129,6 +129,19 @@ namespace MoreLinq.Test
             var index = 0;
             foreach (var subset in result)
                 Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
+        }
+
+        /// <summary>
+        /// See <see href="https://github.com/morelinq/MoreLINQ/issues/645">issue #645</see>.
+        /// </summary>
+        [Test]
+        public void Test0SubsetIsEmptyList()
+        {
+            var sequence = Enumerable.Range(1, 4);
+            var actual = sequence.Subsets(0);
+
+            // For any set there is always 1 subset of size 0: the empty set.
+            actual.AssertSequenceEqual(new int[0]);
         }
 
         /// <summary>

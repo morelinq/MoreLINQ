@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [Test]
         public void SkipUntilEvaluatesSourceLazily()
         {
-            new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
+            _ = new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
         }
 
         [Test]

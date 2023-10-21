@@ -26,7 +26,7 @@ namespace MoreLinq.Test
     {
         static class SomeSingleton
         {
-            public static readonly object Item = new object();
+            public static readonly object Item = new();
             public static readonly IEnumerable<object> Sequence = MoreEnumerable.Return(Item);
             public static IList<object> List => (IList<object>)Sequence;
             public static ICollection<object> Collection => (ICollection<object>)Sequence;
@@ -140,7 +140,7 @@ namespace MoreLinq.Test
             from ma in new (string MethodName, Action Action)[]
             {
                 ("Add"     , () => SomeSingleton.List.Add(new object())),
-                ("Clear"   , () => SomeSingleton.Collection.Clear()),
+                ("Clear"   ,       SomeSingleton.Collection.Clear),
                 ("Remove"  , () => SomeSingleton.Collection.Remove(SomeSingleton.Item)),
                 ("RemoveAt", () => SomeSingleton.List.RemoveAt(0)),
                 ("Insert"  , () => SomeSingleton.List.Insert(0, new object())),

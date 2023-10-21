@@ -33,8 +33,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestRandomSubsetIsLazy()
         {
-            new BreakingSequence<int>().RandomSubset(10);
-            new BreakingSequence<int>().RandomSubset(10, new Random());
+            _ = new BreakingSequence<int>().RandomSubset(10);
+            _ = new BreakingSequence<int>().RandomSubset(10, new Random());
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace MoreLinq.Test
         {
             var average = values.Average();
             var standardDeviation = StandardDeviationInternal(values, average);
-            return (standardDeviation * 100.0) / average;
+            return standardDeviation * 100.0 / average;
         }
 
         static double StandardDeviationInternal(IEnumerable<double> values, double average)

@@ -112,10 +112,10 @@ namespace MoreLinq
             {
                 if (predicate(item))
                 {
-                    yield return seed is (true, {} someSeed)
+                    yield return seed is (true, var theSeed)
                                ? fillSelector != null
-                                 ? fillSelector(item, someSeed)
-                                 : someSeed
+                                 ? fillSelector(item, theSeed)
+                                 : theSeed
                                : item;
                 }
                 else

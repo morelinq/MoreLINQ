@@ -32,7 +32,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestInterleaveIsLazy()
         {
-            new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
+            _ = new BreakingSequence<int>().Interleave(new BreakingSequence<int>());
         }
 
         /// <summary>

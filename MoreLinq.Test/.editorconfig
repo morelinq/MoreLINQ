@@ -26,3 +26,14 @@ dotnet_diagnostic.CA1707.severity = none
 
 # CA1308: Normalize strings to uppercase
 dotnet_diagnostic.CA1308.severity = none
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = suggestion
+
+# IDE0047: Remove unnecessary parentheses
+dotnet_diagnostic.IDE0047.severity = suggestion
+
+[*{Test,Tests}.cs]
+
+# IDE0022: Use expression/block body for methods
+dotnet_diagnostic.IDE0022.severity = none

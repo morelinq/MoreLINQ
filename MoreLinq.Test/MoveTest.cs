@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [Test]
         public void MoveIsLazy()
         {
-            new BreakingSequence<int>().Move(0, 0, 0);
+            _ = new BreakingSequence<int>().Move(0, 0, 0);
         }
 
         [TestCaseSource(nameof(MoveSource))]

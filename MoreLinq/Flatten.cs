@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+#pragma warning disable RS0041 // Public members should not use oblivious types
+
 namespace MoreLinq
 {
     using System;
@@ -137,11 +139,11 @@ namespace MoreLinq
                     {
                         e = stack.Pop();
 
-                        reloop:
+                    reloop:
 
                         while (e.MoveNext())
                         {
-                            if (selector(e.Current) is {} inner)
+                            if (selector(e.Current) is { } inner)
                             {
                                 stack.Push(e);
                                 e = inner.GetEnumerator();

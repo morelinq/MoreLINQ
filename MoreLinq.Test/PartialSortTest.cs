@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.AppendExtension;
 
     [TestFixture]
     public class PartialSortTests
@@ -76,7 +77,7 @@ namespace MoreLinq.Test
         [Test]
         public void PartialSortIsLazy()
         {
-            new BreakingSequence<object>().PartialSort(1);
+            _ = new BreakingSequence<object>().PartialSort(1);
         }
 
         [Test, Ignore("TODO")]

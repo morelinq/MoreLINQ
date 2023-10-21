@@ -273,7 +273,7 @@ namespace MoreLinq
                 var key = keySelector(iterator.Current);
                 var element = elementSelector(iterator.Current);
 
-                if (group is (var k, {} members))
+                if (group is (var k, { } members))
                 {
                     if (comparer.Equals(k, key))
                     {
@@ -290,7 +290,7 @@ namespace MoreLinq
             }
 
             {
-                if (group is (var k, {} members))
+                if (group is (var k, { } members))
                     yield return resultSelector(k, members);
             }
         }
@@ -301,12 +301,10 @@ namespace MoreLinq
         static class Grouping
         {
             public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members) =>
-                new Grouping<TKey, TElement>(key, members);
+                new(key, members);
         }
 
-        #if !NO_SERIALIZATION_ATTRIBUTES
         [Serializable]
-        #endif
         sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
         {
             readonly IEnumerable<TElement> _members;

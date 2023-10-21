@@ -34,10 +34,11 @@ using static MoreLinq.Extensions.LeadExtension;
 In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
 methods will be available in scope.
 
-Apart from extension methods, MoreLINQ also offers regular static method
-that *generate* (instead of operating on) sequences, like `Unfold`,
-`Random`, `Sequence` and others. If you want to use these while statically
-importing other individual extension methods, you can do so via aliasing:
+Apart from extension methods, MoreLINQ also offers regular static method that
+*generate* (instead of operating on) sequences, like [`Unfold`][unfold],
+[`Random`][random], [`Sequence`][sequence] and others. If you want to use these
+while statically importing other individual extension methods, you can do so via
+aliasing:
 
 ```c#
 using static MoreLinq.Extensions.LagExtension;
@@ -74,11 +75,11 @@ Building the documentation is supported on Windows only and requires
 [Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
 generates the documentation in the `docs/api` directory. It can be browsed
 locally using any HTTP server of static files, like
-[http-server][http-server].
+[dotnet-serve][dotnet-serve].
 
 [dotnet-linux]: https://learn.microsoft.com/en-us/dotnet/core/install/linux
-[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
-[http-server]: https://www.npmjs.com/package/http-server
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2022.12.30.0
+[dotnet-serve]: https://www.nuget.org/packages/dotnet-serve
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
@@ -167,8 +168,11 @@ first sequence has fewer, the same or more elements than the second sequence.
 
 Returns a sequence consisting of the head element and the given tail elements.
 
-This method is obsolete and will be removed in a future version. Use `Append`
-instead.
+This extension was rendered obsolete in version 3.0 and eventually removed in
+version 4.0. Use [`Append`][linq-append] from .NET instead that's been available
+since .NET Standard 1.6+, .NET Core 1.0+ and .NET Framework 4.7.1+.
+
+[linq-append]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.append
 
 ### Consume
 
@@ -760,6 +764,14 @@ final result given the source item and completed task.
 Creates a sequence that lazily caches the source as it is iterated for the
 first time, reusing the cache thereafter for future re-iterations. If the
 source is already cached or buffered then it is returned verbatim.
+
+### Merge
+
+Concurrently merges all the elements of multiple asynchronous streams into a
+single asynchronous stream. An overload with an additional parameter specifies
+the maximum concurrent operations that may be in flight at any give time.
+
+This method has 2 overloads.
 
 ### TrySingle
 

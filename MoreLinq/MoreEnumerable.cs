@@ -27,15 +27,6 @@ namespace MoreLinq
 
     public static partial class MoreEnumerable
     {
-        internal static int? TryGetCollectionCount<T>(this IEnumerable<T> source) =>
-            source switch
-            {
-                null => throw new ArgumentNullException(nameof(source)),
-                ICollection<T> collection => collection.Count,
-                IReadOnlyCollection<T> collection => collection.Count,
-                _ => null
-            };
-
         static int CountUpTo<T>(this IEnumerable<T> source, int max)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));

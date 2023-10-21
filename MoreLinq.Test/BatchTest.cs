@@ -63,17 +63,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchSequenceYieldsListsOfBatches()
-        {
-            var result = new[] { 1, 2, 3 }.Batch(2);
-
-            using var reader = result.Read();
-            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-            reader.ReadEnd();
-        }
-
-        [Test]
         public void BatchSequencesAreIndependentInstances()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4);
@@ -92,7 +81,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchIsLazy()
         {
-            new BreakingSequence<object>().Batch(1);
+            _ = new BreakingSequence<object>().Batch(1);
         }
 
         [TestCase(SourceKind.BreakingCollection  , 0)]
@@ -132,6 +121,22 @@ namespace MoreLinq.Test
         {
             var batches = Enumerable.Empty<int>().ToSourceKind(kind).Batch(100);
             Assert.That(batches, Is.Empty);
+        }
+
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        public void BatchUsesCollectionCountAtIterationTime(SourceKind kind)
+        {
+            var list = new List<int> { 1, 2 };
+            var result = list.AsSourceKind(kind).Batch(3);
+
+            list.Add(3);
+            result.AssertSequenceEqual(new[] { 1, 2, 3 });
+
+            list.Add(4);
+            // should fail trying to enumerate because count is now greater than the batch size
+            Assert.That(result.Consume, Throws.TypeOf<BreakException>());
         }
     }
 }

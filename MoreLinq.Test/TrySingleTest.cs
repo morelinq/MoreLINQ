@@ -92,7 +92,7 @@ namespace MoreLinq.Test
         sealed class BreakingSingleElementCollection<T> :
             BreakingSingleElementCollectionBase<T>, ICollection<T>
         {
-            public BreakingSingleElementCollection(T element) : base(element) {}
+            public BreakingSingleElementCollection(T element) : base(element) { }
 
             public void Add(T item) => throw new NotImplementedException();
             public void Clear() => throw new NotImplementedException();
@@ -105,7 +105,7 @@ namespace MoreLinq.Test
         sealed class BreakingSingleElementReadOnlyCollection<T> :
             BreakingSingleElementCollectionBase<T>, IReadOnlyCollection<T>
         {
-            public BreakingSingleElementReadOnlyCollection(T element) : base(element) {}
+            public BreakingSingleElementReadOnlyCollection(T element) : base(element) { }
         }
 
         [TestCase(SourceKind.Sequence)]

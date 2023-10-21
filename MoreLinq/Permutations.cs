@@ -83,7 +83,7 @@ namespace MoreLinq
                 // The nested loop construction below takes into account the fact that:
                 // 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
                 // 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
-                _generator = NestedLoops(NextPermutation, Enumerable.Range(2, Math.Max(0, _valueSet.Count - 1)));
+                _generator = NestedLoops(NextPermutation, Generate(2UL, n => n + 1).Take(Math.Max(0, _valueSet.Count - 1)));
                 Reset();
             }
 
@@ -99,7 +99,7 @@ namespace MoreLinq
                 _generatorIterator = _generator.GetEnumerator();
                 // we must advance the nested loop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
-                _generatorIterator.MoveNext();
+                _ = _generatorIterator.MoveNext();
                 _hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
@@ -180,17 +180,24 @@ namespace MoreLinq
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="sequence">The original sequence to permute.</param>
+        /// <returns>
+        /// A sequence of lists representing permutations of the original sequence.</returns>
+        /// <exception cref="OverflowException">
+        /// Too many permutations (limited by <see cref="ulong.MaxValue"/>); thrown during iteration
+        /// of the resulting sequence.</exception>
         /// <remarks>
-        /// A permutation is a unique re-ordering of the elements of the sequence.<br/>
+        /// <para>
+        /// A permutation is a unique re-ordering of the elements of the sequence.</para>
+        /// <para>
         /// This operator returns permutations in a deferred, streaming fashion; however, each
         /// permutation is materialized into a new list. There are N! permutations of a sequence,
-        /// where N => sequence.Count().<br/>
+        /// where N &#8658; <c>sequence.Count()</c>.</para>
+        /// <para>
         /// Be aware that the original sequence is considered one of the permutations and will be
-        /// returned as one of the results.
+        /// returned as one of the results.</para>
         /// </remarks>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <param name="sequence">The original sequence to permute</param>
-        /// <returns>A sequence of lists representing permutations of the original sequence</returns>
 
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {

@@ -26,7 +26,7 @@ namespace MoreLinq.Test
         [Test]
         public void BacksertIsLazy()
         {
-            new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
+            _ = new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
         }
 
         [Test]

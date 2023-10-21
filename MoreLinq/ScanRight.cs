@@ -84,7 +84,7 @@ namespace MoreLinq
             return ScanRightImpl(source, func, list => (seed, list.Count));
         }
 
-        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<IListLike<TSource>, (TResult Seed, int Count)?> seeder)
+        static IEnumerable<TResult> ScanRightImpl<TSource, TResult>(IEnumerable<TSource> source, Func<TSource, TResult, TResult> func, Func<ListLike<TSource>, (TResult Seed, int Count)?> seeder)
         {
             var list = source.ToListLike();
 

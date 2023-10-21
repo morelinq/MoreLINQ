@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class CountBetweenTest
@@ -43,22 +44,25 @@ namespace MoreLinq.Test
                         Throws.ArgumentOutOfRangeException("max"));
         }
 
-        [Test]
-        public void CountBetweenWithMaxEqualsMin()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.That(xs.CountBetween(1, 1), Is.True);
-        }
+        static IEnumerable<TestCaseData> CountBetweenSource =>
+            from args in new[]
+            {
+                (Count: 1, Min: 1, Max: 1),
+                (Count: 1, Min: 2, Max: 4),
+                (Count: 2, Min: 2, Max: 4),
+                (Count: 3, Min: 2, Max: 4),
+                (Count: 4, Min: 2, Max: 4),
+                (Count: 5, Min: 2, Max: 4),
+            }
+            from type in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            select new TestCaseData(type, args.Count, args.Min, args.Max)
+                .Returns(args.Count >= args.Min && args.Count <= args.Max)
+                .SetName($"{{m}}({type}[{args.Count}], {args.Min}, {args.Max})");
 
-        [TestCase(1, 2, 4, false)]
-        [TestCase(2, 2, 4, true)]
-        [TestCase(3, 2, 4, true)]
-        [TestCase(4, 2, 4, true)]
-        [TestCase(5, 2, 4, false)]
-        public void CountBetweenRangeTests(int count, int min, int max, bool expecting)
+        [TestCaseSource(nameof(CountBetweenSource))]
+        public bool CountBetween(SourceKind sourceKind, int count, int min, int max)
         {
-            foreach (var xs in Enumerable.Range(1, count).ArrangeCollectionTestCases())
-                Assert.That(xs.CountBetween(min, max), Is.EqualTo(expecting));
+            return Enumerable.Range(0, count).ToSourceKind(sourceKind).CountBetween(min, max);
         }
 
         [Test]

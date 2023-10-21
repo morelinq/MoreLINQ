@@ -55,7 +55,7 @@ namespace MoreLinq.Test
         public void ZipLongestIsLazy()
         {
             var bs = new BreakingSequence<int>();
-            bs.ZipLongest(bs, BreakingFunc.Of<int, int, int>());
+            _ = bs.ZipLongest(bs, BreakingFunc.Of<int, int, int>());
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
             var zipped = shorter.ZipLongest(longer, Tuple.Create);
 
             var count = 0;
-            foreach(var _ in zipped.Take(10))
+            foreach (var _ in zipped.Take(10))
             {
                 if (++count == 4)
                     ((IDisposable)shorter).Dispose();

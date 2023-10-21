@@ -31,13 +31,13 @@ namespace MoreLinq.Test
         [Test]
         public void PadIsLazy()
         {
-            new BreakingSequence<object>().Pad(0);
+            _ = new BreakingSequence<object>().Pad(0);
         }
 
         [Test]
         public void PadWithFillerIsLazy()
         {
-            new BreakingSequence<object>().Pad(0, new object());
+            _ = new BreakingSequence<object>().Pad(0, new object());
         }
 
         public class ValueTypeElements

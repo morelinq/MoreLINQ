@@ -170,7 +170,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestPermutationsIsLazy()
         {
-            new BreakingSequence<int>().Permutations();
+            _ = new BreakingSequence<int>().Permutations();
         }
 
         /// <summary>

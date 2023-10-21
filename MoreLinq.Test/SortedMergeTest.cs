@@ -36,7 +36,7 @@ namespace MoreLinq.Test
             var sequenceA = new BreakingSequence<int>();
             var sequenceB = new BreakingSequence<int>();
 
-            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+            _ = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
         }
 
         /// <summary>
@@ -52,6 +52,21 @@ namespace MoreLinq.Test
             Assert.That(() => sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>())
                                        .Consume(),
                         Throws.BreakException);
+        }
+
+        /// <summary>
+        /// Verify that SortedMerge do not call MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TestSortedMergeDoNotCallMoveNextEagerly()
+        {
+            using var sequenceA = TestingSequence.Of(1, 3);
+            using var sequenceB = MoreEnumerable.From(() => 2, () => throw new TestException())
+                                                .AsTestingSequence();
+
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB).Take(2);
+
+            Assert.That(() => result.Consume(), Throws.Nothing);
         }
 
         /// <summary>

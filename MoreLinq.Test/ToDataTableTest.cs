@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using System;
@@ -38,12 +36,7 @@ namespace MoreLinq.Test
             public decimal? ANullableDecimal { get; }
             public object Unreadable { set => throw new NotImplementedException(); }
 
-            public object this[int index]
-            {
-                get => new object();
-                set { }
-            }
-
+            public object this[int index] { get => new(); set { } }
 
             public TestObject(int key)
             {
@@ -61,12 +54,10 @@ namespace MoreLinq.Test
         readonly IReadOnlyCollection<TestObject> _testObjects;
 
 
-        public ToDataTableTest()
-        {
+        public ToDataTableTest() =>
             _testObjects = Enumerable.Range(0, 3)
                                      .Select(i => new TestObject(i))
                                      .ToArray();
-        }
 
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
@@ -81,7 +72,7 @@ namespace MoreLinq.Test
         public void ToDataTableTableWithWrongColumnNames()
         {
             using var dt = new DataTable();
-            dt.Columns.Add("Test");
+            _ = dt.Columns.Add("Test");
 
             Assert.That(() => _testObjects.ToDataTable(dt),
                         Throws.ArgumentException("table"));
@@ -91,9 +82,9 @@ namespace MoreLinq.Test
         public void ToDataTableTableWithWrongColumnDataType()
         {
             using var dt = new DataTable();
-            dt.Columns.Add("AString", typeof(int));
+            _ = dt.Columns.Add("AString", typeof(int));
 
-            Assert.That(() => _testObjects.ToDataTable(dt, t=>t.AString),
+            Assert.That(() => _testObjects.ToDataTable(dt, t => t.AString),
                         Throws.ArgumentException("table"));
         }
 
@@ -172,17 +163,17 @@ namespace MoreLinq.Test
         {
             using var dt = new DataTable();
             var columns = dt.Columns;
-            columns.Add("Column1", typeof(int));
-            columns.Add("Value", typeof(string));
-            columns.Add("Column3", typeof(int));
-            columns.Add("Name", typeof(string));
+            _ = columns.Add("Column1", typeof(int));
+            _ = columns.Add("Value", typeof(string));
+            _ = columns.Add("Column3", typeof(int));
+            _ = columns.Add("Name", typeof(string));
 
             var vars = Environment.GetEnvironmentVariables()
                                   .Cast<DictionaryEntry>()
                                   .ToArray();
 
-            vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value!.ToString() })
-                .ToDataTable(dt, e => e.Name, e => e.Value);
+            _ = vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value!.ToString() })
+                    .ToDataTable(dt, e => e.Name, e => e.Value);
 
             var rows = dt.Rows.Cast<DataRow>().ToArray();
             Assert.That(rows.Length, Is.EqualTo(vars.Length));
@@ -190,10 +181,11 @@ namespace MoreLinq.Test
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
         }
 
-        struct Point
+        readonly struct Point
         {
+
 #pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
-            public static Point Empty = new Point();
+            public static Point Empty = new();
 #pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
             public int X { get; }
