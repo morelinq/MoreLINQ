@@ -43,7 +43,8 @@ namespace MoreLinq.Test
             [Test]
             public void PairwiseWideSourceSequence()
             {
-                var result = new[] { "a", "b", "c", "d" }.Pairwise();
+                using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
+                var result = source.Pairwise();
                 result.AssertSequenceEqual(("a", "b"), ("b", "c"), ("c", "d"));
             }
         }
