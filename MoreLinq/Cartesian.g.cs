@@ -101,9 +101,10 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2)> Cartesian<T1, T2>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second)
+        public static IEnumerable<(T1 First, T2 Second)>
+            Cartesian<T1, T2>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second)
         {
             return Cartesian(first, second, ValueTuple.Create);
         }
@@ -186,10 +187,11 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2, T3)> Cartesian<T1, T2, T3>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third)
+        public static IEnumerable<(T1 First, T2 Second, T3 Third)>
+            Cartesian<T1, T2, T3>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third)
         {
             return Cartesian(first, second, third, ValueTuple.Create);
         }
@@ -282,11 +284,12 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2, T3, T4)> Cartesian<T1, T2, T3, T4>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth)
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth)>
+            Cartesian<T1, T2, T3, T4>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth)
         {
             return Cartesian(first, second, third, fourth, ValueTuple.Create);
         }
@@ -389,12 +392,13 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2, T3, T4, T5)> Cartesian<T1, T2, T3, T4, T5>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            IEnumerable<T5> fifth)
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth)>
+            Cartesian<T1, T2, T3, T4, T5>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth)
         {
             return Cartesian(first, second, third, fourth, fifth, ValueTuple.Create);
         }
@@ -507,13 +511,14 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2, T3, T4, T5, T6)> Cartesian<T1, T2, T3, T4, T5, T6>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            IEnumerable<T5> fifth,
-            IEnumerable<T6> sixth)
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth)>
+            Cartesian<T1, T2, T3, T4, T5, T6>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth)
         {
             return Cartesian(first, second, third, fourth, fifth, sixth, ValueTuple.Create);
         }
@@ -636,14 +641,15 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7)> Cartesian<T1, T2, T3, T4, T5, T6, T7>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            IEnumerable<T5> fifth,
-            IEnumerable<T6> sixth,
-            IEnumerable<T7> seventh)
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth, T7 Seventh)>
+            Cartesian<T1, T2, T3, T4, T5, T6, T7>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh)
         {
             return Cartesian(first, second, third, fourth, fifth, sixth, seventh, ValueTuple.Create);
         }
@@ -776,15 +782,16 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(T1, T2, T3, T4, T5, T6, T7, T8)> Cartesian<T1, T2, T3, T4, T5, T6, T7, T8>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            IEnumerable<T5> fifth,
-            IEnumerable<T6> sixth,
-            IEnumerable<T7> seventh,
-            IEnumerable<T8> eighth)
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth, T7 Seventh, T8 Eighth)>
+            Cartesian<T1, T2, T3, T4, T5, T6, T7, T8>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh,
+                IEnumerable<T8> eighth)
         {
             return Cartesian(first, second, third, fourth, fifth, sixth, seventh, eighth, ValueTuple.Create);
         }
