@@ -103,13 +103,13 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> Cartesian<<#=o.TypeParams#>, TResult>(
+        public static IEnumerable<TResult> Cartesian<<#= o.TypeParams #>, TResult>(
             this <#
         foreach (var arg in o.Arguments) { #>
 IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
             <#
         } #>
-Func<<#=o.TypeParams#>, TResult> resultSelector)
+Func<<#= o.TypeParams #>, TResult> resultSelector)
         {
 <#      foreach (var arg in o.Arguments) { #>
             if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
@@ -156,9 +156,9 @@ Func<<#=o.TypeParams#>, TResult> resultSelector)
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<(<#=o.TypeParams#>)> Cartesian<<#=o.TypeParams#>>(
-            this <#=string.Join($",\r\n            ", from arg in o.Arguments select
-            $"IEnumerable<T{arg.Number}> {arg.Ordinal}")#>)
+        public static IEnumerable<(<#= o.TypeParams #>)> Cartesian<<#= o.TypeParams #>>(
+            this <#= string.Join($",\r\n            ", from arg in o.Arguments select
+            $"IEnumerable<T{arg.Number}> {arg.Ordinal}") #>)
         {
             return Cartesian(<#= string.Join(", ", o.Arguments.Select(a => a.Ordinal)) #>, ValueTuple.Create);
         }
