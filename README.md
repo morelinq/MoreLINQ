@@ -150,7 +150,7 @@ Returns the Cartesian product of two or more sequences by combining each
 element from the sequences and applying a user-defined projection to the
 set.
 
-This method has 7 overloads.
+This method has 14 overloads.
 
 ### Choose
 

@@ -83,6 +83,33 @@ namespace MoreLinq
         }
 
         /// <summary>
+        /// Returns the Cartesian product of two sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second)>
+            Cartesian<T1, T2>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second)
+        {
+            return Cartesian(first, second, ValueTuple.Create);
+        }
+
+        /// <summary>
         /// Returns the Cartesian product of three sequences by enumerating all
         /// possible combinations of one item from each sequence, and applying
         /// a user-defined projection to the items in a given combination.
@@ -137,6 +164,36 @@ namespace MoreLinq
                         yield return resultSelector(item1, item2, item3);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of three sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third)>
+            Cartesian<T1, T2, T3>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third)
+        {
+            return Cartesian(first, second, third, ValueTuple.Create);
         }
 
         /// <summary>
@@ -202,6 +259,39 @@ namespace MoreLinq
                         yield return resultSelector(item1, item2, item3, item4);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of four sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth)>
+            Cartesian<T1, T2, T3, T4>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth)
+        {
+            return Cartesian(first, second, third, fourth, ValueTuple.Create);
         }
 
         /// <summary>
@@ -275,6 +365,42 @@ namespace MoreLinq
                         yield return resultSelector(item1, item2, item3, item4, item5);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of five sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth)>
+            Cartesian<T1, T2, T3, T4, T5>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth)
+        {
+            return Cartesian(first, second, third, fourth, fifth, ValueTuple.Create);
         }
 
         /// <summary>
@@ -356,6 +482,45 @@ namespace MoreLinq
                         yield return resultSelector(item1, item2, item3, item4, item5, item6);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of six sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth)>
+            Cartesian<T1, T2, T3, T4, T5, T6>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth)
+        {
+            return Cartesian(first, second, third, fourth, fifth, sixth, ValueTuple.Create);
         }
 
         /// <summary>
@@ -445,6 +610,48 @@ namespace MoreLinq
                         yield return resultSelector(item1, item2, item3, item4, item5, item6, item7);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of seven sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="T7">The type of the elements of <paramref name="seventh"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="seventh">The seventh sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth, T7 Seventh)>
+            Cartesian<T1, T2, T3, T4, T5, T6, T7>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh)
+        {
+            return Cartesian(first, second, third, fourth, fifth, sixth, seventh, ValueTuple.Create);
         }
 
         /// <summary>
@@ -542,6 +749,51 @@ namespace MoreLinq
                         yield return resultSelector(item1, item2, item3, item4, item5, item6, item7, item8);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of eight sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="T7">The type of the elements of <paramref name="seventh"/>.</typeparam>
+        /// <typeparam name="T8">The type of the elements of <paramref name="eighth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="seventh">The seventh sequence of elements.</param>
+        /// <param name="eighth">The eighth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth, T7 Seventh, T8 Eighth)>
+            Cartesian<T1, T2, T3, T4, T5, T6, T7, T8>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh,
+                IEnumerable<T8> eighth)
+        {
+            return Cartesian(first, second, third, fourth, fifth, sixth, seventh, eighth, ValueTuple.Create);
         }
     }
 }

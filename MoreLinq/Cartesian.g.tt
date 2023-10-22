@@ -43,19 +43,20 @@ namespace MoreLinq
         {
             new[]
             {
-                new { Ordinal = "first"  , Arity = "one"   },
-                new { Ordinal = "second" , Arity = "two"   },
-                new { Ordinal = "third"  , Arity = "three" },
-                new { Ordinal = "fourth" , Arity = "four"  },
-                new { Ordinal = "fifth"  , Arity = "five"  },
-                new { Ordinal = "sixth"  , Arity = "six"   },
-                new { Ordinal = "seventh", Arity = "seven" },
-                new { Ordinal = "eighth" , Arity = "eight" },
+                new { Ordinal = "First"  , Arity = "one"   },
+                new { Ordinal = "Second" , Arity = "two"   },
+                new { Ordinal = "Third"  , Arity = "three" },
+                new { Ordinal = "Fourth" , Arity = "four"  },
+                new { Ordinal = "Fifth"  , Arity = "five"  },
+                new { Ordinal = "Sixth"  , Arity = "six"   },
+                new { Ordinal = "Seventh", Arity = "seven" },
+                new { Ordinal = "Eighth" , Arity = "eight" },
             }
         }
         select args.Select((a, i) => new
         {
             a.Ordinal,
+            OrdinalLower = a.Ordinal.ToLowerInvariant(),
             a.Arity,
             Count  = i + 1,
             Number = (i + 1).ToString(CultureInfo.InvariantCulture),
@@ -66,9 +67,8 @@ namespace MoreLinq
         select new
         {
             a.Arity,
-            Arguments = args.Take(a.Count)
-                            .Select(aa => new { aa.Number, aa.Ordinal })
-                            .ToList(),
+            Arguments = args.Take(a.Count).ToList(),
+            TypeParams = string.Join(", ", from aa in args.Take(a.Count) select $"T{aa.Number}")
         };
 
     foreach (var o in overloads)
@@ -81,12 +81,12 @@ namespace MoreLinq
         /// </summary>
 <#      foreach (var arg in o.Arguments) { #>
         /// <typeparam name="T<#= arg.Number #>">
-        /// The type of the elements of <paramref name="<#= arg.Ordinal #>"/>.</typeparam>
+        /// The type of the elements of <paramref name="<#= arg.OrdinalLower #>"/>.</typeparam>
 <#      } #>
         /// <typeparam name="TResult">
         /// The type of the elements of the result sequence.</typeparam>
 <#      foreach (var arg in o.Arguments) {#>
-        /// <param name="<#= arg.Ordinal #>">The <#= arg.Ordinal #> sequence of elements.</param>
+        /// <param name="<#= arg.OrdinalLower #>">The <#= arg.OrdinalLower #> sequence of elements.</param>
 <#      } #>
         /// <param name="resultSelector">A projection function that combines
         /// elements from all of the sequences.</param>
@@ -102,36 +102,66 @@ namespace MoreLinq
         /// This method uses deferred execution and stream its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> Cartesian<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult>(
+        public static IEnumerable<TResult> Cartesian<<#= o.TypeParams #>, TResult>(
             this <#
         foreach (var arg in o.Arguments) { #>
-IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>,
+IEnumerable<T<#= arg.Number #>> <#= arg.OrdinalLower #>,
             <#
         } #>
-Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult> resultSelector)
+Func<<#= o.TypeParams #>, TResult> resultSelector)
         {
 <#      foreach (var arg in o.Arguments) { #>
-            if (<#= arg.Ordinal #> == null) throw new ArgumentNullException(nameof(<#= arg.Ordinal #>));
+            if (<#= arg.OrdinalLower #> == null) throw new ArgumentNullException(nameof(<#= arg.OrdinalLower #>));
 <#      } #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return _(); IEnumerable<TResult> _()
             {
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Memo;
+                IEnumerable<T<#= arg.Number #>> <#= arg.OrdinalLower #>Memo;
 <#      } #>
 
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                using ((<#= arg.Ordinal #>Memo = <#= arg.Ordinal #>.Memoize()) as IDisposable)
+                using ((<#= arg.OrdinalLower #>Memo = <#= arg.OrdinalLower #>.Memoize()) as IDisposable)
 <#      } #>
                 {
                     foreach (var item1 in first)
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
-                    foreach (var item<#= arg.Number #> in <#= arg.Ordinal #>Memo)
+                    foreach (var item<#= arg.Number #> in <#= arg.OrdinalLower #>Memo)
 <#      } #>
                         yield return resultSelector(<#= string.Join(", ", from x in o.Arguments select "item" + x.Number) #>);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the Cartesian product of <#= o.Arity #> sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+<#      foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="T<#= arg.Number #>">The type of the elements of <paramref name="<#= arg.OrdinalLower #>"/>.</typeparam>
+<#      } #>
+<#      foreach (var arg in o.Arguments) {#>
+        /// <param name="<#= arg.OrdinalLower #>">The <#= arg.OrdinalLower #> sequence of elements.</param>
+<#      } #>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(<#= string.Join(", ", from a in o.Arguments select $"T{a.Number} {a.Ordinal}") #>)>
+            Cartesian<<#= o.TypeParams #>>(
+                this <#= string.Join($",{Environment.NewLine}                ",
+                                     from arg in o.Arguments
+                                     select $"IEnumerable<T{arg.Number}> {arg.OrdinalLower}") #>)
+        {
+            return Cartesian(<#= string.Join(", ", from a in o.Arguments select a.OrdinalLower) #>, ValueTuple.Create);
         }
 <#  } #>
     }
