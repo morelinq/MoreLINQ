@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
     /// <summary>
@@ -26,20 +25,17 @@ namespace MoreLinq.Test
     /// </summary>
     static class SampleData
     {
-        internal static readonly ReadOnlyCollection<string> Strings = new ReadOnlyCollection<string>(
-            new[] { "ax", "hello", "world", "aa", "ab", "ay", "az" });
+        internal static readonly ReadOnlyCollection<string> Strings = new(new[]
+        {
+            "ax", "hello", "world", "aa", "ab", "ay", "az"
+        });
 
-        internal static readonly ReadOnlyCollection<int> Values =
-            new ReadOnlyCollection<int>(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+        internal static readonly ReadOnlyCollection<int> Values = new(new[]
+        {
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        });
 
         internal static readonly Func<int, int, int> Plus = (a, b) => a + b;
         internal static readonly Func<int, int, int> Mul = (a, b) => a * b;
-
-        internal static readonly IComparer<char> ReverseCharComparer = new ReverseCharComparerImpl();
-
-        class ReverseCharComparerImpl : IComparer<char>
-        {
-            public int Compare(char x, char y) => y.CompareTo(x);
-        }
     }
 }

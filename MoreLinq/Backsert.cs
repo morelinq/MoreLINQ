@@ -60,19 +60,22 @@ namespace MoreLinq
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
-            if (index < 0)  throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
-            if (index == 0)
-                return first.Concat(second);
+            return index switch
+            {
+                < 0 => throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative."),
+                0 => first.Concat(second),
+                _ => _()
+            };
 
-            return _(); IEnumerable<T> _()
+            IEnumerable<T> _()
             {
                 using var e = first.CountDown(index, ValueTuple.Create).GetEnumerator();
 
                 if (e.MoveNext())
                 {
                     var (_, countdown) = e.Current;
-                    if (countdown is int n && n != index - 1)
+                    if (countdown is { } n && n != index - 1)
                         throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
 
                     do

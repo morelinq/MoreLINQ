@@ -46,19 +46,18 @@ namespace MoreLinq
         /// 56 and 78 in turn.
         /// </example>
 
+#if NETSTANDARD2_1 || NETCOREAPP2_0_OR_GREATER
+        public static IEnumerable<TSource> TakeLast<TSource>(IEnumerable<TSource> source, int count)
+#else
         public static IEnumerable<TSource> TakeLast<TSource>(this IEnumerable<TSource> source, int count)
+#endif
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            if (count < 1)
-                return Enumerable.Empty<TSource>();
-
-            return
-                source.TryGetCollectionCount() is int collectionCount
-                ? source.Slice(Math.Max(0, collectionCount - count), int.MaxValue)
-                : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
-                        .SkipWhile(e => e.Countdown == null)
-                        .Select(e => e.Element);
+            return count < 1 ? Enumerable.Empty<TSource>()
+                 : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
+                         .SkipWhile(e => e.Countdown == null)
+                         .Select(e => e.Element);
         }
     }
 }

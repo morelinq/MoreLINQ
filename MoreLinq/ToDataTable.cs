@@ -41,7 +41,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, null);
+            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object?>>>.Value);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
         }
@@ -92,15 +92,19 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (table == null) throw new ArgumentNullException(nameof(table));
 
+            // TODO disallow null for "expressions" in next major update
+
+            expressions ??= EmptyArray<Expression<Func<T, object?>>>.Value;
+
             var members = PrepareMemberInfos(expressions).ToArray();
-            members = BuildOrBindSchema(table, members);
-            var shredder = CreateShredder<T>(members);
+            var boundMembers = BuildOrBindSchema(table, members);
+            var shredder = CreateShredder<T>(boundMembers);
 
             //
             // Builds rows out of elements in the sequence and
@@ -126,18 +130,17 @@ namespace MoreLinq
             return table;
         }
 
-        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object?>>> expressions)
         {
             //
             // If no lambda expressions supplied then reflect them off the source element type.
             //
 
-            if (expressions == null || expressions.Count == 0)
+            if (expressions.Count == 0)
             {
                 return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
                        where m.MemberType == MemberTypes.Field
-                          || m is PropertyInfo p && p.CanRead
-                                                 && p.GetIndexParameters().Length == 0
+                          || m is PropertyInfo { CanRead: true } p && p.GetIndexParameters().Length == 0
                        select m;
             }
 
@@ -156,19 +159,18 @@ namespace MoreLinq
                 throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
             }
 
-            MemberInfo GetAccessedMember(LambdaExpression lambda)
+            static MemberInfo GetAccessedMember(LambdaExpression lambda)
             {
                 var body = lambda.Body;
 
                 // If it's a field access, boxing was used, we need the field
-                if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
+                if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
                     body = ((UnaryExpression)body).Operand;
 
                 // Check if the member expression is valid and is a "first level"
                 // member access e.g. not a.b.c
-                return body is MemberExpression memberExpression
-                       && memberExpression.Expression.NodeType == ExpressionType.Parameter
-                     ? memberExpression.Member
+                return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
+                     ? member
                      : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
         }
@@ -178,7 +180,7 @@ namespace MoreLinq
         /// columns for which there is no source member supplying a value.
         /// </remarks>
 
-        static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+        static MemberInfo?[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
         {
             //
             // Retrieve member information needed to
@@ -186,20 +188,6 @@ namespace MoreLinq
             //
 
             var columns = table.Columns;
-
-            var schemas = from m in members
-                          let type = m.MemberType == MemberTypes.Property
-                                   ? ((PropertyInfo) m).PropertyType
-                                   : ((FieldInfo) m).FieldType
-                          select new
-                          {
-                              Member = m,
-                              Type = type.IsGenericType
-                                     && typeof(Nullable<>) == type.GetGenericTypeDefinition()
-                                   ? type.GetGenericArguments()[0]
-                                   : type,
-                              Column = columns[m.Name],
-                          };
 
             //
             // If the table has no columns then build the schema.
@@ -209,31 +197,37 @@ namespace MoreLinq
 
             if (columns.Count == 0)
             {
-                columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
+                foreach (var member in members)
+                    _ = columns.Add(member.Name, GetElementaryTypeOfPropertyOrField(member));
+
+                return members;
             }
-            else
+
+            var columnMembers = new MemberInfo[columns.Count];
+
+            foreach (var member in members)
             {
-                members = new MemberInfo[columns.Count];
+                var column = columns[member.Name] ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
-                foreach (var info in schemas)
-                {
-                    var member = info.Member;
-                    var column = info.Column;
+                if (GetElementaryTypeOfPropertyOrField(member) is var type && type != column.DataType)
+                    throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {type} when it is {column.DataType}.", nameof(table));
 
-                    if (column == null)
-                        throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
-
-                    if (info.Type != column.DataType)
-                        throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));
-
-                    members[column.Ordinal] = member;
-                }
+                columnMembers[column.Ordinal] = member;
             }
 
-            return members;
+            return columnMembers;
+
+            static Type GetElementaryTypeOfPropertyOrField(MemberInfo member) =>
+                (member.MemberType == MemberTypes.Property ? ((PropertyInfo)member).PropertyType
+                                                           : ((FieldInfo)member).FieldType)
+                switch
+                {
+                    var type when Nullable.GetUnderlyingType(type) is { } ut => ut,
+                    var type => type,
+                };
         }
 
-        static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+        static Func<T, object[]> CreateShredder<T>(MemberInfo?[] members)
         {
             var parameter = Expression.Parameter(typeof(T), "e");
 

@@ -109,7 +109,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenIsLazy()
         {
-            new BreakingSequence<int>().Flatten();
+            _ = new BreakingSequence<int>().Flatten();
         }
 
         // Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
@@ -136,7 +136,7 @@ namespace MoreLinq.Test
                 7,
             };
 
-            var result = source.Flatten(obj => !(obj is IEnumerable<bool>));
+            var result = source.Flatten(obj => obj is not IEnumerable<bool>);
 
             var expectations = new object[]
             {
@@ -220,7 +220,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateIsLazy()
         {
-            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
         }
 
         [Test]
@@ -236,29 +236,27 @@ namespace MoreLinq.Test
                 7,
             };
 
-            using (var inner1 = TestingSequence.Of(4, 5))
-            using (var inner2 = TestingSequence.Of(true, false))
-            using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
-            using (var source = TestingSequence.Of<object>(inner1, inner3))
-            {
-                Assert.That(source.Flatten(), Is.EqualTo(expectations));
-            }
+            using var inner1 = TestingSequence.Of(4, 5);
+            using var inner2 = TestingSequence.Of(true, false);
+            using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
+            using var source = TestingSequence.Of<object>(inner1, inner3);
+
+            Assert.That(source.Flatten(), Is.EqualTo(expectations));
         }
 
         [Test]
         public void FlattenInterruptedIterationDisposesInnerSequences()
         {
-            using (var inner1 = TestingSequence.Of(4, 5))
-            using (var inner2 = MoreEnumerable.From(() => true,
-                                                    () => false,
-                                                    () => throw new TestException())
-                                              .AsTestingSequence())
-            using (var inner3 = TestingSequence.Of<object>(6, inner2, 7))
-            using (var source = TestingSequence.Of<object>(inner1, inner3))
-            {
-                Assert.Throws<TestException>(() =>
-                    source.Flatten().Consume());
-            }
+            using var inner1 = TestingSequence.Of(4, 5);
+            using var inner2 = MoreEnumerable.From(() => true,
+                                                   () => false,
+                                                   () => throw new TestException())
+                                             .AsTestingSequence();
+            using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
+            using var source = TestingSequence.Of<object>(inner1, inner3);
+
+            Assert.That(() => source.Flatten().Consume(),
+                        Throws.TypeOf<TestException>());
         }
 
         [Test]
@@ -291,8 +289,8 @@ namespace MoreLinq.Test
 
             Assert.That(result.Take(10), Is.EqualTo(expectations));
 
-            Assert.Throws<TestException>(() =>
-                source.Flatten().ElementAt(11));
+            Assert.That(() => source.Flatten().ElementAt(11),
+                        Throws.TypeOf<TestException>());
         }
 
         // Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
@@ -300,7 +298,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenSelectorIsLazy()
         {
-            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
+            _ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
         }
 
         [Test]
@@ -327,21 +325,13 @@ namespace MoreLinq.Test
                 }
             };
 
-            var result = source.Flatten(obj =>
+            var result = source.Flatten(obj => obj switch
             {
-                switch (obj)
-                {
-                    case string _:
-                        return null;
-                    case IEnumerable inner:
-                        return inner;
-                    case Series s:
-                        return new object[] { s.Name, s.Attributes };
-                    case Attribute a:
-                        return a.Values;
-                    default:
-                        return null;
-                }
+                string => null,
+                IEnumerable inner => inner,
+                Series s => new object[] { s.Name, s.Attributes },
+                Attribute a => a.Values,
+                _ => null
             });
 
             var expectations = new object[] { "series1", 1, 2, 3, 4, "series2", 5, 6 };
@@ -370,17 +360,11 @@ namespace MoreLinq.Test
                 4,
             };
 
-            var result = source.Flatten(obj =>
+            var result = source.Flatten(obj => obj switch
             {
-                switch (obj)
-                {
-                    case int _:
-                        return null;
-                    case IEnumerable inner:
-                        return inner;
-                    default:
-                        return Enumerable.Empty<object>();
-                }
+                int => null,
+                IEnumerable inner => inner,
+                _ => Enumerable.Empty<object>()
             });
 
             var expectations = new object[] { 1, 2, 3, 4 };
@@ -408,19 +392,12 @@ namespace MoreLinq.Test
                 )
             );
 
-            var result = new [] { source }.Flatten(obj =>
+            var result = new[] { source }.Flatten(obj => obj switch
             {
-                switch (obj)
-                {
-                    case int _:
-                        return null;
-                    case Tree<int> tree:
-                        return new object[] { tree.Left, tree.Value, tree.Right };
-                    case IEnumerable inner:
-                        return inner;
-                    default:
-                        return Enumerable.Empty<object>();
-                }
+                int => null,
+                Tree<int> tree => new object?[] { tree.Left, tree.Value, tree.Right },
+                IEnumerable inner => inner,
+                _ => Enumerable.Empty<object>()
             });
 
             var expectations = Enumerable.Range(1, 7);
@@ -428,25 +405,25 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-        class Series
+        sealed class Series
         {
-            public string Name;
-            public Attribute[] Attributes;
+            public required string Name;
+            public required Attribute[] Attributes;
         }
 
-        class Attribute
+        sealed class Attribute
         {
-            public int[] Values;
+            public required int[] Values;
         }
 
-        class Tree<T>
+        sealed class Tree<T>
         {
             public readonly T Value;
-            public readonly Tree<T> Left;
-            public readonly Tree<T> Right;
+            public readonly Tree<T>? Left;
+            public readonly Tree<T>? Right;
 
-            public Tree(T value) : this(null, value, null) {}
-            public Tree(Tree<T> left, T value, Tree<T> right)
+            public Tree(T value) : this(null, value, null) { }
+            public Tree(Tree<T>? left, T value, Tree<T>? right)
             {
                 Left = left;
                 Value = value;

@@ -2,25 +2,14 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp2.0;netcoreapp2.1;netcoreapp3.0;net451</TargetFrameworks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TargetFrameworks>net7.0;net6.0;net471</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
-    <OutputType>Exe</OutputType>
+    <OutputType Condition="'$(TargetFramework)' == 'net471'">Exe</OutputType>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <IsPackable>false</IsPackable>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">$(PackageTargetFallback);dotnet5.4;portable-net451+win8</PackageTargetFallback>
-    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">1.0.4</RuntimeFrameworkVersion>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <ApplicationIcon />
-    <OutputTypeEx>library</OutputTypeEx>
-    <StartupObject>MoreLinq.Test.Program</StartupObject>
-    <LangVersion>8</LangVersion>
     <WarningsNotAsErrors>618</WarningsNotAsErrors>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <DefineConstants>$(DefineConstants);NO_ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,70 +17,50 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Delegating" Version="1.3.1" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.2">
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnitLite" Version="3.12.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.5.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NUnitLite" Version="3.13.3" />
+    <PackageReference Include="PolySharp" Version="1.9.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Reactive" Version="3.1.1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net471'">
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
+    <Compile Remove="Async\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
-      <Compile Include="*Test.cs" />
-      <Compile Include="Test*.cs" />
       <None Remove="TestResult.xml" />
+      <None Remove="TestResults\**" />
+      <Compile Include="..\MoreLinq\Debug.cs" Link="Debug.cs" />
       <Compile Include="..\MoreLinq\Disposable.cs" Link="Disposable.cs" />
       <Compile Include="..\MoreLinq\Reactive\Subject.cs" Link="Subject.cs" />
-      <Compile Include="AssertThrowsArgument.cs" />
-      <Compile Include="BreakingCollection.cs" />
-      <Compile Include="BreakingAction.cs" />
-      <Compile Include="BreakingFunc.cs" />
-      <Compile Include="BreakingList.cs" />
-      <Compile Include="BreakingReadOnlyCollection.cs" />
-      <Compile Include="BreakingReadOnlyList.cs" />
-      <Compile Include="BreakingSequence.cs" />
-      <Compile Include="Combinatorics.cs" />
-      <Compile Include="Comparer.cs" />
-      <Compile Include="CurrentThreadCultureScope.cs" />
-      <Compile Include="Enumerable.cs" />
-      <Compile Include="EqualityComparer.cs" />
-      <Compile Include="KeyValuePair.cs" />
-      <Compile Include="Program.cs" />
-      <Compile Include="ReadOnlyCollection.cs" />
-      <Compile Include="SampleData.cs" />
-      <Compile Include="Scope.cs" />
-      <Compile Include="SequenceReader.cs" />
-      <Compile Include="WatchableEnumerator.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <Compile Remove="TraceTest.cs" />
-    <Compile Remove="ToDataTableTest.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
-    <Reference Include="System" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <PackageReference Include="System.Diagnostics.StackTrace">
-      <Version>4.3.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>

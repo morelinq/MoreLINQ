@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2016 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.AppendExtension;
 
     [TestFixture]
     public class PartialSortTests
@@ -76,7 +77,7 @@ namespace MoreLinq.Test
         [Test]
         public void PartialSortIsLazy()
         {
-            new BreakingSequence<object>().PartialSort(1);
+            _ = new BreakingSequence<object>().PartialSort(1);
         }
 
         [Test, Ignore("TODO")]
@@ -92,7 +93,7 @@ namespace MoreLinq.Test
 
             var sorted = foobars.PartialSortBy(5, s => s.Length);
 
-            // Pair expected and actuals by index and then check
+            // Pair expected and actual by index and then check
             // reference equality, finding the first mismatch.
 
             var mismatchIndex =

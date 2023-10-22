@@ -31,25 +31,16 @@ namespace MoreLinq
         /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
+#if NET471_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP2_0_OR_GREATER
+        public static IEnumerable<T> Append<T>(IEnumerable<T> head, T tail)
+#else
         public static IEnumerable<T> Append<T>(this IEnumerable<T> head, T tail)
+#endif
         {
             if (head == null) throw new ArgumentNullException(nameof(head));
             return head is PendNode<T> node
                 ? node.Concat(tail)
                 : PendNode<T>.WithSource(head).Concat(tail);
         }
-
-        /// <summary>
-        /// Returns a sequence consisting of the head elements and the given tail element.
-        /// </summary>
-        /// <typeparam name="T">Type of sequence</typeparam>
-        /// <param name="head">All elements of the head. Must not be null.</param>
-        /// <param name="tail">Tail element of the new sequence.</param>
-        /// <returns>A sequence consisting of the head elements and the given tail element.</returns>
-        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-
-        [Obsolete("Use " + nameof(Append) + " instead.")]
-        public static IEnumerable<T> Concat<T>(this IEnumerable<T> head, T tail) =>
-            head.Append(tail);
     }
 }

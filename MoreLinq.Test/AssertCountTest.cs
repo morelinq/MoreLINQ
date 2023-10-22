@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2009 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,10 +28,10 @@ namespace MoreLinq.Test
         public void AssertCountNegativeCount()
         {
             var source = new object[0];
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                source.AssertCount(-1));
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()));
+            Assert.That(() => source.AssertCount(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
+            Assert.That(() => source.AssertCount(-1, BreakingFunc.Of<int, int, Exception>()),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         [Test]
@@ -43,46 +43,51 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountShortSequence()
         {
-            Assert.Throws<SequenceException>(() =>
-                "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume());
+            Assert.That(() => "foo,bar,baz".GenerateSplits(',').AssertCount(4).Consume(),
+                        Throws.TypeOf<SequenceException>());
         }
 
         [Test]
         public void AssertCountLongSequence()
         {
-            Assert.Throws<SequenceException>(() =>
-                "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume());
+            Assert.That(() => "foo,bar,baz".GenerateSplits(',').AssertCount(2).Consume(),
+                        Throws.TypeOf<SequenceException>());
         }
 
-        [Test]
-        public void AssertCountDefaultExceptionMessageVariesWithCase()
+        [TestCase("", 1, "Sequence contains too few elements when exactly 1 was expected.")]
+        [TestCase("foo,bar,baz", 1, "Sequence contains too many elements when exactly 1 was expected.")]
+        [TestCase("foo,bar,baz", 4, "Sequence contains too few elements when exactly 4 were expected.")]
+        [TestCase("foo,bar,baz", 2, "Sequence contains too many elements when exactly 2 were expected.")]
+        public void AssertCountDefaultExceptionMessageVariesWithCase(string str, int count, string expectedMessage)
         {
-            var tokens = "foo,bar,baz".GenerateSplits(',');
-            var e1 = Assert.Throws<SequenceException>(() => tokens.AssertCount(4).Consume());
-            var e2 = Assert.Throws<SequenceException>(() => tokens.AssertCount(2).Consume());
-            Assert.That(e1.Message, Is.Not.EqualTo(e2.Message));
+            var tokens = str.GenerateSplits(',')
+                            .Where(t => t.Length > 0)
+                            .AssertCount(count);
+
+            Assert.That(() => tokens.Consume(),
+                        Throws.TypeOf<SequenceException>().With.Message.EqualTo(expectedMessage));
         }
 
         [Test]
         public void AssertCountLongSequenceWithErrorSelector()
         {
-            var e =
-                Assert.Throws<TestException>(() =>
-                    "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count))
-                                 .Consume());
-            Assert.That(e.Cmp, Is.GreaterThan(0));
-            Assert.That(e.Count, Is.EqualTo(2));
+            Assert.That(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(2, (cmp, count) => new TestException(cmp, count))
+                             .Consume(),
+                Throws.TypeOf<TestException>()
+                      .With.Property(nameof(TestException.Cmp)).GreaterThan(0)
+                      .And.Count.EqualTo(2));
         }
 
         [Test]
         public void AssertCountShortSequenceWithErrorSelector()
         {
-            var e =
-                Assert.Throws<TestException>(() =>
-                    "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count))
-                                 .Consume());
-            Assert.That(e.Cmp, Is.LessThan(0));
-            Assert.That(e.Count, Is.EqualTo(4));
+            Assert.That(() =>
+                "foo,bar,baz".GenerateSplits(',').AssertCount(4, (cmp, count) => new TestException(cmp, count))
+                             .Consume(),
+                Throws.TypeOf<TestException>()
+                      .With.Property(nameof(TestException.Cmp)).LessThan(0)
+                      .And.Count.EqualTo(4));
         }
 
         sealed class TestException : Exception
@@ -100,20 +105,13 @@ namespace MoreLinq.Test
         [Test]
         public void AssertCountIsLazy()
         {
-            new BreakingSequence<object>().AssertCount(0);
+            _ = new BreakingSequence<object>().AssertCount(0);
         }
 
         [Test]
         public void AssertCountWithCollectionIsLazy()
         {
-            new BreakingCollection<object>(5).AssertCount(0);
-        }
-
-        [Test]
-        public void AssertCountWithMatchingCollectionCount()
-        {
-            var xs = new[] { 123, 456, 789 };
-            Assert.AreSame(xs, xs.AssertCount(3));
+            _ = new BreakingCollection<int>(new int[5]).AssertCount(0);
         }
 
         [TestCase(3, 2, "Sequence contains too many elements when exactly 2 were expected.")]
@@ -121,15 +119,25 @@ namespace MoreLinq.Test
         public void AssertCountWithMismatchingCollectionCount(int sourceCount, int count, string message)
         {
             var xs = new int[sourceCount];
-            var enumerator = xs.AssertCount(count).GetEnumerator();
-            var e = Assert.Throws<SequenceException>(() => enumerator.MoveNext());
-            Assert.AreEqual(e.Message, message);
+            using var enumerator = xs.AssertCount(count).GetEnumerator();
+            Assert.That(enumerator.MoveNext,
+                        Throws.TypeOf<SequenceException>().With.Message.EqualTo(message));
         }
 
         [Test]
         public void AssertCountWithReadOnlyCollectionIsLazy()
         {
-            new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+            _ = new BreakingReadOnlyCollection<object>(5).AssertCount(0);
+        }
+
+        [Test]
+        public void AssertCountUsesCollectionCountAtIterationTime()
+        {
+            var stack = new Stack<int>(Enumerable.Range(1, 3));
+            var result = stack.AssertCount(4);
+            stack.Push(4);
+            result.Consume();
+            Assert.Pass();
         }
     }
 }

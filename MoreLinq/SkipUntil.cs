@@ -59,16 +59,17 @@ namespace MoreLinq
 
             return _(); IEnumerable<TSource> _()
             {
-                using var iterator = source.GetEnumerator();
+                using var enumerator = source.GetEnumerator();
 
-                while (iterator.MoveNext())
+                do
                 {
-                    if (predicate(iterator.Current))
-                        break;
+                    if (!enumerator.MoveNext())
+                        yield break;
                 }
+                while (!predicate(enumerator.Current));
 
-                while (iterator.MoveNext())
-                    yield return iterator.Current;
+                while (enumerator.MoveNext())
+                    yield return enumerator.Current;
             }
         }
     }

@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+// Copyright (c) 2012 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class PairwiseTest
+    public static class PairwiseTest
     {
         public class ReturningTuples
         {
             [Test]
             public void PairwiseIsLazy()
             {
-                new BreakingSequence<object>().Pairwise();
+                _ = new BreakingSequence<object>().Pairwise();
             }
 
             [TestCase(0)]
@@ -43,7 +43,8 @@ namespace MoreLinq.Test
             [Test]
             public void PairwiseWideSourceSequence()
             {
-                var result = new[] { "a", "b", "c", "d" }.Pairwise();
+                using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
+                var result = source.Pairwise();
                 result.AssertSequenceEqual(("a", "b"), ("b", "c"), ("c", "d"));
             }
         }
@@ -53,7 +54,7 @@ namespace MoreLinq.Test
             [Test]
             public void PairwiseIsLazy()
             {
-                new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
+                _ = new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
             }
 
             [TestCase(0)]
@@ -69,7 +70,8 @@ namespace MoreLinq.Test
             [Test]
             public void PairwiseWideSourceSequence()
             {
-                var result = new[] { "a", "b", "c", "d" }.Pairwise((x, y) => x + y);
+                using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
+                var result = source.Pairwise((x, y) => x + y);
                 result.AssertSequenceEqual("ab", "bc", "cd");
             }
         }

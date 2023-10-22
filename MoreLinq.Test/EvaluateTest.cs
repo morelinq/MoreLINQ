@@ -20,12 +20,12 @@ namespace MoreLinq.Test
     using System;
     using NUnit.Framework;
 
-    class EvaluateTest
+    public class EvaluateTest
     {
         [Test]
         public void TestEvaluateIsLazy()
         {
-            new BreakingSequence<Func<int>>().Evaluate();
+            _ = new BreakingSequence<Func<int>>().Evaluate();
         }
 
         [Test]

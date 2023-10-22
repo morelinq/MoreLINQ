@@ -55,7 +55,7 @@ namespace MoreLinq
         /// </summary>
         /// <typeparam name="T">Element type of sequence</typeparam>
         /// <param name="source">The source sequence</param>
-        /// <param name="count">The maximun number of items a sequence must have for this
+        /// <param name="count">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative</exception>
@@ -110,7 +110,7 @@ namespace MoreLinq
         /// <param name="source">The source sequence</param>
         /// <param name="min">The minimum number of items a sequence must have for this
         /// function to return true</param>
-        /// <param name="max">The maximun number of items a sequence must have for this
+        /// <param name="max">The maximum number of items a sequence must have for this
         /// function to return true</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="min"/> is negative or <paramref name="max"/> is less than min</exception>
@@ -136,7 +136,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            var count = source.TryGetCollectionCount() ?? source.CountUpTo(limit);
+            var count = source.TryAsCollectionLike()?.Count ?? source.CountUpTo(limit);
 
             return count >= min && count <= max;
         }
@@ -167,11 +167,11 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            if (first.TryGetCollectionCount() is int firstCount)
+            if (first.TryAsCollectionLike() is { Count: var firstCount })
             {
-                return firstCount.CompareTo(second.TryGetCollectionCount() ?? second.CountUpTo(firstCount + 1));
+                return firstCount.CompareTo(second.TryAsCollectionLike()?.Count ?? second.CountUpTo(firstCount + 1));
             }
-            else if (second.TryGetCollectionCount() is int secondCount)
+            else if (second.TryAsCollectionLike() is { Count: var secondCount })
             {
                 return first.CountUpTo(secondCount + 1).CompareTo(secondCount);
             }

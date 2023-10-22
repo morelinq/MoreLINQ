@@ -31,6 +31,26 @@ namespace MoreLinq.Test
         BreakingReadOnlyCollection
     }
 
+    static class SourceKinds
+    {
+        public static readonly IEnumerable<SourceKind> Sequence = new[]
+        {
+            SourceKind.Sequence,
+        };
+
+        public static readonly IEnumerable<SourceKind> Collection = new[]
+        {
+            SourceKind.BreakingCollection,
+            SourceKind.BreakingReadOnlyCollection
+        };
+
+        public static readonly IEnumerable<SourceKind> List = new[]
+        {
+            SourceKind.BreakingList,
+            SourceKind.BreakingReadOnlyList
+        };
+    }
+
     static partial class TestExtensions
     {
         /// <summary>
@@ -67,30 +87,24 @@ namespace MoreLinq.Test
                 yield return split;
         }
 
-        internal static IEnumerable<IEnumerable<T>> ArrangeCollectionTestCases<T>(this IEnumerable<T> input)
-        {
-            yield return input.ToSourceKind(SourceKind.Sequence);
-            yield return input.ToSourceKind(SourceKind.BreakingReadOnlyCollection);
-            yield return input.ToSourceKind(SourceKind.BreakingCollection);
-        }
-
-        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind)
-        {
-            switch (sourceKind)
+        internal static IEnumerable<T> ToSourceKind<T>(this IEnumerable<T> input, SourceKind sourceKind) =>
+#pragma warning disable IDE0072 // Add missing cases
+            sourceKind switch
+#pragma warning restore IDE0072 // Add missing cases
             {
-                case SourceKind.Sequence:
-                    return input.Select(x => x);
-                case SourceKind.BreakingList:
-                    return new BreakingList<T>(input.ToList());
-                case SourceKind.BreakingReadOnlyList:
-                    return new BreakingReadOnlyList<T>(input.ToList());
-                case SourceKind.BreakingCollection:
-                    return new BreakingCollection<T>(input.ToList());
-                case SourceKind.BreakingReadOnlyCollection:
-                    return new BreakingReadOnlyCollection<T>(input.ToList());
-                default:
-                    throw new ArgumentException(nameof(sourceKind));
-            }
-        }
+                SourceKind.Sequence => input.Select(x => x),
+                var kind => input.ToList().AsSourceKind(kind)
+            };
+
+        internal static IEnumerable<T> AsSourceKind<T>(this List<T> input, SourceKind sourceKind) =>
+            sourceKind switch
+            {
+                SourceKind.Sequence => input.Select(x => x),
+                SourceKind.BreakingList => new BreakingList<T>(input),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(input),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input),
+                _ => throw new ArgumentException(null, nameof(sourceKind))
+            };
     }
 }

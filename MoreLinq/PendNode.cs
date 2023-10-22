@@ -62,7 +62,7 @@ namespace MoreLinq
         public IEnumerator<T> GetEnumerator()
         {
             var i = 0;
-            T[] concats = null;       // Array for > 4 concatenations
+            T[]? concats = null;      // Array for > 4 concatenations
             var concat1 = default(T); // Slots for up to 4 concatenations
             var concat2 = default(T);
             var concat3 = default(T);
@@ -91,7 +91,7 @@ namespace MoreLinq
                                 case 1: concat2 = item.Value; break;
                                 case 2: concat3 = item.Value; break;
                                 case 3: concat4 = item.Value; break;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new UnreachableException();
                             }
                             continue;
                         }
@@ -101,17 +101,17 @@ namespace MoreLinq
                 }
             }
 
-            var source = (Source) current;
+            var source = (Source)current;
 
             foreach (var item in source.Value)
                 yield return item;
 
             if (concats == null)
             {
-                if (i == 4) { yield return concat4; i--; }
-                if (i == 3) { yield return concat3; i--; }
-                if (i == 2) { yield return concat2; i--; }
-                if (i == 1) { yield return concat1; i--; }
+                if (i == 4) { yield return concat4!; i--; }
+                if (i == 3) { yield return concat3!; i--; }
+                if (i == 2) { yield return concat2!; i--; }
+                if (i == 1) { yield return concat1!; }
                 yield break;
             }
 

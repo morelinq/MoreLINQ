@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     partial class MoreEnumerable
     {
@@ -60,8 +59,52 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.Index() // count-up
-                         .CountDown(1, (e, cd) => resultSelector(e.Value, e.Key == 0, cd == 0));
+            return _(); IEnumerable<TResult> _()
+            {
+                using var enumerator = source.GetEnumerator();
+
+                if (!enumerator.MoveNext())
+                    yield break;
+
+                var current = enumerator.Current;
+                var hasNext = enumerator.MoveNext();
+                yield return resultSelector(current, true, !hasNext);
+
+                while (hasNext)
+                {
+                    current = enumerator.Current;
+                    hasNext = enumerator.MoveNext();
+                    yield return resultSelector(current, false, !hasNext);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where the N-th tuple contains the N-th
+        /// element of the source sequence and two booleans indicating whether the
+        /// element is the first and/or last.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 123, 456, 789 };
+        /// var result = numbers.TagFirstLast();
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// <c>(123, True, False)</c>, <c>(456, False, False)</c> and
+        /// <c>(789, False, True)</c> in turn.
+        /// </example>
+
+        public static IEnumerable<(TSource Item, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
+        {
+            return TagFirstLast(source, ValueTuple.Create);
         }
     }
 }

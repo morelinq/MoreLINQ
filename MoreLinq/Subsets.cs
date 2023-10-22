@@ -25,22 +25,28 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all of
-        /// the subsets of any size that are part of the original sequence. In
-        /// mathematics, it is equivalent to the <em>power set</em> of a set.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all of the subsets of any size
+        /// that are part of the original sequence. In mathematics, it is equivalent to the
+        /// <em>power set</em> of a set.
         /// </summary>
+        /// <param name="sequence">Sequence for which to produce subsets.</param>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <returns>
+        /// A sequence of lists that represent the all subsets of the original sequence.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see
+        /// langword="null"/>.</exception>
         /// <remarks>
-        /// This operator produces all of the subsets of a given sequence. Subsets are returned
-        /// in increasing cardinality, starting with the empty set and terminating with the
-        /// entire original sequence.<br/>
+        /// <para>
+        /// This operator produces all of the subsets of a given sequence. Subsets are returned in
+        /// increasing cardinality, starting with the empty set and terminating with the entire
+        /// original sequence.</para>
+        /// <para>
         /// Subsets are produced in a deferred, streaming manner; however, each subset is returned
-        /// as a materialized list.<br/>
-        /// There are 2^N subsets of a given sequence, where N => sequence.Count().
+        /// as a materialized list.</para>
+        /// <para>
+        /// There are 2<sup>N</sup> subsets of a given sequence, where N &#8658;
+        /// <c>sequence.Count()</c>.</para>
         /// </remarks>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <returns>A sequence of lists that represent the all subsets of the original sequence</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sequence"/> is <see langword="null"/></exception>
 
         public static IEnumerable<IList<T>> Subsets<T>(this IEnumerable<T> sequence)
         {
@@ -66,23 +72,24 @@ namespace MoreLinq
                             yield return subset;
                     }
 
-                    yield return sequenceAsList; // the last subet is the original set itself
+                    yield return sequenceAsList; // the last subset is the original set itself
                 }
             }
         }
 
         /// <summary>
-        /// Returns a sequence of <see cref="IList{T}"/> representing all
-        /// subsets of a given size that are part of the original sequence. In
-        /// mathematics, it is equivalent to the <em>combinations</em> or
-        /// <em>k-subsets</em> of a set.
+        /// Returns a sequence of <see cref="IList{T}"/> representing all subsets of a given size
+        /// that are part of the original sequence. In mathematics, it is equivalent to the
+        /// <em>combinations</em> or <em>k-subsets</em> of a set.
         /// </summary>
-        /// <param name="sequence">Sequence for which to produce subsets</param>
-        /// <param name="subsetSize">The size of the subsets to produce</param>
-        /// <typeparam name="T">The type of the elements in the sequence</typeparam>
-        /// <returns>A sequence of lists that represents of K-sized subsets of the original sequence</returns>
+        /// <param name="sequence">Sequence for which to produce subsets.</param>
+        /// <param name="subsetSize">The size of the subsets to produce.</param>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <returns>
+        /// A sequence of lists that represents of K-sized subsets of the original
+        /// sequence.</returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="sequence"/> is <see langword="null"/>
+        /// Thrown if <paramref name="sequence"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="subsetSize"/> is less than zero.
@@ -95,9 +102,9 @@ namespace MoreLinq
             if (subsetSize < 0)
                 throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be >= 0");
 
-            // NOTE: Theres an interesting trade-off that we have to make in this operator.
+            // NOTE: There's an interesting trade-off that we have to make in this operator.
             // Ideally, we would throw an exception here if the {subsetSize} parameter is
-            // greater than the sequence length. Unforunately, determining the length of a
+            // greater than the sequence length. Unfortunately, determining the length of a
             // sequence is not always possible without enumerating it. Herein lies the rub.
             // We want Subsets() to be a deferred operation that only iterates the sequence
             // when the caller is ready to consume the results. However, this forces us to
@@ -123,7 +130,7 @@ namespace MoreLinq
             /// predetermined size less than or equal to the original set size.
             /// </summary>
 
-            class SubsetEnumerator : IEnumerator<IList<T>>
+            sealed class SubsetEnumerator : IEnumerator<IList<T>>
             {
                 readonly IList<T> _set;   // the original set of elements
                 readonly T[] _subset;     // the current subset to return
@@ -136,7 +143,7 @@ namespace MoreLinq
                 int _m2;           // current swap index (lower index)
                 int _k;            // size of the subset being produced
                 int _n;            // size of the original set (sequence)
-                int _z;            // count of items excluded from the subet
+                int _z;            // count of items excluded from the subset
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -159,7 +166,7 @@ namespace MoreLinq
                     _k = _subset.Length;
                     _n = _set.Count;
                     _z = _n - _k + 1;
-                    _continue = _subset.Length > 0;
+                    _continue = true;
                 }
 
                 public IList<T> Current => (IList<T>)_subset.Clone();
@@ -191,7 +198,7 @@ namespace MoreLinq
 
                     ExtractSubset();
 
-                    _continue = (_indices[0] != _z);
+                    _continue = _indices.Length > 0 && _indices[0] != _z;
                     return true;
                 }
 
@@ -209,7 +216,7 @@ namespace MoreLinq
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
-                if (sequence == null)
+                if (sequence is null)
                     throw new ArgumentNullException(nameof(sequence));
                 if (subsetSize < 0)
                     throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");

@@ -19,41 +19,60 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// negative offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each
+        /// value of the sequence.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and lagged
+        /// items (in that order) and returns a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lagged
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
-        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
+        /// <para>
+        /// This operator evaluates in a deferred and streaming manner.</para>
+        /// <para>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged
+        /// value.</para>
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate lag</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
-        /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
-        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource, TResult> resultSelector)
+        public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
         {
-            return Lag(source, offset, default, resultSelector);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (resultSelector is null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return source.Select(Some)
+                         .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
         }
 
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a negative offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// negative offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements of the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each
+        /// value of the sequence.</param>
+        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the
+        /// lag offset.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and lagged
+        /// items (in that order) and returns a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lagged
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// This operator evaluates in a deferred and streaming manner.
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements of the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate lag</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
-        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
-        /// <param name="resultSelector">A projection function which accepts the current and lagged items (in that order) and returns a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lagged pairing</returns>
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
         {
@@ -93,6 +112,41 @@ namespace MoreLinq
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a negative offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
+        /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
+        {
+            return Lag(source, offset, default, ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a negative offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements prior to the lag offset, <paramref name="defaultLagValue"/> is used as the lagged value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
+        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
+        /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
+        {
+            return Lag(source, offset, defaultLagValue, ValueTuple.Create);
         }
     }
 }

@@ -87,7 +87,7 @@ namespace MoreLinq
         /// otherwise, the first element in source.
         /// </returns>
 
-        public static T FirstOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Take(1).AsEnumerable().FirstOrDefault();
@@ -123,10 +123,10 @@ namespace MoreLinq
         /// otherwise, the last element in source.
         /// </returns>
 
-        public static T LastOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            return source.Take(1).AsEnumerable().LastOrDefault();
+            return source.TakeLast(1).AsEnumerable().LastOrDefault();
         }
 
         /// <summary>
@@ -142,7 +142,9 @@ namespace MoreLinq
         /// The single element of the input sequence.
         /// </returns>
 
+#pragma warning disable CA1720 // Identifier contains type name
         public static T Single<T>(this IExtremaEnumerable<T> source)
+#pragma warning restore CA1720 // Identifier contains type name
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Take(2).AsEnumerable().Single();
@@ -161,7 +163,7 @@ namespace MoreLinq
         /// <typeparamref name="T"/> if the sequence contains no elements.
         /// </returns>
 
-        public static T SingleOrDefault<T>(this IExtremaEnumerable<T> source)
+        public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return source.Take(2).AsEnumerable().SingleOrDefault();
@@ -180,7 +182,7 @@ namespace MoreLinq
         /// <typeparam name="TKey">Type of the projected element</typeparam>
         /// <param name="source">Source sequence</param>
         /// <param name="selector">Selector to use to pick the results to compare</param>
-        /// <returns>The maximal element, according to the projection.</returns>
+        /// <returns>The sequence of maximal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
@@ -202,18 +204,18 @@ namespace MoreLinq
         /// <param name="source">Source sequence</param>
         /// <param name="selector">Selector to use to pick the results to compare</param>
         /// <param name="comparer">Comparer to use to compare projected values</param>
-        /// <returns>The maximal element, according to the projection.</returns>
+        /// <returns>The sequence of maximal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
-            Func<TSource, TKey> selector, IComparer<TKey> comparer)
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
             comparer ??= Comparer<TKey>.Default;
-            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => comparer.Compare(x, y));
+            return new ExtremaEnumerable<TSource, TKey>(source, selector, comparer.Compare);
         }
 
         sealed class ExtremaEnumerable<T, TKey> : IExtremaEnumerable<T>
@@ -235,39 +237,56 @@ namespace MoreLinq
             IEnumerator IEnumerable.GetEnumerator() =>
                 GetEnumerator();
 
-            public IEnumerable<T> Take(int count)
-                => count == 0 ? Enumerable.Empty<T>()
-                 : count == 1 ? ExtremaBy(_source, Extremum.First, 1    , _selector, _comparer)
-                              : ExtremaBy(_source, Extrema.First , count, _selector, _comparer);
+            public IEnumerable<T> Take(int count) =>
+                count switch
+                {
+                    0 => Enumerable.Empty<T>(),
+                    1 => ExtremaBy(_source, Extremum.First, 1    , _selector, _comparer),
+                    _ => ExtremaBy(_source, Extrema.First , count, _selector, _comparer)
+                };
 
-            public IEnumerable<T> TakeLast(int count)
-                => count == 0 ? Enumerable.Empty<T>()
-                 : count == 1 ? ExtremaBy(_source, Extremum.Last, 1    , _selector, _comparer)
-                              : ExtremaBy(_source, Extrema.Last , count, _selector, _comparer);
+            public IEnumerable<T> TakeLast(int count) =>
+                count switch
+                {
+                    0 => Enumerable.Empty<T>(),
+                    1 => ExtremaBy(_source, Extremum.Last, 1    , _selector, _comparer),
+                    _ => ExtremaBy(_source, Extrema.Last , count, _selector, _comparer)
+                };
 
             static class Extrema
             {
-                public static readonly Extrema<List<T> , T> First = new FirstExtrema();
-                public static readonly Extrema<Queue<T>, T> Last  = new LastExtrema();
+                public static readonly Extrema<List<T>? , T> First = new FirstExtrema();
+                public static readonly Extrema<Queue<T>?, T> Last  = new LastExtrema();
 
-                sealed class FirstExtrema : Extrema<List<T>, T>
+                sealed class FirstExtrema : Extrema<List<T>?, T>
                 {
-                    protected override IEnumerable<T> GetSomeEnumerable(List<T> store) => store;
-                    protected override int Count(List<T> store) => store?.Count ?? 0;
-                    protected override void Push(ref List<T> store, T item) => (store ??= new List<T>()).Add(item);
-                    protected override bool TryPop(ref List<T> store) => false;
+                    public override List<T>? New() => null;
+                    public override void Restart(ref List<T>? store) => store = null;
+                    public override IEnumerable<T> GetEnumerable(List<T>? store) => store ?? Enumerable.Empty<T>();
+
+                    public override void Add(ref List<T>? store, int? limit, T item)
+                    {
+                        if (limit == null || store is null || store.Count < limit)
+                            (store ??= new List<T>()).Add(item);
+                    }
                 }
 
-                sealed class LastExtrema : Extrema<Queue<T>, T>
+                sealed class LastExtrema : Extrema<Queue<T>?, T>
                 {
-                    protected override IEnumerable<T> GetSomeEnumerable(Queue<T> store) => store;
-                    protected override int Count(Queue<T> store) => store?.Count ?? 0;
-                    protected override void Push(ref Queue<T> store, T item) => (store ??= new Queue<T>()).Enqueue(item);
-                    protected override bool TryPop(ref Queue<T> store) { store.Dequeue(); return true; }
+                    public override Queue<T>? New() => null;
+                    public override void Restart(ref Queue<T>? store) => store = null;
+                    public override IEnumerable<T> GetEnumerable(Queue<T>? store) => store ?? Enumerable.Empty<T>();
+
+                    public override void Add(ref Queue<T>? store, int? limit, T item)
+                    {
+                        if (limit is { } n && store is { } queue && queue.Count == n)
+                            _ = queue.Dequeue();
+                        (store ??= new Queue<T>()).Enqueue(item);
+                    }
                 }
             }
 
-            sealed class Extremum : Extrema<(bool HasValue, T Value), T>
+            sealed class Extremum : Extrema<(bool, T), T>
             {
                 public static readonly Extrema<(bool, T), T> First = new Extremum(false);
                 public static readonly Extrema<(bool, T), T> Last  = new Extremum(true);
@@ -275,19 +294,17 @@ namespace MoreLinq
                 readonly bool _poppable;
                 Extremum(bool poppable) => _poppable = poppable;
 
-                protected override IEnumerable<T> GetSomeEnumerable((bool HasValue, T Value) store) =>
-                    Enumerable.Repeat(store.Value, 1);
+                public override (bool, T) New() => default;
+                public override void Restart(ref (bool, T) store) => store = default;
 
-                protected override int Count((bool HasValue, T Value) store) => store.HasValue ? 1 : 0;
-                protected override void Push(ref (bool, T) store, T item) => store = (true, item);
+                public override IEnumerable<T> GetEnumerable((bool, T) store) =>
+                    store is (true, var item) ? Enumerable.Repeat(item, 1) : Enumerable.Empty<T>();
 
-                protected override bool TryPop(ref (bool, T) store)
+                public override void Add(ref (bool, T) store, int? limit, T item)
                 {
-                    if (!_poppable)
-                        return false;
-
-                    Restart(ref store);
-                    return true;
+                    if (!_poppable && store is (true, _))
+                        return;
+                    store = (true, item);
                 }
             }
         }
@@ -321,16 +338,18 @@ namespace MoreLinq
                 {
                     var item = e.Current;
                     var key = selector(item);
-                    var comparison = comparer(key, extremaKey);
-                    if (comparison > 0)
+                    switch (comparer(key, extremaKey))
                     {
-                        extrema.Restart(ref store);
-                        extrema.Add(ref store, limit, item);
-                        extremaKey = key;
-                    }
-                    else if (comparison == 0)
-                    {
-                        extrema.Add(ref store, limit, item);
+                        case > 0:
+                            extrema.Restart(ref store);
+                            extrema.Add(ref store, limit, item);
+                            extremaKey = key;
+                            break;
+                        case 0:
+                            extrema.Add(ref store, limit, item);
+                            break;
+                        default:
+                            break;
                     }
                 }
 
@@ -340,25 +359,10 @@ namespace MoreLinq
 
         abstract class Extrema<TStore, T>
         {
-            public virtual TStore New() => default;
-            public virtual void Restart(ref TStore store) => store = default;
-
-            public void Add(ref TStore store, int? limit, T item)
-            {
-                if (limit == null || Count(store) < limit || TryPop(ref store))
-                    Push(ref store, item);
-            }
-
-            protected abstract int Count(TStore store);
-            protected abstract void Push(ref TStore store, T item);
-            protected abstract bool TryPop(ref TStore store);
-
-            public virtual IEnumerable<T> GetEnumerable(TStore store) =>
-                Count(store) > 0
-                ? GetSomeEnumerable(store)
-                : Enumerable.Empty<T>();
-
-            protected abstract IEnumerable<T> GetSomeEnumerable(TStore store);
+            public abstract TStore New();
+            public abstract void Restart(ref TStore store);
+            public abstract IEnumerable<T> GetEnumerable(TStore store);
+            public abstract void Add(ref TStore store, int? limit, T item);
         }
     }
 }

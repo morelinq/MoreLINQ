@@ -22,10 +22,6 @@ namespace MoreLinq
 
     static partial class MoreEnumerable
     {
-        #if MORELINQ
-
-        static readonly Func<int, int, Exception> DefaultErrorSelector = OnAssertCountFailure;
-
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
         /// </summary>
@@ -42,7 +38,7 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source, int count) =>
-            AssertCountImpl(source, count, DefaultErrorSelector);
+            AssertCount(source, count, static (cmp, count) => new SequenceException(FormatSequenceLengthErrorMessage(cmp, count)));
 
         /// <summary>
         /// Asserts that a source sequence contains a given count of elements.
@@ -68,44 +64,34 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
-            int count, Func<int, int, Exception> errorSelector) =>
-            AssertCountImpl(source, count, errorSelector);
-
-        static Exception OnAssertCountFailure(int cmp, int count)
-        {
-            var message = cmp < 0
-                        ? "Sequence contains too few elements when exactly {0} were expected."
-                        : "Sequence contains too many elements when exactly {0} were expected.";
-            return new SequenceException(string.Format(message, count.ToString("N0")));
-        }
-
-        #endif
-
-        static IEnumerable<TSource> AssertCountImpl<TSource>(IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
-            return
-                source.TryGetCollectionCount() is int collectionCount
-                ? collectionCount == count
-                  ? source
-                  : From<TSource>(() => throw errorSelector(collectionCount.CompareTo(count), count))
-                : _(); IEnumerable<TSource> _()
+            return _(); IEnumerable<TSource> _()
+            {
+                if (source.TryAsCollectionLike() is { Count: var collectionCount }
+                    && collectionCount.CompareTo(count) is var comparison && comparison != 0)
                 {
-                    var iterations = 0;
-                    foreach (var element in source)
-                    {
-                        iterations++;
-                        if (iterations > count)
-                            throw errorSelector(1, count);
-                        yield return element;
-                    }
-                    if (iterations != count)
-                        throw errorSelector(-1, count);
+                    throw errorSelector(comparison, count);
                 }
+
+                var iterations = 0;
+                foreach (var element in source)
+                {
+                    iterations++;
+                    if (iterations > count)
+                        throw errorSelector(1, count);
+                    yield return element;
+                }
+                if (iterations != count)
+                    throw errorSelector(-1, count);
+            }
         }
+
+        internal static string FormatSequenceLengthErrorMessage(int cmp, int count) =>
+            $"Sequence contains too {(cmp < 0 ? "few" : "many")} elements when exactly {count:N0} {(count == 1 ? "was" : "were")} expected.";
     }
 }

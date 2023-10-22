@@ -28,8 +28,8 @@ namespace MoreLinq.Test
         [Test]
         public void IsLazy()
         {
-            new BreakingSequence<object>()
-                .CountDown(42, BreakingFunc.Of<object, int?, object>());
+            var bs = new BreakingSequence<object>();
+            _ = bs.CountDown(42, BreakingFunc.Of<object, int?, object>());
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace MoreLinq.Test
             const int count = 10;
             Enumerable.Range(1, count)
                       .CountDown(-1000, (_, cd) => cd)
-                      .AssertSequenceEqual(Enumerable.Repeat((int?) null, count));
+                      .AssertSequenceEqual(Enumerable.Repeat((int?)null, count));
         }
 
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
@@ -67,11 +67,9 @@ namespace MoreLinq.Test
         [TestCaseSource(nameof(SequenceData))]
         public IEnumerable<(int, int?)> WithSequence(int[] xs, int count)
         {
-            using (var ts = xs.Select(x => x).AsTestingSequence())
-            {
-                foreach (var e in ts.CountDown(count, ValueTuple.Create))
-                    yield return e;
-            }
+            using var ts = xs.Select(x => x).AsTestingSequence();
+            foreach (var e in ts.CountDown(count, ValueTuple.Create))
+                yield return e;
         }
 
         static readonly IEnumerable<TestCaseData> ListData =
@@ -79,7 +77,7 @@ namespace MoreLinq.Test
             {
                 Source = xs, Count = count, Countdown = countdown
             })
-            from kind in new[] { SourceKind.BreakingList, SourceKind.BreakingReadOnlyList }
+            from kind in SourceKinds.List
             select new TestCaseData(e.Source.ToSourceKind(kind), e.Count)
                 .Returns(e.Source.Zip(e.Countdown, ValueTuple.Create))
                 .SetName($"{nameof(WithList)}({kind} {{ {string.Join(", ", e.Source)} }}, {e.Count})");
@@ -108,7 +106,7 @@ namespace MoreLinq.Test
             {
                 moves = 0;
                 disposed = false;
-                var te = e.AsWatchtable();
+                var te = e.AsWatchable();
                 te.Disposed += delegate { disposed = true; };
                 te.MoveNextCalled += delegate { moves++; };
                 return te;
@@ -135,14 +133,14 @@ namespace MoreLinq.Test
         {
             public static ICollection<T>
                 Create<T>(ICollection<T> collection,
-                             Func<IEnumerator<T>, IEnumerator<T>> em = null)
+                             Func<IEnumerator<T>, IEnumerator<T>>? em = null)
             {
                 return new Collection<T>(collection, em);
             }
 
             public static IReadOnlyCollection<T>
                 CreateReadOnly<T>(ICollection<T> collection,
-                            Func<IEnumerator<T>, IEnumerator<T>> em = null)
+                            Func<IEnumerator<T>, IEnumerator<T>>? em = null)
             {
                 return new ReadOnlyCollection<T>(collection, em);
             }
@@ -156,7 +154,7 @@ namespace MoreLinq.Test
             {
                 readonly Func<IEnumerator<T>, IEnumerator<T>> _em;
 
-                protected Sequence(Func<IEnumerator<T>, IEnumerator<T>> em) =>
+                protected Sequence(Func<IEnumerator<T>, IEnumerator<T>>? em) =>
                     _em = em ?? (e => e);
 
                 public IEnumerator<T> GetEnumerator() =>
@@ -177,7 +175,7 @@ namespace MoreLinq.Test
                 readonly ICollection<T> _collection;
 
                 public Collection(ICollection<T> collection,
-                                  Func<IEnumerator<T>, IEnumerator<T>> em = null) :
+                                  Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
                     base(em) =>
                     _collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
@@ -204,7 +202,7 @@ namespace MoreLinq.Test
                 readonly ICollection<T> _collection;
 
                 public ReadOnlyCollection(ICollection<T> collection,
-                                          Func<IEnumerator<T>, IEnumerator<T>> em = null) :
+                                          Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
                     base(em) =>
                     _collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
@@ -212,6 +210,15 @@ namespace MoreLinq.Test
 
                 protected override IEnumerable<T> Items => _collection;
             }
+        }
+
+        [Test]
+        public void UsesCollectionCountAtIterationTime()
+        {
+            var stack = new Stack<int>(Enumerable.Range(1, 3));
+            var result = stack.CountDown(2, (_, cd) => cd);
+            stack.Push(4);
+            result.AssertSequenceEqual(null, null, 1, 0);
         }
     }
 }

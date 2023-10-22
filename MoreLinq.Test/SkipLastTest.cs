@@ -17,7 +17,9 @@
 
 namespace MoreLinq.Test
 {
+    using System.Collections.Generic;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.SkipLastExtension;
 
     [TestFixture]
     public class SkipLastTest
@@ -54,7 +56,16 @@ namespace MoreLinq.Test
         [Test]
         public void SkipLastIsLazy()
         {
-            new BreakingSequence<object>().SkipLast(1);
+            _ = new BreakingSequence<object>().SkipLast(1);
+        }
+
+        [Test]
+        public void SkipLastUsesCollectionCountAtIterationTime()
+        {
+            var list = new List<int> { 1, 2, 3, 4 };
+            var result = list.SkipLast(2);
+            list.Add(5);
+            result.AssertSequenceEqual(1, 2, 3);
         }
     }
 }
