@@ -69,7 +69,7 @@ namespace MoreLinq
             Arguments = args.Take(a.Count)
                             .Select(aa => new { aa.Number, aa.Ordinal })
                             .ToList(),
-            TypeParams = string.Join(", ", Enumerable.Range(1, a.Count).Select(i => $"T{i}"))
+            TypeParams = string.Join(", ", from aa in args.Take(a.Count) select $"T{aa.Number}")
         };
 
     foreach (var o in overloads)
@@ -157,10 +157,11 @@ Func<<#= o.TypeParams #>, TResult> resultSelector)
         /// </remarks>
 
         public static IEnumerable<(<#= o.TypeParams #>)> Cartesian<<#= o.TypeParams #>>(
-            this <#= string.Join($",\r\n            ", from arg in o.Arguments select
-            $"IEnumerable<T{arg.Number}> {arg.Ordinal}") #>)
+            this <#= string.Join($",{Environment.NewLine}            ",
+                                 from arg in o.Arguments
+                                 select $"IEnumerable<T{arg.Number}> {arg.Ordinal}") #>)
         {
-            return Cartesian(<#= string.Join(", ", o.Arguments.Select(a => a.Ordinal)) #>, ValueTuple.Create);
+            return Cartesian(<#= string.Join(", ", from a in o.Arguments select a.Ordinal) #>, ValueTuple.Create);
         }
 <#  } #>
     }
