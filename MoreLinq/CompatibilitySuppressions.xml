@@ -94,6 +94,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Windowed``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
+    <Left>lib/net462/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.Extensions.BatchExtension.Batch``2(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Func{System.Collections.Generic.IEnumerable{``0},``1})</Target>
     <Left>lib/net6.0/MoreLinq.dll</Left>
     <Right>lib/net6.0/MoreLinq.dll</Right>
@@ -129,6 +136,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Windowed``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net6.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.Extensions.BatchExtension.Batch``2(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Func{System.Collections.Generic.IEnumerable{``0},``1})</Target>
     <Left>lib/netstandard2.0/MoreLinq.dll</Left>
     <Right>lib/netstandard2.0/MoreLinq.dll</Right>
@@ -164,6 +178,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Windowed``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
+    <Left>lib/netstandard2.0/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.0/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.Extensions.BatchExtension.Batch``2(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Func{System.Collections.Generic.IEnumerable{``0},``1})</Target>
     <Left>lib/netstandard2.1/MoreLinq.dll</Left>
     <Right>lib/netstandard2.1/MoreLinq.dll</Right>
@@ -193,6 +214,13 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.MoreEnumerable.Prepend``1(System.Collections.Generic.IEnumerable{``0},``0)</Target>
+    <Left>lib/netstandard2.1/MoreLinq.dll</Left>
+    <Right>lib/netstandard2.1/MoreLinq.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.Windowed``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
     <Left>lib/netstandard2.1/MoreLinq.dll</Left>
     <Right>lib/netstandard2.1/MoreLinq.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
