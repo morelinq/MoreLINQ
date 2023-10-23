@@ -361,14 +361,28 @@ Performs a left outer join between two sequences.
 
 This method has 4 overloads.
 
-### MaxBy
+### ~~MaxBy~~
+
+This method was renamed to [`Maxima`](#maxima) in version 4.0 to avoid conflict
+with the [`MaxBy`][linq-maxby] method introduced in .NET 6.0.
+
+[linq-maxby]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.maxby
+
+### ~~MinBy~~
+
+This method was renamed to [`Minima`](#minima) in version 4.0 to avoid conflict
+with the [`MinBy`][linq-minby] method introduced in .NET 6.0.
+
+[linq-minby]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.maxby
+
+### Maxima
 
 Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
 
-### MinBy
+### Minima
 
 Returns the minima (minimal elements) of the given sequence, based on the
 given projection.

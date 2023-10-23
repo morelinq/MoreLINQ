@@ -3396,10 +3396,10 @@ namespace MoreLinq.Extensions
 
     }
 
-    /// <summary><c>MaxBy</c> extension.</summary>
+    /// <summary><c>Maxima</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class MaxByExtension
+    public static partial class MaximaExtension
     {
 
         /// <summary>
@@ -3418,9 +3418,9 @@ namespace MoreLinq.Extensions
         /// <returns>The sequence of maximal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
-        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
-            => MoreEnumerable.MaxBy(source, selector);
+            => MoreEnumerable.Maxima(source, selector);
 
         /// <summary>
         /// Returns the maximal elements of the given sequence, based on
@@ -3439,16 +3439,16 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
-        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
-            => MoreEnumerable.MaxBy(source, selector, comparer);
+            => MoreEnumerable.Maxima(source, selector, comparer);
 
     }
 
-    /// <summary><c>MinBy</c> extension.</summary>
+    /// <summary><c>Minima</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
-    public static partial class MinByExtension
+    public static partial class MinimaExtension
     {
         /// <summary>
         /// Returns the minimal elements of the given sequence, based on
@@ -3466,9 +3466,9 @@ namespace MoreLinq.Extensions
         /// <returns>The sequence of minimal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
-        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> Minima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
-            => MoreEnumerable.MinBy(source, selector);
+            => MoreEnumerable.Minima(source, selector);
 
         /// <summary>
         /// Returns the minimal elements of the given sequence, based on
@@ -3487,9 +3487,9 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
-        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> Minima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
-            => MoreEnumerable.MinBy(source, selector, comparer);
+            => MoreEnumerable.Minima(source, selector, comparer);
 
     }
 

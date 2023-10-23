@@ -185,10 +185,10 @@ namespace MoreLinq
         /// <returns>The sequence of maximal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
-        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
         {
-            return source.MaxBy(selector, null);
+            return source.Maxima(selector, null);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
-        public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+        public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
