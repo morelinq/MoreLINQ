@@ -97,10 +97,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (table == null) throw new ArgumentNullException(nameof(table));
-
-            // TODO disallow null for "expressions" in next major update
-
-            expressions ??= EmptyArray<Expression<Func<T, object?>>>.Value;
+            if (expressions == null) throw new ArgumentNullException(nameof(expressions));
 
             var members = PrepareMemberInfos(expressions).ToArray();
             var boundMembers = BuildOrBindSchema(table, members);
