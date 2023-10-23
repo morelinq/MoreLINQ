@@ -693,8 +693,7 @@ subset of the original
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
 
-This method is obsolete and will be removed in a future version. Use `Window`
-instead.
+This method was removed and has been superseded by [`Window`](#window) instead.
 
 ### WindowLeft
 

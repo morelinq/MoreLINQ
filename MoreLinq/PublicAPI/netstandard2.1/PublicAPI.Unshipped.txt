@@ -10,6 +10,7 @@
 *REMOVED*static MoreLinq.MoreEnumerable.TakeLast<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int count) -> System.Collections.Generic.IEnumerable<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.ToHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.HashSet<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.ToHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEqualityComparer<TSource>? comparer) -> System.Collections.Generic.HashSet<TSource>!
+*REMOVED*static MoreLinq.MoreEnumerable.Windowed<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 static MoreLinq.Extensions.BatchExtension.Batch<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<TSource[]!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 static MoreLinq.Extensions.BatchExtension.Batch<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<TSource[]!>!
 static MoreLinq.MoreEnumerable.Append<T>(System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
