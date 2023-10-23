@@ -370,18 +370,18 @@ given projection.
 
 This method has 2 overloads.
 
+### Maxima
+
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
 ### ~~MinBy~~
 
 :warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
 
 Returns the minima (minimal elements) of the given sequence, based on the
-given projection.
-
-This method has 2 overloads.
-
-### Maxima
-
-Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
