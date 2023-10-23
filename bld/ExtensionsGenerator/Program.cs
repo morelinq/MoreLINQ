@@ -120,7 +120,6 @@ static void Run(ProgramArguments args)
             where md.ParameterList.Parameters.Count > 0
                && md.ParameterList.Parameters.First().Modifiers.Any(m => m.Value is "this")
                && md.Modifiers.Any(m => m.Value is "public")
-               && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
             //
             // Build a dictionary of type abbreviations (e.g. TSource -> a,
             // TResult -> b, etc.) for the method's type parameters. If the

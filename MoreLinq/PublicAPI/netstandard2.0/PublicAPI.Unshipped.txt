@@ -1,20 +1,10 @@
 #nullable enable
-*REMOVED*MoreLinq.Extensions.MaxByExtension
-*REMOVED*MoreLinq.Extensions.MinByExtension
 *REMOVED*static MoreLinq.Extensions.BatchExtension.Batch<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IEnumerable<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 *REMOVED*static MoreLinq.Extensions.BatchExtension.Batch<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
-*REMOVED*static MoreLinq.Extensions.MaxByExtension.MaxBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector) -> MoreLinq.IExtremaEnumerable<TSource>!
-*REMOVED*static MoreLinq.Extensions.MaxByExtension.MaxBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector, System.Collections.Generic.IComparer<TKey>? comparer) -> MoreLinq.IExtremaEnumerable<TSource>!
-*REMOVED*static MoreLinq.Extensions.MinByExtension.MinBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector) -> MoreLinq.IExtremaEnumerable<TSource>!
-*REMOVED*static MoreLinq.Extensions.MinByExtension.MinBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector, System.Collections.Generic.IComparer<TKey>? comparer) -> MoreLinq.IExtremaEnumerable<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.Append<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
 *REMOVED*static MoreLinq.MoreEnumerable.Batch<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, int size, System.Func<System.Collections.Generic.IEnumerable<TSource>!, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
 *REMOVED*static MoreLinq.MoreEnumerable.Batch<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 *REMOVED*static MoreLinq.MoreEnumerable.Concat<T>(this System.Collections.Generic.IEnumerable<T>! head, T tail) -> System.Collections.Generic.IEnumerable<T>!
-*REMOVED*static MoreLinq.MoreEnumerable.MaxBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector) -> MoreLinq.IExtremaEnumerable<TSource>!
-*REMOVED*static MoreLinq.MoreEnumerable.MaxBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector, System.Collections.Generic.IComparer<TKey>? comparer) -> MoreLinq.IExtremaEnumerable<TSource>!
-*REMOVED*static MoreLinq.MoreEnumerable.MinBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector) -> MoreLinq.IExtremaEnumerable<TSource>!
-*REMOVED*static MoreLinq.MoreEnumerable.MinBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector, System.Collections.Generic.IComparer<TKey>? comparer) -> MoreLinq.IExtremaEnumerable<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.Prepend<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
 *REMOVED*static MoreLinq.MoreEnumerable.Windowed<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, int size) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<TSource>!>!
 MoreLinq.Extensions.MaximaExtension

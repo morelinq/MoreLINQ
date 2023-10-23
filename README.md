@@ -363,17 +363,21 @@ This method has 4 overloads.
 
 ### ~~MaxBy~~
 
-This method was renamed to [`Maxima`](#maxima) in version 4.0 to avoid conflict
-with the [`MaxBy`][linq-maxby] method introduced in .NET 6.0.
+:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
 
-[linq-maxby]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.maxby
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
 
 ### ~~MinBy~~
 
-This method was renamed to [`Minima`](#minima) in version 4.0 to avoid conflict
-with the [`MinBy`][linq-minby] method introduced in .NET 6.0.
+:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
 
-[linq-minby]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.maxby
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
 
 ### Maxima
 
