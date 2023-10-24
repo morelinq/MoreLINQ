@@ -52,10 +52,10 @@
         - Lag
         - Lead
         - LeftJoin
-        - MaxBy
+        - Maxima
         - Memoize (EXPERIMENTAL)
         - Merge (EXPERIMENTAL)
-        - MinBy
+        - Minima
         - Move
         - OrderBy
         - OrderedMerge
