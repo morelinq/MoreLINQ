@@ -1340,40 +1340,30 @@ namespace MoreLinq.Extensions
     public static partial class EquiZipExtension
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of two sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence has the same length as the input sequences.
+        /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
+        /// A function that specifies how to merge the elements from the two sequences.</param>
         /// <returns>
-        /// A sequence that contains elements of the two input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
+        /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
-        /// name="resultSelector"/> is <see langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3, 4 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var zipped  = numbers.EquiZip(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
-        /// "2B", "3C", "4D" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// This operator uses deferred execution and streams its results.</remarks>
 
         public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
@@ -1382,98 +1372,79 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.EquiZip(first, second, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of three sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence has the same length as the input sequences.
+        /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each triplet of elements.</param>
+        /// A function that specifies how to merge the elements from the three sequences.</param>
         /// <returns>
-        /// A sequence that contains elements of the three input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
+        /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
-        /// name="third"/>, or <paramref name="resultSelector"/> is <see
-        /// langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3, 4 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
-        /// var zipped  = numbers.EquiZip(letters, chars, (n, l, c) => n + l + c);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
-        /// "2Bb", "3Cc", "4Dd" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// This operator uses deferred execution and streams its results.</remarks>
 
-        public static IEnumerable<TResult> EquiZip<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            Func<TFirst, TSecond, TThird, TResult> resultSelector)
             => MoreEnumerable.EquiZip(first, second, third, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. An exception is thrown
-        /// if the input sequences are of different lengths.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of four sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence has the same length as the input sequences.
+        /// If the input sequences are of different lengths, an exception is thrown.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="fourth">The fourth sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TFourth">The type of the elements of the fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
+        /// <param name="fourth">The fourth sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each quadruplet of elements.</param>
+        /// A function that specifies how to merge the elements from the four sequences.</param>
         /// <returns>
-        /// A sequence that contains elements of the four input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// The input sequences are of different lengths.
-        /// </exception>
+        /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
-        /// name="third"/>, <paramref name="fourth"/>, or <paramref
-        /// name="resultSelector"/> is <see langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3, 4 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
-        /// var flags   = new[] { true, false, true, false };
-        /// var zipped = numbers.EquiZip(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
-        /// "2BbFalse", "3CcTrue", "4DdFalse" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/>,
+        /// <paramref name="fourth"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
-        /// </remarks>
+        /// This operator uses deferred execution and streams its results.</remarks>
 
-        public static IEnumerable<TResult> EquiZip<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+        public static IEnumerable<TResult> EquiZip<TFirst, TSecond, TThird, TFourth, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            IEnumerable<TFourth> fourth,
+            Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
             => MoreEnumerable.EquiZip(first, second, third, fourth, resultSelector);
 
     }
@@ -6997,140 +6968,117 @@ namespace MoreLinq.Extensions
     public static partial class ZipLongestExtension
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
-        /// will always be as long as the longest of input sequences where the
-        /// default value of each of the shorter sequence element types is used
-        /// for padding.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of two sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
+        /// A function that specifies how to merge the elements from the two sequences.</param>
         /// <returns>
-        /// A sequence that contains elements of the two input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
-        /// name="resultSelector"/> is <see langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = { 1, 2, 3 };
-        /// var letters = { "A", "B", "C", "D" };
-        /// var zipped = numbers.ZipLongest(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A",
-        /// "2B", "3C", "0D" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
+        /// <para>
+        /// If the input sequences are of different lengths, the default values of the types
+        /// of the elements of the shortests sequences are used for padding.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
-            Func<TFirst?, TSecond?, TResult> resultSelector)
+            Func<TFirst, TSecond, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
-        /// will always be as long as the longest of input sequences where the
-        /// default value of each of the shorter sequence element types is used
-        /// for padding.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of three sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each triplet of elements.</param>
+        /// A function that specifies how to merge the elements from the three sequences.</param>
         /// <returns>
-        /// A sequence that contains elements of the three input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
-        /// name="third"/>, or <paramref name="resultSelector"/> is <see
-        /// langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var zipped  = numbers.ZipLongest(letters, chars, (n, l, c) => n + l + c);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1Aa",
-        /// "2Bb", "3Cc", "0Dd", "0e" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
+        /// <para>
+        /// If the input sequences are of different lengths, the default values of the types
+        /// of the elements of the shortests sequences are used for padding.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            Func<T1?, T2?, T3?, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            Func<TFirst, TSecond, TThird, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, third, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
-        /// will always be as long as the longest of input sequences where the
-        /// default value of each of the shorter sequence element types is used
-        /// for padding.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of four sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as long as the longest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="fourth">The fourth sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TFourth">The type of the elements of the fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
+        /// <param name="fourth">The fourth sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each quadruplet of elements.</param>
+        /// A function that specifies how to merge the elements from the four sequences.</param>
         /// <returns>
-        /// A sequence that contains elements of the four input sequences,
-        /// combined by <paramref name="resultSelector"/>.
-        /// </returns>
+        /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
-        /// name="third"/>, <paramref name="fourth"/>, or <paramref
-        /// name="resultSelector"/> is <see langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var flags   = new[] { true, false, true, false, true, false };
-        /// var zipped  = numbers.ZipLongest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1AaTrue",
-        /// "2BbFalse", "3CcTrue", "0DdFalse", "0eTrue", "0\0False" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/>,
+        /// <paramref name="fourth"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
-        /// This operator uses deferred execution and streams its results.
+        /// <para>
+        /// If the input sequences are of different lengths, the default values of the types
+        /// of the elements of the shortests sequences are used for padding.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipLongest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            Func<T1?, T2?, T3?, T4?, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TFourth, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            IEnumerable<TFourth> fourth,
+            Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, third, fourth, resultSelector);
 
     }
@@ -7141,38 +7089,30 @@ namespace MoreLinq.Extensions
     public static partial class ZipShortestExtension
     {
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
-        /// is as short as the shortest input sequence.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of two sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as short as the shortest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each pair of elements.</param>
+        /// A function that specifies how to merge the elements from the two sequences.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
-        /// <example>
+        /// An <code>IEnumerable</code> that contains merged elements of two input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, or <paramref
-        /// name="resultSelector"/> is <see langword="null"/>.
-        /// </exception>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var zipped = numbers.ZipShortest(letters, (n, l) => n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield "1A", "2B", "3C", in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted
-        /// and remainder elements from the longer sequences are never consumed.
-        /// </para>
+        /// If the input sequences are of different lengths, the resulting sequence is terminated
+        /// as soon as the shortest input sequence reaches its end.
+        /// The remaining elements of the other sequences are never consumed.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
@@ -7184,105 +7124,85 @@ namespace MoreLinq.Extensions
             => MoreEnumerable.ZipShortest(first, second, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
-        /// is as short as the shortest input sequence.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of three sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as short as the shortest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">First sequence</param>
-        /// <param name="second">Second sequence</param>
-        /// <param name="third">Third sequence</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each triplet of elements.</param>
+        /// A function that specifies how to merge the elements from the three sequences.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
+        /// An <code>IEnumerable</code> that contains merged elements of three input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
-        /// name="third"/>, or <paramref name="resultSelector"/> is <see
-        /// langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var zipped  = numbers.ZipShortest(letters, chars, (n, l, c) => c + n + l);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield
-        /// "98A", "100B", "102C", in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted
-        /// and remainder elements from the longer sequences are never consumed.
-        /// </para>
+        /// If the input sequences are of different lengths, the resulting sequence is terminated
+        /// as soon as the shortest input sequence reaches its end.
+        /// The remaining elements of the other sequences are never consumed.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            Func<T1, T2, T3, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TThird, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            Func<TFirst, TSecond, TThird, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first, second, third, resultSelector);
 
         /// <summary>
-        /// Returns a projection of tuples, where each tuple contains the N-th
-        /// element from each of the argument sequences. The resulting sequence
-        /// is as short as the shortest input sequence.
+        /// <para>
+        /// Applies a specified function to the corresponding elements of four sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as short as the shortest of the input sequences.</para>
         /// </summary>
-        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
-        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
-        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
-        /// <typeparam name="T4">Type of elements in fourth sequence.</typeparam>
-        /// <typeparam name="TResult">Type of elements in result sequence.</typeparam>
-        /// <param name="first">The first sequence.</param>
-        /// <param name="second">The second sequence.</param>
-        /// <param name="third">The third sequence.</param>
-        /// <param name="fourth">The fourth sequence.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first input sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second input sequence.</typeparam>
+        /// <typeparam name="TThird">The type of the elements of the third input sequence.</typeparam>
+        /// <typeparam name="TFourth">The type of the elements of the fourth input sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+        /// <param name="first">The first sequence to merge.</param>
+        /// <param name="second">The second sequence to merge.</param>
+        /// <param name="third">The third sequence to merge.</param>
+        /// <param name="fourth">The fourth sequence to merge.</param>
         /// <param name="resultSelector">
-        /// Function to apply to each quadruplet of elements.</param>
+        /// A function that specifies how to merge the elements from the four sequences.</param>
         /// <returns>
-        /// A projection of tuples, where each tuple contains the N-th element
-        /// from each of the argument sequences.</returns>
+        /// An <code>IEnumerable</code> that contains merged elements of four input sequences.</returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="first"/>, <paramref name="second"/>, <paramref
-        /// name="third"/>, <paramref name="fourth"/>, or <paramref
-        /// name="resultSelector"/> is <see langword="null"/>.
-        /// </exception>
-        /// <example>
-        /// <code><![CDATA[
-        /// var numbers = new[] { 1, 2, 3 };
-        /// var letters = new[] { "A", "B", "C", "D" };
-        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
-        /// var flags   = new[] { true, false };
-        /// var zipped  = numbers.ZipShortest(letters, chars, flags, (n, l, c, f) => n + l + c + f);
-        /// ]]></code>
-        /// The <c>zipped</c> variable, when iterated over, will yield
-        /// "1AaTrue", "2BbFalse" in turn.
-        /// </example>
+        /// <paramref name="first"/>,
+        /// <paramref name="second"/>,
+        /// <paramref name="third"/>,
+        /// <paramref name="fourth"/> or
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
         /// <remarks>
         /// <para>
-        /// If the input sequences are of different lengths, the result sequence
-        /// is terminated as soon as the shortest input sequence is exhausted
-        /// and remainder elements from the longer sequences are never consumed.
-        /// </para>
+        /// If the input sequences are of different lengths, the resulting sequence is terminated
+        /// as soon as the shortest input sequence reaches its end.
+        /// The remaining elements of the other sequences are never consumed.</para>
         /// <para>
         /// This operator uses deferred execution and streams its results.</para>
         /// </remarks>
 
-        public static IEnumerable<TResult> ZipShortest<T1, T2, T3, T4, TResult>(
-            this IEnumerable<T1> first,
-            IEnumerable<T2> second,
-            IEnumerable<T3> third,
-            IEnumerable<T4> fourth,
-            Func<T1, T2, T3, T4, TResult> resultSelector)
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TThird, TFourth, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            IEnumerable<TThird> third,
+            IEnumerable<TFourth> fourth,
+            Func<TFirst, TSecond, TThird, TFourth, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first, second, third, fourth, resultSelector);
 
     }

@@ -1,0 +1,130 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2008 Jonathan Skeet. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+<#
+    var ordinals = new[]
+    {
+        string.Empty,
+        "First", "Second", "Third", "Fourth",
+        "Fifth", "Sixth", "Seventh", "Eighth"
+    };
+
+    var cardinals = new[]
+    {
+        "zero",
+        "one", "two", "three", "four",
+        "five", "six", "seven", "eight"
+    };
+
+    var overloads =
+        from argCount in Enumerable.Range(2, 3)
+        from args in new[]
+        {
+            from argPosition in Enumerable.Range(1, argCount)
+            select new
+            {
+                IsFirst    = argPosition == 1,
+                IsLast     = argPosition == argCount,
+                Name       = ordinals[argPosition].ToLower(),
+                ordinal    = ordinals[argPosition].ToLower(),
+                Type       = $"T{ordinals[argPosition]}",
+                // Objects associated with the argument
+                Enumerator = $"e{argPosition}",
+                Value      = $"v{argPosition}"
+            }
+        }
+        select new
+        {
+            Arguments = args.ToList(),
+            cardinal = cardinals[argCount],
+            TParams = string.Join(", ", from arg in args select arg.Type)
+        };
+#>
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    static partial class MoreEnumerable
+    {
+<#  foreach (var o in overloads)
+    {
+#>
+        /// <summary>
+        /// <para>
+        /// Applies a specified function to the corresponding elements of <#= o.cardinal #> sequences,
+        /// producing a sequence of the results.</para>
+        /// <para>
+        /// The resulting sequence is as short as the shortest of the input sequences.</para>
+        /// </summary>
+<# foreach (var arg in o.Arguments) { #>
+        /// <typeparam name="<#= arg.Type #>">The type of the elements of the <#= arg.ordinal #> input sequence.</typeparam>
+<# } #>
+        /// <typeparam name="TResult">The type of the elements of the result sequence.</typeparam>
+<# foreach (var arg in o.Arguments) { #>
+        /// <param name="<#= arg.Name #>">The <#= arg.ordinal #> sequence to merge.</param>
+<# } #>
+        /// <param name="resultSelector">
+        /// A function that specifies how to merge the elements from the <#= o.cardinal #> sequences.</param>
+        /// <returns>
+        /// An <code>IEnumerable</code> that contains merged elements of <#= o.cardinal #> input sequences.</returns>
+        /// <exception cref="ArgumentNullException">
+<# foreach (var arg in o.Arguments) { #>
+        /// <paramref name="<#= arg.Name #>"/><#= arg.IsLast ? " or" : "," #>
+<# } #>
+        /// <paramref name="resultSelector"/> is <code>null</code>.</exception>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the resulting sequence is terminated
+        /// as soon as the shortest input sequence reaches its end.
+        /// The remaining elements of the other sequences are never consumed.</para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<TResult> ZipShortest<<#= o.TParams #>, TResult>(
+<# foreach (var arg in o.Arguments) { #>
+            <#= arg.IsFirst ? "this " : "" #>IEnumerable<<#= arg.Type #>> <#= arg.Name #>,
+<# } #>
+            Func<<#= o.TParams #>, TResult> resultSelector)
+        {
+<# foreach (var arg in o.Arguments) { #>
+            if (<#= arg.Name #> == null) throw new ArgumentNullException(nameof(<#= arg.Name #>));
+<# } #>
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _(); IEnumerable<TResult> _()
+            {
+<# foreach (var arg in o.Arguments) { #>
+                using var <#= arg.Enumerator #> = <#= arg.Name #>.GetEnumerator();
+<# } #>
+
+                while (<# foreach (var arg in o.Arguments) { #><#= arg.Enumerator #>.MoveNext()<#= arg.IsLast ? "" : " && " #><# } #>)
+                {
+                    yield return resultSelector(<# foreach (var arg in o.Arguments) { #><#= arg.Enumerator #>.Current<#= arg.IsLast ? "" : ", " #><# } #>);
+                }
+            }
+        }
+
+<# } #>
+    }
+}

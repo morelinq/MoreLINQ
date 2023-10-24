@@ -176,6 +176,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Cartesian.g.cs</LastGenOutput>
     </None>
+    <None Update="EquiZip.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EquiZip.g.cs</LastGenOutput>
+    </None>
     <None Update="Experimental\Aggregate.g.tt">
       <LastGenOutput>Aggregate.g.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -187,6 +191,14 @@
     <None Update="ToDelimitedString.g.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
+    </None>
+    <None Update="ZipLongest.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ZipLongest.g.cs</LastGenOutput>
+    </None>
+    <None Update="ZipShortest.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ZipShortest.g.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -213,6 +225,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Cartesian.g.tt</DependentUpon>
     </Compile>
+    <Compile Update="EquiZip.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EquiZip.g.tt</DependentUpon>
+    </Compile>
     <Compile Update="Experimental\Aggregate.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -235,6 +252,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ZipLongest.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ZipLongest.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ZipShortest.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ZipShortest.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
