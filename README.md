@@ -363,14 +363,32 @@ Performs a left outer join between two sequences.
 
 This method has 4 overloads.
 
-### MaxBy
+### ~~MaxBy~~
+
+:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
 
 Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
 
-### MinBy
+### Maxima
+
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
+### ~~MinBy~~
+
+:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
+
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
+### Minima
 
 Returns the minima (minimal elements) of the given sequence, based on the
 given projection.
@@ -699,8 +717,7 @@ subset of the original
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
 
-This method is obsolete and will be removed in a future version. Use `Window`
-instead.
+This method was removed and has been superseded by [`Window`](#window) instead.
 
 ### WindowLeft
 

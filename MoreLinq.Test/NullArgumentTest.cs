@@ -124,7 +124,6 @@ namespace MoreLinq.Test
                 nameof(MoreEnumerable.From) + ".function1",
                 nameof(MoreEnumerable.From) + ".function2",
                 nameof(MoreEnumerable.From) + ".function3",
-                nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 
