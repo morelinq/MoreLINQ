@@ -1,0 +1,90 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2019 Phillip Palk. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+namespace MoreLinq
+{
+    using System;
+    using System.Collections.Generic;
+
+    partial class MoreEnumerable
+    {
+<#      const int max = 4;
+        var overloads =
+            from i in Enumerable.Range(2, max - 1)
+            let istr = i.ToString(CultureInfo.InvariantCulture)
+            let im1str = (i - 1).ToString(CultureInfo.InvariantCulture)
+            select new
+            {
+                Ts                = string.Join(", ", Enumerable.Repeat("TSource", i)),
+                Nth               = i == 2 ? "second" : i == 3 ? "third" : istr + "th",
+                NTuple            = i == 2 ? "pair" : i == 3 ? "triplet" : istr + "-tuple",
+                PIsAre            = (i - 1) == 1 ? "is" : "are",
+                Predecessors      = (i - 1) == 1 ? "predecessor" : "predecessors",
+                PPredecessors     = (i - 1) == 1 ? "predecessor" : im1str + " predecessors",
+                PElements         = (i - 1) == 1 ? "first element" : (i - 1) == 2 ? "first and second elements" : ("first " + im1str + " elements"),
+                PredecessorNames  = Enumerable.Range(1, i - 1).Select(n => "predecessor" + n.ToString(CultureInfo.InvariantCulture))
+            };
+
+        foreach (var e in overloads) { #>
+        /// <summary>
+        /// Returns a sequence resulting from applying a function to each
+        /// element in the source sequence and its
+        /// <#= e.PPredecessors #>, with the exception of the <#= e.PElements #> which <#= e.PIsAre #>
+        /// only returned as the <#= e.Predecessors #> of the <#= e.Nth #> element.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements of the returned sequence.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="resultSelector">A transform function to apply to each <#= e.NTuple #> of <paramref name="source"/>.</param>
+        /// <returns>Returns the resulting sequence.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="resultSelector"/> is null</exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<TResult> Tuplewise<TSource, TResult>(this IEnumerable<TSource> source, Func<<#= e.Ts #>, TResult> resultSelector)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+
+            return _(); IEnumerable<TResult> _()
+            {
+                using var e = source.GetEnumerator();
+
+<#              foreach (var predecessor in e.PredecessorNames) { #>
+                if (!e.MoveNext())
+                    yield break;
+                var <#= predecessor #> = e.Current;
+
+<#              } #>
+                while (e.MoveNext())
+                {
+                    yield return resultSelector(<#= string.Join(", ", e.PredecessorNames.Concat(new[] { "e.Current" })) #>);
+                    (<#= string.Join(", ", e.PredecessorNames) #>) = (<#= string.Join(", ", e.PredecessorNames.Skip(1).Concat(new[] { "e.Current" })) #>);
+                }
+            }
+        }
+
+<#      } #>
+    }
+}

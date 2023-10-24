@@ -107,6 +107,7 @@
         - TraverseBreadthFirst
         - TraverseDepthFirst
         - TrySingle (EXPERIMENTAL)
+        - Tuplewise
         - Unfold
         - Window
         - WindowLeft
@@ -188,6 +189,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ToDelimitedString.g.cs</LastGenOutput>
     </None>
+    <None Update="Tuplewise.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Tuplewise.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <PropertyGroup>
@@ -235,6 +240,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ToDelimitedString.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Tuplewise.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Tuplewise.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

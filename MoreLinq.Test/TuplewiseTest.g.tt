@@ -1,0 +1,67 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region License and Terms
+// MoreLINQ - Extensions to LINQ to Objects
+// Copyright (c) 2019 Phillip Palk. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+namespace MoreLinq.Test
+{
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
+    public partial class TuplewiseTest
+    {
+<#      const int max = 4;
+        const string alphabet = "abcdefghijklmnopqrstuvwxyz";
+#>
+        [Test]
+        public void TuplewiseIsLazy()
+        {
+<#      for (var i = 2; i <= max; ++i) {
+            var funcTypeArgs = string.Join(" ", Enumerable.Repeat("object,", i).Concat(Enumerable.Repeat("       ", max - i)));
+#>
+            new BreakingSequence<object>().Tuplewise(BreakingFunc.Of<<#= funcTypeArgs #> int>());
+<#      } #>
+        }
+
+        [Test]
+        public void TuplewiseIntegers()
+        {
+<#      for (var i = 2; i <= max; ++i) {
+            var funcTypeArgs = string.Join(" ",   Enumerable.Repeat("int,", i).Concat(Enumerable.Repeat("    ", max - i)));
+            var functorArgs  = string.Join(", ",  Enumerable.Range(1, i).Select(j => alphabet.Substring(j - 1, 1))) + new string(' ', 3 * (max - i));
+            var functorBody  = string.Join(" + ", Enumerable.Range(1, i).Select(j => alphabet.Substring(j - 1, 1))) + new string(' ', 4 * (max - i));
+#>
+            TuplewiseNWideInt<Func<<#= funcTypeArgs #> int>>(MoreEnumerable.Tuplewise, (<#= functorArgs #>) => <#= functorBody #>);
+<#      } #>
+        }
+
+        [Test]
+        public void TuplewiseStrings()
+        {
+<#      for (var i = 2; i <= max; ++i) {
+            var funcTypeArgs = string.Join(" ",   Enumerable.Repeat("char,", i).Concat(Enumerable.Repeat("     ", max - i)));
+            var functorArgs  = string.Join(", ",  Enumerable.Range(1, i).Select(j => alphabet.Substring(j - 1, 1))) + new string(' ', 3 * (max - i));
+#>
+            TuplewiseNWideString<Func<<#= funcTypeArgs #> string>>(MoreEnumerable.Tuplewise, (<#= functorArgs #>) => string.Join(string.Empty, <#= functorArgs #>));
+<#      } #>
+        }
+    }
+}
