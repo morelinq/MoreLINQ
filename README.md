@@ -379,7 +379,7 @@ This method has 2 overloads.
 
 ### ~~MinBy~~
 
-:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
+:warning: **This method is obsolete. Use [`Minima`](#minima) instead.**
 
 Returns the minima (minimal elements) of the given sequence, based on the
 given projection.
