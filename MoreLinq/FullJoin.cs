@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -64,7 +65,7 @@ namespace MoreLinq
             Func<TSource, TResult> secondSelector,
             Func<TSource, TSource, TResult> bothSelector)
         {
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(keySelector);
             return first.FullJoin(second, keySelector,
                                   firstSelector, secondSelector, bothSelector,
                                   null);
@@ -115,7 +116,7 @@ namespace MoreLinq
             Func<TSource, TSource, TResult> bothSelector,
             IEqualityComparer<TKey>? comparer)
         {
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(keySelector);
             return first.FullJoin(second,
                                   keySelector, keySelector,
                                   firstSelector, secondSelector, bothSelector,
@@ -220,13 +221,13 @@ namespace MoreLinq
             Func<TFirst, TSecond, TResult> bothSelector,
             IEqualityComparer<TKey>? comparer)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (firstKeySelector == null) throw new ArgumentNullException(nameof(firstKeySelector));
-            if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
-            if (firstSelector == null) throw new ArgumentNullException(nameof(firstSelector));
-            if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
-            if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
+            Guard.IsNotNull(firstKeySelector);
+            Guard.IsNotNull(secondKeySelector);
+            Guard.IsNotNull(firstSelector);
+            Guard.IsNotNull(secondSelector);
+            Guard.IsNotNull(bothSelector);
 
             return Impl();
 

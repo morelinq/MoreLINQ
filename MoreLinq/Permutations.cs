@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -201,7 +202,7 @@ namespace MoreLinq
 
         public static IEnumerable<IList<T>> Permutations<T>(this IEnumerable<T> sequence)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
+            Guard.IsNotNull(sequence);
 
             return _(); IEnumerable<IList<T>> _()
             {

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -74,8 +75,8 @@ namespace MoreLinq
 
         public static IEnumerable<int> RankBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(keySelector);
 
             return _(comparer ?? Comparer<TKey>.Default);
 

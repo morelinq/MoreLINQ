@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -43,7 +44,7 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Generate<TResult>(TResult initial, Func<TResult, TResult> generator)
         {
-            if (generator == null) throw new ArgumentNullException(nameof(generator));
+            Guard.IsNotNull(generator);
 
             return _(); IEnumerable<TResult> _()
             {

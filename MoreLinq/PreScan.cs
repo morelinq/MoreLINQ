@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -56,8 +57,8 @@ namespace MoreLinq
             Func<TSource, TSource, TSource> transformation,
             TSource identity)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (transformation == null) throw new ArgumentNullException(nameof(transformation));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(transformation);
 
             return _(); IEnumerable<TSource> _()
             {

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -95,9 +96,9 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (table == null) throw new ArgumentNullException(nameof(table));
-            if (expressions == null) throw new ArgumentNullException(nameof(expressions));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(table);
+            Guard.IsNotNull(expressions);
 
             var members = PrepareMemberInfos(expressions).ToArray();
             var boundMembers = BuildOrBindSchema(table, members);
@@ -146,14 +147,16 @@ namespace MoreLinq
             //
 
             if (expressions.Any(e => e == null))
-                throw new ArgumentException("One of the supplied expressions was null.", nameof(expressions));
+                ThrowHelper.ThrowArgumentException(nameof(expressions), "One of the supplied expressions was null.");
+
             try
             {
                 return expressions.Select(GetAccessedMember);
             }
             catch (ArgumentException e)
             {
-                throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
+                ThrowHelper.ThrowArgumentException(nameof(expressions), "One of the supplied expressions is not allowed.", e);
+                return default!;
             }
 
             static MemberInfo GetAccessedMember(LambdaExpression lambda)
@@ -168,7 +171,7 @@ namespace MoreLinq
                 // member access e.g. not a.b.c
                 return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
                      ? member
-                     : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
+                     : ThrowHelper.ThrowArgumentException<MemberInfo>(nameof(lambda), $"Illegal expression: {lambda}");
             }
         }
 
@@ -203,14 +206,14 @@ namespace MoreLinq
             var columnMembers = new MemberInfo[columns.Count];
 
             foreach (var member in members)
-            {
+                {
                 var column = columns[member.Name] ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
                 if (GetElementaryTypeOfPropertyOrField(member) is var type && type != column.DataType)
                     throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {type} when it is {column.DataType}.", nameof(table));
 
                 columnMembers[column.Ordinal] = member;
-            }
+                }
 
             return columnMembers;
 

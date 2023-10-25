@@ -27,6 +27,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -59,10 +60,10 @@ namespace MoreLinq
             TAccumulate2 seed2, Func<TAccumulate2, T, TAccumulate2> accumulator2,
             Func<TAccumulate1, TAccumulate2, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -80,6 +81,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -126,10 +128,10 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult2>> accumulator2,
             Func<TResult1, TResult2, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -156,6 +158,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -192,11 +195,11 @@ namespace MoreLinq
             TAccumulate3 seed3, Func<TAccumulate3, T, TAccumulate3> accumulator3,
             Func<TAccumulate1, TAccumulate2, TAccumulate3, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -216,6 +219,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -265,11 +269,11 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult3>> accumulator3,
             Func<TResult1, TResult2, TResult3, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -299,6 +303,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -339,12 +344,12 @@ namespace MoreLinq
             TAccumulate4 seed4, Func<TAccumulate4, T, TAccumulate4> accumulator4,
             Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -366,6 +371,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -418,12 +424,12 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult4>> accumulator4,
             Func<TResult1, TResult2, TResult3, TResult4, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -456,6 +462,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -500,13 +507,13 @@ namespace MoreLinq
             TAccumulate5 seed5, Func<TAccumulate5, T, TAccumulate5> accumulator5,
             Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -530,6 +537,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -585,13 +593,13 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult5>> accumulator5,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -627,6 +635,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -675,14 +684,14 @@ namespace MoreLinq
             TAccumulate6 seed6, Func<TAccumulate6, T, TAccumulate6> accumulator6,
             Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(accumulator6);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -708,6 +717,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -766,14 +776,14 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult6>> accumulator6,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(accumulator6);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -812,6 +822,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -864,15 +875,15 @@ namespace MoreLinq
             TAccumulate7 seed7, Func<TAccumulate7, T, TAccumulate7> accumulator7,
             Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-            if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(accumulator6);
+            Guard.IsNotNull(accumulator7);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -900,6 +911,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -961,15 +973,15 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult7>> accumulator7,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-            if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(accumulator6);
+            Guard.IsNotNull(accumulator7);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];
@@ -1011,6 +1023,7 @@ namespace MoreLinq.Experimental
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -1067,16 +1080,16 @@ namespace MoreLinq
             TAccumulate8 seed8, Func<TAccumulate8, T, TAccumulate8> accumulator8,
             Func<TAccumulate1, TAccumulate2, TAccumulate3, TAccumulate4, TAccumulate5, TAccumulate6, TAccumulate7, TAccumulate8, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-            if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
-            if (accumulator8 == null) throw new ArgumentNullException(nameof(accumulator8));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(accumulator6);
+            Guard.IsNotNull(accumulator7);
+            Guard.IsNotNull(accumulator8);
+            Guard.IsNotNull(resultSelector);
 
             var a1 = seed1;
             var a2 = seed2;
@@ -1106,6 +1119,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -1170,16 +1184,16 @@ namespace MoreLinq.Experimental
             Func<IObservable<T>, IObservable<TResult8>> accumulator8,
             Func<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6, TResult7, TResult8, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (accumulator1 == null) throw new ArgumentNullException(nameof(accumulator1));
-            if (accumulator2 == null) throw new ArgumentNullException(nameof(accumulator2));
-            if (accumulator3 == null) throw new ArgumentNullException(nameof(accumulator3));
-            if (accumulator4 == null) throw new ArgumentNullException(nameof(accumulator4));
-            if (accumulator5 == null) throw new ArgumentNullException(nameof(accumulator5));
-            if (accumulator6 == null) throw new ArgumentNullException(nameof(accumulator6));
-            if (accumulator7 == null) throw new ArgumentNullException(nameof(accumulator7));
-            if (accumulator8 == null) throw new ArgumentNullException(nameof(accumulator8));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(accumulator1);
+            Guard.IsNotNull(accumulator2);
+            Guard.IsNotNull(accumulator3);
+            Guard.IsNotNull(accumulator4);
+            Guard.IsNotNull(accumulator5);
+            Guard.IsNotNull(accumulator6);
+            Guard.IsNotNull(accumulator7);
+            Guard.IsNotNull(accumulator8);
+            Guard.IsNotNull(resultSelector);
 
             var r1 = new (bool, TResult1)[1];
             var r2 = new (bool, TResult2)[1];

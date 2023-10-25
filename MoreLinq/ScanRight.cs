@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -47,8 +48,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> ScanRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(func);
 
             return ScanRightImpl(source, func, list => list.Count > 0 ? (list[^1], list.Count - 1) : null);
         }
@@ -78,8 +79,8 @@ namespace MoreLinq
 
         public static IEnumerable<TAccumulate> ScanRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(func);
 
             return ScanRightImpl(source, func, list => (seed, list.Count));
         }

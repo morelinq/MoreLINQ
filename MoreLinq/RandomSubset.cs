@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -57,9 +58,9 @@ namespace MoreLinq
 
         public static IEnumerable<T> RandomSubset<T>(this IEnumerable<T> source, int subsetSize, Random rand)
         {
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
+            Guard.IsNotNull(rand);
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThanOrEqualTo(subsetSize, 0);
 
             return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
         }
@@ -76,7 +77,8 @@ namespace MoreLinq
 
             if (array.Length < subsetSize)
             {
-                throw new ArgumentOutOfRangeException(nameof(subsetSize),
+                ThrowHelper.ThrowArgumentOutOfRangeException(
+                    nameof(subsetSize),
                     "Subset size must be less than or equal to the source length.");
             }
 

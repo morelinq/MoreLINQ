@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -40,8 +41,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> Pipe<T>(this IEnumerable<T> source, Action<T> action)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (action == null) throw new ArgumentNullException(nameof(action));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(action);
 
             return _(); IEnumerable<T> _()
             {

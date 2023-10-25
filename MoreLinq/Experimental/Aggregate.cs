@@ -18,6 +18,7 @@
 namespace MoreLinq.Experimental
 {
     using System;
+    using CommunityToolkit.Diagnostics;
     using Reactive;
 
     static partial class ExperimentalEnumerable
@@ -26,17 +27,17 @@ namespace MoreLinq.Experimental
         {
             var aggregator = aggregatorSelector(subject);
             return ReferenceEquals(aggregator, subject)
-                 ? throw new ArgumentException("Aggregator cannot be identical to the source.", paramName)
+                 ? ThrowHelper.ThrowArgumentException<IDisposable>(paramName, "Aggregator cannot be identical to the source.")
                  : aggregator.Subscribe(s =>
                      r[0] = r[0].Defined
-                         ? throw new InvalidOperationException(
+                         ? ThrowHelper.ThrowInvalidOperationException<(bool, TResult)>(
                              $"Aggregator supplied for parameter \"{paramName}\" produced multiple results when only one is allowed.")
                          : (true, s));
         }
 
         static T GetAggregateResult<T>((bool Defined, T Value) result, string paramName) =>
             !result.Defined
-            ? throw new InvalidOperationException($"Aggregator supplied for parameter \"{paramName}\" has an undefined result.")
+            ? ThrowHelper.ThrowInvalidOperationException<T>($"Aggregator supplied for parameter \"{paramName}\" has an undefined result.")
             : result.Value;
     }
 }

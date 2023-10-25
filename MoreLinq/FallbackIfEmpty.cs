@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -44,7 +44,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return FallbackIfEmptyImpl(source, 1, fallback, default, default, default, null);
         }
 
@@ -65,7 +65,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return FallbackIfEmptyImpl(source, 2, fallback1, fallback2, default, default, null);
         }
 
@@ -88,7 +88,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return FallbackIfEmptyImpl(source, 3, fallback1, fallback2, fallback3, default, null);
         }
 
@@ -113,7 +113,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, T fallback1, T fallback2, T fallback3, T fallback4)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return FallbackIfEmptyImpl(source, 4, fallback1, fallback2, fallback3, fallback4, null);
         }
 
@@ -132,8 +132,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, params T[] fallback)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (fallback == null) throw new ArgumentNullException(nameof(fallback));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(fallback);
             return source.FallbackIfEmpty((IEnumerable<T>)fallback);
         }
 
@@ -152,8 +152,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> FallbackIfEmpty<T>(this IEnumerable<T> source, IEnumerable<T> fallback)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (fallback == null) throw new ArgumentNullException(nameof(fallback));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(fallback);
             return FallbackIfEmptyImpl(source, null, default, default, default, default, fallback);
         }
 

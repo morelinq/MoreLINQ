@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -76,8 +77,8 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (width < 0) throw new ArgumentException(null, nameof(width));
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThanOrEqualTo(width, 0);
             return PadImpl(source, width, padding, null);
         }
 
@@ -107,9 +108,9 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Pad<TSource>(this IEnumerable<TSource> source, int width, Func<int, TSource> paddingSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
-            if (width < 0) throw new ArgumentException(null, nameof(width));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(paddingSelector);
+            Guard.IsGreaterThanOrEqualTo(width, 0);
             return PadImpl(source, width, default, paddingSelector);
         }
 

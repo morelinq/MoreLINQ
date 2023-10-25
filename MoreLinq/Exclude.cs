@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     public static partial class MoreEnumerable
@@ -34,12 +34,12 @@ namespace MoreLinq
 
         public static IEnumerable<T> Exclude<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
-            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
+            Guard.IsNotNull(sequence);
+            Guard.IsGreaterThanOrEqualTo(startIndex, 0);
+            Guard.IsGreaterThanOrEqualTo(count, 0);
 
             return count switch
             {
-                < 0 => throw new ArgumentOutOfRangeException(nameof(count)),
                 0 => sequence,
                 _ => _()
             };

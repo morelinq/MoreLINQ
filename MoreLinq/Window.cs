@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -41,8 +42,8 @@ namespace MoreLinq
 
         public static IEnumerable<IList<TSource>> Window<TSource>(this IEnumerable<TSource> source, int size)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThan(size, 0);
 
             return _(); IEnumerable<IList<TSource>> _()
             {

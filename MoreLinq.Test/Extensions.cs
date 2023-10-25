@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Diagnostics;
     using System.Globalization;
@@ -39,7 +40,7 @@ namespace MoreLinq.Test
         [DebuggerStepThrough]
         public static string ToInvariantString<T>(this T formattable, string? format) where T : IFormattable
         {
-            if (formattable is null) throw new ArgumentNullException(nameof(formattable));
+            Guard.IsNotNull(formattable);
             return formattable.ToString(format, CultureInfo.InvariantCulture);
         }
     }

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -44,12 +45,12 @@ namespace MoreLinq
 
         public static TSource AggregateRight<TSource>(this IEnumerable<TSource> source, Func<TSource, TSource, TSource> func)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(func);
 
             return source.ToListLike() switch
             {
-                { Count: 0 } => throw new InvalidOperationException("Sequence contains no elements."),
+                { Count: 0 } => ThrowHelper.ThrowInvalidOperationException<TSource>("Sequence contains no elements."),
                 var list => AggregateRightImpl(list, list[^1], func, list.Count - 1)
             };
         }
@@ -79,8 +80,8 @@ namespace MoreLinq
 
         public static TAccumulate AggregateRight<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(func);
 
             var list = source.ToListLike();
 
@@ -115,9 +116,9 @@ namespace MoreLinq
 
         public static TResult AggregateRight<TSource, TAccumulate, TResult>(this IEnumerable<TSource> source, TAccumulate seed, Func<TSource, TAccumulate, TAccumulate> func, Func<TAccumulate, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (func == null) throw new ArgumentNullException(nameof(func));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(func);
+            Guard.IsNotNull(resultSelector);
 
             return resultSelector(source.AggregateRight(seed, func));
         }

@@ -31,7 +31,7 @@ namespace MoreLinq
             {
                 elements[i] = i < count ? item : throw LengthError(1);
                 i++;
-            }
+        }
 
             if (i < count)
                 throw LengthError(-1);
@@ -39,6 +39,6 @@ namespace MoreLinq
             return elements;
 
             InvalidOperationException LengthError(int cmp) => new(FormatSequenceLengthErrorMessage(cmp, count));
-        }
     }
+}
 }

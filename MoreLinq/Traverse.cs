@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -46,7 +47,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> TraverseBreadthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
-            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
+            Guard.IsNotNull(childrenSelector);
 
             return _(); IEnumerable<T> _()
             {
@@ -86,7 +87,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> TraverseDepthFirst<T>(T root, Func<T, IEnumerable<T>> childrenSelector)
         {
-            if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
+            Guard.IsNotNull(childrenSelector);
 
             return _(); IEnumerable<T> _()
             {

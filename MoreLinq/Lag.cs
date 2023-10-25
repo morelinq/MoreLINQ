@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -47,8 +48,8 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector is null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
 
             return source.Select(Some)
                          .Lag(offset, default, (curr, lag) => resultSelector(curr.Value, lag is (true, var some) ? some : default));
@@ -76,12 +77,12 @@ namespace MoreLinq
 
         public static IEnumerable<TResult> Lag<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue, Func<TSource, TSource, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(resultSelector);
             // NOTE: Theoretically, we could assume that negative (or zero-offset) lags could be
             //       re-written as: sequence.Lead( -lagBy, resultSelector ). However, I'm not sure
             //       that it's an intuitive - or even desirable - behavior. So it's being omitted.
-            if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
+            Guard.IsGreaterThan(offset, 0);
 
             return _(); IEnumerable<TResult> _()
             {

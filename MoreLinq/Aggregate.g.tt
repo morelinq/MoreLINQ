@@ -70,6 +70,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -104,11 +105,11 @@ namespace MoreLinq
 <#      } #>
             Func<<#= string.Join(", ", from x in o.Arguments select "TAccumulate" + x.Number) #>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
 <#      foreach (var arg in o.Arguments) { #>
-            if (accumulator<#= arg.Number #> == null) throw new ArgumentNullException(nameof(accumulator<#= arg.Number #>));
+            Guard.IsNotNull(accumulator<#= arg.Number #>);
 <#      } #>
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
 <#      foreach (var arg in o.Arguments) { #>
             var a<#= arg.Number #> = seed<#= arg.Number #>;
@@ -128,6 +129,7 @@ namespace MoreLinq
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using Reactive;
@@ -177,11 +179,11 @@ namespace MoreLinq.Experimental
 <#      } #>
             Func<<#= string.Join(", ", from x in o.Arguments select "TResult" + x.Number) #>, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
 <#      foreach (var arg in o.Arguments) { #>
-            if (accumulator<#= arg.Number #> == null) throw new ArgumentNullException(nameof(accumulator<#= arg.Number #>));
+            Guard.IsNotNull(accumulator<#= arg.Number #>);
 <#      } #>
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
 
 <#      foreach (var arg in o.Arguments) { #>
             var r<#= arg.Number #> = new (bool, TResult<#= arg.Number #>)[1];

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -49,9 +50,9 @@ namespace MoreLinq
 
         public static IEnumerable<T> Slice<T>(this IEnumerable<T> sequence, int startIndex, int count)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
-            if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            Guard.IsNotNull(sequence);
+            Guard.IsGreaterThanOrEqualTo(startIndex, 0);
+            Guard.IsGreaterThanOrEqualTo(count, 0);
 
             return sequence switch
             {

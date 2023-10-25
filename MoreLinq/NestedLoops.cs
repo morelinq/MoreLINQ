@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -36,8 +37,8 @@ namespace MoreLinq
 
         static IEnumerable<Action> NestedLoops(this Action action, IEnumerable<ulong> loopCounts)
         {
-            if (action == null) throw new ArgumentNullException(nameof(action));
-            if (loopCounts == null) throw new ArgumentNullException(nameof(loopCounts));
+            Guard.IsNotNull(action);
+            Guard.IsNotNull(loopCounts);
 
             return _(); IEnumerable<Action> _()
             {

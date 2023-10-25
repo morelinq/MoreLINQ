@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace MoreLinq
 
         public static T First<T>(this IExtremaEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.Take(1).AsEnumerable().First();
         }
 
@@ -89,7 +90,7 @@ namespace MoreLinq
 
         public static T? FirstOrDefault<T>(this IExtremaEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.Take(1).AsEnumerable().FirstOrDefault();
         }
 
@@ -107,7 +108,7 @@ namespace MoreLinq
 
         public static T Last<T>(this IExtremaEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.TakeLast(1).AsEnumerable().Last();
         }
 
@@ -125,7 +126,7 @@ namespace MoreLinq
 
         public static T? LastOrDefault<T>(this IExtremaEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.TakeLast(1).AsEnumerable().LastOrDefault();
         }
 
@@ -146,7 +147,7 @@ namespace MoreLinq
         public static T Single<T>(this IExtremaEnumerable<T> source)
 #pragma warning restore CA1720 // Identifier contains type name
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.Take(2).AsEnumerable().Single();
         }
 
@@ -165,7 +166,7 @@ namespace MoreLinq
 
         public static T? SingleOrDefault<T>(this IExtremaEnumerable<T> source)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source.Take(2).AsEnumerable().SingleOrDefault();
         }
 
@@ -211,8 +212,8 @@ namespace MoreLinq
         public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(selector);
 
             comparer ??= Comparer<TKey>.Default;
             return new ExtremaEnumerable<TSource, TKey>(source, selector, comparer.Compare);

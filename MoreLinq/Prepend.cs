@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     static partial class MoreEnumerable
@@ -47,7 +47,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
 #endif
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
             return source is PendNode<TSource> node
                  ? node.Prepend(value)
                  : PendNode<TSource>.WithSource(source).Prepend(value);

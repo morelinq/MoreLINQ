@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -67,8 +68,8 @@ namespace MoreLinq
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rand)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (rand == null) throw new ArgumentNullException(nameof(rand));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(rand);
 
             return RandomSubsetImpl(source, rand, seq =>
             {

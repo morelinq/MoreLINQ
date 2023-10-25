@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -81,7 +82,7 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
             Func<T, int> indexSelector, Func<T, TResult> resultSelector)
         {
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
             return source.ToArrayByIndex(indexSelector, (e, _) => resultSelector(e));
         }
 
@@ -116,9 +117,9 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source,
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(indexSelector);
+            Guard.IsNotNull(resultSelector);
 
             var lastIndex = -1;
             var indexed = (List<KeyValuePair<int, T>>?)null;
@@ -206,7 +207,7 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
             Func<T, int> indexSelector, Func<T, TResult> resultSelector)
         {
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(resultSelector);
             return source.ToArrayByIndex(length, indexSelector, (e, _) => resultSelector(e));
         }
 
@@ -241,10 +242,10 @@ namespace MoreLinq
         public static TResult[] ToArrayByIndex<T, TResult>(this IEnumerable<T> source, int length,
             Func<T, int> indexSelector, Func<T, int, TResult> resultSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (indexSelector == null) throw new ArgumentNullException(nameof(indexSelector));
-            if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThanOrEqualTo(length, 0);
+            Guard.IsNotNull(indexSelector);
+            Guard.IsNotNull(resultSelector);
 
             var array = new TResult[length];
             foreach (var e in source)

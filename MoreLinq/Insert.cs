@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -51,9 +52,9 @@ namespace MoreLinq
 
         public static IEnumerable<T> Insert<T>(this IEnumerable<T> first, IEnumerable<T> second, int index)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
+            Guard.IsGreaterThanOrEqualTo(index, 0);
 
             return _(); IEnumerable<T> _()
             {
@@ -64,8 +65,7 @@ namespace MoreLinq
                 while (++i < index && iter.MoveNext())
                     yield return iter.Current;
 
-                if (i < index)
-                    throw new ArgumentOutOfRangeException(nameof(index), "Insertion index is greater than the length of the first sequence.");
+                Guard.IsLessThanOrEqualTo(i, index);
 
                 foreach (var item in second)
                     yield return item;

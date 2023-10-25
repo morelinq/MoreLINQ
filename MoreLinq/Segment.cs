@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -35,7 +36,7 @@ namespace MoreLinq
 
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, bool> newSegmentPredicate)
         {
-            if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
+            Guard.IsNotNull(newSegmentPredicate);
 
             return Segment(source, (curr, _, _) => newSegmentPredicate(curr));
         }
@@ -53,7 +54,7 @@ namespace MoreLinq
 
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, int, bool> newSegmentPredicate)
         {
-            if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
+            Guard.IsNotNull(newSegmentPredicate);
 
             return Segment(source, (curr, _, index) => newSegmentPredicate(curr, index));
         }
@@ -71,8 +72,8 @@ namespace MoreLinq
 
         public static IEnumerable<IEnumerable<T>> Segment<T>(this IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
+            Guard.IsNotNull(source);
+            Guard.IsNotNull(newSegmentPredicate);
 
             return _(); IEnumerable<IEnumerable<T>> _()
             {

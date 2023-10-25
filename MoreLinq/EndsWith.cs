@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -68,8 +68,8 @@ namespace MoreLinq
 
         public static bool EndsWith<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer)
         {
-            if (first == null) throw new ArgumentNullException(nameof(first));
-            if (second == null) throw new ArgumentNullException(nameof(second));
+            Guard.IsNotNull(first);
+            Guard.IsNotNull(second);
 
             comparer ??= EqualityComparer<T>.Default;
 

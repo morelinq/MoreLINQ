@@ -19,6 +19,7 @@
 
 namespace MoreLinq.Experimental
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -86,8 +87,8 @@ namespace MoreLinq.Experimental
 
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), arrayIndex, null);
-            if (arrayIndex + Count > array.Length) throw new ArgumentException(null, nameof(arrayIndex));
+            Guard.IsGreaterThanOrEqualTo(arrayIndex, 0);
+            Guard.IsLessThanOrEqualTo(arrayIndex, array.Length - Count);
 
             for (int i = 0, j = arrayIndex; i < Count; i++, j++)
                 array[j] = this[i];
@@ -96,11 +97,11 @@ namespace MoreLinq.Experimental
         public virtual IEnumerator<T> GetEnumerator() => this.Take(Count).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        void IList<T>.Insert(int index, T item) => throw new NotSupportedException();
-        void IList<T>.RemoveAt(int index) => throw new NotSupportedException();
-        void ICollection<T>.Add(T item) => throw new NotSupportedException();
-        void ICollection<T>.Clear() => throw new NotSupportedException();
-        bool ICollection<T>.Remove(T item) => throw new NotSupportedException();
+        void IList<T>.Insert(int index, T item) => ThrowHelper.ThrowNotSupportedException();
+        void IList<T>.RemoveAt(int index) => ThrowHelper.ThrowNotSupportedException();
+        void ICollection<T>.Add(T item) => ThrowHelper.ThrowNotSupportedException();
+        void ICollection<T>.Clear() => ThrowHelper.ThrowNotSupportedException();
+        bool ICollection<T>.Remove(T item) => ThrowHelper.ThrowNotSupportedException<bool>();
     }
 }
 

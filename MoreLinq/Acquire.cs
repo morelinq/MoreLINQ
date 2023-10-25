@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -41,7 +42,7 @@ namespace MoreLinq
         public static TSource[] Acquire<TSource>(this IEnumerable<TSource> source)
             where TSource : IDisposable
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            Guard.IsNotNull(source);
 
             var disposables = new List<TSource>();
             try

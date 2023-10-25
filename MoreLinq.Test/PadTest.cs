@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void PadNegativeWidth()
         {
-            Assert.That(() => new object[0].Pad(-1), Throws.ArgumentException("width"));
+            Assert.That(() => new object[0].Pad(-1), Throws.ArgumentOutOfRangeException("width"));
         }
 
         [Test]

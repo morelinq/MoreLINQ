@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
 
     /// <summary>
@@ -29,8 +29,8 @@ namespace MoreLinq
     {
         static int CountUpTo<T>(this IEnumerable<T> source, int max)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (max < 0) throw new ArgumentOutOfRangeException(nameof(max), "The maximum count argument cannot be negative.");
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThanOrEqualTo(max, 0);
 
             var count = 0;
 

@@ -17,6 +17,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections.Generic;
 
@@ -66,9 +67,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> AssertCount<TSource>(this IEnumerable<TSource> source,
             int count, Func<int, int, Exception> errorSelector)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-            if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
+            Guard.IsNotNull(source);
+            Guard.IsGreaterThanOrEqualTo(count, 0);
+            Guard.IsNotNull(errorSelector);
 
             return _(); IEnumerable<TSource> _()
             {

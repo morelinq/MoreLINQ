@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -34,14 +34,16 @@ namespace MoreLinq
 
         public CollectionLike(ICollection<T> collection)
         {
-            _rw = collection ?? throw new ArgumentNullException(nameof(collection));
+            Guard.IsNotNull(collection);
+            _rw = collection;
             _ro = null;
         }
 
         public CollectionLike(IReadOnlyCollection<T> collection)
         {
+            Guard.IsNotNull(collection);
             _rw = null;
-            _ro = collection ?? throw new ArgumentNullException(nameof(collection));
+            _ro = collection;
         }
 
         public int Count => _rw?.Count ?? _ro?.Count ?? 0;
@@ -55,7 +57,7 @@ namespace MoreLinq
         public static CollectionLike<T>? TryAsCollectionLike<T>(this IEnumerable<T> source) =>
             source switch
             {
-                null => throw new ArgumentNullException(nameof(source)),
+                null => ThrowHelper.ThrowArgumentNullException<CollectionLike<T>?>(nameof(source)),
                 ICollection<T> collection => new(collection),
                 IReadOnlyCollection<T> collection => new(collection),
                 _ => null

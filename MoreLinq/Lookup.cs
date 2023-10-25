@@ -30,6 +30,7 @@
 
 namespace MoreLinq
 {
+    using CommunityToolkit.Diagnostics;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -258,9 +259,11 @@ namespace MoreLinq
 
         TElement IList<TElement>.this[int index]
         {
-            get => index < 0 || index >= _count
-                   ? throw new ArgumentOutOfRangeException(nameof(index))
-                   : _elements[index];
+            get
+            {
+                Guard.IsBetween(index, -1, _count);
+                return _elements[index];
+            }
 
             set => ThrowModificationNotSupportedException();
         }
@@ -272,6 +275,6 @@ namespace MoreLinq
         void IList<TElement>.RemoveAt(int index) => ThrowModificationNotSupportedException();
 
         [DoesNotReturn]
-        static void ThrowModificationNotSupportedException() => throw new NotSupportedException("Grouping is immutable.");
+        static void ThrowModificationNotSupportedException() => ThrowHelper.ThrowNotSupportedException("Grouping is immutable.");
     }
 }

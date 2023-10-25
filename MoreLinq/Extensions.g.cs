@@ -1496,7 +1496,8 @@ namespace MoreLinq.Extensions
         /// <returns>A sequence with results from invoking <paramref name="functions"/>.</returns>
         /// <exception cref="ArgumentNullException">When <paramref name="functions"/> is <c>null</c>.</exception>
 
-        public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions)             => MoreEnumerable.Evaluate(functions);
+        public static IEnumerable<T> Evaluate<T>(this IEnumerable<Func<T>> functions)
+            => MoreEnumerable.Evaluate(functions);
 
     }
 

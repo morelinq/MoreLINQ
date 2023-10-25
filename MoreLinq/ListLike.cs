@@ -17,7 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
+    using CommunityToolkit.Diagnostics;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -34,21 +34,23 @@ namespace MoreLinq
 
         public ListLike(IList<T> list)
         {
-            _rw = list ?? throw new ArgumentNullException(nameof(list));
+            Guard.IsNotNull(list);
+            _rw = list;
             _ro = null;
         }
 
         public ListLike(IReadOnlyList<T> list)
         {
+            Guard.IsNotNull(list);
             _rw = null;
-            _ro = list ?? throw new ArgumentNullException(nameof(list));
+            _ro = list;
         }
 
         public int Count => _rw?.Count ?? _ro?.Count ?? 0;
 
         public T this[int index] => _rw is { } rw ? rw[index]
                                   : _ro is { } rx ? rx[index]
-                                  : throw new ArgumentOutOfRangeException(nameof(index));
+                                  : ThrowHelper.ThrowInvalidOperationException<T>("Invalid `ListLike` construction.");
     }
 
     static class ListLike
@@ -61,7 +63,7 @@ namespace MoreLinq
         public static ListLike<T>? TryAsListLike<T>(this IEnumerable<T> source) =>
             source switch
             {
-                null => throw new ArgumentNullException(nameof(source)),
+                null => ThrowHelper.ThrowArgumentNullException<ListLike<T>?>(nameof(source)),
                 IList<T> list => new(list),
                 IReadOnlyList<T> list => new(list),
                 _ => null
