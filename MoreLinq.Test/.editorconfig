@@ -37,3 +37,9 @@ dotnet_diagnostic.IDE0047.severity = suggestion
 
 # IDE0022: Use expression/block body for methods
 dotnet_diagnostic.IDE0022.severity = none
+
+# NUnit1030: The type of parameter provided by the TestCaseSource does not match the type of the parameter in the Test method
+dotnet_diagnostic.NUnit1030.severity = suggestion
+
+# Nunit1029: The number of parameters provided by the TestCaseSource does not match the number of parameters in the Test method
+dotnet_diagnostic.NUnit1029.severity = suggestion
