@@ -164,6 +164,18 @@
     <PackageReference Include="PolySharp" Version="1.13.2" PrivateAssets="all" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PolySharpIncludeGeneratedTypes>
+      System.Index;
+      System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
+      System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute;
+      System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute;
+      System.Diagnostics.CodeAnalysis.MemberNotNullAttribute;
+      System.Diagnostics.CodeAnalysis.NotNullWhenAttribute;
+      System.Runtime.CompilerServices.CallerArgumentExpressionAttribute;
+    </PolySharpIncludeGeneratedTypes>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
     <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
