@@ -17,20 +17,31 @@
 
 namespace MoreLinq.Test
 {
-    using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+    using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class PadStartTest
     {
-        // PadStart(source, width)
+        static readonly IEnumerable<ITestCaseData> PadStartWithNegativeWidthCases =
+            from e in new (string Name, TestDelegate Delegate)[]
+            {
+                ("DefaultPadding" , static () => new object[0].PadStart(-1)),
+                ("Padding"        , static () => new object[0].PadStart(-1, -2)),
+                ("PaddingSelector", static () => new object[0].PadStart(-1, BreakingFunc.Of<int, int>())),
+            }
+            select new TestCaseData(e.Delegate).SetName(e.Name);
 
-        [Test]
-        public void PadStartWithNegativeWidth()
+        [TestCaseSource(nameof(PadStartWithNegativeWidthCases))]
+        public void PadStartWithNegativeWidth(TestDelegate @delegate)
         {
-            Assert.That(() => new int[0].PadStart(-1), Throws.ArgumentException("width"));
+            Assert.That(@delegate, Throws.ArgumentOutOfRangeException("width")
+                                         .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
         }
+
+        // PadStart(source, width)
 
         [Test]
         public void PadStartIsLazy()
@@ -62,12 +73,6 @@ namespace MoreLinq.Test
         // PadStart(source, width, padding)
 
         [Test]
-        public void PadStartWithPaddingWithNegativeWidth()
-        {
-            Assert.That(() => new int[0].PadStart(-1, 1), Throws.ArgumentException("width"));
-        }
-
-        [Test]
         public void PadStartWithPaddingIsLazy()
         {
             _ = new BreakingSequence<int>().PadStart(0, -1);
@@ -92,14 +97,6 @@ namespace MoreLinq.Test
             {
                 AssertEqual(source, x => x.PadStart(width, string.Empty), expected);
             }
-        }
-
-        // PadStart(source, width, paddingSelector)
-
-        [Test]
-        public void PadStartWithSelectorWithNegativeWidth()
-        {
-            Assert.That(() => new int[0].PadStart(-1, x => x), Throws.ArgumentException("width"));
         }
 
         [Test]
