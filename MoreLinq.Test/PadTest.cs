@@ -17,15 +17,44 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class PadTest
     {
-        [Test]
-        public void PadNegativeWidth()
+        static readonly IEnumerable<ITestCaseData> PadNegativeWidthCases =
+            from e in new (string Name, TestDelegate Delegate)[]
+            {
+                ("DefaultPadding" , static () => new object[0].Pad(-1)),
+                ("Padding"        , static () => new object[0].Pad(-1, -2)),
+                ("PaddingSelector", static () => new object[0].Pad(-1, BreakingFunc.Of<int, int>())),
+            }
+            select new TestCaseData(e.Delegate).SetName(e.Name);
+
+        [TestCaseSource(nameof(PadNegativeWidthCases))]
+        public void PadNegativeWidth(TestDelegate @delegate)
         {
-            Assert.That(() => new object[0].Pad(-1), Throws.ArgumentException("width"));
+            Assert.That(@delegate, Throws.ArgumentOutOfRangeException("width")
+                                         .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
+        }
+
+        [Test]
+        public void PadPaddingNegativeWidth()
+        {
+            Assert.That(() => new object[0].Pad(-1, -2),
+                        Throws.ArgumentOutOfRangeException("width")
+                              .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
+        }
+
+        [Test]
+        public void PadPaddingSelectorNegativeWidth()
+        {
+            Assert.That(() => new object[0].Pad(-1, BreakingFunc.Of<int, int>()),
+                        Throws.ArgumentOutOfRangeException("width")
+                              .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
         }
 
         [Test]
