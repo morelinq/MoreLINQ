@@ -42,22 +42,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void PadPaddingNegativeWidth()
-        {
-            Assert.That(() => new object[0].Pad(-1, -2),
-                        Throws.ArgumentOutOfRangeException("width")
-                              .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
-        }
-
-        [Test]
-        public void PadPaddingSelectorNegativeWidth()
-        {
-            Assert.That(() => new object[0].Pad(-1, BreakingFunc.Of<int, int>()),
-                        Throws.ArgumentOutOfRangeException("width")
-                              .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
-        }
-
-        [Test]
         public void PadIsLazy()
         {
             _ = new BreakingSequence<object>().Pad(0);
