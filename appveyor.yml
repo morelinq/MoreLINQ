@@ -41,12 +41,6 @@ for:
       - image: macos-bigsur
   environment:
     IMAGE_NAME: macos
-skip_commits:
-  files:
-    - '*.md'
-    - '*.txt'
-    - '.editorconfig'
-    - lic/*
 install:
 - npm install -g eclint
 - git rm .editorconfig
