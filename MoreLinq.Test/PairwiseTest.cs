@@ -20,30 +20,60 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class PairwiseTest
+    public static class PairwiseTest
     {
-        [Test]
-        public void PairwiseIsLazy()
+        public class ReturningTuples
         {
-            _ = new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
+            [Test]
+            public void PairwiseIsLazy()
+            {
+                _ = new BreakingSequence<object>().Pairwise();
+            }
+
+            [TestCase(0)]
+            [TestCase(1)]
+            public void PairwiseWithSequenceShorterThanTwo(int count)
+            {
+                var source = Enumerable.Range(0, count);
+                var result = source.Pairwise();
+
+                Assert.That(result, Is.Empty);
+            }
+
+            [Test]
+            public void PairwiseWideSourceSequence()
+            {
+                using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
+                var result = source.Pairwise();
+                result.AssertSequenceEqual(("a", "b"), ("b", "c"), ("c", "d"));
+            }
         }
 
-        [TestCase(0)]
-        [TestCase(1)]
-        public void PairwiseWithSequenceShorterThanTwo(int count)
+        public class ReturningSomeResults
         {
-            var source = Enumerable.Range(0, count);
-            var result = source.Pairwise(BreakingFunc.Of<int, int, int>());
+            [Test]
+            public void PairwiseIsLazy()
+            {
+                _ = new BreakingSequence<object>().Pairwise(BreakingFunc.Of<object, object, int>());
+            }
 
-            Assert.That(result, Is.Empty);
-        }
+            [TestCase(0)]
+            [TestCase(1)]
+            public void PairwiseWithSequenceShorterThanTwo(int count)
+            {
+                var source = Enumerable.Range(0, count);
+                var result = source.Pairwise(BreakingFunc.Of<int, int, int>());
 
-        [Test]
-        public void PairwiseWideSourceSequence()
-        {
-            using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
-            var result = source.Pairwise((x, y) => x + y);
-            result.AssertSequenceEqual("ab", "bc", "cd");
+                Assert.That(result, Is.Empty);
+            }
+
+            [Test]
+            public void PairwiseWideSourceSequence()
+            {
+                using var source = new[] { "a", "b", "c", "d" }.AsTestingSequence();
+                var result = source.Pairwise((x, y) => x + y);
+                result.AssertSequenceEqual("ab", "bc", "cd");
+            }
         }
     }
 }

@@ -179,5 +179,120 @@ namespace MoreLinq
 
             return ZipImpl(first, second, third, fourth, resultSelector, 3);
         }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the two input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = { 1, 2, 3 };
+        /// var letters = { "A", "B", "C", "D" };
+        /// var zipped = numbers.ZipLongest(letters);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A),
+        /// (2, B), (3, C), (0, D) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(TFirst, TSecond)> ZipLongest<TFirst, TSecond>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second)
+        {
+            return first.ZipLongest(second, ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the three input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var zipped  = numbers.ZipLongest(letters, chars);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield (1, "A", 'a'),
+        /// (2, "B", 'b'), (3, "C", 'c'), (0, "D", 'd'), (0, <see langword="null"/>, 'e') in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> ZipLongest<T1, T2, T3>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+        {
+            return first.ZipLongest(second, third, ValueTuple.Create);
+        }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the four input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var flags   = new[] { true, false, true, false, true, false };
+        /// var zipped  = numbers.ZipLongest(letters, chars, flags);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield (1, "A", 'a', <see langword="true"/>),
+        /// (2, "B", 'b', <see langword="false"/>), (3, "C", 'c', <see langword="true"/>), (0, "D", 'd', <see langword="false"/>),
+        /// (0, <see langword="null"/>, 'e', <see langword="true"/>), (0, <see langword="null"/>, '\0', <see langword="false"/>) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> ZipLongest<T1, T2, T3, T4>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+        {
+            return first.ZipLongest(second, third, fourth, ValueTuple.Create);
+        }
     }
 }

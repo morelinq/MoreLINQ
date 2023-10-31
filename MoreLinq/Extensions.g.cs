@@ -721,6 +721,59 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class CartesianExtension
     {
+
+        /// <summary>
+        /// Returns the Cartesian product of two sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second)>
+            Cartesian<T1, T2>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second)
+            => MoreEnumerable.            Cartesian(first, second);
+
+        /// <summary>
+        /// Returns the Cartesian product of three sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third)>
+            Cartesian<T1, T2, T3>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third)
+            => MoreEnumerable.            Cartesian(first, second, third);
         /// <summary>
         /// Returns the Cartesian product of two sequences by enumerating all
         /// possible combinations of one item from each sequence, and applying
@@ -753,6 +806,37 @@ namespace MoreLinq.Extensions
             IEnumerable<T2> second,
             Func<T1, T2, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first, second, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of four sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth)>
+            Cartesian<T1, T2, T3, T4>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth)
+            => MoreEnumerable.            Cartesian(first, second, third, fourth);
 
         /// <summary>
         /// Returns the Cartesian product of three sequences by enumerating all
@@ -790,6 +874,40 @@ namespace MoreLinq.Extensions
             IEnumerable<T3> third,
             Func<T1, T2, T3, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first, second, third, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of five sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth)>
+            Cartesian<T1, T2, T3, T4, T5>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth)
+            => MoreEnumerable.            Cartesian(first, second, third, fourth, fifth);
 
         /// <summary>
         /// Returns the Cartesian product of four sequences by enumerating all
@@ -831,6 +949,43 @@ namespace MoreLinq.Extensions
             IEnumerable<T4> fourth,
             Func<T1, T2, T3, T4, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first, second, third, fourth, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of six sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth)>
+            Cartesian<T1, T2, T3, T4, T5, T6>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth)
+            => MoreEnumerable.            Cartesian(first, second, third, fourth, fifth, sixth);
 
         /// <summary>
         /// Returns the Cartesian product of five sequences by enumerating all
@@ -876,6 +1031,46 @@ namespace MoreLinq.Extensions
             IEnumerable<T5> fifth,
             Func<T1, T2, T3, T4, T5, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first, second, third, fourth, fifth, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of seven sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="T7">The type of the elements of <paramref name="seventh"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="seventh">The seventh sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth, T7 Seventh)>
+            Cartesian<T1, T2, T3, T4, T5, T6, T7>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh)
+            => MoreEnumerable.            Cartesian(first, second, third, fourth, fifth, sixth, seventh);
 
         /// <summary>
         /// Returns the Cartesian product of six sequences by enumerating all
@@ -925,6 +1120,49 @@ namespace MoreLinq.Extensions
             IEnumerable<T6> sixth,
             Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
             => MoreEnumerable.Cartesian(first, second, third, fourth, fifth, sixth, resultSelector);
+
+        /// <summary>
+        /// Returns the Cartesian product of eight sequences by enumerating tuples
+        /// of all possible combinations of one item from each sequence.
+        /// </summary>
+        /// <typeparam name="T1">The type of the elements of <paramref name="first"/>.</typeparam>
+        /// <typeparam name="T2">The type of the elements of <paramref name="second"/>.</typeparam>
+        /// <typeparam name="T3">The type of the elements of <paramref name="third"/>.</typeparam>
+        /// <typeparam name="T4">The type of the elements of <paramref name="fourth"/>.</typeparam>
+        /// <typeparam name="T5">The type of the elements of <paramref name="fifth"/>.</typeparam>
+        /// <typeparam name="T6">The type of the elements of <paramref name="sixth"/>.</typeparam>
+        /// <typeparam name="T7">The type of the elements of <paramref name="seventh"/>.</typeparam>
+        /// <typeparam name="T8">The type of the elements of <paramref name="eighth"/>.</typeparam>
+        /// <param name="first">The first sequence of elements.</param>
+        /// <param name="second">The second sequence of elements.</param>
+        /// <param name="third">The third sequence of elements.</param>
+        /// <param name="fourth">The fourth sequence of elements.</param>
+        /// <param name="fifth">The fifth sequence of elements.</param>
+        /// <param name="sixth">The sixth sequence of elements.</param>
+        /// <param name="seventh">The seventh sequence of elements.</param>
+        /// <param name="eighth">The eighth sequence of elements.</param>
+        /// <returns>A sequence of tuples.</returns>
+        /// <remarks>
+        /// <para>
+        /// The method returns items in the same order as a nested foreach
+        /// loop, but all sequences except for <paramref name="first"/> are
+        /// cached when iterated over. The cache is then re-used for any
+        /// subsequent iterations.</para>
+        /// <para>
+        /// This method uses deferred execution and stream its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1 First, T2 Second, T3 Third, T4 Fourth, T5 Fifth, T6 Sixth, T7 Seventh, T8 Eighth)>
+            Cartesian<T1, T2, T3, T4, T5, T6, T7, T8>(
+                this IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh,
+                IEnumerable<T8> eighth)
+            => MoreEnumerable.            Cartesian(first, second, third, fourth, fifth, sixth, seventh, eighth);
 
         /// <summary>
         /// Returns the Cartesian product of seven sequences by enumerating all
@@ -1199,6 +1437,30 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class CountDownExtension
     {
+
+        /// <summary>
+        /// Provides a countdown counter for a given count of elements at the
+        /// tail of the sequence where zero always represents the last element,
+        /// one represents the second-last element, two represents the
+        /// third-last element and so on.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of elements of <paramref name="source"/></typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="count">Count of tail elements of <paramref name="source"/> to count down.</param>
+        /// <returns>
+        /// A sequence of tuple with an element from <paramref name="source"/> and its countdown.
+        /// For elements before the last <paramref name="count"/>, the countdown value is <c>null</c>.
+        /// </returns>
+        /// <remarks>
+        /// This method uses deferred execution semantics and streams its
+        /// results. At most, <paramref name="count"/> elements of the source
+        /// sequence may be buffered at any one time unless
+        /// <paramref name="source"/> is a collection or a list.
+        /// </remarks>
+
+        public static IEnumerable<(T Item, int? CountDown)> CountDown<T>(this IEnumerable<T> source, int count)
+            => MoreEnumerable.CountDown(source, count);
         /// <summary>
         /// Provides a countdown counter for a given count of elements at the
         /// tail of the sequence where zero always represents the last element,
@@ -1339,6 +1601,73 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class EquiZipExtension
     {
+
+        /// <summary>
+        /// Returns tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the two input sequences.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped = numbers.EquiZip(letters);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A),
+        /// (2, B), (3, C), (4, D) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2)> EquiZip<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+            => MoreEnumerable.EquiZip(first, second);
+
+        /// <summary>
+        /// Returns tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the three input sequences.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var zipped = numbers.EquiZip(letters, chars);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A, a),
+        /// (2, B, b), (3, C, c), (4, D, d) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> EquiZip<T1, T2, T3>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third)
+            => MoreEnumerable.EquiZip(first, second, third);
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences. An exception is thrown
@@ -1380,6 +1709,45 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst, TSecond, TResult> resultSelector)
             => MoreEnumerable.EquiZip(first, second, resultSelector);
+
+        /// <summary>
+        /// Returns tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. An exception is thrown
+        /// if the input sequences are of different lengths.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the four input sequences.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// The input sequences are of different lengths.
+        /// </exception>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3, 4 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd' };
+        /// var flags   = new[] { true, false, true, false };
+        /// var zipped = numbers.EquiZip(letters, chars, flags);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A, a, True),
+        /// (2, B, b, False), (3, C, c, True), (4, D, d, False) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> EquiZip<T1, T2, T3, T4>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth)
+            => MoreEnumerable.EquiZip(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -3075,6 +3443,37 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class LagExtension
     {
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a negative offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements prior to the lag offset, <c>default(T)</c> is used as the lagged value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
+        /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset)
+            => MoreEnumerable.Lag(source, offset);
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a negative offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements prior to the lag offset, <paramref name="defaultLagValue"/> is used as the lagged value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements of the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate lag</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lag each value of the sequence</param>
+        /// <param name="defaultLagValue">A default value supplied for the lagged value prior to the lag offset</param>
+        /// <returns>A sequence of element of the sequence with its lagged pairing</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lag<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLagValue)
+            => MoreEnumerable.Lag(source, offset, defaultLagValue);
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a
         /// negative offset.
@@ -3176,6 +3575,37 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class LeadExtension
     {
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a positive offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
+        /// default(T) is used as the lead value.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate Lead</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
+        /// <returns>The produced sequence of tuple</returns>
+
+        public static IEnumerable<(TSource Item, TSource? OffsetItem)> Lead<TSource>(this IEnumerable<TSource> source, int offset)
+            => MoreEnumerable.Lead(source, offset);
+
+        /// <summary>
+        /// Produces a sequence of tuple containing a pair of elements separated by a positive offset.
+        /// </summary>
+        /// <remarks>
+        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// </remarks>
+        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
+        /// <param name="source">The sequence over which to evaluate Lead</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
+        /// <param name="defaultLeadValue">A default value supplied for the leading element when none is available</param>
+        /// <returns>The produced sequence of tuple</returns>
+
+        public static IEnumerable<(TSource Item, TSource OffsetItem)> Lead<TSource>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue)
+            => MoreEnumerable.Lead(source, offset, defaultLeadValue);
         /// <summary>
         /// Produces a projection of a sequence by evaluating pairs of elements separated by a
         /// positive offset.
@@ -4093,6 +4523,25 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class PairwiseExtension
     {
+        /// <summary>
+        /// Returns a sequence where each element in the source sequence is
+        /// paired with its predecessor, with the exception of the first
+        /// element which is only returned as the predecessor of the second
+        /// element.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(TSource, TSource)>
+            Pairwise<TSource>(this IEnumerable<TSource> source)             => MoreEnumerable.            Pairwise(source);
+
         /// <summary>
         /// Returns a sequence resulting from applying a function to each
         /// element in the source sequence and its
@@ -5888,6 +6337,32 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class TagFirstLastExtension
     {
+
+        /// <summary>
+        /// Returns a sequence of tuples, where the N-th tuple contains the N-th
+        /// element of the source sequence and two booleans indicating whether the
+        /// element is the first and/or last.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 123, 456, 789 };
+        /// var result = numbers.TagFirstLast();
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// <c>(123, True, False)</c>, <c>(456, False, False)</c> and
+        /// <c>(789, False, True)</c> in turn.
+        /// </example>
+
+        public static IEnumerable<(TSource Item, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
+            => MoreEnumerable.TagFirstLast(source);
         /// <summary>
         /// Returns a sequence resulting from applying a function to each
         /// element in the source sequence with additional parameters
@@ -6996,6 +7471,74 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class ZipLongestExtension
     {
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the two input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = { 1, 2, 3 };
+        /// var letters = { "A", "B", "C", "D" };
+        /// var zipped = numbers.ZipLongest(letters);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield the tuples : (1, A),
+        /// (2, B), (3, C), (0, D) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(TFirst, TSecond)> ZipLongest<TFirst, TSecond>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second)
+            => MoreEnumerable.ZipLongest(first, second);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the three input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var zipped  = numbers.ZipLongest(letters, chars);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield (1, "A", 'a'),
+        /// (2, "B", 'b'), (3, "C", 'c'), (0, "D", 'd'), (0, <see langword="null"/>, 'e') in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> ZipLongest<T1, T2, T3>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+            => MoreEnumerable.ZipLongest(first, second, third);
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences. The resulting sequence
@@ -7036,6 +7579,47 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst?, TSecond?, TResult> resultSelector)
             => MoreEnumerable.ZipLongest(first, second, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// will always be as long as the longest of input sequences where the
+        /// default value of each of the shorter sequence element types is used
+        /// for padding.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the four input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var flags   = new[] { true, false, true, false, true, false };
+        /// var zipped  = numbers.ZipLongest(letters, chars, flags);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield (1, "A", 'a', <see langword="true"/>),
+        /// (2, "B", 'b', <see langword="false"/>), (3, "C", 'c', <see langword="true"/>), (0, "D", 'd', <see langword="false"/>),
+        /// (0, <see langword="null"/>, 'e', <see langword="true"/>), (0, <see langword="null"/>, '\0', <see langword="false"/>) in turn.
+        /// </example>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> ZipLongest<T1, T2, T3, T4>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+            => MoreEnumerable.ZipLongest(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
@@ -7140,6 +7724,82 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class ZipShortestExtension
     {
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="TFirst">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="TSecond">Type of elements in second sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the two input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var zipped  = numbers.ZipShortest(letters);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// (1, "A"), (2, "B"), (3, "C") in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(TFirst, TSecond)> ZipShortest<TFirst, TSecond>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second)
+            => MoreEnumerable.ZipShortest(first, second);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <param name="first">First sequence</param>
+        /// <param name="second">Second sequence</param>
+        /// <param name="third">Third sequence</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the three input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var zipped  = numbers.ZipShortest(letters, chars);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// (1, "A", 'a'), (2, "B", 'b'), (3, "C", 'c') in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3)> ZipShortest<T1, T2, T3>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third)
+            => MoreEnumerable.ZipShortest(first, second, third);
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th
         /// element from each of the argument sequences. The resulting sequence
@@ -7182,6 +7842,50 @@ namespace MoreLinq.Extensions
             IEnumerable<TSecond> second,
             Func<TFirst, TSecond, TResult> resultSelector)
             => MoreEnumerable.ZipShortest(first, second, resultSelector);
+
+        /// <summary>
+        /// Returns a sequence of tuples, where each tuple contains the N-th
+        /// element from each of the argument sequences. The resulting sequence
+        /// is as short as the shortest input sequence.
+        /// </summary>
+        /// <typeparam name="T1">Type of elements in first sequence.</typeparam>
+        /// <typeparam name="T2">Type of elements in second sequence.</typeparam>
+        /// <typeparam name="T3">Type of elements in third sequence.</typeparam>
+        /// <typeparam name="T4">Type of elements in fourth sequence.</typeparam>
+        /// <param name="first">The first sequence.</param>
+        /// <param name="second">The second sequence.</param>
+        /// <param name="third">The third sequence.</param>
+        /// <param name="fourth">The fourth sequence.</param>
+        /// <returns>
+        /// A sequence of tuples that contains elements of the four input sequences.
+        /// </returns>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 1, 2, 3 };
+        /// var letters = new[] { "A", "B", "C", "D" };
+        /// var chars   = new[] { 'a', 'b', 'c', 'd', 'e' };
+        /// var flags   = new[] { true, false };
+        /// var zipped  = numbers.ZipShortest(letters, chars, flags);
+        /// ]]></code>
+        /// The <c>zipped</c> variable, when iterated over, will yield
+        /// (1, "A", 'a', <see langword="true"/>), (2, "B", 'b', <see langword="false"/>) in turn.
+        /// </example>
+        /// <remarks>
+        /// <para>
+        /// If the input sequences are of different lengths, the result sequence
+        /// is terminated as soon as the shortest input sequence is exhausted
+        /// and remainder elements from the longer sequences are never consumed.
+        /// </para>
+        /// <para>
+        /// This operator uses deferred execution and streams its results.</para>
+        /// </remarks>
+
+        public static IEnumerable<(T1, T2, T3, T4)> ZipShortest<T1, T2, T3, T4>(
+            this IEnumerable<T1> first,
+            IEnumerable<T2> second,
+            IEnumerable<T3> third,
+            IEnumerable<T4> fourth)
+            => MoreEnumerable.ZipShortest(first, second, third, fourth);
 
         /// <summary>
         /// Returns a projection of tuples, where each tuple contains the N-th

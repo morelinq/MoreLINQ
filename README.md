@@ -150,7 +150,7 @@ Returns the Cartesian product of two or more sequences by combining each
 element from the sequences and applying a user-defined projection to the
 set.
 
-This method has 7 overloads.
+This method has 14 overloads.
 
 ### Choose
 
@@ -198,6 +198,8 @@ Provides a countdown counter for a given count of elements at the tail of the
 sequence where zero always represents the last element, one represents the
 second-last element, two represents the third-last element and so on.
 
+This method has 2 overloads.
+
 ### DistinctBy
 
 Returns all distinct elements of the given source, where "distinctness" is
@@ -219,7 +221,7 @@ Returns a projection of tuples, where each tuple contains the N-th
 element from each of the argument sequences. An exception is thrown
 if the input sequences are of different lengths.
 
-This method has 3 overloads.
+This method has 6 overloads.
 
 ### Exactly
 
@@ -346,14 +348,14 @@ skipping sequences as they are consumed.
 Produces a projection of a sequence by evaluating pairs of elements separated
 by a negative offset.
 
-This method has 2 overloads.
+This method has 4 overloads.
 
 ### Lead
 
 Produces a projection of a sequence by evaluating pairs of elements separated
 by a positive offset.
 
-This method has 2 overloads.
+This method has 4 overloads.
 
 ### LeftJoin
 
@@ -432,6 +434,8 @@ This method has 3 overloads.
 Returns a sequence resulting from applying a function to each element in the
 source sequence and its predecessor, with the exception of the first element
 which is only returned as the predecessor of the second element
+
+This method has 2 overloads.
 
 ### PartialSort
 
@@ -612,6 +616,8 @@ Returns a sequence resulting from applying a function to each element in the
 source sequence with additional parameters indicating whether the element is
 the first and/or last of the sequence
 
+This method has 2 overloads.
+
 ### TakeEvery
 
 Returns every N-th element of a source sequence
@@ -729,7 +735,7 @@ will always be as long as the longest of input sequences where the
 default value of each of the shorter sequence element types is used
 for padding.
 
-This method has 3 overloads.
+This method has 6 overloads.
 
 ### ZipShortest
 
@@ -737,7 +743,7 @@ Returns a projection of tuples, where each tuple contains the N-th
 element from each of the argument sequences. The resulting sequence
 is as short as the shortest input sequence.
 
-This method has 3 overloads.
+This method has 6 overloads.
 
 
 ## Experimental Operators

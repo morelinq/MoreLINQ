@@ -78,5 +78,33 @@ namespace MoreLinq
                 }
             }
         }
+
+        /// <summary>
+        /// Returns a sequence of tuples, where the N-th tuple contains the N-th
+        /// element of the source sequence and two booleans indicating whether the
+        /// element is the first and/or last.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <returns>
+        /// Returns the resulting sequence.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var numbers = new[] { 123, 456, 789 };
+        /// var result = numbers.TagFirstLast();
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// <c>(123, True, False)</c>, <c>(456, False, False)</c> and
+        /// <c>(789, False, True)</c> in turn.
+        /// </example>
+
+        public static IEnumerable<(TSource Item, bool IsFirst, bool IsLast)> TagFirstLast<TSource>(this IEnumerable<TSource> source)
+        {
+            return TagFirstLast(source, ValueTuple.Create);
+        }
     }
 }
