@@ -346,6 +346,37 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>AggregateOrDefault</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class AggregateOrDefaultExtension
+    {
+        /// <summary>Applies an accumulator function over a sequence, or a default value if sequence contains no elements.</summary>
+        /// <param name="source">An <see cref="IEnumerable{T}" /> to aggregate over.</param>
+        /// <param name="func">An accumulator function to be invoked on each element.</param>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="func" /> is <see langword="null" />.</exception>
+        /// <returns><see langword="default" />(<typeparamref name="TSource" />) if <paramref name="source" /> is empty; otherwise, the final accumulator value.</returns>
+        public static TSource? AggregateOrDefault<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, TSource> func)
+            => MoreEnumerable.AggregateOrDefault(source, func);
+
+        /// <summary>Applies an accumulator function over a sequence, or a specified default value if sequence contains no elements.</summary>
+        /// <param name="source">An <see cref="IEnumerable{T}" /> to aggregate over.</param>
+        /// <param name="func">An accumulator function to be invoked on each element.</param>
+        /// <param name="defaultValue">The default value to return if the sequence is empty.</param>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="func" /> is <see langword="null" />.</exception>
+        /// <returns><paramref name="defaultValue"/> if <paramref name="source" /> is empty; otherwise, the final accumulator value.</returns>
+        public static TSource AggregateOrDefault<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TSource, TSource> func,
+            TSource defaultValue)
+            => MoreEnumerable.AggregateOrDefault(source, func, defaultValue);
+
+    }
+
     /// <summary><c>AggregateRight</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]

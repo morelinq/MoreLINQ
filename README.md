@@ -97,6 +97,12 @@ Applies multiple accumulators sequentially in a single pass over a sequence.
 
 This method has 7 overloads.
 
+### AggregateOrDefault
+
+Applies an accumulator function over a sequence, or a default value if sequence contains no elements.
+
+This method has 2 overloads.
+
 ### AggregateRight
 
 Applies a right-associative accumulator function over a sequence.
