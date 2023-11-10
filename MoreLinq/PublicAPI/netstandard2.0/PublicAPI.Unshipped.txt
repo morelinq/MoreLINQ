@@ -23,3 +23,4 @@ static MoreLinq.MoreEnumerable.Maxima<TSource, TKey>(this System.Collections.Gen
 static MoreLinq.MoreEnumerable.Minima<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector) -> MoreLinq.IExtremaEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Minima<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TKey>! selector, System.Collections.Generic.IComparer<TKey>? comparer) -> MoreLinq.IExtremaEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Prepend<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, TSource value) -> System.Collections.Generic.IEnumerable<TSource>!
+static MoreLinq.MoreEnumerable.Unfold<TState, TResult>(TState state, System.Func<TState, (bool Continue, (TResult Result, TState State) Generated)>! generator) -> System.Collections.Generic.IEnumerable<TResult>!
