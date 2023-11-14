@@ -206,6 +206,12 @@ projected type.
 
 This method has 2 overloads.
 
+### Duplicates
+
+Returns all duplicated elements of the given source, using the specified element equality comparer
+
+This method has 2 overloads.
+
 ### EndsWith
 
 Determines whether the end of the first sequence is equivalent to the second
