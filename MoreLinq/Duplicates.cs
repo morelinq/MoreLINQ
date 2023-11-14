@@ -22,7 +22,7 @@ namespace MoreLinq
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <typeparam name="T">The type of the elements in the source sequence</typeparam>
         /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
-        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
+        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source, IEqualityComparer<T>? comparer)
             => Duplicates(source, IdFn, comparer);
 
         /// <summary>
@@ -48,20 +48,20 @@ namespace MoreLinq
         /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> is null.</exception>
-        public static IEnumerable<TSource> Duplicates<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        public static IEnumerable<TSource> Duplicates<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
         {
             if (source is null) throw new ArgumentNullException(nameof(source));
             if (keySelector is null) throw new ArgumentNullException(nameof(keySelector));
-            if (comparer is null) throw new ArgumentNullException(nameof(comparer));
 
-            var enumeratedElements = new HashSet<TKey>(comparer);
+            return GetDuplicates();
 
-            foreach (var element in source)
+            IEnumerable<TSource> GetDuplicates()
             {
-                if (enumeratedElements.Add(keySelector(element)) is false)
+                var enumeratedElements = new HashSet<TKey>(comparer);
+                foreach (var element in source)
                 {
-                    yield return element;
+                    if (enumeratedElements.Add(keySelector(element)) is false)
+                        yield return element;
                 }
             }
         }

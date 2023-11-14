@@ -1305,7 +1305,7 @@ namespace MoreLinq.Extensions
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <typeparam name="T">The type of the elements in the source sequence</typeparam>
         /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
-        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
+        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source, IEqualityComparer<T>? comparer)
             => MoreEnumerable.Duplicates(source, comparer);
 
         /// <summary>
@@ -1331,8 +1331,7 @@ namespace MoreLinq.Extensions
         /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="keySelector"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="comparer"/> is null.</exception>
-        public static IEnumerable<TSource> Duplicates<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        public static IEnumerable<TSource> Duplicates<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.Duplicates(source, keySelector, comparer);
 
     }
