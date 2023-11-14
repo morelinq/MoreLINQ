@@ -22,21 +22,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_Projection_Without_Duplicates_Then_Then_Empty_Sequence_Is_Returned()
-        {
-            var dummyClasses = new DummyClass[]
-            {
-                new("FirstElement"),
-                new("SecondElement"),
-                new("ThirdElement")
-            };
-
-            var duplicates = dummyClasses.Duplicates(x => x.ComparableString);
-
-            Assert.That(duplicates, Is.Empty);
-        }
-
-        [Test]
         public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_True_Is_Returned()
         {
             var stringArray = new[]
@@ -53,23 +38,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_True_Is_Returned()
-        {
-            var dummyClass = new DummyClass("DUPLICATED_STRING");
-            var dummyClasses = new DummyClass[]
-            {
-                new("FirstElement"),
-                dummyClass,
-                dummyClass,
-                new("ThirdElement")
-            };
-
-            var duplicates = dummyClasses.Duplicates(x => x.ComparableString);
-
-            Assert.That(duplicates, Contains.Item(dummyClass));
-        }
-
-        [Test]
         public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
         {
             var source = MoreEnumerable.From(() => "FirstElement",
@@ -81,26 +49,9 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
-        {
-            var source = MoreEnumerable.From(() => new DummyClass("FirstElement"),
-                () => new DummyClass("DUPLICATED_STRING"),
-                () => new DummyClass("DUPLICATED_STRING"),
-                () => throw new TestException());
-
-            Assert.DoesNotThrow(() => source.Duplicates(x => x.ComparableString));
-        }
-
-        [Test]
         public void When_Asking_Duplicates_Then_It_Is_Executed_Right_Away()
         {
             _ = Assert.Throws<BreakException>(() => new BreakingSequence<string>().Duplicates().Consume());
-        }
-
-        [Test]
-        public void When_Asking_Duplicates_On_Sequence_Projection_Then_It_Is_Executed_Right_Away()
-        {
-            _ = Assert.Throws<BreakException>(() => new BreakingSequence<DummyClass>().Duplicates(x => x.ComparableString).Consume());
         }
 
         [Test]
@@ -117,22 +68,6 @@ namespace MoreLinq.Test
 
             Assert.That(duplicates, Contains.Item(stringArray[1]));
             Assert.That(duplicates, Contains.Item(stringArray[2]));
-        }
-
-        [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_Projection_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
-        {
-            var dummyClasses = new DummyClass[]
-            {
-                new("FirstElement"),
-                new("SecondElement"),
-                new("ThirdElement")
-            };
-
-            var duplicates = dummyClasses.Duplicates(x => x.ComparableString, new DummyStringAlwaysTrueComparer()).ToArray();
-
-            Assert.That(duplicates, Contains.Item(dummyClasses[1]));
-            Assert.That(duplicates, Contains.Item(dummyClasses[2]));
         }
 
         [Test]
@@ -177,21 +112,6 @@ namespace MoreLinq.Test
             };
 
             var duplicates = stringArray.Duplicates(new DummyStringAlwaysFalseComparer());
-
-            Assert.That(duplicates, Is.Empty);
-        }
-
-        [Test]
-        public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_Projection_With_Custom_Always_False_Comparer_Then_Then_Empty_Sequence_Is_Returned()
-        {
-            var dummyClasses = new DummyClass[]
-            {
-                new("DUPLICATED_STRING"),
-                new("DUPLICATED_STRING"),
-                new("DUPLICATED_STRING")
-            };
-
-            var duplicates = dummyClasses.Duplicates(x => x.ComparableString, new DummyStringAlwaysFalseComparer());
 
             Assert.That(duplicates, Is.Empty);
         }
