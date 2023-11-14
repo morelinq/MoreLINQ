@@ -116,13 +116,6 @@ namespace MoreLinq.Test
             Assert.That(duplicates, Is.Empty);
         }
 
-        sealed class DummyClass
-        {
-            public string ComparableString { get; }
-
-            public DummyClass(string comparableString) => ComparableString = comparableString;
-        }
-
         sealed class DummyStringAlwaysTrueComparer : IEqualityComparer<string>
         {
             public bool Equals(string? x, string? y) => true;
