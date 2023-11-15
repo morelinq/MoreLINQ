@@ -217,7 +217,8 @@ namespace MoreLinq.Test
         [Test]
         public static void MemoizeIteratorThrowsWhenCacheDisposedDuringIteration()
         {
-            var sequence = Enumerable.Range(1, 10);
+            // .Select(x => x) here because net8+ `Enumerable.Range()` returns an `ICollection<>`
+            var sequence = Enumerable.Range(1, 10).Select(x => x);
             var memoized = sequence.Memoize();
             var disposable = (IDisposable)memoized;
 
