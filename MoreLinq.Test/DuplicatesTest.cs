@@ -93,7 +93,7 @@ namespace MoreLinq.Test
             };
 
             var duplicates = stringArray.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
-            
+
             Assert.That(duplicates.AtMost(1), Is.True);
         }
 
