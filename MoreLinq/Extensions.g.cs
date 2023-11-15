@@ -1294,8 +1294,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">source sequence.</param>
         /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
         /// <returns>all elements that are duplicated.</returns>
-        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source)
-            => MoreEnumerable.Duplicates(source);
+        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source)             => MoreEnumerable.Duplicates(source);
 
         /// <summary>
         ///   Returns all duplicated elements of the given source, using the specified element equality comparer
@@ -1306,7 +1305,7 @@ namespace MoreLinq.Extensions
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source,IEqualityComparer<TSource>? comparer)
+        public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
             => MoreEnumerable.Duplicates(source, comparer);
 
     }
