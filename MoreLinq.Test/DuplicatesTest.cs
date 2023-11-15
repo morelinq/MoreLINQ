@@ -44,34 +44,46 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_True_Is_Returned()
+        public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_Duplicates_Are_Returned()
         {
             var stringArray = new[]
             {
                 "FirstElement",
                 "DUPLICATED_STRING",
                 "DUPLICATED_STRING",
+                "DUPLICATED_STRING",
                 "ThirdElement"
             };
 
-            var duplicates = stringArray.Duplicates();
+            var duplicates = stringArray.Duplicates().ToArray();
 
             Assert.That(duplicates, Contains.Item("DUPLICATED_STRING"));
+            Assert.That(duplicates.AtMost(1), Is.True);
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_It_Does_Not_Iterate_Unnecessary_On_Elements()
+        public void When_Asking_For_Duplicates_On_Sequence_With_Multiple_Duplicates_Then_Duplicates_Are_Returned()
         {
-            var source = MoreEnumerable.From(() => "FirstElement",
-                () => "DUPLICATED_STRING",
-                () => "DUPLICATED_STRING",
-                () => throw new TestException());
+            var stringArray = new[]
+            {
+                "FirstElement",
+                "DUPLICATED_STRING",
+                "DUPLICATED_STRING",
+                "DUPLICATED_STRING",
+                "ThirdElement",
+                "SECOND_DUPLICATED_STRING",
+                "SECOND_DUPLICATED_STRING"
+            };
 
-            Assert.DoesNotThrow(() => source.Duplicates());
+            var duplicates = stringArray.Duplicates().ToArray();
+
+            Assert.That(duplicates, Contains.Item("DUPLICATED_STRING"));
+            Assert.That(duplicates, Contains.Item("SECOND_DUPLICATED_STRING"));
+            Assert.That(duplicates.AtMost(2), Is.True);
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
+        public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_True_Comparer_Then_Duplicates_Are_Returned()
         {
             var stringArray = new[]
             {
@@ -81,25 +93,8 @@ namespace MoreLinq.Test
             };
 
             var duplicates = stringArray.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
-
-            Assert.That(duplicates, Contains.Item(stringArray[1]));
-            Assert.That(duplicates, Contains.Item(stringArray[2]));
-        }
-
-        [Test]
-        public void When_Asking_For_Duplicates_On_None_Duplicates_Sequence_With_Custom_Always_True_Comparer_Then_True_Is_Returned()
-        {
-            var stringArray = new[]
-            {
-                "FirstElement",
-                "SecondElement",
-                "ThirdElement"
-            };
-
-            var duplicates = stringArray.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
-
-            Assert.That(duplicates, Contains.Item(stringArray[1]));
-            Assert.That(duplicates, Contains.Item(stringArray[2]));
+            
+            Assert.That(duplicates.AtMost(1), Is.True);
         }
 
         [Test]

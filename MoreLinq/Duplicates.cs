@@ -47,10 +47,13 @@ namespace MoreLinq
             IEnumerable<TSource> GetDuplicates()
             {
                 var keySet = new HashSet<TSource>(comparer);
+                var yieldSet = new HashSet<TSource>(comparer);
                 foreach (var element in source)
                 {
-                    if (!keySet.Add(element))
+                    if (!keySet.Add(element) && yieldSet.Add(element))
+                    {
                         yield return element;
+                    }
                 }
             }
         }
