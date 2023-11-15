@@ -23,6 +23,12 @@ namespace MoreLinq.Test
     public class DuplicatesTest
     {
         [Test]
+        public void Duplicates_IsLazy()
+        {
+            _ = new BreakingSequence<object>().Duplicates();
+        }
+
+        [Test]
         public void When_Asking_For_Duplicates_On_Sequence_Without_Duplicates_Then_Empty_Sequence_Is_Returned()
         {
             var stringArray = new[]
@@ -62,12 +68,6 @@ namespace MoreLinq.Test
                 () => throw new TestException());
 
             Assert.DoesNotThrow(() => source.Duplicates());
-        }
-
-        [Test]
-        public void When_Asking_Duplicates_Then_It_Is_Executed_Right_Away()
-        {
-            _ = Assert.Throws<BreakException>(() => new BreakingSequence<string>().Duplicates().Consume());
         }
 
         [Test]
