@@ -17,7 +17,6 @@
 
 namespace MoreLinq
 {
-    using System;
 
     /// <summary>
     /// The exception that is thrown for a sequence that fails a condition.

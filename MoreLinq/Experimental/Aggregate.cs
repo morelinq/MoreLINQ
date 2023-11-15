@@ -17,8 +17,7 @@
 
 namespace MoreLinq.Experimental
 {
-    using System;
-    using Reactive;
+    using MoreLinq.Reactive;
 
     static partial class ExperimentalEnumerable
     {

@@ -19,11 +19,7 @@
 
 namespace MoreLinq.Experimental
 {
-    using System;
     using System.Buffers;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
 
     static partial class ExperimentalEnumerable
     {

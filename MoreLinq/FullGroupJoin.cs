@@ -17,10 +17,6 @@
 
 namespace MoreLinq
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
     static partial class MoreEnumerable
     {

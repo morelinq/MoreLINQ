@@ -17,9 +17,6 @@
 
 namespace MoreLinq
 {
-    using System;
-    using System.Collections.Generic;
-
     static partial class MoreEnumerable
     {
         static T[] Fold<T>(this IEnumerable<T> source, int count)

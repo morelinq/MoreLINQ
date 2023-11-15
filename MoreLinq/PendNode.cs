@@ -17,9 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Prepend-Append node is a single linked-list of the discriminated union

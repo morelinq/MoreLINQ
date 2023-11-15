@@ -30,12 +30,9 @@
 
 namespace MoreLinq
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
 
     /// <summary>
     /// A <see cref="ILookup{TKey, TElement}"/> implementation that preserves insertion order

@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Reactive
 {
-    using System;
     using Delegate = Delegating.Delegate;
 
     /// <summary>

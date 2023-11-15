@@ -19,10 +19,7 @@
 
 namespace MoreLinq.Experimental
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Represents a current buffered view of a larger result and which

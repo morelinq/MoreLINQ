@@ -17,10 +17,7 @@
 
 namespace MoreLinq
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Exposes the enumerator, which supports iteration over a sequence of
