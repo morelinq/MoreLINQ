@@ -167,8 +167,8 @@ namespace MoreLinq
             /// be surprised to discover that all of the permutations looked the
             /// same.
             /// </remarks>
-            /// <returns>List of permuted source sequence values</returns>
-            IList<T> PermuteValueSet()
+            /// <returns>Array of permuted source sequence values</returns>
+            T[] PermuteValueSet()
             {
                 var permutedSet = new T[_permutation.Length];
                 for (var i = 0; i < _permutation.Length; i++)
