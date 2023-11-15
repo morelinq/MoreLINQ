@@ -26,22 +26,27 @@ namespace MoreLinq
         ///   Returns all duplicate elements of the given source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
-        /// <returns>all elements that are duplicated.</returns>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <returns>All elements that are duplicated.</returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source) =>
+        public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source) =>
             Duplicates(source, null);
 
 
         /// <summary>
-        ///   Returns all duplicate elements of the given source, using the specified element equality comparer
+        ///   Returns all duplicate elements of the given source, using the specified equality
+        ///   comparer.
         /// </summary>
         /// <param name="source">The source sequence.</param>
-        /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
-        /// If null, the default equality comparer for <c>TSource</c> is used.</param>
-        /// <typeparam name="TSource">Type of the source sequence</typeparam>
-        /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
+        /// <param name="comparer">
+        /// The equality comparer to use to determine whether one <typeparamref name="TSource"/>
+        /// equals another. If <see langword="null"/>, the default equality comparer for
+        /// <typeparamref name="TSource"/> is used.</param>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <returns>All elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
