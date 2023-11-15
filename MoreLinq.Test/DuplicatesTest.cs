@@ -99,7 +99,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_False_Comparer_Then_Then_Empty_Sequence_Is_Returned()
+        public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_False_Comparer_Then_Empty_Sequence_Is_Returned()
         {
             var stringArray = new[]
             {
@@ -114,7 +114,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_With_Custom_Always_False_Comparer_Then_Then_Empty_Sequence_Is_Returned()
+        public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_With_Custom_Always_False_Comparer_Then_Empty_Sequence_Is_Returned()
         {
             var stringArray = new[]
             {
