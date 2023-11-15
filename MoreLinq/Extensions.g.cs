@@ -1294,6 +1294,7 @@ namespace MoreLinq.Extensions
         /// <param name="source">source sequence.</param>
         /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
         /// <returns>all elements that are duplicated.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source)             => MoreEnumerable.Duplicates(source);
 
         /// <summary>
