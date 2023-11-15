@@ -27,9 +27,9 @@ namespace MoreLinq
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source) =>
             Duplicates(source, null);
@@ -44,9 +44,9 @@ namespace MoreLinq
         /// equals another. If <see langword="null"/>, the default equality comparer for
         /// <typeparamref name="TSource"/> is used.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
         {

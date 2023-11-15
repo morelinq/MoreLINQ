@@ -1289,20 +1289,19 @@ namespace MoreLinq.Extensions
     public static partial class DuplicatesExtension
     {
         /// <summary>
-        ///   Returns all duplicate elements of the given source.
+        /// Returns all duplicate elements of the given source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source)             => MoreEnumerable.Duplicates(source);
 
-
         /// <summary>
-        ///   Returns all duplicate elements of the given source, using the specified equality
-        ///   comparer.
+        /// Returns all duplicate elements of the given source, using the specified equality
+        /// comparer.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="comparer">
@@ -1310,9 +1309,9 @@ namespace MoreLinq.Extensions
         /// equals another. If <see langword="null"/>, the default equality comparer for
         /// <typeparamref name="TSource"/> is used.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
             => MoreEnumerable.Duplicates(source, comparer);
