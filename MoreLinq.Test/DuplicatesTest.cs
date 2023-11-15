@@ -32,14 +32,9 @@ namespace MoreLinq.Test
         [Test]
         public void When_Asking_For_Duplicates_On_Sequence_Without_Duplicates_Then_Empty_Sequence_Is_Returned()
         {
-            var stringArray = new[]
-            {
-                "FirstElement",
-                "SecondElement",
-                "ThirdElement"
-            };
+            using var testingSequence = TestingSequence.Of("FirstElement", "SecondElement", "ThirdElement");
 
-            var duplicates = stringArray.Duplicates();
+            var duplicates = testingSequence.Duplicates();
 
             Assert.That(duplicates, Is.Empty);
         }
@@ -47,16 +42,15 @@ namespace MoreLinq.Test
         [Test]
         public void When_Asking_For_Duplicates_On_Sequence_With_Duplicates_Then_Duplicates_Are_Returned()
         {
-            var stringArray = new[]
-            {
+            using var testingSequence = TestingSequence.Of(
                 "FirstElement",
                 "DUPLICATED_STRING",
                 "DUPLICATED_STRING",
                 "DUPLICATED_STRING",
                 "ThirdElement"
-            };
+                );
 
-            var duplicates = stringArray.Duplicates().ToArray();
+            var duplicates = testingSequence.Duplicates().ToArray();
 
             Assert.That(duplicates, Contains.Item("DUPLICATED_STRING"));
             Assert.That(duplicates.AtMost(1), Is.True);
@@ -65,8 +59,7 @@ namespace MoreLinq.Test
         [Test]
         public void When_Asking_For_Duplicates_On_Sequence_With_Multiple_Duplicates_Then_Duplicates_Are_Returned()
         {
-            var stringArray = new[]
-            {
+            using var testingSequence = TestingSequence.Of(
                 "FirstElement",
                 "DUPLICATED_STRING",
                 "DUPLICATED_STRING",
@@ -74,9 +67,9 @@ namespace MoreLinq.Test
                 "ThirdElement",
                 "SECOND_DUPLICATED_STRING",
                 "SECOND_DUPLICATED_STRING"
-            };
+            );
 
-            var duplicates = stringArray.Duplicates().ToArray();
+            var duplicates = testingSequence.Duplicates().ToArray();
 
             Assert.That(duplicates, Contains.Item("DUPLICATED_STRING"));
             Assert.That(duplicates, Contains.Item("SECOND_DUPLICATED_STRING"));
@@ -86,14 +79,9 @@ namespace MoreLinq.Test
         [Test]
         public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_True_Comparer_Then_Duplicates_Are_Returned()
         {
-            var stringArray = new[]
-            {
-                "FirstElement",
-                "SecondElement",
-                "ThirdElement"
-            };
+            using var testingSequence = TestingSequence.Of("FirstElement", "SecondElement", "ThirdElement");
 
-            var duplicates = stringArray.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
+            var duplicates = testingSequence.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
 
             Assert.That(duplicates.AtMost(1), Is.True);
         }
@@ -101,14 +89,9 @@ namespace MoreLinq.Test
         [Test]
         public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_False_Comparer_Then_Empty_Sequence_Is_Returned()
         {
-            var stringArray = new[]
-            {
-                "FirstElement",
-                "SecondElement",
-                "ThirdElement"
-            };
+            using var testingSequence = TestingSequence.Of("FirstElement", "SecondElement", "ThirdElement");
 
-            var duplicates = stringArray.Duplicates(new DummyStringAlwaysFalseComparer());
+            var duplicates = testingSequence.Duplicates(new DummyStringAlwaysFalseComparer());
 
             Assert.That(duplicates, Is.Empty);
         }
@@ -116,14 +99,9 @@ namespace MoreLinq.Test
         [Test]
         public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_With_Custom_Always_False_Comparer_Then_Empty_Sequence_Is_Returned()
         {
-            var stringArray = new[]
-            {
-                "DUPLICATED_STRING",
-                "DUPLICATED_STRING",
-                "DUPLICATED_STRING"
-            };
+            using var testingSequence = TestingSequence.Of("DUPLICATED_STRING", "DUPLICATED_STRING", "DUPLICATED_STRING");
 
-            var duplicates = stringArray.Duplicates(new DummyStringAlwaysFalseComparer());
+            var duplicates = testingSequence.Duplicates(new DummyStringAlwaysFalseComparer());
 
             Assert.That(duplicates, Is.Empty);
         }
