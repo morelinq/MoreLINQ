@@ -49,7 +49,7 @@ namespace MoreLinq
                 var keySet = new HashSet<TSource>(comparer);
                 foreach (var element in source)
                 {
-                    if (keySet.Add(element) is false)
+                    if (!keySet.Add(element))
                         yield return element;
                 }
             }
