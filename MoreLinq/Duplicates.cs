@@ -29,6 +29,7 @@ namespace MoreLinq
         /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
         /// <returns>all elements that are duplicated.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+
         public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source) => Duplicates(source, null);
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace MoreLinq
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
         /// <returns>all elements of the source sequence that are duplicated, based on the provided equality comparer</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
         {
             if (source is null) throw new ArgumentNullException(nameof(source));
