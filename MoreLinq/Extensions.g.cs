@@ -1289,7 +1289,7 @@ namespace MoreLinq.Extensions
     public static partial class DuplicatesExtension
     {
         /// <summary>
-        ///   Returns all duplicated elements of the given source.
+        ///   Returns all duplicate elements of the given source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
@@ -1300,7 +1300,7 @@ namespace MoreLinq.Extensions
 
 
         /// <summary>
-        ///   Returns all duplicated elements of the given source, using the specified element equality comparer
+        ///   Returns all duplicate elements of the given source, using the specified element equality comparer
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
