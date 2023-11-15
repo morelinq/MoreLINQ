@@ -21,6 +21,10 @@ namespace MoreLinq
     using System.Collections;
     using System.Collections.Generic;
 
+#if NET8_0_OR_GREATER
+    using System.Diagnostics;
+#endif
+
     /// <summary>
     /// Prepend-Append node is a single linked-list of the discriminated union
     /// of an item to prepend, an item to append and the source.

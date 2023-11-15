@@ -76,8 +76,10 @@ namespace MoreLinq
 
             if (array.Length < subsetSize)
             {
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 throw new ArgumentOutOfRangeException(nameof(subsetSize),
                     "Subset size must be less than or equal to the source length.");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
 
             var m = 0;                // keeps track of count items shuffled

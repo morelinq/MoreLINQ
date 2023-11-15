@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyTitle>MoreLinq.Test</AssemblyTitle>
-    <TargetFrameworks>net7.0;net6.0;net471</TargetFrameworks>
+    <TargetFrameworks>net8.0;net6.0;net471</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>MoreLinq.Test</AssemblyName>
     <OutputType Condition="'$(TargetFramework)' == 'net471'">Exe</OutputType>

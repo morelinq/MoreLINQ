@@ -1,1 +1,2 @@
 #nullable enable
+*REMOVED*MoreLinq.SequenceException.SequenceException(System.Runtime.Serialization.SerializationInfo! info, System.Runtime.Serialization.StreamingContext context) -> void

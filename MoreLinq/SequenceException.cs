@@ -18,7 +18,6 @@
 namespace MoreLinq
 {
     using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// The exception that is thrown for a sequence that fails a condition.
@@ -55,15 +54,5 @@ namespace MoreLinq
 
         public SequenceException(string? message, Exception? innerException) :
             base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SequenceException"/> class
-        /// with serialized data.
-        /// </summary>
-        /// <param name="info">The object that holds the serialized object data.</param>
-        /// <param name="context">The contextual information about the source or destination.</param>
-
-        protected SequenceException(SerializationInfo info, StreamingContext context) :
-            base(info, context) { }
     }
 }
