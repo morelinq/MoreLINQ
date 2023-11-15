@@ -1296,7 +1296,6 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source)             => MoreEnumerable.Duplicates(source);
 
         /// <summary>
@@ -1312,7 +1311,6 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
-
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
             => MoreEnumerable.Duplicates(source, comparer);
 
