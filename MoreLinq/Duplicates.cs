@@ -23,7 +23,7 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        ///   Returns all duplicate elements of the given source.
+        /// Returns all duplicate elements of the given source.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
@@ -34,10 +34,9 @@ namespace MoreLinq
         public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source) =>
             Duplicates(source, null);
 
-
         /// <summary>
-        ///   Returns all duplicate elements of the given source, using the specified equality
-        ///   comparer.
+        /// Returns all duplicate elements of the given source, using the specified equality
+        /// comparer.
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <param name="comparer">
