@@ -25,17 +25,19 @@ namespace MoreLinq
         /// <summary>
         ///   Returns all duplicated elements of the given source.
         /// </summary>
-        /// <param name="source">source sequence.</param>
+        /// <param name="source">The source sequence.</param>
         /// <typeparam name="T">The type of the elements in the source sequence.</typeparam>
         /// <returns>all elements that are duplicated.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
 
-        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source) => Duplicates(source, null);
+        public static IEnumerable<T> Duplicates<T>(this IEnumerable<T> source) =>
+            Duplicates(source, null);
+
 
         /// <summary>
         ///   Returns all duplicated elements of the given source, using the specified element equality comparer
         /// </summary>
-        /// <param name="source">source sequence.</param>
+        /// <param name="source">The source sequence.</param>
         /// <param name="comparer">The equality comparer to use to determine whether or not keys are equal.
         /// If null, the default equality comparer for <c>TSource</c> is used.</param>
         /// <typeparam name="TSource">Type of the source sequence</typeparam>
