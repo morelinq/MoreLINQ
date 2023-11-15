@@ -208,7 +208,7 @@ This method has 2 overloads.
 
 ### Duplicates
 
-Returns all duplicated elements of the given source, using the specified element equality comparer
+Returns all duplicate elements of the given source.
 
 This method has 2 overloads.
 
