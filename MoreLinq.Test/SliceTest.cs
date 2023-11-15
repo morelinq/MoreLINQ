@@ -45,14 +45,10 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
-
-#pragma warning disable IDE0057 // Use range operator (N/A)
+            var sequenceB = sequenceA.ToList().AsEnumerable();
 
             var resultA = sequenceA.Slice(0, count);
             var resultB = sequenceB.Slice(0, count);
-
-#pragma warning restore IDE0057 // Use range operator
 
             Assert.That(resultA, Is.EqualTo(sequenceA));
             Assert.That(resultB, Is.EqualTo(sequenceB));
@@ -68,14 +64,10 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
-
-#pragma warning disable IDE0057 // Use range operator (N/A)
+            var sequenceB = sequenceA.ToList().AsEnumerable();
 
             var resultA = sequenceA.Slice(0, 1);
             var resultB = sequenceB.Slice(0, 1);
-
-#pragma warning restore IDE0057 // Use range operator
 
             Assert.That(resultA, Is.EqualTo(sequenceA.Take(1)));
             Assert.That(resultB, Is.EqualTo(sequenceB.Take(1)));
@@ -91,7 +83,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(count - 1, 1);
             var resultB = sequenceB.Slice(count - 1, 1);
 
@@ -110,7 +103,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(4, 5);
             var resultB = sequenceB.Slice(4, 5);
 
@@ -129,11 +123,10 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(count / 2, count);
-            // .NET 8 introduced `Slice` on `List<T>` so use `AsEnumerable` to force the extension
-            // method to be invoked.
-            var resultB = sequenceB.AsEnumerable().Slice(count / 2, count);
+            var resultB = sequenceB.Slice(count / 2, count);
 
             Assert.That(resultA, Is.EqualTo(sequenceA.Skip(count / 2).Take(count)));
             Assert.That(resultB, Is.EqualTo(sequenceB.Skip(count / 2).Take(count)));
