@@ -656,10 +656,10 @@ static MoreLinq.MoreEnumerable.ToDelimitedString(this System.Collections.Generic
 static MoreLinq.MoreEnumerable.ToDelimitedString(this System.Collections.Generic.IEnumerable<ulong>! source, string! delimiter) -> string!
 static MoreLinq.MoreEnumerable.ToDelimitedString(this System.Collections.Generic.IEnumerable<ushort>! source, string! delimiter) -> string!
 static MoreLinq.MoreEnumerable.ToDelimitedString<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, string! delimiter) -> string!
-static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source) -> System.Collections.Generic.Dictionary<TKey, TValue>!
-static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.Dictionary<TKey, TValue>!
-static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source) -> System.Collections.Generic.Dictionary<TKey, TValue>!
-static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.Dictionary<TKey, TValue>!
+static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source) -> System.Collections.Generic.Dictionary<TKey, TValue>!
+static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.Dictionary<TKey, TValue>!
+static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source) -> System.Collections.Generic.Dictionary<TKey, TValue>!
+static MoreLinq.MoreEnumerable.ToDictionary<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>! source, System.Collections.Generic.IEqualityComparer<TKey>? comparer) -> System.Collections.Generic.Dictionary<TKey, TValue>!
 static MoreLinq.MoreEnumerable.ToHashSet<TSource>(System.Collections.Generic.IEnumerable<TSource>! source) -> System.Collections.Generic.HashSet<TSource>!
 static MoreLinq.MoreEnumerable.ToHashSet<TSource>(System.Collections.Generic.IEnumerable<TSource>! source, System.Collections.Generic.IEqualityComparer<TSource>? comparer) -> System.Collections.Generic.HashSet<TSource>!
 static MoreLinq.MoreEnumerable.ToLookup<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)>! source) -> System.Linq.ILookup<TKey, TValue>!

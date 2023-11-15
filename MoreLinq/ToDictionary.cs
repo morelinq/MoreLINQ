@@ -35,9 +35,13 @@ namespace MoreLinq
         /// mapped to their keys.
         /// </returns>
 
+#if !NET8_0_OR_GREATER
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
+#else
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source)
+#endif
             where TKey : notnull =>
-            source.ToDictionary(null);
+            ToDictionary(source, null);
 
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -53,8 +57,15 @@ namespace MoreLinq
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
+#if !NET8_0_OR_GREATER
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+            this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
+#else
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+            IEnumerable<KeyValuePair<TKey, TValue>> source,
+            IEqualityComparer<TKey>? comparer)
+#endif
             where TKey : notnull
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
@@ -74,9 +85,13 @@ namespace MoreLinq
         /// mapped to their keys.
         /// </returns>
 
+#if !NET8_0_OR_GREATER
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source)
+#else
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(IEnumerable<(TKey Key, TValue Value)> source)
+#endif
             where TKey : notnull =>
-            source.ToDictionary(null);
+            ToDictionary(source, null);
 
         /// <summary>
         /// Creates a <see cref="Dictionary{TKey,TValue}" /> from a sequence of
@@ -92,8 +107,15 @@ namespace MoreLinq
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
+#if !NET8_0_OR_GREATER
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+            this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
+#else
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
+            IEnumerable<(TKey Key, TValue Value)> source,
+            IEqualityComparer<TKey>? comparer)
+#endif
             where TKey : notnull
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
