@@ -697,7 +697,9 @@ namespace MoreLinq.Experimental
         static class AwaitQuery
         {
             public static IAwaitQuery<T>
+#pragma warning disable CA1859 // Use concrete types when possible for improved performance (by-design)
                 Create<T>(
+#pragma warning restore CA1859 // Use concrete types when possible for improved performance
                     Func<AwaitQueryOptions, IEnumerable<T>> impl,
                     AwaitQueryOptions? options = null) =>
                 new AwaitQuery<T>(impl, options);

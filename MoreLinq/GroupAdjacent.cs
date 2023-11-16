@@ -295,7 +295,7 @@ namespace MoreLinq
             }
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
+        static Grouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
             Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
 
         static class Grouping
