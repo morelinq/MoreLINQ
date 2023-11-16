@@ -127,23 +127,5 @@ namespace MoreLinq.Test
             Assert.That(resultA, Is.EqualTo(sequenceA.Skip(count / 2).Take(count)));
             Assert.That(resultB, Is.EqualTo(sequenceB.Skip(count / 2).Take(count)));
         }
-
-        /// <summary>
-        /// Verify that slice is optimized for <see cref="IList{T}"/> and <see cref="IReadOnlyList{T}"/> implementations and does not
-        /// unnecessarily traverse items outside of the slice region.
-        /// </summary>
-        [TestCase(SourceKind.BreakingList)]
-        [TestCase(SourceKind.BreakingReadOnlyList)]
-        public void TestSliceOptimization(SourceKind sourceKind)
-        {
-            const int sliceStart = 4;
-            const int sliceCount = 3;
-            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);
-
-            var result = sequence.Slice(sliceStart, sliceCount);
-
-            Assert.That(result.Count(), Is.EqualTo(sliceCount));
-            Assert.That(Enumerable.Range(5, sliceCount), Is.EqualTo(result));
-        }
     }
 }

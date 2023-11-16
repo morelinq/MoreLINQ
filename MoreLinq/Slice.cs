@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public static partial class MoreEnumerable
     {
@@ -53,19 +52,21 @@ namespace MoreLinq
             if (startIndex < 0) throw new ArgumentOutOfRangeException(nameof(startIndex));
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
 
-            return sequence switch
-            {
-                IList<T> list => SliceList(list.Count, i => list[i]),
-                IReadOnlyList<T> list => SliceList(list.Count, i => list[i]),
-                var seq => seq.Skip(startIndex).Take(count)
-            };
+            return Core();
 
-            IEnumerable<T> SliceList(int listCount, Func<int, T> indexer)
+            IEnumerable<T> Core()
             {
-                var countdown = count;
-                var index = startIndex;
-                while (index < listCount && countdown-- > 0)
-                    yield return indexer(index++);
+                using var e = sequence.GetEnumerator();
+
+                var index = 0;
+                while (index < startIndex && e.MoveNext())
+                    index++;
+
+                while (count > 0 && e.MoveNext())
+                {
+                    count--;
+                    yield return e.Current;
+                }
             }
         }
     }
