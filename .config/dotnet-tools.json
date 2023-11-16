@@ -19,6 +19,12 @@
       "commands": [
         "meziantou.validate-nuget-package"
       ]
+    },
+    "powershell": {
+      "version": "7.4.0",
+      "commands": [
+        "pwsh"
+      ]
     }
   }
 }
