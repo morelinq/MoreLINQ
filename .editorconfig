@@ -86,3 +86,7 @@ dotnet_diagnostic.IDE0055.severity = suggestion
 
 # IDE0046: Convert to conditional expression
 dotnet_diagnostic.IDE0046.severity = suggestion
+
+# Dispose things need disposing
+# CA2000: Dispose objects before losing scope
+dotnet_diagnostic.CA2000.severity = error
