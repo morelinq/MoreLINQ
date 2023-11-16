@@ -18,6 +18,8 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class AggregateRightTest
@@ -27,28 +29,31 @@ namespace MoreLinq.Test
         [Test]
         public void AggregateRightWithEmptySequence()
         {
-            Assert.That(() => new int[0].AggregateRight((a, b) => a + b),
-                        Throws.InvalidOperationException);
+            using var ts = TestingSequence.Of<int>();
+            Assert.That(
+                () => ts.AggregateRight((a, b) => a + b),
+                Throws.InvalidOperationException);
         }
 
         [Test]
         public void AggregateRightFuncIsNotInvokedOnSingleElementSequence()
         {
-            const int value = 1;
+            using var ts = TestingSequence.Of(1);
+            var result = ts.AggregateRight(BreakingFunc.Of<int, int, int>());
 
-            var result = new[] { value }.AggregateRight(BreakingFunc.Of<int, int, int>());
-
-            Assert.That(result, Is.EqualTo(value));
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [TestCase(SourceKind.BreakingList)]
-        [TestCase(SourceKind.BreakingReadOnlyList)]
-        [TestCase(SourceKind.Sequence)]
-        public void AggregateRight(SourceKind sourceKind)
-        {
-            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToInvariantString()).ToSourceKind(sourceKind);
+        public static IEnumerable<TestCaseData> AggregateRightSource =>
+            Enumerable.Range(1, 5)
+                .Select(x => x.ToInvariantString())
+                .ToTestData(SourceKinds.Sequence.Concat(SourceKinds.List));
 
-            var result = enumerable.AggregateRight((a, b) => $"({a}+{b})");
+        [TestCaseSource(nameof(AggregateRightSource))]
+        public void AggregateRight(IEnumerable<string> sequence)
+        {
+            using var d = sequence as IDisposable;
+            var result = sequence.AggregateRight((a, b) => $"({a}+{b})");
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
@@ -60,24 +65,30 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightSeedWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b), Is.EqualTo(defaultValue));
+            using var ts = TestingSequence.Of<int>();
+            var result = ts.AggregateRight(defaultValue, (_, b) => b);
+
+            Assert.That(result, Is.EqualTo(defaultValue));
         }
 
         [Test]
         public void AggregateRightSeedFuncIsNotInvokedOnEmptySequence()
         {
-            const int value = 1;
+            using var ts = TestingSequence.Of<int>();
+            var result = ts.AggregateRight(1, BreakingFunc.Of<int, int, int>());
 
-            var result = new int[0].AggregateRight(value, BreakingFunc.Of<int, int, int>());
-
-            Assert.That(result, Is.EqualTo(value));
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Test]
-        public void AggregateRightSeed()
+        public static IEnumerable<TestCaseData> AggregateRightSeedSource =>
+            Enumerable.Range(1, 4)
+                .ToTestData(SourceKinds.Sequence.Concat(SourceKinds.List));
+
+        [TestCaseSource(nameof(AggregateRightSeedSource))]
+        public void AggregateRightSeed(IEnumerable<int> sequence)
         {
-            var result = Enumerable.Range(1, 4)
-                                   .AggregateRight("5", (a, b) => $"({a}+{b})");
+            using var d = sequence as IDisposable;
+            var result = sequence.AggregateRight("5", (a, b) => $"({a}+{b})");
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
@@ -89,14 +100,16 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightResultorWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b, a => a == defaultValue), Is.EqualTo(true));
+            using var ts = TestingSequence.Of<int>();
+            var result = ts.AggregateRight(defaultValue, (_, b) => b, a => a == defaultValue);
+            Assert.That(result, Is.EqualTo(true));
         }
 
-        [Test]
-        public void AggregateRightResultor()
+        [TestCaseSource(nameof(AggregateRightSeedSource))]
+        public void AggregateRightResultor(IEnumerable<int> sequence)
         {
-            var result = Enumerable.Range(1, 4)
-                                   .AggregateRight("5", (a, b) => $"({a}+{b})", a => a.Length);
+            using var d = sequence as IDisposable;
+            var result = sequence.AggregateRight("5", (a, b) => $"({a}+{b})", a => a.Length);
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))".Length));
         }

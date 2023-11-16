@@ -55,6 +55,31 @@ namespace MoreLinq.Test
             AllowRepeatedDisposals = 0x2,
             AllowRepeatedMoveNexts = 0x4,
         }
+
+        internal static IEnumerable<TestCaseData> ToTestData<T>(
+            this IEnumerable<T> input,
+            IEnumerable<SourceKind> kinds)
+        {
+            var list = input.ToList();
+            foreach (var k in kinds)
+            {
+                var sequence = list.ToTestKind(k);
+                var data = new TestCaseData(sequence)
+                    .SetName($"{{m}}({k}[{string.Join(", ", list)}]");
+                yield return data;
+            }
+        }
+
+        internal static IEnumerable<T> ToTestKind<T>(this IEnumerable<T> input, SourceKind kind) =>
+            kind switch
+            {
+                SourceKind.Sequence => new TestingSequence<T>(input, Options.None, maxEnumerations: 2),
+                SourceKind.BreakingList => new BreakingList<T>(input.ToList()),
+                SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input.ToList()),
+                SourceKind.BreakingCollection => new BreakingCollection<T>(input.ToList()),
+                SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input.ToList()),
+                _ => throw new InvalidOperationException("Unknown SourceKind"),
+            };
     }
 
     /// <summary>
