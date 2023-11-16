@@ -30,6 +30,23 @@ namespace MoreLinq.Test
         }
 
         [Test]
+        public void Streams_Duplicates_As_They_Are_Discovered()
+        {
+            static IEnumerable<string> Source()
+            {
+                yield return "DUPLICATED_STRING";
+                yield return "DUPLICATED_STRING";
+                throw new TestException();
+            }
+
+            using var source = TestingSequence.Of(Source());
+
+            void Act() => source.Duplicates().Take(1);
+
+            Assert.That(Act, Throws.Nothing);
+        }
+
+        [Test]
         public void When_Asking_For_Duplicates_On_Sequence_Without_Duplicates_Then_Empty_Sequence_Is_Returned()
         {
             using var testingSequence = TestingSequence.Of("FirstElement", "SecondElement", "ThirdElement");
