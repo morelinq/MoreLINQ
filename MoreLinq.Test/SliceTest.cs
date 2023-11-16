@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
 
             var resultA = sequenceA.Slice(0, count);
             var resultB = sequenceB.Slice(0, count);
@@ -64,7 +64,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(0, 1);
             var resultB = sequenceB.Slice(0, 1);
 
@@ -82,7 +83,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(count - 1, 1);
             var resultB = sequenceB.Slice(count - 1, 1);
 
@@ -101,7 +103,8 @@ namespace MoreLinq.Test
         {
             const int count = 10;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(4, 5);
             var resultB = sequenceB.Slice(4, 5);
 
@@ -120,7 +123,8 @@ namespace MoreLinq.Test
         {
             const int count = 100;
             var sequenceA = Enumerable.Range(1, count);
-            var sequenceB = sequenceA.ToList();
+            var sequenceB = sequenceA.ToList().AsEnumerable();
+
             var resultA = sequenceA.Slice(count / 2, count);
             var resultB = sequenceB.Slice(count / 2, count);
 

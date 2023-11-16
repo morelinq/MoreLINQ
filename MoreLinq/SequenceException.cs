@@ -18,14 +18,13 @@
 namespace MoreLinq
 {
     using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// The exception that is thrown for a sequence that fails a condition.
     /// </summary>
 
     [Serializable]
-    public class SequenceException : Exception
+    public partial class SequenceException : Exception
     {
         const string DefaultMessage = "Error in sequence.";
 
@@ -55,7 +54,20 @@ namespace MoreLinq
 
         public SequenceException(string? message, Exception? innerException) :
             base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
+    }
+}
 
+#if !NET7_0_OR_GREATER
+
+// BinaryFormatter serialization APIs are obsolete
+// https://learn.microsoft.com/en-us/dotnet/core/compatibility/serialization/7.0/binaryformatter-apis-produce-errors
+
+namespace MoreLinq
+{
+    using System.Runtime.Serialization;
+
+    partial class SequenceException
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="SequenceException"/> class
         /// with serialized data.
@@ -67,3 +79,5 @@ namespace MoreLinq
             base(info, context) { }
     }
 }
+
+#endif // !NET8_0_OR_GREATER

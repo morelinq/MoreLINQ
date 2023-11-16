@@ -180,7 +180,11 @@ namespace MoreLinq.Experimental.Async
                     // Signal cancellation to those in flight. Unfortunately, this relies on all
                     // iterators to honour the cancellation.
 
+#if NET8_0_OR_GREATER
+                    await thisCancellationTokenSource.CancelAsync().ConfigureAwait(false);
+#else
                     thisCancellationTokenSource.Cancel();
+#endif
 
                     // > The caller of an async-iterator method should only call `DisposeAsync()`
                     // > when the method completed or was suspended by a `yield return`.

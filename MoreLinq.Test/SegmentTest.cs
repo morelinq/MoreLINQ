@@ -149,8 +149,6 @@ namespace MoreLinq.Test
             Assert.That(result.All(s => s.Count() == repCount), Is.True);
         }
 
-        static IEnumerable<T> Seq<T>(params T[] values) => values;
-
         public static readonly IEnumerable<ITestCaseData> TestData =
             from e in new[]
             {
