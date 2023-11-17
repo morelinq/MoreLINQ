@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -52,20 +53,12 @@ namespace MoreLinq
         {
             if (source is null) throw new ArgumentNullException(nameof(source));
 
-            return GetDuplicates();
-
-            IEnumerable<TSource> GetDuplicates()
-            {
-                var keySet = new HashSet<TSource>(comparer);
-                var yieldSet = new HashSet<TSource>(comparer);
-                foreach (var element in source)
-                {
-                    if (!keySet.Add(element) && yieldSet.Add(element))
-                    {
-                        yield return element;
-                    }
-                }
-            }
+            return from e in source.ScanBy(static e => e,
+                    static _ => 0,
+                    static (count, _, _) => unchecked(Math.Min(count + 1, 3)),
+                    comparer)
+                where e.Value is 2
+                select e.Key;
         }
     }
 }
