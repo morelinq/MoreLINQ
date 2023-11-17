@@ -26,15 +26,13 @@ namespace MoreLinq.Test.Async
         public static WatchableEnumerator<T> AsWatchable<T>(this IAsyncEnumerator<T> source) => new(source);
     }
 
-    sealed class WatchableEnumerator<T> : IAsyncEnumerator<T>
+    sealed class WatchableEnumerator<T>(IAsyncEnumerator<T> source) :
+        IAsyncEnumerator<T>
     {
-        readonly IAsyncEnumerator<T> _source;
+        readonly IAsyncEnumerator<T> _source = source ?? throw new ArgumentNullException(nameof(source));
 
         public event EventHandler? Disposed;
         public event EventHandler<bool>? MoveNextCalled;
-
-        public WatchableEnumerator(IAsyncEnumerator<T> source) =>
-            _source = source ?? throw new ArgumentNullException(nameof(source));
 
         public T Current => _source.Current;
 

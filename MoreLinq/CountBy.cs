@@ -80,8 +80,8 @@ namespace MoreLinq
                 {
                     var dic = new Collections.Dictionary<TKey, int>(cmp);
 
-                    keys = new List<TKey>();
-                    counts = new List<int>();
+                    keys = [];
+                    counts = [];
 
                     foreach (var item in source)
                     {

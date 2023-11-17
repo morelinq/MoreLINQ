@@ -44,15 +44,15 @@ namespace MoreLinq.Test
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
         {
             var xs = Enumerable.Range(0, 5).ToArray();
-            yield return selector(xs, -1, new int?[] { null, null, null, null, null });
-            yield return selector(xs,  0, new int?[] { null, null, null, null, null });
-            yield return selector(xs,  1, new int?[] { null, null, null, null,    0 });
-            yield return selector(xs,  2, new int?[] { null, null, null,    1,    0 });
-            yield return selector(xs,  3, new int?[] { null, null,    2,    1,    0 });
-            yield return selector(xs,  4, new int?[] { null,    3,    2,    1,    0 });
-            yield return selector(xs,  5, new int?[] {    4,    3,    2,    1,    0 });
-            yield return selector(xs,  6, new int?[] {    4,    3,    2,    1,    0 });
-            yield return selector(xs,  7, new int?[] {    4,    3,    2,    1,    0 });
+            yield return selector(xs, -1, [null, null, null, null, null]);
+            yield return selector(xs,  0, [null, null, null, null, null]);
+            yield return selector(xs,  1, [null, null, null, null,    0]);
+            yield return selector(xs,  2, [null, null, null,    1,    0]);
+            yield return selector(xs,  3, [null, null,    2,    1,    0]);
+            yield return selector(xs,  4, [null,    3,    2,    1,    0]);
+            yield return selector(xs,  5, [4,    3,    2,    1,    0]);
+            yield return selector(xs,  6, [4,    3,    2,    1,    0]);
+            yield return selector(xs,  7, [4,    3,    2,    1,    0]);
         }
 
         static readonly IEnumerable<TestCaseData> SequenceData =
@@ -170,14 +170,11 @@ namespace MoreLinq.Test
             /// enumerator to be substituted for another.
             /// </summary>
 
-            sealed class Collection<T> : Sequence<T>, ICollection<T>
+            sealed class Collection<T>(ICollection<T> collection,
+                                       Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
+                Sequence<T>(em), ICollection<T>
             {
-                readonly ICollection<T> _collection;
-
-                public Collection(ICollection<T> collection,
-                                  Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
-                    base(em) =>
-                    _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                readonly ICollection<T> _collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
                 public int Count => _collection.Count;
                 public bool IsReadOnly => _collection.IsReadOnly;
@@ -197,14 +194,11 @@ namespace MoreLinq.Test
             /// also permits its enumerator to be substituted for another.
             /// </summary>
 
-            sealed class ReadOnlyCollection<T> : Sequence<T>, IReadOnlyCollection<T>
+            sealed class ReadOnlyCollection<T>(ICollection<T> collection,
+                                               Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
+                Sequence<T>(em), IReadOnlyCollection<T>
             {
-                readonly ICollection<T> _collection;
-
-                public ReadOnlyCollection(ICollection<T> collection,
-                                          Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
-                    base(em) =>
-                    _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                readonly ICollection<T> _collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
                 public int Count => _collection.Count;
 

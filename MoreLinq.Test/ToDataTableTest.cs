@@ -27,25 +27,16 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        sealed class TestObject
+        sealed class TestObject(int key)
         {
-            public int KeyField;
-            public Guid? ANullableGuidField;
+            public int KeyField = key;
+            public Guid? ANullableGuidField = Guid.NewGuid();
 
-            public string AString { get; }
-            public decimal? ANullableDecimal { get; }
+            public string AString { get; } = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
+            public decimal? ANullableDecimal { get; } = key / 3;
             public object Unreadable { set => throw new NotImplementedException(); }
 
             public object this[int index] { get => new(); set { } }
-
-            public TestObject(int key)
-            {
-                KeyField = key;
-                ANullableGuidField = Guid.NewGuid();
-
-                ANullableDecimal = key / 3;
-                AString = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
-            }
 
             public override string ToString() => nameof(TestObject);
         }

@@ -52,7 +52,9 @@ namespace MoreLinq
         /// <param name="message">A message that describes the error.</param>
         /// <param name="innerException">The exception that is the cause of the current exception.</param>
 
+#pragma warning disable IDE0290 // Use primary constructor (needed due to deserialization constructor)
         public SequenceException(string? message, Exception? innerException) :
+#pragma warning restore IDE0290 // Use primary constructor
             base(string.IsNullOrEmpty(message) ? DefaultMessage : message, innerException) { }
     }
 }

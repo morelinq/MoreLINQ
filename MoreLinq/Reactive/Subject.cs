@@ -28,7 +28,7 @@ namespace MoreLinq.Reactive
         Exception? _error;
 
         bool HasObservers => (_observers?.Count ?? 0) > 0;
-        List<IObserver<T>> Observers => _observers ??= new List<IObserver<T>>();
+        List<IObserver<T>> Observers => _observers ??= [];
 
         bool IsMuted => _completed || _error != null;
 

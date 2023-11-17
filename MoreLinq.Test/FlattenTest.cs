@@ -309,19 +309,19 @@ namespace MoreLinq.Test
                 new Series
                 {
                     Name = "series1",
-                    Attributes = new[]
-                    {
-                        new Attribute { Values = new[] { 1, 2 } },
-                        new Attribute { Values = new[] { 3, 4 } },
-                    }
+                    Attributes =
+                    [
+                        new Attribute { Values = [1, 2] },
+                        new Attribute { Values = [3, 4] },
+                    ]
                 },
                 new Series
                 {
                     Name = "series2",
-                    Attributes = new[]
-                    {
-                        new Attribute { Values = new[] { 5, 6 } },
-                    }
+                    Attributes =
+                    [
+                        new Attribute { Values = [5, 6] },
+                    ]
                 }
             };
 
@@ -416,19 +416,9 @@ namespace MoreLinq.Test
             public required int[] Values;
         }
 
-        sealed class Tree<T>
+        sealed record Tree<T>(Tree<T>? Left, T Value, Tree<T>? Right)
         {
-            public readonly T Value;
-            public readonly Tree<T>? Left;
-            public readonly Tree<T>? Right;
-
             public Tree(T value) : this(null, value, null) { }
-            public Tree(Tree<T>? left, T value, Tree<T>? right)
-            {
-                Left = left;
-                Value = value;
-                Right = right;
-            }
         }
     }
 }

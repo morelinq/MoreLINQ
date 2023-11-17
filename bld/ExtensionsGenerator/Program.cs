@@ -380,9 +380,8 @@ abstract class TypeKey : IComparable<TypeKey>
          .FirstOrDefault(e => e != 0);
 }
 
-sealed class SimpleTypeKey : TypeKey
+sealed class SimpleTypeKey(string name) : TypeKey(name)
 {
-    public SimpleTypeKey(string name) : base(name) { }
     public override string ToString() => Name;
     public override ImmutableList<TypeKey> Parameters => ImmutableList<TypeKey>.Empty;
 }
@@ -390,7 +389,7 @@ sealed class SimpleTypeKey : TypeKey
 abstract class ParameterizedTypeKey : TypeKey
 {
     protected ParameterizedTypeKey(string name, TypeKey parameter) :
-        this(name, ImmutableList.Create(parameter)) { }
+        this(name, [parameter]) { }
 
     protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) :
         base(name) => Parameters = parameters;
@@ -398,36 +397,30 @@ abstract class ParameterizedTypeKey : TypeKey
     public override ImmutableList<TypeKey> Parameters { get; }
 }
 
-sealed class GenericTypeKey : ParameterizedTypeKey
+sealed class GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :
+    ParameterizedTypeKey(name, parameters)
 {
-    public GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :
-        base(name, parameters) { }
-
     public override string ToString() =>
         Name + "<" + string.Join(", ", Parameters) + ">";
 }
 
-sealed class NullableTypeKey : ParameterizedTypeKey
+sealed class NullableTypeKey(TypeKey underlying) :
+    ParameterizedTypeKey("?", underlying)
 {
-    public NullableTypeKey(TypeKey underlying) : base("?", underlying) { }
     public override string ToString() => Parameters.Single() + "?";
 }
 
-sealed class TupleTypeKey : ParameterizedTypeKey
+sealed class TupleTypeKey(ImmutableList<TypeKey> parameters) :
+    ParameterizedTypeKey("()", parameters)
 {
-    public TupleTypeKey(ImmutableList<TypeKey> parameters) :
-        base("()", parameters) { }
-
     public override string ToString() =>
         "(" + string.Join(", ", Parameters) + ")";
 }
 
-sealed class ArrayTypeKey : ParameterizedTypeKey
+sealed class ArrayTypeKey(TypeKey element, IEnumerable<int> ranks) :
+    ParameterizedTypeKey("[]", element)
 {
-    public ArrayTypeKey(TypeKey element, IEnumerable<int> ranks) :
-        base("[]", element) => Ranks = ImmutableList.CreateRange(ranks);
-
-    public ImmutableList<int> Ranks { get; }
+    public ImmutableList<int> Ranks { get; } = ImmutableList.CreateRange(ranks);
 
     public override string ToString() =>
         Parameters.Single() + string.Concat(from r in Ranks

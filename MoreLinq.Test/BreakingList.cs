@@ -28,10 +28,11 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class BreakingList<T> : BreakingCollection<T>, IList<T>
+    sealed class BreakingList<T>(List<T> list) :
+        BreakingCollection<T>(list),
+        IList<T>
     {
-        public BreakingList() : this(new List<T>()) { }
-        public BreakingList(List<T> list) : base(list) { }
+        public BreakingList() : this([]) { }
 
         public int IndexOf(T item) => List.IndexOf(item);
         public void Insert(int index, T item) => throw new NotImplementedException();

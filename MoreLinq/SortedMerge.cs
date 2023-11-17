@@ -156,12 +156,9 @@ namespace MoreLinq
         /// are disposed - either when Excluded or when the DisposableGroup is disposed.
         /// </summary>
 
-        sealed class DisposableGroup<T> : IDisposable
+        sealed class DisposableGroup<T>(IEnumerable<IEnumerator<T>> iterators) : IDisposable
         {
-            public DisposableGroup(IEnumerable<IEnumerator<T>> iterators) =>
-                Iterators = new List<IEnumerator<T>>(iterators);
-
-            public List<IEnumerator<T>> Iterators { get; }
+            public List<IEnumerator<T>> Iterators { get; } = new(iterators);
 
             public IEnumerator<T> this[int index] => Iterators[index];
 
