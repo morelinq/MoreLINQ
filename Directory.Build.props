@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>11</LangVersion>
+    <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AnalysisLevel>8.0-all</AnalysisLevel>

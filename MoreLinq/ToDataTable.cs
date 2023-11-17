@@ -41,7 +41,7 @@ namespace MoreLinq
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, EmptyArray<Expression<Func<T, object?>>>.Value);
+            return ToDataTable(source, table, []);
         }
 
         /// <summary>

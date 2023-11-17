@@ -78,15 +78,15 @@ namespace MoreLinq.Test
             var set = new[] { 42, 11, 100 };
             var permutations = set.Permutations();
 
-            var expectedPermutations = new[]
-                                           {
-                                               new[] {42, 11, 100},
-                                               new[] {42, 100, 11},
-                                               new[] {11, 100, 42},
-                                               new[] {11, 42, 100},
-                                               new[] {100, 11, 42},
-                                               new[] {100, 42, 11},
-                                           };
+            var expectedPermutations = new int[][]
+            {
+                [42, 11, 100],
+                [42, 100, 11],
+                [11, 100, 42],
+                [11, 42, 100],
+                [100, 11, 42],
+                [100, 42, 11],
+            };
 
             // should contain six permutations (as defined above)
             Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
@@ -103,33 +103,33 @@ namespace MoreLinq.Test
             var set = new[] { 42, 11, 100, 89 };
             var permutations = set.Permutations();
 
-            var expectedPermutations = new[]
-                                           {
-                                               new[] {42, 11, 100, 89},
-                                               new[] {42, 100, 11, 89},
-                                               new[] {11, 100, 42, 89},
-                                               new[] {11, 42, 100, 89},
-                                               new[] {100, 11, 42, 89},
-                                               new[] {100, 42, 11, 89},
-                                               new[] {42, 11, 89, 100},
-                                               new[] {42, 100, 89, 11},
-                                               new[] {11, 100, 89, 42},
-                                               new[] {11, 42, 89, 100},
-                                               new[] {100, 11, 89, 42},
-                                               new[] {100, 42, 89, 11},
-                                               new[] {42, 89, 11, 100},
-                                               new[] {42, 89, 100, 11},
-                                               new[] {11, 89, 100, 42},
-                                               new[] {11, 89, 42, 100},
-                                               new[] {100, 89, 11, 42},
-                                               new[] {100, 89, 42, 11},
-                                               new[] {89, 42, 11, 100},
-                                               new[] {89, 42, 100, 11},
-                                               new[] {89, 11, 100, 42},
-                                               new[] {89, 11, 42, 100},
-                                               new[] {89, 100, 11, 42},
-                                               new[] {89, 100, 42, 11},
-                                           };
+            var expectedPermutations = new int[][]
+            {
+                [42, 11, 100, 89],
+                [42, 100, 11, 89],
+                [11, 100, 42, 89],
+                [11, 42, 100, 89],
+                [100, 11, 42, 89],
+                [100, 42, 11, 89],
+                [42, 11, 89, 100],
+                [42, 100, 89, 11],
+                [11, 100, 89, 42],
+                [11, 42, 89, 100],
+                [100, 11, 89, 42],
+                [100, 42, 89, 11],
+                [42, 89, 11, 100],
+                [42, 89, 100, 11],
+                [11, 89, 100, 42],
+                [11, 89, 42, 100],
+                [100, 89, 11, 42],
+                [100, 89, 42, 11],
+                [89, 42, 11, 100],
+                [89, 42, 100, 11],
+                [89, 11, 100, 42],
+                [89, 11, 42, 100],
+                [89, 100, 11, 42],
+                [89, 100, 42, 11],
+            };
 
             // should contain six permutations (as defined above)
             Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));

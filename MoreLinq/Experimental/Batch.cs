@@ -229,7 +229,7 @@ namespace MoreLinq.Experimental
         sealed class CurrentPoolArrayProvider<T> : CurrentBuffer<T>, ICurrentBufferProvider<T>
         {
             bool _rented;
-            T[] _array = Array.Empty<T>();
+            T[] _array = [];
             int _count;
             IEnumerator<(T[], int)>? _rental;
             ArrayPool<T>? _pool;
@@ -280,7 +280,7 @@ namespace MoreLinq.Experimental
                     if (_rented)
                         _pool.Return(array);
                     enumerator.Dispose();
-                    _array = Array.Empty<T>();
+                    _array = [];
                     _count = 0;
                     _rental = null;
                     _pool = null;

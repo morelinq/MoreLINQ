@@ -287,7 +287,7 @@ namespace MoreLinq
                         }
                         else
                         {
-                            items ??= new List<TSource>();
+                            items ??= [];
                             items.Add(item);
                         }
                     }

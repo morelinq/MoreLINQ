@@ -90,16 +90,10 @@ namespace MoreLinq.Test
                       .And.Count.EqualTo(4));
         }
 
-        sealed class TestException : Exception
+        sealed class TestException(int cmp, int count) : Exception
         {
-            public int Cmp { get; }
-            public int Count { get; }
-
-            public TestException(int cmp, int count)
-            {
-                Cmp = cmp;
-                Count = count;
-            }
+            public int Cmp { get; } = cmp;
+            public int Count { get; } = count;
         }
 
         [Test]

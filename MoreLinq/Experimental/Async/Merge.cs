@@ -107,7 +107,7 @@ namespace MoreLinq.Experimental.Async
                     enumeratorList.AddRange(from s in sources
                                             select s.GetAsyncEnumerator(cancellationToken));
 
-                    pendingTaskList = new List<Task<(bool, IAsyncEnumerator<T>)>>();
+                    pendingTaskList = [];
 
                     const bool some = true;
 
@@ -117,7 +117,7 @@ namespace MoreLinq.Experimental.Async
                         var disposalTask = enumerator.DisposeAsync();
                         if (disposalTask.IsCompleted)
                             return disposalTask;
-                        disposalTaskList ??= new List<Task>();
+                        disposalTaskList ??= [];
                         disposalTaskList.Add(disposalTask.AsTask());
                         return null;
                     }
@@ -232,7 +232,7 @@ namespace MoreLinq.Experimental.Async
                         }
                         else
                         {
-                            disposalTaskList ??= new List<Task>();
+                            disposalTaskList ??= [];
                             disposalTaskList.Add(task.AsTask());
                         }
                     }

@@ -705,26 +705,18 @@ namespace MoreLinq.Experimental
                 new AwaitQuery<T>(impl, options);
         }
 
-        sealed class AwaitQuery<T> : IAwaitQuery<T>
+        sealed class AwaitQuery<T>(Func<AwaitQueryOptions, IEnumerable<T>> impl,
+            AwaitQueryOptions? options = null) : IAwaitQuery<T>
         {
-            readonly Func<AwaitQueryOptions, IEnumerable<T>> _impl;
-
-            public AwaitQuery(Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                AwaitQueryOptions? options = null)
-            {
-                _impl = impl;
-                Options = options ?? AwaitQueryOptions.Default;
-            }
-
-            public AwaitQueryOptions Options { get; }
+            public AwaitQueryOptions Options { get; } = options ?? AwaitQueryOptions.Default;
 
             public IAwaitQuery<T> WithOptions(AwaitQueryOptions options)
             {
                 if (options == null) throw new ArgumentNullException(nameof(options));
-                return Options == options ? this : new AwaitQuery<T>(_impl, options);
+                return Options == options ? this : new AwaitQuery<T>(impl, options);
             }
 
-            public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
+            public IEnumerator<T> GetEnumerator() => impl(Options).GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 

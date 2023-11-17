@@ -122,7 +122,7 @@ namespace MoreLinq
 
             var lastIndex = -1;
             var indexed = (List<KeyValuePair<int, T>>?)null;
-            List<KeyValuePair<int, T>> Indexed() => indexed ??= new List<KeyValuePair<int, T>>();
+            List<KeyValuePair<int, T>> Indexed() => indexed ??= [];
 
             foreach (var e in source)
             {
@@ -143,7 +143,7 @@ namespace MoreLinq
 
             var length = lastIndex + 1;
             return length == 0
-                 ? EmptyArray<TResult>.Value
+                 ? []
                  : Indexed().ToArrayByIndex(length, e => e.Key, e => resultSelector(e.Value, e.Key));
         }
 

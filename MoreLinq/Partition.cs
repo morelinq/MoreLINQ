@@ -367,7 +367,7 @@ namespace MoreLinq
 
                 if (i < 0)
                 {
-                    etc ??= new List<IGrouping<TKey, TElement>>();
+                    etc ??= [];
                     etc.Add(e);
                 }
                 else

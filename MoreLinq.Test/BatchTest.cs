@@ -360,7 +360,7 @@ namespace MoreLinq.Test
             using var pool = new TestArrayPool<int>();
             int[]? bucketSelectorItems = null;
 
-            var result = input.Batch(4, pool, current => bucketSelectorItems = current.ToArray(), _ => 0);
+            var result = input.Batch(4, pool, current => bucketSelectorItems = [..current], _ => 0);
 
             using var reader = result.Read();
             _ = reader.Read();

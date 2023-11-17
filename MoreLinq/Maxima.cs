@@ -218,21 +218,13 @@ namespace MoreLinq
             return new ExtremaEnumerable<TSource, TKey>(source, selector, comparer.Compare);
         }
 
-        sealed class ExtremaEnumerable<T, TKey> : IExtremaEnumerable<T>
+        sealed class ExtremaEnumerable<T, TKey>(IEnumerable<T> source,
+                                                Func<T, TKey> selector,
+                                                Func<TKey, TKey, int> comparer) :
+            IExtremaEnumerable<T>
         {
-            readonly IEnumerable<T> _source;
-            readonly Func<T, TKey> _selector;
-            readonly Func<TKey, TKey, int> _comparer;
-
-            public ExtremaEnumerable(IEnumerable<T> source, Func<T, TKey> selector, Func<TKey, TKey, int> comparer)
-            {
-                _source = source;
-                _selector = selector;
-                _comparer = comparer;
-            }
-
             public IEnumerator<T> GetEnumerator() =>
-                ExtremaBy(_source, Extrema.First, null, _selector, _comparer).GetEnumerator();
+                ExtremaBy(source, Extrema.First, null, selector, comparer).GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() =>
                 GetEnumerator();
@@ -241,16 +233,16 @@ namespace MoreLinq
                 count switch
                 {
                     0 => Enumerable.Empty<T>(),
-                    1 => ExtremaBy(_source, Extremum.First, 1    , _selector, _comparer),
-                    _ => ExtremaBy(_source, Extrema.First , count, _selector, _comparer)
+                    1 => ExtremaBy(source, Extremum.First, 1    , selector, comparer),
+                    _ => ExtremaBy(source, Extrema.First , count, selector, comparer)
                 };
 
             public IEnumerable<T> TakeLast(int count) =>
                 count switch
                 {
                     0 => Enumerable.Empty<T>(),
-                    1 => ExtremaBy(_source, Extremum.Last, 1    , _selector, _comparer),
-                    _ => ExtremaBy(_source, Extrema.Last , count, _selector, _comparer)
+                    1 => ExtremaBy(source, Extremum.Last, 1    , selector, comparer),
+                    _ => ExtremaBy(source, Extrema.Last , count, selector, comparer)
                 };
 
             static class Extrema
@@ -267,7 +259,7 @@ namespace MoreLinq
                     public override void Add(ref List<T>? store, int? limit, T item)
                     {
                         if (limit == null || store is null || store.Count < limit)
-                            (store ??= new List<T>()).Add(item);
+                            (store ??= []).Add(item);
                     }
                 }
 

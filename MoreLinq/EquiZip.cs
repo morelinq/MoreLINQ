@@ -201,7 +201,7 @@ namespace MoreLinq
         }
 
         static readonly string[] OrdinalNumbers =
-        {
+        [
             "First",
             "Second",
             "Third",
@@ -218,6 +218,6 @@ namespace MoreLinq
             // "Fourteenth",
             // "Fifteenth",
             // "Sixteenth",
-        };
+        ];
     }
 }
