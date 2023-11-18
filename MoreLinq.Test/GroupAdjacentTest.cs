@@ -207,7 +207,7 @@ namespace MoreLinq.Test
                           .SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
                           .GroupAdjacent(x => x);
 
-            int?[] aNull = { null };
+            int?[] aNull = [null];
 
             using var reader = groupings.Read();
             AssertGrouping(reader, 1, 1);

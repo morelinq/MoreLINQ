@@ -35,6 +35,9 @@ dotnet_diagnostic.IDE0047.severity = suggestion
 
 [*{Test,Tests}.cs]
 
+# CA1861: Avoid constant arrays as arguments
+dotnet_diagnostic.CA1861.severity = none
+
 # IDE0022: Use expression/block body for methods
 dotnet_diagnostic.IDE0022.severity = none
 

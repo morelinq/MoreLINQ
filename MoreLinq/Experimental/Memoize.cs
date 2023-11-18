@@ -62,20 +62,14 @@ namespace MoreLinq.Experimental
             };
     }
 
-    sealed class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
+    sealed class MemoizedEnumerable<T>(IEnumerable<T> sequence) : IEnumerable<T>, IDisposable
     {
         List<T>? _cache;
-        readonly object _locker;
-        readonly IEnumerable<T> _source;
+        readonly object _locker = new();
+        readonly IEnumerable<T> _source = sequence ?? throw new ArgumentNullException(nameof(sequence));
         IEnumerator<T>? _sourceEnumerator;
         int? _errorIndex;
         ExceptionDispatchInfo? _error;
-
-        public MemoizedEnumerable(IEnumerable<T> sequence)
-        {
-            _source = sequence ?? throw new ArgumentNullException(nameof(sequence));
-            _locker = new object();
-        }
 
         public IEnumerator<T> GetEnumerator()
         {

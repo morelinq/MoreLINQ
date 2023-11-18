@@ -20,7 +20,6 @@
 namespace MoreLinq
 {
     using System;
-    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -135,7 +134,7 @@ namespace MoreLinq
 
                 try
                 {
-                    while (stack.Any())
+                    while (stack.Count > 0)
                     {
                         e = stack.Pop();
 

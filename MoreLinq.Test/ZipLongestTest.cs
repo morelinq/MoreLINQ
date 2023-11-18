@@ -26,8 +26,6 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ZipLongestTest
     {
-        static IEnumerable<T> Seq<T>(params T[] values) => values;
-
         public static readonly IEnumerable<ITestCaseData> TestData =
             from e in new[]
             {
@@ -44,10 +42,10 @@ namespace MoreLinq.Test
 
 
         [Test, TestCaseSource(nameof(TestData))]
-        public IEnumerable<(int, string)> ZipLongest(int[] first, string[] second)
+        public IEnumerable<(int, string)> ZipLongest(IEnumerable<int> first, IEnumerable<string> second)
         {
-            using var ts1 = TestingSequence.Of(first);
-            using var ts2 = TestingSequence.Of(second);
+            using var ts1 = first.AsTestingSequence();
+            using var ts2 = second.AsTestingSequence();
             return ts1.ZipLongest(ts2, Tuple.Create).ToArray();
         }
 

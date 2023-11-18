@@ -35,9 +35,14 @@ namespace MoreLinq.Test
     /// "read" operation.
     /// </summary>
     /// <typeparam name="T">Type of elements to read.</typeparam>
-    sealed class SequenceReader<T> : IDisposable
+    /// <remarks>
+    /// Initializes a <see cref="SequenceReader{T}" /> instance
+    /// from an enumerator.
+    /// </remarks>
+    /// <param name="enumerator">Source enumerator.</param>
+    sealed class SequenceReader<T>(IEnumerator<T> enumerator) : IDisposable
     {
-        IEnumerator<T>? _enumerator;
+        IEnumerator<T>? _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -47,15 +52,6 @@ namespace MoreLinq.Test
 
         public SequenceReader(IEnumerable<T> source) :
             this(GetEnumerator(source)) { }
-
-        /// <summary>
-        /// Initializes a <see cref="SequenceReader{T}" /> instance
-        /// from an enumerator.
-        /// </summary>
-        /// <param name="enumerator">Source enumerator.</param>
-
-        public SequenceReader(IEnumerator<T> enumerator) =>
-            _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
         static IEnumerator<T> GetEnumerator(IEnumerable<T> source)
         {

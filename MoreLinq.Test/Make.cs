@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2012 Atif Aziz. All rights reserved.
+// Copyright (c) 2018 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,16 @@
 // limitations under the License.
 #endregion
 
+global using static MoreLinq.Test.Make;
+
 namespace MoreLinq.Test
 {
-    /// <summary>
-    /// Reserved for use within tests.
-    /// </summary>
+    using System.Collections.Generic;
 
-    sealed class TestException(string? message) : System.Exception(message)
+    static class Make
     {
-        public TestException() : this(null) { }
+        public static IEnumerable<T> Seq<T>(params T[] values) =>
+            from value in values
+            select value;
     }
 }

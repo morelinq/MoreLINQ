@@ -45,12 +45,12 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithRowsOfSameLength()
         {
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new [] { 10, 20, 30 },
-                new [] { 11, 21, 31 },
-                new [] { 12, 22, 32 },
-                new [] { 13, 23, 33 },
+                [10, 20, 30],
+                [11, 21, 31],
+                [12, 22, 32],
+                [13, 23, 33],
             };
 
             using var row1 = TestingSequence.Of(10, 11, 12, 13);
@@ -64,11 +64,11 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithRowsOfDifferentLengths()
         {
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new[] { 10, 20, 30 },
-                new[] { 11, 31 },
-                new[] { 32 }
+                [10, 20, 30],
+                [11, 31],
+                [32]
             };
 
             using var row1 = TestingSequence.Of(10, 11);
@@ -85,10 +85,10 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new[] { 10, 11 },
-                new[] { 20 },
+                [10, 11],
+                [20],
                 new int[0],
-                new[] { 30, 31, 32 }
+                [30, 31, 32]
             };
 
             var traspose = matrix.Transpose();
@@ -107,13 +107,13 @@ namespace MoreLinq.Test
 
             var result = matrix.Transpose().Take(5);
 
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new[] { 2,    3,    5 },
-                new[] { 4,    9,   25 },
-                new[] { 8,   27,  125 },
-                new[] { 16,  81,  625 },
-                new[] { 32, 243, 3125 }
+                [2,    3,    5],
+                [4,    9,   25],
+                [8,   27,  125],
+                [16,  81,  625],
+                [32, 243, 3125]
             };
 
             AssertMatrix(expectations, result);
@@ -130,13 +130,13 @@ namespace MoreLinq.Test
 
             var result = matrix.Transpose().Take(5);
 
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new[] { 2,    3,    5 },
-                new[] { 4,    9,   25 },
-                new[] { 8,        125 },
-                new[] { 16,       625 },
-                new[] { 32,      3125 }
+                [2,    3,    5],
+                [4,    9,   25],
+                [8,        125],
+                [16,       625],
+                [32,      3125]
             };
 
             AssertMatrix(expectations, result);
@@ -147,10 +147,10 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new[] { 10, 11 },
-                new[] { 20 },
+                [10, 11],
+                [20],
                 new int[0],
-                new[] { 30, 31, 32 }
+                [30, 31, 32]
             };
 
             var transpose = matrix.Transpose().ToList();

@@ -90,3 +90,15 @@ dotnet_diagnostic.IDE0046.severity = suggestion
 # Dispose things need disposing
 # CA2000: Dispose objects before losing scope
 dotnet_diagnostic.CA2000.severity = error
+
+# CA1510: Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance
+# TODO: Remove post https://github.com/morelinq/MoreLINQ/issues/903
+dotnet_diagnostic.CA1510.severity = suggestion
+
+# CA1512: Use 'ArgumentOutOfRangeException.ThrowIfNegativeOrZero' instead of explicitly throwing a new exception instance
+# TODO: Remove post https://github.com/morelinq/MoreLINQ/issues/903
+dotnet_diagnostic.CA1512.severity = suggestion
+
+# CA1513: Use 'ObjectDisposedException.ThrowIf' instead of explicitly throwing a new exception instance
+# TODO: Remove post https://github.com/morelinq/MoreLINQ/issues/903
+dotnet_diagnostic.CA1513.severity = suggestion

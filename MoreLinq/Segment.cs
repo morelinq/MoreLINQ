@@ -95,7 +95,7 @@ namespace MoreLinq
                     if (newSegmentPredicate(current, previous, index))
                     {
                         yield return segment;              // yield the completed segment
-                        segment = new List<T> { current }; // start a new segment
+                        segment = [current]; // start a new segment
                     }
                     else // not a new segment, append and continue
                     {

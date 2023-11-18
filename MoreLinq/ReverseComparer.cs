@@ -19,12 +19,9 @@ namespace MoreLinq
 {
     using System.Collections.Generic;
 
-    sealed class ReverseComparer<T> : IComparer<T>
+    sealed class ReverseComparer<T>(IComparer<T>? underlying) : IComparer<T>
     {
-        readonly IComparer<T> _underlying;
-
-        public ReverseComparer(IComparer<T>? underlying) =>
-            _underlying = underlying ?? Comparer<T>.Default;
+        readonly IComparer<T> _underlying = underlying ?? Comparer<T>.Default;
 
         public int Compare
 #if NETCOREAPP3_1_OR_GREATER

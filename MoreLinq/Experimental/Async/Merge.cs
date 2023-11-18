@@ -107,7 +107,7 @@ namespace MoreLinq.Experimental.Async
                     enumeratorList.AddRange(from s in sources
                                             select s.GetAsyncEnumerator(cancellationToken));
 
-                    pendingTaskList = new List<Task<(bool, IAsyncEnumerator<T>)>>();
+                    pendingTaskList = [];
 
                     const bool some = true;
 
@@ -117,7 +117,7 @@ namespace MoreLinq.Experimental.Async
                         var disposalTask = enumerator.DisposeAsync();
                         if (disposalTask.IsCompleted)
                             return disposalTask;
-                        disposalTaskList ??= new List<Task>();
+                        disposalTaskList ??= [];
                         disposalTaskList.Add(disposalTask.AsTask());
                         return null;
                     }
@@ -180,7 +180,11 @@ namespace MoreLinq.Experimental.Async
                     // Signal cancellation to those in flight. Unfortunately, this relies on all
                     // iterators to honour the cancellation.
 
+#if NET8_0_OR_GREATER
+                    await thisCancellationTokenSource.CancelAsync().ConfigureAwait(false);
+#else
                     thisCancellationTokenSource.Cancel();
+#endif
 
                     // > The caller of an async-iterator method should only call `DisposeAsync()`
                     // > when the method completed or was suspended by a `yield return`.
@@ -228,7 +232,7 @@ namespace MoreLinq.Experimental.Async
                         }
                         else
                         {
-                            disposalTaskList ??= new List<Task>();
+                            disposalTaskList ??= [];
                             disposalTaskList.Add(task.AsTask());
                         }
                     }

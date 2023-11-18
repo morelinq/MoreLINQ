@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNonEmptyTailSequence()
         {
-            string[] tail = { "second", "third" };
+            string[] tail = ["second", "third"];
             var head = "first";
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first", "second", "third");
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithEmptyTailSequence()
         {
-            string[] tail = { };
+            string[] tail = [];
             var head = "first";
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first");
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNullHead()
         {
-            string[] tail = { "second", "third" };
+            string[] tail = ["second", "third"];
             string? head = null;
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual(null, "second", "third");
