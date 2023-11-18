@@ -61,10 +61,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
 
-            return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
+            return RandomSubsetImpl(source, rand, subsetSize);
         }
 
-        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
+        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, int? subsetSize)
         {
             // The simplest and most efficient way to return a random subset is to perform
             // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
@@ -72,19 +72,18 @@ namespace MoreLinq
             // than the length of the sequence.
             // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-            var (array, subsetSize) = seeder(source);
+            var array = source.ToList();
+            subsetSize ??= array.Count;
 
-            if (array.Length < subsetSize)
+            if (array.Count < subsetSize)
             {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                               // TODO Throw InvalidOperationException instead?
+                // TODO Throw InvalidOperationException instead?
                 throw new ArgumentOutOfRangeException(nameof(subsetSize),
                     "Subset size must be less than or equal to the source length.");
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
 
             var m = 0;                // keeps track of count items shuffled
-            var w = array.Length;     // upper bound of shrinking swap range
+            var w = array.Count;      // upper bound of shrinking swap range
             var g = w - 1;            // used to compute the second swap index
 
             // perform in-place, partial Fisher-Yates shuffle
