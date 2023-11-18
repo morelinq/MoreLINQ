@@ -136,14 +136,12 @@ namespace MoreLinq
                 readonly T[] _subset;     // the current subset to return
                 readonly int[] _indices;  // indices into the original set
 
-                // TODO: It would be desirable to give these index members clearer names
                 bool _continue;  // termination indicator, set when all subsets have been produced
 
-                int _m;            // previous swap index (upper index)
-                int _m2;           // current swap index (lower index)
-                int _k;            // size of the subset being produced
-                int _n;            // size of the original set (sequence)
-                int _z;            // count of items excluded from the subset
+                int _prevSwapIndex;       // previous swap index (upper index)
+                int _currSwapIndex;       // current swap index (lower index)
+                int _subsetSize;          // size of the subset being produced
+                int _setSize;             // size of the original set (sequence)
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -161,11 +159,10 @@ namespace MoreLinq
 
                 public void Reset()
                 {
-                    _m = _subset.Length;
-                    _m2 = -1;
-                    _k = _subset.Length;
-                    _n = _set.Count;
-                    _z = _n - _k + 1;
+                    _prevSwapIndex = _subset.Length;
+                    _currSwapIndex = -1;
+                    _subsetSize = _subset.Length;
+                    _setSize = _set.Count;
                     _continue = true;
                 }
 
@@ -178,27 +175,29 @@ namespace MoreLinq
                     if (!_continue)
                         return false;
 
-                    if (_m2 == -1)
+                    if (_currSwapIndex == -1)
                     {
-                        _m2 = 0;
-                        _m = _k;
+                        _currSwapIndex = 0;
+                        _prevSwapIndex = _subsetSize;
                     }
                     else
                     {
-                        if (_m2 < _n - _m)
+                        if (_currSwapIndex < _setSize - _prevSwapIndex)
                         {
-                            _m = 0;
+                            _prevSwapIndex = 0;
                         }
-                        _m++;
-                        _m2 = _indices[_k - _m];
+                        _prevSwapIndex++;
+                        _currSwapIndex = _indices[_subsetSize - _prevSwapIndex];
                     }
 
-                    for (var j = 1; j <= _m; j++)
-                        _indices[_k + j - _m - 1] = _m2 + j;
+                    for (var j = 1; j <= _prevSwapIndex; j++)
+                        _indices[_subsetSize + j - _prevSwapIndex - 1] = _currSwapIndex + j;
 
                     ExtractSubset();
 
-                    _continue = _indices.Length > 0 && _indices[0] != _z;
+                    // ........................................ count of items excluded from the subset
+                    _continue = _indices is [var i, ..] && i != _setSize - _subsetSize + 1;
+
                     return true;
                 }
 
@@ -206,7 +205,7 @@ namespace MoreLinq
 
                 void ExtractSubset()
                 {
-                    for (var i = 0; i < _k; i++)
+                    for (var i = 0; i < _subsetSize; i++)
                         _subset[i] = _set[_indices[i] - 1];
                 }
             }
