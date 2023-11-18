@@ -96,7 +96,7 @@ namespace MoreLinq.Test
         int _disposedCount;
         int _enumerationCount;
 
-        internal TestingSequence(IEnumerable<T> sequence, Options options, int maxEnumerations)
+        internal TestingSequence(IEnumerable<T> sequence, Options options = Options.None, int maxEnumerations = 1)
         {
             _sequence = sequence;
             _maxEnumerations = maxEnumerations;

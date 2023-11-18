@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using static MoreLinq.Extensions.AppendExtension;
@@ -60,10 +61,11 @@ namespace MoreLinq.Test
         #endregion
 
         [TestCaseSource(nameof(ContactManySource))]
-        public void AppendMany(int[] head, int[] tail)
+        public void AppendMany(IEnumerable<int> head, IEnumerable<int> tail, IEnumerable<int> expected)
         {
-            tail.Aggregate(head.AsEnumerable(), (xs, x) => xs.Append(x))
-                .AssertSequenceEqual(head.Concat(tail));
+            using var d = head as IDisposable;
+            tail.Aggregate(head, (xs, x) => xs.Append(x))
+                .AssertSequenceEqual(expected);
         }
 
         public static IEnumerable<object> ContactManySource =>
@@ -75,14 +77,16 @@ namespace MoreLinq.Test
                 Tail = Enumerable.Range(x + 1, y).ToArray(),
             }
             into e
-            select new TestCaseData(e.Head,
-                                    e.Tail).SetName("Head = [" + string.Join(", ", e.Head) + "], " +
-                                                    "Tail = [" + string.Join(", ", e.Tail) + "]");
+            select new TestCaseData(e.Head.AsTestingSequence(),
+                                    e.Tail,
+                                    e.Head.Concat(e.Tail))
+                .SetName("Head = [" + string.Join(", ", e.Head) + "], " +
+                         "Tail = [" + string.Join(", ", e.Tail) + "]");
 
         [Test]
         public void AppendWithSharedSource()
         {
-            var first  = new[] { 1 }.Append(2);
+            using var first = new TestingSequence<int>([1, 2], maxEnumerations: 2);
             var second = first.Append(3).Append(4);
             var third  = first.Append(4).Append(8);
 
