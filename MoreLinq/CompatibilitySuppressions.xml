@@ -1,6 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.ToDictionary``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}},System.Collections.Generic.IEqualityComparer{``0})</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net8.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.ToDictionary``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}})</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net8.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.ToDictionary``2(System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1}},System.Collections.Generic.IEqualityComparer{``0})</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net8.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.ToDictionary``2(System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1}})</Target>
+    <Left>lib/net6.0/MoreLinq.dll</Left>
+    <Right>lib/net8.0/MoreLinq.dll</Right>
+  </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.SequenceException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)</Target>
