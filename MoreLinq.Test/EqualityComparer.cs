@@ -32,20 +32,20 @@ namespace MoreLinq.Test
 
         sealed class DelegatingComparer<T> : IEqualityComparer<T>
         {
-            readonly Func<T?, T?, bool> _comparer;
-            readonly Func<T, int> _hasher;
+            readonly Func<T?, T?, bool> comparer;
+            readonly Func<T, int> hasher;
 
             public DelegatingComparer(Func<T?, T?, bool> comparer)
                 : this(comparer, x => x == null ? 0 : x.GetHashCode()) { }
 
             DelegatingComparer(Func<T?, T?, bool> comparer, Func<T, int> hasher)
             {
-                _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-                _hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
+                this.comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+                this.hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
             }
 
-            public bool Equals(T? x, T? y) => _comparer(x, y);
-            public int GetHashCode(T obj) => _hasher(obj);
+            public bool Equals(T? x, T? y) => this.comparer(x, y);
+            public int GetHashCode(T obj) => this.hasher(obj);
         }
     }
 }

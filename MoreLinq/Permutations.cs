@@ -67,48 +67,48 @@ namespace MoreLinq
             //                               for( int j = 0; j < 8; j++ )
             //                                   DoSomething();
 
-            readonly IList<T> _valueSet;
-            readonly int[] _permutation;
-            readonly IEnumerable<Action> _generator;
+            readonly IList<T> valueSet;
+            readonly int[] permutation;
+            readonly IEnumerable<Action> generator;
 
-            IEnumerator<Action> _generatorIterator;
-            bool _hasMoreResults;
+            IEnumerator<Action> generatorIterator;
+            bool hasMoreResults;
 
-            IList<T>? _current;
+            IList<T>? current;
 
             public PermutationEnumerator(IEnumerable<T> valueSet)
             {
-                _valueSet = valueSet.ToArray();
-                _permutation = new int[_valueSet.Count];
+                this.valueSet = valueSet.ToArray();
+                this.permutation = new int[this.valueSet.Count];
                 // The nested loop construction below takes into account the fact that:
                 // 1) for empty sets and sets of cardinality 1, there exists only a single permutation.
                 // 2) for sets larger than 1 element, the number of nested loops needed is: set.Count-1
-                _generator = NestedLoops(NextPermutation, Generate(2UL, n => n + 1).Take(Math.Max(0, _valueSet.Count - 1)));
+                this.generator = NestedLoops(NextPermutation, Generate(2UL, n => n + 1).Take(Math.Max(0, this.valueSet.Count - 1)));
                 Reset();
             }
 
-            [MemberNotNull(nameof(_generatorIterator))]
+            [MemberNotNull(nameof(generatorIterator))]
             public void Reset()
             {
-                _current = null;
-                _generatorIterator?.Dispose();
+                this.current = null;
+                this.generatorIterator?.Dispose();
                 // restore lexographic ordering of the permutation indexes
-                for (var i = 0; i < _permutation.Length; i++)
-                    _permutation[i] = i;
+                for (var i = 0; i < this.permutation.Length; i++)
+                    this.permutation[i] = i;
                 // start a new iteration over the nested loop generator
-                _generatorIterator = _generator.GetEnumerator();
+                this.generatorIterator = this.generator.GetEnumerator();
                 // we must advance the nested loop iterator to the initial element,
                 // this ensures that we only ever produce N!-1 calls to NextPermutation()
-                _ = _generatorIterator.MoveNext();
-                _hasMoreResults = true; // there's always at least one permutation: the original set itself
+                _ = this.generatorIterator.MoveNext();
+                this.hasMoreResults = true; // there's always at least one permutation: the original set itself
             }
 
             public IList<T> Current
             {
                 get
                 {
-                    Debug.Assert(_current is not null);
-                    return _current;
+                    Debug.Assert(this.current is not null);
+                    return this.current;
                 }
             }
 
@@ -116,12 +116,12 @@ namespace MoreLinq
 
             public bool MoveNext()
             {
-                _current = PermuteValueSet();
+                this.current = PermuteValueSet();
                 // check if more permutation left to enumerate
-                var prevResult = _hasMoreResults;
-                _hasMoreResults = _generatorIterator.MoveNext();
-                if (_hasMoreResults)
-                    _generatorIterator.Current(); // produce the next permutation ordering
+                var prevResult = this.hasMoreResults;
+                this.hasMoreResults = this.generatorIterator.MoveNext();
+                if (this.hasMoreResults)
+                    this.generatorIterator.Current(); // produce the next permutation ordering
                 // we return prevResult rather than m_HasMoreResults because there is always
                 // at least one permutation: the original set. Also, this provides a simple way
                 // to deal with the disparity between sets that have only one loop level (size 0-2)
@@ -129,7 +129,7 @@ namespace MoreLinq
                 return prevResult;
             }
 
-            void IDisposable.Dispose() => _generatorIterator.Dispose();
+            void IDisposable.Dispose() => this.generatorIterator.Dispose();
 
             /// <summary>
             /// Transposes elements in the cached permutation array to produce the next permutation
@@ -137,21 +137,21 @@ namespace MoreLinq
             void NextPermutation()
             {
                 // find the largest index j with m_Permutation[j] < m_Permutation[j+1]
-                var j = _permutation.Length - 2;
-                while (_permutation[j] > _permutation[j + 1])
+                var j = this.permutation.Length - 2;
+                while (this.permutation[j] > this.permutation[j + 1])
                     j--;
 
                 // find index k such that m_Permutation[k] is the smallest integer
                 // greater than m_Permutation[j] to the right of m_Permutation[j]
-                var k = _permutation.Length - 1;
-                while (_permutation[j] > _permutation[k])
+                var k = this.permutation.Length - 1;
+                while (this.permutation[j] > this.permutation[k])
                     k--;
 
-                (_permutation[j], _permutation[k]) = (_permutation[k], _permutation[j]);
+                (this.permutation[j], this.permutation[k]) = (this.permutation[k], this.permutation[j]);
 
                 // move the tail of the permutation after the jth position in increasing order
-                for (int x = _permutation.Length - 1, y = j + 1; x > y; x--, y++)
-                    (_permutation[x], _permutation[y]) = (_permutation[y], _permutation[x]);
+                for (int x = this.permutation.Length - 1, y = j + 1; x > y; x--, y++)
+                    (this.permutation[x], this.permutation[y]) = (this.permutation[y], this.permutation[x]);
             }
 
             /// <summary>
@@ -170,9 +170,9 @@ namespace MoreLinq
             /// <returns>Array of permuted source sequence values</returns>
             T[] PermuteValueSet()
             {
-                var permutedSet = new T[_permutation.Length];
-                for (var i = 0; i < _permutation.Length; i++)
-                    permutedSet[i] = _valueSet[_permutation[i]];
+                var permutedSet = new T[this.permutation.Length];
+                for (var i = 0; i < this.permutation.Length; i++)
+                    permutedSet[i] = this.valueSet[this.permutation[i]];
                 return permutedSet;
             }
         }

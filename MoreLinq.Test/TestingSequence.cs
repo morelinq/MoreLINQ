@@ -64,45 +64,45 @@ namespace MoreLinq.Test
     /// </summary>
     sealed class TestingSequence<T> : IEnumerable<T>, IDisposable
     {
-        readonly IEnumerable<T> _sequence;
-        readonly Options _options;
-        readonly int _maxEnumerations;
+        readonly IEnumerable<T> sequence;
+        readonly Options options;
+        readonly int maxEnumerations;
 
-        int _disposedCount;
-        int _enumerationCount;
+        int disposedCount;
+        int enumerationCount;
 
         internal TestingSequence(IEnumerable<T> sequence, Options options, int maxEnumerations)
         {
-            _sequence = sequence;
-            _maxEnumerations = maxEnumerations;
-            _options = options;
+            this.sequence = sequence;
+            this.maxEnumerations = maxEnumerations;
+            this.options = options;
         }
 
         public int MoveNextCallCount { get; private set; }
-        public bool IsDisposed => _enumerationCount > 0 && _disposedCount == _enumerationCount;
+        public bool IsDisposed => this.enumerationCount > 0 && this.disposedCount == this.enumerationCount;
 
         void IDisposable.Dispose()
         {
-            if (_enumerationCount > 0)
-                Assert.That(_disposedCount, Is.EqualTo(_enumerationCount), ExpectedDisposal);
+            if (this.enumerationCount > 0)
+                Assert.That(this.disposedCount, Is.EqualTo(this.enumerationCount), ExpectedDisposal);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            Assert.That(_enumerationCount, Is.LessThan(_maxEnumerations), TooManyEnumerations);
-            Assert.That(_enumerationCount, Is.EqualTo(_disposedCount), SimultaneousEnumerations);
-            _enumerationCount++;
+            Assert.That(this.enumerationCount, Is.LessThan(this.maxEnumerations), TooManyEnumerations);
+            Assert.That(this.enumerationCount, Is.EqualTo(this.disposedCount), SimultaneousEnumerations);
+            this.enumerationCount++;
 
-            var enumerator = _sequence.GetEnumerator().AsWatchable();
+            var enumerator = this.sequence.GetEnumerator().AsWatchable();
             var disposed = false;
             enumerator.Disposed += delegate
             {
                 if (!disposed)
                 {
-                    _disposedCount++;
+                    this.disposedCount++;
                     disposed = true;
                 }
-                else if (!_options.HasFlag(Options.AllowRepeatedDisposals))
+                else if (!this.options.HasFlag(Options.AllowRepeatedDisposals))
                 {
                     Assert.Fail(TooManyDisposals);
                 }
@@ -112,7 +112,7 @@ namespace MoreLinq.Test
             enumerator.MoveNextCalled += (_, moved) =>
             {
                 Assert.That(disposed, Is.False, MoveNextPostDisposal);
-                if (!_options.HasFlag(Options.AllowRepeatedMoveNexts))
+                if (!this.options.HasFlag(Options.AllowRepeatedMoveNexts))
                     Assert.That(ended, Is.False, MoveNextPostEnumeration);
 
                 ended = !moved;

@@ -152,13 +152,13 @@ namespace MoreLinq.Test
 
             abstract class Sequence<T> : IEnumerable<T>
             {
-                readonly Func<IEnumerator<T>, IEnumerator<T>> _em;
+                readonly Func<IEnumerator<T>, IEnumerator<T>> em;
 
                 protected Sequence(Func<IEnumerator<T>, IEnumerator<T>>? em) =>
-                    _em = em ?? (e => e);
+                    this.em = em ?? (e => e);
 
                 public IEnumerator<T> GetEnumerator() =>
-                    _em(Items.GetEnumerator());
+                    this.em(Items.GetEnumerator());
 
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -174,15 +174,15 @@ namespace MoreLinq.Test
                                        Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
                 Sequence<T>(em), ICollection<T>
             {
-                readonly ICollection<T> _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                readonly ICollection<T> collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
-                public int Count => _collection.Count;
-                public bool IsReadOnly => _collection.IsReadOnly;
+                public int Count => this.collection.Count;
+                public bool IsReadOnly => this.collection.IsReadOnly;
 
-                protected override IEnumerable<T> Items => _collection;
+                protected override IEnumerable<T> Items => this.collection;
 
-                public bool Contains(T item) => _collection.Contains(item);
-                public void CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
+                public bool Contains(T item) => this.collection.Contains(item);
+                public void CopyTo(T[] array, int arrayIndex) => this.collection.CopyTo(array, arrayIndex);
 
                 public void Add(T item) => throw new NotImplementedException();
                 public void Clear() => throw new NotImplementedException();
@@ -198,11 +198,11 @@ namespace MoreLinq.Test
                                                Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
                 Sequence<T>(em), IReadOnlyCollection<T>
             {
-                readonly ICollection<T> _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                readonly ICollection<T> collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
-                public int Count => _collection.Count;
+                public int Count => this.collection.Count;
 
-                protected override IEnumerable<T> Items => _collection;
+                protected override IEnumerable<T> Items => this.collection;
             }
         }
 

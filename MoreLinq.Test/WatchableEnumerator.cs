@@ -29,7 +29,7 @@ namespace MoreLinq.Test
     sealed class WatchableEnumerator<T>(IEnumerator<T> source) :
         IEnumerator<T>
     {
-        readonly IEnumerator<T> _source = source ?? throw new ArgumentNullException(nameof(source));
+        readonly IEnumerator<T> source = source ?? throw new ArgumentNullException(nameof(source));
 
         public event EventHandler? Disposed;
         public event EventHandler? GetCurrentCalled;
@@ -40,24 +40,24 @@ namespace MoreLinq.Test
             get
             {
                 GetCurrentCalled?.Invoke(this, EventArgs.Empty);
-                return _source.Current;
+                return this.source.Current;
             }
         }
 
         object? IEnumerator.Current => this.Current;
 
-        public void Reset() => _source.Reset();
+        public void Reset() => this.source.Reset();
 
         public bool MoveNext()
         {
-            var moved = _source.MoveNext();
+            var moved = this.source.MoveNext();
             MoveNextCalled?.Invoke(this, moved);
             return moved;
         }
 
         public void Dispose()
         {
-            _source.Dispose();
+            this.source.Dispose();
             Disposed?.Invoke(this, EventArgs.Empty);
         }
     }

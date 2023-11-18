@@ -42,12 +42,12 @@ namespace Delegating
 
     sealed class DelegatingDisposable(Action delegatee) : IDisposable
     {
-        Action? _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
+        Action? delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
 
         public void Dispose()
         {
-            var delegatee = _delegatee;
-            if (delegatee == null || Interlocked.CompareExchange(ref _delegatee, null, delegatee) != delegatee)
+            var delegatee = this.delegatee;
+            if (delegatee == null || Interlocked.CompareExchange(ref this.delegatee, null, delegatee) != delegatee)
                 return;
             delegatee();
         }
@@ -58,10 +58,10 @@ namespace Delegating
                                        Action? onCompleted = null) :
         IObserver<T>
     {
-        readonly Action<T> _onNext = onNext ?? throw new ArgumentNullException(nameof(onNext));
+        readonly Action<T> onNext = onNext ?? throw new ArgumentNullException(nameof(onNext));
 
         public void OnCompleted() => onCompleted?.Invoke();
         public void OnError(Exception error) => onError?.Invoke(error);
-        public void OnNext(T value) => _onNext(value);
+        public void OnNext(T value) => this.onNext(value);
     }
 }

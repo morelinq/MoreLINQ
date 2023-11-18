@@ -283,8 +283,8 @@ namespace MoreLinq
                 public static readonly Extrema<(bool, T), T> First = new Extremum(false);
                 public static readonly Extrema<(bool, T), T> Last  = new Extremum(true);
 
-                readonly bool _poppable;
-                Extremum(bool poppable) => _poppable = poppable;
+                readonly bool poppable;
+                Extremum(bool poppable) => this.poppable = poppable;
 
                 public override (bool, T) New() => default;
                 public override void Restart(ref (bool, T) store) => store = default;
@@ -294,7 +294,7 @@ namespace MoreLinq
 
                 public override void Add(ref (bool, T) store, int? limit, T item)
                 {
-                    if (!_poppable && store is (true, _))
+                    if (!this.poppable && store is (true, _))
                         return;
                     store = (true, item);
                 }

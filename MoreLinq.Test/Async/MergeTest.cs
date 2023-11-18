@@ -86,22 +86,22 @@ namespace MoreLinq.Test.Async
         {
             sealed record State(TaskCompletionSource<T> TaskCompletionSource, T Result);
 
-            State? _state;
+            State? state;
 
             public Task<T> Result(T result)
             {
-                if (_state is not null)
+                if (this.state is not null)
                     throw new InvalidOperationException();
-                _state = new State(new TaskCompletionSource<T>(), result);
-                return _state.TaskCompletionSource.Task;
+                this.state = new State(new TaskCompletionSource<T>(), result);
+                return this.state.TaskCompletionSource.Task;
             }
 
             public void Complete()
             {
-                if (_state is not { } state)
+                if (this.state is not { } someState)
                     throw new InvalidOperationException();
-                _state = null;
-                state.TaskCompletionSource.SetResult(state.Result);
+                this.state = null;
+                someState.TaskCompletionSource.SetResult(someState.Result);
             }
         }
 

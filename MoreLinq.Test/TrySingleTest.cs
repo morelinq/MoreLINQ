@@ -72,9 +72,9 @@ namespace MoreLinq.Test
 
         class BreakingSingleElementCollectionBase<T> : IEnumerable<T>
         {
-            readonly T _element;
+            readonly T element;
 
-            protected BreakingSingleElementCollectionBase(T element) => _element = element;
+            protected BreakingSingleElementCollectionBase(T element) => this.element = element;
 
 #pragma warning disable CA1822 // Mark members as static
             public int Count => 1;
@@ -82,7 +82,7 @@ namespace MoreLinq.Test
 
             public IEnumerator<T> GetEnumerator()
             {
-                yield return _element;
+                yield return this.element;
                 Assert.Fail($"{nameof(ExperimentalEnumerable.TrySingle)} should not have attempted to consume a second element.");
             }
 

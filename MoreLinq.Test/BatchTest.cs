@@ -375,34 +375,34 @@ namespace MoreLinq.Test
 
         sealed class TestArrayPool<T> : ArrayPool<T>, IDisposable
         {
-            T[]? _pooledArray;
-            T[]? _rentedArray;
+            T[]? pooledArray;
+            T[]? rentedArray;
 
             public override T[] Rent(int minimumLength)
             {
-                if (_pooledArray is null && _rentedArray is null)
-                    _pooledArray = new T[minimumLength * 2];
+                if (this.pooledArray is null && this.rentedArray is null)
+                    this.pooledArray = new T[minimumLength * 2];
 
-                (_pooledArray, _rentedArray) =
-                    (null, _pooledArray ?? throw new InvalidOperationException("The pool is exhausted."));
+                (this.pooledArray, this.rentedArray) =
+                    (null, this.pooledArray ?? throw new InvalidOperationException("The pool is exhausted."));
 
-                return _rentedArray;
+                return this.rentedArray;
             }
 
             public override void Return(T[] array, bool clearArray = false)
             {
-                if (_rentedArray is null)
+                if (this.rentedArray is null)
                     throw new InvalidOperationException("Cannot return when nothing has been rented from this pool.");
 
-                if (array != _rentedArray)
+                if (array != this.rentedArray)
                     throw new InvalidOperationException("Cannot return what has not been rented from this pool.");
 
-                _pooledArray = array;
-                _rentedArray = null;
+                this.pooledArray = array;
+                this.rentedArray = null;
             }
 
             public void Dispose() =>
-                Assert.That(_rentedArray, Is.Null);
+                Assert.That(this.rentedArray, Is.Null);
         }
     }
 }

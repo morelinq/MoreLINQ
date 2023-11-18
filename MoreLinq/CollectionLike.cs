@@ -29,25 +29,25 @@ namespace MoreLinq
 
     readonly struct CollectionLike<T>
     {
-        readonly ICollection<T>? _rw;
-        readonly IReadOnlyCollection<T>? _ro;
+        readonly ICollection<T>? rw;
+        readonly IReadOnlyCollection<T>? ro;
 
         public CollectionLike(ICollection<T> collection)
         {
-            _rw = collection ?? throw new ArgumentNullException(nameof(collection));
-            _ro = null;
+            this.rw = collection ?? throw new ArgumentNullException(nameof(collection));
+            this.ro = null;
         }
 
         public CollectionLike(IReadOnlyCollection<T> collection)
         {
-            _rw = null;
-            _ro = collection ?? throw new ArgumentNullException(nameof(collection));
+            this.rw = null;
+            this.ro = collection ?? throw new ArgumentNullException(nameof(collection));
         }
 
-        public int Count => _rw?.Count ?? _ro?.Count ?? 0;
+        public int Count => this.rw?.Count ?? this.ro?.Count ?? 0;
 
         public IEnumerator<T> GetEnumerator() =>
-            _rw?.GetEnumerator() ?? _ro?.GetEnumerator() ?? Enumerable.Empty<T>().GetEnumerator();
+            this.rw?.GetEnumerator() ?? this.ro?.GetEnumerator() ?? Enumerable.Empty<T>().GetEnumerator();
     }
 
     static class CollectionLike

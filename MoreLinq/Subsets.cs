@@ -132,16 +132,16 @@ namespace MoreLinq
 
             sealed class SubsetEnumerator : IEnumerator<IList<T>>
             {
-                readonly IList<T> _set;   // the original set of elements
-                readonly T[] _subset;     // the current subset to return
-                readonly int[] _indices;  // indices into the original set
+                readonly IList<T> set;    // the original set of elements
+                readonly T[] subset;      // the current subset to return
+                readonly int[] indices;   // indices into the original set
 
-                bool _continue;  // termination indicator, set when all subsets have been produced
+                bool @continue;  // termination indicator, set when all subsets have been produced
 
-                int _prevSwapIndex;       // previous swap index (upper index)
-                int _currSwapIndex;       // current swap index (lower index)
-                int _subsetSize;          // size of the subset being produced
-                int _setSize;             // size of the original set (sequence)
+                int prevSwapIndex;        // previous swap index (upper index)
+                int currSwapIndex;        // current swap index (lower index)
+                int subsetSize;           // size of the subset being produced
+                int setSize;              // size of the original set (sequence)
 
                 public SubsetEnumerator(IList<T> set, int subsetSize)
                 {
@@ -150,53 +150,54 @@ namespace MoreLinq
                         throw new ArgumentOutOfRangeException(nameof(subsetSize), "Subset size must be <= sequence.Count()");
 
                     // initialize set arrays...
-                    _set = set;
-                    _subset = new T[subsetSize];
-                    _indices = new int[subsetSize];
+                    this.set = set;
+                    this.subset = new T[subsetSize];
+                    this.indices = new int[subsetSize];
                     // initialize index counters...
                     Reset();
                 }
 
                 public void Reset()
                 {
-                    _prevSwapIndex = _subset.Length;
-                    _currSwapIndex = -1;
-                    _subsetSize = _subset.Length;
-                    _setSize = _set.Count;
-                    _continue = true;
+                    this.prevSwapIndex = this.subset.Length;
+                    this.currSwapIndex = -1;
+                    this.subsetSize = this.subset.Length;
+                    this.setSize = this.set.Count;
+                    this.@continue = true;
                 }
 
-                public IList<T> Current => (IList<T>)_subset.Clone();
+                public IList<T> Current => (IList<T>)this.subset.Clone();
 
                 object IEnumerator.Current => Current;
 
                 public bool MoveNext()
                 {
-                    if (!_continue)
+                    if (!this.@continue)
                         return false;
 
-                    if (_currSwapIndex == -1)
+                    if (this.currSwapIndex == -1)
                     {
-                        _currSwapIndex = 0;
-                        _prevSwapIndex = _subsetSize;
+                        this.currSwapIndex = 0;
+                        this.prevSwapIndex = this.subsetSize;
                     }
                     else
                     {
-                        if (_currSwapIndex < _setSize - _prevSwapIndex)
+                        if (this.currSwapIndex < this.setSize - this.prevSwapIndex)
                         {
-                            _prevSwapIndex = 0;
+                            this.prevSwapIndex = 0;
                         }
-                        _prevSwapIndex++;
-                        _currSwapIndex = _indices[_subsetSize - _prevSwapIndex];
+                        this.prevSwapIndex++;
+                        this.currSwapIndex = this.indices[this.subsetSize - this.prevSwapIndex];
                     }
 
-                    for (var j = 1; j <= _prevSwapIndex; j++)
-                        _indices[_subsetSize + j - _prevSwapIndex - 1] = _currSwapIndex + j;
+                    for (var j = 1; j <= this.prevSwapIndex; j++)
+                        this.indices[this.subsetSize + j - this.prevSwapIndex - 1] = this.currSwapIndex + j;
 
                     ExtractSubset();
 
-                    // ........................................ count of items excluded from the subset
-                    _continue = _indices is [var i, ..] && i != _setSize - _subsetSize + 1;
+                    this.@continue = this.indices is [var i, ..]
+                                     // .... count of items excluded from the subset
+                                     && i != this.setSize - this.subsetSize + 1;
 
                     return true;
                 }
@@ -205,13 +206,13 @@ namespace MoreLinq
 
                 void ExtractSubset()
                 {
-                    for (var i = 0; i < _subsetSize; i++)
-                        _subset[i] = _set[_indices[i] - 1];
+                    for (var i = 0; i < this.subsetSize; i++)
+                        this.subset[i] = this.set[this.indices[i] - 1];
                 }
             }
 
-            readonly IEnumerable<T> _sequence;
-            readonly int _subsetSize;
+            readonly IEnumerable<T> sequence;
+            readonly int subsetSize;
 
             public SubsetGenerator(IEnumerable<T> sequence, int subsetSize)
             {
@@ -219,8 +220,8 @@ namespace MoreLinq
                     throw new ArgumentNullException(nameof(sequence));
                 if (subsetSize < 0)
                     throw new ArgumentOutOfRangeException(nameof(subsetSize), "{subsetSize} must be between 0 and set.Count()");
-                _subsetSize = subsetSize;
-                _sequence = sequence;
+                this.subsetSize = subsetSize;
+                this.sequence = sequence;
             }
 
             /// <summary>
@@ -232,7 +233,7 @@ namespace MoreLinq
 
             public IEnumerator<IList<T>> GetEnumerator()
             {
-                return new SubsetEnumerator(_sequence.ToList(), _subsetSize);
+                return new SubsetEnumerator(this.sequence.ToList(), this.subsetSize);
             }
 
             IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }

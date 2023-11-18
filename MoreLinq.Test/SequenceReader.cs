@@ -42,7 +42,7 @@ namespace MoreLinq.Test
     /// <param name="enumerator">Source enumerator.</param>
     sealed class SequenceReader<T>(IEnumerator<T> enumerator) : IDisposable
     {
-        IEnumerator<T>? _enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
+        IEnumerator<T>? enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
         /// <summary>
         /// Initializes a <see cref="SequenceReader{T}" /> instance
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
         }
 
         IEnumerator<T> Enumerator =>
-            _enumerator ?? throw new ObjectDisposedException(GetType().FullName);
+            this.enumerator ?? throw new ObjectDisposedException(GetType().FullName);
 
         /// <summary>
         /// Reads a value otherwise throws <see cref="InvalidOperationException"/>
@@ -100,9 +100,9 @@ namespace MoreLinq.Test
 
         public void Dispose()
         {
-            var e = _enumerator;
+            var e = this.enumerator;
             if (e == null) return;
-            _enumerator = null;
+            this.enumerator = null;
             e.Dispose();
         }
     }

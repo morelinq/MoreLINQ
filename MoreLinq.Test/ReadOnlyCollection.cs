@@ -29,12 +29,12 @@ namespace MoreLinq.Test
             IReadOnlyCollection<T>
             where TList : IList<T>
         {
-            readonly TList _list = list;
+            readonly TList list = list;
 
-            public IEnumerator<T> GetEnumerator() => _list.GetEnumerator();
+            public IEnumerator<T> GetEnumerator() => this.list.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            public int Count => _list.Count;
+            public int Count => this.list.Count;
         }
     }
 }

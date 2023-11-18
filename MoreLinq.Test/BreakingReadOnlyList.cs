@@ -31,10 +31,10 @@ namespace MoreLinq.Test
         BreakingReadOnlyCollection<T>(list),
         IReadOnlyList<T>
     {
-        readonly IReadOnlyList<T> _list = list;
+        readonly IReadOnlyList<T> list = list;
 
         public BreakingReadOnlyList(params T[] values) : this((IReadOnlyList<T>)values) { }
 
-        public T this[int index] => _list[index];
+        public T this[int index] => this.list[index];
     }
 }

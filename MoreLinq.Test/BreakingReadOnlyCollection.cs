@@ -22,10 +22,10 @@ namespace MoreLinq.Test
     class BreakingReadOnlyCollection<T>(IReadOnlyCollection<T> collection) :
         BreakingSequence<T>, IReadOnlyCollection<T>
     {
-        readonly IReadOnlyCollection<T> _collection = collection;
+        readonly IReadOnlyCollection<T> collection = collection;
 
         public BreakingReadOnlyCollection(params T[] values) : this((IReadOnlyCollection<T>)values) { }
 
-        public int Count => _collection.Count;
+        public int Count => this.collection.Count;
     }
 }

@@ -756,27 +756,27 @@ namespace MoreLinq.Experimental
         {
             public static readonly ConcurrencyGate Unbounded = new();
 
-            readonly SemaphoreSlim? _semaphore;
+            readonly SemaphoreSlim? semaphore;
 
             ConcurrencyGate(SemaphoreSlim? semaphore = null) =>
-                _semaphore = semaphore;
+                this.semaphore = semaphore;
 
             public ConcurrencyGate(int max) :
                 this(new SemaphoreSlim(max, max)) { }
 
             public Task EnterAsync(CancellationToken token)
             {
-                if (_semaphore == null)
+                if (this.semaphore == null)
                 {
                     token.ThrowIfCancellationRequested();
                     return CompletedTask.Instance;
                 }
 
-                return _semaphore.WaitAsync(token);
+                return this.semaphore.WaitAsync(token);
             }
 
             public void Exit() =>
-                _semaphore?.Release();
+                this.semaphore?.Release();
         }
     }
 }
