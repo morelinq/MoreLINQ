@@ -32,8 +32,6 @@ global using UnreachableException = System.Diagnostics.UnreachableException;
 
 namespace MoreLinq
 {
-    using System;
-
     // Source: https://github.com/dotnet/runtime/blob/v7.0.2/src/libraries/System.Private.CoreLib/src/System/Diagnostics/UnreachableException.cs
 
     /// <summary>

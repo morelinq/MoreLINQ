@@ -17,14 +17,9 @@
 
 namespace MoreLinq.Experimental
 {
-    using System;
     using System.Collections;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.ExceptionServices;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents options for a query whose results evaluate asynchronously.

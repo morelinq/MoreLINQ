@@ -211,9 +211,7 @@ static void Run(ProgramArguments args)
 
     var baseImports = new[]
     {
-        "System",
         "System.CodeDom.Compiler",
-        "System.Collections.Generic",
         "System.Diagnostics.CodeAnalysis",
     };
 

@@ -17,9 +17,7 @@
 
 namespace MoreLinq.Experimental
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
     using System.Runtime.ExceptionServices;
 
     static partial class ExperimentalEnumerable

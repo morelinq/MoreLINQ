@@ -31,9 +31,7 @@
 
 namespace MoreLinq.Extensions
 {
-    using System;
     using System.CodeDom.Compiler;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Data;
     using System.Linq.Expressions;

@@ -17,8 +17,6 @@
 
 namespace MoreLinq.Experimental
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// <para>
     /// Provides a set of static methods for querying objects that

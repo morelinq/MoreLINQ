@@ -26,9 +26,6 @@
 
 namespace Delegating
 {
-    using System;
-    using System.Threading;
-
     static class Delegate
     {
         public static IDisposable Disposable(Action delegatee) =>

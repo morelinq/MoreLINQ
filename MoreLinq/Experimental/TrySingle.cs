@@ -17,10 +17,6 @@
 
 namespace MoreLinq.Experimental
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     partial class ExperimentalEnumerable
     {
         /// <summary>

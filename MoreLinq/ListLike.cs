@@ -17,10 +17,6 @@
 
 namespace MoreLinq
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     /// <summary>
     /// Represents a union over list types implementing either
     /// <see cref="IList{T}"/> or <see cref="IReadOnlyList{T}"/>, allowing

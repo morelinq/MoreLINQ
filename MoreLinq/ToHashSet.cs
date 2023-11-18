@@ -17,9 +17,6 @@
 
 namespace MoreLinq
 {
-    using System;
-    using System.Collections.Generic;
-
     // TODO: Tests! (The code is simple enough I trust it not to fail, mind you...)
     static partial class MoreEnumerable
     {
