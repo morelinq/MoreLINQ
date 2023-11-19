@@ -87,8 +87,8 @@ namespace MoreLinq.Test
 
             Assert.That(first.EndsWith(second), Is.False);
             Assert.That(first.EndsWith(second, null), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
+            Assert.That(first.EndsWith(second, EqualityComparer<int>.Create(delegate { return false; })), Is.False);
+            Assert.That(first.EndsWith(second, EqualityComparer<int>.Create(delegate { return true; })), Is.True);
         }
 
         [TestCase(SourceKind.BreakingCollection)]

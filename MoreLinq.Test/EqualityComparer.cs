@@ -15,22 +15,27 @@
 // limitations under the License.
 #endregion
 
+#if !NET8_0_OR_GREATER
+
 namespace MoreLinq.Test
 {
     using System;
     using System.Collections.Generic;
 
-    static class EqualityComparer
+    static class EqualityComparer<T>
     {
+        public static System.Collections.Generic.EqualityComparer<T>
+            Default => System.Collections.Generic.EqualityComparer<T>.Default;
+
         /// <summary>
         /// Creates an <see cref="IEqualityComparer{T}"/> given a
         /// <see cref="Func{T,T,Boolean}"/>.
         /// </summary>
 
-        public static IEqualityComparer<T> Create<T>(Func<T?, T?, bool> comparer) =>
-            new DelegatingComparer<T>(comparer);
+        public static IEqualityComparer<T> Create(Func<T?, T?, bool> comparer) =>
+            new DelegatingComparer(comparer);
 
-        sealed class DelegatingComparer<T> : IEqualityComparer<T>
+        sealed class DelegatingComparer : IEqualityComparer<T>
         {
             readonly Func<T?, T?, bool> comparer;
             readonly Func<T, int> hasher;
@@ -49,3 +54,5 @@ namespace MoreLinq.Test
         }
     }
 }
+
+#endif

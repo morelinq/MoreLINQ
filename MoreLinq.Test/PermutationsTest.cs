@@ -200,7 +200,7 @@ namespace MoreLinq.Test
         static class SequenceEqualityComparer<T>
         {
             public static readonly IEqualityComparer<IEnumerable<T>> Instance =
-                EqualityComparer.Create<IEnumerable<T>>((x, y) => x is { } sx && y is { } sy && sx.SequenceEqual(sy));
+                EqualityComparer<IEnumerable<T>>.Create((x, y) => x is { } sx && y is { } sy && sx.SequenceEqual(sy));
         }
     }
 }
