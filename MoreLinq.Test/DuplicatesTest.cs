@@ -98,7 +98,7 @@ namespace MoreLinq.Test
 
             var results = input.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
 
-            Assert.That(results.AtMost(1), Is.True);
+            Assert.That(results, Has.Exactly(1).Items);
         }
 
         [Test]
