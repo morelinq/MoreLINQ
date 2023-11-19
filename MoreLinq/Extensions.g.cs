@@ -1293,7 +1293,7 @@ namespace MoreLinq.Extensions
         /// </summary>
         /// <param name="source">The source sequence.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
@@ -1309,7 +1309,7 @@ namespace MoreLinq.Extensions
         /// equals another. If <see langword="null"/>, the default equality comparer for
         /// <typeparamref name="TSource"/> is used.</param>
         /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         /// <returns>All elements that are duplicated.</returns>
         /// <remarks>This operator uses deferred execution and streams its results.</remarks>
 
