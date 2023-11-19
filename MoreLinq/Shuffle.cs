@@ -69,7 +69,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (rand == null) throw new ArgumentNullException(nameof(rand));
 
-            return RandomSubsetImpl(source, rand, default);
+            return RandomSubsetImpl(source, rand, subsetSize: null);
         }
     }
 }
