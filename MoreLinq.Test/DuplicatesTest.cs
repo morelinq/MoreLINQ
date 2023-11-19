@@ -88,7 +88,7 @@ namespace MoreLinq.Test
 
             Assert.That(results, Contains.Item("DUPLICATED_STRING"));
             Assert.That(results, Contains.Item("SECOND_DUPLICATED_STRING"));
-            Assert.That(results.AtMost(2), Is.True);
+            Assert.That(results, Has.Exactly(2).Items);
         }
 
         [Test]
