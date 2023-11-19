@@ -97,10 +97,10 @@ namespace MoreLinq.Test
         {
             using var input = TestingSequence.Of("DUPLICATED_STRING", "DUPLICATED_STRING", "DUPLICATED_STRING");
 
-#pragma warning disable CA1307 // Specify StringComparison for clarity
             var results =
                 input.Duplicates(Delegate.EqualityComparer((_, _) => false,
-                    (string s) => s.GetHashCode()));
+#pragma warning disable CA1307 // Specify StringComparison for clarity
+                                 (string s) => s.GetHashCode()));
 #pragma warning restore CA1307 // Specify StringComparison for clarity
 
             Assert.That(results, Is.Empty);
