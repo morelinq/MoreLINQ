@@ -54,11 +54,11 @@ namespace MoreLinq
             if (source is null) throw new ArgumentNullException(nameof(source));
 
             return from e in source.ScanBy(static e => e,
-                    static _ => 0,
-                    static (count, _, _) => unchecked(Math.Min(count + 1, 3)),
-                    comparer)
-                where e.Value is 2
-                select e.Key;
+                                           static _ => 0,
+                                           static (count, _, _) => unchecked(Math.Min(count + 1, 3)),
+                                           comparer)
+                   where e.Value is 2
+                   select e.Key;
         }
     }
 }
