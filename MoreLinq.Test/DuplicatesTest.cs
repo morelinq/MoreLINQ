@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
+    using Delegating;
     using NUnit.Framework;
 
     [TestFixture]
@@ -73,7 +74,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Multiple_Duplicates_Then_Duplicates_Are_Returned()
+        public void Sequence_With_Multiple_Duplicates_Returns_One_Instance_Of_Each_Duplicates()
         {
             using var input =
                 TestingSequence.Of("FirstElement",
@@ -92,47 +93,17 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_True_Comparer_Then_Duplicates_Are_Returned()
-        {
-            using var input = TestingSequence.Of("FirstElement", "SecondElement", "ThirdElement");
-
-            var results = input.Duplicates(new DummyStringAlwaysTrueComparer()).ToArray();
-
-            Assert.That(results, Has.Exactly(1).Items);
-        }
-
-        [Test]
-        public void When_Asking_For_Duplicates_On_Sequence_With_Custom_Always_False_Comparer_Then_Empty_Sequence_Is_Returned()
-        {
-            using var input = TestingSequence.Of("FirstElement", "SecondElement", "ThirdElement");
-
-            var results = input.Duplicates(new DummyStringAlwaysFalseComparer()).ToArray();
-
-            Assert.That(results, Is.Empty);
-        }
-
-        [Test]
-        public void When_Asking_For_Duplicates_On_Multiple_Duplicates_Sequence_With_Custom_Always_False_Comparer_Then_Empty_Sequence_Is_Returned()
+        public void Sequence_With_Duplicates_But_Using_Comparer_That_Always_Return_False_Returns_Empty_Sequence()
         {
             using var input = TestingSequence.Of("DUPLICATED_STRING", "DUPLICATED_STRING", "DUPLICATED_STRING");
 
-            var results = input.Duplicates(new DummyStringAlwaysFalseComparer()).ToArray();
+#pragma warning disable CA1307 // Specify StringComparison for clarity
+            var results =
+                input.Duplicates(Delegate.EqualityComparer((_, _) => false,
+                    (string s) => s.GetHashCode()));
+#pragma warning restore CA1307 // Specify StringComparison for clarity
 
             Assert.That(results, Is.Empty);
-        }
-
-        sealed class DummyStringAlwaysTrueComparer : IEqualityComparer<string>
-        {
-            public bool Equals(string? x, string? y) => true;
-
-            public int GetHashCode(string obj) => 0;
-        }
-
-        sealed class DummyStringAlwaysFalseComparer : IEqualityComparer<string>
-        {
-            public bool Equals(string? x, string? y) => false;
-
-            public int GetHashCode(string obj) => 0;
         }
     }
 }
