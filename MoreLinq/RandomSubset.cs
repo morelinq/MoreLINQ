@@ -72,10 +72,10 @@ namespace MoreLinq
             // than the length of the sequence.
             // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-            var array = source.ToList();
-            subsetSize ??= array.Count;
+            var array = source.ToArray();
+            subsetSize ??= array.Length;
 
-            if (array.Count < subsetSize)
+            if (array.Length < subsetSize)
             {
                 // TODO Throw InvalidOperationException instead?
                 throw new ArgumentOutOfRangeException(nameof(subsetSize),
@@ -83,7 +83,7 @@ namespace MoreLinq
             }
 
             var m = 0;                // keeps track of count items shuffled
-            var w = array.Count;      // upper bound of shrinking swap range
+            var w = array.Length;     // upper bound of shrinking swap range
             var g = w - 1;            // used to compute the second swap index
 
             // perform in-place, partial Fisher-Yates shuffle
