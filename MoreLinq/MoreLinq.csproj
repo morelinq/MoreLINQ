@@ -27,6 +27,7 @@
         - CountDown
         - Consume
         - DistinctBy
+        - Duplicates
         - EndsWith
         - EquiZip
         - Evaluate
