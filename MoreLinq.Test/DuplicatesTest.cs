@@ -18,8 +18,8 @@
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
-    using Delegating;
     using NUnit.Framework;
+    using Delegate = Delegating.Delegate;
 
     [TestFixture]
     public class DuplicatesTest
@@ -97,11 +97,7 @@ namespace MoreLinq.Test
         {
             using var input = TestingSequence.Of("DUPLICATED_STRING", "DUPLICATED_STRING", "DUPLICATED_STRING");
 
-            var results =
-                input.Duplicates(Delegate.EqualityComparer((_, _) => false,
-#pragma warning disable CA1307 // Specify StringComparison for clarity
-                                 (string s) => s.GetHashCode()));
-#pragma warning restore CA1307 // Specify StringComparison for clarity
+            var results = input.Duplicates(Delegate.EqualityComparer((_, _) => false, (string _) => 0));
 
             Assert.That(results, Is.Empty);
         }
