@@ -6637,8 +6637,7 @@ namespace MoreLinq.Extensions
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-            this IEnumerable<(TKey Key, TValue Value)> source,
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
             => MoreEnumerable.ToDictionary(source, comparer);
@@ -6657,8 +6656,7 @@ namespace MoreLinq.Extensions
         /// mapped to their keys.
         /// </returns>
 
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-            this IEnumerable<KeyValuePair<TKey, TValue>> source,
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
             => MoreEnumerable.ToDictionary(source, comparer);

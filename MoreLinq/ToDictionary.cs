@@ -59,13 +59,11 @@ namespace MoreLinq
         /// </returns>
 
 #if !NET8_0_OR_GREATER
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-            this IEnumerable<KeyValuePair<TKey, TValue>> source,
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
 #else
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-            IEnumerable<KeyValuePair<TKey, TValue>> source,
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> source,
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
 #endif
@@ -111,13 +109,11 @@ namespace MoreLinq
         /// </returns>
 
 #if !NET8_0_OR_GREATER
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-            this IEnumerable<(TKey Key, TValue Value)> source,
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
 #else
-        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
-            IEnumerable<(TKey Key, TValue Value)> source,
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(IEnumerable<(TKey Key, TValue Value)> source,
             IEqualityComparer<TKey>? comparer)
             where TKey : notnull
 #endif
