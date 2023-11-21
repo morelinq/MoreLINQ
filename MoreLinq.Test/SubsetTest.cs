@@ -193,5 +193,29 @@ namespace MoreLinq.Test
             foreach (var subset in result)
                 Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
         }
+
+        [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/1047")]
+        public void TestEnumeratorCurrentReturnsSameReferenceOnEachAccess()
+        {
+            var source = Seq(1, 2, 3, 4, 5);
+
+            using var e = source.Subsets(3).GetEnumerator();
+            var moved = e.MoveNext();
+            var first = e.Current;
+            var second = e.Current;
+
+            Assert.That(moved, Is.True);
+            Assert.That(first, Is.SameAs(second));
+        }
+
+        [Test]
+        public void TestEachSubsetInstanceIsUnique()
+        {
+            var source = Seq(1, 2, 3, 4, 5);
+
+            var subsets = source.Subsets(2).ToArray();
+
+            Assert.That(subsets[0], Is.Not.SameAs(subsets[1]));
+        }
     }
 }
