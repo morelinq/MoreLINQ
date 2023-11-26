@@ -4644,7 +4644,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class PermutationsExtension
     {
-
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.
         /// </summary>

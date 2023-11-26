@@ -184,7 +184,14 @@ namespace MoreLinq.Test
             var permutedSets = set.Permutations();
 
             var listPermutations = new List<IList<int>>();
-            listPermutations.AddRange(permutedSets);
+            foreach (var ps in permutedSets)
+            {
+                Assert.That(ps, Is.Not.All.Negative);
+                listPermutations.Add(ps);
+                for (var i = 0; i < ps.Count; i++)
+                    ps[i] = -1;
+            }
+
             Assert.That(listPermutations, Is.Not.Empty);
 
             for (var i = 0; i < listPermutations.Count; i++)
