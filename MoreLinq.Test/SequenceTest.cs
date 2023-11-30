@@ -110,8 +110,9 @@ namespace MoreLinq.Test
         [TestCase(int.MinValue, int.MinValue, null)]
         public void SequenceWithStartEqualsStop(int start, int stop, int? step)
         {
-            var result = step.HasValue ? MoreEnumerable.Sequence(start, stop, step.Value)
-                                       : MoreEnumerable.Sequence(start, stop);
+            var result = step is { } someStep
+                       ? MoreEnumerable.Sequence(start, stop, someStep)
+                       : MoreEnumerable.Sequence(start, stop);
 
             Assert.That(start, Is.EqualTo(result.Single()));
         }
