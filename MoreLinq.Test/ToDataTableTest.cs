@@ -170,15 +170,14 @@ namespace MoreLinq.Test
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
         }
 
-        readonly struct Point
+        readonly struct Point(int x, int y)
         {
 #pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static Point Empty = new();
 #pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
-            public int X { get; }
-            public int Y { get; }
-            public Point(int x, int y) : this() { X = x; Y = y; }
+            public int X { get; } = x;
+            public int Y { get; } = y;
         }
 
         [Test]
