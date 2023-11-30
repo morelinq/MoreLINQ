@@ -41,9 +41,7 @@ namespace MoreLinq.Test
             public override string ToString() => nameof(TestObject);
         }
 
-
         readonly IReadOnlyCollection<TestObject> testObjects;
-
 
         public ToDataTableTest() =>
             this.testObjects = Enumerable.Range(0, 3)
@@ -174,7 +172,6 @@ namespace MoreLinq.Test
 
         readonly struct Point
         {
-
 #pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static Point Empty = new();
 #pragma warning restore CA1805 // Do not initialize unnecessarily
