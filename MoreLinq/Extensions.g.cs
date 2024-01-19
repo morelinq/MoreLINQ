@@ -1125,6 +1125,84 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>CopyTo</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class CopyToExtension
+    {
+
+        /// <summary>
+        /// Copies the contents of a sequence into a provided list.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements of <paramref name="source"/></typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="list">The list that is the destination of the elements copied from <paramref
+        /// name="source"/>.</param>
+        /// <returns>The number of elements actually copied.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="list"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// All data from <paramref name="source"/> will be copied to <paramref name="list"/>, starting at position 0.
+        /// </para>
+        /// <para>
+        /// This operator executes immediately.
+        /// </para>
+        /// </remarks>
+        public static int CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list)
+            => MoreEnumerable.CopyTo(source, list);
+        /// <summary>
+        /// Copies the contents of a sequence into a provided array.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements of <paramref name="source"/></typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="array">The array that is the destination of the elements copied from <paramref
+        /// name="source"/>.</param>
+        /// <returns>The number of elements actually copied.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="array"/> is not long enough to hold the data from
+        /// sequence.</exception>
+        /// <remarks>
+        /// <para>
+        /// All data from <paramref name="source"/> will be copied to <paramref name="array"/> if possible. If <paramref
+        /// name="source"/> is shorter than <paramref name="array"/>, then any remaining elements will be untouched. If
+        /// <paramref name="source"/> is longer than <paramref name="array"/>, then an exception will be thrown.
+        /// </para>
+        /// <para>
+        /// This operator executes immediately.
+        /// </para>
+        /// </remarks>
+        public static int CopyTo<TSource>(this IEnumerable<TSource> source, TSource[] array)
+            => MoreEnumerable.CopyTo(source, array);
+
+        /// <summary>
+        /// Copies the contents of a sequence into a provided list.
+        /// </summary>
+        /// <typeparam name="TSource">
+        /// The type of elements of <paramref name="source"/></typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="list">The list that is the destination of the elements copied from <paramref
+        /// name="source"/>.</param>
+        /// <param name="index">The position in <paramref name="list"/> at which to start copying data</param>
+        /// <returns>The number of elements actually copied.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="list"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// All data from <paramref name="source"/> will be copied to <paramref name="list"/>, starting at position
+        /// <paramref name="index"/>.
+        /// </para>
+        /// <para>
+        /// This operator executes immediately.
+        /// </para>
+        /// </remarks>
+        public static int CopyTo<TSource>(this IEnumerable<TSource> source, IList<TSource> list, int index)
+            => MoreEnumerable.CopyTo(source, list, index);
+
+    }
+
     /// <summary><c>CountBetween</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]

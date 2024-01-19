@@ -222,6 +222,9 @@ namespace MoreLinq.Test
 
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
 
+            public sealed class List<T> : System.Collections.Generic.List<T>
+            { }
+
             public sealed class OrderedEnumerable<T> : Enumerable<T>, System.Linq.IOrderedEnumerable<T?>
             {
                 public System.Linq.IOrderedEnumerable<T?> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool descending)
