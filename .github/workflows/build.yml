@@ -1,0 +1,121 @@
+name: Build
+
+on:
+  push:
+    paths-ignore:
+    - '*.md'
+    - '*.txt'
+    branches:
+    - master
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  SKIP_TEST_BUILD: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2022, ubuntu-22.04, macos-11]
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install ECLint
+      run: npm install -g eclint
+
+    - name: Delete EditorConfig file
+      run: git rm .editorconfig
+
+    - name: Check Final New-Line
+      run: eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
+
+    - name: Check Trailing Whitespace
+      run: eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+
+    - name: Restore Checkout
+      run: git reset --hard
+
+    - name: Setup .NET SDK per "global.json"
+      uses: actions/setup-dotnet@v3
+      with:
+        global-json-file: global.json
+
+    - name: Setup .NET SDK 7.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Setup .NET SDK 6.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    - name: .NET Information
+      run: dotnet --info
+
+    - name: Check Unit Tests Never Import "System.Linq"
+      shell: pwsh
+      run: |
+        grep --extended-regexp '^[[:space:]]*using[[:space:]]+System\.Linq;' (dir -Recurse -File -Filter *Test.cs MoreLinq.Test)
+        if ($LASTEXITCODE -eq 0) {
+            throw 'Unit tests should not import System.Linq'
+        } else {
+            $LASTEXITCODE = 0
+        }
+
+    - name: Build & Pack (Windows)
+      shell: cmd
+      if: runner.os == 'Windows'
+      run: call pack.cmd
+
+    - name: Build & Pack (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: ./pack.sh
+
+    - name: Check Uncommitted Changes
+      shell: pwsh
+      run: |
+        $diff = git diff --ignore-all-space --exit-code 2>&1
+        $diff | % { if ($_ -is [string]) { $_ } else { [string]$_ } } | echo
+        if ($LASTEXITCODE -ne 0) {
+            throw "New code was generated during build that's not been committed."
+        }
+
+    - name: Validate NuGet Packages
+      shell: pwsh
+      run: |
+        dir dist\*.nupkg | % {
+          dotnet meziantou.validate-nuget-package --excluded-rules IconMustBeSet $_
+          if ($LASTEXITCODE) {
+            throw "Package validation failed: $_"
+          }
+        }
+
+    - name: Test (Windows)
+      shell: cmd
+      if: runner.os == 'Windows'
+      run: call test.cmd
+
+    - name: Test (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: ./test.sh
+
+    - name: Publish Coverage to Codecov
+      uses: codecov/codecov-action@v3

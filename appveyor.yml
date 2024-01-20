@@ -7,6 +7,9 @@ environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   SKIP_TEST_BUILD: true
+skip_commits:
+  files:
+  - .github/**
 for:
 -
   matrix:
