@@ -9,7 +9,7 @@ environment:
   SKIP_TEST_BUILD: true
 skip_commits:
   files:
-  - .github/*
+  - .github/**
 for:
 -
   matrix:
