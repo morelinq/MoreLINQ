@@ -201,13 +201,14 @@ namespace MoreLinq.Experimental.Async
                     // is in some defined state before disposing it otherwise it could throw
                     // "NotSupportedException".
 
-                    if (pendingTaskList is { Count: > 0 })
+                    if (pendingTaskList is { Count: > 0 } somePendingTaskList)
                     {
-                        while (await Task.WhenAny(pendingTaskList)
-                                         .ConfigureAwait(false) is { } completedTask)
+                        do
                         {
-                            _ = pendingTaskList.Remove(completedTask);
+                            var completedTask = await Task.WhenAny(somePendingTaskList).ConfigureAwait(false);
+                            _ = somePendingTaskList.Remove(completedTask);
                         }
+                        while (somePendingTaskList.Count > 0);
                     }
 
                     foreach (var enumerator in enumeratorList)
