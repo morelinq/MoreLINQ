@@ -5,6 +5,7 @@ on:
     paths-ignore:
     - '*.md'
     - '*.txt'
+    - appveyor.yml
     branches:
     - master
   pull_request:
