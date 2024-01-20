@@ -5,8 +5,6 @@ on:
     paths-ignore:
     - '*.md'
     - '*.txt'
-    - '.editorconfig'
-    - lic/*
     branches:
     - master
   pull_request:
