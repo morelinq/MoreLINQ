@@ -357,11 +357,9 @@ static TypeKey CreateTypeKey(TypeSyntax root, Func<string, TypeKey?> abbreviator
 // - Each type parameter (recursively)
 //
 
-abstract class TypeKey : IComparable<TypeKey>
+abstract class TypeKey(string name) : IComparable<TypeKey>
 {
-    protected TypeKey(string name) => Name = name;
-
-    public string Name { get; }
+    public string Name { get; } = name;
     public abstract ImmutableList<TypeKey> Parameters { get; }
 
     public virtual int CompareTo(TypeKey? other)
@@ -383,18 +381,15 @@ abstract class TypeKey : IComparable<TypeKey>
 sealed class SimpleTypeKey(string name) : TypeKey(name)
 {
     public override string ToString() => Name;
-    public override ImmutableList<TypeKey> Parameters => ImmutableList<TypeKey>.Empty;
+    public override ImmutableList<TypeKey> Parameters => [];
 }
 
-abstract class ParameterizedTypeKey : TypeKey
+abstract class ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) : TypeKey(name)
 {
     protected ParameterizedTypeKey(string name, TypeKey parameter) :
         this(name, [parameter]) { }
 
-    protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) :
-        base(name) => Parameters = parameters;
-
-    public override ImmutableList<TypeKey> Parameters { get; }
+    public override ImmutableList<TypeKey> Parameters { get; } = parameters;
 }
 
 sealed class GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :

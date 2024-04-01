@@ -97,7 +97,9 @@ namespace MoreLinq.Test
             into t
             select new TestCaseData(t.Method, t.Args).SetName(t.Name).Returns(t.Expectation);
 
-        [TestCaseSource(nameof(AccumulatorsTestSource), new object[] { nameof(Accumulators), 10 })]
+#pragma warning disable NUnit1018 // Parameter count does not match (false negative)
+        [TestCaseSource(nameof(AccumulatorsTestSource), [nameof(Accumulators), 10])]
+#pragma warning restore NUnit1018 // Parameter count does not match
         public object? Accumulators(MethodInfo method, object[] args) =>
             method.Invoke(null, args);
 

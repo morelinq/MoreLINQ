@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         [Test]
         public void StartsWithReturnsTrueIfBothEmpty()
         {
-            Assert.That(new int[0].StartsWith(new int[0]), Is.True);
+            Assert.That(new int[0].StartsWith([]), Is.True);
         }
 
         [Test]
         public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.That(new int[0].StartsWith(new[] { 1, 2, 3 }), Is.False);
+            Assert.That(new int[0].StartsWith([1, 2, 3]), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]

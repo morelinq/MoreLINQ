@@ -150,12 +150,9 @@ namespace MoreLinq.Test
             /// for another.
             /// </summary>
 
-            abstract class Sequence<T> : IEnumerable<T>
+            abstract class Sequence<T>(Func<IEnumerator<T>, IEnumerator<T>>? em) : IEnumerable<T>
             {
-                readonly Func<IEnumerator<T>, IEnumerator<T>> em;
-
-                protected Sequence(Func<IEnumerator<T>, IEnumerator<T>>? em) =>
-                    this.em = em ?? (e => e);
+                readonly Func<IEnumerator<T>, IEnumerator<T>> em = em ?? (e => e);
 
                 public IEnumerator<T> GetEnumerator() =>
                     this.em(Items.GetEnumerator());

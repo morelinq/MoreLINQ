@@ -351,12 +351,7 @@ namespace MoreLinq
 
             List<IGrouping<TKey, TElement>>? etc = null;
 
-            var groups = new[]
-            {
-                Enumerable.Empty<TElement>(),
-                Enumerable.Empty<TElement>(),
-                Enumerable.Empty<TElement>(),
-            };
+            var groups = new IEnumerable<TElement>[] { [], [], [] };
 
             foreach (var e in source)
             {

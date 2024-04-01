@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
     static partial class MoreEnumerable
@@ -162,7 +161,7 @@ namespace MoreLinq
                     if (alookup.Contains(b.Key))
                         continue;
                     // We can skip the lookup because we are iterating over keys not found in the first sequence
-                    yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
+                    yield return resultSelector(b.Key, [], b);
                 }
             }
         }

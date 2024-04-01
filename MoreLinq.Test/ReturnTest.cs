@@ -148,7 +148,9 @@ namespace MoreLinq.Test
             }
             select new TestCaseData(ma.Action).SetName($"{testName}({ma.MethodName})");
 
-        [TestCaseSource(nameof(UnsupportedActions), new object[] { nameof(TestUnsupportedMethodShouldThrow) })]
+#pragma warning disable NUnit1018 // Parameter count does not match (false negative)
+        [TestCaseSource(nameof(UnsupportedActions), [nameof(TestUnsupportedMethodShouldThrow)])]
+#pragma warning restore NUnit1018 // Parameter count does not match
         public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
         {
             Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());

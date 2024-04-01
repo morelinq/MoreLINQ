@@ -232,7 +232,7 @@ namespace MoreLinq
             public IEnumerable<T> Take(int count) =>
                 count switch
                 {
-                    0 => Enumerable.Empty<T>(),
+                    0 => [],
                     1 => ExtremaBy(source, Extremum.First, 1    , selector, comparer),
                     _ => ExtremaBy(source, Extrema.First , count, selector, comparer)
                 };
@@ -240,7 +240,7 @@ namespace MoreLinq
             public IEnumerable<T> TakeLast(int count) =>
                 count switch
                 {
-                    0 => Enumerable.Empty<T>(),
+                    0 => [],
                     1 => ExtremaBy(source, Extremum.Last, 1    , selector, comparer),
                     _ => ExtremaBy(source, Extrema.Last , count, selector, comparer)
                 };
@@ -290,7 +290,7 @@ namespace MoreLinq
                 public override void Restart(ref (bool, T) store) => store = default;
 
                 public override IEnumerable<T> GetEnumerable((bool, T) store) =>
-                    store is (true, var item) ? Enumerable.Repeat(item, 1) : Enumerable.Empty<T>();
+                    store is (true, var item) ? [item] : [];
 
                 public override void Add(ref (bool, T) store, int? limit, T item)
                 {
@@ -320,7 +320,7 @@ namespace MoreLinq
                 using var e = source.GetEnumerator();
 
                 if (!e.MoveNext())
-                    return new List<TSource>();
+                    return [];
 
                 var store = extrema.New();
                 extrema.Add(ref store, limit, e.Current);
