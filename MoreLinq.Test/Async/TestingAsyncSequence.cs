@@ -67,7 +67,7 @@ namespace MoreLinq.Test.Async
             if (this.disposed is null)
                 return;
 
-            Assert.IsTrue(this.disposed, "Expected sequence to be disposed.");
+            Assert.That(this.disposed, Is.True, "Expected sequence to be disposed.");
             this.disposed = null;
         }
 
