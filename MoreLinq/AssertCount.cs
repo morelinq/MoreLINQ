@@ -70,7 +70,9 @@ namespace MoreLinq
             if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (errorSelector == null) throw new ArgumentNullException(nameof(errorSelector));
 
-            return _(); IEnumerable<TSource> _()
+            return _(source, count, errorSelector);
+
+            static IEnumerable<TSource> _(IEnumerable<TSource> source, int count, Func<int, int, Exception> errorSelector)
             {
                 if (source.TryAsCollectionLike() is { Count: var collectionCount }
                     && collectionCount.CompareTo(count) is var comparison && comparison != 0)

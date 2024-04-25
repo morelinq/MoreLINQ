@@ -58,12 +58,16 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.TryAsListLike() is { } listLike
-                   ? IterateList(listLike)
+                   ? IterateList(listLike, source, count, resultSelector)
                    : source.TryAsCollectionLike() is { } collectionLike
-                     ? IterateCollection(collectionLike)
-                     : IterateSequence();
+                     ? IterateCollection(collectionLike, source, count, resultSelector)
+                     : IterateSequence(source, count, resultSelector);
 
-            IEnumerable<TResult> IterateList(ListLike<T> list)
+            static IEnumerable<TResult> IterateList(
+                ListLike<T> list,
+                IEnumerable<T> source,
+                int count,
+                Func<T, int?, TResult> resultSelector)
             {
                 var listCount = list.Count;
                 var countdown = Math.Min(count, listCount);
@@ -72,14 +76,21 @@ namespace MoreLinq
                     yield return resultSelector(list[i], listCount - i <= count ? --countdown : null);
             }
 
-            IEnumerable<TResult> IterateCollection(CollectionLike<T> collection)
+            static IEnumerable<TResult> IterateCollection(
+                CollectionLike<T> collection,
+                IEnumerable<T> source,
+                int count,
+                Func<T, int?, TResult> resultSelector)
             {
                 var i = collection.Count;
                 foreach (var item in collection)
                     yield return resultSelector(item, i-- <= count ? i : null);
             }
 
-            IEnumerable<TResult> IterateSequence()
+            static IEnumerable<TResult> IterateSequence(
+                IEnumerable<T> source,
+                int count,
+                Func<T, int?, TResult> resultSelector)
             {
                 var queue = new Queue<T>(Math.Max(1, count + 1));
 

@@ -55,7 +55,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (chooser == null) throw new ArgumentNullException(nameof(chooser));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, chooser);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T> source,
+                Func<T, (bool, TResult)> chooser)
             {
                 foreach (var item in source)
                 {

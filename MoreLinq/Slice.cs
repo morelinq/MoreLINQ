@@ -55,12 +55,12 @@ namespace MoreLinq
 
             return sequence switch
             {
-                IList<T> list => SliceList(list.Count, i => list[i]),
-                IReadOnlyList<T> list => SliceList(list.Count, i => list[i]),
+                IList<T> list => SliceList(startIndex, count, list.Count, i => list[i]),
+                IReadOnlyList<T> list => SliceList(startIndex, count, list.Count, i => list[i]),
                 var seq => seq.Skip(startIndex).Take(count)
             };
 
-            IEnumerable<T> SliceList(int listCount, Func<int, T> indexer)
+            static IEnumerable<T> SliceList(int startIndex, int count, int listCount, Func<int, T> indexer)
             {
                 var countdown = count;
                 var index = startIndex;

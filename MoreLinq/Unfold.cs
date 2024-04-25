@@ -61,7 +61,14 @@ namespace MoreLinq
             if (stateSelector == null) throw new ArgumentNullException(nameof(stateSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(state); IEnumerable<TResult> _(TState initialState)
+            return _(state, generator, predicate, stateSelector, resultSelector);
+
+            static IEnumerable<TResult> _(
+                TState initialState,
+                Func<TState, T> generator,
+                Func<T, bool> predicate,
+                Func<T, TState> stateSelector,
+                Func<T, TResult> resultSelector)
             {
                 for (var state = initialState; ;)
                 {

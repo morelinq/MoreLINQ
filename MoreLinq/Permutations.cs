@@ -49,7 +49,9 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
-            return _(); IEnumerable<IList<T>> _()
+            return _(sequence);
+
+            static IEnumerable<IList<T>> _(IEnumerable<T> sequence)
             {
                 // The algorithm used to generate permutations uses the fact that any set can be put
                 // into 1-to-1 correspondence with the set of ordinals number (0..n). The

@@ -55,7 +55,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return _(); IEnumerable<KeyValuePair<TKey, int>> _()
+            return _(source, keySelector, comparer);
+
+            static IEnumerable<KeyValuePair<TKey, int>> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
             {
                 List<TKey> keys;
                 List<int> counts;

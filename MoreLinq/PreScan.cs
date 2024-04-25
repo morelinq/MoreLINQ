@@ -59,7 +59,12 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
 
-            return _(); IEnumerable<TSource> _()
+            return _(source, transformation, identity);
+
+            static IEnumerable<TSource> _(
+                IEnumerable<TSource> source,
+                Func<TSource, TSource, TSource> transformation,
+                TSource identity)
             {
                 var aggregator = identity;
                 using var e = source.GetEnumerator();

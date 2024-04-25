@@ -123,7 +123,7 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(0, count)
                 .Concat(Enumerable.Range(0, count))
                 .Concat(Enumerable.Range(0, count));
-            using var ts = sequence.AsTestingSequence();
+            using var ts = sequence.AsTestingSequence(maxEnumerations:2);
             var result = ts.Rank();
 
             Assert.That(result.Distinct().Count(), Is.EqualTo(count));

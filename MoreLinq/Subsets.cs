@@ -51,7 +51,9 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
-            return _(); IEnumerable<IList<T>> _()
+            return _(sequence);
+
+            static IEnumerable<IList<T>> _(IEnumerable<T> sequence)
             {
                 var sequenceAsList = sequence.ToList();
                 var sequenceLength = sequenceAsList.Count;
