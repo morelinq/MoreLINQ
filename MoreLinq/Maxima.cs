@@ -312,9 +312,7 @@ namespace MoreLinq
             Extrema<TStore, TSource> extrema, int? limit,
             Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
         {
-            var extremaResults = Extrema(source, extrema, limit, selector, comparer);
-
-            foreach (var item in extremaResults)
+            foreach (var item in Extrema(source, extrema, limit, selector, comparer))
                 yield return item;
 
             static IEnumerable<TSource> Extrema(
