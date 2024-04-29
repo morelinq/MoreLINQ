@@ -58,14 +58,13 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.TryAsListLike() is { } listLike
-                   ? IterateList(listLike, source, count, resultSelector)
+                   ? IterateList(listLike, count, resultSelector)
                    : source.TryAsCollectionLike() is { } collectionLike
-                     ? IterateCollection(collectionLike, source, count, resultSelector)
+                     ? IterateCollection(collectionLike, count, resultSelector)
                      : IterateSequence(source, count, resultSelector);
 
             static IEnumerable<TResult> IterateList(
                 ListLike<T> list,
-                IEnumerable<T> source,
                 int count,
                 Func<T, int?, TResult> resultSelector)
             {
@@ -78,7 +77,6 @@ namespace MoreLinq
 
             static IEnumerable<TResult> IterateCollection(
                 CollectionLike<T> collection,
-                IEnumerable<T> source,
                 int count,
                 Func<T, int?, TResult> resultSelector)
             {
