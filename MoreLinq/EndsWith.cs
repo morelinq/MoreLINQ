@@ -78,14 +78,14 @@ namespace MoreLinq
             return second.TryAsCollectionLike() is { Count: var secondCount }
                    ? first.TryAsCollectionLike() is { Count: var firstCount } && secondCount > firstCount
                      ? false
-                     : Impl(second, secondCount, first, comparer)
-                   : Impl(secondList = second.ToList(), secondList.Count, first, comparer);
+                     : Impl(first, second, secondCount, comparer)
+                   : Impl(first, secondList = second.ToList(), secondList.Count, comparer);
 #pragma warning restore IDE0075 // Simplify conditional expression
 
-            static bool Impl(IEnumerable<T> snd, int count, IEnumerable<T> first, IEqualityComparer<T> comparer)
+            static bool Impl(IEnumerable<T> first, IEnumerable<T> second, int count, IEqualityComparer<T> comparer)
             {
                 using var firstIter = first.TakeLast(count).GetEnumerator();
-                return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
+                return second.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
             }
         }
     }
