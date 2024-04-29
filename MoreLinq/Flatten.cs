@@ -131,7 +131,7 @@ namespace MoreLinq
 #nullable disable
 /*....................*/ object,
 #nullable restore
-/*....................*/ IEnumerable?> selector)
+/*........................*/ IEnumerable?> selector)
             {
                 var e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
