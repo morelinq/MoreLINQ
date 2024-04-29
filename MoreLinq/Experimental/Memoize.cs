@@ -96,53 +96,55 @@ namespace MoreLinq.Experimental
                 }
             }
 
-            return _(); IEnumerator<T> _()
+            return _(this);
+
+            static IEnumerator<T> _(MemoizedEnumerable<T> memoized)
             {
                 var index = 0;
 
                 while (true)
                 {
                     T current;
-                    lock (this.locker)
+                    lock (memoized.locker)
                     {
-                        if (this.cache == null) // Cache disposed during iteration?
+                        if (memoized.cache == null) // Cache disposed during iteration?
                             throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
 
-                        if (index >= this.cache.Count)
+                        if (index >= memoized.cache.Count)
                         {
-                            if (index == this.errorIndex)
-                                Assume.NotNull(this.error).Throw();
+                            if (index == memoized.errorIndex)
+                                Assume.NotNull(memoized.error).Throw();
 
-                            if (this.sourceEnumerator == null)
+                            if (memoized.sourceEnumerator == null)
                                 break;
 
                             bool moved;
                             try
                             {
-                                moved = this.sourceEnumerator.MoveNext();
+                                moved = memoized.sourceEnumerator.MoveNext();
                             }
                             catch (Exception ex)
                             {
-                                this.error = ExceptionDispatchInfo.Capture(ex);
-                                this.errorIndex = index;
-                                this.sourceEnumerator.Dispose();
-                                this.sourceEnumerator = null;
+                                memoized.error = ExceptionDispatchInfo.Capture(ex);
+                                memoized.errorIndex = index;
+                                memoized.sourceEnumerator.Dispose();
+                                memoized.sourceEnumerator = null;
                                 throw;
                             }
 
                             if (moved)
                             {
-                                this.cache.Add(this.sourceEnumerator.Current);
+                                memoized.cache.Add(memoized.sourceEnumerator.Current);
                             }
                             else
                             {
-                                this.sourceEnumerator.Dispose();
-                                this.sourceEnumerator = null;
+                                memoized.sourceEnumerator.Dispose();
+                                memoized.sourceEnumerator = null;
                                 break;
                             }
                         }
 
-                        current = this.cache[index];
+                        current = memoized.cache[index];
                     }
 
                     yield return current;

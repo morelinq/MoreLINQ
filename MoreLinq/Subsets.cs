@@ -115,7 +115,9 @@ namespace MoreLinq
             // preconditions. This however, needs to be carefully considered - and perhaps
             // may change after further thought and review.
 
-            return _(); IEnumerable<IList<T>> _()
+            return _(sequence, subsetSize);
+
+            static IEnumerable<IList<T>> _(IEnumerable<T> sequence, int subsetSize)
             {
                 foreach (var subset in Subsets(sequence.ToList(), subsetSize))
                     yield return subset;

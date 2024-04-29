@@ -115,7 +115,9 @@ Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TRes
 <#      } #>
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(<#= string.Join(", ", from x in o.Arguments select x.Ordinal)  #>, resultSelector);
+
+            static IEnumerable<TResult> _(<#= string.Join(", ", from x in o.Arguments select "IEnumerable<T" + x.Number + "> " + x.Ordinal)  #>, Func<<#= string.Join(", ", from x in o.Arguments select "T" + x.Number) #>, TResult> resultSelector)
             {
 <#      foreach (var arg in o.Arguments.Skip(1)) { #>
                 IEnumerable<T<#= arg.Number #>> <#= arg.Ordinal #>Memo;

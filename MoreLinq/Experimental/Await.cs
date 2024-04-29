@@ -424,11 +424,20 @@ namespace MoreLinq.Experimental
 
             return
                 AwaitQuery.Create(
-                    options => Impl(options.MaxConcurrency,
+                    options => Impl(source,
+                                    evaluator,
+                                    resultSelector,
+                                    options.MaxConcurrency,
                                     options.Scheduler ?? TaskScheduler.Default,
                                     options.PreserveOrder));
 
-            IEnumerable<TResult> Impl(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
+            static IEnumerable<TResult> Impl(
+                IEnumerable<T> source,
+                Func<T, CancellationToken, Task<TTaskResult>> evaluator,
+                Func<T, Task<TTaskResult>, TResult> resultSelector,
+                int? maxConcurrency,
+                TaskScheduler scheduler,
+                bool ordered)
             {
                 // A separate task will enumerate the source and launch tasks.
                 // It will post all progress as notices to the collection below.

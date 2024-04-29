@@ -145,7 +145,12 @@ namespace MoreLinq.Experimental
             if (bucketProjectionSelector == null) throw new ArgumentNullException(nameof(bucketProjectionSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, size, pool, bucketProjectionSelector, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<TSource> source, int size, ArrayPool<TSource> pool,
+                Func<ICurrentBuffer<TSource>, IEnumerable<TBucket>> bucketProjectionSelector,
+                Func<IEnumerable<TBucket>, TResult> resultSelector)
             {
                 using var batch = source.Batch(size, pool);
                 var bucket = bucketProjectionSelector(batch.CurrentBuffer);
