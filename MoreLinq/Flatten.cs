@@ -123,15 +123,15 @@ namespace MoreLinq
             static IEnumerable<
 // Just like "IEnumerable.Current" is null-oblivious, so is this:
 #nullable disable
-/*...................*/ object
+/*..........................*/ object
 #nullable restore
-/*.........................*/ > _(IEnumerable source,
-                    Func<
+/*.................................*/ > _(IEnumerable source,
+                                          Func<
 // Just like "IEnumerable.Current" is null-oblivious, so is this:
 #nullable disable
-/*....................*/ object,
+/*..........................................*/ object,
 #nullable restore
-/*........................*/ IEnumerable?> selector)
+/*..................................................*/ IEnumerable?> selector)
             {
                 var e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
