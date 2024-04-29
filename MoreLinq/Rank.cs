@@ -79,7 +79,7 @@ namespace MoreLinq
 
             return _(source, keySelector, comparer ?? Comparer<TKey>.Default);
 
-            static IEnumerable<int> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer< TKey> comparer)
+            static IEnumerable<int> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
             {
                 source = source.ToArray(); // avoid enumerating source twice
 
