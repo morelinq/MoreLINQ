@@ -96,55 +96,55 @@ namespace MoreLinq.Experimental
                 }
             }
 
-            return _(this);
+            return _();
 
-            static IEnumerator<T> _(MemoizedEnumerable<T> memoized)
+            IEnumerator<T> _()
             {
                 var index = 0;
 
                 while (true)
                 {
                     T current;
-                    lock (memoized.locker)
+                    lock (this.locker)
                     {
-                        if (memoized.cache == null) // Cache disposed during iteration?
+                        if (this.cache == null) // Cache disposed during iteration?
                             throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
 
-                        if (index >= memoized.cache.Count)
+                        if (index >= this.cache.Count)
                         {
-                            if (index == memoized.errorIndex)
-                                Assume.NotNull(memoized.error).Throw();
+                            if (index == this.errorIndex)
+                                Assume.NotNull(this.error).Throw();
 
-                            if (memoized.sourceEnumerator == null)
+                            if (this.sourceEnumerator == null)
                                 break;
 
                             bool moved;
                             try
                             {
-                                moved = memoized.sourceEnumerator.MoveNext();
+                                moved = this.sourceEnumerator.MoveNext();
                             }
                             catch (Exception ex)
                             {
-                                memoized.error = ExceptionDispatchInfo.Capture(ex);
-                                memoized.errorIndex = index;
-                                memoized.sourceEnumerator.Dispose();
-                                memoized.sourceEnumerator = null;
+                                this.error = ExceptionDispatchInfo.Capture(ex);
+                                this.errorIndex = index;
+                                this.sourceEnumerator.Dispose();
+                                this.sourceEnumerator = null;
                                 throw;
                             }
 
                             if (moved)
                             {
-                                memoized.cache.Add(memoized.sourceEnumerator.Current);
+                                this.cache.Add(this.sourceEnumerator.Current);
                             }
                             else
                             {
-                                memoized.sourceEnumerator.Dispose();
-                                memoized.sourceEnumerator = null;
+                                this.sourceEnumerator.Dispose();
+                                this.sourceEnumerator = null;
                                 break;
                             }
                         }
 
-                        current = memoized.cache[index];
+                        current = this.cache[index];
                     }
 
                     yield return current;
