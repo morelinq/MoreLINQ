@@ -73,12 +73,6 @@ namespace MoreLinq.Experimental
 
         public IEnumerator<T> GetEnumerator()
         {
-            InitializeEnumerator();
-            return GetEnumeratorImpl();
-        }
-
-        void InitializeEnumerator()
-        {
             if (this.cache == null)
             {
                 lock (this.locker)
@@ -101,59 +95,61 @@ namespace MoreLinq.Experimental
                     }
                 }
             }
-        }
 
-        IEnumerator<T> GetEnumeratorImpl()
-        {
-            var index = 0;
+            return _();
 
-            while (true)
+            IEnumerator<T> _()
             {
-                T current;
-                lock (this.locker)
+                var index = 0;
+
+                while (true)
                 {
-                    if (this.cache == null) // Cache disposed during iteration?
-                        throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
-
-                    if (index >= this.cache.Count)
+                    T current;
+                    lock (this.locker)
                     {
-                        if (index == this.errorIndex)
-                            Assume.NotNull(this.error).Throw();
+                        if (this.cache == null) // Cache disposed during iteration?
+                            throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
 
-                        if (this.sourceEnumerator == null)
-                            break;
+                        if (index >= this.cache.Count)
+                        {
+                            if (index == this.errorIndex)
+                                Assume.NotNull(this.error).Throw();
 
-                        bool moved;
-                        try
-                        {
-                            moved = this.sourceEnumerator.MoveNext();
-                        }
-                        catch (Exception ex)
-                        {
-                            this.error = ExceptionDispatchInfo.Capture(ex);
-                            this.errorIndex = index;
-                            this.sourceEnumerator.Dispose();
-                            this.sourceEnumerator = null;
-                            throw;
+                            if (this.sourceEnumerator == null)
+                                break;
+
+                            bool moved;
+                            try
+                            {
+                                moved = this.sourceEnumerator.MoveNext();
+                            }
+                            catch (Exception ex)
+                            {
+                                this.error = ExceptionDispatchInfo.Capture(ex);
+                                this.errorIndex = index;
+                                this.sourceEnumerator.Dispose();
+                                this.sourceEnumerator = null;
+                                throw;
+                            }
+
+                            if (moved)
+                            {
+                                this.cache.Add(this.sourceEnumerator.Current);
+                            }
+                            else
+                            {
+                                this.sourceEnumerator.Dispose();
+                                this.sourceEnumerator = null;
+                                break;
+                            }
                         }
 
-                        if (moved)
-                        {
-                            this.cache.Add(this.sourceEnumerator.Current);
-                        }
-                        else
-                        {
-                            this.sourceEnumerator.Dispose();
-                            this.sourceEnumerator = null;
-                            break;
-                        }
+                        current = this.cache[index];
                     }
 
-                    current = this.cache[index];
+                    yield return current;
+                    index++;
                 }
-
-                yield return current;
-                index++;
             }
         }
 
