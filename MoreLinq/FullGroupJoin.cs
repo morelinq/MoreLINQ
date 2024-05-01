@@ -146,9 +146,15 @@ namespace MoreLinq
             if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(comparer ?? EqualityComparer<TKey>.Default);
+            return _(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer ?? EqualityComparer<TKey>.Default);
 
-            IEnumerable<TResult> _(IEqualityComparer<TKey> comparer)
+            static IEnumerable<TResult> _(
+                IEnumerable<TFirst> first,
+                IEnumerable<TSecond> second,
+                Func<TFirst, TKey> firstKeySelector,
+                Func<TSecond, TKey> secondKeySelector,
+                Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
+                IEqualityComparer<TKey> comparer)
             {
                 var alookup = Lookup<TKey, TFirst>.CreateForJoin(first, firstKeySelector, comparer);
                 var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);

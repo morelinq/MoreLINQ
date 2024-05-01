@@ -267,7 +267,13 @@ namespace MoreLinq
             if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, separatorFunc, count, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<TSource> source,
+                Func<TSource, bool> separatorFunc,
+                int count,
+                Func<IEnumerable<TSource>, TResult> resultSelector)
             {
                 if (count == 0) // No splits?
                 {

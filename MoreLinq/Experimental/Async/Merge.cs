@@ -85,9 +85,9 @@ namespace MoreLinq.Experimental.Async
             if (sources is null) throw new ArgumentNullException(nameof(sources));
             if (maxConcurrent <= 0) throw new ArgumentOutOfRangeException(nameof(maxConcurrent));
 
-            return Async();
+            return Async(sources, maxConcurrent);
 
-            async IAsyncEnumerable<T> Async([EnumeratorCancellation]CancellationToken cancellationToken = default)
+            static async IAsyncEnumerable<T> Async(IEnumerable<IAsyncEnumerable<T>> sources, int maxConcurrent, [EnumeratorCancellation]CancellationToken cancellationToken = default)
             {
                 using var thisCancellationTokenSource = new CancellationTokenSource();
 

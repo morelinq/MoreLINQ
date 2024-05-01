@@ -45,7 +45,9 @@ namespace MoreLinq
         {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
 
-            return _(); IEnumerable<TResult> _()
+            return _(initial, generator);
+
+            static IEnumerable<TResult> _(TResult initial, Func<TResult, TResult> generator)
             {
                 var current = initial;
                 while (true)

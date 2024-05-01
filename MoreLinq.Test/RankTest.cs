@@ -124,7 +124,7 @@ namespace MoreLinq.Test
                 .Concat(Enumerable.Range(0, count))
                 .Concat(Enumerable.Range(0, count));
             using var ts = sequence.AsTestingSequence();
-            var result = ts.Rank();
+            var result = ts.Rank().ToArray();
 
             Assert.That(result.Distinct().Count(), Is.EqualTo(count));
             Assert.That(result, Is.EqualTo(sequence.Reverse().Select(x => x + 1)));

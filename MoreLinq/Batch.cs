@@ -86,7 +86,9 @@ namespace MoreLinq
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, size, resultSelector);
+
+            static IEnumerable<TResult> _(IEnumerable<TSource> source, int size, Func<TSource[], TResult> resultSelector)
             {
                 switch (source)
                 {

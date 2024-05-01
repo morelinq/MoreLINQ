@@ -83,7 +83,13 @@ namespace MoreLinq
             //       that it's an intuitive - or even desirable - behavior. So it's being omitted.
             if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, offset, defaultLagValue, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<TSource> source,
+                int offset,
+                TSource defaultLagValue,
+                Func<TSource, TSource, TResult> resultSelector)
             {
                 using var iter = source.GetEnumerator();
 

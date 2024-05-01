@@ -117,7 +117,13 @@ namespace MoreLinq
         static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
             int width, T? padding, Func<int, T>? paddingSelector)
         {
-            return _(); IEnumerable<T> _()
+            return _(source, width, padding, paddingSelector);
+
+            static IEnumerable<T> _(
+                IEnumerable<T> source,
+                int width,
+                T? padding,
+                Func<int, T>? paddingSelector)
             {
                 if (source.TryAsCollectionLike() is { Count: var collectionCount } && collectionCount < width)
                 {

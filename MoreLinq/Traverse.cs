@@ -48,7 +48,9 @@ namespace MoreLinq
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
 
-            return _(); IEnumerable<T> _()
+            return _(root, childrenSelector);
+
+            static IEnumerable<T> _(T root, Func<T, IEnumerable<T>> childrenSelector)
             {
                 var queue = new Queue<T>();
                 queue.Enqueue(root);
@@ -88,7 +90,9 @@ namespace MoreLinq
         {
             if (childrenSelector == null) throw new ArgumentNullException(nameof(childrenSelector));
 
-            return _(); IEnumerable<T> _()
+            return _(root, childrenSelector);
+
+            static IEnumerable<T> _(T root, Func<T, IEnumerable<T>> childrenSelector)
             {
                 var stack = new Stack<T>();
                 stack.Push(root);

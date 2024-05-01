@@ -85,9 +85,14 @@ namespace MoreLinq
             if (seedSelector == null) throw new ArgumentNullException(nameof(seedSelector));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
 
-            return _(comparer ?? EqualityComparer<TKey>.Default);
+            return _(source, keySelector, seedSelector, accumulator, comparer ?? EqualityComparer<TKey>.Default);
 
-            IEnumerable<KeyValuePair<TKey, TState>> _(IEqualityComparer<TKey> comparer)
+            static IEnumerable<KeyValuePair<TKey, TState>> _(
+                IEnumerable<TSource> source,
+                Func<TSource, TKey> keySelector,
+                Func<TKey, TState> seedSelector,
+                Func<TState, TKey, TSource, TState> accumulator,
+                IEqualityComparer<TKey> comparer)
             {
                 var stateByKey = new Collections.Dictionary<TKey, TState>(comparer);
 

@@ -312,10 +312,13 @@ namespace MoreLinq
             Extrema<TStore, TSource> extrema, int? limit,
             Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
         {
-            foreach (var item in Extrema())
+            foreach (var item in Extrema(source, extrema, limit, selector, comparer))
                 yield return item;
 
-            IEnumerable<TSource> Extrema()
+            static IEnumerable<TSource> Extrema(
+                IEnumerable<TSource> source,
+                Extrema<TStore, TSource> extrema, int? limit,
+                Func<TSource, TKey> selector, Func<TKey, TKey, int> comparer)
             {
                 using var e = source.GetEnumerator();
 

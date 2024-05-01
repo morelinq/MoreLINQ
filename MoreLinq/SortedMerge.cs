@@ -96,7 +96,7 @@ namespace MoreLinq
                     : (a, b) => comparer.Compare(b, a) > 0;
 
             // return the sorted merge result
-            return Impl(new[] { source }.Concat(otherSequences));
+            return Impl(new[] { source }.Concat(otherSequences), precedenceFunc);
 
             // Private implementation method that performs a merge of multiple, ordered sequences using
             // a precedence function which encodes order-sensitive comparison logic based on the caller's arguments.
@@ -109,7 +109,7 @@ namespace MoreLinq
             //
             // The algorithm used here will perform N*(K1+K2+...Kn-1) comparisons, where <c>N => otherSequences.Count()+1.</c>
 
-            IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences)
+            static IEnumerable<TSource> Impl(IEnumerable<IEnumerable<TSource>> sequences, Func<TSource, TSource, bool> precedenceFunc)
             {
                 using var disposables = new DisposableGroup<TSource>(sequences.Select(e => e.GetEnumerator()).Acquire());
 
