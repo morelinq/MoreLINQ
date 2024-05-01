@@ -96,9 +96,7 @@ namespace MoreLinq.Experimental
                 }
             }
 
-            return _();
-
-            IEnumerator<T> _()
+            return _(); IEnumerator<T> _()
             {
                 var index = 0;
 
