@@ -10,8 +10,6 @@ if %SKIP_TEST_BUILD%==false call build || exit /b 1
 call :clean ^
   && call :test net8.0 Debug ^
   && call :test net8.0 Release ^
-  && call :test net7.0 Debug ^
-  && call :test net7.0 Release ^
   && call :test net6.0 Debug ^
   && call :test net6.0 Release ^
   && call :test net471 Debug ^

@@ -58,11 +58,6 @@ jobs:
       with:
         global-json-file: global.json
 
-    - name: Setup .NET SDK 7.0
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-
     - name: Setup .NET SDK 6.0
       uses: actions/setup-dotnet@v3
       with:
