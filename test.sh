@@ -12,7 +12,7 @@ if [[ -z "$1" ]]; then
 else
     configs="$1"
 fi
-for f in net6.0 net7.0 net8.0; do
+for f in net6.0 net8.0; do
     for c in $configs; do
         dotnet test --no-build -c $c -f $f --settings MoreLinq.Test/coverlet.runsettings MoreLinq.Test
         TEST_RESULTS_DIR="$(ls -dc MoreLinq.Test/TestResults/* | head -1)"
