@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.Engine" Version="1.0.0-alpha.24163.4" />
-    <PackageReference Include="MSTest.SourceGeneration" Version="1.0.0-alpha.24163.4" />
+    <PackageReference Include="MSTest.Engine" Version="1.0.0-alpha.24266.1" />
+    <PackageReference Include="MSTest.SourceGeneration" Version="1.0.0-alpha.24266.1" />
     <PackageReference Include="Microsoft.CodeCoverage.MSBuild" Version="17.10.4" />
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.10.4" />
-    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.3.1" />
     <PackageReference Include="MSTest.Analyzers" Version="3.3.1">
       <PrivateAssets>all</PrivateAssets>
