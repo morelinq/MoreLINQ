@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2010 Johannes Rudolph. All rights reserved.
+// Copyright (c) 2024 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,10 +21,11 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Linq.Expressions;
-    using NUnit.Framework;
 
-    [TestFixture]
+    [TestClass]
     public class ToDataTableTest
     {
         sealed class TestObject(int key)
@@ -48,108 +49,133 @@ namespace MoreLinq.Test
                                          .Select(i => new TestObject(i))
                                          .ToArray();
 
-        [Test]
+        [TestMethod]
         public void ToDataTableNullMemberExpressionMethod()
         {
             Expression<Func<TestObject, object?>>? expression = null;
 
-            Assert.That(() => this.testObjects.ToDataTable(expression!),
-                        Throws.ArgumentException("expressions"));
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            void Act() => _ = this.testObjects.ToDataTable(expression!);
+
+            var e = Assert.ThrowsException<ArgumentException>(Act);
+            Assert.AreEqual("expressions", e.ParamName);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableTableWithWrongColumnNames()
         {
             using var dt = new DataTable();
             _ = dt.Columns.Add("Test");
 
-            Assert.That(() => this.testObjects.ToDataTable(dt),
-                        Throws.ArgumentException("table"));
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            void Act() => _ = this.testObjects.ToDataTable(dt);
+
+            var e = Assert.ThrowsException<ArgumentException>(Act);
+            Assert.AreEqual("table", e.ParamName);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableTableWithWrongColumnDataType()
         {
             using var dt = new DataTable();
             _ = dt.Columns.Add("AString", typeof(int));
 
-            Assert.That(() => this.testObjects.ToDataTable(dt, t => t.AString),
-                        Throws.ArgumentException("table"));
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            void Act() => _ = this.testObjects.ToDataTable(dt, t => t.AString);
+
+            var e = Assert.ThrowsException<ArgumentException>(Act);
+            Assert.AreEqual("table", e.ParamName);
         }
 
         void TestDataTableMemberExpression(Expression<Func<TestObject, object?>> expression)
         {
-            Assert.That(() => this.testObjects.ToDataTable(expression),
-                        Throws.ArgumentException("expressions")
-                              .And.InnerException.With.ParamName("lambda"));
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            void Act() => _ = this.testObjects.ToDataTable(expression);
+
+            var e = Assert.ThrowsException<ArgumentException>(Act);
+            Assert.AreEqual("expressions", e.ParamName);
+            var innerException = e.InnerException;
+            Assert.IsNotNull(innerException);
+            Assert.IsInstanceOfType<ArgumentException>(innerException);
+            Assert.AreEqual("lambda", ((ArgumentException)innerException).ParamName);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableMemberExpressionMethod()
         {
             TestDataTableMemberExpression(t => t.ToString());
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableMemberExpressionNonMember()
         {
             TestDataTableMemberExpression(t => t.ToString().Length);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableMemberExpressionIndexer()
         {
             TestDataTableMemberExpression(t => t[0]);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableMemberExpressionStatic()
         {
             TestDataTableMemberExpression(_ => DateTime.Now);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableSchemaInDeclarationOrder()
         {
-            var dt = this.testObjects.ToDataTable();
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            DataTable Act() => this.testObjects.ToDataTable();
+
+            var dt = Act();
 
             // Assert properties first, then fields, then in declaration order
 
-            Assert.That(dt.Columns[2].Caption, Is.EqualTo("KeyField"));
-            Assert.That(dt.Columns[2].DataType, Is.EqualTo(typeof(int)));
+            Assert.AreEqual("KeyField", dt.Columns[2].Caption);
+            Assert.AreEqual(typeof(int), dt.Columns[2].DataType);
 
-            Assert.That(dt.Columns[3].Caption, Is.EqualTo("ANullableGuidField"));
-            Assert.That(dt.Columns[3].DataType, Is.EqualTo(typeof(Guid)));
-            Assert.That(dt.Columns[3].AllowDBNull, Is.True);
+            Assert.AreEqual("ANullableGuidField", dt.Columns[3].Caption);
+            Assert.AreEqual(typeof(Guid), dt.Columns[3].DataType);
+            Assert.IsTrue(dt.Columns[3].AllowDBNull);
 
-            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
-            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
+            Assert.AreEqual("AString", dt.Columns[0].Caption);
+            Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
 
-            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
-            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
+            Assert.AreEqual("ANullableDecimal", dt.Columns[1].Caption);
+            Assert.AreEqual(typeof(decimal), dt.Columns[1].DataType);
 
-            Assert.That(dt.Columns.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, dt.Columns.Count);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableContainsAllElements()
         {
-            var dt = this.testObjects.ToDataTable();
-            Assert.That(dt.Rows.Count, Is.EqualTo(this.testObjects.Count));
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            DataTable Act() => this.testObjects.ToDataTable();
+
+            var dt = Act();
+
+            Assert.AreEqual(this.testObjects.Count, dt.Rows.Count);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableWithExpression()
         {
-            var dt = this.testObjects.ToDataTable(t => t.AString);
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            DataTable Act() => this.testObjects.ToDataTable(t => t.AString);
 
-            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
-            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
+            var dt = Act();
 
-            Assert.That(dt.Columns.Count, Is.EqualTo(1));
+            Assert.AreEqual("AString", dt.Columns[0].Caption);
+            Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
+
+            Assert.AreEqual(1, dt.Columns.Count);
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableWithSchema()
         {
             using var dt = new DataTable();
@@ -163,13 +189,16 @@ namespace MoreLinq.Test
                                   .Cast<DictionaryEntry>()
                                   .ToArray();
 
-            _ = vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value!.ToString() })
-                    .ToDataTable(dt, e => e.Name, e => e.Value);
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            void Act() => _ = vars.Select(e => new { Name = e.Key.ToString(), Value = e.Value!.ToString() })
+                                  .ToDataTable(dt, e => e.Name, e => e.Value);
+
+            Act();
 
             var rows = dt.Rows.Cast<DataRow>().ToArray();
-            Assert.That(rows.Length, Is.EqualTo(vars.Length));
-            Assert.That(rows.Select(r => r["Name"]).ToArray(), Is.EqualTo(vars.Select(e => e.Key).ToArray()));
-            Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
+            Assert.AreEqual(vars.Length, rows.Length);
+            CollectionAssert.AreEqual(vars.Select(e => e.Key).ToArray(), rows.Select(r => r["Name"]).ToArray());
+            CollectionAssert.AreEqual(vars.Select(e => e.Value).ToArray(), rows.Select(r => r["Value"]).ToArray());
         }
 
         readonly struct Point(int x, int y)
@@ -182,22 +211,25 @@ namespace MoreLinq.Test
             public int Y { get; } = y;
         }
 
-        [Test]
+        [TestMethod]
         public void ToDataTableIgnoresStaticMembers()
         {
-            var points = new[] { new Point(12, 34) }.ToDataTable();
+            [UnconditionalSuppressMessage("Aot", "IL2026")]
+            static DataTable Act() => new[] { new Point(12, 34) }.ToDataTable();
 
-            Assert.That(points.Columns.Count, Is.EqualTo(3));
+            var points = Act();
+
+            Assert.AreEqual(3, points.Columns.Count);
             var x = points.Columns["X"];
             var y = points.Columns["Y"];
             var empty = points.Columns["IsEmpty"];
-            Assert.That(x, Is.Not.Null);
-            Assert.That(y, Is.Not.Null);
-            Assert.That(empty, Is.Not.Null);
+            Assert.IsNotNull(x);
+            Assert.IsNotNull(y);
+            Assert.IsNotNull(empty);
             var row = points.Rows.Cast<DataRow>().Single();
-            Assert.That(row[x], Is.EqualTo(12));
-            Assert.That(row[y], Is.EqualTo(34));
-            Assert.That(row[empty], Is.False);
+            Assert.AreEqual(12, row[x]);
+            Assert.AreEqual(34, row[y]);
+            Assert.AreEqual(row[empty], false);
         }
     }
 }

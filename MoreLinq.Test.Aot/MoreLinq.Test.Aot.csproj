@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.Engine" Version="1.0.0-alpha.24266.1" />
+    <PackageReference Include="MSTest.SourceGeneration" Version="1.0.0-alpha.24266.1" />
+    <PackageReference Include="Microsoft.CodeCoverage.MSBuild" Version="17.10.4" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.10.4" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.2.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.3.1" />
+    <PackageReference Include="MSTest.Analyzers" Version="3.3.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MoreLinq\MoreLinq.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+</Project>

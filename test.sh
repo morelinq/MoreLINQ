@@ -31,3 +31,5 @@ else
         mono MoreLinq.Test/bin/$c/net471/MoreLinq.Test.exe
     done
 fi
+dotnet publish MoreLinq.Test.Aot
+"$(find MoreLinq.Test.Aot -type d -name publish)/MoreLinq.Test.Aot"

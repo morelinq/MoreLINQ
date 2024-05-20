@@ -43,7 +43,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class ToDataTableExtension
     {
-
         /// <summary>
         /// Converts a sequence to a <see cref="DataTable"/> object.
         /// </summary>
@@ -54,8 +53,11 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source)
-            => MoreEnumerable.ToDataTable(source);
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        public static DataTable
+            ToDataTable<[DynamicallyAccessedMembers(DynamicallyAccessedPublicPropertiesOrFields)] T>(
+            this IEnumerable<T> source)
+            => MoreEnumerable.            ToDataTable(source);
 
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
@@ -70,8 +72,10 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
         public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
             => MoreEnumerable.ToDataTable(source, expressions);
+
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
         /// </summary>
@@ -84,9 +88,12 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        public static TTable
+            ToDataTable<[DynamicallyAccessedMembers(DynamicallyAccessedPublicPropertiesOrFields)] T,
+                        TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
-            => MoreEnumerable.ToDataTable(source, table);
+            => MoreEnumerable.            ToDataTable(source, table);
 
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/>
@@ -103,6 +110,7 @@ namespace MoreLinq.Extensions
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
         public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
             => MoreEnumerable.ToDataTable(source, table, expressions);
