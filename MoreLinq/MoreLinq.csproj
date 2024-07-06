@@ -126,6 +126,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>MoreLinq</AssemblyName>
     <OutputType>Library</OutputType>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsAotCompatible>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
@@ -170,9 +171,13 @@
       System.Index;
       System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
       System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute;
+      System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;
+      System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
       System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute;
       System.Diagnostics.CodeAnalysis.MemberNotNullAttribute;
       System.Diagnostics.CodeAnalysis.NotNullWhenAttribute;
+      System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute;
+      System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute;
       System.Runtime.CompilerServices.CallerArgumentExpressionAttribute;
     </PolySharpIncludeGeneratedTypes>
   </PropertyGroup>
@@ -209,6 +214,10 @@
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0' And '$(TargetFramework)' != 'net6.0'">
+    <DefineConstants>$(DefineConstants);DYNAMIC_CODE_FALLBACK</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
