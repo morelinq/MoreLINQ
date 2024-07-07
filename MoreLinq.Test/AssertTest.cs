@@ -33,14 +33,15 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithValidAllElements()
         {
-            var source = new[] { 2, 4, 6, 8 };
-            source.Assert(n => n % 2 == 0).AssertSequenceEqual(source);
+            var xs = new[] { 2, 4, 6, 8 };
+            using var source = TestingSequence.Of(xs);
+            source.Assert(n => n % 2 == 0).AssertSequenceEqual(xs);
         }
 
         [Test]
         public void AssertSequenceWithValidSomeInvalidElements()
         {
-            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
             Assert.That(() => source.Assert(n => n % 2 == 0).Consume(),
                         Throws.InvalidOperationException);
         }
@@ -48,7 +49,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomErrorReturningNull()
         {
-            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
             Assert.That(() => source.Assert(n => n % 2 == 0, _ => null!).Consume(),
                         Throws.InvalidOperationException);
         }
@@ -56,7 +57,7 @@ namespace MoreLinq.Test
         [Test]
         public void AssertSequenceWithInvalidElementsAndCustomError()
         {
-            var source = new[] { 2, 4, 6, 7, 8, 9 };
+            using var source = TestingSequence.Of(2, 4, 6, 7, 8, 9);
             Assert.That(() =>
                 source.Assert(n => n % 2 == 0, n => new ValueException(n)).Consume(),
                 Throws.TypeOf<ValueException>()
