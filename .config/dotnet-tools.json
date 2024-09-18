@@ -3,28 +3,32 @@
   "isRoot": true,
   "tools": {
     "dotnet-t4": {
-      "version": "2.3.0",
+      "version": "3.0.0",
       "commands": [
         "t4"
-      ]
+      ],
+      "rollForward": false
     },
     "dotnet-reportgenerator-globaltool": {
-      "version": "5.1.11",
+      "version": "5.3.9",
       "commands": [
         "reportgenerator"
-      ]
+      ],
+      "rollForward": false
     },
     "meziantou.framework.nugetpackagevalidation.tool": {
-      "version": "1.0.14",
+      "version": "1.0.16",
       "commands": [
         "meziantou.validate-nuget-package"
-      ]
+      ],
+      "rollForward": false
     },
     "powershell": {
-      "version": "7.4.0",
+      "version": "7.4.5",
       "commands": [
         "pwsh"
-      ]
+      ],
+      "rollForward": false
     }
   }
 }
