@@ -15,7 +15,7 @@
 // limitations under the License.
 #endregion
 
-namespace MoreLinq.Test
+namespace MoreLinq.Test.Aot
 {
     using System;
     using System.Collections;
