@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, ubuntu-22.04, macos-11]
+        os: [windows-2022, ubuntu-22.04]
 
     steps:
 
@@ -81,7 +81,7 @@ jobs:
       if: runner.os == 'Windows'
       run: call pack.cmd
 
-    - name: Build & Pack (Linux/macOS)
+    - name: Build & Pack (Linux)
       if: runner.os != 'Windows'
       run: ./pack.sh
 
@@ -109,7 +109,7 @@ jobs:
       if: runner.os == 'Windows'
       run: call test.cmd
 
-    - name: Test (Linux/macOS)
+    - name: Test (Linux)
       if: runner.os != 'Windows'
       run: ./test.sh
 
