@@ -26,14 +26,15 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Generates a sequence of numbers starting within the and in steps of 1.
+        /// Generates a sequence of numbers starting with the given value and in steps of 1.
         /// </summary>
         /// <typeparam name="T">
         /// A type that represents a number and defines its minimum and maximum representable value.
         /// </typeparam>
         /// <param name="start">The value of the first number in the sequence.</param>
-        /// <returns>A sequence of sequential numbers starting with <paramref name="start"/> and up
-        /// to the maximum representable value, in increments of 1.</returns>
+        /// <returns>
+        /// A sequence of sequential numbers starting with <paramref name="start"/> and up to the
+        /// maximum representable value, in increments of 1.</returns>
         /// <remarks>
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
@@ -60,8 +61,7 @@ namespace MoreLinq
 
         /// <summary>
         /// Generates a sequence of numbers within the (inclusive) specified range. An additional
-        /// parameter specifies the steps in which the integers of the sequence increase or
-        /// decrease.
+        /// parameter specifies the steps in which the numbers of the sequence increase or decrease.
         /// </summary>
         /// <typeparam name="T">A type that represents a number.</typeparam>
         /// <param name="start">The value of the first number in the sequence.</param>
@@ -73,7 +73,7 @@ namespace MoreLinq
         /// This operator uses deferred execution and streams its results.</para>
         /// <para>
         /// When <paramref name="step"/> is equal to zero, this operator returns an infinite
-        /// sequence where all elements are equals to <paramref name="start"/>.</para>
+        /// sequence where all elements are equal to <paramref name="start"/>.</para>
         /// </remarks>
 
         public static IEnumerable<T> Sequence<T>(T start, T stop, T step)
@@ -139,7 +139,7 @@ namespace MoreLinq
         /// <returns>An <see cref="IEnumerable{Int32}"/> that contains a range of sequential integral numbers.</returns>
         /// <remarks>
         /// When <paramref name="step"/> is equal to zero, this operator returns an
-        /// infinite sequence where all elements are equals to <paramref name="start"/>.
+        /// infinite sequence where all elements are equal to <paramref name="start"/>.
         /// This operator uses deferred execution and streams its results.
         /// </remarks>
         /// <example>
