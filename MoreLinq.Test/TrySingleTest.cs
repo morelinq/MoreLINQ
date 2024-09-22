@@ -65,16 +65,16 @@ namespace MoreLinq.Test
         }
 
         static readonly ITestCaseData[] SingletonCollectionTestCases =
-        {
+        [
             new TestCaseData(new BreakingSingleElementCollection<int>(10), 10),
             new TestCaseData(new BreakingSingleElementReadOnlyCollection<int>(20), 20)
-        };
+        ];
 
         class BreakingSingleElementCollectionBase<T> : IEnumerable<T>
         {
-            readonly T _element;
+            readonly T element;
 
-            protected BreakingSingleElementCollectionBase(T element) => _element = element;
+            protected BreakingSingleElementCollectionBase(T element) => this.element = element;
 
 #pragma warning disable CA1822 // Mark members as static
             public int Count => 1;
@@ -82,18 +82,17 @@ namespace MoreLinq.Test
 
             public IEnumerator<T> GetEnumerator()
             {
-                yield return _element;
+                yield return this.element;
                 Assert.Fail($"{nameof(ExperimentalEnumerable.TrySingle)} should not have attempted to consume a second element.");
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        sealed class BreakingSingleElementCollection<T> :
-            BreakingSingleElementCollectionBase<T>, ICollection<T>
+        sealed class BreakingSingleElementCollection<T>(T element) :
+            BreakingSingleElementCollectionBase<T>(element),
+            ICollection<T>
         {
-            public BreakingSingleElementCollection(T element) : base(element) { }
-
             public void Add(T item) => throw new NotImplementedException();
             public void Clear() => throw new NotImplementedException();
             public bool Contains(T item) => throw new NotImplementedException();
@@ -102,10 +101,9 @@ namespace MoreLinq.Test
             public bool IsReadOnly => true;
         }
 
-        sealed class BreakingSingleElementReadOnlyCollection<T> :
-            BreakingSingleElementCollectionBase<T>, IReadOnlyCollection<T>
+        sealed class BreakingSingleElementReadOnlyCollection<T>(T element) :
+            BreakingSingleElementCollectionBase<T>(element), IReadOnlyCollection<T>
         {
-            public BreakingSingleElementReadOnlyCollection(T element) : base(element) { }
         }
 
         [TestCase(SourceKind.Sequence)]

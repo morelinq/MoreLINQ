@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         [Test]
         public void StartsWithReturnsTrueIfBothEmpty()
         {
-            Assert.That(new int[0].StartsWith(new int[0]), Is.True);
+            Assert.That(new int[0].StartsWith([]), Is.True);
         }
 
         [Test]
         public void StartsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.That(new int[0].StartsWith(new[] { 1, 2, 3 }), Is.False);
+            Assert.That(new int[0].StartsWith([1, 2, 3]), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -87,8 +87,8 @@ namespace MoreLinq.Test
 
             Assert.That(first.StartsWith(second), Is.False);
             Assert.That(first.StartsWith(second, null), Is.False);
-            Assert.That(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
-            Assert.That(first.StartsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
+            Assert.That(first.StartsWith(second, EqualityComparer<int>.Create(delegate { return false; })), Is.False);
+            Assert.That(first.StartsWith(second, EqualityComparer<int>.Create(delegate { return true; })), Is.True);
         }
 
         [TestCase(SourceKind.BreakingCollection)]

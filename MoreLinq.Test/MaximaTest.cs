@@ -20,44 +20,44 @@ namespace MoreLinq.Test
     using NUnit.Framework;
 
     [TestFixture]
-    public class MaxByTest
+    public class MaximaTest
     {
         [Test]
-        public void MaxByIsLazy()
+        public void MaximaIsLazy()
         {
-            _ = new BreakingSequence<int>().MaxBy(BreakingFunc.Of<int, int>());
+            _ = new BreakingSequence<int>().Maxima(BreakingFunc.Of<int, int>());
         }
 
         [Test]
-        public void MaxByReturnsMaxima()
+        public void MaximaReturnsMaxima()
         {
-            Assert.That(SampleData.Strings.MaxBy(x => x.Length),
+            Assert.That(SampleData.Strings.Maxima(x => x.Length),
                         Is.EqualTo(new[] { "hello", "world" }));
         }
 
         [Test]
-        public void MaxByNullComparer()
+        public void MaximaNullComparer()
         {
-            Assert.That(SampleData.Strings.MaxBy(x => x.Length, null),
-                        Is.EqualTo(SampleData.Strings.MaxBy(x => x.Length)));
+            Assert.That(SampleData.Strings.Maxima(x => x.Length, null),
+                        Is.EqualTo(SampleData.Strings.Maxima(x => x.Length)));
         }
 
         [Test]
-        public void MaxByEmptySequence()
+        public void MaximaEmptySequence()
         {
-            Assert.That(new string[0].MaxBy(x => x.Length), Is.Empty);
+            Assert.That(new string[0].Maxima(x => x.Length), Is.Empty);
         }
 
         [Test]
-        public void MaxByWithNaturalComparer()
+        public void MaximaWithNaturalComparer()
         {
-            Assert.That(SampleData.Strings.MaxBy(x => x[1]), Is.EqualTo(new[] { "az" }));
+            Assert.That(SampleData.Strings.Maxima(x => x[1]), Is.EqualTo(new[] { "az" }));
         }
 
         [Test]
-        public void MaxByWithComparer()
+        public void MaximaWithComparer()
         {
-            Assert.That(SampleData.Strings.MaxBy(x => x[1], Comparable<char>.DescendingOrderComparer), Is.EqualTo(new[] { "aa" }));
+            Assert.That(SampleData.Strings.Maxima(x => x[1], Comparable<char>.DescendingOrderComparer), Is.EqualTo(new[] { "aa" }));
         }
 
         public class First
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
             public void ReturnsMaximum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length);
+                var maxima = strings.Maxima(s => s.Length);
                 Assert.That(MoreEnumerable.First(maxima), Is.EqualTo("hello"));
             }
 
@@ -74,7 +74,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMaximum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var maxima = strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.First(maxima), Is.EqualTo("ax"));
             }
 
@@ -83,7 +83,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.That(() =>
-                    MoreEnumerable.First(strings.MaxBy(s => s.Length)),
+                    MoreEnumerable.First(strings.Maxima(s => s.Length)),
                     Throws.InvalidOperationException);
             }
 
@@ -92,7 +92,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.That(() =>
-                    MoreEnumerable.First(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)),
+                    MoreEnumerable.First(strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer)),
                     Throws.InvalidOperationException);
             }
         }
@@ -103,7 +103,7 @@ namespace MoreLinq.Test
             public void ReturnsMaximum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length);
+                var maxima = strings.Maxima(s => s.Length);
                 Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.EqualTo("hello"));
             }
 
@@ -111,7 +111,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMaximum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var maxima = strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.EqualTo("ax"));
             }
 
@@ -119,7 +119,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length);
+                var maxima = strings.Maxima(s => s.Length);
                 Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.Null);
             }
 
@@ -127,7 +127,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceWithComparerReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var maxima = strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.FirstOrDefault(maxima), Is.Null);
             }
         }
@@ -138,7 +138,7 @@ namespace MoreLinq.Test
             public void ReturnsMaximum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length);
+                var maxima = strings.Maxima(s => s.Length);
                 Assert.That(MoreEnumerable.Last(maxima), Is.EqualTo("world"));
             }
 
@@ -146,7 +146,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMaximumPerComparer()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var maxima = strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.Last(maxima), Is.EqualTo("az"));
             }
 
@@ -155,7 +155,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.That(() =>
-                    MoreEnumerable.Last(strings.MaxBy(s => s.Length)),
+                    MoreEnumerable.Last(strings.Maxima(s => s.Length)),
                     Throws.InvalidOperationException);
             }
 
@@ -164,7 +164,7 @@ namespace MoreLinq.Test
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
                 Assert.That(() =>
-                    MoreEnumerable.Last(strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer)),
+                    MoreEnumerable.Last(strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer)),
                     Throws.InvalidOperationException);
             }
         }
@@ -175,7 +175,7 @@ namespace MoreLinq.Test
             public void ReturnsMaximum()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length);
+                var maxima = strings.Maxima(s => s.Length);
                 Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.EqualTo("world"));
             }
 
@@ -183,7 +183,7 @@ namespace MoreLinq.Test
             public void WithComparerReturnsMaximumPerComparer()
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var maxima = strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.EqualTo("az"));
             }
 
@@ -191,7 +191,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length);
+                var maxima = strings.Maxima(s => s.Length);
                 Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.Null);
             }
 
@@ -199,7 +199,7 @@ namespace MoreLinq.Test
             public void WithEmptySourceWithComparerReturnsDefault()
             {
                 using var strings = Enumerable.Empty<string>().AsTestingSequence();
-                var maxima = strings.MaxBy(s => s.Length, Comparable<int>.DescendingOrderComparer);
+                var maxima = strings.Maxima(s => s.Length, Comparable<int>.DescendingOrderComparer);
                 Assert.That(MoreEnumerable.LastOrDefault(maxima), Is.Null);
             }
         }
@@ -213,7 +213,7 @@ namespace MoreLinq.Test
             public string[] ReturnsMaxima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MaxBy(s => s.Length).Take(count).ToArray();
+                return strings.Maxima(s => s.Length).Take(count).ToArray();
             }
 
             [TestCase(0, 0, ExpectedResult = new string[0]                         )]
@@ -227,7 +227,7 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MaxBy(s => s[index], Comparable<char>.DescendingOrderComparer)
+                return strings.Maxima(s => s[index], Comparable<char>.DescendingOrderComparer)
                               .Take(count)
                               .ToArray();
             }
@@ -242,7 +242,7 @@ namespace MoreLinq.Test
             public string[] TakeLastReturnsMaxima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MaxBy(s => s.Length).TakeLast(count).ToArray();
+                return strings.Maxima(s => s.Length).TakeLast(count).ToArray();
             }
 
             [TestCase(0, 0, ExpectedResult = new string[0]                         )]
@@ -256,7 +256,7 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.MaxBy(s => s[index], Comparable<char>.DescendingOrderComparer)
+                return strings.Maxima(s => s[index], Comparable<char>.DescendingOrderComparer)
                               .TakeLast(count)
                               .ToArray();
             }

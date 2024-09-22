@@ -145,7 +145,12 @@ namespace MoreLinq.Experimental
             if (bucketProjectionSelector == null) throw new ArgumentNullException(nameof(bucketProjectionSelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, size, pool, bucketProjectionSelector, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<TSource> source, int size, ArrayPool<TSource> pool,
+                Func<ICurrentBuffer<TSource>, IEnumerable<TBucket>> bucketProjectionSelector,
+                Func<IEnumerable<TBucket>, TResult> resultSelector)
             {
                 using var batch = source.Batch(size, pool);
                 var bucket = bucketProjectionSelector(batch.CurrentBuffer);
@@ -228,26 +233,26 @@ namespace MoreLinq.Experimental
 
         sealed class CurrentPoolArrayProvider<T> : CurrentBuffer<T>, ICurrentBufferProvider<T>
         {
-            bool _rented;
-            T[] _array = Array.Empty<T>();
-            int _count;
-            IEnumerator<(T[], int)>? _rental;
-            ArrayPool<T>? _pool;
+            bool rented;
+            T[] array = [];
+            int count;
+            IEnumerator<(T[], int)>? rental;
+            ArrayPool<T>? pool;
 
             public CurrentPoolArrayProvider(IEnumerator<(T[], int)> rental, ArrayPool<T> pool) =>
-                (_rental, _pool) = (rental, pool);
+                (this.rental, this.pool) = (rental, pool);
 
             ICurrentBuffer<T> ICurrentBufferProvider<T>.CurrentBuffer => this;
 
             public bool UpdateWithNext()
             {
-                if (_rental is { Current: var (array, _) } rental)
+                if (this.rental is { Current: var (array, _) } rental)
                 {
-                    Debug.Assert(_pool is not null);
-                    if (_rented)
+                    Debug.Assert(this.pool is not null);
+                    if (this.rented)
                     {
-                        _pool.Return(array);
-                        _rented = false;
+                        this.pool.Return(array);
+                        this.rented = false;
                     }
 
                     if (!rental.MoveNext())
@@ -256,34 +261,34 @@ namespace MoreLinq.Experimental
                         return false;
                     }
 
-                    _rented = true;
-                    (_array, _count) = rental.Current;
+                    this.rented = true;
+                    (this.array, this.count) = rental.Current;
                     return true;
                 }
 
                 return false;
             }
 
-            public override int Count => _count;
+            public override int Count => this.count;
 
             public override T this[int index]
             {
-                get => index >= 0 && index < Count ? _array[index] : throw new ArgumentOutOfRangeException(nameof(index));
+                get => index >= 0 && index < Count ? this.array[index] : throw new ArgumentOutOfRangeException(nameof(index));
                 set => throw new NotSupportedException();
             }
 
             public void Dispose()
             {
-                if (_rental is { Current: var (array, _) } enumerator)
+                if (this.rental is { Current: var (array, _) } enumerator)
                 {
-                    Debug.Assert(_pool is not null);
-                    if (_rented)
-                        _pool.Return(array);
+                    Debug.Assert(this.pool is not null);
+                    if (this.rented)
+                        this.pool.Return(array);
                     enumerator.Dispose();
-                    _array = Array.Empty<T>();
-                    _count = 0;
-                    _rental = null;
-                    _pool = null;
+                    this.array = [];
+                    this.count = 0;
+                    this.rental = null;
+                    this.pool = null;
                 }
             }
         }

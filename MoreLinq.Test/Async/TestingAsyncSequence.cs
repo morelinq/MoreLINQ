@@ -43,14 +43,14 @@ namespace MoreLinq.Test.Async
 
     sealed class TestingAsyncSequence<T> : IAsyncEnumerable<T>, IDisposable
     {
-        bool? _disposed;
-        IAsyncEnumerable<T>? _source;
-        ExceptionDispatchInfo? _disposeErrorInfo;
+        bool? disposed;
+        IAsyncEnumerable<T>? source;
+        ExceptionDispatchInfo? disposeErrorInfo;
 
         internal TestingAsyncSequence(IAsyncEnumerable<T> sequence) =>
-            _source = sequence;
+            this.source = sequence;
 
-        public bool IsDisposed => _disposed == true;
+        public bool IsDisposed => this.disposed == true;
         public int MoveNextCallCount { get; private set; }
 
         void IDisposable.Dispose() =>
@@ -62,24 +62,24 @@ namespace MoreLinq.Test.Async
 
         void AssertDisposed()
         {
-            _disposeErrorInfo?.Throw();
+            this.disposeErrorInfo?.Throw();
 
-            if (_disposed is null)
+            if (this.disposed is null)
                 return;
 
-            Assert.IsTrue(_disposed, "Expected sequence to be disposed.");
-            _disposed = null;
+            Assert.That(this.disposed, Is.True, "Expected sequence to be disposed.");
+            this.disposed = null;
         }
 
         public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
-            Assert.That(_source, Is.Not.Null,
+            Assert.That(this.source, Is.Not.Null,
                         "LINQ operators should not enumerate a sequence more than once.");
 
             // Dammit (!) below is okay since we assert above it's not null.
-            var enumerator = _source!.GetAsyncEnumerator(cancellationToken).AsWatchable();
+            var enumerator = this.source!.GetAsyncEnumerator(cancellationToken).AsWatchable();
 
-            _disposed = false;
+            this.disposed = false;
             enumerator.Disposed += delegate
             {
                 // If the following assertion fails the capture the error
@@ -90,14 +90,14 @@ namespace MoreLinq.Test.Async
 
                 try
                 {
-                    Assert.That(_disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
+                    Assert.That(this.disposed, Is.False, "LINQ operators should not dispose a sequence more than once.");
                 }
                 catch (AssertionException e)
                 {
-                    _disposeErrorInfo = ExceptionDispatchInfo.Capture(e);
+                    this.disposeErrorInfo = ExceptionDispatchInfo.Capture(e);
                 }
 
-                _disposed = true;
+                this.disposed = true;
             };
 
             var ended = false;
@@ -108,7 +108,7 @@ namespace MoreLinq.Test.Async
                 MoveNextCallCount++;
             };
 
-            _source = null;
+            this.source = null;
             return enumerator;
         }
     }

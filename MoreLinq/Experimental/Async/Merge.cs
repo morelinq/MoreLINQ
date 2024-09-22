@@ -85,9 +85,9 @@ namespace MoreLinq.Experimental.Async
             if (sources is null) throw new ArgumentNullException(nameof(sources));
             if (maxConcurrent <= 0) throw new ArgumentOutOfRangeException(nameof(maxConcurrent));
 
-            return Async();
+            return Async(sources, maxConcurrent);
 
-            async IAsyncEnumerable<T> Async([EnumeratorCancellation]CancellationToken cancellationToken = default)
+            static async IAsyncEnumerable<T> Async(IEnumerable<IAsyncEnumerable<T>> sources, int maxConcurrent, [EnumeratorCancellation]CancellationToken cancellationToken = default)
             {
                 using var thisCancellationTokenSource = new CancellationTokenSource();
 
@@ -107,7 +107,7 @@ namespace MoreLinq.Experimental.Async
                     enumeratorList.AddRange(from s in sources
                                             select s.GetAsyncEnumerator(cancellationToken));
 
-                    pendingTaskList = new List<Task<(bool, IAsyncEnumerator<T>)>>();
+                    pendingTaskList = [];
 
                     const bool some = true;
 
@@ -117,7 +117,7 @@ namespace MoreLinq.Experimental.Async
                         var disposalTask = enumerator.DisposeAsync();
                         if (disposalTask.IsCompleted)
                             return disposalTask;
-                        disposalTaskList ??= new List<Task>();
+                        disposalTaskList ??= [];
                         disposalTaskList.Add(disposalTask.AsTask());
                         return null;
                     }
@@ -180,7 +180,11 @@ namespace MoreLinq.Experimental.Async
                     // Signal cancellation to those in flight. Unfortunately, this relies on all
                     // iterators to honour the cancellation.
 
+#if NET8_0_OR_GREATER
+                    await thisCancellationTokenSource.CancelAsync().ConfigureAwait(false);
+#else
                     thisCancellationTokenSource.Cancel();
+#endif
 
                     // > The caller of an async-iterator method should only call `DisposeAsync()`
                     // > when the method completed or was suspended by a `yield return`.
@@ -197,13 +201,14 @@ namespace MoreLinq.Experimental.Async
                     // is in some defined state before disposing it otherwise it could throw
                     // "NotSupportedException".
 
-                    if (pendingTaskList is { Count: > 0 })
+                    if (pendingTaskList is { Count: > 0 } somePendingTaskList)
                     {
-                        while (await Task.WhenAny(pendingTaskList)
-                                         .ConfigureAwait(false) is { } completedTask)
+                        do
                         {
-                            _ = pendingTaskList.Remove(completedTask);
+                            var completedTask = await Task.WhenAny(somePendingTaskList).ConfigureAwait(false);
+                            _ = somePendingTaskList.Remove(completedTask);
                         }
+                        while (somePendingTaskList.Count > 0);
                     }
 
                     foreach (var enumerator in enumeratorList)
@@ -228,7 +233,7 @@ namespace MoreLinq.Experimental.Async
                         }
                         else
                         {
-                            disposalTaskList ??= new List<Task>();
+                            disposalTaskList ??= [];
                             disposalTaskList.Add(task.AsTask());
                         }
                     }

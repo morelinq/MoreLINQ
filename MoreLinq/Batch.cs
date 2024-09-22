@@ -47,7 +47,7 @@ namespace MoreLinq
         /// </para>
         /// </remarks>
 
-        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
+        public static IEnumerable<TSource[]> Batch<TSource>(this IEnumerable<TSource> source, int size)
         {
             return Batch(source, size, IdFn);
         }
@@ -80,13 +80,15 @@ namespace MoreLinq
         /// </remarks>
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
+            Func<TSource[], TResult> resultSelector)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (size <= 0) throw new ArgumentOutOfRangeException(nameof(size));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, size, resultSelector);
+
+            static IEnumerable<TResult> _(IEnumerable<TSource> source, int size, Func<TSource[], TResult> resultSelector)
             {
                 switch (source)
                 {

@@ -36,16 +36,19 @@ namespace MoreLinq.Test
             NUnit.Framework.Throws.TypeOf<T>();
 
         public static EqualConstraint ArgumentException(string expectedParamName) =>
-            NUnit.Framework.Throws.ArgumentException.With.ParamName().EqualTo(expectedParamName);
+            NUnit.Framework.Throws.ArgumentException.With.ParamName(expectedParamName);
 
         public static EqualConstraint ArgumentNullException(string expectedParamName) =>
-            NUnit.Framework.Throws.ArgumentNullException.With.ParamName().EqualTo(expectedParamName);
+            NUnit.Framework.Throws.ArgumentNullException.With.ParamName(expectedParamName);
 
         public static ExactTypeConstraint ArgumentOutOfRangeException() =>
             TypeOf<ArgumentOutOfRangeException>();
 
         public static EqualConstraint ArgumentOutOfRangeException(string expectedParamName) =>
-            ArgumentOutOfRangeException().With.ParamName().EqualTo(expectedParamName);
+            ArgumentOutOfRangeException().With.ParamName(expectedParamName);
+
+        public static EqualConstraint ParamName(this ConstraintExpression constraint, string expectedParamName) =>
+            constraint.ParamName().EqualTo(expectedParamName);
 
         static ResolvableConstraintExpression ParamName(this ConstraintExpression constraint) =>
             constraint.Property(nameof(System.ArgumentException.ParamName));

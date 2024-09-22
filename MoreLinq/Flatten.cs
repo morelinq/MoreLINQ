@@ -20,7 +20,6 @@
 namespace MoreLinq
 {
     using System;
-    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -119,14 +118,20 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            return _();
+            return _(source, selector);
 
-            IEnumerable<
+            static IEnumerable<
 // Just like "IEnumerable.Current" is null-oblivious, so is this:
 #nullable disable
-/*...................*/ object
+/*..........................*/ object
 #nullable restore
-/*.........................*/ > _()
+/*.................................*/ > _(IEnumerable source,
+                                          Func<
+// Just like "IEnumerable.Current" is null-oblivious, so is this:
+#nullable disable
+/*..........................................*/ object,
+#nullable restore
+/*..................................................*/ IEnumerable?> selector)
             {
                 var e = source.GetEnumerator();
                 var stack = new Stack<IEnumerator>();
@@ -135,7 +140,7 @@ namespace MoreLinq
 
                 try
                 {
-                    while (stack.Any())
+                    while (stack.Count > 0)
                     {
                         e = stack.Pop();
 

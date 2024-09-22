@@ -25,7 +25,7 @@ namespace MoreLinq.Test
         [Test]
         public void InsertWithNegativeIndex()
         {
-            Assert.That(() => Enumerable.Range(1, 10).Insert(new[] { 97, 98, 99 }, -1),
+            Assert.That(() => Enumerable.Range(1, 10).Insert([97, 98, 99], -1),
                         Throws.ArgumentOutOfRangeException("index"));
         }
 

@@ -7,14 +7,19 @@ popd & exit /b %ERRORLEVEL%
 setlocal
 if not defined SKIP_TEST_BUILD set SKIP_TEST_BUILD=false
 if %SKIP_TEST_BUILD%==false call build || exit /b 1
+if not "%~1"=="aot" goto :test-all
+call :test-aot
+exit /b %ERRORLEVEL%
+:test-all
 call :clean ^
-  && call :test net7.0 Debug ^
-  && call :test net7.0 Release ^
+  && call :test net8.0 Debug ^
+  && call :test net8.0 Release ^
   && call :test net6.0 Debug ^
   && call :test net6.0 Release ^
   && call :test net471 Debug ^
   && call :test net471 Release ^
-  && call :report-cover
+  && call :report-cover ^
+  && call :test-aot
 exit /b %ERRORLEVEL%
 
 :clean
@@ -50,4 +55,18 @@ dotnet reportgenerator -reports:coverage-*.opencover.xml ^
                        -reporttypes:Html;TextSummary ^
                        -targetdir:reports ^
   && type reports\Summary.txt
+exit /b %ERRORLEVEL%
+
+:test-aot
+setlocal
+cd MoreLinq.Test.Aot
+dotnet publish
+if not ERRORLEVEL==0 exit /b %ERRORLEVEL%
+set AOT_TEST_PUBLISH_DIR=
+for /f %%d in ('dir /ad /s /b publish') do if not defined AOT_TEST_PUBLISH_DIR set AOT_TEST_PUBLISH_DIR=%%~d
+if not defined AOT_TEST_PUBLISH_DIR (
+    echo>&2 Published binary directory not found!
+    exit /b 1
+)
+"%AOT_TEST_PUBLISH_DIR%\MoreLinq.Test.Aot.exe"
 exit /b %ERRORLEVEL%

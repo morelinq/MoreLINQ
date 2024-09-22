@@ -53,10 +53,9 @@ namespace MoreLinq
             }
         }
 
-        sealed class Source : PendNode<T>
+        sealed class Source(IEnumerable<T> source) : PendNode<T>
         {
-            public IEnumerable<T> Value { get; }
-            public Source(IEnumerable<T> source) => Value = source;
+            public IEnumerable<T> Value { get; } = source;
         }
 
         public IEnumerator<T> GetEnumerator()

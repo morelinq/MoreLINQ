@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void AppendWithEmptyHeadSequence()
         {
-            string[] head = { };
+            string[] head = [];
             var tail = "first";
             var whole = head.Append(tail);
             whole.AssertSequenceEqual("first");

@@ -54,7 +54,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return count < 1 ? Enumerable.Empty<TSource>()
+            return count < 1 ? []
                  : source.CountDown(count, (e, cd) => (Element: e, Countdown: cd))
                          .SkipWhile(e => e.Countdown == null)
                          .Select(e => e.Element);

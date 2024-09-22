@@ -55,7 +55,9 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be negative.");
 
-            return _(); IEnumerable<T> _()
+            return _(first, second, index);
+
+            static IEnumerable<T> _(IEnumerable<T> first, IEnumerable<T> second, int index)
             {
                 var i = -1;
 

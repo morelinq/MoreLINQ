@@ -45,12 +45,12 @@ namespace MoreLinq.Test
         [Test]
         public void TransposeWithRowsOfSameLength()
         {
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new [] { 10, 20, 30 },
-                new [] { 11, 21, 31 },
-                new [] { 12, 22, 32 },
-                new [] { 13, 23, 33 },
+                [10, 20, 30],
+                [11, 21, 31],
+                [12, 22, 32],
+                [13, 23, 33],
             };
 
             using var row1 = TestingSequence.Of(10, 11, 12, 13);
@@ -58,17 +58,17 @@ namespace MoreLinq.Test
             using var row3 = TestingSequence.Of(30, 31, 32, 33);
             using var matrix = TestingSequence.Of(row1, row2, row3);
 
-            AssertMatrix(expectations, matrix.Transpose());
+            Assert.That(matrix.Transpose(), Is.EqualTo(expectations));
         }
 
         [Test]
         public void TransposeWithRowsOfDifferentLengths()
         {
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new[] { 10, 20, 30 },
-                new[] { 11, 31 },
-                new[] { 32 }
+                [10, 20, 30],
+                [11, 31],
+                [32]
             };
 
             using var row1 = TestingSequence.Of(10, 11);
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
             using var row4 = TestingSequence.Of(30, 31, 32);
             using var matrix = TestingSequence.Of(row1, row2, row3, row4);
 
-            AssertMatrix(expectations, matrix.Transpose());
+            Assert.That(matrix.Transpose(), Is.EqualTo(expectations));
         }
 
         [Test]
@@ -85,10 +85,10 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new[] { 10, 11 },
-                new[] { 20 },
+                [10, 11],
+                [20],
                 new int[0],
-                new[] { 30, 31, 32 }
+                [30, 31, 32]
             };
 
             var traspose = matrix.Transpose();
@@ -107,16 +107,16 @@ namespace MoreLinq.Test
 
             var result = matrix.Transpose().Take(5);
 
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new[] { 2,    3,    5 },
-                new[] { 4,    9,   25 },
-                new[] { 8,   27,  125 },
-                new[] { 16,  81,  625 },
-                new[] { 32, 243, 3125 }
+                [2,    3,    5],
+                [4,    9,   25],
+                [8,   27,  125],
+                [16,  81,  625],
+                [32, 243, 3125]
             };
 
-            AssertMatrix(expectations, result);
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -130,16 +130,16 @@ namespace MoreLinq.Test
 
             var result = matrix.Transpose().Take(5);
 
-            var expectations = new[]
+            var expectations = new int[][]
             {
-                new[] { 2,    3,    5 },
-                new[] { 4,    9,   25 },
-                new[] { 8,        125 },
-                new[] { 16,       625 },
-                new[] { 32,      3125 }
+                [2,    3,    5],
+                [4,    9,   25],
+                [8,        125],
+                [16,       625],
+                [32,      3125]
             };
 
-            AssertMatrix(expectations, result);
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -147,10 +147,10 @@ namespace MoreLinq.Test
         {
             var matrix = new[]
             {
-                new[] { 10, 11 },
-                new[] { 20 },
+                [10, 11],
+                [20],
                 new int[0],
-                new[] { 30, 31, 32 }
+                [30, 31, 32]
             };
 
             var transpose = matrix.Transpose().ToList();
@@ -206,19 +206,6 @@ namespace MoreLinq.Test
             }
 
             return true;
-        }
-
-        static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
-        {
-            // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
-
-            var resultList = result.ToList();
-            var expectationList = expectation.ToList();
-
-            Assert.That(resultList.Count, Is.EqualTo(expectationList.Count));
-
-            expectationList.Zip(resultList, ValueTuple.Create)
-                           .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));
         }
     }
 }

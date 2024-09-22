@@ -52,13 +52,13 @@ namespace MoreLinq.Test
         [Test]
         public void EndsWithReturnsTrueIfBothEmpty()
         {
-            Assert.That(new int[0].EndsWith(new int[0]), Is.True);
+            Assert.That(new int[0].EndsWith([]), Is.True);
         }
 
         [Test]
         public void EndsWithReturnsFalseIfOnlyFirstIsEmpty()
         {
-            Assert.That(new int[0].EndsWith(new[] { 1, 2, 3 }), Is.False);
+            Assert.That(new int[0].EndsWith([1, 2, 3]), Is.False);
         }
 
         [TestCase("", "", ExpectedResult = true)]
@@ -87,8 +87,8 @@ namespace MoreLinq.Test
 
             Assert.That(first.EndsWith(second), Is.False);
             Assert.That(first.EndsWith(second, null), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return false; })), Is.False);
-            Assert.That(first.EndsWith(second, EqualityComparer.Create<int>(delegate { return true; })), Is.True);
+            Assert.That(first.EndsWith(second, EqualityComparer<int>.Create(delegate { return false; })), Is.False);
+            Assert.That(first.EndsWith(second, EqualityComparer<int>.Create(delegate { return true; })), Is.True);
         }
 
         [TestCase(SourceKind.BreakingCollection)]

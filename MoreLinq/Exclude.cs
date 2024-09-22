@@ -41,10 +41,10 @@ namespace MoreLinq
             {
                 < 0 => throw new ArgumentOutOfRangeException(nameof(count)),
                 0 => sequence,
-                _ => _()
+                _ => _(sequence, startIndex, count)
             };
 
-            IEnumerable<T> _()
+            static IEnumerable<T> _(IEnumerable<T> sequence, int startIndex, int count)
             {
                 var index = 0;
                 var endIndex = startIndex + count;

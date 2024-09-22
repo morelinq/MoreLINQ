@@ -19,6 +19,7 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     static partial class MoreEnumerable
     {
@@ -38,10 +39,17 @@ namespace MoreLinq
         /// <returns>The sequence of minimal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
+        [Obsolete($"Use {ExtremaMembers.Minima} instead.")]
+        [ExcludeFromCodeCoverage]
+#if !NET6_0_OR_GREATER
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
+#else
+        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(IEnumerable<TSource> source,
+            Func<TSource, TKey> selector)
+#endif
         {
-            return source.MinBy(selector, null);
+            return MinBy(source, selector, null);
         }
 
         /// <summary>
@@ -61,14 +69,17 @@ namespace MoreLinq
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
+        [Obsolete($"Use {nameof(ExtremaMembers.Minima)} instead.")]
+        [ExcludeFromCodeCoverage]
+#if !NET6_0_OR_GREATER
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
+#else
+        public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(IEnumerable<TSource> source,
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
+#endif
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-
-            comparer ??= Comparer<TKey>.Default;
-            return new ExtremaEnumerable<TSource, TKey>(source, selector, (x, y) => -Math.Sign(comparer.Compare(x, y)));
+            return source.Minima(selector, comparer);
         }
     }
 }

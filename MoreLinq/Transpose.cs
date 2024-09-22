@@ -56,7 +56,9 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return _(); IEnumerable<IEnumerable<T>> _()
+            return _(source);
+
+            static IEnumerable<IEnumerable<T>> _(IEnumerable<IEnumerable<T>> source)
             {
 #pragma warning disable IDE0007 // Use implicit type (false positive)
                 IEnumerator<T>?[] enumerators = source.Select(e => e.GetEnumerator()).Acquire();

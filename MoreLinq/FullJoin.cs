@@ -228,9 +228,17 @@ namespace MoreLinq
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
 
-            return Impl();
+            return Impl(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector, comparer);
 
-            IEnumerable<TResult> Impl()
+            static IEnumerable<TResult> Impl(
+                IEnumerable<TFirst> first,
+                IEnumerable<TSecond> second,
+                Func<TFirst, TKey> firstKeySelector,
+                Func<TSecond, TKey> secondKeySelector,
+                Func<TFirst, TResult> firstSelector,
+                Func<TSecond, TResult> secondSelector,
+                Func<TFirst, TSecond, TResult> bothSelector,
+                IEqualityComparer<TKey>? comparer)
             {
                 var seconds = second.Select(e => new KeyValuePair<TKey, TSecond>(secondKeySelector(e), e)).ToArray();
                 var secondLookup = seconds.ToLookup(e => e.Key, e => e.Value, comparer);

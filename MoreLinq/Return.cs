@@ -32,28 +32,26 @@ namespace MoreLinq
 
         public static IEnumerable<T> Return<T>(T item) => new SingleElementList<T>(item);
 
-        sealed class SingleElementList<T> : IList<T>, IReadOnlyList<T>
+        sealed class SingleElementList<T>(T item) : IList<T>, IReadOnlyList<T>
         {
-            readonly T _item;
-
-            public SingleElementList(T item) => _item = item;
+            readonly T item = item;
 
             public int Count       => 1;
             public bool IsReadOnly => true;
 
             public T this[int index]
             {
-                get => index == 0 ? _item : throw new ArgumentOutOfRangeException(nameof(index));
+                get => index == 0 ? this.item : throw new ArgumentOutOfRangeException(nameof(index));
                 set => throw ReadOnlyException();
             }
 
-            public IEnumerator<T> GetEnumerator() { yield return _item; }
+            public IEnumerator<T> GetEnumerator() { yield return this.item; }
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             public int IndexOf(T item) => Contains(item) ? 0 : -1;
-            public bool Contains(T item) => EqualityComparer<T>.Default.Equals(_item, item);
+            public bool Contains(T item) => EqualityComparer<T>.Default.Equals(this.item, item);
 
-            public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = _item;
+            public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = this.item;
 
             // Following methods are unsupported as this is a read-only list.
 

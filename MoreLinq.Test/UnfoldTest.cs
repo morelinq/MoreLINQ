@@ -28,11 +28,10 @@ namespace MoreLinq.Test
             TestCaseData<T>(IEnumerable<T> source1,
                             IEnumerable<T> source2,
                             [CallerMemberName] string? callerMemberName = null) =>
-            new TestCaseData[]
-            {
+            [
                 new(source1) { TestName = $"{callerMemberName}(generator)" },
                 new(source2) { TestName = $"{callerMemberName}(state, generator, predicate, stateSelector, resultSelector)" },
-            };
+            ];
 
         static IEnumerable<TestCaseData> UnfoldInfiniteSequenceData() =>
             TestCaseData(MoreEnumerable.Unfold(1, x => (true, (Result: x, State: x + 1))),

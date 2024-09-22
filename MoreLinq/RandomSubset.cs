@@ -61,10 +61,10 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (subsetSize < 0) throw new ArgumentOutOfRangeException(nameof(subsetSize));
 
-            return RandomSubsetImpl(source, rand, seq => (seq.ToArray(), subsetSize));
+            return RandomSubsetImpl(source, rand, subsetSize);
         }
 
-        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, Func<IEnumerable<T>, (T[], int)> seeder)
+        static IEnumerable<T> RandomSubsetImpl<T>(IEnumerable<T> source, Random rand, int? subsetSize)
         {
             // The simplest and most efficient way to return a random subset is to perform
             // an in-place, partial Fisher-Yates shuffle of the sequence. While we could do
@@ -72,10 +72,12 @@ namespace MoreLinq
             // than the length of the sequence.
             // See: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
-            var (array, subsetSize) = seeder(source);
+            var array = source.ToArray();
+            subsetSize ??= array.Length;
 
             if (array.Length < subsetSize)
             {
+                // TODO Throw InvalidOperationException instead?
                 throw new ArgumentOutOfRangeException(nameof(subsetSize),
                     "Subset size must be less than or equal to the source length.");
             }

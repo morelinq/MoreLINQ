@@ -47,7 +47,7 @@ namespace MoreLinq
             try
             {
                 disposables.AddRange(source);
-                return disposables.ToArray();
+                return [..disposables];
             }
             catch
             {
