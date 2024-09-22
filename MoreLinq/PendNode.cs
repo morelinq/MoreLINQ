@@ -53,10 +53,9 @@ namespace MoreLinq
             }
         }
 
-        sealed class Source : PendNode<T>
+        sealed class Source(IEnumerable<T> source) : PendNode<T>
         {
-            public IEnumerable<T> Value { get; }
-            public Source(IEnumerable<T> source) => Value = source;
+            public IEnumerable<T> Value { get; } = source;
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -91,7 +90,7 @@ namespace MoreLinq
                                 case 1: concat2 = item.Value; break;
                                 case 2: concat3 = item.Value; break;
                                 case 3: concat4 = item.Value; break;
-                                default: throw new IndexOutOfRangeException();
+                                default: throw new UnreachableException();
                             }
                             continue;
                         }
@@ -101,7 +100,7 @@ namespace MoreLinq
                 }
             }
 
-            var source = (Source) current;
+            var source = (Source)current;
 
             foreach (var item in source.Value)
                 yield return item;
@@ -111,7 +110,7 @@ namespace MoreLinq
                 if (i == 4) { yield return concat4!; i--; }
                 if (i == 3) { yield return concat3!; i--; }
                 if (i == 2) { yield return concat2!; i--; }
-                if (i == 1) { yield return concat1!; i--; }
+                if (i == 1) { yield return concat1!; }
                 yield break;
             }
 

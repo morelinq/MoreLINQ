@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
 
@@ -27,14 +26,14 @@ namespace MoreLinq.Test
         [Test]
         public void BacksertIsLazy()
         {
-            new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
+            _ = new BreakingSequence<int>().Backsert(new BreakingSequence<int>(), 0);
         }
 
         [Test]
         public void BacksertWithNegativeIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("index", () =>
-                 Enumerable.Range(1, 10).Backsert(new[] { 97, 98, 99 }, -1));
+            Assert.That(() => Enumerable.Range(1, 10).Backsert([97, 98, 99], -1),
+                        Throws.ArgumentOutOfRangeException("index"));
         }
 
         [TestCase(new[] { 1, 2, 3 }, 4, new[] { 9 })]
@@ -45,7 +44,8 @@ namespace MoreLinq.Test
 
             var result = test1.Backsert(test2, index);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => result.ElementAt(0));
+            Assert.That(() => result.ElementAt(0),
+                        Throws.ArgumentOutOfRangeException());
         }
 
         [TestCase(new[] { 1, 2, 3 }, 0, new[] { 8, 9 }, ExpectedResult = new[] { 1, 2, 3, 8, 9 })]

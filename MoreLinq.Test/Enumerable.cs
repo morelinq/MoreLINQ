@@ -126,7 +126,7 @@ namespace MoreLinq.Test
         public static int Count<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.Count(source);
 
-        public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source) =>
+        public static IEnumerable<TSource?> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.DefaultIfEmpty(source);
 
         public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, TSource defaultValue) =>
@@ -141,11 +141,13 @@ namespace MoreLinq.Test
         public static TSource ElementAt<TSource>(this IEnumerable<TSource> source, int index) =>
             LinqEnumerable.ElementAt(source, index);
 
-        public static TSource ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, int index) =>
+        public static TSource? ElementAtOrDefault<TSource>(this IEnumerable<TSource> source, int index) =>
             LinqEnumerable.ElementAtOrDefault(source, index);
 
         public static IEnumerable<TResult> Empty<TResult>() =>
+#pragma warning disable IDE0301 // Simplify collection initialization
             LinqEnumerable.Empty<TResult>();
+#pragma warning restore IDE0301 // Simplify collection initialization
 
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second) =>
             LinqEnumerable.Except(first, second);
@@ -159,10 +161,10 @@ namespace MoreLinq.Test
         public static TSource First<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.First(source, predicate);
 
-        public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source) =>
+        public static TSource? FirstOrDefault<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.FirstOrDefault(source);
 
-        public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
+        public static TSource? FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.FirstOrDefault(source, predicate);
 
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
@@ -213,10 +215,10 @@ namespace MoreLinq.Test
         public static TSource Last<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.Last(source, predicate);
 
-        public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source) =>
+        public static TSource? LastOrDefault<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.LastOrDefault(source);
 
-        public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
+        public static TSource? LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.LastOrDefault(source, predicate);
 
         public static long LongCount<TSource>(this IEnumerable<TSource> source) =>
@@ -249,13 +251,13 @@ namespace MoreLinq.Test
         public static float? Max<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector) =>
             LinqEnumerable.Max(source, selector);
 
-        public static TResult Max<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) =>
+        public static TResult? Max<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) =>
             LinqEnumerable.Max(source, selector);
 
         public static double? Max<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector) =>
             LinqEnumerable.Max(source, selector);
 
-        public static TSource Max<TSource>(this IEnumerable<TSource> source) =>
+        public static TSource? Max<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.Max(source);
 
         public static float Max<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector) =>
@@ -303,7 +305,7 @@ namespace MoreLinq.Test
         public static double? Min<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector) =>
             LinqEnumerable.Min(source, selector);
 
-        public static TResult Min<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) =>
+        public static TResult? Min<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) =>
             LinqEnumerable.Min(source, selector);
 
         public static long? Min<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector) =>
@@ -321,7 +323,7 @@ namespace MoreLinq.Test
         public static int? Min<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector) =>
             LinqEnumerable.Min(source, selector);
 
-        public static TSource Min<TSource>(this IEnumerable<TSource> source) =>
+        public static TSource? Min<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.Min(source);
 
         public static double Min<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector) =>
@@ -411,10 +413,10 @@ namespace MoreLinq.Test
         public static TSource Single<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.Single(source, predicate);
 
-        public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source) =>
+        public static TSource? SingleOrDefault<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.SingleOrDefault(source);
 
-        public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
+        public static TSource? SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.SingleOrDefault(source, predicate);
 
         public static IEnumerable<TSource> Skip<TSource>(this IEnumerable<TSource> source, int count) =>
@@ -510,16 +512,20 @@ namespace MoreLinq.Test
         public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.ToArray(source);
 
-        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) =>
+        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionary(source, keySelector);
 
-        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) =>
+        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionary(source, keySelector, comparer);
 
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector) =>
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionary(source, keySelector, elementSelector);
 
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) =>
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionary(source, keySelector, elementSelector, comparer);
 
         public static List<TSource> ToList<TSource>(this IEnumerable<TSource> source) =>

@@ -1,0 +1,4 @@
+#nullable enable
+static MoreLinq.MoreEnumerable.Sequence<T>(T start) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Sequence<T>(T start, T stop) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Sequence<T>(T start, T stop, T step) -> System.Collections.Generic.IEnumerable<T>!

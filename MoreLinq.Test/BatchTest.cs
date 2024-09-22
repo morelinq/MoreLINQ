@@ -27,8 +27,8 @@ namespace MoreLinq.Test
         [TestCase(-1)]
         public void BatchBadSize(int size)
         {
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                new object[0].Batch(size));
+            Assert.That(() => new object[0].Batch(size),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         [Test]
@@ -63,17 +63,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void BatchSequenceYieldsListsOfBatches()
-        {
-            var result = new[] { 1, 2, 3 }.Batch(2);
-
-            using var reader = result.Read();
-            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-            Assert.That(reader.Read(), Is.InstanceOf(typeof(IList<int>)));
-            reader.ReadEnd();
-        }
-
-        [Test]
         public void BatchSequencesAreIndependentInstances()
         {
             var result = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }.Batch(4);
@@ -92,7 +81,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchIsLazy()
         {
-            new BreakingSequence<object>().Batch(1);
+            _ = new BreakingSequence<object>().Batch(1);
         }
 
         [TestCase(SourceKind.BreakingCollection  , 0)]
@@ -133,6 +122,22 @@ namespace MoreLinq.Test
             var batches = Enumerable.Empty<int>().ToSourceKind(kind).Batch(100);
             Assert.That(batches, Is.Empty);
         }
+
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingCollection)]
+        public void BatchUsesCollectionCountAtIterationTime(SourceKind kind)
+        {
+            var list = new List<int> { 1, 2 };
+            var result = list.AsSourceKind(kind).Batch(3);
+
+            list.Add(3);
+            result.AssertSequenceEqual(new[] { 1, 2, 3 });
+
+            list.Add(4);
+            // should fail trying to enumerate because count is now greater than the batch size
+            Assert.That(result.Consume, Throws.TypeOf<BreakException>());
+        }
     }
 }
 
@@ -153,10 +158,10 @@ namespace MoreLinq.Test
         [TestCase(-1)]
         public void BatchBadSize(int size)
         {
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                new object[0].Batch(size, ArrayPool<object>.Shared,
-                                    BreakingFunc.Of<ICurrentBuffer<object>, IEnumerable<object>>(),
-                                    BreakingFunc.Of<IEnumerable<object>, object>()));
+            Assert.That(() => new object[0].Batch(size, ArrayPool<object>.Shared,
+                                                  BreakingFunc.Of<ICurrentBuffer<object>, IEnumerable<object>>(),
+                                                  BreakingFunc.Of<IEnumerable<object>, object>()),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         [Test]
@@ -251,7 +256,7 @@ namespace MoreLinq.Test
         public void BatchFilterBucket()
         {
             const int scale = 2;
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(3, pool,
@@ -270,7 +275,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchSumBucket()
         {
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(3, pool, Enumerable.Sum);
@@ -289,7 +294,7 @@ namespace MoreLinq.Test
         [Test]
         public void BatchUpdatesCurrentListInPlace()
         {
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
 
             var result = input.Batch(4, pool, current => current, current => (ICurrentBuffer<int>)current);
@@ -305,6 +310,20 @@ namespace MoreLinq.Test
             reader.ReadEnd();
 
             Assert.That(current, Is.Empty);
+        }
+
+        [Test]
+        public void BatchCurrentListIndexerWithBadIndexThrowsArgumentOutOfRangeException()
+        {
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var pool = new TestArrayPool<int>();
+
+            var result = input.Batch(4, pool, current => current, current => (ICurrentBuffer<int>)current);
+
+            using var reader = result.Read();
+            var current = reader.Read();
+
+            Assert.That(() => current[100], Throws.ArgumentOutOfRangeException("index"));
         }
 
         [Test]
@@ -337,11 +356,11 @@ namespace MoreLinq.Test
         [Test]
         public void BatchBucketSelectorCurrentList()
         {
-            var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
+            using var input = TestingSequence.Of(1, 2, 3, 4, 5, 6, 7, 8, 9);
             using var pool = new TestArrayPool<int>();
-            int[] bucketSelectorItems = null;
+            int[]? bucketSelectorItems = null;
 
-            var result = input.Batch(4, pool, current => bucketSelectorItems = current.ToArray(), _ => 0);
+            var result = input.Batch(4, pool, current => bucketSelectorItems = [..current], _ => 0);
 
             using var reader = result.Read();
             _ = reader.Read();
@@ -356,36 +375,34 @@ namespace MoreLinq.Test
 
         sealed class TestArrayPool<T> : ArrayPool<T>, IDisposable
         {
-            T[] _pooledArray;
-            T[] _rentedArray;
+            T[]? pooledArray;
+            T[]? rentedArray;
 
             public override T[] Rent(int minimumLength)
             {
-                if (_pooledArray is null && _rentedArray is null)
-                    _pooledArray = new T[minimumLength * 2];
+                if (this.pooledArray is null && this.rentedArray is null)
+                    this.pooledArray = new T[minimumLength * 2];
 
-                if (_pooledArray is null)
-                    throw new InvalidOperationException("The pool is exhausted.");
+                (this.pooledArray, this.rentedArray) =
+                    (null, this.pooledArray ?? throw new InvalidOperationException("The pool is exhausted."));
 
-                (_pooledArray, _rentedArray) = (null, _pooledArray);
-
-                return _rentedArray;
+                return this.rentedArray;
             }
 
             public override void Return(T[] array, bool clearArray = false)
             {
-                if (_rentedArray is null)
+                if (this.rentedArray is null)
                     throw new InvalidOperationException("Cannot return when nothing has been rented from this pool.");
 
-                if (array != _rentedArray)
+                if (array != this.rentedArray)
                     throw new InvalidOperationException("Cannot return what has not been rented from this pool.");
 
-                _pooledArray = array;
-                _rentedArray = null;
+                this.pooledArray = array;
+                this.rentedArray = null;
             }
 
             public void Dispose() =>
-                Assert.That(_rentedArray, Is.Null);
+                Assert.That(this.rentedArray, Is.Null);
         }
     }
 }

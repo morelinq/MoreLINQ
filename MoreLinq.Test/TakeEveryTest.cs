@@ -25,15 +25,15 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryNegativeSkip()
         {
-            AssertThrowsArgument.OutOfRangeException("step",() =>
-                new object[0].TakeEvery(-1));
+            Assert.That(() => new object[0].TakeEvery(-1),
+                        Throws.ArgumentOutOfRangeException("step"));
         }
 
         [Test]
         public void TakeEveryOutOfRangeZeroStep()
         {
-            AssertThrowsArgument.OutOfRangeException("step", () =>
-                new object[0].TakeEvery(0));
+            Assert.That(() => new object[0].TakeEvery(0),
+                        Throws.ArgumentOutOfRangeException("step"));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeEveryIsLazy()
         {
-            new BreakingSequence<object>().TakeEvery(1);
+            _ = new BreakingSequence<object>().TakeEvery(1);
         }
     }
 }

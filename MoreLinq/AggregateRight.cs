@@ -47,12 +47,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (func == null) throw new ArgumentNullException(nameof(func));
 
-            var list = source.ToListLike();
-
-            if (list.Count == 0)
-                throw new InvalidOperationException("Sequence contains no elements.");
-
-            return AggregateRightImpl(list, list[^1], func, list.Count - 1);
+            return source.ToListLike() switch
+            {
+                { Count: 0 } => throw new InvalidOperationException("Sequence contains no elements."),
+                var list => AggregateRightImpl(list, list[^1], func, list.Count - 1)
+            };
         }
 
         /// <summary>
@@ -123,7 +122,7 @@ namespace MoreLinq
             return resultSelector(source.AggregateRight(seed, func));
         }
 
-        static TResult AggregateRightImpl<TSource, TResult>(IListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
+        static TResult AggregateRightImpl<TSource, TResult>(ListLike<TSource> list, TResult accumulator, Func<TSource, TResult, TResult> func, int i)
         {
             while (i-- > 0)
             {

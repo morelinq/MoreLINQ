@@ -78,7 +78,11 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return _(); IEnumerable<IList<TSource>> _()
+            return _(source, predicate);
+
+            static IEnumerable<IList<TSource>> _(
+                IEnumerable<TSource> source,
+                Func<TSource, int, bool> predicate)
             {
                 var window = new List<TSource>();
                 foreach (var item in source)

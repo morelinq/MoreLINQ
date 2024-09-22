@@ -37,7 +37,7 @@ namespace MoreLinq
 
         public static IEnumerable<TSource> Trace<TSource>(this IEnumerable<TSource> source)
         {
-            return Trace(source, (string?) null);
+            return Trace(source, (string?)null);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace MoreLinq
 
             return TraceImpl(source, string.IsNullOrEmpty(format)
                                      ? x => x?.ToString() ?? string.Empty
-                                     : x => string.Format(format, x));
+                                     : x => string.Format(null, format, x));
         }
 
         /// <summary>
@@ -91,11 +91,7 @@ namespace MoreLinq
 
         static IEnumerable<TSource> TraceImpl<TSource>(IEnumerable<TSource> source, Func<TSource, string> formatter)
         {
-            return source
-#if !NO_TRACING
-                .Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)))
-#endif
-                ;
+            return source.Pipe(x => System.Diagnostics.Trace.WriteLine(formatter(x)));
         }
     }
 }

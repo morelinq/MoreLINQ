@@ -18,6 +18,7 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class ExactlyTest
@@ -25,37 +26,27 @@ namespace MoreLinq.Test
         [Test]
         public void ExactlyWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.Exactly(-1));
+            Assert.That(() => new[] { 1 }.Exactly(-1),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyZeroElements()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(0));
-        }
+        static IEnumerable<TestCaseData> ExactlySource =>
+            from k in SourceKinds.Sequence.Concat(SourceKinds.Collection)
+            from e in new[]
+            {
+                (Size: 0, Count: 0),
+                (Size: 0, Count: 1),
+                (Size: 1, Count: 1),
+                (Size: 3, Count: 1)
+            }
+            select new TestCaseData(k, e.Size, e.Count)
+                .Returns(e.Size == e.Count)
+                .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
-        [Test]
-        public void ExactlyWithEmptySequenceHasExactlyOneElement()
-        {
-            foreach (var xs in Enumerable.Empty<int>().ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
-        }
+        [TestCaseSource(nameof(ExactlySource))]
+        public bool Exactly(SourceKind sourceKind, int sequenceSize, int exactlyAssertCount) =>
+            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).Exactly(exactlyAssertCount);
 
-        [Test]
-        public void ExactlyWithSingleElementHasExactlyOneElements()
-        {
-            foreach (var xs in new[] { 1 }.ArrangeCollectionTestCases())
-                Assert.IsTrue(xs.Exactly(1));
-        }
-
-        [Test]
-        public void ExactlyWithManyElementHasExactlyOneElement()
-        {
-            foreach (var xs in new[] { 1, 2, 3 }.ArrangeCollectionTestCases())
-                Assert.IsFalse(xs.Exactly(1));
-        }
 
         [Test]
         public void ExactlyDoesNotIterateUnnecessaryElements()
@@ -64,7 +55,7 @@ namespace MoreLinq.Test
                                              () => 2,
                                              () => 3,
                                              () => throw new TestException());
-            Assert.IsFalse(source.Exactly(2));
+            Assert.That(source.Exactly(2), Is.False);
         }
     }
 }

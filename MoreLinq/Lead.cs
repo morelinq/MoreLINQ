@@ -24,19 +24,26 @@ namespace MoreLinq
     public static partial class MoreEnumerable
     {
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// positive offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements in the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate lead.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each
+        /// element of the sequence.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and
+        /// subsequent (lead) element (in that order) and produces a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lead
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
-        /// For elements of the sequence that are less than <paramref name="offset"/> items from the end,
-        /// default(T) is used as the lead value.<br/>
+        /// <para>
+        /// This operator evaluates in a deferred and streaming manner.</para>
+        /// <para>
+        /// For elements of the sequence that are less than <paramref name="offset"/> items from the
+        /// end, <c>default(T)</c> is used as the lead value.</para>
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements in the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate Lead</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
-        /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, Func<TSource, TSource?, TResult> resultSelector)
         {
@@ -48,18 +55,24 @@ namespace MoreLinq
         }
 
         /// <summary>
-        /// Produces a projection of a sequence by evaluating pairs of elements separated by a positive offset.
+        /// Produces a projection of a sequence by evaluating pairs of elements separated by a
+        /// positive offset.
         /// </summary>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <typeparam name="TResult">The type of the elements in the result sequence.</typeparam>
+        /// <param name="source">The sequence over which to evaluate Lead.</param>
+        /// <param name="offset">The offset (expressed as a positive number) by which to lead each
+        /// element of the sequence.</param>
+        /// <param name="defaultLeadValue">A default value supplied for the leading element when
+        /// none is available.</param>
+        /// <param name="resultSelector">A projection function which accepts the current and
+        /// subsequent (lead) element (in that order) and produces a result.</param>
+        /// <returns>
+        /// A sequence produced by projecting each element of the sequence with its lead
+        /// pairing.</returns>
         /// <remarks>
-        /// This operator evaluates in a deferred and streaming manner.<br/>
+        /// This operator evaluates in a deferred and streaming manner.
         /// </remarks>
-        /// <typeparam name="TSource">The type of the elements in the source sequence</typeparam>
-        /// <typeparam name="TResult">The type of the elements in the result sequence</typeparam>
-        /// <param name="source">The sequence over which to evaluate Lead</param>
-        /// <param name="offset">The offset (expressed as a positive number) by which to lead each element of the sequence</param>
-        /// <param name="defaultLeadValue">A default value supplied for the leading element when none is available</param>
-        /// <param name="resultSelector">A projection function which accepts the current and subsequent (lead) element (in that order) and produces a result</param>
-        /// <returns>A sequence produced by projecting each element of the sequence with its lead pairing</returns>
 
         public static IEnumerable<TResult> Lead<TSource, TResult>(this IEnumerable<TSource> source, int offset, TSource defaultLeadValue, Func<TSource, TSource, TResult> resultSelector)
         {
@@ -67,7 +80,13 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
             if (offset <= 0) throw new ArgumentOutOfRangeException(nameof(offset));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, offset, defaultLeadValue, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<TSource> source,
+                int offset,
+                TSource defaultLeadValue,
+                Func<TSource, TSource, TResult> resultSelector)
             {
                 var leadQueue = new Queue<TSource>(offset);
                 using var iter = source.GetEnumerator();

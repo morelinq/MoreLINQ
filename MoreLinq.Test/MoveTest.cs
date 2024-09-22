@@ -27,28 +27,28 @@ namespace MoreLinq.Test
         [Test]
         public void MoveWithNegativeFromIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("fromIndex", () =>
-                new[] { 1 }.Move(-1, 0, 0));
+            Assert.That(() => new[] { 1 }.Move(-1, 0, 0),
+                        Throws.ArgumentOutOfRangeException("fromIndex"));
         }
 
         [Test]
         public void MoveWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.Move(0, -1, 0));
+            Assert.That(() => new[] { 1 }.Move(0, -1, 0),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         [Test]
         public void MoveWithNegativeToIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("toIndex", () =>
-                new[] { 1 }.Move(0, 0, -1));
+            Assert.That(() => new[] { 1 }.Move(0, 0, -1),
+                        Throws.ArgumentOutOfRangeException("toIndex"));
         }
 
         [Test]
         public void MoveIsLazy()
         {
-            new BreakingSequence<int>().Move(0, 0, 0);
+            _ = new BreakingSequence<int>().Move(0, 0, 0);
         }
 
         [TestCaseSource(nameof(MoveSource))]

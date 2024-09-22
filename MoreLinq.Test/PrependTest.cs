@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using System.Collections.Generic;
     using NUnit.Framework;
     using NUnit.Framework.Interfaces;
+    using static MoreLinq.Extensions.PrependExtension;
 
     [TestFixture]
     public class PrependTest
@@ -27,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNonEmptyTailSequence()
         {
-            string[] tail = { "second", "third" };
+            string[] tail = ["second", "third"];
             var head = "first";
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first", "second", "third");
@@ -36,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithEmptyTailSequence()
         {
-            string[] tail = { };
+            string[] tail = [];
             var head = "first";
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first");
@@ -45,8 +46,8 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNullHead()
         {
-            string[] tail = { "second", "third" };
-            string head = null;
+            string[] tail = ["second", "third"];
+            string? head = null;
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual(null, "second", "third");
         }
@@ -54,7 +55,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependIsLazyInTailSequence()
         {
-            new BreakingSequence<string>().Prepend("head");
+            _ = new BreakingSequence<string>().Prepend("head");
         }
 
         [TestCaseSource(nameof(PrependManySource))]
@@ -80,7 +81,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithSharedSource()
         {
-            var first  = new [] { 1 }.Prepend(2);
+            var first  = new[] { 1 }.Prepend(2);
             var second = first.Prepend(3).Prepend(4);
             var third  = first.Prepend(4).Prepend(8);
 

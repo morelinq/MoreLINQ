@@ -36,7 +36,7 @@ namespace MoreLinq.Test
             var sequenceA = new BreakingSequence<int>();
             var sequenceB = new BreakingSequence<int>();
 
-            sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
+            _ = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB);
         }
 
         /// <summary>
@@ -49,8 +49,24 @@ namespace MoreLinq.Test
             using var sequenceA = TestingSequence.Of<int>();
 
             // Expected and thrown by BreakingSequence
-            Assert.Throws<InvalidOperationException>(() =>
-                sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>()).Consume());
+            Assert.That(() => sequenceA.SortedMerge(OrderByDirection.Ascending, new BreakingSequence<int>())
+                                       .Consume(),
+                        Throws.BreakException);
+        }
+
+        /// <summary>
+        /// Verify that SortedMerge do not call MoveNext method eagerly
+        /// </summary>
+        [Test]
+        public void TestSortedMergeDoNotCallMoveNextEagerly()
+        {
+            using var sequenceA = TestingSequence.Of(1, 3);
+            using var sequenceB = MoreEnumerable.From(() => 2, () => throw new TestException())
+                                                .AsTestingSequence();
+
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, sequenceB).Take(2);
+
+            Assert.That(() => result.Consume(), Throws.Nothing);
         }
 
         /// <summary>
@@ -61,7 +77,7 @@ namespace MoreLinq.Test
         {
             var sequenceA = Enumerable.Range(1, 3);
             var sequenceB = Enumerable.Range(4, 3);
-            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>)null, sequenceB);
+            var result = sequenceA.SortedMerge(OrderByDirection.Ascending, (IComparer<int>?)null, sequenceB);
 
             Assert.That(result, Is.EqualTo(sequenceA.Concat(sequenceB)));
         }

@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copysecond (c) 2017 Atif Aziz. All seconds reserved.
+// Copyright (c) 2017 Atif Aziz. All seconds reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -228,7 +228,17 @@ namespace MoreLinq
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return Impl(first, second, firstKeySelector, secondKeySelector, firstSelector, secondSelector, bothSelector, comparer);
+
+            static IEnumerable<TResult> Impl(
+                IEnumerable<TFirst> first,
+                IEnumerable<TSecond> second,
+                Func<TFirst, TKey> firstKeySelector,
+                Func<TSecond, TKey> secondKeySelector,
+                Func<TFirst, TResult> firstSelector,
+                Func<TSecond, TResult> secondSelector,
+                Func<TFirst, TSecond, TResult> bothSelector,
+                IEqualityComparer<TKey>? comparer)
             {
                 var seconds = second.Select(e => new KeyValuePair<TKey, TSecond>(secondKeySelector(e), e)).ToArray();
                 var secondLookup = seconds.ToLookup(e => e.Key, e => e.Value, comparer);
@@ -237,7 +247,7 @@ namespace MoreLinq
                 foreach (var fe in first)
                 {
                     var key = firstKeySelector(fe);
-                    firstKeys.Add(key);
+                    _ = firstKeys.Add(key);
 
                     using var se = secondLookup[key].GetEnumerator();
 

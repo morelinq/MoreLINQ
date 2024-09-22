@@ -110,8 +110,9 @@ namespace MoreLinq.Test
         [TestCase(int.MinValue, int.MinValue, null)]
         public void SequenceWithStartEqualsStop(int start, int stop, int? step)
         {
-            var result = step.HasValue ? MoreEnumerable.Sequence(start, stop, step.Value)
-                                       : MoreEnumerable.Sequence(start, stop);
+            var result = step is { } someStep
+                       ? MoreEnumerable.Sequence(start, stop, someStep)
+                       : MoreEnumerable.Sequence(start, stop);
 
             Assert.That(start, Is.EqualTo(result.Single()));
         }
@@ -124,7 +125,7 @@ namespace MoreLinq.Test
         {
             var result = MoreEnumerable.Sequence(start, stop, step);
 
-            Assert.AreEqual(result.Count(), count);
+            Assert.That(result.Count(), Is.EqualTo(count));
         }
 
         [TestCase(           5,           10)]
@@ -134,7 +135,7 @@ namespace MoreLinq.Test
         {
             var result = MoreEnumerable.Sequence(start, stop, 0);
 
-            Assert.IsTrue(result.Take(100).All(x => x == start));
+            Assert.That(result.Take(100).All(x => x == start), Is.True);
         }
     }
 }

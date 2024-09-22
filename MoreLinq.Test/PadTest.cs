@@ -15,33 +15,42 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
+    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class PadTest
     {
-        [Test]
-        public void PadNegativeWidth()
+        static readonly IEnumerable<ITestCaseData> PadNegativeWidthCases =
+            from e in new (string Name, TestDelegate Delegate)[]
+            {
+                ("DefaultPadding" , static () => new object[0].Pad(-1)),
+                ("Padding"        , static () => new object[0].Pad(-1, -2)),
+                ("PaddingSelector", static () => new object[0].Pad(-1, BreakingFunc.Of<int, int>())),
+            }
+            select new TestCaseData(e.Delegate).SetName(e.Name);
+
+        [TestCaseSource(nameof(PadNegativeWidthCases))]
+        public void PadNegativeWidth(TestDelegate @delegate)
         {
-            AssertThrowsArgument.Exception("width",() =>
-                new object[0].Pad(-1));
+            Assert.That(@delegate, Throws.ArgumentOutOfRangeException("width")
+                                         .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
         }
 
         [Test]
         public void PadIsLazy()
         {
-            new BreakingSequence<object>().Pad(0);
+            _ = new BreakingSequence<object>().Pad(0);
         }
 
         [Test]
         public void PadWithFillerIsLazy()
         {
-            new BreakingSequence<object>().Pad(0, new object());
+            _ = new BreakingSequence<object>().Pad(0, new object());
         }
 
         public class ValueTypeElements

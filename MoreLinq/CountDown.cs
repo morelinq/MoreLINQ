@@ -39,7 +39,7 @@ namespace MoreLinq
         /// A function that receives the element and the current countdown
         /// value for the element and which returns those mapped to a
         /// result returned in the resulting sequence. For elements before
-        /// the last <paramref name="count"/>, the coundown value is
+        /// the last <paramref name="count"/>, the countdown value is
         /// <c>null</c>.</param>
         /// <returns>
         /// A sequence of results returned by
@@ -57,32 +57,38 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return source.TryAsListLike() is {} listLike
-                   ? IterateList(listLike)
-                   : source.TryGetCollectionCount() is {} collectionCount
-                     ? IterateCollection(collectionCount)
-                     : IterateSequence();
+            return source.TryAsListLike() is { } listLike
+                   ? IterateList(listLike, count, resultSelector)
+                   : source.TryAsCollectionLike() is { } collectionLike
+                     ? IterateCollection(collectionLike, count, resultSelector)
+                     : IterateSequence(source, count, resultSelector);
 
-            IEnumerable<TResult> IterateList(IListLike<T> list)
+            static IEnumerable<TResult> IterateList(
+                ListLike<T> list,
+                int count,
+                Func<T, int?, TResult> resultSelector)
             {
-                var countdown = Math.Min(count, list.Count);
+                var listCount = list.Count;
+                var countdown = Math.Min(count, listCount);
 
-                for (var i = 0; i < list.Count; i++)
-                {
-                    var cd = list.Count - i <= count
-                           ? --countdown
-                           : (int?) null;
-                    yield return resultSelector(list[i], cd);
-                }
+                for (var i = 0; i < listCount; i++)
+                    yield return resultSelector(list[i], listCount - i <= count ? --countdown : null);
             }
 
-            IEnumerable<TResult> IterateCollection(int i)
+            static IEnumerable<TResult> IterateCollection(
+                CollectionLike<T> collection,
+                int count,
+                Func<T, int?, TResult> resultSelector)
             {
-                foreach (var item in source)
-                    yield return resultSelector(item, i-- <= count ? i : (int?) null);
+                var i = collection.Count;
+                foreach (var item in collection)
+                    yield return resultSelector(item, i-- <= count ? i : null);
             }
 
-            IEnumerable<TResult> IterateSequence()
+            static IEnumerable<TResult> IterateSequence(
+                IEnumerable<T> source,
+                int count,
+                Func<T, int?, TResult> resultSelector)
             {
                 var queue = new Queue<T>(Math.Max(1, count + 1));
 

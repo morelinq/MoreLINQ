@@ -87,7 +87,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return GroupAdjacent(source, keySelector, e => e, comparer);
+            return GroupAdjacent(source, keySelector, IdFn, comparer);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace MoreLinq
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
 
-            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
+            return GroupAdjacentImpl(source, keySelector, IdFn, ResultSelectorWrapper,
                                      EqualityComparer<TKey>.Default);
         }
 
@@ -253,7 +253,7 @@ namespace MoreLinq
 
             // This should be removed once the target framework is bumped to something that supports covariance
             TResult ResultSelectorWrapper(TKey key, IList<TSource> group) => resultSelector(key, group);
-            return GroupAdjacentImpl(source, keySelector, i => i, ResultSelectorWrapper,
+            return GroupAdjacentImpl(source, keySelector, IdFn, ResultSelectorWrapper,
                                      comparer ?? EqualityComparer<TKey>.Default);
         }
 
@@ -273,7 +273,7 @@ namespace MoreLinq
                 var key = keySelector(iterator.Current);
                 var element = elementSelector(iterator.Current);
 
-                if (group is (var k, {} members))
+                if (group is (var k, { } members))
                 {
                     if (comparer.Equals(k, key))
                     {
@@ -290,36 +290,27 @@ namespace MoreLinq
             }
 
             {
-                if (group is (var k, {} members))
+                if (group is (var k, { } members))
                     yield return resultSelector(k, members);
             }
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
+        static Grouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
             Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
 
         static class Grouping
         {
             public static Grouping<TKey, TElement> Create<TKey, TElement>(TKey key, IEnumerable<TElement> members) =>
-                new Grouping<TKey, TElement>(key, members);
+                new(key, members);
         }
 
-        #if !NO_SERIALIZATION_ATTRIBUTES
         [Serializable]
-        #endif
-        sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
+        sealed class Grouping<TKey, TElement>(TKey key, IEnumerable<TElement> members) :
+            IGrouping<TKey, TElement>
         {
-            readonly IEnumerable<TElement> _members;
+            public TKey Key { get; } = key;
 
-            public Grouping(TKey key, IEnumerable<TElement> members)
-            {
-                Key = key;
-                _members = members;
-            }
-
-            public TKey Key { get; }
-
-            public IEnumerator<TElement> GetEnumerator() => _members.GetEnumerator();
+            public IEnumerator<TElement> GetEnumerator() => members.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }

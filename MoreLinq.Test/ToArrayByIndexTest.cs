@@ -68,11 +68,11 @@ namespace MoreLinq.Test
         {
             var input = new[] { 42 };
 
-            Assert.Throws<IndexOutOfRangeException>(() =>
-                input.ToArrayByIndex(_ => -1));
+            Assert.That(() => input.ToArrayByIndex(_ => -1),
+                        Throws.TypeOf<IndexOutOfRangeException>());
 
-            Assert.Throws<IndexOutOfRangeException>(() =>
-                input.ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()));
+            Assert.That(() => input.ToArrayByIndex(_ => -1, BreakingFunc.Of<int, object>()),
+                        Throws.TypeOf<IndexOutOfRangeException>());
         }
 
         [TestCase(10, -1)]
@@ -80,11 +80,11 @@ namespace MoreLinq.Test
         public void ToArrayByIndexWithLengthWithBadIndexSelectorThrows(int length, int badIndex)
         {
             var input = new[] { 42 };
-            Assert.Throws<IndexOutOfRangeException>(() =>
-                input.ToArrayByIndex(length, _ => badIndex));
+            Assert.That(() => input.ToArrayByIndex(length, _ => badIndex),
+                        Throws.TypeOf<IndexOutOfRangeException>());
 
-            Assert.Throws<IndexOutOfRangeException>(() =>
-                input.ToArrayByIndex(10, _ => -1, BreakingFunc.Of<int, object>()));
+            Assert.That(() => input.ToArrayByIndex(length, _ => badIndex, BreakingFunc.Of<int, object>()),
+                        Throws.TypeOf<IndexOutOfRangeException>());
         }
 
         [Test]

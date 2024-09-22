@@ -31,7 +31,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatIsLazy()
         {
-            new BreakingSequence<int>().Repeat(5);
+            _ = new BreakingSequence<int>().Repeat(5);
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace MoreLinq.Test
         [Test]
         public void TestNegativeRepeatCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                 Enumerable.Range(1, 10).Repeat(-3));
+            Assert.That(() => Enumerable.Range(1, 10).Repeat(-3),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
 
             var result = sequence.Repeat();
 
-            Assert.IsTrue(result.Take(100).All(x => x == value));
+            Assert.That(result.Take(100).All(x => x == value), Is.True);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestRepeatForeverIsLazy()
         {
-            new BreakingSequence<int>().Repeat();
+            _ = new BreakingSequence<int>().Repeat();
         }
     }
 }

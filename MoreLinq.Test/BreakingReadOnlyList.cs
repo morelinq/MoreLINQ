@@ -27,14 +27,14 @@ namespace MoreLinq.Test
     /// expected to be lazily evaluated.
     /// </summary>
 
-    sealed class BreakingReadOnlyList<T> : BreakingReadOnlyCollection<T>, IReadOnlyList<T>
+    sealed class BreakingReadOnlyList<T>(IReadOnlyList<T> list) :
+        BreakingReadOnlyCollection<T>(list),
+        IReadOnlyList<T>
     {
-        readonly IReadOnlyList<T> _list;
+        readonly IReadOnlyList<T> list = list;
 
-        public BreakingReadOnlyList(params T[] values) : this ((IReadOnlyList<T>) values) {}
-        public BreakingReadOnlyList(IReadOnlyList<T> list) : base (list)
-            => _list = list;
+        public BreakingReadOnlyList(params T[] values) : this((IReadOnlyList<T>)values) { }
 
-        public T this[int index] => _list[index];
+        public T this[int index] => this.list[index];
     }
 }

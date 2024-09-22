@@ -28,7 +28,7 @@ namespace MoreLinq.Test
             var counter = 0;
             var sequence = Enumerable.Range(0, 10).Pipe(_ => counter++);
             sequence.Consume();
-            Assert.AreEqual(10, counter);
+            Assert.That(counter, Is.EqualTo(10));
         }
     }
 }

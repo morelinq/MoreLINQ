@@ -21,5 +21,8 @@ namespace MoreLinq.Test
     /// Reserved for use within tests.
     /// </summary>
 
-    sealed class TestException : System.Exception {}
+    sealed class TestException(string? message) : System.Exception(message)
+    {
+        public TestException() : this(null) { }
+    }
 }

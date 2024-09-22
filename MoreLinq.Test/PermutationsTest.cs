@@ -63,7 +63,7 @@ namespace MoreLinq.Test
             var permutations = set.Permutations();
 
             // should contain two results: the set itself and its reverse
-            Assert.IsTrue(permutations.Count() == 2);
+            Assert.That(permutations.Count(), Is.EqualTo(2));
             Assert.That(permutations.First(), Is.EqualTo(set));
             Assert.That(permutations.Last(), Is.EqualTo(set.Reverse()));
         }
@@ -78,19 +78,19 @@ namespace MoreLinq.Test
             var set = new[] { 42, 11, 100 };
             var permutations = set.Permutations();
 
-            var expectedPermutations = new[]
-                                           {
-                                               new[] {42, 11, 100},
-                                               new[] {42, 100, 11},
-                                               new[] {11, 100, 42},
-                                               new[] {11, 42, 100},
-                                               new[] {100, 11, 42},
-                                               new[] {100, 42, 11},
-                                           };
+            var expectedPermutations = new int[][]
+            {
+                [42, 11, 100],
+                [42, 100, 11],
+                [11, 100, 42],
+                [11, 42, 100],
+                [100, 11, 42],
+                [100, 42, 11],
+            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+            Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
+            Assert.That(permutations.All(p => expectedPermutations.Contains(p, SequenceEqualityComparer<int>.Instance)), Is.True);
         }
 
         /// <summary>
@@ -103,37 +103,37 @@ namespace MoreLinq.Test
             var set = new[] { 42, 11, 100, 89 };
             var permutations = set.Permutations();
 
-            var expectedPermutations = new[]
-                                           {
-                                               new[] {42, 11, 100, 89},
-                                               new[] {42, 100, 11, 89},
-                                               new[] {11, 100, 42, 89},
-                                               new[] {11, 42, 100, 89},
-                                               new[] {100, 11, 42, 89},
-                                               new[] {100, 42, 11, 89},
-                                               new[] {42, 11, 89, 100},
-                                               new[] {42, 100, 89, 11},
-                                               new[] {11, 100, 89, 42},
-                                               new[] {11, 42, 89, 100},
-                                               new[] {100, 11, 89, 42},
-                                               new[] {100, 42, 89, 11},
-                                               new[] {42, 89, 11, 100},
-                                               new[] {42, 89, 100, 11},
-                                               new[] {11, 89, 100, 42},
-                                               new[] {11, 89, 42, 100},
-                                               new[] {100, 89, 11, 42},
-                                               new[] {100, 89, 42, 11},
-                                               new[] {89, 42, 11, 100},
-                                               new[] {89, 42, 100, 11},
-                                               new[] {89, 11, 100, 42},
-                                               new[] {89, 11, 42, 100},
-                                               new[] {89, 100, 11, 42},
-                                               new[] {89, 100, 42, 11},
-                                           };
+            var expectedPermutations = new int[][]
+            {
+                [42, 11, 100, 89],
+                [42, 100, 11, 89],
+                [11, 100, 42, 89],
+                [11, 42, 100, 89],
+                [100, 11, 42, 89],
+                [100, 42, 11, 89],
+                [42, 11, 89, 100],
+                [42, 100, 89, 11],
+                [11, 100, 89, 42],
+                [11, 42, 89, 100],
+                [100, 11, 89, 42],
+                [100, 42, 89, 11],
+                [42, 89, 11, 100],
+                [42, 89, 100, 11],
+                [11, 89, 100, 42],
+                [11, 89, 42, 100],
+                [100, 89, 11, 42],
+                [100, 89, 42, 11],
+                [89, 42, 11, 100],
+                [89, 42, 100, 11],
+                [89, 11, 100, 42],
+                [89, 11, 42, 100],
+                [89, 100, 11, 42],
+                [89, 100, 42, 11],
+            };
 
             // should contain six permutations (as defined above)
-            Assert.AreEqual(expectedPermutations.Length, permutations.Count());
-            Assert.IsTrue(permutations.All(p => expectedPermutations.Contains(p, EqualityComparer.Create<IList<int>>((x, y) => x.SequenceEqual(y)))));
+            Assert.That(permutations.Count(), Is.EqualTo(expectedPermutations.Length));
+            Assert.That(permutations.All(p => expectedPermutations.Contains(p, SequenceEqualityComparer<int>.Instance)), Is.True);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace MoreLinq.Test
         public void TestHigherCardinalityPermutations()
         {
             // NOTE: Testing higher cardinality permutations by exhaustive comparison becomes tedious
-            //       above cardiality 4 sets, as the number of permutations is N! (factorial). To provide
+            //       above cardinality 4 sets, as the number of permutations is N! (factorial). To provide
             //       some level of verification, though, we will simply test the count of items in the
             //       permuted sets, and verify they are equal to the expected number (count!).
 
@@ -159,7 +159,7 @@ namespace MoreLinq.Test
             {
                 var permutedSet = set.Permutations();
                 var permutationCount = permutedSet.Count();
-                Assert.AreEqual(Combinatorics.Factorial(set.Count()), permutationCount);
+                Assert.That(permutationCount, Is.EqualTo(Combinatorics.Factorial(set.Count())));
             }
         }
 
@@ -170,7 +170,7 @@ namespace MoreLinq.Test
         [Test]
         public void TestPermutationsIsLazy()
         {
-            new BreakingSequence<int>().Permutations();
+            _ = new BreakingSequence<int>().Permutations();
         }
 
         /// <summary>
@@ -184,17 +184,30 @@ namespace MoreLinq.Test
             var permutedSets = set.Permutations();
 
             var listPermutations = new List<IList<int>>();
-            listPermutations.AddRange(permutedSets);
-            Assert.IsNotEmpty(listPermutations);
+            foreach (var ps in permutedSets)
+            {
+                Assert.That(ps, Is.Not.All.Negative);
+                listPermutations.Add(ps);
+                for (var i = 0; i < ps.Count; i++)
+                    ps[i] = -1;
+            }
+
+            Assert.That(listPermutations, Is.Not.Empty);
 
             for (var i = 0; i < listPermutations.Count; i++)
             {
                 for (var j = 1; j < listPermutations.Count; j++)
                 {
                     if (j == i) continue;
-                    Assert.AreNotSame(listPermutations[i], listPermutations[j]);
+                    Assert.That(listPermutations[i], Is.Not.SameAs(listPermutations[j]));
                 }
             }
+        }
+
+        static class SequenceEqualityComparer<T>
+        {
+            public static readonly IEqualityComparer<IEnumerable<T>> Instance =
+                EqualityComparer<IEnumerable<T>>.Create((x, y) => x is { } sx && y is { } sy && sx.SequenceEqual(sy));
         }
     }
 }

@@ -15,8 +15,6 @@
 // limitations under the License.
 #endregion
 
-#nullable enable
-
 namespace MoreLinq.Test
 {
     using System.Collections.Generic;
@@ -111,7 +109,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenIsLazy()
         {
-            new BreakingSequence<int>().Flatten();
+            _ = new BreakingSequence<int>().Flatten();
         }
 
         // Flatten(this IEnumerable source, Func<IEnumerable, bool> predicate)
@@ -222,7 +220,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenPredicateIsLazy()
         {
-            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
+            _ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, bool>());
         }
 
         [Test]
@@ -257,8 +255,8 @@ namespace MoreLinq.Test
             using var inner3 = TestingSequence.Of<object>(6, inner2, 7);
             using var source = TestingSequence.Of<object>(inner1, inner3);
 
-            Assert.Throws<TestException>(() =>
-                source.Flatten().Consume());
+            Assert.That(() => source.Flatten().Consume(),
+                        Throws.TypeOf<TestException>());
         }
 
         [Test]
@@ -291,8 +289,8 @@ namespace MoreLinq.Test
 
             Assert.That(result.Take(10), Is.EqualTo(expectations));
 
-            Assert.Throws<TestException>(() =>
-                source.Flatten().ElementAt(11));
+            Assert.That(() => source.Flatten().ElementAt(11),
+                        Throws.TypeOf<TestException>());
         }
 
         // Flatten(this IEnumerable source, Func<object, IEnumerable> selector)
@@ -300,7 +298,7 @@ namespace MoreLinq.Test
         [Test]
         public void FlattenSelectorIsLazy()
         {
-            new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
+            _ = new BreakingSequence<int>().Flatten(BreakingFunc.Of<object, IEnumerable>());
         }
 
         [Test]
@@ -311,19 +309,19 @@ namespace MoreLinq.Test
                 new Series
                 {
                     Name = "series1",
-                    Attributes = new[]
-                    {
-                        new Attribute { Values = new[] { 1, 2 } },
-                        new Attribute { Values = new[] { 3, 4 } },
-                    }
+                    Attributes =
+                    [
+                        new Attribute { Values = [1, 2] },
+                        new Attribute { Values = [3, 4] },
+                    ]
                 },
                 new Series
                 {
                     Name = "series2",
-                    Attributes = new[]
-                    {
-                        new Attribute { Values = new[] { 5, 6 } },
-                    }
+                    Attributes =
+                    [
+                        new Attribute { Values = [5, 6] },
+                    ]
                 }
             };
 
@@ -407,30 +405,20 @@ namespace MoreLinq.Test
             Assert.That(result, Is.EqualTo(expectations));
         }
 
-        class Series
+        sealed class Series
         {
             public required string Name;
             public required Attribute[] Attributes;
         }
 
-        class Attribute
+        sealed class Attribute
         {
             public required int[] Values;
         }
 
-        class Tree<T>
+        sealed record Tree<T>(Tree<T>? Left, T Value, Tree<T>? Right)
         {
-            public readonly T Value;
-            public readonly Tree<T>? Left;
-            public readonly Tree<T>? Right;
-
-            public Tree(T value) : this(null, value, null) {}
-            public Tree(Tree<T>? left, T value, Tree<T>? right)
-            {
-                Left = left;
-                Value = value;
-                Right = right;
-            }
+            public Tree(T value) : this(null, value, null) { }
         }
     }
 }

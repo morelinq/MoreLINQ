@@ -20,6 +20,7 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.AppendExtension;
 
     [TestFixture]
     public class GroupAdjacentTest
@@ -32,12 +33,12 @@ namespace MoreLinq.Test
             var bfo = BreakingFunc.Of<object, object>();
             var bfg = BreakingFunc.Of<int, IEnumerable<object>, IEnumerable<object>>();
 
-            bs.GroupAdjacent(bf);
-            bs.GroupAdjacent(bf, bfo);
-            bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
-            bs.GroupAdjacent(bf, bfg);
-            bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf);
+            _ = bs.GroupAdjacent(bf, bfo);
+            _ = bs.GroupAdjacent(bf, bfo, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf, EqualityComparer<int>.Default);
+            _ = bs.GroupAdjacent(bf, bfg);
+            _ = bs.GroupAdjacent(bf, bfg, EqualityComparer<int>.Default);
         }
 
         [Test]
@@ -206,7 +207,7 @@ namespace MoreLinq.Test
                           .SelectMany(x => Enumerable.Repeat((int?)x, x).Append(null))
                           .GroupAdjacent(x => x);
 
-            int?[] aNull = { null };
+            int?[] aNull = [null];
 
             using var reader = groupings.Read();
             AssertGrouping(reader, 1, 1);
@@ -235,7 +236,7 @@ namespace MoreLinq.Test
         {
             var result = reader.Read();
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(element, result);
+            Assert.That(result, Is.EqualTo(element));
         }
     }
 }

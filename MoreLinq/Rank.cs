@@ -32,7 +32,7 @@ namespace MoreLinq
 
         public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source)
         {
-            return source.RankBy(x => x);
+            return source.RankBy(IdFn);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace MoreLinq
         /// <param name="comparer">A object that defines comparison semantics for the elements in the sequence</param>
         /// <returns>A sequence of position integers representing the ranks of the corresponding items in the sequence</returns>
 
-        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
+        public static IEnumerable<int> Rank<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
         {
-            return source.RankBy(x => x, comparer);
+            return source.RankBy(IdFn, comparer);
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return _(comparer ?? Comparer<TKey>.Default);
+            return _(source, keySelector, comparer ?? Comparer<TKey>.Default);
 
-            IEnumerable<int> _(IComparer<TKey> comparer)
+            static IEnumerable<int> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
             {
                 source = source.ToArray(); // avoid enumerating source twice
 

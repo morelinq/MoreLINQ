@@ -141,7 +141,7 @@ namespace MoreLinq.Test.Async
         public static ValueTask<TSource> ElementAtAsync<TSource>(this IAsyncEnumerable<TSource> source, int index) =>
             LinqEnumerable.ElementAtAsync(source, index);
 
-        public static ValueTask<TSource> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, int index) =>
+        public static ValueTask<TSource?> ElementAtOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, int index) =>
             LinqEnumerable.ElementAtOrDefaultAsync(source, index);
 
         public static IAsyncEnumerable<TResult> Empty<TResult>() =>
@@ -159,10 +159,10 @@ namespace MoreLinq.Test.Async
         public static ValueTask<TSource> FirstAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.FirstAsync(source, predicate);
 
-        public static ValueTask<TSource> FirstOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
+        public static ValueTask<TSource?> FirstOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
             LinqEnumerable.FirstOrDefaultAsync(source);
 
-        public static ValueTask<TSource> FirstOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
+        public static ValueTask<TSource?> FirstOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.FirstOrDefaultAsync(source, predicate);
 
         public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IAsyncEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
@@ -213,10 +213,10 @@ namespace MoreLinq.Test.Async
         public static ValueTask<TSource> LastAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.LastAsync(source, predicate);
 
-        public static ValueTask<TSource> LastOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
+        public static ValueTask<TSource?> LastOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
             LinqEnumerable.LastOrDefaultAsync(source);
 
-        public static ValueTask<TSource> LastOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
+        public static ValueTask<TSource?> LastOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.LastOrDefaultAsync(source, predicate);
 
         public static ValueTask<long> LongCountAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
@@ -411,10 +411,10 @@ namespace MoreLinq.Test.Async
         public static ValueTask<TSource> SingleAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.SingleAsync(source, predicate);
 
-        public static ValueTask<TSource> SingleOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
+        public static ValueTask<TSource?> SingleOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
             LinqEnumerable.SingleOrDefaultAsync(source);
 
-        public static ValueTask<TSource> SingleOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
+        public static ValueTask<TSource?> SingleOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.SingleOrDefaultAsync(source, predicate);
 
         public static IAsyncEnumerable<TSource> Skip<TSource>(this IAsyncEnumerable<TSource> source, int count) =>
@@ -510,16 +510,20 @@ namespace MoreLinq.Test.Async
         public static ValueTask<TSource[]> ToArrayAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
             LinqEnumerable.ToArrayAsync(source);
 
-        public static ValueTask<Dictionary<TKey, TSource>> ToDictionaryAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector) =>
+        public static ValueTask<Dictionary<TKey, TSource>> ToDictionaryAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector);
 
-        public static ValueTask<Dictionary<TKey, TSource>> ToDictionaryAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) =>
+        public static ValueTask<Dictionary<TKey, TSource>> ToDictionaryAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, comparer);
 
-        public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAsync<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector) =>
+        public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAsync<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, elementSelector);
 
-        public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAsync<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) =>
+        public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAsync<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
+            where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, elementSelector, comparer);
 
         public static ValueTask<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> source) =>

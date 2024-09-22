@@ -31,20 +31,18 @@ namespace MoreLinq.Test
         [Test]
         public void TestWindowIsLazy()
         {
-            new BreakingSequence<int>().Window(1);
+            _ = new BreakingSequence<int>().Window(1);
         }
 
         [Test]
         public void WindowModifiedBeforeMoveNextDoesNotAffectNextWindow()
         {
             var sequence = Enumerable.Range(0, 3);
-            using var e = sequence.Window(2).GetEnumerator();
+            using var reader = sequence.Window(2).Read();
 
-            e.MoveNext();
-            var window1 = e.Current;
+            var window1 = reader.Read();
             window1[1] = -1;
-            e.MoveNext();
-            var window2 = e.Current;
+            var window2 = reader.Read();
 
             Assert.That(window2[0], Is.EqualTo(1));
         }
@@ -53,13 +51,11 @@ namespace MoreLinq.Test
         public void WindowModifiedAfterMoveNextDoesNotAffectNextWindow()
         {
             var sequence = Enumerable.Range(0, 3);
-            using var e = sequence.Window(2).GetEnumerator();
+            using var reader = sequence.Window(2).Read();
 
-            e.MoveNext();
-            var window1 = e.Current;
-            e.MoveNext();
+            var window1 = reader.Read();
             window1[1] = -1;
-            var window2 = e.Current;
+            var window2 = reader.Read();
 
             Assert.That(window2[0], Is.EqualTo(1));
         }
@@ -68,12 +64,10 @@ namespace MoreLinq.Test
         public void WindowModifiedDoesNotAffectPreviousWindow()
         {
             var sequence = Enumerable.Range(0, 3);
-            using var e = sequence.Window(2).GetEnumerator();
+            using var reader = sequence.Window(2).Read();
 
-            e.MoveNext();
-            var window1 = e.Current;
-            e.MoveNext();
-            var window2 = e.Current;
+            var window1 = reader.Read();
+            var window2 = reader.Read();
             window2[0] = -1;
 
             Assert.That(window1[1], Is.EqualTo(1));
@@ -87,8 +81,8 @@ namespace MoreLinq.Test
         {
             var sequence = Enumerable.Repeat(1, 10);
 
-            AssertThrowsArgument.OutOfRangeException("size", () =>
-                sequence.Window(-5));
+            Assert.That(() => sequence.Window(-5),
+                        Throws.ArgumentOutOfRangeException("size"));
         }
 
         /// <summary>
@@ -116,11 +110,11 @@ namespace MoreLinq.Test
             var result = sequence.Window(1);
 
             // number of windows should be equal to the source sequence length
-            Assert.AreEqual(count, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count));
             // each window should contain single item consistent of element at that offset
             var index = -1;
             foreach (var window in result)
-                Assert.AreEqual(sequence.ElementAt(++index), window.Single());
+                Assert.That(window.Single(), Is.EqualTo(sequence.ElementAt(++index)));
         }
 
         /// <summary>
@@ -152,7 +146,7 @@ namespace MoreLinq.Test
             var result = sequence.Window(windowSize);
 
             // ensure that the number of windows is correct
-            Assert.AreEqual(count - windowSize + 1, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(count - windowSize + 1));
             // ensure each window contains the correct set of items
             var index = -1;
             foreach (var window in result)
