@@ -58,7 +58,7 @@ namespace MoreLinq.Test
             using var row3 = TestingSequence.Of(30, 31, 32, 33);
             using var matrix = TestingSequence.Of(row1, row2, row3);
 
-            AssertMatrix(expectations, matrix.Transpose());
+            Assert.That(matrix.Transpose(), Is.EqualTo(expectations));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace MoreLinq.Test
             using var row4 = TestingSequence.Of(30, 31, 32);
             using var matrix = TestingSequence.Of(row1, row2, row3, row4);
 
-            AssertMatrix(expectations, matrix.Transpose());
+            Assert.That(matrix.Transpose(), Is.EqualTo(expectations));
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace MoreLinq.Test
                 [32, 243, 3125]
             };
 
-            AssertMatrix(expectations, result);
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace MoreLinq.Test
                 [32,      3125]
             };
 
-            AssertMatrix(expectations, result);
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         [Test]
@@ -206,19 +206,6 @@ namespace MoreLinq.Test
             }
 
             return true;
-        }
-
-        static void AssertMatrix<T>(IEnumerable<IEnumerable<T>> expectation, IEnumerable<IEnumerable<T>> result)
-        {
-            // necessary because NUnitLite 3.6.1 (.NET 4.5) for Mono don't assert nested enumerables
-
-            var resultList = result.ToList();
-            var expectationList = expectation.ToList();
-
-            Assert.That(resultList.Count, Is.EqualTo(expectationList.Count));
-
-            expectationList.Zip(resultList, ValueTuple.Create)
-                           .ForEach(t => t.Item1.AssertSequenceEqual(t.Item2));
         }
     }
 }

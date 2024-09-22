@@ -23,13 +23,5 @@ dotnet reportgenerator -reports:MoreLinq.Test/TestResults/coverage-*.opencover.x
                        -reporttypes:Html\;TextSummary \
                        -targetdir:MoreLinq.Test/TestResults/reports
 cat MoreLinq.Test/TestResults/reports/Summary.txt
-if [[ -z `which mono 2>/dev/null` ]]; then
-    echo>&2 NOTE! Mono does not appear to be installed so unit tests
-    echo>&2 against the Mono runtime will be skipped.
-else
-    for c in $configs; do
-        mono MoreLinq.Test/bin/$c/net471/MoreLinq.Test.exe
-    done
-fi
 dotnet publish MoreLinq.Test.Aot
 "$(find MoreLinq.Test.Aot -type d -name publish)/MoreLinq.Test.Aot"
