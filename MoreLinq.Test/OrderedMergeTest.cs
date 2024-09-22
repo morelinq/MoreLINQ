@@ -24,9 +24,7 @@ namespace MoreLinq.Test
     [TestFixture]
     public class OrderedMergeTest
     {
-        static IEnumerable<T> Seq<T>(params T[] values) => values;
-
-        public static IEnumerable<ITestCaseData> TestData =
+        public static readonly IEnumerable<ITestCaseData> TestData =
             from e in new[]
             {
                 new

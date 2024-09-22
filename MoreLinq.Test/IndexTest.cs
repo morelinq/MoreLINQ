@@ -26,8 +26,8 @@ namespace MoreLinq.Test
         public void IndexIsLazy()
         {
             var bs = new BreakingSequence<object>();
-            bs.Index();
-            bs.Index(0);
+            _ = bs.Index();
+            _ = bs.Index(0);
         }
 
         [Test]

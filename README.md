@@ -9,7 +9,7 @@ MoreLINQ is available for download and installation as
 [NuGet packages](https://www.nuget.org/packages/morelinq/).
 
 Documentation for the stable and beta releases can be found at
-[morelinq.github.io](http://morelinq.github.io/).
+[morelinq.github.io](https://morelinq.github.io/).
 
 
 ## Usage
@@ -34,10 +34,11 @@ using static MoreLinq.Extensions.LeadExtension;
 In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
 methods will be available in scope.
 
-Apart from extension methods, MoreLINQ also offers regular static method
-that *generate* (instead of operating on) sequences, like `Unfold`,
-`Random`, `Sequence` and others. If you want to use these while statically
-importing other individual extension methods, you can do so via aliasing:
+Apart from extension methods, MoreLINQ also offers regular static method that
+*generate* (instead of operating on) sequences, like [`Unfold`][unfold],
+[`Random`][random], [`Sequence`][sequence] and others. If you want to use these
+while statically importing other individual extension methods, you can do so via
+aliasing:
 
 ```c#
 using static MoreLinq.Extensions.LagExtension;
@@ -54,7 +55,7 @@ extension methods as well as all the regular static methods on
 [lag]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lag.htm
 [lead]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Lead.htm
 [using-static]: https://docs.microsoft.com/en-us/dotnet/articles/csharp/whats-new/csharp-6#using-static
-[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip--3
+[netzip]: https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip#System_Linq_Enumerable_Zip__3_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEnumerable___1__System_Func___0___1___2__
 [zip]: https://morelinq.github.io/1.x/ref/api/html/M_MoreLinq_MoreEnumerable_Zip__3.htm
 [unfold]: https://morelinq.github.io/2.3/ref/api/html/M_MoreLinq_MoreEnumerable_Unfold__3.htm
 [random]: https://morelinq.github.io/2.0/ref/api/html/Overload_MoreLinq_MoreEnumerable_Random.htm
@@ -63,13 +64,8 @@ extension methods as well as all the regular static methods on
 
 ## Building
 
-To build MoreLINQ from sources, you will need:
-
-- [.NET Core 2.0 with SDK 2.1][dotnet-2.0-sdk-2.1]
-- [Mono][mono] 5.0 if building on other platforms than Windows
-
-Then run either `build.cmd` if building on Windows or `build.sh` if
-building on macOS or a Linux distribution supported by .NET Core.
+Run either `build.cmd` if building on Windows or `build.sh` if building on macOS
+or a [Linux distribution supported by .NET][dotnet-linux].
 
 Some code in the project is generated using [T4][t4] templates. To regenerate
 the code from modified templates, run `MoreLinq\tt.cmd` (Windows) or
@@ -79,13 +75,11 @@ Building the documentation is supported on Windows only and requires
 [Sandcastle Help File Builder (SHFB)][shfb]. Executing `builddocs.cmd`
 generates the documentation in the `docs/api` directory. It can be browsed
 locally using any HTTP server of static files, like
-[http-server][http-server].
+[dotnet-serve][dotnet-serve].
 
-
-[mono]: https://www.mono-project.com/
-[dotnet-2.0-sdk-2.1]: https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.1.2-sdk-download.md
-[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2017.12.30.2
-[http-server]: https://www.npmjs.com/package/http-server
+[dotnet-linux]: https://learn.microsoft.com/en-us/dotnet/core/install/linux
+[shfb]: https://github.com/EWSoftware/SHFB/releases/tag/v2022.12.30.0
+[dotnet-serve]: https://www.nuget.org/packages/dotnet-serve
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
@@ -148,7 +142,7 @@ the third-last element and so on.
 
 Batches the source sequence into sized buckets.
 
-This method has 2 overloads.
+This method has 4 overloads, 2 of which are experimental.
 
 ### Cartesian
 
@@ -174,8 +168,11 @@ first sequence has fewer, the same or more elements than the second sequence.
 
 Returns a sequence consisting of the head element and the given tail elements.
 
-This method is obsolete and will be removed in a future version. Use `Append`
-instead.
+This extension was rendered obsolete in version 3.0 and eventually removed in
+version 4.0. Use [`Append`][linq-append] from .NET instead that's been available
+since .NET Standard 1.6+, .NET Core 1.0+ and .NET Framework 4.7.1+.
+
+[linq-append]: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.append
 
 ### Consume
 
@@ -206,6 +203,12 @@ second-last element, two represents the third-last element and so on.
 Returns all distinct elements of the given source, where "distinctness" is
 determined via a projection and the default equality comparer for the
 projected type.
+
+This method has 2 overloads.
+
+### Duplicates
+
+Returns all duplicate elements of the given source.
 
 This method has 2 overloads.
 
@@ -364,14 +367,32 @@ Performs a left outer join between two sequences.
 
 This method has 4 overloads.
 
-### MaxBy
+### ~~MaxBy~~
+
+:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
 
 Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
 
-### MinBy
+### Maxima
+
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
+### ~~MinBy~~
+
+:warning: **This method is obsolete. Use [`Minima`](#minima) instead.**
+
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
+### Minima
 
 Returns the minima (minimal elements) of the given sequence, based on the
 given projection.
@@ -709,8 +730,7 @@ subset of the original
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
 
-This method is obsolete and will be removed in a future version. Use `Window`
-instead.
+This method was removed and has been superseded by [`Window`](#window) instead.
 
 ### WindowLeft
 
@@ -774,6 +794,14 @@ final result given the source item and completed task.
 Creates a sequence that lazily caches the source as it is iterated for the
 first time, reusing the cache thereafter for future re-iterations. If the
 source is already cached or buffered then it is returned verbatim.
+
+### Merge
+
+Concurrently merges all the elements of multiple asynchronous streams into a
+single asynchronous stream. An overload with an additional parameter specifies
+the maximum concurrent operations that may be in flight at any give time.
+
+This method has 2 overloads.
 
 ### TrySingle
 

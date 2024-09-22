@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     public static partial class MoreEnumerable
     {
@@ -42,7 +41,7 @@ namespace MoreLinq
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
         {
-            return Shuffle(source, new Random());
+            return Shuffle(source, GlobalRandom.Instance);
         }
 
         /// <summary>
@@ -70,11 +69,7 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (rand == null) throw new ArgumentNullException(nameof(rand));
 
-            return RandomSubsetImpl(source, rand, seq =>
-            {
-                var array = seq.ToArray();
-                return (array, array.Length);
-            });
+            return RandomSubsetImpl(source, rand, subsetSize: null);
         }
     }
 }

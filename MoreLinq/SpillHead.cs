@@ -98,7 +98,8 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.SpillHead((_, i) => i == 0,
-                                    default, h => h, (a, _) => a,
+                                    () => throw new UnreachableException(),
+                                    h => h, (a, _) => a,
                                     headerSelector,
                                     (h, e, _) => resultSelector(h, e));
         }
@@ -355,10 +356,10 @@ namespace MoreLinq
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
             return source.SpillHead(matcher,
-                                    null,
+                                    () => [],
                                     h => new List<TMatch> { h },
                                     (a, h) => { a.Add(h); return a; },
-                                    hs => headerSelector(hs ?? new List<TMatch>()),
+                                    hs => headerSelector(hs ?? []),
                                     resultSelector);
         }
 
@@ -399,7 +400,7 @@ namespace MoreLinq
             SpillHead<T, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, bool> predicate,
-                TState empty,
+                Func<TState> empty,
                 Func<T, TState> seeder,
                 Func<TState, T, TState> accumulator,
                 Func<TState, THead> headerSelector,
@@ -407,6 +408,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (empty == null) throw new ArgumentNullException(nameof(empty));
             if (seeder == null) throw new ArgumentNullException(nameof(seeder));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
@@ -455,7 +457,7 @@ namespace MoreLinq
             SpillHead<T, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, int, bool> predicate,
-                TState empty,
+                Func<TState> empty,
                 Func<T, TState> seeder,
                 Func<TState, T, TState> accumulator,
                 Func<TState, THead> headerSelector,
@@ -463,6 +465,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+            if (empty == null) throw new ArgumentNullException(nameof(empty));
             if (seeder == null) throw new ArgumentNullException(nameof(seeder));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
@@ -510,7 +513,7 @@ namespace MoreLinq
             SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, (bool, TMatch)> matcher,
-                TState empty,
+                Func<TState> empty,
                 Func<TMatch, TState> seeder,
                 Func<TState, TMatch, TState> accumulator,
                 Func<TState, THead> headerSelector,
@@ -518,6 +521,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (matcher == null) throw new ArgumentNullException(nameof(matcher));
+            if (empty == null) throw new ArgumentNullException(nameof(empty));
             if (seeder == null) throw new ArgumentNullException(nameof(seeder));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
@@ -567,7 +571,7 @@ namespace MoreLinq
             SpillHead<T, TMatch, TState, THead, TResult>(
                 this IEnumerable<T> source,
                 Func<T, int, (bool, TMatch)> matcher,
-                TState empty,
+                Func<TState> empty,
                 Func<TMatch, TState> seeder,
                 Func<TState, TMatch, TState> accumulator,
                 Func<TState, THead> headerSelector,
@@ -575,6 +579,7 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (matcher == null) throw new ArgumentNullException(nameof(matcher));
+            if (empty == null) throw new ArgumentNullException(nameof(empty));
             if (seeder == null) throw new ArgumentNullException(nameof(seeder));
             if (accumulator == null) throw new ArgumentNullException(nameof(accumulator));
             if (headerSelector == null) throw new ArgumentNullException(nameof(headerSelector));
@@ -587,7 +592,7 @@ namespace MoreLinq
                     yield break;
                 var i = 0;
                 var (span, fm) = matcher(e.Current, i);
-                var state = span ? seeder(fm) : empty;
+                var state = span ? seeder(fm) : empty();
                 if (span)
                 {
                     for (;;)

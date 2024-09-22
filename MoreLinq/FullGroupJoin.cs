@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     // Inspiration & credit: http://stackoverflow.com/a/13503860/6682
     static partial class MoreEnumerable
@@ -76,7 +75,7 @@ namespace MoreLinq
             IEnumerable<TSecond> second,
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             return FullGroupJoin(first, second, firstKeySelector, secondKeySelector, ValueTuple.Create, comparer);
         }
@@ -139,7 +138,7 @@ namespace MoreLinq
             Func<TFirst, TKey> firstKeySelector,
             Func<TSecond, TKey> secondKeySelector,
             Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
-            IEqualityComparer<TKey> comparer)
+            IEqualityComparer<TKey>? comparer)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
@@ -147,11 +146,17 @@ namespace MoreLinq
             if (secondKeySelector == null) throw new ArgumentNullException(nameof(secondKeySelector));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(comparer ?? EqualityComparer<TKey>.Default);
+            return _(first, second, firstKeySelector, secondKeySelector, resultSelector, comparer ?? EqualityComparer<TKey>.Default);
 
-            IEnumerable<TResult> _(IEqualityComparer<TKey> comparer)
+            static IEnumerable<TResult> _(
+                IEnumerable<TFirst> first,
+                IEnumerable<TSecond> second,
+                Func<TFirst, TKey> firstKeySelector,
+                Func<TSecond, TKey> secondKeySelector,
+                Func<TKey, IEnumerable<TFirst>, IEnumerable<TSecond>, TResult> resultSelector,
+                IEqualityComparer<TKey> comparer)
             {
-                var alookup = Lookup<TKey,TFirst>.CreateForJoin(first, firstKeySelector, comparer);
+                var alookup = Lookup<TKey, TFirst>.CreateForJoin(first, firstKeySelector, comparer);
                 var blookup = Lookup<TKey, TSecond>.CreateForJoin(second, secondKeySelector, comparer);
 
                 foreach (var a in alookup)
@@ -162,7 +167,7 @@ namespace MoreLinq
                     if (alookup.Contains(b.Key))
                         continue;
                     // We can skip the lookup because we are iterating over keys not found in the first sequence
-                    yield return resultSelector(b.Key, Enumerable.Empty<TFirst>(), b);
+                    yield return resultSelector(b.Key, [], b);
                 }
             }
         }

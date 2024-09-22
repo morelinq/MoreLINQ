@@ -17,7 +17,6 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -28,8 +27,8 @@ namespace MoreLinq.Test
         [Test]
         public void AggregateRightWithEmptySequence()
         {
-            Assert.Throws<InvalidOperationException>(
-                () => new int[0].AggregateRight((a, b) => a + b));
+            Assert.That(() => new int[0].AggregateRight((a, b) => a + b),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
@@ -47,9 +46,9 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.Sequence)]
         public void AggregateRight(SourceKind sourceKind)
         {
-            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToString()).ToSourceKind(sourceKind);
+            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToInvariantString()).ToSourceKind(sourceKind);
 
-            var result = enumerable.AggregateRight((a, b) => string.Format("({0}+{1})", a, b));
+            var result = enumerable.AggregateRight((a, b) => $"({a}+{b})");
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
@@ -61,7 +60,7 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightSeedWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (a, b) => b), Is.EqualTo(defaultValue));
+            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b), Is.EqualTo(defaultValue));
         }
 
         [Test]
@@ -78,7 +77,7 @@ namespace MoreLinq.Test
         public void AggregateRightSeed()
         {
             var result = Enumerable.Range(1, 4)
-                                   .AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b));
+                                   .AggregateRight("5", (a, b) => $"({a}+{b})");
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
@@ -90,14 +89,14 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightResultorWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (a, b) => b, a => a == defaultValue), Is.EqualTo(true));
+            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b, a => a == defaultValue), Is.EqualTo(true));
         }
 
         [Test]
         public void AggregateRightResultor()
         {
             var result = Enumerable.Range(1, 4)
-                                   .AggregateRight("5", (a, b) => string.Format("({0}+{1})", a, b), a => a.Length);
+                                   .AggregateRight("5", (a, b) => $"({a}+{b})", a => a.Length);
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))".Length));
         }

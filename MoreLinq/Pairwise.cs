@@ -53,7 +53,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(source, resultSelector);
+
+            static IEnumerable<TResult> _(IEnumerable<TSource> source, Func<TSource, TSource, TResult> resultSelector)
             {
                 using var e = source.GetEnumerator();
 

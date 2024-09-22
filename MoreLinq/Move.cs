@@ -58,34 +58,33 @@ namespace MoreLinq
                 return source;
 
             return toIndex < fromIndex
-                 ? _(toIndex, fromIndex - toIndex, count)
-                 : _(fromIndex, count, toIndex - fromIndex);
+                 ? _(source, toIndex, fromIndex - toIndex, count)
+                 : _(source, fromIndex, count, toIndex - fromIndex);
 
-            IEnumerable<T> _(int bufferStartIndex, int bufferSize, int bufferYieldIndex)
+            static IEnumerable<T> _(IEnumerable<T> source, int bufferStartIndex, int bufferSize, int bufferYieldIndex)
             {
-                bool hasMore = true;
+                var hasMore = true;
                 bool MoveNext(IEnumerator<T> e) => hasMore && (hasMore = e.MoveNext());
 
-                using (var e = source.GetEnumerator())
-                {
-                    for (var i = 0; i < bufferStartIndex && MoveNext(e); i++)
-                        yield return e.Current;
+                using var e = source.GetEnumerator();
 
-                    var buffer = new T[bufferSize];
-                    var length = 0;
+                for (var i = 0; i < bufferStartIndex && MoveNext(e); i++)
+                    yield return e.Current;
 
-                    for (; length < bufferSize && MoveNext(e); length++)
-                        buffer[length] = e.Current;
+                var buffer = new T[bufferSize];
+                var length = 0;
 
-                    for (var i = 0; i < bufferYieldIndex && MoveNext(e); i++)
-                        yield return e.Current;
+                for (; length < bufferSize && MoveNext(e); length++)
+                    buffer[length] = e.Current;
 
-                    for (var i = 0; i < length; i++)
-                        yield return buffer[i];
+                for (var i = 0; i < bufferYieldIndex && MoveNext(e); i++)
+                    yield return e.Current;
 
-                    while (MoveNext(e))
-                        yield return e.Current;
-                }
+                for (var i = 0; i < length; i++)
+                    yield return buffer[i];
+
+                while (MoveNext(e))
+                    yield return e.Current;
             }
         }
     }

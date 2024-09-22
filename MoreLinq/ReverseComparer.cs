@@ -19,18 +19,18 @@ namespace MoreLinq
 {
     using System.Collections.Generic;
 
-    sealed class ReverseComparer<T> : IComparer<T>
+    sealed class ReverseComparer<T>(IComparer<T>? underlying) : IComparer<T>
     {
-        readonly IComparer<T> _underlying;
+        readonly IComparer<T> underlying = underlying ?? Comparer<T>.Default;
 
-        public ReverseComparer(IComparer<T> underlying)
+        public int Compare
+#if NETCOREAPP3_1_OR_GREATER
+            (T? x, T? y)
+#else
+            (T x, T y)
+#endif
         {
-            _underlying = underlying ?? Comparer<T>.Default;
-        }
-
-        public int Compare(T x, T y)
-        {
-            var result = _underlying.Compare(x, y);
+            var result = this.underlying.Compare(x, y);
             return result < 0 ? 1 : result > 0 ? -1 : 0;
         }
     }

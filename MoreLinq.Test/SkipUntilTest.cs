@@ -48,7 +48,7 @@ namespace MoreLinq.Test
         [Test]
         public void SkipUntilEvaluatesSourceLazily()
         {
-            new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
+            _ = new BreakingSequence<string>().SkipUntil(x => x.Length == 0);
         }
 
         [Test]
@@ -77,7 +77,8 @@ namespace MoreLinq.Test
         [Test, TestCaseSource(nameof(TestData))]
         public int[] TestSkipUntil(int[] source, int min)
         {
-            return source.AsTestingSequence().SkipUntil(v => v >= min).ToArray();
+            using var ts = source.AsTestingSequence();
+            return ts.SkipUntil(v => v >= min).ToArray();
         }
     }
 }

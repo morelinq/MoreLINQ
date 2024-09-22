@@ -35,9 +35,13 @@ namespace MoreLinq
         /// This evaluates the input sequence completely.
         /// </remarks>
 
+#if NETSTANDARD2_1 || NET472_OR_GREATER || NETCOREAPP2_0_OR_GREATER
+        public static HashSet<TSource> ToHashSet<TSource>(IEnumerable<TSource> source)
+#else
         public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source)
+#endif
         {
-            return source.ToHashSet(null);
+            return ToHashSet(source, null);
         }
 
         /// <summary>
@@ -53,7 +57,11 @@ namespace MoreLinq
         /// This evaluates the input sequence completely.
         /// </remarks>
 
-        public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource> comparer)
+#if NETSTANDARD2_1 || NET472_OR_GREATER || NETCOREAPP2_0_OR_GREATER
+        public static HashSet<TSource> ToHashSet<TSource>(IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
+#else
+        public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
+#endif
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             return new HashSet<TSource>(source, comparer);

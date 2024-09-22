@@ -74,7 +74,7 @@ namespace MoreLinq
         /// <summary>
         /// Returns a sequence with each missing element in the source replaced
         /// with one based on the previous non-missing element seen in that
-        /// sequence. Additional parameters specifiy two functions, one used to
+        /// sequence. Additional parameters specify two functions, one used to
         /// determine if an element is considered missing or not and another
         /// to provide the replacement for the missing element.
         /// </summary>
@@ -104,24 +104,23 @@ namespace MoreLinq
             return FillForwardImpl(source, predicate, fillSelector);
         }
 
-        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T> fillSelector)
+        static IEnumerable<T> FillForwardImpl<T>(IEnumerable<T> source, Func<T, bool> predicate, Func<T, T, T>? fillSelector)
         {
-            var seeded = false;
-            var seed = default(T);
+            (bool, T) seed = default;
+
             foreach (var item in source)
             {
                 if (predicate(item))
                 {
-                    yield return seeded
+                    yield return seed is (true, var theSeed)
                                ? fillSelector != null
-                                 ? fillSelector(item, seed)
-                                 : seed
+                                 ? fillSelector(item, theSeed)
+                                 : theSeed
                                : item;
                 }
                 else
                 {
-                    seeded = true;
-                    seed = item;
+                    seed = (true, item);
                     yield return item;
                 }
             }

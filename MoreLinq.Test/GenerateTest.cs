@@ -41,7 +41,7 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateIsLazy()
         {
-            MoreEnumerable.Generate(0, BreakingFunc.Of<int, int>());
+            _ = MoreEnumerable.Generate(0, BreakingFunc.Of<int, int>());
         }
 
         [Test]
@@ -55,13 +55,13 @@ namespace MoreLinq.Test
         [Test]
         public void GenerateByIndexIsLazy()
         {
-            MoreEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
+            _ = MoreEnumerable.GenerateByIndex(BreakingFunc.Of<int, int>());
         }
 
         [Test]
         public void GenerateByIndex()
         {
-            var sequence = MoreEnumerable.GenerateByIndex(x => x.ToString()).Take(3);
+            var sequence = MoreEnumerable.GenerateByIndex(x => x.ToInvariantString()).Take(3);
             sequence.AssertSequenceEqual("0", "1", "2");
         }
     }

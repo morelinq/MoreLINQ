@@ -34,66 +34,62 @@ namespace MoreLinq.Experimental
         /// Type of elements in <paramref name="source"/>.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <returns>
-        /// Returns a sequence that corresponds to a cached version of the
-        /// input sequence.</returns>
+        /// Returns a sequence that corresponds to a cached version of the input
+        /// sequence.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source"/> is <see langword="null"/>.
+        /// </exception>
         /// <remarks>
         /// The returned <see cref="IEnumerable{T}"/> will cache items from
         /// <paramref name="source"/> in a thread-safe manner. Each thread can
         /// call its <see cref="IEnumerable{T}.GetEnumerator"/> to acquire an
-        /// iterator  but the same iterator should not be used simultanesouly
-        /// from multiple threads. The sequence supplied in
-        /// <paramref name="source"/> is not expected to be thread-safe but it
-        /// is required to be thread-agnostic because different threads
-        /// (though never simultaneously) may iterate over the sequence.
+        /// iterator  but the same iterator should not be used simultaneously
+        /// from multiple threads. The sequence supplied in <paramref
+        /// name="source"/> is not expected to be thread-safe but it is required
+        /// to be thread-agnostic because different threads (though never
+        /// simultaneously) may iterate over the sequence.
         /// </remarks>
 
-        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source)
-        {
-            switch (source)
+        public static IEnumerable<T> Memoize<T>(this IEnumerable<T> source) =>
+            source switch
             {
-                case null: throw new ArgumentNullException(nameof(source));
-                case ICollection<T>         _: // ...
-                case IReadOnlyCollection<T> _: // ...
-                case MemoizedEnumerable<T>  _: return source;
-                default: return new MemoizedEnumerable<T>(source);
-            }
-        }
+                null => throw new ArgumentNullException(nameof(source)),
+                ICollection<T> => source,
+                IReadOnlyCollection<T> => source,
+                MemoizedEnumerable<T> => source,
+                _ => new MemoizedEnumerable<T>(source),
+            };
     }
 
-    sealed class MemoizedEnumerable<T> : IEnumerable<T>, IDisposable
+    sealed class MemoizedEnumerable<T>(IEnumerable<T> sequence) : IEnumerable<T>, IDisposable
     {
-        List<T> _cache;
-        readonly object _locker;
-        readonly IEnumerable<T> _source;
-        IEnumerator<T> _sourceEnumerator;
-        int? _errorIndex;
-        ExceptionDispatchInfo _error;
-
-        public MemoizedEnumerable(IEnumerable<T> sequence)
-        {
-            _source = sequence ?? throw new ArgumentNullException(nameof(sequence));
-            _locker = new object();
-        }
+        List<T>? cache;
+        readonly object locker = new();
+        readonly IEnumerable<T> source = sequence ?? throw new ArgumentNullException(nameof(sequence));
+        IEnumerator<T>? sourceEnumerator;
+        int? errorIndex;
+        ExceptionDispatchInfo? error;
 
         public IEnumerator<T> GetEnumerator()
         {
-            if (_cache == null)
+            if (this.cache == null)
             {
-                lock (_locker)
+                lock (this.locker)
                 {
-                    if (_cache == null)
+                    if (this.cache == null)
                     {
-                        _error?.Throw();
+                        this.error?.Throw();
 
                         try
                         {
                             var cache = new List<T>(); // for exception safety, allocate then...
-                            _sourceEnumerator = _source.GetEnumerator(); // (because this can fail)
-                            _cache = cache; // ...commit to state
+                            this.sourceEnumerator = this.source.GetEnumerator(); // (because this can fail)
+                            this.cache = cache; // ...commit to state
                         }
                         catch (Exception ex)
                         {
-                            _error = ExceptionDispatchInfo.Capture(ex);
+                            this.error = ExceptionDispatchInfo.Capture(ex);
                             throw;
                         }
                     }
@@ -107,46 +103,46 @@ namespace MoreLinq.Experimental
                 while (true)
                 {
                     T current;
-                    lock (_locker)
+                    lock (this.locker)
                     {
-                        if (_cache == null) // Cache disposed during iteration?
+                        if (this.cache == null) // Cache disposed during iteration?
                             throw new ObjectDisposedException(nameof(MemoizedEnumerable<T>));
 
-                        if (index >= _cache.Count)
+                        if (index >= this.cache.Count)
                         {
-                            if (index == _errorIndex)
-                                _error.Throw();
+                            if (index == this.errorIndex)
+                                Assume.NotNull(this.error).Throw();
 
-                            if (_sourceEnumerator == null)
+                            if (this.sourceEnumerator == null)
                                 break;
 
                             bool moved;
                             try
                             {
-                                moved = _sourceEnumerator.MoveNext();
+                                moved = this.sourceEnumerator.MoveNext();
                             }
                             catch (Exception ex)
                             {
-                                _error = ExceptionDispatchInfo.Capture(ex);
-                                _errorIndex = index;
-                                _sourceEnumerator.Dispose();
-                                _sourceEnumerator = null;
+                                this.error = ExceptionDispatchInfo.Capture(ex);
+                                this.errorIndex = index;
+                                this.sourceEnumerator.Dispose();
+                                this.sourceEnumerator = null;
                                 throw;
                             }
 
                             if (moved)
                             {
-                                _cache.Add(_sourceEnumerator.Current);
+                                this.cache.Add(this.sourceEnumerator.Current);
                             }
                             else
                             {
-                                _sourceEnumerator.Dispose();
-                                _sourceEnumerator = null;
+                                this.sourceEnumerator.Dispose();
+                                this.sourceEnumerator = null;
                                 break;
                             }
                         }
 
-                        current = _cache[index];
+                        current = this.cache[index];
                     }
 
                     yield return current;
@@ -159,13 +155,13 @@ namespace MoreLinq.Experimental
 
         public void Dispose()
         {
-            lock (_locker)
+            lock (this.locker)
             {
-                _error = null;
-                _cache = null;
-                _errorIndex = null;
-                _sourceEnumerator?.Dispose();
-                _sourceEnumerator = null;
+                this.error = null;
+                this.cache = null;
+                this.errorIndex = null;
+                this.sourceEnumerator?.Dispose();
+                this.sourceEnumerator = null;
             }
         }
     }

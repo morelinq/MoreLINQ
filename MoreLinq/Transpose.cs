@@ -56,9 +56,13 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
 
-            return _(); IEnumerable<IEnumerable<T>> _()
+            return _(source);
+
+            static IEnumerable<IEnumerable<T>> _(IEnumerable<IEnumerable<T>> source)
             {
-                var enumerators = source.Select(e => e.GetEnumerator()).Acquire();
+#pragma warning disable IDE0007 // Use implicit type (false positive)
+                IEnumerator<T>?[] enumerators = source.Select(e => e.GetEnumerator()).Acquire();
+#pragma warning restore IDE0007 // Use implicit type
 
                 try
                 {
@@ -68,16 +72,17 @@ namespace MoreLinq
                         var count = 0;
                         for (var i = 0; i < enumerators.Length; i++)
                         {
-                            if (enumerators[i] == null)
+                            var enumerator = enumerators[i];
+                            if (enumerator == null)
                                 continue;
 
-                            if (enumerators[i].MoveNext())
+                            if (enumerator.MoveNext())
                             {
-                                column[count++] = enumerators[i].Current;
+                                column[count++] = enumerator.Current;
                             }
                             else
                             {
-                                enumerators[i].Dispose();
+                                enumerator.Dispose();
                                 enumerators[i] = null;
                             }
                         }

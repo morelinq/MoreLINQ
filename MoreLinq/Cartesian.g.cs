@@ -15,6 +15,16 @@
 // limitations under the License.
 #endregion
 
+#nullable enable // required for auto-generated sources (see below why)
+
+// > Older code generation strategies may not be nullable aware. Setting the
+// > project-level nullable context to "enable" could result in many
+// > warnings that a user is unable to fix. To support this scenario any syntax
+// > tree that is determined to be generated will have its nullable state
+// > implicitly set to "disable", regardless of the overall project state.
+//
+// Source: https://github.com/dotnet/roslyn/blob/70e158ba6c2c99bd3c3fc0754af0dbf82a6d353d/docs/features/nullable-reference-types.md#generated-code
+
 namespace MoreLinq
 {
     using System;
@@ -59,7 +69,12 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                Func<T1, T2, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
 
@@ -113,7 +128,13 @@ namespace MoreLinq
             if (third == null) throw new ArgumentNullException(nameof(third));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, third, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                Func<T1, T2, T3, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
                 IEnumerable<T3> thirdMemo;
@@ -175,7 +196,14 @@ namespace MoreLinq
             if (fourth == null) throw new ArgumentNullException(nameof(fourth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, third, fourth, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                Func<T1, T2, T3, T4, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
                 IEnumerable<T3> thirdMemo;
@@ -245,7 +273,15 @@ namespace MoreLinq
             if (fifth == null) throw new ArgumentNullException(nameof(fifth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, third, fourth, fifth, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                Func<T1, T2, T3, T4, T5, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
                 IEnumerable<T3> thirdMemo;
@@ -323,7 +359,16 @@ namespace MoreLinq
             if (sixth == null) throw new ArgumentNullException(nameof(sixth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, third, fourth, fifth, sixth, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                Func<T1, T2, T3, T4, T5, T6, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
                 IEnumerable<T3> thirdMemo;
@@ -409,7 +454,17 @@ namespace MoreLinq
             if (seventh == null) throw new ArgumentNullException(nameof(seventh));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, third, fourth, fifth, sixth, seventh, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh,
+                Func<T1, T2, T3, T4, T5, T6, T7, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
                 IEnumerable<T3> thirdMemo;
@@ -503,7 +558,18 @@ namespace MoreLinq
             if (eighth == null) throw new ArgumentNullException(nameof(eighth));
             if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-            return _(); IEnumerable<TResult> _()
+            return _(first, second, third, fourth, fifth, sixth, seventh, eighth, resultSelector);
+
+            static IEnumerable<TResult> _(
+                IEnumerable<T1> first,
+                IEnumerable<T2> second,
+                IEnumerable<T3> third,
+                IEnumerable<T4> fourth,
+                IEnumerable<T5> fifth,
+                IEnumerable<T6> sixth,
+                IEnumerable<T7> seventh,
+                IEnumerable<T8> eighth,
+                Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> resultSelector)
             {
                 IEnumerable<T2> secondMemo;
                 IEnumerable<T3> thirdMemo;

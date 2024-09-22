@@ -26,19 +26,19 @@ namespace MoreLinq.Test
         [Test]
         public void TraverseDepthFirstFNullGenerator()
         {
-            MoreEnumerable.TraverseDepthFirst(new object(), o => new BreakingSequence<object>());
+            _ = MoreEnumerable.TraverseDepthFirst(new object(), _ => new BreakingSequence<object>());
         }
 
         [Test]
         public void TraverseBreadthFirstIsStreaming()
         {
-            MoreEnumerable.TraverseBreadthFirst(new object(), o => new BreakingSequence<object>());
+            _ = MoreEnumerable.TraverseBreadthFirst(new object(), _ => new BreakingSequence<object>());
         }
 
         [Test]
         public void TraverseDepthFirstPreservesChildrenOrder()
         {
-            var res = MoreEnumerable.TraverseDepthFirst(0, i => i == 0 ? Enumerable.Range(1, 10) : Enumerable.Empty<int>());
+            var res = MoreEnumerable.TraverseDepthFirst(0, i => i == 0 ? Enumerable.Range(1, 10) : []);
             res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         }
 
@@ -46,26 +46,19 @@ namespace MoreLinq.Test
         [Test]
         public void TraverseBreadthFirstPreservesChildrenOrder()
         {
-            var res = MoreEnumerable.TraverseBreadthFirst(0, i => i == 0 ? Enumerable.Range(1, 10) : Enumerable.Empty<int>());
+            var res = MoreEnumerable.TraverseBreadthFirst(0, i => i == 0 ? Enumerable.Range(1, 10) : []);
             res.AssertSequenceEqual(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         }
 
-        class Tree<T>
+        sealed class Tree<T>(T value, IEnumerable<Tree<T>> children)
         {
-            public T Value { get; }
-            public IEnumerable<Tree<T>> Children { get; }
-
-            public Tree(T value, IEnumerable<Tree<T>> children)
-            {
-                Value = value;
-                Children = children;
-            }
+            public T Value { get; } = value;
+            public IEnumerable<Tree<T>> Children { get; } = children;
         }
 
         static class Tree
         {
-            public static Tree<T> New<T>(T value, params Tree<T>[] children) =>
-                new Tree<T>(value, children);
+            public static Tree<T> New<T>(T value, params Tree<T>[] children) => new(value, children);
         }
 
         [Test]

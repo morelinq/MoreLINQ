@@ -20,12 +20,34 @@ namespace MoreLinq
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using static Diagnostics;
 
     static partial class MoreEnumerable
     {
+        /// <summary>
+        /// Converts a sequence to a <see cref="DataTable"/> object.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <returns>
+        /// A <see cref="DataTable"/> representing the source.
+        /// </returns>
+        /// <remarks>This operator uses immediate execution.</remarks>
+
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        public static DataTable
+            ToDataTable<[DynamicallyAccessedMembers(DynamicallyAccessedPublicPropertiesOrFields)] T>(
+            this IEnumerable<T> source)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            return source.ToDataTable(new DataTable());
+        }
+
         /// <summary>
         /// Appends elements in the sequence as rows of a given <see cref="DataTable"/> object.
         /// </summary>
@@ -38,10 +60,24 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table)
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        public static TTable
+            ToDataTable<[DynamicallyAccessedMembers(DynamicallyAccessedPublicPropertiesOrFields)] T,
+                        TTable>(this IEnumerable<T> source, TTable table)
             where TTable : DataTable
         {
-            return ToDataTable(source, table, null);
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (table == null) throw new ArgumentNullException(nameof(table));
+
+            const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance;
+
+            var members = typeof(T).GetProperties(bindingFlags)
+                                   .Where(p => p.CanRead && p.GetIndexParameters().Length == 0)
+                                   .Cast<MemberInfo>()
+                                   .Concat(typeof(T).GetFields(bindingFlags))
+                                   .ToArray();
+
+            return ToDataTable(source, table, members);
         }
 
         /// <summary>
@@ -57,24 +93,10 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object>>[] expressions)
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        public static DataTable ToDataTable<T>(this IEnumerable<T> source, params Expression<Func<T, object?>>[] expressions)
         {
             return ToDataTable(source, new DataTable(), expressions);
-        }
-
-        /// <summary>
-        /// Converts a sequence to a <see cref="DataTable"/> object.
-        /// </summary>
-        /// <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <param name="source">The source.</param>
-        /// <returns>
-        /// A <see cref="DataTable"/> representing the source.
-        /// </returns>
-        /// <remarks>This operator uses immediate execution.</remarks>
-
-        public static DataTable ToDataTable<T>(this IEnumerable<T> source)
-        {
-            return ToDataTable(source, new DataTable());
         }
 
         /// <summary>
@@ -92,15 +114,23 @@ namespace MoreLinq
         /// </returns>
         /// <remarks>This operator uses immediate execution.</remarks>
 
-        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object>>[] expressions)
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        public static TTable ToDataTable<T, TTable>(this IEnumerable<T> source, TTable table, params Expression<Func<T, object?>>[] expressions)
             where TTable : DataTable
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (table == null) throw new ArgumentNullException(nameof(table));
+            if (expressions == null) throw new ArgumentNullException(nameof(expressions));
 
-            var members = PrepareMemberInfos(expressions).ToArray();
-            members = BuildOrBindSchema(table, members);
-            var shredder = CreateShredder<T>(members);
+            return ToDataTable(source, table, PrepareMemberInfos(expressions));
+        }
+
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        static TTable ToDataTable<T, TTable>(IEnumerable<T> source, TTable table, MemberInfo[] members)
+            where TTable : DataTable
+        {
+            var boundMembers = BuildOrBindSchema(table, members);
+            var shredder = CreateShredder<T>(boundMembers);
 
             //
             // Builds rows out of elements in the sequence and
@@ -126,20 +156,10 @@ namespace MoreLinq
             return table;
         }
 
-        static IEnumerable<MemberInfo> PrepareMemberInfos<T>(ICollection<Expression<Func<T, object>>> expressions)
+        static MemberInfo[] PrepareMemberInfos<T>(ICollection<Expression<Func<T, object?>>> expressions)
         {
-            //
-            // If no lambda expressions supplied then reflect them off the source element type.
-            //
-
-            if (expressions == null || expressions.Count == 0)
-            {
-                return from m in typeof(T).GetMembers(BindingFlags.Public | BindingFlags.Instance)
-                       where m.MemberType == MemberTypes.Field
-                          || m is PropertyInfo p && p.CanRead
-                                                 && p.GetIndexParameters().Length == 0
-                       select m;
-            }
+            if (expressions.Count == 0)
+                return [];
 
             //
             // Ensure none of the expressions is null.
@@ -149,26 +169,25 @@ namespace MoreLinq
                 throw new ArgumentException("One of the supplied expressions was null.", nameof(expressions));
             try
             {
-                return expressions.Select(GetAccessedMember);
+                return expressions.Select(GetAccessedMember).ToArray();
             }
             catch (ArgumentException e)
             {
                 throw new ArgumentException("One of the supplied expressions is not allowed.", nameof(expressions), e);
             }
 
-            MemberInfo GetAccessedMember(LambdaExpression lambda)
+            static MemberInfo GetAccessedMember(LambdaExpression lambda)
             {
                 var body = lambda.Body;
 
                 // If it's a field access, boxing was used, we need the field
-                if (body.NodeType == ExpressionType.Convert || body.NodeType == ExpressionType.ConvertChecked)
+                if (body.NodeType is ExpressionType.Convert or ExpressionType.ConvertChecked)
                     body = ((UnaryExpression)body).Operand;
 
                 // Check if the member expression is valid and is a "first level"
                 // member access e.g. not a.b.c
-                return body is MemberExpression memberExpression
-                       && memberExpression.Expression.NodeType == ExpressionType.Parameter
-                     ? memberExpression.Member
+                return body is MemberExpression { Expression.NodeType: ExpressionType.Parameter, Member: var member }
+                     ? member
                      : throw new ArgumentException($"Illegal expression: {lambda}", nameof(lambda));
             }
         }
@@ -178,7 +197,8 @@ namespace MoreLinq
         /// columns for which there is no source member supplying a value.
         /// </remarks>
 
-        static MemberInfo[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
+        [RequiresUnreferencedCode(RequiresUnreferencedCodeMessage)]
+        static MemberInfo?[] BuildOrBindSchema(DataTable table, MemberInfo[] members)
         {
             //
             // Retrieve member information needed to
@@ -186,20 +206,6 @@ namespace MoreLinq
             //
 
             var columns = table.Columns;
-
-            var schemas = from m in members
-                          let type = m.MemberType == MemberTypes.Property
-                                   ? ((PropertyInfo) m).PropertyType
-                                   : ((FieldInfo) m).FieldType
-                          select new
-                          {
-                              Member = m,
-                              Type = type.IsGenericType
-                                     && typeof(Nullable<>) == type.GetGenericTypeDefinition()
-                                   ? type.GetGenericArguments()[0]
-                                   : type,
-                              Column = columns[m.Name],
-                          };
 
             //
             // If the table has no columns then build the schema.
@@ -209,32 +215,78 @@ namespace MoreLinq
 
             if (columns.Count == 0)
             {
-                columns.AddRange(schemas.Select(m => new DataColumn(m.Member.Name, m.Type)).ToArray());
+                foreach (var member in members)
+                    _ = columns.Add(member.Name, GetElementaryTypeOfPropertyOrField(member));
+
+                return members;
             }
-            else
+
+            var columnMembers = new MemberInfo[columns.Count];
+
+            foreach (var member in members)
             {
-                members = new MemberInfo[columns.Count];
+                var column = columns[member.Name] ?? throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
 
-                foreach (var info in schemas)
-                {
-                    var member = info.Member;
-                    var column = info.Column;
+                if (GetElementaryTypeOfPropertyOrField(member) is var type && type != column.DataType)
+                    throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {type} when it is {column.DataType}.", nameof(table));
 
-                    if (column == null)
-                        throw new ArgumentException($"Column named '{member.Name}' is missing.", nameof(table));
-
-                    if (info.Type != column.DataType)
-                        throw new ArgumentException($"Column named '{member.Name}' has wrong data type. It should be {info.Type} when it is {column.DataType}.", nameof(table));
-
-                    members[column.Ordinal] = member;
-                }
+                columnMembers[column.Ordinal] = member;
             }
 
-            return members;
+            return columnMembers;
+
+            static Type GetElementaryTypeOfPropertyOrField(MemberInfo member) =>
+                (member.MemberType == MemberTypes.Property ? ((PropertyInfo)member).PropertyType
+                                                           : ((FieldInfo)member).FieldType)
+                switch
+                {
+                    var type when Nullable.GetUnderlyingType(type) is { } ut => ut,
+                    var type => type,
+                };
         }
 
-        static Func<T, object[]> CreateShredder<T>(IEnumerable<MemberInfo> members)
+        [UnconditionalSuppressMessage("Aot", "IL3050:RequiresDynamicCode",
+            Justification = "Falls back to reflection-based member access at run-time if the CLR " +
+                            "version does not support dynamic code generation.")]
+        static Func<T, object?[]> CreateShredder<T>(MemberInfo?[] members)
         {
+#if DYNAMIC_CODE_FALLBACK
+
+            //
+            // If the runtime does not support dynamic code generation, then
+            // fall back to reflection-based member access at run-time.
+            //
+            // See also: https://github.com/dotnet/runtime/issues/17973#issuecomment-1330799386
+            //
+
+            if (!System.Runtime.CompilerServices.RuntimeFeature.IsDynamicCodeSupported)
+            {
+                return obj =>
+                {
+                    var values = new object?[members.Length];
+
+                    for (var i = 0; i < members.Length; i++)
+                    {
+                        var member = members[i];
+                        values[i] = member switch
+                        {
+                            null => null,
+                            PropertyInfo pi => pi.GetValue(obj),
+                            FieldInfo fi => fi.GetValue(obj),
+                            _ => throw new UnreachableException(),
+                        };
+                    }
+
+                    return values;
+                };
+            }
+#endif
+
+            //
+            // Otherwise compile a lambda expression that will extract the
+            // values of the specified members from an object instance.
+            //
+
             var parameter = Expression.Parameter(typeof(T), "e");
 
             //
@@ -249,7 +301,7 @@ namespace MoreLinq
 
             var array = Expression.NewArrayInit(typeof(object), initializers);
 
-            var lambda = Expression.Lambda<Func<T, object[]>>(array, parameter);
+            var lambda = Expression.Lambda<Func<T, object?[]>>(array, parameter);
 
             return lambda.Compile();
 
@@ -259,5 +311,28 @@ namespace MoreLinq
                 return Expression.Convert(access, typeof(object));
             }
         }
+    }
+
+    namespace Extensions
+    {
+        partial class ToDataTableExtension
+        {
+            internal const DynamicallyAccessedMemberTypes DynamicallyAccessedPublicPropertiesOrFields
+                = DynamicallyAccessedMemberTypes.PublicProperties |
+                  DynamicallyAccessedMemberTypes.PublicFields;
+
+            internal const string RequiresUnreferencedCodeMessage =
+                "This method uses reflection to access public properties and fields of the source " +
+                "type, and in turn the types of those properties and fields. That latter could be " +
+                "problematic and require root descriptors for some custom and complex types " +
+                "(although columns usually store simple, scalar types). For more, see: " +
+                "https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/trimming-options#root-descriptors";
+        }
+    }
+
+    file static class Diagnostics
+    {
+        public const DynamicallyAccessedMemberTypes DynamicallyAccessedPublicPropertiesOrFields = MoreLinq.Extensions.ToDataTableExtension.DynamicallyAccessedPublicPropertiesOrFields;
+        public const string RequiresUnreferencedCodeMessage = MoreLinq.Extensions.ToDataTableExtension.RequiresUnreferencedCodeMessage;
     }
 }

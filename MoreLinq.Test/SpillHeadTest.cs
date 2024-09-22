@@ -97,7 +97,7 @@ namespace MoreLinq.Test
                                               "foo", "bar", "baz");
 
             var result =  ts.SpillHead(h => Regex.IsMatch(h, "^head[0-9]$"),
-                                       Enumerable.Empty<string>(),
+                                       () => [],
                                        MoreEnumerable.Return,
                                        (hs, h) => hs.Append(h),
                                        hs => string.Join("|", hs),
@@ -117,7 +117,7 @@ namespace MoreLinq.Test
             using var words = TestingSequence.Of("foo", "bar", "baz");
             var result = words.SpillHead(e => e == "head",
                                          hs => hs.Count,
-                                         (hc, e) => new { HeadCount = 0, Data = e });
+                                         (hc, e) => new { HeadCount = hc, Data = e });
 
             Assert.That(result, Is.EqualTo(new[]
             {

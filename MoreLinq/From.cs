@@ -36,9 +36,13 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(Func<T> function)
         {
-            return _(); IEnumerable<T> _()
+            return _(function);
+
+            static IEnumerable<T> _(Func<T> function)
             {
+#pragma warning disable CA1062 // Validate arguments of public methods
                 yield return function();
+#pragma warning restore CA1062 // Validate arguments of public methods
             }
         }
 
@@ -57,10 +61,14 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2)
         {
-            return _(); IEnumerable<T> _()
+            return _(function1, function2);
+
+            static IEnumerable<T> _(Func<T> function1, Func<T> function2)
             {
+#pragma warning disable CA1062 // Validate arguments of public methods
                 yield return function1();
                 yield return function2();
+#pragma warning restore CA1062 // Validate arguments of public methods
             }
         }
 
@@ -80,11 +88,15 @@ namespace MoreLinq
 
         public static IEnumerable<T> From<T>(Func<T> function1, Func<T> function2, Func<T> function3)
         {
-            return _(); IEnumerable<T> _()
+            return _(function1, function2, function3);
+
+            static IEnumerable<T> _(Func<T> function1, Func<T> function2, Func<T> function3)
             {
+#pragma warning disable CA1062 // Validate arguments of public methods
                 yield return function1();
                 yield return function2();
                 yield return function3();
+#pragma warning restore CA1062 // Validate arguments of public methods
             }
         }
 

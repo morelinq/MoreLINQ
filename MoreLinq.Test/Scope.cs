@@ -19,20 +19,9 @@ namespace MoreLinq.Test
 {
     using System;
 
-    abstract class Scope<T> : IDisposable
+    abstract class Scope<T>(T current) : IDisposable
     {
-        readonly T _old;
-
-        protected Scope(T current)
-        {
-            _old = current;
-        }
-
-        public virtual void Dispose()
-        {
-            Restore(_old);
-        }
-
+        public virtual void Dispose() => Restore(current);
         protected abstract void Restore(T old);
     }
 }

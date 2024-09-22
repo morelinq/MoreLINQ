@@ -22,6 +22,8 @@
 
 // https://github.com/atifaziz/Delegating
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+
 namespace Delegating
 {
     using System;
@@ -33,44 +35,33 @@ namespace Delegating
             new DelegatingDisposable(delegatee);
 
         public static IObserver<T> Observer<T>(Action<T> onNext,
-                                               Action<Exception> onError = null,
-                                               Action onCompleted = null) =>
+                                               Action<Exception>? onError = null,
+                                               Action? onCompleted = null) =>
             new DelegatingObserver<T>(onNext, onError, onCompleted);
     }
 
-    sealed class DelegatingDisposable : IDisposable
+    sealed class DelegatingDisposable(Action delegatee) : IDisposable
     {
-        Action _delegatee;
-
-        public DelegatingDisposable(Action delegatee) =>
-            _delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
+        Action? delegatee = delegatee ?? throw new ArgumentNullException(nameof(delegatee));
 
         public void Dispose()
         {
-            var delegatee = _delegatee;
-            if (delegatee == null || Interlocked.CompareExchange(ref _delegatee, null, delegatee) != delegatee)
+            var delegatee = this.delegatee;
+            if (delegatee == null || Interlocked.CompareExchange(ref this.delegatee, null, delegatee) != delegatee)
                 return;
             delegatee();
         }
     }
 
-    sealed class DelegatingObserver<T> : IObserver<T>
+    sealed class DelegatingObserver<T>(Action<T> onNext,
+                                       Action<Exception>? onError = null,
+                                       Action? onCompleted = null) :
+        IObserver<T>
     {
-        readonly Action<T> _onNext;
-        readonly Action<Exception> _onError;
-        readonly Action _onCompleted;
+        readonly Action<T> onNext = onNext ?? throw new ArgumentNullException(nameof(onNext));
 
-        public DelegatingObserver(Action<T> onNext,
-                                  Action<Exception> onError = null,
-                                  Action onCompleted = null)
-        {
-            _onNext = onNext ?? throw new ArgumentNullException(nameof(onNext));
-            _onError = onError;
-            _onCompleted = onCompleted;
-        }
-
-        public void OnCompleted() => _onCompleted?.Invoke();
-        public void OnError(Exception error) => _onError?.Invoke(error);
-        public void OnNext(T value) => _onNext(value);
+        public void OnCompleted() => onCompleted?.Invoke();
+        public void OnError(Exception error) => onError?.Invoke(error);
+        public void OnNext(T value) => this.onNext(value);
     }
 }

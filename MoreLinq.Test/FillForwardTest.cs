@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void FillForwardIsLazy()
         {
-            new BreakingSequence<object>().FillForward();
+            _ = new BreakingSequence<object>().FillForward();
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace MoreLinq.Test
                     Continent = cont,
                     Country   = ctry,
                     City      = city,
-                    Value     = int.Parse(val),
+                    Value     = int.Parse(val, CultureInfo.InvariantCulture),
                 });
 
             data = data.FillForward(e => e.Continent == "-", (e, f) => new { f.Continent, e.Country, e.City, e.Value })
@@ -81,6 +82,19 @@ namespace MoreLinq.Test
                 new { Continent = "Africa", Country = "Egypt",   City = "Alexandria", Value = 890 },
                 new { Continent = "Africa", Country = "Kenya",   City = "Nairobi",    Value = 901 },
             }));
+        }
+
+        /// <summary>
+        /// Exercises bug reported in <see
+        /// href="https://github.com/morelinq/MoreLINQ/issues/999">issue #999</see>.
+        /// </summary>
+
+        [Test]
+        public void FillForwardWithNullFiller()
+        {
+            var input = new int?[] { null, 1, null, 2, null, 3, null };
+            var result = input.FillForward(x => x is not null);
+            result.AssertSequenceEqual(Enumerable.Repeat((int?)null, input.Length));
         }
     }
 }

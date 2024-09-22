@@ -19,6 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using NUnit.Framework;
+    using static MoreLinq.Extensions.DistinctByExtension;
 
     [TestFixture]
     public class DistinctByTest
@@ -26,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void DistinctBy()
         {
-            string[] source = { "first", "second", "third", "fourth", "fifth" };
+            string[] source = ["first", "second", "third", "fourth", "fifth"];
             var distinct = source.DistinctBy(word => word.Length);
             distinct.AssertSequenceEqual("first", "second");
         }
@@ -34,13 +35,13 @@ namespace MoreLinq.Test
         [Test]
         public void DistinctByIsLazy()
         {
-            new BreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
+            _ = new BreakingSequence<string>().DistinctBy(BreakingFunc.Of<string, int>());
         }
 
         [Test]
         public void DistinctByWithComparer()
         {
-            string[] source = { "first", "FIRST", "second", "second", "third" };
+            string[] source = ["first", "FIRST", "second", "second", "third"];
             var distinct = source.DistinctBy(word => word, StringComparer.OrdinalIgnoreCase);
             distinct.AssertSequenceEqual("first", "second", "third");
         }
@@ -48,7 +49,7 @@ namespace MoreLinq.Test
         [Test]
         public void DistinctByNullComparer()
         {
-            string[] source = { "first", "second", "third", "fourth", "fifth" };
+            string[] source = ["first", "second", "third", "fourth", "fifth"];
             var distinct = source.DistinctBy(word => word.Length, null);
             distinct.AssertSequenceEqual("first", "second");
         }
@@ -56,8 +57,8 @@ namespace MoreLinq.Test
         [Test]
         public void DistinctByIsLazyWithComparer()
         {
-            new BreakingSequence<string>()
-                .DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
+            var bs = new BreakingSequence<string>();
+            _ = bs.DistinctBy(BreakingFunc.Of<string, string>(), StringComparer.Ordinal);
         }
     }
 }

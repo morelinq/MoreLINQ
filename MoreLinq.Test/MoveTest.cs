@@ -27,28 +27,28 @@ namespace MoreLinq.Test
         [Test]
         public void MoveWithNegativeFromIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("fromIndex", () =>
-                new[] { 1 }.Move(-1, 0, 0));
+            Assert.That(() => new[] { 1 }.Move(-1, 0, 0),
+                        Throws.ArgumentOutOfRangeException("fromIndex"));
         }
 
         [Test]
         public void MoveWithNegativeCount()
         {
-            AssertThrowsArgument.OutOfRangeException("count", () =>
-                new[] { 1 }.Move(0, -1, 0));
+            Assert.That(() => new[] { 1 }.Move(0, -1, 0),
+                        Throws.ArgumentOutOfRangeException("count"));
         }
 
         [Test]
         public void MoveWithNegativeToIndex()
         {
-            AssertThrowsArgument.OutOfRangeException("toIndex", () =>
-                new[] { 1 }.Move(0, 0, -1));
+            Assert.That(() => new[] { 1 }.Move(0, 0, -1),
+                        Throws.ArgumentOutOfRangeException("toIndex"));
         }
 
         [Test]
         public void MoveIsLazy()
         {
-            new BreakingSequence<int>().Move(0, 0, 0);
+            _ = new BreakingSequence<int>().Move(0, 0, 0);
         }
 
         [TestCaseSource(nameof(MoveSource))]
@@ -56,15 +56,14 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, length);
 
-            var exclude = source.Exclude(fromIndex, count);
-            var slice = source.Slice(fromIndex, count);
-            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
+            using var test = source.AsTestingSequence();
 
-            using (var test = source.AsTestingSequence())
-            {
-                var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EqualTo(expectations));
-            }
+            var result = test.Move(fromIndex, count, toIndex);
+
+            var slice = source.Slice(fromIndex, count);
+            var exclude = source.Exclude(fromIndex, count);
+            var expectations = exclude.Take(toIndex).Concat(slice).Concat(exclude.Skip(toIndex));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         public static IEnumerable<object> MoveSource()
@@ -85,13 +84,12 @@ namespace MoreLinq.Test
         {
             var source = Enumerable.Range(0, length);
 
-            var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
+            using var test = source.AsTestingSequence();
 
-            using (var test = source.AsTestingSequence())
-            {
-                var result = test.Move(fromIndex, count, toIndex);
-                Assert.That(result, Is.EqualTo(expectations));
-            }
+            var result = test.Move(fromIndex, count, toIndex);
+
+            var expectations = source.Exclude(fromIndex, count).Concat(source.Slice(fromIndex, count));
+            Assert.That(result, Is.EqualTo(expectations));
         }
 
         public static IEnumerable<object> MoveWithSequenceShorterThanToIndexSource()

@@ -1,6 +1,6 @@
 #region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
-// Copyright (c) 2017 Atif Aziz. All rights reserved.
+// Copyright (c) 2020 Atif Aziz. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,26 +20,9 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
 
-    sealed class Comparer
+    static class Comparable<T> where T : IComparable<T>
     {
-        /// <summary>
-        /// Creates an <see cref="IComparer{T}"/> given a
-        /// <see cref="Func{T,T,Int32}"/>.
-        /// </summary>
-
-        public static IComparer<T> Create<T>(Func<T, T, int> compare) =>
-            new DelegatingComparer<T>(compare);
-
-        sealed class DelegatingComparer<T> : IComparer<T>
-        {
-            readonly Func<T, T, int> _comparer;
-
-            public DelegatingComparer(Func<T, T, int> comparer)
-            {
-                _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-            }
-
-            public int Compare(T x, T y) => _comparer(x, y);
-        }
+        public static readonly IComparer<T> DescendingOrderComparer =
+            Comparer<T>.Create((x, y) => -Math.Sign(x.CompareTo(y)));
     }
 }
