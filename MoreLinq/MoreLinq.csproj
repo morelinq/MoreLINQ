@@ -213,8 +213,12 @@
     <DefineConstants>$(DefineConstants);MORELINQ</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net6.0' ">
+    <DefineConstants>$(DefineConstants);NO_STATIC_ABSTRACTS</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);NO_ASYNC_STREAMS;NO_BUFFERS</DefineConstants>
+    <DefineConstants>$(DefineConstants);NO_STATIC_ABSTRACTS;NO_ASYNC_STREAMS;NO_BUFFERS</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0' And '$(TargetFramework)' != 'net6.0'">

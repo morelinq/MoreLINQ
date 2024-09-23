@@ -92,20 +92,19 @@ namespace MoreLinq.Test
         {
             if (!definition.IsGenericMethodDefinition) return definition;
 
-            var typeArguments = definition.GetGenericArguments().Select(t => InstantiateType(t.GetTypeInfo())).ToArray();
-            return definition.MakeGenericMethod(typeArguments);
-        }
+            var typeArguments =
+                from t in definition.GetGenericArguments()
+                select t.GetGenericParameterConstraints() switch
+                {
+                    { Length: 0 } => typeof(int),
+#if NET7_0_OR_GREATER
+                    var constraints when constraints.Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(System.Numerics.INumber<>)) => typeof(int),
+#endif
+                    { Length: 1 } constraints => constraints.Single(),
+                    _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
+                };
 
-        static Type InstantiateType(TypeInfo typeParameter)
-        {
-            var constraints = typeParameter.GetGenericParameterConstraints();
-
-            return constraints.Length switch
-            {
-                0 => typeof(int),
-                1 => constraints.Single(),
-                _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
-            };
+            return definition.MakeGenericMethod(typeArguments.ToArray());
         }
 
         static bool IsReferenceType(ParameterInfo parameter) =>
