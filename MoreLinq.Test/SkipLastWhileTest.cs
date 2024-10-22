@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using static MoreLinq.Extensions.SkipLastWhileExtension;
@@ -91,6 +92,20 @@ namespace MoreLinq.Test
             var result = list.SkipLastWhile(x => x > 2);
             list.Add(5);
             result.AssertSequenceEqual(1, 2);
+        }
+
+        [Test]
+        public void SkipLastWhileThrowsArgumentNullExceptionWhenSourceIsNull()
+        {
+            IEnumerable<int> source = null!;
+            _ = Assert.Throws<ArgumentNullException>(() => source.SkipLastWhile(_ => true));
+        }
+
+        [Test]
+        public void SkipLstWhileThrowsArgumentNullExceptionWhenPredicateIsNull()
+        {
+            Func<int, bool> predicate = null!;
+            _ = Assert.Throws<ArgumentNullException>(() => TestingSequence.Of(0).SkipLastWhile(predicate));
         }
     }
 }
