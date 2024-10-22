@@ -576,6 +576,10 @@ This method has 2 overloads.
 
 Bypasses a specified number of elements at the end of the sequence.
 
+### SkipLastWhile
+
+Skips items starting from the end of the input sequence until the given predicate returns true.
+
 ### SkipUntil
 
 Skips items from the input sequence until the given predicate returns true
