@@ -20,7 +20,6 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
 
     public class ReturnTest
     {
@@ -136,21 +135,20 @@ namespace MoreLinq.Test
             Assert.That(SomeSingleton.List.IndexOf(new object()), Is.EqualTo(-1));
         }
 
-        static IEnumerable<ITestCaseData> UnsupportedActions(string testName) =>
-            from ma in new (string MethodName, Action Action)[]
-            {
-                ("Add"     , () => SomeSingleton.List.Add(new object())),
-                ("Clear"   ,       SomeSingleton.Collection.Clear),
-                ("Remove"  , () => SomeSingleton.Collection.Remove(SomeSingleton.Item)),
-                ("RemoveAt", () => SomeSingleton.List.RemoveAt(0)),
-                ("Insert"  , () => SomeSingleton.List.Insert(0, new object())),
-                ("Index"   , () => SomeSingleton.List[0] = new object()),
-            }
-            select new TestCaseData(ma.Action).SetName($"{testName}({ma.MethodName})");
+        static IEnumerable<Action> UnsupportedActions()
+        {
+            return
+            [
+                () => SomeSingleton.List.Add(new object()),
+                SomeSingleton.Collection.Clear,
+                () => SomeSingleton.Collection.Remove(SomeSingleton.Item),
+                () => SomeSingleton.List.RemoveAt(0),
+                () => SomeSingleton.List.Insert(0, new object()),
+                () => SomeSingleton.List[0] = new object(),
+            ];
+        }
 
-#pragma warning disable NUnit1018 // Parameter count does not match (false negative)
-        [TestCaseSource(nameof(UnsupportedActions), [nameof(TestUnsupportedMethodShouldThrow)])]
-#pragma warning restore NUnit1018 // Parameter count does not match
+        [TestCaseSource(nameof(UnsupportedActions))]
         public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
         {
             Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());

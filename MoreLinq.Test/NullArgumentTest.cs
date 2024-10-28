@@ -24,7 +24,6 @@ namespace MoreLinq.Test
     using System.Reflection;
     using System.Threading.Tasks;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using StackTrace = System.Diagnostics.StackTrace;
 
     [TestFixture]
@@ -38,7 +37,7 @@ namespace MoreLinq.Test
         public void CanBeNull(Action testCase) =>
             testCase();
 
-        static IEnumerable<ITestCaseData> GetNotNullTestCases() =>
+        static IEnumerable<Action> GetNotNullTestCases() =>
             GetTestCases(canBeNull: false, testCaseFactory: (method, args, paramName) => () =>
             {
                 Exception? e = null;
@@ -61,28 +60,29 @@ namespace MoreLinq.Test
                 Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
             });
 
-        static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
+        static IEnumerable<Action> GetCanBeNullTestCases() =>
             GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
 
-        static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory) =>
+        static IEnumerable<Action> GetTestCases(bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory) =>
             from m in typeof(MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
             from t in CreateTestCases(m, canBeNull, testCaseFactory)
             select t;
 
-        static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory)
+        static IEnumerable<Action> CreateTestCases(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory)
         {
             var method = InstantiateMethod(methodDefinition);
             var parameters = method.GetParameters().ToList();
 
             return from param in parameters
-                   where IsReferenceType(param) && CanBeNull(param) == canBeNull
-                   let arguments = parameters.Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
-                   let testCase = testCaseFactory(method, arguments,
+                where IsReferenceType(param) && CanBeNull(param) == canBeNull
+                let arguments = parameters
+                    .Select(p => p == param ? null : CreateInstance(p.ParameterType)).ToArray()
+                let testCase = testCaseFactory(method, arguments,
 #pragma warning disable CA2201 // Do not raise reserved exception types
-                                                  param.Name ?? throw new NullReferenceException())
+                    param.Name ?? throw new NullReferenceException())
 #pragma warning restore CA2201 // Do not raise reserved exception types
-                   let testName = GetTestName(methodDefinition, param)
-                   select (ITestCaseData)new TestCaseData(testCase).SetName(testName);
+                let testName = GetTestName(methodDefinition, param)
+                select testCase;
         }
 
         static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
