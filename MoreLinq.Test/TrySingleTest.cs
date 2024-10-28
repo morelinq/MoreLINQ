@@ -21,7 +21,6 @@ namespace MoreLinq.Test
     using System.Collections;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using Experimental;
 
     [TestFixture]
@@ -64,10 +63,10 @@ namespace MoreLinq.Test
             Assert.That(value, Is.EqualTo(result));
         }
 
-        static readonly ITestCaseData[] SingletonCollectionTestCases =
+        static readonly TestCaseData[] SingletonCollectionTestCases =
         [
-            new TestCaseData(new BreakingSingleElementCollection<int>(10), 10),
-            new TestCaseData(new BreakingSingleElementReadOnlyCollection<int>(20), 20)
+            new(new BreakingSingleElementCollection<int>(10), 10),
+            new(new BreakingSingleElementReadOnlyCollection<int>(20), 20)
         ];
 
         class BreakingSingleElementCollectionBase<T> : IEnumerable<T>

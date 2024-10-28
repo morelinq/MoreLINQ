@@ -20,13 +20,12 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using Tuple = System.ValueTuple;
 
     [TestFixture]
     public class ZipLongestTest
     {
-        public static readonly IEnumerable<ITestCaseData> TestData =
+        public static readonly IEnumerable<TestCaseData> TestData =
             from e in new[]
             {
                 new { A = Seq<int>(  ), B = Seq("foo", "bar", "baz"), Result = Seq<(int, string?)>((0, "foo"), (0, "bar"), (0, "baz")) },

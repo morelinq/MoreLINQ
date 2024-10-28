@@ -19,12 +19,11 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class OrderedMergeTest
     {
-        public static readonly IEnumerable<ITestCaseData> TestData =
+        public static readonly IEnumerable<TestCaseData> TestData =
             from e in new[]
             {
                 new

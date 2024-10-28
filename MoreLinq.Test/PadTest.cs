@@ -20,12 +20,11 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
 
     [TestFixture]
     public class PadTest
     {
-        static readonly IEnumerable<ITestCaseData> PadNegativeWidthCases =
+        static readonly IEnumerable<TestCaseData> PadNegativeWidthCases =
             from e in new (string Name, TestDelegate Delegate)[]
             {
                 ("DefaultPadding" , static () => new object[0].Pad(-1)),

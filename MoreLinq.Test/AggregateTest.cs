@@ -25,14 +25,13 @@ namespace MoreLinq.Test
     using Experimental;
     using System.Reactive.Linq;
     using System.Reflection;
-    using NUnit.Framework.Interfaces;
     using static MoreLinq.Extensions.AppendExtension;
     using static FuncModule;
 
     [TestFixture]
     public class AggregateTest
     {
-        public static IEnumerable<ITestCaseData> AccumulatorsTestSource(string name, int count) =>
+        public static IEnumerable<TestCaseData> AccumulatorsTestSource(string name, int count) =>
 
             /* Generates an invocation as follows for 2 accumulators:
 
