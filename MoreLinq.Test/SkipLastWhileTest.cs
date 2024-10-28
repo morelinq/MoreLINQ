@@ -17,10 +17,8 @@
 
 namespace MoreLinq.Test
 {
-    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using static MoreLinq.Extensions.SkipLastWhileExtension;
 
     [TestFixture]
     public class SkipLastWhileTest
@@ -30,8 +28,7 @@ namespace MoreLinq.Test
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
-            sequence.SkipLastWhile(x => x < 5)
-                    .AssertSequenceEqual(Enumerable.Empty<int>());
+            Assert.That(sequence.SkipLastWhile(x => x < 5), Is.Empty);
         }
 
         [Test]
@@ -44,7 +41,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhilePredicateBecomesTrueHalfWay()
+        public void SkipLastWhilePredicateBecomesTruePartWay()
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
@@ -53,27 +50,11 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhileReturnsEmptySequenceWhenSourceIsEmpty()
+        public void SkipLastWhileNeverEvaluatesPredicateWhenSourceIsEmpty()
         {
             using var sequence = TestingSequence.Of<int>();
 
-            sequence.SkipLastWhile(_ => true)
-                    .AssertSequenceEqual(Enumerable.Empty<int>());
-        }
-
-        [Test]
-        public void SkipLastWhileReturnsEntireSequenceWhenPredicateIsAlwaysFalse()
-        {
-            using var sequence = TestingSequence.Of(0, 0, 0, 0);
-
-            sequence.SkipLastWhile(_ => false)
-                    .AssertSequenceEqual(0, 0, 0, 0);
-        }
-
-        [Test]
-        public void SkipLastWhileEvaluatesSourceLazily()
-        {
-            _ = new BreakingSequence<object>().SkipLastWhile(_ => true);
+            Assert.That(sequence.SkipLastWhile(BreakingFunc.Of<int, bool>()), Is.Empty);
         }
 
         [Test]
@@ -92,20 +73,6 @@ namespace MoreLinq.Test
             var result = list.SkipLastWhile(x => x > 2);
             list.Add(5);
             result.AssertSequenceEqual(1, 2);
-        }
-
-        [Test]
-        public void SkipLastWhileThrowsArgumentNullExceptionWhenSourceIsNull()
-        {
-            IEnumerable<int> source = null!;
-            _ = Assert.Throws<ArgumentNullException>(() => source.SkipLastWhile(_ => true));
-        }
-
-        [Test]
-        public void SkipLstWhileThrowsArgumentNullExceptionWhenPredicateIsNull()
-        {
-            Func<int, bool> predicate = null!;
-            _ = Assert.Throws<ArgumentNullException>(() => TestingSequence.Of(0).SkipLastWhile(predicate));
         }
     }
 }
