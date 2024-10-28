@@ -26,14 +26,14 @@ namespace MoreLinq
         /// <summary>
         /// Removes elements from the end of a sequence as long as a specified condition is true.
         /// </summary>
-        /// <typeparam name="T">Type of the source sequence</typeparam>
+        /// <typeparam name="T">Type of the source sequence.</typeparam>
         /// <param name="source">The source sequence.</param>
         /// <param name="predicate">The predicate to use to remove items from the tail of the sequence.</param>
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> containing the source sequence elements except for the bypassed ones at the end.
         /// </returns>
-        /// <exception cref="ArgumentNullException">The source sequence is null.</exception>
-        /// <exception cref="ArgumentNullException">The predicate is null.</exception>
+        /// <exception cref="ArgumentNullException">The source sequence is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">The predicate is <see langword="null"/>.</exception>
 
         public static IEnumerable<T> SkipLastWhile<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
