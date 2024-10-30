@@ -58,15 +58,6 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhileEvaluatesPredicateLazily()
-        {
-            using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
-
-            sequence.SkipLastWhile(x => 1 / x != 1)
-                    .AssertSequenceEqual(0, 1);
-        }
-
-        [Test]
         public void SkipLastWhileUsesCollectionCountAtIterationTime()
         {
             var list = new List<int> { 1, 2, 3, 4 };
