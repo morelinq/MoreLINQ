@@ -19,7 +19,6 @@ namespace MoreLinq
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     static partial class MoreEnumerable
     {
@@ -44,17 +43,21 @@ namespace MoreLinq
 
             static IEnumerable<T> _(IEnumerable<T> source, Func<T, bool> predicate)
             {
-                var list = source.ToArray();
-                int tailIndex;
-                for (tailIndex = list.Length - 1; tailIndex >= 0; tailIndex--)
+                var queue = new Queue<T>();
+                foreach (var item in source)
                 {
-                    if (!predicate(list[tailIndex]))
-                        break;
-                }
-
-                for (var returnIndex = 0; returnIndex <= tailIndex; returnIndex++)
-                {
-                    yield return list[returnIndex];
+                    if (predicate(item))
+                    {
+                        queue.Enqueue(item);
+                    }
+                    else
+                    {
+                        while (queue.Count > 0)
+                        {
+                            yield return queue.Dequeue();
+                        }
+                        yield return item;
+                    }
                 }
             }
         }
