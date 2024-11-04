@@ -39,20 +39,40 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 
-            return _(source, predicate);
-
-            static IEnumerable<T> _(IEnumerable<T> source, Func<T, bool> predicate)
+            return source.TryAsListLike() switch
             {
-                var queue = new Queue<T>();
+                { Count: 0 } => source,
+                { } list => IterateList(list, predicate),
+                _ => IterateSequence(source, predicate),
+            };
+
+            static IEnumerable<T> IterateList(ListLike<T> list, Func<T, bool> predicate)
+            {
+                var i = list.Count - 1;
+                while (i >= 0 && predicate(list[i]))
+                {
+                    i--;
+                }
+
+                for (var j = 0; j <= i; j++)
+                {
+                    yield return list[j];
+                }
+            }
+
+            static IEnumerable<T> IterateSequence(IEnumerable<T> source, Func<T, bool> predicate)
+            {
+                Queue<T>? queue = null;
                 foreach (var item in source)
                 {
                     if (predicate(item))
                     {
+                        queue ??= new Queue<T>();
                         queue.Enqueue(item);
                     }
                     else
                     {
-                        while (queue.Count > 0)
+                        while (queue?.Count > 0)
                         {
                             yield return queue.Dequeue();
                         }
