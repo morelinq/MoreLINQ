@@ -578,7 +578,7 @@ Bypasses a specified number of elements at the end of the sequence.
 
 ### SkipLastWhile
 
-Skips items starting from the end of the input sequence until the given predicate returns true.
+Removes elements from the end of a sequence as long as a specified condition is true.
 
 ### SkipUntil
 

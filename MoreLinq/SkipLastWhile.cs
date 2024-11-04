@@ -33,6 +33,10 @@ namespace MoreLinq
         /// </returns>
         /// <exception cref="ArgumentNullException">The source sequence is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentNullException">The predicate is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results. At any given time, it
+        /// will buffer as many consecutive elements as satisfied by <paramref name="predicate"/>.
+        /// </remarks>
 
         public static IEnumerable<T> SkipLastWhile<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
