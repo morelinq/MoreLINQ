@@ -24,7 +24,13 @@ namespace MoreLinq.Test
     public class SkipLastWhileTest
     {
         [Test]
-        public void SkipLastWhilePredicateNeverFalse()
+        public void IsLazy()
+        {
+            _ = new BreakingSequence<object>().SkipLastWhile(BreakingFunc.Of<object, bool>());
+        }
+
+        [Test]
+        public void PredicateNeverFalse()
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
@@ -32,7 +38,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhilePredicateNeverTrue()
+        public void PredicateNeverTrue()
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
@@ -41,7 +47,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhilePredicateBecomesTruePartWay()
+        public void PredicateBecomesTruePartWay()
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
@@ -50,7 +56,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhileNeverEvaluatesPredicateWhenSourceIsEmpty()
+        public void NeverEvaluatesPredicateWhenSourceIsEmpty()
         {
             using var sequence = TestingSequence.Of<int>();
 
@@ -58,7 +64,7 @@ namespace MoreLinq.Test
         }
 
         [Test]
-        public void SkipLastWhileUsesCollectionCountAtIterationTime()
+        public void UsesCollectionCountAtIterationTime()
         {
             var list = new List<int> { 1, 2, 3, 4 };
             var result = list.SkipLastWhile(x => x > 2);
