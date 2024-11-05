@@ -71,5 +71,16 @@ namespace MoreLinq.Test
             list.Add(5);
             result.AssertSequenceEqual(1, 2);
         }
+
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void OptimizedForCollections(SourceKind sourceKind)
+        {
+            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);
+
+            sequence.SkipLastWhile(x => x > 7)
+                    .AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7);
+        }
     }
 }
