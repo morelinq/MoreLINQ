@@ -63,12 +63,16 @@ namespace MoreLinq.Test
                     .AssertSequenceEqual(0, 1, 2);
         }
 
-        [Test]
-        public void NeverEvaluatesPredicateWhenSourceIsEmpty()
+        [TestCase(SourceKind.Sequence)]
+        // [TestCase(SourceKind.BreakingList)]
+        // [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void NeverEvaluatesPredicateWhenSourceIsEmpty(SourceKind sourceKind)
         {
             using var sequence = TestingSequence.Of<int>();
 
-            Assert.That(sequence.SkipLastWhile(BreakingFunc.Of<int, bool>()), Is.Empty);
+            Assert.That(sequence
+                .ToSourceKind(sourceKind)
+                .SkipLastWhile(BreakingFunc.Of<int, bool>()), Is.Empty);
         }
 
         [TestCase(SourceKind.Sequence)]
@@ -91,6 +95,18 @@ namespace MoreLinq.Test
 
             sequence.SkipLastWhile(x => x > 7)
                     .AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7);
+        }
+
+        [TestCase(SourceKind.Sequence)]
+        // [TestCase(SourceKind.BreakingList)]
+        // [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void KeepsNonTrailingItemsThatMatchPredicate(SourceKind sourceKind)
+        {
+            using var sequence = TestingSequence.Of(1, 2, 0, 0, 3, 4, 0, 0);
+
+            sequence.ToSourceKind(sourceKind)
+                    .SkipLastWhile(x => x == 0)
+                    .AssertSequenceEqual(1, 2, 0, 0, 3, 4);
         }
     }
 }
