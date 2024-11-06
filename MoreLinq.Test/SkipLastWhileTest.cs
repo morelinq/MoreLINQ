@@ -29,29 +29,37 @@ namespace MoreLinq.Test
             _ = new BreakingSequence<object>().SkipLastWhile(BreakingFunc.Of<object, bool>());
         }
 
-        [Test]
-        public void PredicateNeverFalse()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void PredicateNeverFalse(SourceKind sourceKind)
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
-            Assert.That(sequence.SkipLastWhile(x => x < 5), Is.Empty);
+            Assert.That(sequence.ToSourceKind(sourceKind).SkipLastWhile(x => x < 5), Is.Empty);
         }
 
-        [Test]
-        public void PredicateNeverTrue()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void PredicateNeverTrue(SourceKind sourceKind)
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
-            sequence.SkipLastWhile(x => x == 100)
+            sequence.ToSourceKind(sourceKind)
+                    .SkipLastWhile(x => x == 100)
                     .AssertSequenceEqual(0, 1, 2, 3, 4);
         }
 
-        [Test]
-        public void PredicateBecomesTruePartWay()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void PredicateBecomesTruePartWay(SourceKind sourceKind)
         {
             using var sequence = TestingSequence.Of(0, 1, 2, 3, 4);
 
-            sequence.SkipLastWhile(x => x > 2)
+            sequence.ToSourceKind(sourceKind)
+                    .SkipLastWhile(x => x > 2)
                     .AssertSequenceEqual(0, 1, 2);
         }
 
@@ -63,11 +71,13 @@ namespace MoreLinq.Test
             Assert.That(sequence.SkipLastWhile(BreakingFunc.Of<int, bool>()), Is.Empty);
         }
 
-        [Test]
-        public void UsesCollectionCountAtIterationTime()
+        [TestCase(SourceKind.Sequence)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
+        public void UsesCollectionCountAtIterationTime(SourceKind sourceKind)
         {
             var list = new List<int> { 1, 2, 3, 4 };
-            var result = list.SkipLastWhile(x => x > 2);
+            var result = list.ToSourceKind(sourceKind).SkipLastWhile(x => x > 2);
             list.Add(5);
             result.AssertSequenceEqual(1, 2);
         }
