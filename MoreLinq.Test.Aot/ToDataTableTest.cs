@@ -19,7 +19,7 @@ namespace MoreLinq.Test.Aot
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -42,12 +42,12 @@ namespace MoreLinq.Test.Aot
             public override string ToString() => nameof(TestObject);
         }
 
-        readonly IReadOnlyCollection<TestObject> testObjects;
+        readonly ImmutableArray<TestObject> testObjects;
 
         public ToDataTableTest() =>
             this.testObjects = Enumerable.Range(0, 3)
                                          .Select(i => new TestObject(i))
-                                         .ToArray();
+                                         .ToImmutableArray();
 
         [TestMethod]
         public void ToDataTableNullMemberExpressionMethod()
@@ -158,7 +158,7 @@ namespace MoreLinq.Test.Aot
 
             var dt = Act();
 
-            Assert.AreEqual(this.testObjects.Count, dt.Rows.Count);
+            Assert.AreEqual(this.testObjects.Length, dt.Rows.Count);
         }
 
         [TestMethod]
