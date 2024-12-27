@@ -5,6 +5,7 @@ on:
     paths-ignore:
     - '*.md'
     - '*.txt'
+    - '**/.gitignore'
     - appveyor.yml
     branches:
     - master
