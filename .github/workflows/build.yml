@@ -46,10 +46,12 @@ jobs:
       run: git rm .editorconfig
 
     - name: Check Final New-Line
-      run: eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
+      shell: pwsh
+      run: ./eclint.ps1 -InsertFinalNewline -Verbose
 
     - name: Check Trailing Whitespace
-      run: eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+      shell: pwsh
+      run: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 
     - name: Restore Checkout
       run: git reset --hard
