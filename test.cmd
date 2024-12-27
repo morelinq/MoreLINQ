@@ -21,7 +21,8 @@ call :clean ^
   && call :test net471 Debug ^
   && call :test net471 Release ^
   && call :report-cover ^
-  && call :test-aot
+  && call :test-aot net8.0 ^
+  && call :test-aot net9.0
 exit /b %ERRORLEVEL%
 
 :clean
