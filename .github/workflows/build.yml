@@ -42,8 +42,10 @@ jobs:
     - name: Install ECLint
       run: npm install -g eclint
 
-    - name: Delete EditorConfig file
-      run: git rm .editorconfig
+    - name: Delete files to exclude from EditorConfig linting
+      run: |
+        git rm .editorconfig
+        git rm 'tools/dotnet-install.*'
 
     - name: Check Final New-Line
       shell: pwsh

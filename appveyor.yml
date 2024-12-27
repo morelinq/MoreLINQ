@@ -43,6 +43,7 @@ for:
 install:
 - npm install -g eclint
 - git rm .editorconfig
+- git rm 'tools/dotnet-install.*'
 - pwsh: ./eclint.ps1 -InsertFinalNewline -Verbose
 - pwsh: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 - git reset --hard
