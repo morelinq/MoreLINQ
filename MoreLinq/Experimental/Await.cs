@@ -461,7 +461,7 @@ namespace MoreLinq.Experimental
                 var completed = false;
                 var cancellationTokenSource = new CancellationTokenSource();
 
-                var enumerator = source.Index().GetEnumerator();
+                var enumerator = MoreEnumerable.Index(source).GetEnumerator();
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
 
                 try

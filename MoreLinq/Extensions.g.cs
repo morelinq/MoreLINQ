@@ -1173,7 +1173,11 @@ namespace MoreLinq.Extensions
         /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+#if !NET9_0_OR_GREATER
+            this
+#endif
+            IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
             => MoreEnumerable.CountBy(source, keySelector);
 
         /// <summary>
@@ -1189,7 +1193,11 @@ namespace MoreLinq.Extensions
         /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+#if !NET9_0_OR_GREATER
+            this
+#endif
+            IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.CountBy(source, keySelector, comparer);
 
     }
