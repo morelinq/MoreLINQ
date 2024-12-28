@@ -59,12 +59,12 @@ jobs:
       run: git reset --hard
 
     - name: Setup .NET SDK per "global.json"
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
 
     - name: Setup .NET SDK 6.0, 8.0
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           6.0.x
