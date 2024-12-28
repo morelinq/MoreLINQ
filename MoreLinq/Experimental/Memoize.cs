@@ -65,7 +65,7 @@ namespace MoreLinq.Experimental
     sealed class MemoizedEnumerable<T>(IEnumerable<T> sequence) : IEnumerable<T>, IDisposable
     {
         List<T>? cache;
-        readonly object locker = new();
+        readonly Lock locker = new();
         readonly IEnumerable<T> source = sequence ?? throw new ArgumentNullException(nameof(sequence));
         IEnumerator<T>? sourceEnumerator;
         int? errorIndex;
