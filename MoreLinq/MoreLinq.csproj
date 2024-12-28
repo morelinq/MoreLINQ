@@ -138,7 +138,7 @@
     <PackageOutputPath>..\dist</PackageOutputPath>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <PackageValidationBaselineVersion>4.1.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.3.0</PackageValidationBaselineVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
