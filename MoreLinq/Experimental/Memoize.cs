@@ -77,7 +77,9 @@ namespace MoreLinq.Experimental
             {
                 lock (this.locker)
                 {
+#pragma warning disable CA1508 // Avoid dead conditional code
                     if (this.cache == null)
+#pragma warning restore CA1508 // Avoid dead conditional code
                     {
                         this.error?.Throw();
 
