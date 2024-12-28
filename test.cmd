@@ -8,10 +8,12 @@ setlocal
 if not defined SKIP_TEST_BUILD set SKIP_TEST_BUILD=false
 if %SKIP_TEST_BUILD%==false call build || exit /b 1
 if not "%~1"=="aot" goto :test-all
-call :test-aot
+call :test-aot net8.0 && call :test-aot net9.0
 exit /b %ERRORLEVEL%
 :test-all
 call :clean ^
+  && call :test net9.0 Debug ^
+  && call :test net9.0 Release ^
   && call :test net8.0 Debug ^
   && call :test net8.0 Release ^
   && call :test net6.0 Debug ^
@@ -19,7 +21,8 @@ call :clean ^
   && call :test net471 Debug ^
   && call :test net471 Release ^
   && call :report-cover ^
-  && call :test-aot
+  && call :test-aot net8.0 ^
+  && call :test-aot net9.0
 exit /b %ERRORLEVEL%
 
 :clean
@@ -60,10 +63,10 @@ exit /b %ERRORLEVEL%
 :test-aot
 setlocal
 cd MoreLinq.Test.Aot
-dotnet publish
+dotnet publish -f %1
 if not ERRORLEVEL==0 exit /b %ERRORLEVEL%
 set AOT_TEST_PUBLISH_DIR=
-for /f %%d in ('dir /ad /s /b publish') do if not defined AOT_TEST_PUBLISH_DIR set AOT_TEST_PUBLISH_DIR=%%~d
+for /f %%d in ('cmd /c "dir /ad /s /b publish | findstr /c:%1"') do if not defined AOT_TEST_PUBLISH_DIR set AOT_TEST_PUBLISH_DIR=%%~d
 if not defined AOT_TEST_PUBLISH_DIR (
     echo>&2 Published binary directory not found!
     exit /b 1

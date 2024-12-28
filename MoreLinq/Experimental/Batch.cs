@@ -246,12 +246,12 @@ namespace MoreLinq.Experimental
 
             public bool UpdateWithNext()
             {
-                if (this.rental is { Current: var (array, _) } rental)
+                if (this.rental is { } rental)
                 {
                     Debug.Assert(this.pool is not null);
                     if (this.rented)
                     {
-                        this.pool.Return(array);
+                        this.pool.Return(this.array);
                         this.rented = false;
                     }
 
@@ -279,12 +279,12 @@ namespace MoreLinq.Experimental
 
             public void Dispose()
             {
-                if (this.rental is { Current: var (array, _) } enumerator)
+                if (this.rental is { } rental)
                 {
                     Debug.Assert(this.pool is not null);
                     if (this.rented)
-                        this.pool.Return(array);
-                    enumerator.Dispose();
+                        this.pool.Return(this.array);
+                    rental.Dispose();
                     this.array = [];
                     this.count = 0;
                     this.rental = null;

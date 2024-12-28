@@ -156,7 +156,9 @@ namespace MoreLinq
             return table;
         }
 
+#pragma warning disable CA1859 // Use concrete types when possible for improved performance
         static MemberInfo[] PrepareMemberInfos<T>(ICollection<Expression<Func<T, object?>>> expressions)
+#pragma warning restore CA1859 // Use concrete types when possible for improved performance
         {
             if (expressions.Count == 0)
                 return [];
