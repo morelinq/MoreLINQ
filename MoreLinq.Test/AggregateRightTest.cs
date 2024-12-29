@@ -28,9 +28,8 @@ namespace MoreLinq.Test
         [Test]
         public void AggregateRightWithEmptySequence()
         {
-            using var source = TestingSequence.Of<int>();
-            void Act() => source.AggregateRight((a, b) => a + b);
-            Assert.That(Act, Throws.InvalidOperationException);
+            Assert.That(() => new int[0].AggregateRight((a, b) => a + b),
+                        Throws.InvalidOperationException);
         }
 
         [Test]
