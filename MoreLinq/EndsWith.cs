@@ -71,22 +71,14 @@ namespace MoreLinq
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));
 
-            comparer ??= EqualityComparer<T>.Default;
-
             List<T> secondList;
-#pragma warning disable IDE0075 // Simplify conditional expression (makes it worse)
             return second.TryAsCollectionLike() is { Count: var secondCount }
-                   ? first.TryAsCollectionLike() is { Count: var firstCount } && secondCount > firstCount
-                     ? false
-                     : Impl(second, secondCount)
-                   : Impl(secondList = second.ToList(), secondList.Count);
-#pragma warning restore IDE0075 // Simplify conditional expression
+                   ? first.TryAsCollectionLike() is not { Count: var firstCount } || secondCount <= firstCount
+                     && EndsWith(second, secondCount)
+                   : EndsWith(secondList = second.ToList(), secondList.Count);
 
-            bool Impl(IEnumerable<T> snd, int count)
-            {
-                using var firstIter = first.TakeLast(count).GetEnumerator();
-                return snd.All(item => firstIter.MoveNext() && comparer.Equals(firstIter.Current, item));
-            }
+            bool EndsWith(IEnumerable<T> second, int count) =>
+                first.TakeLast(count).SequenceEqual(second, comparer);
         }
     }
 }

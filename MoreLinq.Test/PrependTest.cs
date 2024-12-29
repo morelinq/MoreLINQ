@@ -19,7 +19,6 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using static MoreLinq.Extensions.PrependExtension;
 
     [TestFixture]
@@ -28,7 +27,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNonEmptyTailSequence()
         {
-            string[] tail = { "second", "third" };
+            string[] tail = ["second", "third"];
             var head = "first";
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first", "second", "third");
@@ -37,7 +36,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithEmptyTailSequence()
         {
-            string[] tail = { };
+            string[] tail = [];
             var head = "first";
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual("first");
@@ -46,7 +45,7 @@ namespace MoreLinq.Test
         [Test]
         public void PrependWithNullHead()
         {
-            string[] tail = { "second", "third" };
+            string[] tail = ["second", "third"];
             string? head = null;
             var whole = tail.Prepend(head);
             whole.AssertSequenceEqual(null, "second", "third");
@@ -64,7 +63,7 @@ namespace MoreLinq.Test
             return tail.Aggregate(head.AsEnumerable(), MoreEnumerable.Prepend).ToArray();
         }
 
-        public static IEnumerable<ITestCaseData> PrependManySource =>
+        public static IEnumerable<TestCaseData> PrependManySource =>
             from x in Enumerable.Range(0, 11)
             from y in Enumerable.Range(1, 11)
             select new

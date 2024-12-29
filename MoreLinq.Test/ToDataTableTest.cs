@@ -19,7 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Data;
     using System.Linq.Expressions;
     using NUnit.Framework;
@@ -27,44 +27,33 @@ namespace MoreLinq.Test
     [TestFixture]
     public class ToDataTableTest
     {
-        sealed class TestObject
+        sealed class TestObject(int key)
         {
-            public int KeyField;
-            public Guid? ANullableGuidField;
+            public int KeyField = key;
+            public Guid? ANullableGuidField = Guid.NewGuid();
 
-            public string AString { get; }
-            public decimal? ANullableDecimal { get; }
+            public string AString { get; } = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
+            public decimal? ANullableDecimal { get; } = key / 3;
             public object Unreadable { set => throw new NotImplementedException(); }
 
             public object this[int index] { get => new(); set { } }
 
-            public TestObject(int key)
-            {
-                KeyField = key;
-                ANullableGuidField = Guid.NewGuid();
-
-                ANullableDecimal = key / 3;
-                AString = "ABCDEFGHIKKLMNOPQRSTUVWXYSZ";
-            }
-
             public override string ToString() => nameof(TestObject);
         }
 
-
-        readonly IReadOnlyCollection<TestObject> _testObjects;
-
+        readonly ImmutableArray<TestObject> testObjects;
 
         public ToDataTableTest() =>
-            _testObjects = Enumerable.Range(0, 3)
-                                     .Select(i => new TestObject(i))
-                                     .ToArray();
+            this.testObjects = Enumerable.Range(0, 3)
+                                         .Select(i => new TestObject(i))
+                                         .ToImmutableArray();
 
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
         {
             Expression<Func<TestObject, object?>>? expression = null;
 
-            Assert.That(() => _testObjects.ToDataTable(expression!),
+            Assert.That(() => this.testObjects.ToDataTable(expression!),
                         Throws.ArgumentException("expressions"));
         }
 
@@ -74,7 +63,7 @@ namespace MoreLinq.Test
             using var dt = new DataTable();
             _ = dt.Columns.Add("Test");
 
-            Assert.That(() => _testObjects.ToDataTable(dt),
+            Assert.That(() => this.testObjects.ToDataTable(dt),
                         Throws.ArgumentException("table"));
         }
 
@@ -84,51 +73,47 @@ namespace MoreLinq.Test
             using var dt = new DataTable();
             _ = dt.Columns.Add("AString", typeof(int));
 
-            Assert.That(() => _testObjects.ToDataTable(dt, t => t.AString),
+            Assert.That(() => this.testObjects.ToDataTable(dt, t => t.AString),
                         Throws.ArgumentException("table"));
+        }
+
+        void TestDataTableMemberExpression(Expression<Func<TestObject, object?>> expression)
+        {
+            Assert.That(() => this.testObjects.ToDataTable(expression),
+                        Throws.ArgumentException("expressions")
+                              .And.InnerException.With.ParamName("lambda"));
         }
 
         [Test]
         public void ToDataTableMemberExpressionMethod()
         {
-            Assert.That(() => _testObjects.ToDataTable(t => t.ToString()),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(t => t.ToString());
         }
-
 
         [Test]
         public void ToDataTableMemberExpressionNonMember()
         {
-            Assert.That(() => _testObjects.ToDataTable(t => t.ToString().Length),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(t => t.ToString().Length);
         }
 
         [Test]
         public void ToDataTableMemberExpressionIndexer()
         {
-            Assert.That(() => _testObjects.ToDataTable(t => t[0]),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(t => t[0]);
         }
 
         [Test]
         public void ToDataTableMemberExpressionStatic()
         {
-            Assert.That(() => _ = _testObjects.ToDataTable(_ => DateTime.Now),
-                        Throws.ArgumentException("lambda"));
+            TestDataTableMemberExpression(_ => DateTime.Now);
         }
 
         [Test]
         public void ToDataTableSchemaInDeclarationOrder()
         {
-            var dt = _testObjects.ToDataTable();
+            var dt = this.testObjects.ToDataTable();
 
             // Assert properties first, then fields, then in declaration order
-
-            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
-            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
-
-            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
-            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
 
             Assert.That(dt.Columns[2].Caption, Is.EqualTo("KeyField"));
             Assert.That(dt.Columns[2].DataType, Is.EqualTo(typeof(int)));
@@ -137,20 +122,26 @@ namespace MoreLinq.Test
             Assert.That(dt.Columns[3].DataType, Is.EqualTo(typeof(Guid)));
             Assert.That(dt.Columns[3].AllowDBNull, Is.True);
 
+            Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
+            Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
+
+            Assert.That(dt.Columns[1].Caption, Is.EqualTo("ANullableDecimal"));
+            Assert.That(dt.Columns[1].DataType, Is.EqualTo(typeof(decimal)));
+
             Assert.That(dt.Columns.Count, Is.EqualTo(4));
         }
 
         [Test]
         public void ToDataTableContainsAllElements()
         {
-            var dt = _testObjects.ToDataTable();
-            Assert.That(dt.Rows.Count, Is.EqualTo(_testObjects.Count));
+            var dt = this.testObjects.ToDataTable();
+            Assert.That(dt.Rows.Count, Is.EqualTo(this.testObjects.Length));
         }
 
         [Test]
         public void ToDataTableWithExpression()
         {
-            var dt = _testObjects.ToDataTable(t => t.AString);
+            var dt = this.testObjects.ToDataTable(t => t.AString);
 
             Assert.That(dt.Columns[0].Caption, Is.EqualTo("AString"));
             Assert.That(dt.Columns[0].DataType, Is.EqualTo(typeof(string)));
@@ -181,16 +172,14 @@ namespace MoreLinq.Test
             Assert.That(rows.Select(r => r["Value"]).ToArray(), Is.EqualTo(vars.Select(e => e.Value).ToArray()));
         }
 
-        readonly struct Point
+        readonly struct Point(int x, int y)
         {
-
 #pragma warning disable CA1805 // Do not initialize unnecessarily (avoids CS0649)
             public static Point Empty = new();
 #pragma warning restore CA1805 // Do not initialize unnecessarily
             public bool IsEmpty => X == 0 && Y == 0;
-            public int X { get; }
-            public int Y { get; }
-            public Point(int x, int y) : this() { X = x; Y = y; }
+            public int X { get; } = x;
+            public int Y { get; } = y;
         }
 
         [Test]

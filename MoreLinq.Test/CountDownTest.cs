@@ -44,15 +44,15 @@ namespace MoreLinq.Test
         static IEnumerable<T> GetData<T>(Func<int[], int, int?[], T> selector)
         {
             var xs = Enumerable.Range(0, 5).ToArray();
-            yield return selector(xs, -1, new int?[] { null, null, null, null, null });
-            yield return selector(xs,  0, new int?[] { null, null, null, null, null });
-            yield return selector(xs,  1, new int?[] { null, null, null, null,    0 });
-            yield return selector(xs,  2, new int?[] { null, null, null,    1,    0 });
-            yield return selector(xs,  3, new int?[] { null, null,    2,    1,    0 });
-            yield return selector(xs,  4, new int?[] { null,    3,    2,    1,    0 });
-            yield return selector(xs,  5, new int?[] {    4,    3,    2,    1,    0 });
-            yield return selector(xs,  6, new int?[] {    4,    3,    2,    1,    0 });
-            yield return selector(xs,  7, new int?[] {    4,    3,    2,    1,    0 });
+            yield return selector(xs, -1, [null, null, null, null, null]);
+            yield return selector(xs,  0, [null, null, null, null, null]);
+            yield return selector(xs,  1, [null, null, null, null,    0]);
+            yield return selector(xs,  2, [null, null, null,    1,    0]);
+            yield return selector(xs,  3, [null, null,    2,    1,    0]);
+            yield return selector(xs,  4, [null,    3,    2,    1,    0]);
+            yield return selector(xs,  5, [4,    3,    2,    1,    0]);
+            yield return selector(xs,  6, [4,    3,    2,    1,    0]);
+            yield return selector(xs,  7, [4,    3,    2,    1,    0]);
         }
 
         static readonly IEnumerable<TestCaseData> SequenceData =
@@ -150,15 +150,12 @@ namespace MoreLinq.Test
             /// for another.
             /// </summary>
 
-            abstract class Sequence<T> : IEnumerable<T>
+            abstract class Sequence<T>(Func<IEnumerator<T>, IEnumerator<T>>? em) : IEnumerable<T>
             {
-                readonly Func<IEnumerator<T>, IEnumerator<T>> _em;
-
-                protected Sequence(Func<IEnumerator<T>, IEnumerator<T>>? em) =>
-                    _em = em ?? (e => e);
+                readonly Func<IEnumerator<T>, IEnumerator<T>> em = em ?? (e => e);
 
                 public IEnumerator<T> GetEnumerator() =>
-                    _em(Items.GetEnumerator());
+                    this.em(Items.GetEnumerator());
 
                 IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -170,22 +167,19 @@ namespace MoreLinq.Test
             /// enumerator to be substituted for another.
             /// </summary>
 
-            sealed class Collection<T> : Sequence<T>, ICollection<T>
+            sealed class Collection<T>(ICollection<T> collection,
+                                       Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
+                Sequence<T>(em), ICollection<T>
             {
-                readonly ICollection<T> _collection;
+                readonly ICollection<T> collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
-                public Collection(ICollection<T> collection,
-                                  Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
-                    base(em) =>
-                    _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                public int Count => this.collection.Count;
+                public bool IsReadOnly => this.collection.IsReadOnly;
 
-                public int Count => _collection.Count;
-                public bool IsReadOnly => _collection.IsReadOnly;
+                protected override IEnumerable<T> Items => this.collection;
 
-                protected override IEnumerable<T> Items => _collection;
-
-                public bool Contains(T item) => _collection.Contains(item);
-                public void CopyTo(T[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
+                public bool Contains(T item) => this.collection.Contains(item);
+                public void CopyTo(T[] array, int arrayIndex) => this.collection.CopyTo(array, arrayIndex);
 
                 public void Add(T item) => throw new NotImplementedException();
                 public void Clear() => throw new NotImplementedException();
@@ -197,18 +191,15 @@ namespace MoreLinq.Test
             /// also permits its enumerator to be substituted for another.
             /// </summary>
 
-            sealed class ReadOnlyCollection<T> : Sequence<T>, IReadOnlyCollection<T>
+            sealed class ReadOnlyCollection<T>(ICollection<T> collection,
+                                               Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
+                Sequence<T>(em), IReadOnlyCollection<T>
             {
-                readonly ICollection<T> _collection;
+                readonly ICollection<T> collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
-                public ReadOnlyCollection(ICollection<T> collection,
-                                          Func<IEnumerator<T>, IEnumerator<T>>? em = null) :
-                    base(em) =>
-                    _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+                public int Count => this.collection.Count;
 
-                public int Count => _collection.Count;
-
-                protected override IEnumerable<T> Items => _collection;
+                protected override IEnumerable<T> Items => this.collection;
             }
         }
 

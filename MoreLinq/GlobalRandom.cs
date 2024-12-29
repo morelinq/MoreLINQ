@@ -48,9 +48,9 @@ namespace MoreLinq
         {
             public static Random Instance { get; } = new GlobalRandom();
 
-            static int _seed = Environment.TickCount;
-            [ThreadStatic] static Random? _threadRandom;
-            static Random ThreadRandom => _threadRandom ??= new Random(Interlocked.Increment(ref _seed));
+            static int seed = Environment.TickCount;
+            [ThreadStatic] static Random? threadRandom;
+            static Random ThreadRandom => threadRandom ??= new Random(Interlocked.Increment(ref seed));
 
             GlobalRandom() { }
 

@@ -33,22 +33,19 @@ namespace MoreLinq.Test
 
     static class SourceKinds
     {
-        public static readonly IEnumerable<SourceKind> Sequence = new[]
-        {
-            SourceKind.Sequence,
-        };
+        public static readonly IEnumerable<SourceKind> Sequence = [
+            SourceKind.Sequence
+        ];
 
-        public static readonly IEnumerable<SourceKind> Collection = new[]
-        {
+        public static readonly IEnumerable<SourceKind> Collection = [
             SourceKind.BreakingCollection,
             SourceKind.BreakingReadOnlyCollection
-        };
+        ];
 
-        public static readonly IEnumerable<SourceKind> List = new[]
-        {
+        public static readonly IEnumerable<SourceKind> List = [
             SourceKind.BreakingList,
             SourceKind.BreakingReadOnlyList
-        };
+        ];
     }
 
     static partial class TestExtensions

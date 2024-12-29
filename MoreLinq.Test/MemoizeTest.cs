@@ -217,7 +217,7 @@ namespace MoreLinq.Test
         [Test]
         public static void MemoizeIteratorThrowsWhenCacheDisposedDuringIteration()
         {
-            var sequence = Enumerable.Range(1, 10);
+            var sequence = Seq(1, 2, 3);
             var memoized = sequence.Memoize();
             var disposable = (IDisposable)memoized;
 

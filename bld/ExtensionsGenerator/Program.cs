@@ -120,7 +120,6 @@ static void Run(ProgramArguments args)
             where md.ParameterList.Parameters.Count > 0
                && md.ParameterList.Parameters.First().Modifiers.Any(m => m.Value is "this")
                && md.Modifiers.Any(m => m.Value is "public")
-               && md.AttributeLists.SelectMany(al => al.Attributes).All(a => a.Name.ToString() != "Obsolete")
             //
             // Build a dictionary of type abbreviations (e.g. TSource -> a,
             // TResult -> b, etc.) for the method's type parameters. If the
@@ -358,11 +357,9 @@ static TypeKey CreateTypeKey(TypeSyntax root, Func<string, TypeKey?> abbreviator
 // - Each type parameter (recursively)
 //
 
-abstract class TypeKey : IComparable<TypeKey>
+abstract class TypeKey(string name) : IComparable<TypeKey>
 {
-    protected TypeKey(string name) => Name = name;
-
-    public string Name { get; }
+    public string Name { get; } = name;
     public abstract ImmutableList<TypeKey> Parameters { get; }
 
     public virtual int CompareTo(TypeKey? other)
@@ -381,54 +378,44 @@ abstract class TypeKey : IComparable<TypeKey>
          .FirstOrDefault(e => e != 0);
 }
 
-sealed class SimpleTypeKey : TypeKey
+sealed class SimpleTypeKey(string name) : TypeKey(name)
 {
-    public SimpleTypeKey(string name) : base(name) { }
     public override string ToString() => Name;
-    public override ImmutableList<TypeKey> Parameters => ImmutableList<TypeKey>.Empty;
+    public override ImmutableList<TypeKey> Parameters => [];
 }
 
-abstract class ParameterizedTypeKey : TypeKey
+abstract class ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) : TypeKey(name)
 {
     protected ParameterizedTypeKey(string name, TypeKey parameter) :
-        this(name, ImmutableList.Create(parameter)) { }
+        this(name, [parameter]) { }
 
-    protected ParameterizedTypeKey(string name, ImmutableList<TypeKey> parameters) :
-        base(name) => Parameters = parameters;
-
-    public override ImmutableList<TypeKey> Parameters { get; }
+    public override ImmutableList<TypeKey> Parameters { get; } = parameters;
 }
 
-sealed class GenericTypeKey : ParameterizedTypeKey
+sealed class GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :
+    ParameterizedTypeKey(name, parameters)
 {
-    public GenericTypeKey(string name, ImmutableList<TypeKey> parameters) :
-        base(name, parameters) { }
-
     public override string ToString() =>
         Name + "<" + string.Join(", ", Parameters) + ">";
 }
 
-sealed class NullableTypeKey : ParameterizedTypeKey
+sealed class NullableTypeKey(TypeKey underlying) :
+    ParameterizedTypeKey("?", underlying)
 {
-    public NullableTypeKey(TypeKey underlying) : base("?", underlying) { }
     public override string ToString() => Parameters.Single() + "?";
 }
 
-sealed class TupleTypeKey : ParameterizedTypeKey
+sealed class TupleTypeKey(ImmutableList<TypeKey> parameters) :
+    ParameterizedTypeKey("()", parameters)
 {
-    public TupleTypeKey(ImmutableList<TypeKey> parameters) :
-        base("()", parameters) { }
-
     public override string ToString() =>
         "(" + string.Join(", ", Parameters) + ")";
 }
 
-sealed class ArrayTypeKey : ParameterizedTypeKey
+sealed class ArrayTypeKey(TypeKey element, IEnumerable<int> ranks) :
+    ParameterizedTypeKey("[]", element)
 {
-    public ArrayTypeKey(TypeKey element, IEnumerable<int> ranks) :
-        base("[]", element) => Ranks = ImmutableList.CreateRange(ranks);
-
-    public ImmutableList<int> Ranks { get; }
+    public ImmutableList<int> Ranks { get; } = ImmutableList.CreateRange(ranks);
 
     public override string ToString() =>
         Parameters.Single() + string.Concat(from r in Ranks

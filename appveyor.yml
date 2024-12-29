@@ -1,12 +1,17 @@
 version: '{build}'
 image:
 - Visual Studio 2022
-- Ubuntu1604
-- macos-bigsur
+- Ubuntu1804
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   SKIP_TEST_BUILD: true
+skip_commits:
+  files:
+  - '*.md'
+  - '*.txt'
+  - '**/.gitignore'
+  - .github/**
 for:
 -
   matrix:
@@ -32,31 +37,22 @@ for:
 -
   matrix:
     only:
-      - image: Ubuntu1604
+      - image: Ubuntu1804
   environment:
-    IMAGE_NAME: ubuntu-16.04
--
-  matrix:
-    only:
-      - image: macos-bigsur
-  environment:
-    IMAGE_NAME: macos
-skip_commits:
-  files:
-    - '*.md'
-    - '*.txt'
-    - '.editorconfig'
-    - lic/*
+    IMAGE_NAME: ubuntu-18.04
 install:
 - npm install -g eclint
 - git rm .editorconfig
+- pwsh: git rm 'tools/dotnet-install.*'
 - pwsh: ./eclint.ps1 -InsertFinalNewline -Verbose
 - pwsh: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 - git reset --hard
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 6.0.11 -SkipNonVersionedFiles }
+- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 8.0.11 -SkipNonVersionedFiles }
 - sh: ./tools/dotnet-install.sh --jsonfile global.json
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 6.0.11 --skip-non-versioned-files
+- sh: ./tools/dotnet-install.sh --runtime dotnet --version 8.0.11 --skip-non-versioned-files
 - sh: export PATH="$HOME/.dotnet:$PATH"
 before_build:
 - dotnet --info

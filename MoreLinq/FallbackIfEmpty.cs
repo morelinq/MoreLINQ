@@ -161,7 +161,16 @@ namespace MoreLinq
             int? count, T? fallback1, T? fallback2, T? fallback3, T? fallback4,
             IEnumerable<T>? fallback)
         {
-            return _(); IEnumerable<T> _()
+            return _(source, count, fallback1, fallback2, fallback3, fallback4, fallback);
+
+            static IEnumerable<T> _(
+                IEnumerable<T> source,
+                int? count,
+                T? fallback1,
+                T? fallback2,
+                T? fallback3,
+                T? fallback4,
+                IEnumerable<T>? fallback)
             {
                 if (source.TryAsCollectionLike() is null or { Count: > 0 })
                 {

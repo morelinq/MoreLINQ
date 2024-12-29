@@ -24,7 +24,6 @@ namespace MoreLinq.Test
     using System.Reflection;
     using System.Threading.Tasks;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using StackTrace = System.Diagnostics.StackTrace;
 
     [TestFixture]
@@ -38,7 +37,7 @@ namespace MoreLinq.Test
         public void CanBeNull(Action testCase) =>
             testCase();
 
-        static IEnumerable<ITestCaseData> GetNotNullTestCases() =>
+        static IEnumerable<TestCaseData> GetNotNullTestCases() =>
             GetTestCases(canBeNull: false, testCaseFactory: (method, args, paramName) => () =>
             {
                 Exception? e = null;
@@ -61,15 +60,15 @@ namespace MoreLinq.Test
                 Assert.That(actualType, Is.SameAs(typeof(MoreEnumerable)));
             });
 
-        static IEnumerable<ITestCaseData> GetCanBeNullTestCases() =>
+        static IEnumerable<TestCaseData> GetCanBeNullTestCases() =>
             GetTestCases(canBeNull: true, testCaseFactory: (method, args, _) => () => method.Invoke(null, args));
 
-        static IEnumerable<ITestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory) =>
+        static IEnumerable<TestCaseData> GetTestCases(bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory) =>
             from m in typeof(MoreEnumerable).GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
             from t in CreateTestCases(m, canBeNull, testCaseFactory)
             select t;
 
-        static IEnumerable<ITestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory)
+        static IEnumerable<TestCaseData> CreateTestCases(MethodInfo methodDefinition, bool canBeNull, Func<MethodInfo, object?[], string, Action> testCaseFactory)
         {
             var method = InstantiateMethod(methodDefinition);
             var parameters = method.GetParameters().ToList();
@@ -82,7 +81,7 @@ namespace MoreLinq.Test
                                                   param.Name ?? throw new NullReferenceException())
 #pragma warning restore CA2201 // Do not raise reserved exception types
                    let testName = GetTestName(methodDefinition, param)
-                   select (ITestCaseData)new TestCaseData(testCase).SetName(testName);
+                   select new TestCaseData(testCase).SetName(testName);
         }
 
         static string GetTestName(MethodInfo definition, ParameterInfo parameter) =>
@@ -92,20 +91,19 @@ namespace MoreLinq.Test
         {
             if (!definition.IsGenericMethodDefinition) return definition;
 
-            var typeArguments = definition.GetGenericArguments().Select(t => InstantiateType(t.GetTypeInfo())).ToArray();
-            return definition.MakeGenericMethod(typeArguments);
-        }
+            var typeArguments =
+                from t in definition.GetGenericArguments()
+                select t.GetGenericParameterConstraints() switch
+                {
+                    { Length: 0 } => typeof(int),
+#if NET7_0_OR_GREATER
+                    var constraints when constraints.Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(System.Numerics.INumber<>)) => typeof(int),
+#endif
+                    { Length: 1 } constraints => constraints.Single(),
+                    _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
+                };
 
-        static Type InstantiateType(TypeInfo typeParameter)
-        {
-            var constraints = typeParameter.GetGenericParameterConstraints();
-
-            return constraints.Length switch
-            {
-                0 => typeof(int),
-                1 => constraints.Single(),
-                _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
-            };
+            return definition.MakeGenericMethod(typeArguments.ToArray());
         }
 
         static bool IsReferenceType(ParameterInfo parameter) =>
@@ -124,7 +122,6 @@ namespace MoreLinq.Test
                 nameof(MoreEnumerable.From) + ".function1",
                 nameof(MoreEnumerable.From) + ".function2",
                 nameof(MoreEnumerable.From) + ".function3",
-                nameof(MoreEnumerable.ToDataTable) + ".expressions",
                 nameof(MoreEnumerable.Trace) + ".format"
             };
 

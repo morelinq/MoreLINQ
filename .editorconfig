@@ -31,6 +31,42 @@ dotnet_analyzer_diagnostic.category-Style.severity = warning
 # IDE0022: Use expression/block body for methods
 dotnet_diagnostic.IDE0022.severity = suggestion
 
+# IDE1006: Naming rule violation
+dotnet_diagnostic.IDE1006.severity = warning
+
+# Naming capitalization styles
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Naming rule that private instance fields must use camel case
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_rule.camel_case_private_fields.severity = warning
+dotnet_naming_rule.camel_case_private_fields.symbols = private_fields
+dotnet_naming_rule.camel_case_private_fields.style = camel_case_style
+
+# Naming rule that static read-only fields must use Pascal case
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.static_readonly_fields.applicable_accessibilities = *
+dotnet_naming_symbols.static_readonly_fields.required_modifiers = readonly, static
+dotnet_naming_rule.pascal_case_static_readonly_fields.severity = warning
+dotnet_naming_rule.pascal_case_static_readonly_fields.symbols = static_readonly_fields
+dotnet_naming_rule.pascal_case_static_readonly_fields.style = pascal_case_style
+
+# Naming rule that const fields must use Pascal case
+dotnet_naming_symbols.const_fields.applicable_kinds = field
+dotnet_naming_symbols.const_fields.applicable_accessibilities = *
+dotnet_naming_symbols.const_fields.required_modifiers = const
+dotnet_naming_rule.pascal_case_const_fields.severity = warning
+dotnet_naming_rule.pascal_case_const_fields.symbols = const_fields
+dotnet_naming_rule.pascal_case_const_fields.style = pascal_case_style
+
+# this. preferences
+dotnet_style_qualification_for_event = false
+dotnet_style_qualification_for_field = true
+dotnet_style_qualification_for_method = false
+dotnet_style_qualification_for_property = false
+
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true
 csharp_style_var_when_type_is_apparent = true
@@ -86,3 +122,15 @@ dotnet_diagnostic.IDE0055.severity = suggestion
 
 # IDE0046: Convert to conditional expression
 dotnet_diagnostic.IDE0046.severity = suggestion
+
+# CA1510: Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance
+# TODO: Remove post https://github.com/morelinq/MoreLINQ/issues/903
+dotnet_diagnostic.CA1510.severity = suggestion
+
+# CA1512: Use 'ArgumentOutOfRangeException.ThrowIfNegativeOrZero' instead of explicitly throwing a new exception instance
+# TODO: Remove post https://github.com/morelinq/MoreLINQ/issues/903
+dotnet_diagnostic.CA1512.severity = suggestion
+
+# CA1513: Use 'ObjectDisposedException.ThrowIf' instead of explicitly throwing a new exception instance
+# TODO: Remove post https://github.com/morelinq/MoreLINQ/issues/903
+dotnet_diagnostic.CA1513.severity = suggestion

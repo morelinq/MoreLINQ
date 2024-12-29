@@ -424,11 +424,20 @@ namespace MoreLinq.Experimental
 
             return
                 AwaitQuery.Create(
-                    options => Impl(options.MaxConcurrency,
+                    options => Impl(source,
+                                    evaluator,
+                                    resultSelector,
+                                    options.MaxConcurrency,
                                     options.Scheduler ?? TaskScheduler.Default,
                                     options.PreserveOrder));
 
-            IEnumerable<TResult> Impl(int? maxConcurrency, TaskScheduler scheduler, bool ordered)
+            static IEnumerable<TResult> Impl(
+                IEnumerable<T> source,
+                Func<T, CancellationToken, Task<TTaskResult>> evaluator,
+                Func<T, Task<TTaskResult>, TResult> resultSelector,
+                int? maxConcurrency,
+                TaskScheduler scheduler,
+                bool ordered)
             {
                 // A separate task will enumerate the source and launch tasks.
                 // It will post all progress as notices to the collection below.
@@ -452,7 +461,7 @@ namespace MoreLinq.Experimental
                 var completed = false;
                 var cancellationTokenSource = new CancellationTokenSource();
 
-                var enumerator = source.Index().GetEnumerator();
+                var enumerator = MoreEnumerable.Index(source).GetEnumerator();
                 IDisposable disposable = enumerator; // disables AccessToDisposedClosure warnings
 
                 try
@@ -697,32 +706,26 @@ namespace MoreLinq.Experimental
         static class AwaitQuery
         {
             public static IAwaitQuery<T>
+#pragma warning disable CA1859 // Use concrete types when possible for improved performance (by-design)
                 Create<T>(
+#pragma warning restore CA1859 // Use concrete types when possible for improved performance
                     Func<AwaitQueryOptions, IEnumerable<T>> impl,
                     AwaitQueryOptions? options = null) =>
                 new AwaitQuery<T>(impl, options);
         }
 
-        sealed class AwaitQuery<T> : IAwaitQuery<T>
+        sealed class AwaitQuery<T>(Func<AwaitQueryOptions, IEnumerable<T>> impl,
+            AwaitQueryOptions? options = null) : IAwaitQuery<T>
         {
-            readonly Func<AwaitQueryOptions, IEnumerable<T>> _impl;
-
-            public AwaitQuery(Func<AwaitQueryOptions, IEnumerable<T>> impl,
-                AwaitQueryOptions? options = null)
-            {
-                _impl = impl;
-                Options = options ?? AwaitQueryOptions.Default;
-            }
-
-            public AwaitQueryOptions Options { get; }
+            public AwaitQueryOptions Options { get; } = options ?? AwaitQueryOptions.Default;
 
             public IAwaitQuery<T> WithOptions(AwaitQueryOptions options)
             {
                 if (options == null) throw new ArgumentNullException(nameof(options));
-                return Options == options ? this : new AwaitQuery<T>(_impl, options);
+                return Options == options ? this : new AwaitQuery<T>(impl, options);
             }
 
-            public IEnumerator<T> GetEnumerator() => _impl(Options).GetEnumerator();
+            public IEnumerator<T> GetEnumerator() => impl(Options).GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
@@ -762,27 +765,27 @@ namespace MoreLinq.Experimental
         {
             public static readonly ConcurrencyGate Unbounded = new();
 
-            readonly SemaphoreSlim? _semaphore;
+            readonly SemaphoreSlim? semaphore;
 
             ConcurrencyGate(SemaphoreSlim? semaphore = null) =>
-                _semaphore = semaphore;
+                this.semaphore = semaphore;
 
             public ConcurrencyGate(int max) :
                 this(new SemaphoreSlim(max, max)) { }
 
             public Task EnterAsync(CancellationToken token)
             {
-                if (_semaphore == null)
+                if (this.semaphore == null)
                 {
                     token.ThrowIfCancellationRequested();
                     return CompletedTask.Instance;
                 }
 
-                return _semaphore.WaitAsync(token);
+                return this.semaphore.WaitAsync(token);
             }
 
             public void Exit() =>
-                _semaphore?.Release();
+                this.semaphore?.Release();
         }
     }
 }

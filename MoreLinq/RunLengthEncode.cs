@@ -49,9 +49,9 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
 
-            return _(comparer ?? EqualityComparer<T>.Default);
+            return _(sequence, comparer ?? EqualityComparer<T>.Default);
 
-            IEnumerable<KeyValuePair<T, int>> _(IEqualityComparer<T> comparer)
+            static IEnumerable<KeyValuePair<T, int>> _(IEnumerable<T> sequence, IEqualityComparer<T> comparer)
             {
                 // This implementation could also have been written using a foreach loop,
                 // but it proved to be easier to deal with edge certain cases that occur

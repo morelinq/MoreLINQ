@@ -25,14 +25,13 @@ namespace MoreLinq.Test
     using Experimental;
     using System.Reactive.Linq;
     using System.Reflection;
-    using NUnit.Framework.Interfaces;
     using static MoreLinq.Extensions.AppendExtension;
     using static FuncModule;
 
     [TestFixture]
     public class AggregateTest
     {
-        public static IEnumerable<ITestCaseData> AccumulatorsTestSource(string name, int count) =>
+        public static IEnumerable<TestCaseData> AccumulatorsTestSource(string name, int count) =>
 
             /* Generates an invocation as follows for 2 accumulators:
 
@@ -97,7 +96,9 @@ namespace MoreLinq.Test
             into t
             select new TestCaseData(t.Method, t.Args).SetName(t.Name).Returns(t.Expectation);
 
-        [TestCaseSource(nameof(AccumulatorsTestSource), new object[] { nameof(Accumulators), 10 })]
+#pragma warning disable NUnit1018 // Parameter count does not match (false negative)
+        [TestCaseSource(nameof(AccumulatorsTestSource), [nameof(Accumulators), 10])]
+#pragma warning restore NUnit1018 // Parameter count does not match
         public object? Accumulators(MethodInfo method, object[] args) =>
             method.Invoke(null, args);
 

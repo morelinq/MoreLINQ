@@ -282,9 +282,24 @@ namespace MoreLinq
             if (bothSelector == null) throw new ArgumentNullException(nameof(bothSelector));
             if (secondSelector == null) throw new ArgumentNullException(nameof(secondSelector));
 
-            return _(comparer ?? Comparer<TKey>.Default);
+            return _(first,
+                     second,
+                     firstKeySelector,
+                     secondKeySelector,
+                     firstSelector,
+                     secondSelector,
+                     bothSelector,
+                     comparer ?? Comparer<TKey>.Default);
 
-            IEnumerable<TResult> _(IComparer<TKey> comparer)
+            static IEnumerable<TResult> _(
+                IEnumerable<TFirst> first,
+                IEnumerable<TSecond> second,
+                Func<TFirst, TKey> firstKeySelector,
+                Func<TSecond, TKey> secondKeySelector,
+                Func<TFirst, TResult> firstSelector,
+                Func<TSecond, TResult> secondSelector,
+                Func<TFirst, TSecond, TResult> bothSelector,
+                IComparer<TKey> comparer)
             {
                 using var e1 = first.GetEnumerator();
                 using var e2 = second.GetEnumerator();

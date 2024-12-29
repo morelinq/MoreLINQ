@@ -24,7 +24,11 @@
 // SOFTWARE.
 #endregion
 
-#if !NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
+
+global using UnreachableException = System.Diagnostics.UnreachableException;
+
+#else
 
 namespace MoreLinq
 {
@@ -55,4 +59,4 @@ namespace MoreLinq
     }
 }
 
-#endif // !NET7_0_OR_GREATER
+#endif // NET7_0_OR_GREATER

@@ -17,15 +17,27 @@
 
 namespace MoreLinq.Test
 {
+    using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
     public class PadTest
     {
-        [Test]
-        public void PadNegativeWidth()
+        static readonly IEnumerable<TestCaseData> PadNegativeWidthCases =
+            from e in new (string Name, TestDelegate Delegate)[]
+            {
+                ("DefaultPadding" , static () => new object[0].Pad(-1)),
+                ("Padding"        , static () => new object[0].Pad(-1, -2)),
+                ("PaddingSelector", static () => new object[0].Pad(-1, BreakingFunc.Of<int, int>())),
+            }
+            select new TestCaseData(e.Delegate).SetName(e.Name);
+
+        [TestCaseSource(nameof(PadNegativeWidthCases))]
+        public void PadNegativeWidth(TestDelegate @delegate)
         {
-            Assert.That(() => new object[0].Pad(-1), Throws.ArgumentException("width"));
+            Assert.That(@delegate, Throws.ArgumentOutOfRangeException("width")
+                                         .And.Property(nameof(ArgumentOutOfRangeException.ActualValue)).EqualTo(-1));
         }
 
         [Test]

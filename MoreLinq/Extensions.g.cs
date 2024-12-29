@@ -680,7 +680,7 @@ namespace MoreLinq.Extensions
         /// </para>
         /// </remarks>
 
-        public static IEnumerable<IEnumerable<TSource>> Batch<TSource>(this IEnumerable<TSource> source, int size)
+        public static IEnumerable<TSource[]> Batch<TSource>(this IEnumerable<TSource> source, int size)
             => MoreEnumerable.Batch(source, size);
 
         /// <summary>
@@ -711,7 +711,7 @@ namespace MoreLinq.Extensions
         /// </remarks>
 
         public static IEnumerable<TResult> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size,
-            Func<IEnumerable<TSource>, TResult> resultSelector)
+            Func<TSource[], TResult> resultSelector)
             => MoreEnumerable.Batch(source, size, resultSelector);
 
     }
@@ -1173,7 +1173,11 @@ namespace MoreLinq.Extensions
         /// <param name="keySelector">Function that transforms each item of source sequence into a key to be compared against the others.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+#if !NET9_0_OR_GREATER
+            this
+#endif
+            IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
             => MoreEnumerable.CountBy(source, keySelector);
 
         /// <summary>
@@ -1189,7 +1193,11 @@ namespace MoreLinq.Extensions
         /// If null, the default equality comparer for <typeparamref name="TSource"/> is used.</param>
         /// <returns>A sequence of unique keys and their number of occurrences in the original sequence.</returns>
 
-        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
+        public static IEnumerable<KeyValuePair<TKey, int>> CountBy<TSource, TKey>(
+#if !NET9_0_OR_GREATER
+            this
+#endif
+            IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.CountBy(source, keySelector, comparer);
 
     }
@@ -1280,6 +1288,41 @@ namespace MoreLinq.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey>? comparer)
             => MoreEnumerable.DistinctBy(source, keySelector, comparer);
+
+    }
+
+    /// <summary><c>Duplicates</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class DuplicatesExtension
+    {
+        /// <summary>
+        /// Returns all duplicate elements of the given source.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <returns>All elements that are duplicated.</returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+
+        public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source)             => MoreEnumerable.Duplicates(source);
+
+        /// <summary>
+        /// Returns all duplicate elements of the given source, using the specified equality
+        /// comparer.
+        /// </summary>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="comparer">
+        /// The equality comparer to use to determine whether one <typeparamref name="TSource"/>
+        /// equals another. If <see langword="null"/>, the default equality comparer for
+        /// <typeparamref name="TSource"/> is used.</param>
+        /// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <returns>All elements that are duplicated.</returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+
+        public static IEnumerable<TSource> Duplicates<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
+            => MoreEnumerable.Duplicates(source, comparer);
 
     }
 
@@ -3401,7 +3444,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class MaxByExtension
     {
-
         /// <summary>
         /// Returns the maximal elements of the given sequence, based on
         /// the given projection.
@@ -3418,6 +3460,8 @@ namespace MoreLinq.Extensions
         /// <returns>The sequence of maximal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
+        [Obsolete($"Use {nameof(ExtremaMembers.Maxima)} instead.")]
+        [ExcludeFromCodeCoverage]
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MaxBy(source, selector);
@@ -3439,9 +3483,60 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
+        [Obsolete($"Use {nameof(ExtremaMembers.Maxima)} instead.")]
+        [ExcludeFromCodeCoverage]
         public static IExtremaEnumerable<TSource> MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
             => MoreEnumerable.MaxBy(source, selector, comparer);
+
+    }
+
+    /// <summary><c>Maxima</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class MaximaExtension
+    {
+
+        /// <summary>
+        /// Returns the maximal elements of the given sequence, based on
+        /// the given projection.
+        /// </summary>
+        /// <remarks>
+        /// This overload uses the default comparer  for the projected type.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
+        /// </remarks>
+        /// <typeparam name="TSource">Type of the source sequence</typeparam>
+        /// <typeparam name="TKey">Type of the projected element</typeparam>
+        /// <param name="source">Source sequence</param>
+        /// <param name="selector">Selector to use to pick the results to compare</param>
+        /// <returns>The sequence of maximal elements, according to the projection.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
+
+        public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector)
+            => MoreEnumerable.Maxima(source, selector);
+
+        /// <summary>
+        /// Returns the maximal elements of the given sequence, based on
+        /// the given projection and the specified comparer for projected values.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
+        /// </remarks>
+        /// <typeparam name="TSource">Type of the source sequence</typeparam>
+        /// <typeparam name="TKey">Type of the projected element</typeparam>
+        /// <param name="source">Source sequence</param>
+        /// <param name="selector">Selector to use to pick the results to compare</param>
+        /// <param name="comparer">Comparer to use to compare projected values</param>
+        /// <returns>The sequence of maximal elements, according to the projection.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
+        /// or <paramref name="comparer"/> is null</exception>
+
+        public static IExtremaEnumerable<TSource> Maxima<TSource, TKey>(this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
+            => MoreEnumerable.Maxima(source, selector, comparer);
 
     }
 
@@ -3466,6 +3561,8 @@ namespace MoreLinq.Extensions
         /// <returns>The sequence of minimal elements, according to the projection.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
 
+        [Obsolete($"Use {ExtremaMembers.Minima} instead.")]
+        [ExcludeFromCodeCoverage]
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector)
             => MoreEnumerable.MinBy(source, selector);
@@ -3487,9 +3584,59 @@ namespace MoreLinq.Extensions
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
         /// or <paramref name="comparer"/> is null</exception>
 
+        [Obsolete($"Use {nameof(ExtremaMembers.Minima)} instead.")]
+        [ExcludeFromCodeCoverage]
         public static IExtremaEnumerable<TSource> MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey>? comparer)
             => MoreEnumerable.MinBy(source, selector, comparer);
+
+    }
+
+    /// <summary><c>Minima</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class MinimaExtension
+    {
+        /// <summary>
+        /// Returns the minimal elements of the given sequence, based on
+        /// the given projection.
+        /// </summary>
+        /// <remarks>
+        /// This overload uses the default comparer for the projected type.
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
+        /// </remarks>
+        /// <typeparam name="TSource">Type of the source sequence</typeparam>
+        /// <typeparam name="TKey">Type of the projected element</typeparam>
+        /// <param name="source">Source sequence</param>
+        /// <param name="selector">Selector to use to pick the results to compare</param>
+        /// <returns>The sequence of minimal elements, according to the projection.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="selector"/> is null</exception>
+
+        public static IExtremaEnumerable<TSource> Minima<TSource, TKey>(this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector)
+            => MoreEnumerable.Minima(source, selector);
+
+        /// <summary>
+        /// Returns the minimal elements of the given sequence, based on
+        /// the given projection and the specified comparer for projected values.
+        /// </summary>
+        /// <remarks>
+        /// This operator uses deferred execution. The results are evaluated
+        /// and cached on first use to returned sequence.
+        /// </remarks>
+        /// <typeparam name="TSource">Type of the source sequence</typeparam>
+        /// <typeparam name="TKey">Type of the projected element</typeparam>
+        /// <param name="source">Source sequence</param>
+        /// <param name="selector">Selector to use to pick the results to compare</param>
+        /// <param name="comparer">Comparer to use to compare projected values</param>
+        /// <returns>The sequence of minimal elements, according to the projection.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="selector"/>
+        /// or <paramref name="comparer"/> is null</exception>
+
+        public static IExtremaEnumerable<TSource> Minima<TSource, TKey>(this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector, IComparer<TKey>? comparer)
+            => MoreEnumerable.Minima(source, selector, comparer);
 
     }
 
@@ -4505,7 +4652,6 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class PermutationsExtension
     {
-
         /// <summary>
         /// Generates a sequence of lists that represent the permutations of the original sequence.
         /// </summary>

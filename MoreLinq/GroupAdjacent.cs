@@ -295,7 +295,7 @@ namespace MoreLinq
             }
         }
 
-        static IGrouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
+        static Grouping<TKey, TElement> CreateGroupAdjacentGrouping<TKey, TElement>(TKey key, IList<TElement> members) =>
             Grouping.Create(key, members.IsReadOnly ? members : new ReadOnlyCollection<TElement>(members));
 
         static class Grouping
@@ -305,19 +305,12 @@ namespace MoreLinq
         }
 
         [Serializable]
-        sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
+        sealed class Grouping<TKey, TElement>(TKey key, IEnumerable<TElement> members) :
+            IGrouping<TKey, TElement>
         {
-            readonly IEnumerable<TElement> _members;
+            public TKey Key { get; } = key;
 
-            public Grouping(TKey key, IEnumerable<TElement> members)
-            {
-                Key = key;
-                _members = members;
-            }
-
-            public TKey Key { get; }
-
-            public IEnumerator<TElement> GetEnumerator() => _members.GetEnumerator();
+            public IEnumerator<TElement> GetEnumerator() => members.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }

@@ -18,7 +18,6 @@
 namespace MoreLinq.Test
 {
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using System.Collections.Generic;
 
     [TestFixture]
@@ -60,7 +59,7 @@ namespace MoreLinq.Test
             sequence.AssertSequenceEqual(0, 1, 2);
         }
 
-        public static readonly IEnumerable<ITestCaseData> TestData =
+        public static readonly IEnumerable<TestCaseData> TestData =
             from e in new[]
             {
                 new { Source = new int[0]       , Min = 0, Expected = new int[0]     }, // empty sequence

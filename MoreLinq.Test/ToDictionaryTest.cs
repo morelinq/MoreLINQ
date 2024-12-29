@@ -33,7 +33,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create("baz", 789),
             };
 
-            var dict = pairs.ToDictionary();
+            var dict = MoreEnumerable.ToDictionary(pairs);
 
             Assert.That(dict["foo"], Is.EqualTo(123));
             Assert.That(dict["bar"], Is.EqualTo(456));
@@ -50,7 +50,7 @@ namespace MoreLinq.Test
                 ("baz", 789),
             };
 
-            var dict = pairs.ToDictionary();
+            var dict = MoreEnumerable.ToDictionary(pairs);
 
             Assert.That(dict["foo"], Is.EqualTo(123));
             Assert.That(dict["bar"], Is.EqualTo(456));
@@ -67,7 +67,7 @@ namespace MoreLinq.Test
                 KeyValuePair.Create("baz", 789),
             };
 
-            var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
+            var dict = MoreEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict["FOO"], Is.EqualTo(123));
             Assert.That(dict["BAR"], Is.EqualTo(456));
@@ -84,7 +84,7 @@ namespace MoreLinq.Test
                 ("baz", 789),
             };
 
-            var dict = pairs.ToDictionary(StringComparer.OrdinalIgnoreCase);
+            var dict = MoreEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict["FOO"], Is.EqualTo(123));
             Assert.That(dict["BAR"], Is.EqualTo(456));

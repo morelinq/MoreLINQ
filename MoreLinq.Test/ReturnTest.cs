@@ -20,7 +20,6 @@ namespace MoreLinq.Test
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
 
     public class ReturnTest
     {
@@ -136,7 +135,7 @@ namespace MoreLinq.Test
             Assert.That(SomeSingleton.List.IndexOf(new object()), Is.EqualTo(-1));
         }
 
-        static IEnumerable<ITestCaseData> UnsupportedActions(string testName) =>
+        static IEnumerable<TestCaseData> UnsupportedActions(string testName) =>
             from ma in new (string MethodName, Action Action)[]
             {
                 ("Add"     , () => SomeSingleton.List.Add(new object())),
@@ -148,7 +147,9 @@ namespace MoreLinq.Test
             }
             select new TestCaseData(ma.Action).SetName($"{testName}({ma.MethodName})");
 
-        [TestCaseSource(nameof(UnsupportedActions), new object[] { nameof(TestUnsupportedMethodShouldThrow) })]
+#pragma warning disable NUnit1018 // Parameter count does not match (false negative)
+        [TestCaseSource(nameof(UnsupportedActions), [nameof(TestUnsupportedMethodShouldThrow)])]
+#pragma warning restore NUnit1018 // Parameter count does not match
         public void TestUnsupportedMethodShouldThrow(Action unsupportedAction)
         {
             Assert.That(() => unsupportedAction(), Throws.InstanceOf<NotSupportedException>());

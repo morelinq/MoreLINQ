@@ -72,36 +72,36 @@ namespace MoreLinq.Test.Async
             using var ts = TestingSequence.Of(ts1, ts2, ts3, ts4, ts5);
             var result = await ts.Merge().ToListAsync();
 
-            Assert.That(result, Is.EquivalentTo(new[]
-            {
+            Assert.That(result, Is.EquivalentTo(
+            [
                 10,
                 20, 21,
                 30, 31, 32,
                 40, 41, 42, 43,
-                50, 51, 52, 53, 54,
-            }));
+                50, 51, 52, 53, 54
+            ]));
         }
 
         sealed class AsyncControl<T>
         {
             sealed record State(TaskCompletionSource<T> TaskCompletionSource, T Result);
 
-            State? _state;
+            State? state;
 
             public Task<T> Result(T result)
             {
-                if (_state is not null)
+                if (this.state is not null)
                     throw new InvalidOperationException();
-                _state = new State(new TaskCompletionSource<T>(), result);
-                return _state.TaskCompletionSource.Task;
+                this.state = new State(new TaskCompletionSource<T>(), result);
+                return this.state.TaskCompletionSource.Task;
             }
 
             public void Complete()
             {
-                if (_state is not { } state)
+                if (this.state is not { } someState)
                     throw new InvalidOperationException();
-                _state = null;
-                state.TaskCompletionSource.SetResult(state.Result);
+                this.state = null;
+                someState.TaskCompletionSource.SetResult(someState.Result);
             }
         }
 

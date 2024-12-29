@@ -43,7 +43,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (action == null) throw new ArgumentNullException(nameof(action));
 
-            return _(); IEnumerable<T> _()
+            return _(source, action);
+
+            static IEnumerable<T> _(IEnumerable<T> source, Action<T> action)
             {
                 foreach (var element in source)
                 {

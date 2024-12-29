@@ -145,7 +145,9 @@ namespace MoreLinq.Test
             LinqEnumerable.ElementAtOrDefault(source, index);
 
         public static IEnumerable<TResult> Empty<TResult>() =>
+#pragma warning disable IDE0301 // Simplify collection initialization
             LinqEnumerable.Empty<TResult>();
+#pragma warning restore IDE0301 // Simplify collection initialization
 
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second) =>
             LinqEnumerable.Except(first, second);

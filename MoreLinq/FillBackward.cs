@@ -114,7 +114,7 @@ namespace MoreLinq
                 var isBlank = predicate(item);
                 if (isBlank)
                 {
-                    (blanks ??= new List<T>()).Add(item);
+                    (blanks ??= []).Add(item);
                 }
                 else
                 {

@@ -67,8 +67,8 @@ namespace MoreLinq.Test
             var trace = Lines(CaptureTrace(delegate
             {
                 var formatter = CultureInfo.InvariantCulture;
-                new int?[] { 1234, null, 5678 }.Trace(n => n.HasValue
-                                                           ? n.Value.ToString("N0", formatter)
+                new int?[] { 1234, null, 5678 }.Trace(n => n is { } some
+                                                           ? some.ToString("N0", formatter)
                                                            : "#NULL")
                                                .Consume();
             }));

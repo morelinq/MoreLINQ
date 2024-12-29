@@ -5,6 +5,7 @@ popd & exit /b %ERRORLEVEL%
 
 :main
 setlocal
+set MSBUILDTERMINALLOGGER=off
 for %%i in (dotnet.exe) do set dotnet=%%~dpnx$PATH:i
 if "%dotnet%"=="" goto :nodotnet
 if "%1"=="docs" shift & goto :docs
@@ -27,7 +28,14 @@ exit /b 2
 
 :codegen
 echo | set /p=Generating extensions wrappers (%1)...
-dotnet run --project bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release -- %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
+dotnet build bld\ExtensionsGenerator\MoreLinq.ExtensionsGenerator.csproj -c Release >build.log 2>&1 || (
+    echo Failed!
+    type build.log
+    del build.log
+    exit /b 1
+)
+del build.log
+dotnet bld\ExtensionsGenerator\bin\Release\MoreLinq.ExtensionsGenerator.dll %2 %3 %4 %5 %6 %7 %8 %9 > "%temp%\%~nx1" ^
   && move "%temp%\%~nx1" "%~dp1" > nul ^
   && echo Done.
 exit /b %ERRORLEVEL%

@@ -26,40 +26,38 @@ namespace MoreLinq.Test
         public static WatchableEnumerator<T> AsWatchable<T>(this IEnumerator<T> source) => new(source);
     }
 
-    sealed class WatchableEnumerator<T> : IEnumerator<T>
+    sealed class WatchableEnumerator<T>(IEnumerator<T> source) :
+        IEnumerator<T>
     {
-        readonly IEnumerator<T> _source;
+        readonly IEnumerator<T> source = source ?? throw new ArgumentNullException(nameof(source));
 
         public event EventHandler? Disposed;
         public event EventHandler? GetCurrentCalled;
         public event EventHandler<bool>? MoveNextCalled;
-
-        public WatchableEnumerator(IEnumerator<T> source) =>
-            _source = source ?? throw new ArgumentNullException(nameof(source));
 
         public T Current
         {
             get
             {
                 GetCurrentCalled?.Invoke(this, EventArgs.Empty);
-                return _source.Current;
+                return this.source.Current;
             }
         }
 
         object? IEnumerator.Current => this.Current;
 
-        public void Reset() => _source.Reset();
+        public void Reset() => this.source.Reset();
 
         public bool MoveNext()
         {
-            var moved = _source.MoveNext();
+            var moved = this.source.MoveNext();
             MoveNextCalled?.Invoke(this, moved);
             return moved;
         }
 
         public void Dispose()
         {
-            _source.Dispose();
+            this.source.Dispose();
             Disposed?.Invoke(this, EventArgs.Empty);
         }
     }

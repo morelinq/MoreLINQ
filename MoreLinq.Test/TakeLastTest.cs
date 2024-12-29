@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLast()
         {
-            AssertTakeLast(new[] { 12, 34, 56, 78, 910, 1112 },
+            AssertTakeLast([12, 34, 56, 78, 910, 1112],
                            3,
                            result => result.AssertSequenceEqual(78, 910, 1112));
         }
@@ -36,7 +36,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastOnSequenceShortOfCount()
         {
-            AssertTakeLast(new[] { 12, 34, 56 },
+            AssertTakeLast([12, 34, 56],
                            5,
                            result => result.AssertSequenceEqual(12, 34, 56));
         }
@@ -44,7 +44,7 @@ namespace MoreLinq.Test
         [Test]
         public void TakeLastWithNegativeCount()
         {
-            AssertTakeLast(new[] { 12, 34, 56 },
+            AssertTakeLast([12, 34, 56],
                            -2,
                            result => Assert.That(result, Is.Empty));
         }

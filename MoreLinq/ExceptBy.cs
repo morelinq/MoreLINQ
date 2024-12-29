@@ -79,9 +79,13 @@ namespace MoreLinq
             if (second == null) throw new ArgumentNullException(nameof(second));
             if (keySelector == null) throw new ArgumentNullException(nameof(keySelector));
 
-            return Impl();
+            return Impl(first, second, keySelector, keyComparer);
 
-            IEnumerable<TSource> Impl()
+            static IEnumerable<TSource> Impl(
+                IEnumerable<TSource> first,
+                IEnumerable<TSource> second,
+                Func<TSource, TKey> keySelector,
+                IEqualityComparer<TKey>? keyComparer)
             {
                 // TODO Use ToHashSet
                 var keys = new HashSet<TKey>(second.Select(keySelector), keyComparer);

@@ -34,10 +34,11 @@ using static MoreLinq.Extensions.LeadExtension;
 In the example above, only the [`Lag`][lag] and [`Lead`][lead] extension
 methods will be available in scope.
 
-Apart from extension methods, MoreLINQ also offers regular static method
-that *generate* (instead of operating on) sequences, like `Unfold`,
-`Random`, `Sequence` and others. If you want to use these while statically
-importing other individual extension methods, you can do so via aliasing:
+Apart from extension methods, MoreLINQ also offers regular static method that
+*generate* (instead of operating on) sequences, like [`Unfold`][unfold],
+[`Random`][random], [`Sequence`][sequence] and others. If you want to use these
+while statically importing other individual extension methods, you can do so via
+aliasing:
 
 ```c#
 using static MoreLinq.Extensions.LagExtension;
@@ -205,6 +206,12 @@ projected type.
 
 This method has 2 overloads.
 
+### Duplicates
+
+Returns all duplicate elements of the given source.
+
+This method has 2 overloads.
+
 ### EndsWith
 
 Determines whether the end of the first sequence is equivalent to the second
@@ -360,14 +367,32 @@ Performs a left outer join between two sequences.
 
 This method has 4 overloads.
 
-### MaxBy
+### ~~MaxBy~~
+
+:warning: **This method is obsolete. Use [`Maxima`](#maxima) instead.**
 
 Returns the maxima (maximal elements) of the given sequence, based on the
 given projection.
 
 This method has 2 overloads.
 
-### MinBy
+### Maxima
+
+Returns the maxima (maximal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
+### ~~MinBy~~
+
+:warning: **This method is obsolete. Use [`Minima`](#minima) instead.**
+
+Returns the minima (minimal elements) of the given sequence, based on the
+given projection.
+
+This method has 2 overloads.
+
+### Minima
 
 Returns the minima (minimal elements) of the given sequence, based on the
 given projection.
@@ -692,8 +717,7 @@ subset of the original
 Processes a sequence into a series of subsequences representing a windowed
 subset of the original
 
-This method is obsolete and will be removed in a future version. Use `Window`
-instead.
+This method was removed and has been superseded by [`Window`](#window) instead.
 
 ### WindowLeft
 

@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 set -e
 cd "$(dirname "$0")"
+export MSBUILDTERMINALLOGGER=off
 dotnet restore
 dotnet tool restore
 codegen() {
     dest="$1"
     printf "Generating extensions wrappers (%s)..." "$1"
     shift
-    dotnet run --project bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release -- "$@" > "$dest"
+    dotnet build bld/ExtensionsGenerator/MoreLinq.ExtensionsGenerator.csproj -c Release >build.log || (
+        printf "Failed!\n"
+        cat build.log
+        rm build.log
+        exit 1
+    )
+    dotnet bld/ExtensionsGenerator/bin/Release/MoreLinq.ExtensionsGenerator.dll "$@" > "$dest"
     printf "Done.\n"
 }
 codegen MoreLinq/Extensions.g.cs -x "[/\\\\]ToDataTable\.cs$" -u System.Linq -u System.Collections MoreLinq

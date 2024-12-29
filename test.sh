@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 cd "$(dirname "$0")"
 if [[ "${SKIP_TEST_BUILD:=false}" == "false" ]]; then
     ./build.sh $c
@@ -12,7 +12,7 @@ if [[ -z "$1" ]]; then
 else
     configs="$1"
 fi
-for f in net6.0 net7.0; do
+for f in net6.0 net8.0 net9.0; do
     for c in $configs; do
         dotnet test --no-build -c $c -f $f --settings MoreLinq.Test/coverlet.runsettings MoreLinq.Test
         TEST_RESULTS_DIR="$(ls -dc MoreLinq.Test/TestResults/* | head -1)"
@@ -23,11 +23,7 @@ dotnet reportgenerator -reports:MoreLinq.Test/TestResults/coverage-*.opencover.x
                        -reporttypes:Html\;TextSummary \
                        -targetdir:MoreLinq.Test/TestResults/reports
 cat MoreLinq.Test/TestResults/reports/Summary.txt
-if [[ -z `which mono 2>/dev/null` ]]; then
-    echo>&2 NOTE! Mono does not appear to be installed so unit tests
-    echo>&2 against the Mono runtime will be skipped.
-else
-    for c in $configs; do
-        mono MoreLinq.Test/bin/$c/net471/MoreLinq.Test.exe
-    done
-fi
+for f in net8.0 net9.0; do
+    dotnet publish -f $f MoreLinq.Test.Aot
+    "$(find MoreLinq.Test.Aot -type d -name publish | grep -F $f)/MoreLinq.Test.Aot"
+done

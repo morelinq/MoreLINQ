@@ -117,18 +117,31 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, 4);
             var result = sequence.Subsets();
 
-            var expectedSubsets = new[]
-                                      {
-                                          new int[] {},
-                                          new[] {1}, new[] {2}, new[] {3}, new[] {4},
-                                          new[] {1,2}, new[] {1,3}, new[] {1,4}, new[] {2,3}, new[] {2,4}, new[] {3,4},
-                                          new[] {1,2,3}, new[] {1,2,4}, new[] {1,3,4}, new[] {2,3,4},
-                                          new[] {1,2,3,4}
-                                      };
+            var expectedSubsets = new int[][]
+            {
+                [],
+                [1], [2], [3], [4],
+                [1,  2], [1,  3], [1, 4], [2, 3], [2, 4], [3, 4],
+                [1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4],
+                [1, 2, 3, 4]
+            };
 
             var index = 0;
             foreach (var subset in result)
                 Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
+        }
+
+        /// <summary>
+        /// See <see href="https://github.com/morelinq/MoreLINQ/issues/645">issue #645</see>.
+        /// </summary>
+        [Test]
+        public void Test0SubsetIsEmptyList()
+        {
+            var sequence = Enumerable.Range(1, 4);
+            var actual = sequence.Subsets(0);
+
+            // For any set there is always 1 subset of size 0: the empty set.
+            actual.AssertSequenceEqual(new int[0]);
         }
 
         /// <summary>
@@ -157,28 +170,52 @@ namespace MoreLinq.Test
             var sequence = Enumerable.Range(1, 6);
             var result = sequence.Subsets(4);
 
-            var expectedSubsets = new[]
-                                      {
-                                          new[] {1,2,3,4},
-                                          new[] {1,2,3,5},
-                                          new[] {1,2,3,6},
-                                          new[] {1,2,4,5},
-                                          new[] {1,2,4,6},
-                                          new[] {1,2,5,6},
-                                          new[] {1,3,4,5},
-                                          new[] {1,3,4,6},
-                                          new[] {1,3,5,6},
-                                          new[] {1,4,5,6},
-                                          new[] {2,3,4,5},
-                                          new[] {2,3,4,6},
-                                          new[] {2,3,5,6},
-                                          new[] {2,4,5,6},
-                                          new[] {3,4,5,6},
-                                      };
+            var expectedSubsets = new int[][]
+            {
+                [1, 2, 3, 4],
+                [1, 2, 3, 5],
+                [1, 2, 3, 6],
+                [1, 2, 4, 5],
+                [1, 2, 4, 6],
+                [1, 2, 5, 6],
+                [1, 3, 4, 5],
+                [1, 3, 4, 6],
+                [1, 3, 5, 6],
+                [1, 4, 5, 6],
+                [2, 3, 4, 5],
+                [2, 3, 4, 6],
+                [2, 3, 5, 6],
+                [2, 4, 5, 6],
+                [3, 4, 5, 6],
+            };
 
             var index = 0;
             foreach (var subset in result)
                 Assert.That(subset, Is.EqualTo(expectedSubsets[index++]));
+        }
+
+        [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/1047")]
+        public void TestEnumeratorCurrentReturnsSameReferenceOnEachAccess()
+        {
+            var source = Seq(1, 2, 3, 4, 5);
+
+            using var e = source.Subsets(3).GetEnumerator();
+            var moved = e.MoveNext();
+            var first = e.Current;
+            var second = e.Current;
+
+            Assert.That(moved, Is.True);
+            Assert.That(first, Is.SameAs(second));
+        }
+
+        [Test]
+        public void TestEachSubsetInstanceIsUnique()
+        {
+            var source = Seq(1, 2, 3, 4, 5);
+
+            var subsets = source.Subsets(2).ToArray();
+
+            Assert.That(subsets[0], Is.Not.SameAs(subsets[1]));
         }
     }
 }

@@ -74,7 +74,9 @@ namespace MoreLinq
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (newSegmentPredicate == null) throw new ArgumentNullException(nameof(newSegmentPredicate));
 
-            return _(); IEnumerable<IEnumerable<T>> _()
+            return _(source, newSegmentPredicate);
+
+            static IEnumerable<IEnumerable<T>> _(IEnumerable<T> source, Func<T, T, int, bool> newSegmentPredicate)
             {
                 using var e = source.GetEnumerator();
 
@@ -95,7 +97,7 @@ namespace MoreLinq
                     if (newSegmentPredicate(current, previous, index))
                     {
                         yield return segment;              // yield the completed segment
-                        segment = new List<T> { current }; // start a new segment
+                        segment = [current]; // start a new segment
                     }
                     else // not a new segment, append and continue
                     {

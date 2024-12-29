@@ -54,8 +54,6 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
-            if (otherSequences.Any(s => s == null))
-                throw new ArgumentNullException(nameof(otherSequences), "One or more sequences passed to Interleave was null.");
 
             return Impl(otherSequences.Prepend(sequence));
 

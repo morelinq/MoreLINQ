@@ -64,10 +64,9 @@ namespace MoreLinq.Test
                       .With.Property(nameof(ValueException.Value)).EqualTo(7));
         }
 
-        sealed class ValueException : Exception
+        sealed class ValueException(object value) : Exception
         {
-            public object Value { get; }
-            public ValueException(object value) => Value = value;
+            public object Value { get; } = value;
         }
     }
 }

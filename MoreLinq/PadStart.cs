@@ -76,7 +76,7 @@ namespace MoreLinq
         public static IEnumerable<TSource> PadStart<TSource>(this IEnumerable<TSource> source, int width, TSource padding)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (width < 0) throw new ArgumentException(null, nameof(width));
+            if (width < 0) throw new ArgumentOutOfRangeException(nameof(width), width, null);
             return PadStartImpl(source, width, padding, null);
         }
 
@@ -110,14 +110,20 @@ namespace MoreLinq
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (paddingSelector == null) throw new ArgumentNullException(nameof(paddingSelector));
-            if (width < 0) throw new ArgumentException(null, nameof(width));
+            if (width < 0) throw new ArgumentOutOfRangeException(nameof(width), width, null);
             return PadStartImpl(source, width, default, paddingSelector);
         }
 
         static IEnumerable<T> PadStartImpl<T>(IEnumerable<T> source,
             int width, T? padding, Func<int, T>? paddingSelector)
         {
-            return _(); IEnumerable<T> _()
+            return _(source, width, padding, paddingSelector);
+
+            static IEnumerable<T> _(
+                IEnumerable<T> source,
+                int width,
+                T? padding,
+                Func<int, T>? paddingSelector)
             {
                 if (source.TryAsCollectionLike() is { Count: var collectionCount } && collectionCount < width)
                 {
