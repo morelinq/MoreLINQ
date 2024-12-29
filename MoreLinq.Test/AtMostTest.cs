@@ -50,7 +50,7 @@ namespace MoreLinq.Test
         public bool AtMost(SourceKind sourceKind, int sequenceSize, int atMostAssertCount)
         {
             var source = Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind);
-            using (source as IDisposable)
+            using (source as IDisposable) // primarily for `TestingSequence<>`
                 return source.AtMost(atMostAssertCount);
         }
 
