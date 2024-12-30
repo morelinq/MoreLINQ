@@ -64,8 +64,8 @@ namespace MoreLinq.Test
         }
 
         [TestCase(SourceKind.Sequence)]
-        // [TestCase(SourceKind.BreakingList)]
-        // [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
         public void NeverEvaluatesPredicateWhenSourceIsEmpty(SourceKind sourceKind)
         {
             using var sequence = TestingSequence.Of<int>();
@@ -98,8 +98,8 @@ namespace MoreLinq.Test
         }
 
         [TestCase(SourceKind.Sequence)]
-        // [TestCase(SourceKind.BreakingList)]
-        // [TestCase(SourceKind.BreakingReadOnlyList)]
+        [TestCase(SourceKind.BreakingList)]
+        [TestCase(SourceKind.BreakingReadOnlyList)]
         public void KeepsNonTrailingItemsThatMatchPredicate(SourceKind sourceKind)
         {
             using var sequence = TestingSequence.Of(1, 2, 0, 0, 3, 4, 0, 0);

@@ -45,7 +45,6 @@ namespace MoreLinq
 
             return source.TryAsListLike() switch
             {
-                { Count: 0 } => source,
                 { } list => IterateList(list, predicate),
                 _ => IterateSequence(source, predicate),
             };
