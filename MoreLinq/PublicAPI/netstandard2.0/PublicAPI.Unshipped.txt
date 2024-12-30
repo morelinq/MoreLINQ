@@ -1,1 +1,4 @@
 #nullable enable
+MoreLinq.Extensions.SkipLastWhileExtension
+static MoreLinq.Extensions.SkipLastWhileExtension.SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, bool>! predicate) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, bool>! predicate) -> System.Collections.Generic.IEnumerable<T>!

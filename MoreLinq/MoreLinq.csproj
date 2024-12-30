@@ -86,6 +86,7 @@
         - Sequence
         - Shuffle
         - SkipLast
+        - SkipLastWhile
         - SkipUntil
         - Slice
         - SortedMerge
