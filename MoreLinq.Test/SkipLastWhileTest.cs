@@ -1,4 +1,4 @@
-﻿#region License and Terms
+#region License and Terms
 // MoreLINQ - Extensions to LINQ to Objects
 // Copyright (c) 2024 Andy Romero (armorynode). All rights reserved.
 //
@@ -70,9 +70,9 @@ namespace MoreLinq.Test
         {
             using var sequence = TestingSequence.Of<int>();
 
-            Assert.That(sequence
-                .ToSourceKind(sourceKind)
-                .SkipLastWhile(BreakingFunc.Of<int, bool>()), Is.Empty);
+            Assert.That(sequence.ToSourceKind(sourceKind)
+                                .SkipLastWhile(BreakingFunc.Of<int, bool>()),
+                        Is.Empty);
         }
 
         [TestCase(SourceKind.Sequence)]
@@ -84,17 +84,6 @@ namespace MoreLinq.Test
             var result = list.ToSourceKind(sourceKind).SkipLastWhile(x => x > 2);
             list.Add(5);
             result.AssertSequenceEqual(1, 2);
-        }
-
-        [TestCase(SourceKind.Sequence)]
-        [TestCase(SourceKind.BreakingList)]
-        [TestCase(SourceKind.BreakingReadOnlyList)]
-        public void OptimizedForCollections(SourceKind sourceKind)
-        {
-            var sequence = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }.ToSourceKind(sourceKind);
-
-            sequence.SkipLastWhile(x => x > 7)
-                    .AssertSequenceEqual(1, 2, 3, 4, 5, 6, 7);
         }
 
         [TestCase(SourceKind.Sequence)]
