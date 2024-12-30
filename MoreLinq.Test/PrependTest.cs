@@ -19,7 +19,6 @@ namespace MoreLinq.Test
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using NUnit.Framework.Interfaces;
     using static MoreLinq.Extensions.PrependExtension;
 
     [TestFixture]
@@ -64,7 +63,7 @@ namespace MoreLinq.Test
             return tail.Aggregate(head.AsEnumerable(), MoreEnumerable.Prepend).ToArray();
         }
 
-        public static IEnumerable<ITestCaseData> PrependManySource =>
+        public static IEnumerable<TestCaseData> PrependManySource =>
             from x in Enumerable.Range(0, 11)
             from y in Enumerable.Range(1, 11)
             select new

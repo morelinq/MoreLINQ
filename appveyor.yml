@@ -8,6 +8,9 @@ environment:
   SKIP_TEST_BUILD: true
 skip_commits:
   files:
+  - '*.md'
+  - '*.txt'
+  - '**/.gitignore'
   - .github/**
 for:
 -
@@ -40,13 +43,16 @@ for:
 install:
 - npm install -g eclint
 - git rm .editorconfig
+- pwsh: git rm 'tools/dotnet-install.*'
 - pwsh: ./eclint.ps1 -InsertFinalNewline -Verbose
 - pwsh: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 - git reset --hard
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -JSonFile global.json }
 - ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 6.0.11 -SkipNonVersionedFiles }
+- ps: if ($isWindows) { tools\dotnet-install.ps1 -Runtime dotnet -Version 8.0.11 -SkipNonVersionedFiles }
 - sh: ./tools/dotnet-install.sh --jsonfile global.json
 - sh: ./tools/dotnet-install.sh --runtime dotnet --version 6.0.11 --skip-non-versioned-files
+- sh: ./tools/dotnet-install.sh --runtime dotnet --version 8.0.11 --skip-non-versioned-files
 - sh: export PATH="$HOME/.dotnet:$PATH"
 before_build:
 - dotnet --info

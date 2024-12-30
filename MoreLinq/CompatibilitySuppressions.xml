@@ -33,6 +33,30 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.Extensions.CountByExtension.CountBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})</Target>
+    <Left>lib/net8.0/MoreLinq.dll</Left>
+    <Right>lib/net9.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.Extensions.CountByExtension.CountBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})</Target>
+    <Left>lib/net8.0/MoreLinq.dll</Left>
+    <Right>lib/net9.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.CountBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})</Target>
+    <Left>lib/net8.0/MoreLinq.dll</Left>
+    <Right>lib/net9.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:MoreLinq.MoreEnumerable.CountBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})</Target>
+    <Left>lib/net8.0/MoreLinq.dll</Left>
+    <Right>lib/net9.0/MoreLinq.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:MoreLinq.MoreEnumerable.SkipLast``1(System.Collections.Generic.IEnumerable{``0},System.Int32)</Target>
     <Left>lib/netstandard2.0/MoreLinq.dll</Left>
     <Right>lib/netstandard2.1/MoreLinq.dll</Right>

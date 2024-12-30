@@ -19,7 +19,7 @@ namespace MoreLinq.Test
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Data;
     using System.Linq.Expressions;
     using NUnit.Framework;
@@ -41,12 +41,12 @@ namespace MoreLinq.Test
             public override string ToString() => nameof(TestObject);
         }
 
-        readonly IReadOnlyCollection<TestObject> testObjects;
+        readonly ImmutableArray<TestObject> testObjects;
 
         public ToDataTableTest() =>
             this.testObjects = Enumerable.Range(0, 3)
                                          .Select(i => new TestObject(i))
-                                         .ToArray();
+                                         .ToImmutableArray();
 
         [Test]
         public void ToDataTableNullMemberExpressionMethod()
@@ -135,7 +135,7 @@ namespace MoreLinq.Test
         public void ToDataTableContainsAllElements()
         {
             var dt = this.testObjects.ToDataTable();
-            Assert.That(dt.Rows.Count, Is.EqualTo(this.testObjects.Count));
+            Assert.That(dt.Rows.Count, Is.EqualTo(this.testObjects.Length));
         }
 
         [Test]

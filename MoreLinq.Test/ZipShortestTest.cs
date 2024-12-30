@@ -44,7 +44,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipShortestWithEqualLengthSequences()
         {
-            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5, 6 }, Tuple.Create);
+            var zipped = new[] { 1, 2, 3 }.ZipShortest([4, 5, 6], Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual((1, 4), (2, 5), (3, 6));
         }
@@ -52,7 +52,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipShortestWithFirstSequenceShorterThanSecond()
         {
-            var zipped = new[] { 1, 2 }.ZipShortest(new[] { 4, 5, 6 }, Tuple.Create);
+            var zipped = new[] { 1, 2 }.ZipShortest([4, 5, 6], Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual((1, 4), (2, 5));
         }
@@ -60,7 +60,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipShortestWithFirstSequnceLongerThanSecond()
         {
-            var zipped = new[] { 1, 2, 3 }.ZipShortest(new[] { 4, 5 }, Tuple.Create);
+            var zipped = new[] { 1, 2, 3 }.ZipShortest([4, 5], Tuple.Create);
             Assert.That(zipped, Is.Not.Null);
             zipped.AssertSequenceEqual((1, 4), (2, 5));
         }

@@ -72,14 +72,14 @@ namespace MoreLinq.Test.Async
             using var ts = TestingSequence.Of(ts1, ts2, ts3, ts4, ts5);
             var result = await ts.Merge().ToListAsync();
 
-            Assert.That(result, Is.EquivalentTo(new[]
-            {
+            Assert.That(result, Is.EquivalentTo(
+            [
                 10,
                 20, 21,
                 30, 31, 32,
                 40, 41, 42, 43,
-                50, 51, 52, 53, 54,
-            }));
+                50, 51, 52, 53, 54
+            ]));
         }
 
         sealed class AsyncControl<T>

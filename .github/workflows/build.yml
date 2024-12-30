@@ -5,6 +5,7 @@ on:
     paths-ignore:
     - '*.md'
     - '*.txt'
+    - '**/.gitignore'
     - appveyor.yml
     branches:
     - master
@@ -41,14 +42,18 @@ jobs:
     - name: Install ECLint
       run: npm install -g eclint
 
-    - name: Delete EditorConfig file
-      run: git rm .editorconfig
+    - name: Delete files to exclude from EditorConfig linting
+      run: |
+        git rm .editorconfig
+        git rm 'tools/dotnet-install.*'
 
     - name: Check Final New-Line
-      run: eclint check -n "**/*.{cs,tt,cmd,sh,md,txt,yml}"
+      shell: pwsh
+      run: ./eclint.ps1 -InsertFinalNewline -Verbose
 
     - name: Check Trailing Whitespace
-      run: eclint check -w "**/*.{cs,tt,cmd,sh,md,txt,yml,json,sln,csproj,shfbproj}"
+      shell: pwsh
+      run: ./eclint.ps1 -TrimTrailingWhitespace -Verbose
 
     - name: Restore Checkout
       run: git reset --hard
@@ -58,10 +63,12 @@ jobs:
       with:
         global-json-file: global.json
 
-    - name: Setup .NET SDK 6.0
+    - name: Setup .NET SDK 6.0, 8.0
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: |
+          6.0.x
+          8.0.x
 
     - name: .NET Information
       run: dotnet --info

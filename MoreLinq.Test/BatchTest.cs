@@ -132,7 +132,7 @@ namespace MoreLinq.Test
             var result = list.AsSourceKind(kind).Batch(3);
 
             list.Add(3);
-            result.AssertSequenceEqual(new[] { 1, 2, 3 });
+            result.AssertSequenceEqual([1, 2, 3]);
 
             list.Add(4);
             // should fail trying to enumerate because count is now greater than the batch size
