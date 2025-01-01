@@ -120,7 +120,7 @@
     <Copyright>$([System.Text.RegularExpressions.Regex]::Replace($(Copyright), `\s+`, ` `).Trim())</Copyright>
     <AssemblyTitle>MoreLINQ</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>4.4.0</VersionPrefix>
+    <VersionPrefix>4.4.1</VersionPrefix>
     <Authors>MoreLINQ Developers.</Authors>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net8.0;net9.0</TargetFrameworks>
     <DebugType>portable</DebugType>
@@ -139,7 +139,7 @@
     <PackageOutputPath>..\dist</PackageOutputPath>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <PackageValidationBaselineVersion>4.3.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.4.0</PackageValidationBaselineVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
