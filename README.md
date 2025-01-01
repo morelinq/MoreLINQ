@@ -562,9 +562,11 @@ This method has 3 overloads.
 
 ### Sequence
 
-Generates a sequence of integral numbers within the (inclusive) specified range.
+Generates a sequence of [numbers] within the (inclusive) specified range.
 
-This method has 2 overloads.
+This method has 5 overloads.
+
+[numbers]: https://learn.microsoft.com/en-us/dotnet/api/system.numerics.inumber-1
 
 ### Shuffle
 
