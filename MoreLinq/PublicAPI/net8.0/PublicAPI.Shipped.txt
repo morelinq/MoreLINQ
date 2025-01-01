@@ -94,6 +94,7 @@ MoreLinq.Extensions.ShuffleExtension
 MoreLinq.Extensions.SingleExtension
 MoreLinq.Extensions.SingleOrDefaultExtension
 MoreLinq.Extensions.SkipLastExtension
+MoreLinq.Extensions.SkipLastWhileExtension
 MoreLinq.Extensions.SkipUntilExtension
 MoreLinq.Extensions.SliceExtension
 MoreLinq.Extensions.SortedMergeExtension
@@ -339,6 +340,7 @@ static MoreLinq.Extensions.ShuffleExtension.Shuffle<T>(this System.Collections.G
 static MoreLinq.Extensions.SingleExtension.Single<T>(this MoreLinq.IExtremaEnumerable<T>! source) -> T
 static MoreLinq.Extensions.SingleOrDefaultExtension.SingleOrDefault<T>(this MoreLinq.IExtremaEnumerable<T>! source) -> T?
 static MoreLinq.Extensions.SkipLastExtension.SkipLast<T>(this System.Collections.Generic.IEnumerable<T>! source, int count) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.Extensions.SkipLastWhileExtension.SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, bool>! predicate) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.Extensions.SkipUntilExtension.SkipUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.Extensions.SliceExtension.Slice<T>(this System.Collections.Generic.IEnumerable<T>! sequence, int startIndex, int count) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.Extensions.SortedMergeExtension.SortedMerge<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, MoreLinq.OrderByDirection direction, params System.Collections.Generic.IEnumerable<TSource>![]! otherSequences) -> System.Collections.Generic.IEnumerable<TSource>!
@@ -611,11 +613,15 @@ static MoreLinq.MoreEnumerable.Segment<T>(this System.Collections.Generic.IEnume
 static MoreLinq.MoreEnumerable.Segment<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, T, int, bool>! newSegmentPredicate) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>!>!
 static MoreLinq.MoreEnumerable.Sequence(int start, int stop, int step) -> System.Collections.Generic.IEnumerable<int>!
 static MoreLinq.MoreEnumerable.Sequence(int start, int stop) -> System.Collections.Generic.IEnumerable<int>!
+static MoreLinq.MoreEnumerable.Sequence<T>(T start, T stop, T step) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Sequence<T>(T start, T stop) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.Sequence<T>(T start) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Shuffle<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Random! rand) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Shuffle<T>(this System.Collections.Generic.IEnumerable<T>! source) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.Single<T>(this MoreLinq.IExtremaEnumerable<T>! source) -> T
 static MoreLinq.MoreEnumerable.SingleOrDefault<T>(this MoreLinq.IExtremaEnumerable<T>! source) -> T?
 static MoreLinq.MoreEnumerable.SkipLast<T>(System.Collections.Generic.IEnumerable<T>! source, int count) -> System.Collections.Generic.IEnumerable<T>!
+static MoreLinq.MoreEnumerable.SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, bool>! predicate) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.SkipUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, bool>! predicate) -> System.Collections.Generic.IEnumerable<TSource>!
 static MoreLinq.MoreEnumerable.Slice<T>(this System.Collections.Generic.IEnumerable<T>! sequence, int startIndex, int count) -> System.Collections.Generic.IEnumerable<T>!
 static MoreLinq.MoreEnumerable.SortedMerge<TSource>(this System.Collections.Generic.IEnumerable<TSource>! source, MoreLinq.OrderByDirection direction, params System.Collections.Generic.IEnumerable<TSource>![]! otherSequences) -> System.Collections.Generic.IEnumerable<TSource>!
