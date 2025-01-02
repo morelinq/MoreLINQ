@@ -27,7 +27,8 @@ namespace MoreLinq.Test
         public void ForEachWithSequence()
         {
             var results = new List<int>();
-            new[] { 1, 2, 3 }.ForEach(results.Add);
+            using var source = TestingSequence.Of(1, 2, 3);
+            source.ForEach(results.Add);
             results.AssertSequenceEqual(1, 2, 3);
         }
 
@@ -36,7 +37,8 @@ namespace MoreLinq.Test
         {
             var valueResults = new List<int>();
             var indexResults = new List<int>();
-            new[] { 9, 7, 8 }.ForEach((x, index) => { valueResults.Add(x); indexResults.Add(index); });
+            using var source = TestingSequence.Of(9, 7, 8);
+            source.ForEach((x, index) => { valueResults.Add(x); indexResults.Add(index); });
             valueResults.AssertSequenceEqual(9, 7, 8);
             indexResults.AssertSequenceEqual(0, 1, 2);
         }

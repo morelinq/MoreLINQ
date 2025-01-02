@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
     using System.Collections.Generic;
 
@@ -44,17 +45,22 @@ namespace MoreLinq.Test
                 .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
         [TestCaseSource(nameof(ExactlySource))]
-        public bool Exactly(SourceKind sourceKind, int sequenceSize, int exactlyAssertCount) =>
-            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).Exactly(exactlyAssertCount);
+        public bool Exactly(SourceKind sourceKind, int sequenceSize, int exactlyAssertCount)
+        {
+            var source = Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind);
+            using (source as IDisposable) // primarily for `TestingSequence<>`
+                return source.Exactly(exactlyAssertCount);
+        }
 
 
         [Test]
         public void ExactlyDoesNotIterateUnnecessaryElements()
         {
-            var source = MoreEnumerable.From(() => 1,
-                                             () => 2,
-                                             () => 3,
-                                             () => throw new TestException());
+            using var source = MoreEnumerable.From(() => 1,
+                                                   () => 2,
+                                                   () => 3,
+                                                   () => throw new TestException())
+                                             .AsTestingSequence();
             Assert.That(source.Exactly(2), Is.False);
         }
     }

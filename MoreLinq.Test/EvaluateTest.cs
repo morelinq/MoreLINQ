@@ -31,13 +31,10 @@ namespace MoreLinq.Test
         [Test]
         public void TestEvaluateInvokesMethods()
         {
-            var factories = new Func<int>[]
-            {
-                () => -2,
-                () => 4,
-                () => int.MaxValue,
-                () => int.MinValue,
-            };
+            using var factories = TestingSequence.Of(() => -2,
+                                                     () => 4,
+                                                     () => int.MaxValue,
+                                                     () => int.MinValue);
             var results = factories.Evaluate();
 
             results.AssertSequenceEqual(-2, 4, int.MaxValue, int.MinValue);
@@ -47,11 +44,9 @@ namespace MoreLinq.Test
         public void TestEvaluateInvokesMethodsMultipleTimes()
         {
             var evals = 0;
-            var factories = new Func<int>[]
-            {
-                () => { evals++; return -2; },
-            };
-            var results = factories.Evaluate();
+            var factories = new[] { () => { evals++; return -2; } };
+            using var source = factories.AsTestingSequence(maxEnumerations: 3);
+            var results = source.Evaluate();
 
             results.Consume();
             results.Consume();

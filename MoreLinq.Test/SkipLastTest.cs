@@ -28,9 +28,9 @@ namespace MoreLinq.Test
         [TestCase(-1)]
         public void SkipLastWithCountLesserThanOne(int skip)
         {
-            var numbers = Enumerable.Range(1, 5);
-
-            Assert.That(numbers.SkipLast(skip), Is.EqualTo(numbers));
+            using var numbers = Enumerable.Range(1, 5).AsTestingSequence();
+            var result = numbers.SkipLast(skip);
+            Assert.That(result, Is.EqualTo(numbers));
         }
 
         [Test]
@@ -40,17 +40,20 @@ namespace MoreLinq.Test
             const int skip = 20;
 
             var sequence = Enumerable.Range(1, take);
-
             var expectations = sequence.Take(take - skip);
 
-            Assert.That(expectations, Is.EqualTo(sequence.SkipLast(skip)));
+            using var source = sequence.AsTestingSequence();
+            var result = source.SkipLast(skip);
+            Assert.That(expectations, Is.EqualTo(result));
         }
 
         [TestCase(5)]
         [TestCase(6)]
         public void SkipLastWithSequenceShorterThanCount(int skip)
         {
-            Assert.That(Enumerable.Range(1, 5).SkipLast(skip), Is.Empty);
+            using var source = Enumerable.Range(1, 5).AsTestingSequence();
+            var result = source.SkipLast(skip);
+            Assert.That(result, Is.Empty);
         }
 
         [Test]

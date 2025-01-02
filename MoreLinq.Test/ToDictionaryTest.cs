@@ -18,22 +18,28 @@
 namespace MoreLinq.Test
 {
     using System;
+    using System.Collections.Generic;
     using NUnit.Framework;
 
     [TestFixture]
     public class ToDictionaryTest
     {
+        static TestingSequence<KeyValuePair<string, int>> Pairs() =>
+            TestingSequence.Of(KeyValuePair.Create("foo", 123),
+                               KeyValuePair.Create("bar", 456),
+                               KeyValuePair.Create("baz", 789));
+
+        static TestingSequence<(string, int)> Couples() =>
+            TestingSequence.Of(("foo", 123),
+                               ("bar", 456),
+                               ("baz", 789));
+
         [Test]
         public void ToDictionaryWithKeyValuePairs()
         {
-            var pairs = new[]
-            {
-                KeyValuePair.Create("foo", 123),
-                KeyValuePair.Create("bar", 456),
-                KeyValuePair.Create("baz", 789),
-            };
+            using var source = Pairs();
 
-            var dict = MoreEnumerable.ToDictionary(pairs);
+            var dict = MoreEnumerable.ToDictionary(source);
 
             Assert.That(dict["foo"], Is.EqualTo(123));
             Assert.That(dict["bar"], Is.EqualTo(456));
@@ -43,14 +49,9 @@ namespace MoreLinq.Test
         [Test]
         public void ToDictionaryWithCouples()
         {
-            var pairs = new[]
-            {
-                ("foo", 123),
-                ("bar", 456),
-                ("baz", 789),
-            };
+            using var source = Couples();
 
-            var dict = MoreEnumerable.ToDictionary(pairs);
+            var dict = MoreEnumerable.ToDictionary(source);
 
             Assert.That(dict["foo"], Is.EqualTo(123));
             Assert.That(dict["bar"], Is.EqualTo(456));
@@ -60,14 +61,9 @@ namespace MoreLinq.Test
         [Test]
         public void ToDictionaryWithKeyValuePairsWithComparer()
         {
-            var pairs = new[]
-            {
-                KeyValuePair.Create("foo", 123),
-                KeyValuePair.Create("bar", 456),
-                KeyValuePair.Create("baz", 789),
-            };
+            using var source = Pairs();
 
-            var dict = MoreEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
+            var dict = MoreEnumerable.ToDictionary(source, StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict["FOO"], Is.EqualTo(123));
             Assert.That(dict["BAR"], Is.EqualTo(456));
@@ -77,14 +73,9 @@ namespace MoreLinq.Test
         [Test]
         public void ToDictionaryWithCouplesWithComparer()
         {
-            var pairs = new[]
-            {
-                ("foo", 123),
-                ("bar", 456),
-                ("baz", 789),
-            };
+            using var source = Couples();
 
-            var dict = MoreEnumerable.ToDictionary(pairs, StringComparer.OrdinalIgnoreCase);
+            var dict = MoreEnumerable.ToDictionary(source, StringComparer.OrdinalIgnoreCase);
 
             Assert.That(dict["FOO"], Is.EqualTo(123));
             Assert.That(dict["BAR"], Is.EqualTo(456));

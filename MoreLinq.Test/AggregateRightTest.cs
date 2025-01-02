@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     [TestFixture]
@@ -36,7 +37,8 @@ namespace MoreLinq.Test
         {
             const int value = 1;
 
-            var result = new[] { value }.AggregateRight(BreakingFunc.Of<int, int, int>());
+            using var source = TestingSequence.Of(value);
+            var result = source.AggregateRight(BreakingFunc.Of<int, int, int>());
 
             Assert.That(result, Is.EqualTo(value));
         }
@@ -46,9 +48,13 @@ namespace MoreLinq.Test
         [TestCase(SourceKind.Sequence)]
         public void AggregateRight(SourceKind sourceKind)
         {
-            var enumerable = Enumerable.Range(1, 5).Select(x => x.ToInvariantString()).ToSourceKind(sourceKind);
+            var source = Enumerable.Range(1, 5)
+                                   .Select(x => x.ToInvariantString())
+                                   .ToSourceKind(sourceKind);
 
-            var result = enumerable.AggregateRight((a, b) => $"({a}+{b})");
+            string result;
+            using (source as IDisposable) // primarily for `TestingSequence<>`
+                result = source.AggregateRight((a, b) => $"({a}+{b})");
 
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
@@ -60,7 +66,8 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightSeedWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b), Is.EqualTo(defaultValue));
+            using var source = TestingSequence.Of<int>();
+            Assert.That(source.AggregateRight(defaultValue, (_, b) => b), Is.EqualTo(defaultValue));
         }
 
         [Test]
@@ -68,7 +75,8 @@ namespace MoreLinq.Test
         {
             const int value = 1;
 
-            var result = new int[0].AggregateRight(value, BreakingFunc.Of<int, int, int>());
+            using var source = TestingSequence.Of<int>();
+            var result = source.AggregateRight(value, BreakingFunc.Of<int, int, int>());
 
             Assert.That(result, Is.EqualTo(value));
         }
@@ -76,9 +84,8 @@ namespace MoreLinq.Test
         [Test]
         public void AggregateRightSeed()
         {
-            var result = Enumerable.Range(1, 4)
-                                   .AggregateRight("5", (a, b) => $"({a}+{b})");
-
+            using var source = TestingSequence.Of("1", "2", "3", "4");
+            var result = source.AggregateRight("5", (a, b) => $"({a}+{b})");
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))"));
         }
 
@@ -89,15 +96,15 @@ namespace MoreLinq.Test
         [TestCase(true)]
         public void AggregateRightResultorWithEmptySequence(object defaultValue)
         {
-            Assert.That(new int[0].AggregateRight(defaultValue, (_, b) => b, a => a == defaultValue), Is.EqualTo(true));
+            using var source = TestingSequence.Of<int>();
+            Assert.That(source.AggregateRight(defaultValue, (_, b) => b, a => a == defaultValue), Is.EqualTo(true));
         }
 
         [Test]
         public void AggregateRightResultor()
         {
-            var result = Enumerable.Range(1, 4)
-                                   .AggregateRight("5", (a, b) => $"({a}+{b})", a => a.Length);
-
+            using var source = TestingSequence.Of("1", "2", "3", "4");
+            var result = source.AggregateRight("5", (a, b) => $"({a}+{b})", a => a.Length);
             Assert.That(result, Is.EqualTo("(1+(2+(3+(4+5))))".Length));
         }
     }

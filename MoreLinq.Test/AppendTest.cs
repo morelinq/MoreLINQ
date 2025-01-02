@@ -28,7 +28,7 @@ namespace MoreLinq.Test
         [Test]
         public void AppendWithNonEmptyHeadSequence()
         {
-            var head = new[] { "first", "second" };
+            using var head = TestingSequence.Of("first", "second");
             var tail = "third";
             var whole = head.Append(tail);
             whole.AssertSequenceEqual("first", "second", "third");
@@ -37,7 +37,7 @@ namespace MoreLinq.Test
         [Test]
         public void AppendWithEmptyHeadSequence()
         {
-            string[] head = [];
+            using var head = TestingSequence.Of<string>();
             var tail = "first";
             var whole = head.Append(tail);
             whole.AssertSequenceEqual("first");
@@ -46,7 +46,7 @@ namespace MoreLinq.Test
         [Test]
         public void AppendWithNullTail()
         {
-            var head = new[] { "first", "second" };
+            using var head = TestingSequence.Of("first", "second");
             string? tail = null;
             var whole = head.Append(tail);
             whole.AssertSequenceEqual("first", "second", null);
@@ -82,12 +82,15 @@ namespace MoreLinq.Test
         [Test]
         public void AppendWithSharedSource()
         {
-            var first  = new[] { 1 }.Append(2);
-            var second = first.Append(3).Append(4);
-            var third  = first.Append(4).Append(8);
+            using var a = new[] { 1 }.AsTestingSequence(maxEnumerations: 2);
+            using var b = a.Append(2).AsTestingSequence(maxEnumerations: 2);
+            using var c = b.Append(3).AsTestingSequence();
+            using var d = c.Append(4).AsTestingSequence();
+            using var e = b.Append(4).AsTestingSequence();
+            using var f = e.Append(8).AsTestingSequence();
 
-            second.AssertSequenceEqual(1, 2, 3, 4);
-            third.AssertSequenceEqual(1, 2, 4, 8);
+            d.AssertSequenceEqual(1, 2, 3, 4);
+            f.AssertSequenceEqual(1, 2, 4, 8);
         }
     }
 }

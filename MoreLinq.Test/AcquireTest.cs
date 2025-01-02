@@ -30,9 +30,10 @@ namespace MoreLinq.Test
             Disposable? b = null;
             Disposable? c = null;
 
-            var allocators = MoreEnumerable.From(() => a = new Disposable(),
-                                                 () => b = new Disposable(),
-                                                 () => c = new Disposable());
+            using var allocators = MoreEnumerable.From(() => a = new Disposable(),
+                                                       () => b = new Disposable(),
+                                                       () => c = new Disposable())
+                                                 .AsTestingSequence();
 
             var disposables = allocators.Acquire();
 
@@ -52,10 +53,11 @@ namespace MoreLinq.Test
             Disposable? b = null;
             Disposable? c = null;
 
-            var allocators = MoreEnumerable.From(() => a = new Disposable(),
-                                                 () => b = new Disposable(),
-                                                 () => throw new TestException(),
-                                                 () => c = new Disposable());
+            using var allocators = MoreEnumerable.From(() => a = new Disposable(),
+                                                       () => b = new Disposable(),
+                                                       () => throw new TestException(),
+                                                       () => c = new Disposable())
+                                                 .AsTestingSequence();
 
             Assert.That(allocators.Acquire, Throws.TypeOf<TestException>());
 

@@ -26,7 +26,9 @@ namespace MoreLinq.Test
         [Test]
         public void CountBySimpleTest()
         {
-            var result = MoreEnumerable.CountBy([1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2 ], c => c);
+            using var source = TestingSequence.Of(1, 2, 3, 4, 5, 6, 1, 2, 3, 1, 1, 2);
+
+            var result = MoreEnumerable.CountBy(source, c => c);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create(1, 4),
@@ -40,7 +42,9 @@ namespace MoreLinq.Test
         [Test]
         public void CountByWithSecondOccurenceImmediatelyAfterFirst()
         {
-            var result = MoreEnumerable.CountBy("jaffer", c => c);
+            using var source = "jaffer".ToCharArray().AsTestingSequence();
+
+            var result = MoreEnumerable.CountBy(source, c => c);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create('j', 1),
@@ -53,7 +57,9 @@ namespace MoreLinq.Test
         [Test]
         public void CountByEvenOddTest()
         {
-            var result = MoreEnumerable.CountBy(Enumerable.Range(1, 100), c => c % 2);
+            using var source = Enumerable.Range(1, 100).AsTestingSequence();
+
+            var result = MoreEnumerable.CountBy(source, c => c % 2);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create(1, 50),
@@ -63,7 +69,9 @@ namespace MoreLinq.Test
         [Test]
         public void CountByWithEqualityComparer()
         {
-            var result = MoreEnumerable.CountBy(["a", "B", "c", "A", "b", "A"], c => c, StringComparer.OrdinalIgnoreCase);
+            using var source = TestingSequence.Of("a", "B", "c", "A", "b", "A");
+
+            var result = MoreEnumerable.CountBy(source, c => c, StringComparer.OrdinalIgnoreCase);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create("a", 3),
@@ -76,7 +84,8 @@ namespace MoreLinq.Test
         {
             var randomSequence = MoreEnumerable.Random(0, 100).Take(100).ToArray();
 
-            var countByKeys = MoreEnumerable.CountBy(randomSequence, x => x).Select(x => x.Key);
+            using var source = randomSequence.AsTestingSequence();
+            var countByKeys = MoreEnumerable.CountBy(source, x => x).Select(x => x.Key);
             var groupByKeys = randomSequence.GroupBy(x => x).Select(x => x.Key);
 
             countByKeys.AssertSequenceEqual(groupByKeys);
@@ -91,11 +100,10 @@ namespace MoreLinq.Test
         [Test]
         public void CountByWithSomeNullKeys()
         {
-            var ss = new[]
-            {
-                "foo", null, "bar", "baz", null, null, "baz", "bar", null, "foo"
-            };
-            var result = MoreEnumerable.CountBy(ss, s => s);
+            using var source = TestingSequence.Of("foo", null, "bar", "baz", null, null, "baz",
+                                                  "bar", null, "foo");
+
+            var result = MoreEnumerable.CountBy(source, s => s);
 
             result.AssertSequenceEqual(
                 KeyValuePair.Create((string?)"foo", 2),
@@ -107,7 +115,8 @@ namespace MoreLinq.Test
         [Test]
         public void CountByWithSomeNullKeysAndEqualityComparer()
         {
-            string?[] source = ["a", "B", null, "c", "A", null, "b", "A"];
+            using var source = TestingSequence.Of("a", "B", null, "c", "A", null, "b", "A");
+
             var result = MoreEnumerable.CountBy(source, c => c, StringComparer.OrdinalIgnoreCase);
 
             result.AssertSequenceEqual(
