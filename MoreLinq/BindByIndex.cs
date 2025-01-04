@@ -145,11 +145,10 @@ namespace MoreLinq
     }
 
     /// <summary>
-    /// A queue implementation similar to
-    /// <see cref="System.Collections.Generic.Queue{T}"/> but which
-    /// supports a maximum count (exceeding which will cause an item to be
-    /// dequeued each to make space for a new one being queued) as well as
-    /// directly indexing into the queue to retrieve any one item.
+    /// A queue implementation similar to <see cref="System.Collections.Generic.Queue{T}"/> but
+    /// which supports a maximum count (exceeding which will cause an item to be dequeued to make
+    /// space for a new one being queued) as well as directly indexing into the queue to retrieve
+    /// any one item.
     /// </summary>
 
     file sealed class Queue<T>(int maxCount = 0, int capacity = 0) : IReadOnlyList<T>
