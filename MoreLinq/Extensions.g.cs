@@ -716,6 +716,60 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>BindByIndex</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class BindByIndexExtension
+    {
+        /// <summary>
+        /// TODO Complete documentation
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of result elements returned.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="indices">The sequence of indices.</param>
+        /// <param name="missingSelector">
+        /// TODO Complete documentation
+        /// </param>
+        /// <param name="resultSelector">
+        /// TODO Complete documentation
+        /// </param>
+        /// <returns>
+        /// TODO Complete documentation
+        /// </returns>
+
+        public static IEnumerable<TResult>
+            BindByIndex<T, TResult>(this IEnumerable<T> source, IEnumerable<int> indices,
+                Func<int, TResult> missingSelector, Func<T, int, TResult> resultSelector)             => MoreEnumerable.            BindByIndex(source, indices, missingSelector, resultSelector);
+
+        /// <summary>
+        /// TODO Complete documentation
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of elements in <paramref name="source"/> sequence.</typeparam>
+        /// <typeparam name="TResult">Type of result elements returned.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="indices">The sequence of indices.</param>
+        /// <param name="lookBackSize">Size of look-back buffer.</param>
+        /// <param name="missingSelector">
+        /// TODO Complete documentation
+        /// </param>
+        /// <param name="resultSelector">
+        /// TODO Complete documentation
+        /// </param>
+        /// <returns>
+        /// TODO Complete documentation
+        /// </returns>
+
+        public static IEnumerable<TResult>
+            BindByIndex<T, TResult>(this IEnumerable<T> source, IEnumerable<int> indices,
+                                    int lookBackSize,
+                                    Func<int, TResult> missingSelector,
+                                    Func<T, int, TResult> resultSelector)             => MoreEnumerable.            BindByIndex(source, indices, lookBackSize, missingSelector, resultSelector);
+
+    }
+
     /// <summary><c>Cartesian</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
