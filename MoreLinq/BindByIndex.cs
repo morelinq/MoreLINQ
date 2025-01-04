@@ -142,77 +142,77 @@ namespace MoreLinq
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// A queue implementation similar to
-        /// <see cref="System.Collections.Generic.Queue{T}"/> but which
-        /// supports a maximum count (exceeding which will cause an item to be
-        /// dequeued each to make space for a new one being queued) as well as
-        /// directly indexing into the queue to retrieve any one item.
-        /// </summary>
+    /// <summary>
+    /// A queue implementation similar to
+    /// <see cref="System.Collections.Generic.Queue{T}"/> but which
+    /// supports a maximum count (exceeding which will cause an item to be
+    /// dequeued each to make space for a new one being queued) as well as
+    /// directly indexing into the queue to retrieve any one item.
+    /// </summary>
 
-        sealed class Queue<T>(int maxCount = 0, int capacity = 0) : IReadOnlyList<T>
+    file sealed class Queue<T>(int maxCount = 0, int capacity = 0) : IReadOnlyList<T>
+    {
+        T[] items = capacity > 0 ? new T[capacity] : [];
+        int firstIndex;
+        readonly int maxCount = maxCount;
+
+        int Capacity => this.items.Length;
+        public int Count { get; private set; }
+
+        T IReadOnlyList<T>.this[int index] => this[index];
+
+        public T this[int index]
         {
-            T[] items = capacity > 0 ? new T[capacity] : [];
-            int firstIndex;
-            readonly int maxCount = maxCount;
-
-            int Capacity => this.items.Length;
-            public int Count { get; private set; }
-
-            T IReadOnlyList<T>.this[int index] => this[index];
-
-            public T this[int index]
+            get
             {
-                get
+                if (index < 0 || index >= Count)
                 {
-                    if (index < 0 || index >= Count)
-                    {
-    #pragma warning disable CA2201 // Do not raise reserved exception types
-                            throw new IndexOutOfRangeException();
-    #pragma warning restore CA2201
-                    }
-
-                    return Cell(index);
-                }
-            }
-
-            ref T Cell(int index) => ref this.items[(this.firstIndex + index) % Capacity];
-
-            public void Enqueue(T item)
-            {
-                if (this.maxCount > 0 && Count == this.maxCount)
-                    _ = Dequeue();
-
-                if (Count == Capacity)
-                {
-                    var array = new T[Math.Max(4, Capacity * 2)];
-                    for (var i = 0; i < Count; i++)
-                        array[i] = this[i];
-                    this.firstIndex = 0;
-                    this.items = array;
+#pragma warning disable CA2201 // Do not raise reserved exception types
+                    throw new IndexOutOfRangeException();
+#pragma warning restore CA2201
                 }
 
-                Cell(Count++) = item;
+                return Cell(index);
             }
+        }
 
-            public T Dequeue()
+        ref T Cell(int index) => ref this.items[(this.firstIndex + index) % Capacity];
+
+        public void Enqueue(T item)
+        {
+            if (this.maxCount > 0 && Count == this.maxCount)
+                _ = Dequeue();
+
+            if (Count == Capacity)
             {
-                if (Count == 0)
-                    throw new InvalidOperationException();
-                var result = this[0];
-                this.firstIndex++;
-                --Count;
-                return result;
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-            public IEnumerator<T> GetEnumerator()
-            {
+                var array = new T[Math.Max(4, Capacity * 2)];
                 for (var i = 0; i < Count; i++)
-                    yield return this[i];
+                    array[i] = this[i];
+                this.firstIndex = 0;
+                this.items = array;
             }
+
+            Cell(Count++) = item;
+        }
+
+        public T Dequeue()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException();
+            var result = this[0];
+            this.firstIndex++;
+            --Count;
+            return result;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (var i = 0; i < Count; i++)
+                yield return this[i];
         }
     }
 }
