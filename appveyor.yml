@@ -12,6 +12,7 @@ skip_commits:
   - '*.txt'
   - '**/.gitignore'
   - .github/**
+  - .devcontainer/devcontainer.json
 for:
 -
   matrix:
