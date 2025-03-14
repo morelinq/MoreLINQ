@@ -45,9 +45,8 @@ namespace MoreLinq.Test.Aot
         readonly ImmutableArray<TestObject> testObjects;
 
         public ToDataTableTest() =>
-            this.testObjects = Enumerable.Range(0, 3)
-                                         .Select(i => new TestObject(i))
-                                         .ToImmutableArray();
+            this.testObjects = [..from i in Enumerable.Range(0, 3)
+                                  select new TestObject(i)];
 
         [TestMethod]
         public void ToDataTableNullMemberExpressionMethod()

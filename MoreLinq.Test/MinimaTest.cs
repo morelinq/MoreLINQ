@@ -212,7 +212,7 @@ namespace MoreLinq.Test
             public string[] ReturnsMinima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Minima(s => s.Length).Take(count).ToArray();
+                return [..strings.Minima(s => s.Length).Take(count)];
             }
 
             [TestCase(0, ExpectedResult = new string[0]             )]
@@ -222,9 +222,8 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMinimaPerComparer(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Minima(s => s.Length, Comparable<int>.DescendingOrderComparer)
-                              .Take(count)
-                              .ToArray();
+                return [..strings.Minima(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                 .Take(count)];
             }
         }
 
@@ -240,7 +239,7 @@ namespace MoreLinq.Test
             public string[] ReturnsMinima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Minima(s => s.Length).TakeLast(count).ToArray();
+                return [..strings.Minima(s => s.Length).TakeLast(count)];
             }
 
             [TestCase(0, ExpectedResult = new string[0]             )]
@@ -250,9 +249,8 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMinimaPerComparer(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Minima(s => s.Length, Comparable<int>.DescendingOrderComparer)
-                              .TakeLast(count)
-                              .ToArray();
+                return [..strings.Minima(s => s.Length, Comparable<int>.DescendingOrderComparer)
+                                 .TakeLast(count)];
             }
         }
     }

@@ -81,7 +81,9 @@ namespace MoreLinq
 
             static IEnumerable<int> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
             {
+#pragma warning disable IDE0305 // Simplify collection initialization (could be less optimal)
                 source = source.ToArray(); // avoid enumerating source twice
+#pragma warning restore IDE0305 // Simplify collection initialization
 
                 var rankDictionary = new Collections.Dictionary<TSource, int>(EqualityComparer<TSource>.Default);
                 var i = 1;

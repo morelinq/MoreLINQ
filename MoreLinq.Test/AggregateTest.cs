@@ -51,9 +51,8 @@ namespace MoreLinq.Test
             {
                 Source = source,
                 Expectation = sum,
-                Instantiation = m.MakeGenericMethod(Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
-                                                              .Append(typeof(int[])) // TResult
-                                                              .ToArray()),
+                Instantiation = m.MakeGenericMethod([..Enumerable.Repeat(typeof(int), m.GetGenericArguments().Length - 1)
+                                                                 .Append(typeof(int[]))]), // TResult
             }
             into m
             let rst = m.Instantiation.GetParameters().Last().ParameterType

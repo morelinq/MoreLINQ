@@ -45,7 +45,7 @@ namespace MoreLinq.Test
         {
             using var ts1 = first.AsTestingSequence();
             using var ts2 = second.AsTestingSequence();
-            return ts1.ZipLongest(ts2, Tuple.Create).ToArray();
+            return [..ts1.ZipLongest(ts2, Tuple.Create)];
         }
 
         [Test]

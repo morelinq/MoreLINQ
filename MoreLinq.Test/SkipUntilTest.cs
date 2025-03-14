@@ -77,7 +77,7 @@ namespace MoreLinq.Test
         public int[] TestSkipUntil(int[] source, int min)
         {
             using var ts = source.AsTestingSequence();
-            return ts.SkipUntil(v => v >= min).ToArray();
+            return [..ts.SkipUntil(v => v >= min)];
         }
     }
 }

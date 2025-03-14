@@ -97,10 +97,12 @@ namespace MoreLinq.Test
             sourceKind switch
             {
                 SourceKind.Sequence => input.Select(x => x),
+#pragma warning disable IDE0028 // Simplify collection initialization (would change semantics)
                 SourceKind.BreakingList => new BreakingList<T>(input),
                 SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input),
                 SourceKind.BreakingCollection => new BreakingCollection<T>(input),
                 SourceKind.BreakingReadOnlyCollection => new BreakingReadOnlyCollection<T>(input),
+#pragma warning restore IDE0028 // Simplify collection initialization
                 _ => throw new ArgumentException(null, nameof(sourceKind))
             };
     }

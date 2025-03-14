@@ -25,14 +25,14 @@ namespace MoreLinq.Test
         [Test]
         public void SplitWithSeparatorAndResultTransformation()
         {
-            var result = "the quick brown fox".ToCharArray().Split(' ', chars => new string(chars.ToArray()));
+            var result = "the quick brown fox".ToCharArray().Split(' ', chars => new string([..chars]));
             result.AssertSequenceEqual("the", "quick", "brown", "fox");
         }
 
         [Test]
         public void SplitUptoMaxCount()
         {
-            var result = "the quick brown fox".ToCharArray().Split(' ', 2, chars => new string(chars.ToArray()));
+            var result = "the quick brown fox".ToCharArray().Split(' ', 2, chars => new string([..chars]));
             result.AssertSequenceEqual("the", "quick", "brown fox");
         }
 
