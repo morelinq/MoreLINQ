@@ -105,31 +105,29 @@ namespace MoreLinq.Test
         [Test]
         public void SevenUniqueAccumulators()
         {
+            using var source = Enumerable.Range(1, 10).AsTestingSequence();
+
             var result =
-                Enumerable
-                    .Range(1, 10)
-                    .Shuffle()
-                    .Select(n => new { Num = n, Str = n.ToString(CultureInfo.InvariantCulture) })
-                    .Aggregate(
-                        0, (s, e) => s + e.Num,
-                        0, (s, e) => e.Num % 2 == 0 ? s + e.Num : s,
-                        0, (s, _) => s + 1,
-                        (int?)null, (s, e) => s is { } n ? Math.Min(n, e.Num) : e.Num,
-                        (int?)null, (s, e) => s is { } n ? Math.Max(n, e.Num) : e.Num,
-                        new HashSet<int>(), (s, e) => { _ = s.Add(e.Str.Length); return s; },
-                        new List<(int Num, string Str)>(), (s, e) => { s.Add((e.Num, e.Str)); return s; },
-                        (sum, esum, count, min, max, lengths, items) => new
-                        {
-                            Sum           = sum,
-                            EvenSum       = esum,
-                            Count         = count,
-                            Average       = (double)sum / count,
-                            Min           = min ?? throw new InvalidOperationException(),
-                            Max           = max ?? throw new InvalidOperationException(),
-                            UniqueLengths = lengths,
-                            Items         = items,
-                        }
-                    );
+                source.Shuffle()
+                      .Select(n => new { Num = n, Str = n.ToString(CultureInfo.InvariantCulture) })
+                      .Aggregate(0, (s, e) => s + e.Num,
+                                 0, (s, e) => e.Num % 2 == 0 ? s + e.Num : s,
+                                 0, (s, _) => s + 1,
+                                 (int?)null, (s, e) => s is { } n ? Math.Min(n, e.Num) : e.Num,
+                                 (int?)null, (s, e) => s is { } n ? Math.Max(n, e.Num) : e.Num,
+                                 new HashSet<int>(), (s, e) => { _ = s.Add(e.Str.Length); return s; },
+                                 new List<(int Num, string Str)>(), (s, e) => { s.Add((e.Num, e.Str)); return s; },
+                                 (sum, esum, count, min, max, lengths, items) => new
+                                 {
+                                     Sum           = sum,
+                                     EvenSum       = esum,
+                                     Count         = count,
+                                     Average       = (double)sum / count,
+                                     Min           = min ?? throw new InvalidOperationException(),
+                                     Max           = max ?? throw new InvalidOperationException(),
+                                     UniqueLengths = lengths,
+                                     Items         = items,
+                                 });
 
             Assert.That(result.Sum    , Is.EqualTo(55));
             Assert.That(result.EvenSum, Is.EqualTo(30));
@@ -156,31 +154,29 @@ namespace MoreLinq.Test
         [Test]
         public void SevenUniqueAccumulatorComprehensions()
         {
+            using var source = Enumerable.Range(1, 10).AsTestingSequence();
+
             var result =
-                Enumerable
-                    .Range(1, 10)
-                    .Shuffle()
-                    .Select(n => new { Num = n, Str = n.ToString(CultureInfo.InvariantCulture) })
-                    .Aggregate(
-                        s => s.Sum(e => e.Num),
-                        s => s.Select(e => e.Num).Where(n => n % 2 == 0).Sum(),
-                        s => s.Count(),
-                        s => s.Min(e => e.Num),
-                        s => s.Max(e => e.Num),
-                        s => s.Select(e => e.Str.Length).Distinct().ToArray(),
-                        s => s.ToArray(),
-                        (sum, esum, count, min, max, lengths, items) => new
-                        {
-                            Sum           = sum,
-                            EvenSum       = esum,
-                            Count         = count,
-                            Average       = (double)sum / count,
-                            Min           = min,
-                            Max           = max,
-                            UniqueLengths = lengths,
-                            Items         = items,
-                        }
-                    );
+                source.Shuffle()
+                      .Select(n => new { Num = n, Str = n.ToString(CultureInfo.InvariantCulture) })
+                      .Aggregate(s => s.Sum(e => e.Num),
+                                 s => s.Select(e => e.Num).Where(n => n % 2 == 0).Sum(),
+                                 s => s.Count(),
+                                 s => s.Min(e => e.Num),
+                                 s => s.Max(e => e.Num),
+                                 s => s.Select(e => e.Str.Length).Distinct().ToArray(),
+                                 s => s.ToArray(),
+                                 (sum, esum, count, min, max, lengths, items) => new
+                                 {
+                                     Sum           = sum,
+                                     EvenSum       = esum,
+                                     Count         = count,
+                                     Average       = (double)sum / count,
+                                     Min           = min,
+                                     Max           = max,
+                                     UniqueLengths = lengths,
+                                     Items         = items,
+                                 });
 
             Assert.That(result.Sum    , Is.EqualTo(55));
             Assert.That(result.EvenSum, Is.EqualTo(30));
@@ -206,11 +202,11 @@ namespace MoreLinq.Test
         [Test(Description = "https://github.com/morelinq/MoreLINQ/issues/616")]
         public void Issue616()
         {
-            var (first, last) =
-                Enumerable.Range(1, 10)
-                          .Aggregate(ds => ds.FirstAsync(),
-                                     ds => ds.LastAsync(),
-                                     ValueTuple.Create);
+            using var source = Enumerable.Range(1, 10).AsTestingSequence();
+
+            var (first, last) = source.Aggregate(ds => ds.FirstAsync(),
+                                                 ds => ds.LastAsync(),
+                                                 ValueTuple.Create);
 
             Assert.That(first, Is.EqualTo(1));
             Assert.That(last, Is.EqualTo(10));

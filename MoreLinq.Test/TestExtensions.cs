@@ -89,14 +89,14 @@ namespace MoreLinq.Test
             sourceKind switch
 #pragma warning restore IDE0072 // Add missing cases
             {
-                SourceKind.Sequence => input.Select(x => x),
+                SourceKind.Sequence => input.AsTestingSequence(),
                 var kind => input.ToList().AsSourceKind(kind)
             };
 
         internal static IEnumerable<T> AsSourceKind<T>(this List<T> input, SourceKind sourceKind) =>
             sourceKind switch
             {
-                SourceKind.Sequence => input.Select(x => x),
+                SourceKind.Sequence => input.AsTestingSequence(),
                 SourceKind.BreakingList => new BreakingList<T>(input),
                 SourceKind.BreakingReadOnlyList => new BreakingReadOnlyList<T>(input),
                 SourceKind.BreakingCollection => new BreakingCollection<T>(input),

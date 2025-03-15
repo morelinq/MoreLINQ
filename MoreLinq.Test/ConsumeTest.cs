@@ -26,7 +26,9 @@ namespace MoreLinq.Test
         public void ConsumeReallyConsumes()
         {
             var counter = 0;
-            var sequence = Enumerable.Range(0, 10).Pipe(_ => counter++);
+            using var sequence = Enumerable.Range(0, 10)
+                                           .Pipe(_ => counter++)
+                                           .AsTestingSequence();
             sequence.Consume();
             Assert.That(counter, Is.EqualTo(10));
         }

@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
     using System.Collections.Generic;
 
@@ -49,8 +50,13 @@ namespace MoreLinq.Test
                 .SetName($"{{m}}({k}[{e.Size}], {e.Count})");
 
         [TestCaseSource(nameof(AtLeastSource))]
-        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount) =>
-            Enumerable.Range(0, sequenceSize).ToSourceKind(sourceKind).AtLeast(atLeastAssertCount);
+        public bool AtLeast(SourceKind sourceKind, int sequenceSize, int atLeastAssertCount)
+        {
+            var xs = Enumerable.Range(0, sequenceSize);
+            var source = xs.ToSourceKind(sourceKind);
+            using (source as IDisposable) // primarily for `TestingSequence<>`
+                return source.AtLeast(atLeastAssertCount);
+        }
 
         [Test]
         public void AtLeastDoesNotIterateUnnecessaryElements()
