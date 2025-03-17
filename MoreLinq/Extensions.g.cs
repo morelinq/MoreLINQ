@@ -5896,6 +5896,32 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>Step</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class StepExtension
+    {
+        /// <summary>
+        /// Steps through a sequence based on another sequence of zero or
+        /// positive steps to take between elements.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in <paramref name="source"/>.</typeparam>
+        /// <param name="source">The source sequence.</param>
+        /// <param name="steps">
+        /// Sequence of zero or positive steps to take where a negative step is
+        /// treated the same as zero.</param>
+        /// <returns>
+        /// A sequence of items from <paramref name="source"/> paired with
+        /// steps from <paramref name="steps"/>.
+        /// </returns>
+        /// <remarks>This operator uses deferred execution and streams its results.</remarks>
+
+        public static IEnumerable<(T Item, int Step)>
+            Step<T>(this IEnumerable<T> source, IEnumerable<int> steps)
+            => MoreEnumerable.            Step(source, steps);
+
+    }
+
     /// <summary><c>Subsets</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
