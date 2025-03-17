@@ -1,1 +1,2 @@
 #nullable enable
+static MoreLinq.MoreEnumerable.Unfold<TState, TResult>(TState state, System.Func<TState, (bool Continue, (TResult Result, TState State) Generated)>! generator) -> System.Collections.Generic.IEnumerable<TResult>!
