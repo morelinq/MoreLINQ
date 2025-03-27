@@ -45,6 +45,9 @@ namespace MoreLinq.Test
         public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.Any(source, predicate);
 
+        public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource element) =>
+            LinqEnumerable.Append(source, element);
+
         public static IEnumerable<TSource> AsEnumerable<TSource>(this IEnumerable<TSource> source) =>
             LinqEnumerable.AsEnumerable(source);
 
