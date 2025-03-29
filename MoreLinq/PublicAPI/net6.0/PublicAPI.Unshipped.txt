@@ -1,1 +1,6 @@
 #nullable enable
+MoreLinq.Extensions.BindByIndexExtension
+static MoreLinq.Extensions.BindByIndexExtension.BindByIndex<T, TResult>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEnumerable<int>! indices, System.Func<int, TResult>! missingSelector, System.Func<T, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static MoreLinq.Extensions.BindByIndexExtension.BindByIndex<T, TResult>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEnumerable<int>! indices, int lookBackSize, System.Func<int, TResult>! missingSelector, System.Func<T, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static MoreLinq.MoreEnumerable.BindByIndex<T, TResult>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEnumerable<int>! indices, System.Func<int, TResult>! missingSelector, System.Func<T, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
+static MoreLinq.MoreEnumerable.BindByIndex<T, TResult>(this System.Collections.Generic.IEnumerable<T>! source, System.Collections.Generic.IEnumerable<int>! indices, int lookBackSize, System.Func<int, TResult>! missingSelector, System.Func<T, int, TResult>! resultSelector) -> System.Collections.Generic.IEnumerable<TResult>!
