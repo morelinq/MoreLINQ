@@ -114,6 +114,7 @@
         - WindowLeft
         - WindowRight
         - ZipLongest
+        - ZipMap
         - ZipShortest
     </Description>
     <Description>$([System.Text.RegularExpressions.Regex]::Replace($(Description), `\s+`, ` `).Trim().Replace(` - `, `, `).Replace(`:,`, `:`))</Description>

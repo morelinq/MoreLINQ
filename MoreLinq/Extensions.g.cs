@@ -7203,6 +7203,41 @@ namespace MoreLinq.Extensions
 
     }
 
+    /// <summary><c>ZipMap</c> extension.</summary>
+
+    [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
+    public static partial class ZipMapExtension
+    {
+        /// <summary>
+        /// Applies a function on each element and returns a sequence of
+        /// tuples with the source element and the result from the function.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the elements returned by <paramref name="func"/>.</typeparam>
+        /// <param name="source">The sequence to iterate over.</param>
+        /// <param name="func">The function to apply on each element.</param>
+        /// <returns>
+        /// Returns a sequence of tuples with the source element and the
+        /// result from <paramref name="func"/> parameter.
+        /// </returns>
+        /// <remarks>
+        /// This operator uses deferred execution and streams its results.
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// string[] strings = { "foo", "bar", "baz" };
+        /// var result = strings.ZipMap(s => Regex.IsMatch(s, @"^b"));
+        /// ]]></code>
+        /// The <c>result</c> variable, when iterated over, will yield
+        /// ("foo", false"), ("bar", true) and ("baz", true), in turn.
+        /// </example>
+
+        public static IEnumerable<(TSource Item, TResult Result)> ZipMap<TSource, TResult>(
+            this IEnumerable<TSource> source, Func<TSource, TResult> func)
+            => MoreEnumerable.ZipMap(source, func);
+
+    }
+
     /// <summary><c>ZipShortest</c> extension.</summary>
 
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
