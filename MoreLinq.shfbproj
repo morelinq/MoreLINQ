@@ -31,8 +31,8 @@
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <DocumentationSources>
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net6.0\MoreLinq.dll" />
-      <DocumentationSource sourceFile="MoreLinq\bin\Release\net6.0\MoreLinq.xml" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net8.0\MoreLinq.dll" />
+      <DocumentationSource sourceFile="MoreLinq\bin\Release\net8.0\MoreLinq.xml" />
     </DocumentationSources>
     <HelpFileFormat>Website</HelpFileFormat>
     <CopyrightHref>http://www.apache.org/licenses/LICENSE-2.0</CopyrightHref>
