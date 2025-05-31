@@ -16,8 +16,6 @@ call :clean ^
   && call :test net9.0 Release ^
   && call :test net8.0 Debug ^
   && call :test net8.0 Release ^
-  && call :test net6.0 Debug ^
-  && call :test net6.0 Release ^
   && call :test net471 Debug ^
   && call :test net471 Release ^
   && call :report-cover ^

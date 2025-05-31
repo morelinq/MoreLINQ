@@ -28,7 +28,7 @@
     },
     "ghcr.io/devcontainers/features/dotnet:2": {
       "version": "9.0.300",
-      "dotnetRuntimeVersions": "8.0.14, 6.0.36"
+      "dotnetRuntimeVersions": "8.0.14"
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": false,
