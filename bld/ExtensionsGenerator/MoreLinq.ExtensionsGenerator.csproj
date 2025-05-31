@@ -8,6 +8,6 @@
   <ItemGroup>
     <PackageReference Include="docopt.net" Version="0.8.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.3" />
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.5" />
   </ItemGroup>
 </Project>
