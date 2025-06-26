@@ -32,7 +32,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipMapEmptySequence()
         {
-            object[] objects = {};
+            using var objects = Enumerable.Empty<object>().AsTestingSequence();
             var result = objects.ZipMap(BreakingFunc.Of<object, object>());
             result.AssertSequenceEqual();
         }
