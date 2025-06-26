@@ -42,8 +42,10 @@ namespace MoreLinq
         /// string[] strings = { "foo", "bar", "baz" };
         /// var result = strings.ZipMap(s => Regex.IsMatch(s, @"^b"));
         /// ]]></code>
+        /// <para>
         /// The <c>result</c> variable, when iterated over, will yield
-        /// ("foo", false"), ("bar", true) and ("baz", true), in turn.
+        /// <c>("foo", false)</c>, <c>("bar", true)</c> and
+        /// <c>("baz", true)</c>, in turn.</para>
         /// </example>
 
         public static IEnumerable<(TSource Item, TResult Result)> ZipMap<TSource, TResult>(
