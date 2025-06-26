@@ -40,7 +40,7 @@ namespace MoreLinq.Test
         [Test]
         public void ZipMapStrings()
         {
-            string[] strings = { "foo", "bar", "baz" };
+            using var strings = TestingSequence.Of("foo", "bar", "baz");
             var result = strings.ZipMap(s => Regex.IsMatch(s, @"^b"));
             result.AssertSequenceEqual(("foo", false), ("bar", true), ("baz", true));
         }
