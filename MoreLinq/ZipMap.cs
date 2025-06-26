@@ -27,7 +27,7 @@ namespace MoreLinq
         /// tuples with the source element and the result from the function.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
-        /// <typeparam name="TResult">The type of the elements returned by <paramref name="func"/>.</typeparam>
+        /// <typeparam name="TResult">The type of value returned by <paramref name="func"/>.</typeparam>
         /// <param name="source">The sequence to iterate over.</param>
         /// <param name="func">The function to apply to each element.</param>
         /// <returns>
