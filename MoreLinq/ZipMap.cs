@@ -23,8 +23,9 @@ namespace MoreLinq
     static partial class MoreEnumerable
     {
         /// <summary>
-        /// Applies a function on each element and returns a sequence of
-        /// tuples with the source element and the result from the function.
+        /// Applies a function on each element of the sequence and returns a
+        /// sequence of tuples with the source element and the result from the
+        /// function.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
         /// <typeparam name="TResult">The type of value returned by <paramref name="func"/>.</typeparam>
