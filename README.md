@@ -713,7 +713,7 @@ This method has 3 overloads.
 ### ZipMap
 
 Returns a sequence of tuples containing the source elements and the result of
-a function applied on each element.
+a function applied to each element.
 
 ### ZipShortest
 
