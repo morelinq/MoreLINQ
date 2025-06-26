@@ -48,7 +48,8 @@ namespace MoreLinq.Test
         [Test]
         public void ZipMapFromSequence()
         {
-            var result = MoreEnumerable.Sequence(5, 8).ZipMap(i => i % 2 == 0);
+            using var xs = TestingSequence.Of(5, 6, 7, 8);
+            var result = xs.ZipMap(i => i % 2 == 0);
             result.AssertSequenceEqual((5, false), (6, true), (7, false), (8, true));
         }
     }
