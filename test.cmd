@@ -12,6 +12,8 @@ call :test-aot net8.0 && call :test-aot net9.0
 exit /b %ERRORLEVEL%
 :test-all
 call :clean ^
+  && call :test net10.0 Debug ^
+  && call :test net10.0 Release ^
   && call :test net9.0 Debug ^
   && call :test net9.0 Release ^
   && call :test net8.0 Debug ^
@@ -20,7 +22,8 @@ call :clean ^
   && call :test net471 Release ^
   && call :report-cover ^
   && call :test-aot net8.0 ^
-  && call :test-aot net9.0
+  && call :test-aot net9.0 ^
+  && call :test-aot net10.0
 exit /b %ERRORLEVEL%
 
 :clean

@@ -56,7 +56,7 @@ namespace MoreLinq.Test.Aot
             [UnconditionalSuppressMessage("Aot", "IL2026")]
             void Act() => _ = this.testObjects.ToDataTable(expression!);
 
-            var e = Assert.ThrowsException<ArgumentException>(Act);
+            var e = Assert.Throws<ArgumentException>(Act);
             Assert.AreEqual("expressions", e.ParamName);
         }
 
@@ -69,7 +69,7 @@ namespace MoreLinq.Test.Aot
             [UnconditionalSuppressMessage("Aot", "IL2026")]
             void Act() => _ = this.testObjects.ToDataTable(dt);
 
-            var e = Assert.ThrowsException<ArgumentException>(Act);
+            var e = Assert.Throws<ArgumentException>(Act);
             Assert.AreEqual("table", e.ParamName);
         }
 
@@ -82,7 +82,7 @@ namespace MoreLinq.Test.Aot
             [UnconditionalSuppressMessage("Aot", "IL2026")]
             void Act() => _ = this.testObjects.ToDataTable(dt, t => t.AString);
 
-            var e = Assert.ThrowsException<ArgumentException>(Act);
+            var e = Assert.Throws<ArgumentException>(Act);
             Assert.AreEqual("table", e.ParamName);
         }
 
@@ -91,12 +91,11 @@ namespace MoreLinq.Test.Aot
             [UnconditionalSuppressMessage("Aot", "IL2026")]
             void Act() => _ = this.testObjects.ToDataTable(expression);
 
-            var e = Assert.ThrowsException<ArgumentException>(Act);
+            var e = Assert.Throws<ArgumentException>(Act);
             Assert.AreEqual("expressions", e.ParamName);
             var innerException = e.InnerException;
             Assert.IsNotNull(innerException);
-            Assert.IsInstanceOfType<ArgumentException>(innerException);
-            Assert.AreEqual("lambda", ((ArgumentException)innerException).ParamName);
+            Assert.AreEqual("lambda", Assert.IsInstanceOfType<ArgumentException>(innerException).ParamName);
         }
 
         [TestMethod]
@@ -146,7 +145,7 @@ namespace MoreLinq.Test.Aot
             Assert.AreEqual("ANullableDecimal", dt.Columns[1].Caption);
             Assert.AreEqual(typeof(decimal), dt.Columns[1].DataType);
 
-            Assert.AreEqual(4, dt.Columns.Count);
+            Assert.HasCount(4, dt.Columns);
         }
 
         [TestMethod]
@@ -157,7 +156,7 @@ namespace MoreLinq.Test.Aot
 
             var dt = Act();
 
-            Assert.AreEqual(this.testObjects.Length, dt.Rows.Count);
+            Assert.HasCount(this.testObjects.Length, dt.Rows);
         }
 
         [TestMethod]
@@ -171,7 +170,7 @@ namespace MoreLinq.Test.Aot
             Assert.AreEqual("AString", dt.Columns[0].Caption);
             Assert.AreEqual(typeof(string), dt.Columns[0].DataType);
 
-            Assert.AreEqual(1, dt.Columns.Count);
+            Assert.HasCount(1, dt.Columns);
         }
 
         [TestMethod]
@@ -195,7 +194,7 @@ namespace MoreLinq.Test.Aot
             Act();
 
             var rows = dt.Rows.Cast<DataRow>().ToArray();
-            Assert.AreEqual(vars.Length, rows.Length);
+            Assert.HasCount(vars.Length, rows);
             CollectionAssert.AreEqual(vars.Select(e => e.Key).ToArray(), rows.Select(r => r["Name"]).ToArray());
             CollectionAssert.AreEqual(vars.Select(e => e.Value).ToArray(), rows.Select(r => r["Value"]).ToArray());
         }
@@ -218,7 +217,7 @@ namespace MoreLinq.Test.Aot
 
             var points = Act();
 
-            Assert.AreEqual(3, points.Columns.Count);
+            Assert.HasCount(3, points.Columns);
             var x = points.Columns["X"];
             var y = points.Columns["Y"];
             var empty = points.Columns["IsEmpty"];
@@ -228,7 +227,7 @@ namespace MoreLinq.Test.Aot
             var row = points.Rows.Cast<DataRow>().Single();
             Assert.AreEqual(12, row[x]);
             Assert.AreEqual(34, row[y]);
-            Assert.AreEqual(row[empty], false);
+            Assert.IsFalse(row[empty] as bool?);
         }
     }
 }

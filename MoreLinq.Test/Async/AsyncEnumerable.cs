@@ -21,6 +21,7 @@ namespace MoreLinq.Test.Async
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using LinqEnumerable = System.Linq.AsyncEnumerable;
 
@@ -45,68 +46,35 @@ namespace MoreLinq.Test.Async
         public static ValueTask<bool> AnyAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.AnyAsync(source, predicate);
 
-        public static IAsyncEnumerable<TSource> AsEnumerable<TSource>(this IAsyncEnumerable<TSource> source) =>
-            LinqEnumerable.AsAsyncEnumerable(source);
+        public static ValueTask<float?> AverageAsync(this IAsyncEnumerable<float?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<double> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<double?> AverageAsync(this IAsyncEnumerable<long?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<decimal?> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal?> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<double?> AverageAsync(this IAsyncEnumerable<int?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<double?> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double?> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<double?> AverageAsync(this IAsyncEnumerable<double?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<float> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<decimal?> AverageAsync(this IAsyncEnumerable<decimal?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<double?> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long?> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<double> AverageAsync(this IAsyncEnumerable<long> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<float?> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float?> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<double> AverageAsync(this IAsyncEnumerable<int> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<double> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<double> AverageAsync(this IAsyncEnumerable<double> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<double?> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int?> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
+        public static ValueTask<float> AverageAsync(this IAsyncEnumerable<float> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
-        public static ValueTask<decimal> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
-
-        public static ValueTask<double> AverageAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double> selector) =>
-            LinqEnumerable.AverageAsync(source, selector);
-
-        public static ValueTask<float?> AverageAsync(this IAsyncEnumerable<float?> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<double?> AverageAsync(this IAsyncEnumerable<long?> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<double?> AverageAsync(this IAsyncEnumerable<int?> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<double?> AverageAsync(this IAsyncEnumerable<double?> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<decimal?> AverageAsync(this IAsyncEnumerable<decimal?> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<double> AverageAsync(this IAsyncEnumerable<long> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<double> AverageAsync(this IAsyncEnumerable<int> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<double> AverageAsync(this IAsyncEnumerable<double> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<float> AverageAsync(this IAsyncEnumerable<float> source) =>
-            LinqEnumerable.AverageAsync(source);
-
-        public static ValueTask<decimal> AverageAsync(this IAsyncEnumerable<decimal> source) =>
-            LinqEnumerable.AverageAsync(source);
+        public static ValueTask<decimal> AverageAsync(this IAsyncEnumerable<decimal> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.AverageAsync(source, cancellationToken);
 
         public static IAsyncEnumerable<TResult> Cast<TResult>(this IAsyncEnumerable<object> source) =>
             LinqEnumerable.Cast<TResult>(source);
@@ -126,7 +94,7 @@ namespace MoreLinq.Test.Async
         public static ValueTask<int> CountAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
             LinqEnumerable.CountAsync(source);
 
-        public static IAsyncEnumerable<TSource> DefaultIfEmpty<TSource>(this IAsyncEnumerable<TSource> source) =>
+        public static IAsyncEnumerable<TSource?> DefaultIfEmpty<TSource>(this IAsyncEnumerable<TSource> source) =>
             LinqEnumerable.DefaultIfEmpty(source);
 
         public static IAsyncEnumerable<TSource> DefaultIfEmpty<TSource>(this IAsyncEnumerable<TSource> source, TSource defaultValue) =>
@@ -165,34 +133,34 @@ namespace MoreLinq.Test.Async
         public static ValueTask<TSource?> FirstOrDefaultAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.FirstOrDefaultAsync(source, predicate);
 
-        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IAsyncEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
+        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
             LinqEnumerable.GroupBy(source, keySelector, resultSelector, comparer);
 
-        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IAsyncEnumerable<TSource>, TResult> resultSelector) =>
+        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TKey, IEnumerable<TSource>, TResult> resultSelector) =>
             LinqEnumerable.GroupBy(source, keySelector, resultSelector);
 
-        public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) =>
+        public static IAsyncEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) =>
             LinqEnumerable.GroupBy(source, keySelector, elementSelector, comparer);
 
-        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IAsyncEnumerable<TElement>, TResult> resultSelector) =>
+        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector) =>
             LinqEnumerable.GroupBy(source, keySelector, elementSelector, resultSelector);
 
-        public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) =>
+        public static IAsyncEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) =>
             LinqEnumerable.GroupBy(source, keySelector, comparer);
 
-        public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector) =>
+        public static IAsyncEnumerable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector) =>
             LinqEnumerable.GroupBy(source, keySelector);
 
-        public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector) =>
+        public static IAsyncEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector) =>
             LinqEnumerable.GroupBy(source, keySelector, elementSelector);
 
-        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IAsyncEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
+        public static IAsyncEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, Func<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
             LinqEnumerable.GroupBy(source, keySelector, elementSelector, resultSelector, comparer);
 
-        public static IAsyncEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IAsyncEnumerable<TOuter> outer, IAsyncEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IAsyncEnumerable<TInner>, TResult> resultSelector) =>
+        public static IAsyncEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IAsyncEnumerable<TOuter> outer, IAsyncEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector) =>
             LinqEnumerable.GroupJoin(outer, inner, outerKeySelector, innerKeySelector, resultSelector);
 
-        public static IAsyncEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IAsyncEnumerable<TOuter> outer, IAsyncEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IAsyncEnumerable<TInner>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
+        public static IAsyncEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IAsyncEnumerable<TOuter> outer, IAsyncEnumerable<TInner> inner, Func<TOuter, TKey> outerKeySelector, Func<TInner, TKey> innerKeySelector, Func<TOuter, IEnumerable<TInner>, TResult> resultSelector, IEqualityComparer<TKey> comparer) =>
             LinqEnumerable.GroupJoin(outer, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
 
         public static IAsyncEnumerable<TSource> Intersect<TSource>(this IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second) =>
@@ -225,137 +193,11 @@ namespace MoreLinq.Test.Async
         public static ValueTask<long> LongCountAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, bool> predicate) =>
             LinqEnumerable.LongCountAsync(source, predicate);
 
-        public static ValueTask<double> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
+        public static ValueTask<TSource?> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, IComparer<TSource>? comparer = null, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.MaxAsync(source, comparer, cancellationToken);
 
-        public static ValueTask<int> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<long> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<decimal?> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal?> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<decimal> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<int?> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int?> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<long?> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long?> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<float?> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float?> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<TResult> MaxAsync<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TResult> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<double?> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double?> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<TSource> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<float> MaxAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float> selector) =>
-            LinqEnumerable.MaxAsync(source, selector);
-
-        public static ValueTask<float?> MaxAsync(this IAsyncEnumerable<float?> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<long?> MaxAsync(this IAsyncEnumerable<long?> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<int?> MaxAsync(this IAsyncEnumerable<int?> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<double?> MaxAsync(this IAsyncEnumerable<double?> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<decimal?> MaxAsync(this IAsyncEnumerable<decimal?> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<long> MaxAsync(this IAsyncEnumerable<long> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<int> MaxAsync(this IAsyncEnumerable<int> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<double> MaxAsync(this IAsyncEnumerable<double> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<decimal> MaxAsync(this IAsyncEnumerable<decimal> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<float> MaxAsync(this IAsyncEnumerable<float> source) =>
-            LinqEnumerable.MaxAsync(source);
-
-        public static ValueTask<int> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<long> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<decimal?> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal?> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<double?> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double?> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<TResult> MinAsync<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, TResult> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<long?> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long?> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<float?> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float?> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<float> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<decimal> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<int?> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int?> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<TSource> MinAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<double> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double> selector) =>
-            LinqEnumerable.MinAsync(source, selector);
-
-        public static ValueTask<float?> MinAsync(this IAsyncEnumerable<float?> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<long?> MinAsync(this IAsyncEnumerable<long?> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<int?> MinAsync(this IAsyncEnumerable<int?> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<double?> MinAsync(this IAsyncEnumerable<double?> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<decimal?> MinAsync(this IAsyncEnumerable<decimal?> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<long> MinAsync(this IAsyncEnumerable<long> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<int> MinAsync(this IAsyncEnumerable<int> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<double> MinAsync(this IAsyncEnumerable<double> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<decimal> MinAsync(this IAsyncEnumerable<decimal> source) =>
-            LinqEnumerable.MinAsync(source);
-
-        public static ValueTask<float> MinAsync(this IAsyncEnumerable<float> source) =>
-            LinqEnumerable.MinAsync(source);
+        public static ValueTask<TSource?> MinAsync<TSource>(this IAsyncEnumerable<TSource> source, IComparer<TSource>? comparer = null, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.MinAsync(source, comparer, cancellationToken);
 
         public static IAsyncEnumerable<TResult> OfType<TResult>(this IAsyncEnumerable<object> source) =>
             LinqEnumerable.OfType<TResult>(source);
@@ -396,7 +238,7 @@ namespace MoreLinq.Test.Async
         public static IAsyncEnumerable<TResult> SelectMany<TSource, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, int, IAsyncEnumerable<TResult>> selector) =>
             LinqEnumerable.SelectMany(source, selector);
 
-        public static IAsyncEnumerable<TResult> SelectMany<TSource, TCollection, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, int, IAsyncEnumerable<TCollection>> collectionSelector, Func<TSource, TCollection, TResult> resultSelector) =>
+        public static IAsyncEnumerable<TResult> SelectMany<TSource, TCollection, TResult>(this IAsyncEnumerable<TSource> source, Func<TSource, int, IAsyncEnumerable<TCollection>> collectionSelector, Func<TSource, TCollection, CancellationToken, ValueTask<TResult>> resultSelector) =>
             LinqEnumerable.SelectMany(source, collectionSelector, resultSelector);
 
         public static ValueTask<bool> SequenceEqualAsync<TSource>(this IAsyncEnumerable<TSource> first, IAsyncEnumerable<TSource> second, IEqualityComparer<TSource> comparer) =>
@@ -426,65 +268,35 @@ namespace MoreLinq.Test.Async
         public static IAsyncEnumerable<TSource> SkipWhile<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int, bool> predicate) =>
             LinqEnumerable.SkipWhile(source, predicate);
 
-        public static ValueTask<int?> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int?> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<float?> SumAsync(this IAsyncEnumerable<float?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<int> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, int> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<long?> SumAsync(this IAsyncEnumerable<long?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<long> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<int?> SumAsync(this IAsyncEnumerable<int?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<decimal?> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal?> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<double?> SumAsync(this IAsyncEnumerable<double?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<float> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<decimal?> SumAsync(this IAsyncEnumerable<decimal?> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<float?> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, float?> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<float> SumAsync(this IAsyncEnumerable<float> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<double> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<long> SumAsync(this IAsyncEnumerable<long> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<long?> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, long?> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<int> SumAsync(this IAsyncEnumerable<int> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<decimal> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, decimal> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
+        public static ValueTask<double> SumAsync(this IAsyncEnumerable<double> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
-        public static ValueTask<double?> SumAsync<TSource>(this IAsyncEnumerable<TSource> source, Func<TSource, double?> selector) =>
-            LinqEnumerable.SumAsync(source, selector);
-
-        public static ValueTask<float?> SumAsync(this IAsyncEnumerable<float?> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<long?> SumAsync(this IAsyncEnumerable<long?> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<int?> SumAsync(this IAsyncEnumerable<int?> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<double?> SumAsync(this IAsyncEnumerable<double?> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<decimal?> SumAsync(this IAsyncEnumerable<decimal?> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<float> SumAsync(this IAsyncEnumerable<float> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<long> SumAsync(this IAsyncEnumerable<long> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<int> SumAsync(this IAsyncEnumerable<int> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<double> SumAsync(this IAsyncEnumerable<double> source) =>
-            LinqEnumerable.SumAsync(source);
-
-        public static ValueTask<decimal> SumAsync(this IAsyncEnumerable<decimal> source) =>
-            LinqEnumerable.SumAsync(source);
+        public static ValueTask<decimal> SumAsync(this IAsyncEnumerable<decimal> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.SumAsync(source, cancellationToken);
 
         public static IAsyncEnumerable<TSource> Take<TSource>(this IAsyncEnumerable<TSource> source, int count) =>
             LinqEnumerable.Take(source, count);
@@ -526,8 +338,8 @@ namespace MoreLinq.Test.Async
             where TKey : notnull =>
             LinqEnumerable.ToDictionaryAsync(source, keySelector, elementSelector, comparer);
 
-        public static ValueTask<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> source) =>
-            LinqEnumerable.ToListAsync(source);
+        public static ValueTask<List<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource> source, CancellationToken cancellationToken = default) =>
+            LinqEnumerable.ToListAsync(source, cancellationToken);
 
         public static ValueTask<ILookup<TKey, TSource>> ToLookupAsync<TSource, TKey>(this IAsyncEnumerable<TSource> source, Func<TSource, TKey> keySelector) =>
             LinqEnumerable.ToLookupAsync(source, keySelector);
