@@ -155,14 +155,14 @@ static void Run(ProgramArguments args)
             e.Method.Name,
             e.Method.TypeParameterCount,
             e.Method.ParameterCount,
-            new TupleTypeKey(ImmutableList.CreateRange(e.Method.SortableParameterTypes))
+            new TupleTypeKey([..e.Method.SortableParameterTypes])
         select new
         {
             e.Method,
             e.SourceOrder,
         };
 
-    q = q.ToArray();
+    q = [..q];
 
     if (args.OptDebug)
     {
@@ -336,14 +336,12 @@ static TypeKey CreateTypeKey(TypeSyntax root, Func<string, TypeKey?> abbreviator
                                     ?? new SimpleTypeKey(ins.ToString()),
         GenericNameSyntax gns =>
             new GenericTypeKey(gns.Identifier.ToString(),
-                               ImmutableList.CreateRange(gns.TypeArgumentList.Arguments.Select(Walk))),
+                               [..from arg in gns.TypeArgumentList.Arguments select Walk(arg)]),
         ArrayTypeSyntax ats =>
             new ArrayTypeKey(Walk(ats.ElementType),
-                             ImmutableList.CreateRange(from rs in ats.RankSpecifiers
-                                                       select rs.Rank)),
+                             [..from rs in ats.RankSpecifiers select rs.Rank]),
         TupleTypeSyntax tts =>
-            new TupleTypeKey(ImmutableList.CreateRange(from te in tts.Elements
-                                                       select Walk(te.Type))),
+            new TupleTypeKey([..from te in tts.Elements select Walk(te.Type)]),
         _ => throw new NotSupportedException("Unhandled type: " + ts)
     };
 }
@@ -415,7 +413,7 @@ sealed class TupleTypeKey(ImmutableList<TypeKey> parameters) :
 sealed class ArrayTypeKey(TypeKey element, IEnumerable<int> ranks) :
     ParameterizedTypeKey("[]", element)
 {
-    public ImmutableList<int> Ranks { get; } = ImmutableList.CreateRange(ranks);
+    public ImmutableList<int> Ranks { get; } = [..ranks];
 
     public override string ToString() =>
         Parameters.Single() + string.Concat(from r in Ranks

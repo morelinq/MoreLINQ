@@ -158,7 +158,7 @@ namespace MoreLinq
 
         sealed class DisposableGroup<T>(IEnumerable<IEnumerator<T>> iterators) : IDisposable
         {
-            public List<IEnumerator<T>> Iterators { get; } = new(iterators);
+            public List<IEnumerator<T>> Iterators { get; } = [..iterators];
 
             public IEnumerator<T> this[int index] => Iterators[index];
 

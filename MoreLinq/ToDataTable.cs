@@ -171,7 +171,7 @@ namespace MoreLinq
                 throw new ArgumentException("One of the supplied expressions was null.", nameof(expressions));
             try
             {
-                return expressions.Select(GetAccessedMember).ToArray();
+                return [..from e in expressions select GetAccessedMember(e)];
             }
             catch (ArgumentException e)
             {

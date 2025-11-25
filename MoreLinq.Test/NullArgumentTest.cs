@@ -103,7 +103,7 @@ namespace MoreLinq.Test
                     _ => throw new NotImplementedException("NullArgumentTest.InstantiateType")
                 };
 
-            return definition.MakeGenericMethod(typeArguments.ToArray());
+            return definition.MakeGenericMethod([..typeArguments]);
         }
 
         static bool IsReferenceType(ParameterInfo parameter) =>

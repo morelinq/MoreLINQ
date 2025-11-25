@@ -93,7 +93,7 @@ namespace MoreLinq.Test
 
             IList<int>[] result;
             using (var ts = sequence.AsTestingSequence())
-                result = ts.WindowLeft(1).ToArray();
+                result = [..ts.WindowLeft(1)];
 
             // number of windows should be equal to the source sequence length
             Assert.That(result.Length, Is.EqualTo(count));

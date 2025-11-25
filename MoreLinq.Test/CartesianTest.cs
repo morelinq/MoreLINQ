@@ -17,6 +17,7 @@
 
 namespace MoreLinq.Test
 {
+    using System;
     using NUnit.Framework;
 
     /// <summary>
@@ -122,14 +123,14 @@ namespace MoreLinq.Test
             var sequenceA = Enumerable.Range(0, 5);
             var sequenceB = Enumerable.Range(0, 5);
 
-            var expectedSet = new[]
-            {
-                Enumerable.Repeat(false, 5).ToArray(),
-                Enumerable.Repeat(false, 5).ToArray(),
-                Enumerable.Repeat(false, 5).ToArray(),
-                Enumerable.Repeat(false, 5).ToArray(),
-                Enumerable.Repeat(false, 5).ToArray()
-            };
+            bool[][] expectedSet =
+            [
+                [..Enumerable.Repeat(false, 5)],
+                [..Enumerable.Repeat(false, 5)],
+                [..Enumerable.Repeat(false, 5)],
+                [..Enumerable.Repeat(false, 5)],
+                [..Enumerable.Repeat(false, 5)],
+            ];
 
             using var tsA = sequenceA.AsTestingSequence();
             using var tsB = sequenceB.AsTestingSequence();

@@ -60,7 +60,7 @@ namespace MoreLinq.Test
         [TestCaseSource(nameof(PrependManySource))]
         public int[] PrependMany(int[] head, int[] tail)
         {
-            return tail.Aggregate(head.AsEnumerable(), MoreEnumerable.Prepend).ToArray();
+            return [..tail.Aggregate(head.AsEnumerable(), MoreEnumerable.Prepend)];
         }
 
         public static IEnumerable<TestCaseData> PrependManySource =>

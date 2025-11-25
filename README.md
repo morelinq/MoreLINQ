@@ -83,6 +83,17 @@ locally using any HTTP server of static files, like
 [t4]: https://docs.microsoft.com/en-us/visualstudio/modeling/code-generation-and-t4-text-templates
 
 
+### Dev Container
+
+For a consistent development experience, you can use [Visual Studio Code] with
+the [Dev Containers extension]. A [dev container] provides a ready-to-use
+development environment with all the necessary dependencies.
+
+[Visual Studio Code]: https://code.visualstudio.com/
+[Dev Containers extension]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
+[dev container]: .devcontainer/README.md
+
+
 ## Operators
 
 ### Acquire

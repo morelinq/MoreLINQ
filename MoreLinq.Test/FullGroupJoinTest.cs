@@ -126,8 +126,8 @@ namespace MoreLinq.Test
             // Order of joined elements is preserved
             foreach (var (key, first, second) in result)
             {
-                first.AssertSequenceEqual(listA.Where(t => t.Item1 == key).ToArray());
-                second.AssertSequenceEqual(listB.Where(t => t.Item1 == key).ToArray());
+                first.AssertSequenceEqual([..from t in listA where t.Item1 == key select t]);
+                second.AssertSequenceEqual([..from t in listB where t.Item1 == key select t]);
             }
         }
 

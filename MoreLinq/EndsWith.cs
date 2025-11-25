@@ -75,7 +75,7 @@ namespace MoreLinq
             return second.TryAsCollectionLike() is { Count: var secondCount }
                    ? first.TryAsCollectionLike() is not { Count: var firstCount } || secondCount <= firstCount
                      && EndsWith(second, secondCount)
-                   : EndsWith(secondList = second.ToList(), secondList.Count);
+                   : EndsWith(secondList = [..second], secondList.Count);
 
             bool EndsWith(IEnumerable<T> second, int count) =>
                 first.TakeLast(count).SequenceEqual(second, comparer);

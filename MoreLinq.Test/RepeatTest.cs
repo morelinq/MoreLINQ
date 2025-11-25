@@ -46,7 +46,7 @@ namespace MoreLinq.Test
 
             int[] result;
             using (var ts = sequence.AsTestingSequence())
-                result = ts.Repeat(repeatCount).ToArray();
+                result = [..ts.Repeat(repeatCount)];
 
             var expectedResult = Enumerable.Empty<int>();
             for (var i = 0; i < repeatCount; i++)
@@ -94,7 +94,7 @@ namespace MoreLinq.Test
 
             int[] result;
             using (var ts = sequence.AsTestingSequence())
-                result = ts.Repeat().Take(takeCount).ToArray();
+                result = [..ts.Repeat().Take(takeCount)];
 
             var expectedResult = Enumerable.Empty<int>();
             for (var i = 0; i < repeatCount; i++)

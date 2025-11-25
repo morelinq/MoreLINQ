@@ -58,7 +58,9 @@ namespace MoreLinq.Experimental
                 ICollection<T> => source,
                 IReadOnlyCollection<T> => source,
                 MemoizedEnumerable<T> => source,
+#pragma warning disable IDE0306 // Simplify collection initialization (would change semantics)
                 _ => new MemoizedEnumerable<T>(source),
+#pragma warning restore IDE0306 // Simplify collection initialization
             };
     }
 

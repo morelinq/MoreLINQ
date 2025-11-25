@@ -8,14 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.Engine" Version="1.0.0-alpha.24562.1" />
-    <PackageReference Include="MSTest.SourceGeneration" Version="1.0.0-alpha.24562.1" />
-    <PackageReference Include="Microsoft.CodeCoverage.MSBuild" Version="17.13.1" />
-    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.13.1" />
-    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.5.0" />
-    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.5.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.7.0" />
-    <PackageReference Include="MSTest.Analyzers" Version="3.7.0">
+    <PackageReference Include="MSTest.Engine" Version="1.0.0-alpha.25277.3" />
+    <PackageReference Include="MSTest.SourceGeneration" Version="1.0.0-alpha.25277.3" />
+    <PackageReference Include="Microsoft.CodeCoverage.MSBuild" Version="17.14.2" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="1.7.1" />
+    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.7.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.9.1" />
+    <PackageReference Include="MSTest.Analyzers" Version="3.9.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -44,9 +44,22 @@ namespace MoreLinq.Test
         readonly ImmutableArray<TestObject> testObjects;
 
         public ToDataTableTest() =>
-            this.testObjects = Enumerable.Range(0, 3)
-                                         .Select(i => new TestObject(i))
-                                         .ToImmutableArray();
+            this.testObjects =
+#if NET8_0_OR_GREATER
+                [..
+#else
+#pragma warning disable IDE0303 // Use array creation expression
+                ImmutableArray.CreateRange(
+#pragma warning restore IDE0303 // Use array creation expression
+#endif
+                    from i in Enumerable.Range(0, 3)
+                    select new TestObject(i)
+#if NET8_0_OR_GREATER
+                ]
+#else
+                )
+#endif
+                ;
 
         [Test]
         public void ToDataTableNullMemberExpressionMethod()

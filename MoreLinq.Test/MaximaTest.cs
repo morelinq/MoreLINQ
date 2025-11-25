@@ -213,7 +213,7 @@ namespace MoreLinq.Test
             public string[] ReturnsMaxima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Maxima(s => s.Length).Take(count).ToArray();
+                return [..strings.Maxima(s => s.Length).Take(count)];
             }
 
             [TestCase(0, 0, ExpectedResult = new string[0]                         )]
@@ -227,9 +227,8 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Maxima(s => s[index], Comparable<char>.DescendingOrderComparer)
-                              .Take(count)
-                              .ToArray();
+                return [..strings.Maxima(s => s[index], Comparable<char>.DescendingOrderComparer)
+                                 .Take(count)];
             }
         }
 
@@ -242,7 +241,7 @@ namespace MoreLinq.Test
             public string[] TakeLastReturnsMaxima(int count)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Maxima(s => s.Length).TakeLast(count).ToArray();
+                return [..strings.Maxima(s => s.Length).TakeLast(count)];
             }
 
             [TestCase(0, 0, ExpectedResult = new string[0]                         )]
@@ -256,9 +255,8 @@ namespace MoreLinq.Test
             public string[] WithComparerReturnsMaximaPerComparer(int count, int index)
             {
                 using var strings = SampleData.Strings.AsTestingSequence();
-                return strings.Maxima(s => s[index], Comparable<char>.DescendingOrderComparer)
-                              .TakeLast(count)
-                              .ToArray();
+                return [..strings.Maxima(s => s[index], Comparable<char>.DescendingOrderComparer)
+                                 .TakeLast(count)];
             }
         }
     }
