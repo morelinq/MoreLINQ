@@ -185,7 +185,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="..\COPYING.txt" Pack="true" PackagePath="" />
     <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
     <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
