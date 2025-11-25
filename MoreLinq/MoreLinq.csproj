@@ -135,7 +135,7 @@
     <PackageId>morelinq</PackageId>
     <PackageTags>linq;extensions</PackageTags>
     <PackageProjectUrl>https://morelinq.github.io/</PackageProjectUrl>
-    <PackageLicenseFile>COPYING.txt</PackageLicenseFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageOutputPath>..\dist</PackageOutputPath>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <EnablePackageValidation>true</EnablePackageValidation>
@@ -185,7 +185,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\COPYING.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
+    <None Include="..\COPYING.txt" Pack="true" PackagePath="" />
     <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)" />
     <None Include="*.g.tt" />
     <None Update="Aggregate.g.tt">
