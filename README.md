@@ -1,3 +1,7 @@
+[![Nuget](https://img.shields.io/nuget/v/morelinq?style=flat-square)](https://www.nuget.org/packages/morelinq)
+[![Nuget](https://img.shields.io/nuget/dt/morelinq?style=flat-square)](https://www.nuget.org/packages/morelinq)
+[![GitHub contributors](https://img.shields.io/github/contributors/MoreLINQ/MoreLINQ?style=flat-square)](https://github.com/morelinq/MoreLINQ/graphs/contributors)
+
 # MoreLINQ
 
 LINQ to Objects is missing a few desirable features.
