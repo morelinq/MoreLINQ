@@ -55,7 +55,7 @@ namespace MoreLinq
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
 
-            return Impl(otherSequences.Prepend(sequence));
+            return InterleaveImpl(otherSequences.Prepend(sequence));
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace MoreLinq
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequences));
 
-            return Impl(sequence);
+            return InterleaveImpl(sequence);
         }
 
-        private static IEnumerable<T> InterleaveImpl(IEnumerable<IEnumerable<T>> sequences)
+        private static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences)
         {
             var enumerators = new LinkedList<IEnumerator<T>>();
 
