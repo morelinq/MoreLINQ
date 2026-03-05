@@ -55,56 +55,86 @@ namespace MoreLinq
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (otherSequences == null) throw new ArgumentNullException(nameof(otherSequences));
 
-            return Impl(otherSequences.Prepend(sequence));
+            return InterleaveImpl(otherSequences.Prepend(sequence));
+        }
 
-            static IEnumerable<T> Impl(IEnumerable<IEnumerable<T>> sequences)
+        /// <summary>
+        /// Interleaves the elements of a sequence of sequences into a single sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the source sequences.</typeparam>
+        /// <param name="sequences">The sequences to interleave</param>
+        /// <returns>A sequence of interleaved elements from all of the source sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// Interleave combines sequences by visiting each in turn, and returning the first element
+        /// of each, followed by the second, then the third, and so on. So, for example:</para>
+        /// <code><![CDATA[
+        /// var xs = new[] { new[] { 1, 1, 1 }, new[] { 2, 2, 2 }, new[] { 3, 3, 3 } }.Interleave();
+        /// // xs = { 1, 2, 3, 1, 2, 3, 1, 2, 3 }
+        /// ]]></code>
+        /// <para>
+        /// This operator behaves in a deferred and streaming manner.</para>
+        /// <para>
+        /// When sequences are of unequal length, this method will skip those sequences that have
+        /// been fully consumed and continue interleaving the remaining sequences.</para>
+        /// <para>
+        /// The sequences are interleaved in the order that they appear in the <paramref
+        /// name="sequences"/> collection. </para>
+        /// </remarks>
+        public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sequences)
+        {
+            if (sequences == null) throw new ArgumentNullException(nameof(sequences));
+
+            return InterleaveImpl(sequences);
+        }
+
+        static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences)
+        {
+            var enumerators = new LinkedList<IEnumerator<T>>();
+
+            try
             {
-                var enumerators = new LinkedList<IEnumerator<T>>();
+                // First, yield first element of each sequence.
 
-                try
+                foreach (var sequence in sequences)
                 {
-                    // First, yield first element of each sequence.
+                    var enumerator = sequence.GetEnumerator();
 
-                    foreach (var sequence in sequences)
+                    _ = enumerators.AddLast(enumerator);
+                    if (enumerator.MoveNext())
                     {
-                        var enumerator = sequence.GetEnumerator();
-
-                        _ = enumerators.AddLast(enumerator);
-                        if (enumerator.MoveNext())
-                        {
-                            yield return enumerator.Current;
-                        }
-                        else // Dispose and remove empty sequence
-                        {
-                            enumerator.Dispose();
-                            _ = enumerators.Remove(enumerator);
-                        }
+                        yield return enumerator.Current;
                     }
-
-                    // Then, yield remaining elements from each sequence.
-
-                    var node = enumerators.First;
-                    while (node is { Value: var enumerator, Next: var nextNode })
+                    else // Dispose and remove empty sequence
                     {
-                        if (enumerator.MoveNext())
-                        {
-                            yield return enumerator.Current;
-                        }
-                        else
-                        {
-                            enumerator.Dispose();
-                            enumerators.Remove(node);
-                        }
-
-                        // Work on next node or restart from first one.
-                        node = nextNode ?? enumerators.First;
-                    }
-                }
-                finally
-                {
-                    foreach (var enumerator in enumerators)
                         enumerator.Dispose();
+                        _ = enumerators.Remove(enumerator);
+                    }
                 }
+
+                // Then, yield remaining elements from each sequence.
+
+                var node = enumerators.First;
+                while (node is { Value: var enumerator, Next: var nextNode })
+                {
+                    if (enumerator.MoveNext())
+                    {
+                        yield return enumerator.Current;
+                    }
+                    else
+                    {
+                        enumerator.Dispose();
+                        enumerators.Remove(node);
+                    }
+
+                    // Work on next node or restart from first one.
+                    node = nextNode ?? enumerators.First;
+                }
+            }
+            finally
+            {
+                foreach (var enumerator in enumerators)
+                    enumerator.Dispose();
             }
         }
     }

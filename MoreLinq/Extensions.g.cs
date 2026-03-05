@@ -3081,6 +3081,32 @@ namespace MoreLinq.Extensions
     [GeneratedCode("MoreLinq.ExtensionsGenerator", "1.0.0.0")]
     public static partial class InterleaveExtension
     {
+
+        /// <summary>
+        /// Interleaves the elements of a sequence of sequences into a single sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements of the source sequences.</typeparam>
+        /// <param name="sequences">The sequences to interleave</param>
+        /// <returns>A sequence of interleaved elements from all of the source sequences.</returns>
+        /// <remarks>
+        /// <para>
+        /// Interleave combines sequences by visiting each in turn, and returning the first element
+        /// of each, followed by the second, then the third, and so on. So, for example:</para>
+        /// <code><![CDATA[
+        /// var xs = new[] { new[] { 1, 1, 1 }, new[] { 2, 2, 2 }, new[] { 3, 3, 3 } }.Interleave();
+        /// // xs = { 1, 2, 3, 1, 2, 3, 1, 2, 3 }
+        /// ]]></code>
+        /// <para>
+        /// This operator behaves in a deferred and streaming manner.</para>
+        /// <para>
+        /// When sequences are of unequal length, this method will skip those sequences that have
+        /// been fully consumed and continue interleaving the remaining sequences.</para>
+        /// <para>
+        /// The sequences are interleaved in the order that they appear in the <paramref
+        /// name="sequences"/> collection. </para>
+        /// </remarks>
+        public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sequences)
+            => MoreEnumerable.Interleave(sequences);
         /// <summary>
         /// Interleaves the elements of two or more sequences into a single sequence, skipping
         /// sequences as they are consumed.
