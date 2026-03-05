@@ -83,12 +83,12 @@ namespace MoreLinq
         /// </remarks>
         public static IEnumerable<T> Interleave<T>(this IEnumerable<IEnumerable<T>> sequences)
         {
-            if (sequence == null) throw new ArgumentNullException(nameof(sequences));
+            if (sequences == null) throw new ArgumentNullException(nameof(sequences));
 
-            return InterleaveImpl(sequence);
+            return InterleaveImpl(sequences);
         }
 
-        private static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences)
+        static IEnumerable<T> InterleaveImpl<T>(IEnumerable<IEnumerable<T>> sequences)
         {
             var enumerators = new LinkedList<IEnumerator<T>>();
 
