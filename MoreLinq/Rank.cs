@@ -82,15 +82,19 @@ namespace MoreLinq
             static IEnumerable<int> _(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
             {
 #pragma warning disable IDE0305 // Simplify collection initialization (could be less optimal)
-                source = source.ToArray(); // avoid enumerating source twice
+                var ordered = source.Select((item, index) => (Key: keySelector(item), Index: index))
+                                    .OrderByDescending(item => item.Key, comparer)
+                                    .ToArray();
 #pragma warning restore IDE0305 // Simplify collection initialization
 
-                var rankDictionary = new Collections.Dictionary<TSource, int>(EqualityComparer<TSource>.Default);
-                var i = 1;
-                foreach (var item in source.Distinct()
-                                           .OrderByDescending(keySelector, comparer))
+                var ranks = new int[ordered.Length];
+                var rank = 0;
+                for (var i = 0; i < ordered.Length; i++)
                 {
-                    rankDictionary[item] = i++;
+                    if (i == 0 || comparer.Compare(ordered[i - 1].Key, ordered[i].Key) != 0)
+                        rank++;
+
+                    ranks[ordered[i].Index] = rank;
                 }
 
                 // The following loop should not be be converted to a query to
@@ -98,8 +102,8 @@ namespace MoreLinq
 
                 // ReSharper disable LoopCanBeConvertedToQuery
 
-                foreach (var item in source)
-                    yield return rankDictionary[item];
+                foreach (var item in ranks)
+                    yield return item;
 
                 // ReSharper restore LoopCanBeConvertedToQuery
             }

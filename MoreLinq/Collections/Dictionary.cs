@@ -42,7 +42,6 @@ namespace MoreLinq.Collections
 
         public TValue this[TKey key]
         {
-            get => this.dict[ValueTuple.Create(key)];
             set => this.dict[ValueTuple.Create(key)] = value;
         }
 
